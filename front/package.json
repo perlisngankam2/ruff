@@ -1,0 +1,42 @@
+{
+  "name": "ruffschool",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "gen:types": "npx apollo client:codegen --target typescript --includes **/*.graphql.ts --excludes **/__generated__"
+  },
+  "dependencies": {
+    "@apollo/client": "^3.7.3",
+    "@chakra-ui/icons": "^2.0.13",
+    "@chakra-ui/react": "^2.4.3",
+    "@emotion/react": "^11.10.5",
+    "@emotion/styled": "^11.10.5",
+    "@fontsource/open-sans": "^4.5.13",
+    "axios": "^1.2.2",
+    "chakra-react-select": "^4.4.3",
+    "formik": "^2.2.9",
+    "framer-motion": "^7.8.0",
+    "graphql": "^16.6.0",
+    "i18next": "^22.4.6",
+    "moment": "^2.29.4",
+    "next": "13.0.6",
+    "next-i18next": "^13.0.2",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "react-hook-form": "^7.41.5",
+    "react-i18next": "^12.1.1",
+    "react-icons": "^4.7.1",
+    "yup": "^0.32.11"
+  },
+  "devDependencies": {
+    "@graphql-codegen/cli": "^2.16.4",
+    "@types/node": "18.11.15",
+    "@types/react": "18.0.26",
+    "i18next-hmr": "^1.11.1",
+    "typescript": "4.9.4"
+  }
+}

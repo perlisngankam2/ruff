@@ -1,0 +1,226 @@
+import { AddIcon, SearchIcon } from "@chakra-ui/icons";
+import {
+  Box,
+  Button,
+  ButtonGroup,
+  IconButton ,
+  Center,
+  Flex,
+  Heading,
+  Hide,
+  Input,
+  InputGroup,
+  InputRightAddon,
+  Select,
+  Table,
+  TableContainer,
+  Tbody,
+  Td,
+  Text,
+  Th,
+  Thead,
+  Tr,
+  Link,
+  Avatar,
+  Icon
+} from "@chakra-ui/react";
+import { useState, useEffect } from "react";
+import DefaultLayout from "../../components/layouts/DefaultLayout";
+import { Users } from '../api/data/users';
+import { Classes } from '../api/data/classes';
+import PaiementTable from "../scolarite/paiementTable";
+import { IoIosAdd } from "react-icons/io";
+import{ FiEdit} from 'react-icons/fi';
+import {MdDelete} from 'react-icons/md';
+import { Router, useRouter } from "next/router";
+import { GET_ALL_ATUDENT } from "../../graphql/Queries";
+import { DELETE_STUDENT } from "../../graphql/Mutation";
+import { useMutation, useQuery } from "@apollo/client";
+
+
+const Eleves = () => {
+
+    const router = useRouter();
+    const [query , setQuery] = useState("");
+    //const [classeValue , setClasseValue ] = useState("");
+    const [data, setData] = useState([]);
+    const keys = ["first_name", "last_name", "email", "classe"];
+    const {data:dataStudent} = useQuery(GET_ALL_ATUDENT);
+    const [deletestudent] = useMutation(DELETE_STUDENT);
+
+    const search = (data) => {
+       
+      let datas = data.filter((item) => keys.some((key) => (
+        item[key].toUpperCase().includes(query) 
+        )
+      ));
+      console.log("datas :" , datas)
+      return query ? datas.slice(0,5) : Users.slice(0,5)
+    }; 
+
+    useEffect(() => {
+      console.log(dataStudent?.findAllstudents);
+    })
+
+    const removeStudent = async(id) => {
+      await deletestudent({
+        variables: {id},
+        refetchQueries: [{
+          query: GET_ALL_ATUDENT
+        }]
+      })
+    }
+
+  return (
+    <DefaultLayout>
+      <Box p="3" pt={"80px"} w="full">
+        <Flex
+          align="center"
+          justify="space-between"
+          boxShadow="md"
+          p="5"
+          rounded="lg"
+          background="white"
+        >
+          <Heading
+            textAlign="center"
+            color="WindowText"
+            size="lg"
+            textColor="pink.300"
+          >
+            Liste des élèves
+          </Heading>
+          <Hide below="sm">
+            <Text>Dashboad / Éleves / Liste Élèves</Text>
+          </Hide>
+        </Flex>
+
+        <Flex gap={10} mt={5}>
+          <InputGroup>
+            <Input
+              placeholder="Rechercher un élève..."
+              //value={recherche}
+              onChange={e => setQuery(e.target.value)}
+            />
+            <InputRightAddon children={<SearchIcon />} />
+          </InputGroup>
+          <Select 
+            placeholder="Selectionner la classe"
+            onChange={e =>setQuery(e.target.value)}
+          >
+            {Classes.map((classe) => (
+              <option 
+                key={classe.id}
+              >{classe.classe}</option>
+            ))}
+          </Select>
+          <Box> 
+            <Button
+                rightIcon={<Icon as={IoIosAdd} boxSize="20px" />}
+                onClick={() => router.push("/eleves/ajoutereleve")}
+              >
+                Ajouter un élève
+            </Button>
+          </Box> 
+        </Flex>
+        {/* <Box mt={10}>
+          <PaiementTable data={search(Users)}/>
+        </Box> */}
+        <Box mt={10}>
+           <TableContainer>
+              <Table variant='striped'>
+                  {/* <TableCaption>Liste des eleves</TableCaption> */}
+                  <Thead>
+                  <Tr>
+                      <Th>Nom</Th>
+                      <Th>Prenom</Th>
+                      <Th >classe</Th>
+                      <Th>sexe</Th>
+                      {/* <Th>Photo</Th> */}
+                      <Th>Action</Th>
+                  </Tr>
+                  </Thead>
+                  <Tbody>
+                  {dataStudent && ( 
+                    dataStudent.findAllstudents.map((student, index) =>(
+                        // <Link href='/scolarite/formulaire' key={index}>
+                      <Tr key={index}>
+                        <Td borderColor={'#C6B062'}>{student.lastname}</Td>
+                        <Td borderColor={'#C6B062'}>{student.firstname}</Td>
+                        <Td borderColor={'#C6B062'}>{student.classe}</Td>
+                        <Td borderColor={'#C6B062'}>{student.sex}</Td>
+                        {/* <Td borderColor={'#C6B062'}>
+                            <Avatar 
+                                size='xs' 
+                                name='Dan Abrahmov' 
+                                src='https://bit.ly/dan-abramov'
+                            /> 
+                        </Td> */}
+                        
+                        <Td borderColor={'#C6B062'}>
+                          <ButtonGroup 
+                            size='sm' 
+                            isAttached 
+                            variant='link' 
+                            colorScheme={'teal'}
+                            >
+                              <Button>
+                                <Link 
+                                  href='/eleves/details '
+                                >
+                                  Details
+                                </Link>
+                              </Button>
+                              {/* <Link
+                              href='/eleves/scolariteform'
+                              >
+                                <IconButton aria-label='Add to friends' _hover={{color:'#E2D39C'}}  icon={<AddIcon />} />                      
+                              </Link> */}
+                              
+                            </ButtonGroup> 
+                          </Td>
+                            <Box ml='-100px' mt='8px'>
+                                <Link 
+                                href="/eleves/modifiereleve">
+                                    <Icon
+                                    as={FiEdit}
+                                    boxSize="40px"
+                                    p="3"
+                                    // bg="blue.100"
+                                    rounded="full"
+                                    _hover={{background:"red.100"}}
+                                    />
+                                </Link>
+                                <Link href="#" mt="-3px">
+                                  <Icon
+                                    as={MdDelete}
+                                    boxSize="44px"
+                                    p="3"
+                                    rounded="full"
+                                    color="colors.quaternary"
+                                    onClick={() => {removeStudent(student.id)}}
+                                    _hover={{background:"blue.100"}}
+                                  />
+                              </Link>
+                            </Box> 
+                        </Tr>
+                      // </Link>
+                  ))
+                )}
+                </Tbody>
+                  {/* <Tfoot>
+                  <Tr>
+                      <Th>To convert</Th>
+                      <Th>into</Th>
+                      <Th isNumeric>multiply by</Th>
+                  </Tr>
+                  </Tfoot> */}
+              </Table>
+            </TableContainer>
+        </Box>
+      </Box>
+    </DefaultLayout>
+  );
+};
+
+export default Eleves;

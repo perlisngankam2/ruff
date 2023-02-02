@@ -1,0 +1,35 @@
+{
+  "compilerOptions": {
+    "target": "es5",
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "strict": false,
+    "forceConsistentCasingInFileNames": true,
+    "noEmit": true,
+    "incremental": true,
+    "esModuleInterop": true,
+    "module": "esnext",
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "jsx": "preserve"
+  },
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    // <<<<<<< HEAD
+    "pages/test.jsx",
+    "pages/erika.jsx",
+    "components/atoms/PyaSlipMiddle.jsx",
+    "components/atoms/PaySlipBottom.jsx",
+    "../Paiement.jsx",
+    "pages/Paiement.jsx",
+    "components/atoms/PaySlipInformationEmployeeBox.jsx"
+, "apollo.config.js"  ],
+  // =======
+  // , "pages/test.jsx", "pages/erika.jsx", "pages/payment/tablesuvipaiementpareleve.jsx", "pages/payment/suivipaiementpareleverespecial.jsx", "pages/payment/suivipaiementpareleverenormal.jsx", "pages/payment/suiviepaiementfraisscolarite.jsx"  ],
+  // >>>>>>> scolarite
+  "exclude": ["node_modules"]
+}

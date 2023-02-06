@@ -27,7 +27,7 @@ async validateUser(email:string,passwd:string) {
         );
         const{password, ...result}= user
 
-        console.log(user);
+        console.log(result);
         if (!user)
           throw new HttpException('Invalid Credentials', HttpStatus.UNAUTHORIZED);
         const isPasswordValid = await this.compareHash(

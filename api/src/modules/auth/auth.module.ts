@@ -1,24 +1,21 @@
 /* eslint-disable prettier/prettier */
-import { Module } from '@nestjs/common';
-import { AuthService } from './auth.service';
-import { AuthResolver } from './auth.resolver';
-import { LocalStrategy } from './local.strategie';
-import { PassportModule } from '@nestjs/passport';
-import { JwtModule } from '@nestjs/jwt';
-import { JwtStrategy } from './jwt.strategy';
-import { JwtAuthGuard } from './jwt-auth.guard';
-import { UserModule } from '../user/user.module';
 
+import { Module } from "@nestjs/common";
+import { JwtModule } from "@nestjs/jwt";
+import { PassportModule } from "@nestjs/passport";
+import { UserModule } from "../user/user.module";
+import { AuthResolver } from "./auth.resolver";
+import { AuthService } from "./auth.service";
+import { JwtStrategy } from "./jwt.strategy";
+import { LocalStrategy } from "./local.strategy";
 
 @Module({
-  imports: [
-    UserModule,
-    PassportModule,
+    imports: [PassportModule, UserModule,
     JwtModule.register({
-      secret: 'hide-me',
-      signOptions: { expiresIn: '60s' },
-    }),
-  ],
-  providers: [AuthService, AuthResolver,LocalStrategy,JwtStrategy,JwtAuthGuard],
+        signOptions: {expiresIn: '1d'},
+        secret:process.env.JWT_SECRET_KEY
+    })],
+    providers: [AuthService, AuthResolver, LocalStrategy, JwtStrategy],
+    exports: [AuthService,AuthResolver]
 })
-export class AuthModule {}
+export class Authmodule{}

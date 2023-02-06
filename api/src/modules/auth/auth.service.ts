@@ -1,49 +1,52 @@
 /* eslint-disable prettier/prettier */
-import { Injectable } from '@nestjs/common';
-import { JwtService } from '@nestjs/jwt';
-import * as bcript from 'bcrypt';
-import { User } from 'src/entities/user.entity';
-import { UserService } from '../user/user.service';
-import { SingInInput } from './dto/register.input';
+
+import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
+import { UserService } from "../user/user.service";
+import * as bcrypt from 'bcrypt';
+import { LoginInput } from "./login.input";
+import { User } from "src/entities/user.entity";
+import { JwtService } from "@nestjs/jwt";
+
+
 
 
 @Injectable()
-export class AuthService {
-    constructor(
-        private userService: UserService,
-        private jwtService: JwtService
-        ) {}
-
-    async validateUser(email: string, password: string): Promise<any> {
-        const user = await this.userService.findByOne(email);
-        const valid = await bcript.compare(password, user.password);
-
-        if (user && valid) { // do more secure
-          const { password, ...result } = user;
-          return result;
-        }
-        return null;
+export class AuthService{
+    constructor(private readonly userservice: UserService,
+                private readonly jwtservice:JwtService){}
+  
+async compareHash(rawPassword: string, hashedPassword: string) {
+        return bcrypt.compare(rawPassword, hashedPassword);
       }
-    
-    async login(user:User ) {
-        return {
-            access_token: this.jwtService.sign({
-                email: user.email, 
-                sub: user.id}), // todo: implement jwt
-            user,
-        }
+
+async validateUser(email:string,passwd:string) {
+        const user = await this.userservice.findOne(
+          { email: email,
+            },
+          
+        );
+        const{password, ...result}= user
+
+        console.log(result);
+        if (!user)
+          throw new HttpException('Invalid Credentials', HttpStatus.UNAUTHORIZED);
+        const isPasswordValid = await this.compareHash(
+          passwd,
+          user.password,
+        );
+        console.log(isPasswordValid);
+        return isPasswordValid ? result: null;
+}
+
+async login(user:User){
+   return {
+        access_token: this.jwtservice.sign({
+            username: user.email,
+            password: user.password, 
+            sub: user.id}),
+        user
     }
+}
 
-    // async signup(register: SingInInput) {
-    //     const user = await this.userService.findByOne(register.phone)
-    //     if(user) {
-    //         throw new Error("user already exist");
-    //     }
-    //     const password = await bcript.hash(register.password,10)
 
-    //     return this.userService.create ({
-    //         ...register,
-    //         password,
-    //     })
-    // }
 }

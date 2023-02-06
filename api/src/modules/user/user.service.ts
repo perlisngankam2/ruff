@@ -21,6 +21,8 @@ export class UserService {
   ): Promise<User> {
     const new_user = new User()
     new_user.name = input.name
+    new_user.email = input.email
+    new_user.role = input.role
     new_user.lastName = input.lastName
     new_user.password = input.password
     new_user.firstName = input.firstName

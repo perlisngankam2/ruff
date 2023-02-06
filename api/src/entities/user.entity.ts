@@ -12,6 +12,7 @@ import {
     Unique,
   } from '@mikro-orm/core';
 import { Field, ID, ObjectType } from '@nestjs/graphql';
+import { Role } from '../modules/auth/roles/roles';
 import { PrimaryKeyUuid } from '../decorators/PrimaryKeyUuid.decorator';
 import { Parent } from './parent.entity';
 import { Personnel } from './pesonnel.entity';
@@ -44,6 +45,10 @@ export class User {
   @Property({ nullable: true })
   name!: string;
 
+  @Field(() => Role,{nullable: true })
+  @Enum({items: () => Role, nullable:true})
+  role!: Role;
+  
   @Field(() => String, { nullable: true })
   @Property({ nullable: true })
   phoneNumber!: string | null;

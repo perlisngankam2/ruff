@@ -31,7 +31,7 @@ export class ParentService {
         const parent = new Parent()
 
         const user = input.user
-                ? await this.userService.findByOne(input.user)
+                ? await this.userService.findOne(input.user)
                 : await this.userService.create(input.user)
 
         parent.firstname = input.firstname
@@ -45,7 +45,7 @@ export class ParentService {
         return parent
       }
     
-      findByOne(filters: FilterQuery<Parent>): Promise<Parent | null> {
+      findOne(filters: FilterQuery<Parent>): Promise<Parent | null> {
         return this.parentRepository.findOne(filters);
       }
       findById(id:string){
@@ -61,7 +61,7 @@ export class ParentService {
         if(input.user){
             const user =
             input.user?.ID &&
-              (await this.userService.findByOne({ id: input.user?.ID }));
+              (await this.userService.findOne({ id: input.user?.ID }));
 
               if (!user) {
                 throw new NotFoundError('user no exist' || '');

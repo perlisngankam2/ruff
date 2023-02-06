@@ -14,20 +14,35 @@ import {
   Input,
 } from "@chakra-ui/react";
 import { useFormik } from "formik";
-import Link from "next/link";
-import { useState } from "react";
+import { NextLink } from "next/link";
+import { Link } from "@chakra-ui/react";
+import { LOGIN_USER } from "../../../graphql/Mutation";
+import { useMutation, useQuery } from "@apollo/client";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/router";
 
 const LoginForm = () => {
-  const formik = useFormik({
-    initialValues: {
-      matricule: "",
-      password: "",
-      remember: false,
-    },
-    onSubmit: (values) => {
-      console.log(values);
-    },
-  });
+  const[email , setEmail] = useState("");
+  const[password , setPassword] = useState("");
+  const [loginInput , error] = useMutation(LOGIN_USER);
+  const [user, setUser] = useState(null);
+  const router = useRouter()
+
+   const HandleClick = async (event) => {
+  event.preventDefault();
+
+  const login = await loginInput({
+        variables:{
+        loginInput: { 
+          username: email,
+          password : password
+        }
+      }
+    })
+    router.push('/dashboard');
+    
+  }
+ 
   return (
     <Flex w="full">
       <Hide below="md">
@@ -56,14 +71,14 @@ const LoginForm = () => {
               >
                 Connexion
               </Heading>
-              <Box as="form" onSubmit={formik.handleSubmit} px="7">
+              <Box as="form" onSubmit={HandleClick} px="7">
                 <FormControl mb={3}>
-                  <FormLabel>Matricule</FormLabel>
+                  <FormLabel>Email</FormLabel>
                   <Input
                     id="matricule"
                     type="text"
-                    value={formik.values.matricule}
-                    onChange={formik.handleChange}
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
                   />
                 </FormControl>
                 <FormControl mb={4}>
@@ -71,8 +86,8 @@ const LoginForm = () => {
                   <Input
                     id="password"
                     type="password"
-                    value={formik.values.password}
-                    onChange={formik.handleChange}
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
                     name="password"
                   />
                 </FormControl>
@@ -81,8 +96,8 @@ const LoginForm = () => {
                   <Checkbox
                     id="remember"
                     colorScheme="green"
-                    isChecked={formik.values.remember}
-                    onChange={formik.handleChange}
+                    // isChecked={formik.values.remember}
+                    // onChange={formik.handleChange}
                   >
                     Se souvenir de moi
                   </Checkbox>
@@ -99,6 +114,12 @@ const LoginForm = () => {
             </Container>
           </Box>
         </Center>
+        <Center>
+            <Box pt={5}>
+            Vous n'avez pas encore de compte ? <Link _hover={{color : "blue", textDecoration : "underline" }} href="/register" >creer le</Link>
+          </Box>
+        </Center>
+        
       </Box>
     </Flex>
   );

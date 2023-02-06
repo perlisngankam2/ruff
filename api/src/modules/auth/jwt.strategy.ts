@@ -1,28 +1,19 @@
 /* eslint-disable prettier/prettier */
-import { Strategy } from 'passport-local';
-//import { Strategy } from "passport-jwt";
-import { PassportStrategy } from '@nestjs/passport';
-import { Injectable, UnauthorizedException } from '@nestjs/common';
-import { AuthService } from './auth.service';
-import { extend } from '@nestjs/graphql';
-import { ExtractJwt } from 'passport-jwt';
-import { jwtConstants } from "./constants";
-
+import { Injectable } from "@nestjs/common";
+import { PassportStrategy } from "@nestjs/passport";
+import { ExtractJwt, Strategy } from "passport-jwt";
 
 @Injectable()
-export class JwtStrategy extends PassportStrategy(Strategy) {
-    constructor (){
+export class JwtStrategy extends PassportStrategy(Strategy){
+    constructor(){
         super({
             jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
             ignoreExpiration: false,
-            secretOrkey:jwtConstants.secret,
-            logging: true
-        });
+            secretOrKey: 'hide-me'
+        })
     }
-    async validate(payload: any) {
-        return {
-            userId: payload.sub,
-            email: payload.email
-        }
-    }
+
+  async validate(payload: any){
+    return {id: payload.sub, email: payload.sub, password: payload.sub}
+  } 
 }

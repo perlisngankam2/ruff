@@ -36,7 +36,7 @@ export class PrimePersonnelService {
             ? await this.primeService.findByOne(input.prime)
             : await this.primeService.create(input.prime)
         
-        const personnel = await this.personnelService.findByOne(input.personnnel)
+        const personnel = await this.personnelService.findOne(input.personnnel)
         if(!personnel){
             throw new NotFoundError('personnel no exist' || '');
         }
@@ -78,7 +78,7 @@ export class PrimePersonnelService {
           if (input.personnnel) {
             const personnel =
             input.personnnel?.ID &&
-              (await this.personnelService.findByOne({ id: input.personnnel?.ID }));
+              (await this.personnelService.findOne({ id: input.personnnel?.ID }));
       
             if (!personnel) {
               throw new NotFoundError('personnel no exist' || '');

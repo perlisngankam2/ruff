@@ -247,6 +247,45 @@ export const UPDATE_CYCLE = gql `
     }
 `;
 
+//create user
+
+export const CREATE_USER = gql `
+    mutation createuser ($createUser: UserCreateInput!) {
+        createuser (createUser: $createUser) {
+            id
+            email
+            password
+            firstName
+            lastName
+            phoneNumber
+            role
+            active
+            deactivatedAt
+        }
+    }
+`;
+
+//user login
+
+export const LOGIN_USER = gql `
+mutation login ($loginInput: LoginInput!) {
+    login (loginInput: $loginInput) {
+        access_token
+        user {
+            id
+            email
+            password
+            firstName
+            lastName
+            phoneNumber
+            role
+            active
+            deactivatedAt
+        }
+    }
+}
+`;
+
 
 
 

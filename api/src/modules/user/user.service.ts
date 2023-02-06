@@ -16,21 +16,36 @@ export class UserService {
     private readonly em: EntityManager,
   ) {}
 
+  hashpass(password:string):string{
+    const salt = bcript.genSaltSync();
+    return bcript.hashSync(password, salt);
+
+  }
+
   async create(
     input: UserCreateInput,
   ): Promise<User> {
     const new_user = new User()
-    new_user.name = input.name
     new_user.lastName = input.lastName
-    new_user.password = input.password
+    new_user.password = this.hashpass(input.password)
     new_user.firstName = input.firstName
+    new_user.email = input.email
     new_user.phoneNumber = input.phoneNumber
+    new_user.role = input.role
+    
+
+    const user = await this.findOne({
+      email: new_user.email
+    })
+    if(user){
+      throw new Error('User already exists!!!!!!!!!!')
+    }
 
     await this.userRepository.persistAndFlush(new_user)
     return new_user
   }
 
-  findByOne(filters: FilterQuery<User>): Promise<User | null> {
+  findOne(filters: FilterQuery<User>): Promise<User | null> {
     return this.userRepository.findOne(filters);
   }
 

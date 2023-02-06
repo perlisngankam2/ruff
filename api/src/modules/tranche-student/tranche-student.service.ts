@@ -127,7 +127,7 @@ export class TrancheStudentService {
             if(toDay === alertDate ){
                 // create alert to parent 
                 this.twilioService.client.messages.create({
-                    body: "vous êtes prier de passer solder"+ tranche.name +"de votre enfant nome" + parent.name + "donc le reste est de"+reste,
+                    body: "vous êtes prier de passer solder"+ tranche.name +"de votre enfant nome" + parent.firstName + "donc le reste est de"+reste,
                     from: "+237647476798" ,
                     to: parent.phoneNumber,
                   });

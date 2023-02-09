@@ -5,16 +5,19 @@ export const CREATE_PERSONNEL = gql `
     mutation createpersonnel ($createPersonnelUser: PersonnelCreateInput!) {
         createpersonnel (createPersonnelUser: $createPersonnelUser) {
             id
+            firstName
+            lastName
+            phoneNumber
+            personnelCategory
             situationMatrimonial
             sexe
             fonction
             status
             dateOfStartWork
             dateOfBirth
-            matricule
             childNumber
         }
-    }
+}
 `;
 
 //categorie personnel
@@ -43,6 +46,8 @@ export const CREATE_STUDENT = gql`
             adress
             transport
             categoryStudent
+            section
+            cycle
             fatherFirstName
             fatherLastName
             fatherPhoneNumber
@@ -107,7 +112,7 @@ export const CREATE_CYCLE = gql `
     }
 `;
 
-export const fragmentCyle = gql` fragment CycleClass on cyle {
+export const fragmentCycle = gql` fragment CycleClass on cyle {
     id
     name
     section
@@ -132,13 +137,16 @@ export const DELETE_PERSONNEL = gql `
     mutation deletepersonnel ($id: String!) {
         deletepersonnel (id: $id) {
             id
+            firstName
+            lastName
+            phoneNumber
+            personnelCategory
             situationMatrimonial
             sexe
             fonction
             status
             dateOfStartWork
             dateOfBirth
-            matricule
             childNumber
         }
     }
@@ -192,6 +200,8 @@ export const DELETE_STUDENT = gql `
             adress
             transport
             categoryStudent
+            section
+            cycle
             fatherFirstName
             fatherLastName
             fatherPhoneNumber

@@ -70,6 +70,14 @@ export class Student {
   categoryStudent!: string;
 
   @Field({ nullable: true })
+  @Property({nullable:true})
+  section!: string;
+
+  @Field({ nullable: true })
+  @Property({nullable:true})
+  cycle!: string;
+  
+  @Field({ nullable: true })
   @Property({ nullable: true })
   fatherFirstName!: string;
 

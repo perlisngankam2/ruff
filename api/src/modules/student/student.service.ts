@@ -62,7 +62,9 @@ export class StudentService {
         student.dateOfBirth=input.dateOfBirth
         student.adress=input.adress
         student.transport=input.transport
-        student.categoryStudent=input.categoryStudent
+        student.categoryStudent = input.categoryStudent
+        student.section = input.section
+        student.cycle = input.cycle
         student.fatherFirstName=input.fatherFirstName
         student.fatherLastName=input.fatherLastName
         student.fatherPhoneNumber=input.fatherPhoneNumber
@@ -134,6 +136,8 @@ export class StudentService {
             // old: input.old,
             transport:input.transport,
             categoryStudent:input.categoryStudent,
+            section : input.section,
+            cycle : input.cycle,
             fatherFirstName:input.fatherFirstName,
             fatherLastName:input.fatherLastName,
             fatherPhoneNumber:input.fatherPhoneNumber,

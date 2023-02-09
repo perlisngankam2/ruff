@@ -9,7 +9,7 @@ const Stastistiques = () => {
     <DefaultLayout>
       <Box p="3" pt="70px">
         <Heading>Statistiques</Heading>
-        <Flex gap={5} mt="5">
+        <Flex gap={5} mt="5" flexWrap={'wrap'}>
           <Button
             onClick={() => {
               router.push("/payment/suiviepaiementfraisscolarite");
@@ -42,10 +42,35 @@ const Stastistiques = () => {
           >
             Reçu de paiement
           </Button>
+          <Button
+            onClick={() => {
+              router.push("/payment/suiviegeneraldepaiementdefraisdescolarite");
+            }}
+            colorScheme="purple"
+          >
+            Suivi general de paiement des frais des colarite
+          </Button>
+          <Button
+            onClick={() => {
+              router.push("/payment/suividepaiementdesfraisdepremieretranche");
+            }}
+            colorScheme="green"
+          >
+            Suivi de paiement des frais de premiere tranche
+          </Button>
+          <Button
+            onClick={() => {
+              router.push("/payment/suiviepaiementdesfraisinscription");
+            }}
+            colorScheme="pink"
+          >
+            Suivie paiement des frais d'inscription
+          </Button>
         </Flex>
       </Box>
     </DefaultLayout>
   );
+  
 };
 
 export default Stastistiques;

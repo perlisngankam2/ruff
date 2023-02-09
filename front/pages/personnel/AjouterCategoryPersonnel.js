@@ -27,6 +27,7 @@ import { IoIosAdd } from "react-icons/io";
 import Link from "next/link";
 import {useMutation } from '@apollo/client';
 import { CREATE_CATEGORY_PERSONNEL } from "../../graphql/Mutation";
+import { GET_ALL_Category_Personnel } from "../../graphql/Queries";
 import { useState } from "react";
 import { useRouter } from "next/router";
 
@@ -74,7 +75,10 @@ function ajoutercategorypersonnel  () {
                     nom: nom,
                     description: description
                 }
-            }
+            },
+            refetchQueries:[{
+                query: GET_ALL_Category_Personnel
+            }]
         })
         console.log(catPerData)
         // input.value = '';
@@ -85,7 +89,6 @@ function ajoutercategorypersonnel  () {
           duration: 3000,
           isClosable: true,
         });
-        router.push("/personnel/categorypersonnel")
     }
 
     // const pearl = () => {
@@ -107,15 +110,21 @@ function ajoutercategorypersonnel  () {
                     {/* </Link>               */}
                 </Button>
           </Box>
-            <Box as={"form"}  > 
+            <Box 
+                as={"form"} 
+                onClick={addCategoryPersonnel}
+                     > 
                 <AlertDialog
                     isOpen={isOpen}
                     leastDestructiveRef={cancelRef}
-                    onClose={onClose}
                     size='xl'
+                    onClose={onClose}
                 >
-                    <AlertDialogOverlay>
-                        <AlertDialogContent  >
+                    <AlertDialogOverlay
+                     
+                    >
+                        <AlertDialogContent 
+                        >
                             <AlertDialogHeader 
                                 fontSize='sm' 
                                 fontWeight='base' 
@@ -172,7 +181,7 @@ function ajoutercategorypersonnel  () {
                                     <Button 
                                     colorScheme='green'  
                                     ml={3}
-                                    onClick={addCategoryPersonnel}
+                                    onClick={onClose}
                                     >
                                     Creer
                                     </Button>

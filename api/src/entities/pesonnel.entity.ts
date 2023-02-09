@@ -30,6 +30,22 @@ export class Personnel {
 
   @Field({ nullable: true })
   @Property({ nullable: true })
+  firstName!: string;
+
+  @Field({ nullable: true })
+  @Property({ nullable: true })
+  lastName!: string;
+  
+  @Field({ nullable: true })
+  @Property({ nullable: true })
+  phoneNumber!: string;
+  
+  @Field({ nullable: true })
+  @Property({ nullable: true })
+  personnelCategory!: string;
+
+  @Field({ nullable: true })
+  @Property({ nullable: true })
   situationMatrimonial!: string;
 
   @Field({ nullable: true })
@@ -59,9 +75,9 @@ export class Personnel {
   @Property({ default: false })
   dateOfBirth!: string;
 
-  @Field({ nullable: true })
-  @Property({ nullable: true })
-  matricule!: string;
+  // @Field({ nullable: true })
+  // @Property({ nullable: true })
+  // matricule!: string;
 
   @Field({ nullable: true})
   @Property({ nullable: true })

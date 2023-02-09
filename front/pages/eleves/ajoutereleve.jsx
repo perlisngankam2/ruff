@@ -13,12 +13,11 @@ import {
   useToast
 } from "@chakra-ui/react";
 
-import { useToast } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import DefaultLayout from "../../components/layouts/DefaultLayout";
 import { useMutation, useQuery } from "@apollo/client";
 import { CREATE_STUDENT } from "../../graphql/Mutation";
-import { GET_ALL_ATUDENT, GET_ALL_CLASS, GET_ALL_Category_Eleve } from "../../graphql/Queries";
+import { GET_ALL_SECTION , GET_ALL_CYCLE, GET_ALL_CLASS, GET_ALL_Category_Eleve, GET_ALL_STUDENT } from "../../graphql/Queries";
 
 
 const AjouterEleve = () => {
@@ -34,6 +33,8 @@ const AjouterEleve = () => {
   const [adress, setAdress] = useState("");
   const [transport, setTransport] = useState(false);
   const [categoryStudent, setCategoryStudent] = useState("");
+  const [cycle, setCycle] = useState("");
+  const [section, setSection] = useState("");
   const [fatherFirstName, setFatherFirstName] = useState("");
   const [fatherLastName, setFatherLastName] = useState("");
   const [fatherProfession, setFatherProfession] = useState("");
@@ -56,7 +57,8 @@ const AjouterEleve = () => {
   const {data:dataClass} = useQuery(GET_ALL_CLASS);
   const {data:dataCategoryStudent} = useQuery(GET_ALL_Category_Eleve);
   const [ createStudent, error] = useMutation(CREATE_STUDENT)
-
+  const {data:dataSection} = useQuery(GET_ALL_SECTION);
+  const {data:dataCycle} = useQuery(GET_ALL_CYCLE);
   // findAllstudents
 
   const HandleClick = async (event) => {
@@ -87,7 +89,10 @@ const AjouterEleve = () => {
           tutorPhoneNumber: tutorPhoneNumber,
           tutorProfession: tutorProfession
         }
-      }
+      },
+      refetchQueries: [{
+        query: GET_ALL_STUDENT
+      }]
     })
     console.log(studentData)
     toast({
@@ -107,6 +112,8 @@ const AjouterEleve = () => {
   useEffect(() => {
     console.log(dataClass?.findAllsalle)
     console.log(dataCategoryStudent?.findAllcategorieeleve)
+    console.log(dataSection?.findAllsection)
+    console.log(dataCycle?.findAllcycle)
   })
 
   // const handleSubmit = (e) => {
@@ -282,6 +289,46 @@ const AjouterEleve = () => {
                         )}
                       </Select>
                     </FormControl>
+                    <FormControl>
+                      <FormLabel>Cycle</FormLabel>
+                      <Select
+                        placeholder="Cycle"
+                        name="cycle"
+                        value={cycle}
+                        onChange={(e) => setCycle(e.target.value)}
+                        variant="flushed"
+                      >
+                        { 
+                          dataCycle && (
+                            dataCycle.findAllcycle.map((cycle, index) => (
+                                <option key={index}>
+                                  <option>{cycle.name}</option>
+                                </option>
+                            ))
+                        )}
+                      </Select>
+                    </FormControl>
+                </Flex>
+                <Flex>
+                    <FormControl>
+                      <FormLabel>Section</FormLabel>
+                      <Select
+                        placeholder="Section"
+                        name="section"
+                        value={section}
+                        onChange={(e) => setSection(e.target.value)}
+                        variant="flushed"
+                      >
+                        { 
+                          dataSection && (
+                            dataSection.findAllsection.map((section, index) => (
+                                <option key={index}>
+                                  <option>{section.name}</option>
+                                </option>
+                            ))
+                        )}
+                      </Select>
+                    </FormControl>
                 </Flex>
               </Box>
             </Box>
@@ -306,23 +353,16 @@ const AjouterEleve = () => {
                     onChange={(e) => setFatherLastName(e.target.value)}
                     variant="flushed"
                   />
-                  <Input
-                    placeholder="Profession"
-                    name="fatherProfession"
-                    value={fatherProfession}
-                    onChange={(e) => setFatherProfession(e.target.value)}
-                    variant="flushed"
-                  />
+                 
                 </Flex>
                 <Flex gap={3}>
-                  {/* <Input
-                    type="email"
-                    placeholder="Email"
-                    name="emailDuPere"
-                    value={emailDuPere}
-                    onChange={(e) => setEmailDuPere(e.target.value)}
-                    variant="flushed"
-                  /> */}
+                  <Input
+                      placeholder="Profession"
+                      name="fatherProfession"
+                      value={fatherProfession}
+                      onChange={(e) => setFatherProfession(e.target.value)}
+                      variant="flushed"
+                    />
                   <Input
                     type="tel"
                     placeholder="Numero de téléphone"
@@ -331,6 +371,7 @@ const AjouterEleve = () => {
                     onChange={(e) => setFatherPhoneNumber(e.target.value)}
                     variant="flushed"
                   />
+                   
                 </Flex>
               </Box>
               <Box mt={10}>

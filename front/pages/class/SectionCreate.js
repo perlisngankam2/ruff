@@ -23,6 +23,7 @@ import React from "react";
 import { IoIosAdd } from "react-icons/io";
 import {useMutation } from '@apollo/client';
 import { CREATE_SECTION } from "../../graphql/Mutation";
+import { GET_ALL_SECTION } from "../../graphql/Queries";
 import { useState } from "react";
 import { useRouter } from "next/router";
 
@@ -70,7 +71,10 @@ const  SectionCreate =  () => {
                     name: name,
                     description: description
                 }
-            }
+            },
+        refetchQueries:[{
+          query: GET_ALL_SECTION
+        }]
         })
         console.log(sectionData)
         toast({

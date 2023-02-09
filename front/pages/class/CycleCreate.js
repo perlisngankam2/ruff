@@ -9,7 +9,7 @@ import {
   AlertDialogOverlay,
   useDisclosure,
   Button,
-    Center,
+  Center,
   Flex,
   Input,
   Select,
@@ -20,24 +20,39 @@ import {
   useToast
 } from '@chakra-ui/react';
 
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useState, useMemo} from "react";
 import { IoIosAdd } from "react-icons/io";
 import {useMutation, useQuery } from '@apollo/client';
 import { CREATE_CYCLE, UPDATE_CYCLE } from "../../graphql/Mutation";
 import { GET_ALL_SECTION } from "../../graphql/Queries";
-import { fragmentCyle } from "../../graphql/Mutation";
 import { useRouter } from "next/router";
 
+const CycleSchema = {
+    name: "",
+    section: ""
+}
 
-const  CycleCreate =  () => {
+const formData = CycleSchema
+
+// export const CycleProps = {
+//     defaultValues:formData,
+//      onSubmit:(value = formData) 
+// }
+
+const  CycleCreate =  ({
+    defaultValues,
+    onSubmit
+} = CycleProps) => {
+   
 
     const [name, setName] = useState("");
     const[section, setSection] = useState("");
     const { isOpen, onOpen, onClose } = useDisclosure();
     const cancelRef = React.useRef();
     const [createCycle, {error}] = useMutation(CREATE_CYCLE);
+    const [editCycle] = useMutation(UPDATE_CYCLE);
     const {data} = useQuery(GET_ALL_SECTION);
-    const router = useRouter()
+    const router = useRouter();
     const toast = useToast();
 
     // const updateCache = (cache, { dataCycle: { editCycle } }) => {
@@ -59,60 +74,78 @@ const  CycleCreate =  () => {
     //           }
     //         });
     //       }
-      
+   
 
-    // const addCategoryPersonnel = async (event, value) => {
-    //     console.log("value")
-    //     event.preventDefault();
-       
-    //     console.log(event.target.name.value);
-    //     console.log(event.target.description.value);
-
-    //     // const categoryData = await createCategoryPersonnel({
-    //             // variables: {
-    //         //     createcategoriepersonnnel: { 
-    //         //         
-    //         //             nom : event.target.value,
-    //         //             description: event.target.value
-    //         //     }
-    //         //   }
-    //     // })
-    //     // console.log(categoryData)
+    // const handleSubmit = {
+    //     defaultValues: {
+    //         name: "",
+    //         section: "",
+    //         ...defaultValues
+    //     }
     // }
 
+    // const _cycleOnSubmit =  handleSubmit (async(values) => {    
+    //     try{
+    //        await onSubmit?.(values);
+    //         toast({
+    //             title: "Creation d'un cyle.",
+    //             description: "Le cylce a éte crée avec succes.",
+    //             status: "success",
+    //             duration: 3000,
+    //             isClosable: true,
+    //         });
+    //     }catch{
+    //         toast({
+    //             title: "Creation d'un cyle.",
+    //             description: "$mess.",
+    //             status: "error",
+    //             duration: 3000,
+    //             isClosable: true,
+    //         });
+    //     }
+    // })
+
     let input
-    const  addCycle = async (event, value) => {
-        event.preventDefault();
-        console.log('cccc');
+    // const  addCycle = async (event) => {
+    //     event.preventDefault();
+    //     console.log('cccc');
+
+    //     console.log(name);
+    //     console.log(section);
    
-        console.log(name);
-        console.log(section);
-   
-        const cycleData = await createCycle({
-            variables: {
-                cycle: {
-                    name: name,
-                    section: section
-                }
-            }
-        })
-        console.log(cycleData)
-        // toast({
-        //     title: "Creation d'un cycle.",
-        //     description: "Votre cycle a ete cree avec succes.",
-        //     status: "success",
-        //     duration: 3000,
-        //     isClosable: true,
-        //   });
-        toast({
-            title: "Creation d'un cyle.",
-            description: "Le cylce a éte crée avec succes.",
-            status: "success",
-            duration: 3000,
-            isClosable: true,
-          });
-          router.push("/class/cyclesection")
-    }
+    //     const cycleData = await createCycle({
+    //         variables: {
+    //             cycle: {
+    //                 name: name,
+    //                 section: section
+    //             }
+    //         }
+    //     })
+    //     console.log(cycleData)
+    //     toast({
+    //         title: "Creation d'un cyle.",
+    //         description: "Le cylce a éte crée avec succes.",
+    //         status: "success",
+    //         duration: 3000,
+    //         isClosable: true,
+    //       });
+    //       router.push("/class/cyclesection")
+    // }
+
+    // const updateCycle = async(values) => {
+    //     console.log("bb")
+         
+    //     await editCycle({
+    //       variables:{
+    //         Id: fragment.id,
+    //         input:{ 
+    //         name: values.name,
+    //         section: values.section 
+    //         }
+    //       }
+    //     })
+    // }
+
 
     useEffect(() => {
         console.log(data?.findAllsection)
@@ -132,7 +165,9 @@ const  CycleCreate =  () => {
                         Ajouter un Cycle                               
                 </Button>
           </Box>
-            <Box as={"form"}> 
+            <Box as={"form"} 
+            // onSubmit={_cycleOnSubmit}
+            > 
                 <AlertDialog
                     isOpen={isOpen}
                     leastDestructiveRef={cancelRef}
@@ -201,7 +236,7 @@ const  CycleCreate =  () => {
                                         <Button 
                                         colorScheme='green'  
                                         ml={3}
-                                        onClick={addCycle}
+                                        // onClick={addCycle}
                                     >
                                     Creer
                                     </Button>

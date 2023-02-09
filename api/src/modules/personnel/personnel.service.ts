@@ -31,10 +31,14 @@ export class PersonnelService {
   const new_personnel = new Personnel()
 
 wrap(new_personnel).assign({
-  matricule :input.matricule,
-  childNumber:input.childNumber,
+  firstName : input.firstName,
+  lastName : input.lastName,
+  personnelCategory :input.personnelCategory,
+  status : input.status,
+  childNumber: input.childNumber,
+  phoneNumber: input.phoneNumber,
   sexe: input.sexe,
-  dateOfStartWork :input.dateOfStartWork,
+  dateOfStartWork : input.dateOfStartWork,
   fonction : input.fonction,
   dateOfBirth : input.dateOfBirth,
   situationMatrimonial : input.situationMatrimonial},
@@ -70,7 +74,11 @@ wrap(new_personnel).assign({
       this.userService.update(user.id, input.user);
     }    
     wrap(personnel).assign({
-      matricule: input.matricule || personnel.matricule,
+      firstName: input.firstName || personnel.firstName,
+      lastName: input.lastName || personnel.lastName,
+      personnelCategory: input.personnelCategory || personnel.personnelCategory,
+      status: input.status || personnel.status,
+      phoneNumber: input.phoneNumber || personnel.phoneNumber,
       situationMatrimonial: input.situationMatrimonial || personnel.situationMatrimonial,
       sexe: input.sexe || personnel.sexe,
       fonction: input.fonction || personnel.fonction,

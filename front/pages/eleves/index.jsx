@@ -20,10 +20,12 @@ import {
   Th,
   Thead,
   Tr,
-  Link,
   Avatar,
   Icon
 } from "@chakra-ui/react";
+// import Link from "../../components/atoms/Link"
+import Link from "next/link";
+import Routes from "../../modules/routes";
 import { useState, useEffect } from "react";
 import DefaultLayout from "../../components/layouts/DefaultLayout";
 import { Users } from '../api/data/users';
@@ -33,20 +35,32 @@ import { IoIosAdd } from "react-icons/io";
 import{ FiEdit} from 'react-icons/fi';
 import {MdDelete} from 'react-icons/md';
 import { Router, useRouter } from "next/router";
-import { GET_ALL_ATUDENT } from "../../graphql/Queries";
+import { GET_ALL_STUDENT, GET_STUDENT_BY_ID} from "../../graphql/Queries";
 import { DELETE_STUDENT } from "../../graphql/Mutation";
 import { useMutation, useQuery } from "@apollo/client";
+// import { initializeApollo } from "../../graphql/apollo";
+import {get} from 'lodash';
 
+// const VARIABLE = "pearl";
 
 const Eleves = () => {
 
-    const router = useRouter();
+    const {router} = useRouter();
     const [query , setQuery] = useState("");
-    //const [classeValue , setClasseValue ] = useState("");
     const [data, setData] = useState([]);
     const keys = ["first_name", "last_name", "email", "classe"];
-    const {data:dataStudent} = useQuery(GET_ALL_ATUDENT);
+    const {data:dataStudent, loading, error} = useQuery(GET_ALL_STUDENT);
     const [deletestudent] = useMutation(DELETE_STUDENT);
+    // const student = get(dataStudent)
+    
+    // const {data:singleStudent} = useQuery(GET_STUDENT_BY_ID,
+    //   {
+    //     variable:{id: VARIABLE}
+    //   });
+
+      // if (singleStudent){
+      //   console.log(singleStudent)
+      // }
 
     const search = (data) => {
        
@@ -62,14 +76,18 @@ const Eleves = () => {
       console.log(dataStudent?.findAllstudents);
     })
 
+    if (loading) return <Text>Chargement en cour...</Text>
+    if (error) return <Text>Une erreur s'est produite!</Text>
+
     const removeStudent = async(id) => {
       await deletestudent({
         variables: {id},
         refetchQueries: [{
-          query: GET_ALL_ATUDENT
+          query: GET_ALL_STUDENT
         }]
       })
     }
+
 
   return (
     <DefaultLayout>
@@ -119,7 +137,7 @@ const Eleves = () => {
                 rightIcon={<Icon as={IoIosAdd} boxSize="20px" />}
                 onClick={() => router.push("/eleves/ajoutereleve")}
               >
-                Ajouter un élève
+                {/* Ajouter un élève */}
             </Button>
           </Box> 
         </Flex>
@@ -164,11 +182,16 @@ const Eleves = () => {
                             variant='link' 
                             colorScheme={'teal'}
                             >
-                              <Button>
-                                <Link 
-                                  href='/eleves/details '
+                              <Button
+                                // onClick = {()=>router.push('/eleves/details')}
+                              >
+                                <Link
+                                 href= {{
+                                  pathname: Routes.EleveDetails?.path || '',
+                                  query: {id: student.id}
+                                  }}
                                 >
-                                  Details
+                                 Details
                                 </Link>
                               </Button>
                               {/* <Link
@@ -176,7 +199,6 @@ const Eleves = () => {
                               >
                                 <IconButton aria-label='Add to friends' _hover={{color:'#E2D39C'}}  icon={<AddIcon />} />                      
                               </Link> */}
-                              
                             </ButtonGroup> 
                           </Td>
                             <Box ml='-100px' mt='8px'>
@@ -224,3 +246,12 @@ const Eleves = () => {
 };
 
 export default Eleves;
+
+// export  const  getStaticProps = async() => {
+//   const apolloClient = initializeApollo();
+//   await apolloClient.query({
+//     query:GET_STUDENT_BY_ID,
+//     variables:{id: VARIABLE}
+//   })
+//   return{propos:{initialzeApollState: apolloClient.cache.extract()}}
+// }

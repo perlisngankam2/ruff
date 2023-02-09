@@ -105,13 +105,16 @@ type CategoriePersonnel {
 
 type Personnel {
   id: ID!
+  firstName: String
+  lastName: String
+  phoneNumber: String
+  personnelCategory: String
   situationMatrimonial: String
   sexe: String
   fonction: String
   status: String
   dateOfStartWork: String!
   dateOfBirth: String!
-  matricule: String
   childNumber: String
 }
 
@@ -198,6 +201,8 @@ type Student {
   adress: String
   transport: String
   categoryStudent: String
+  section: String
+  cycle: String
   fatherFirstName: String
   fatherLastName: String
   fatherPhoneNumber: String
@@ -417,6 +422,8 @@ input StudentCreateInput {
   adress: String
   transport: String
   categoryStudent: String
+  section: String
+  cycle: String
   fatherFirstName: String
   fatherLastName: String
   fatherPhoneNumber: String
@@ -467,11 +474,14 @@ input CategorieEleveUpdateInput {
 
 input PersonnelCreateInput {
   ID: String
+  firstName: String
+  lastName: String
   situationMatrimonial: String
-  userId: ID
   sexe: String
+  phoneNumber: String
   fonction: String
-  matricule: String
+  personnelCategory: String
+  status: String
   childNumber: String
   dateOfBirth: String
   dateOfStartWork: String
@@ -480,10 +490,14 @@ input PersonnelCreateInput {
 
 input PersonnelUpdateInput {
   ID: String
+  firstName: String
+  lastName: String
   situationMatrimonial: String
+  status: String
   sexe: String
+  phoneNumber: String
   fonction: String
-  matricule: String
+  personnelCategory: String
   childNumber: String
   dateOfBirth: String
   dateOfStartWork: String

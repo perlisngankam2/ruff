@@ -41,7 +41,7 @@ import { ParentModule } from './modules/parent/parent.module';
 import { SectionCycleModule } from './modules/section-cycle/section-cycle.module';
 import { AvancePensionModule } from './modules/avance-pension/avance-pension.module';
 import { AvanceInscriptionModule } from './modules/avance-inscription/avance-inscription.module';
-import { AuthModule } from './modules/auth/auth.module';
+import { Authmodule } from './modules/auth/auth.module';
 import { ParentStudentModule } from './modules/parent-student/parent-student.module';
 import { LocalisationModule } from './modules/localisation/localisation.module';
 import ormConfig from './modules/orm/orm/orm.config';
@@ -101,7 +101,7 @@ import ormConfig from './modules/orm/orm/orm.config';
     autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
   }),
 
-  AuthModule,
+  Authmodule,
   ParentStudentModule,
   LocalisationModule,
   ],

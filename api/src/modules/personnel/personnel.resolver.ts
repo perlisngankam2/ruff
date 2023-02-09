@@ -33,7 +33,7 @@ export class PersonnelResolver {
   
   @Query(() => Personnel)
   async findOnePersonnel(@Args('id', { type: () => String }) id: string) {
-    return await this.personnelService.findByOne(id);
+    return await this.personnelService.findOne(id);
   }
 
   @Mutation(()=>Personnel)

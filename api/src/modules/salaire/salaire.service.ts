@@ -32,7 +32,7 @@ export class SalaireService {
   ): Promise<Salaire> {
 
     const personnel = input.personnel
-        ? await this.personnel.findByOne(input.personnel)
+        ? await this.personnel.findOne(input.personnel)
         : await this.personnel.createPersonnel(input.personnel)
 
     

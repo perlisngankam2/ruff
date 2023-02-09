@@ -237,8 +237,18 @@ type User {
   lastName: String
   name: String
   phoneNumber: String
+  role: Role
   active: Boolean
   deactivatedAt: DateTime
+}
+
+enum Role {
+  ADMIN
+  PERSSONNEL
+  ECONOME
+  FONDATEUR
+  PRINCIPAL
+  GESTIONAIRE
 }
 
 type LoginResponse {
@@ -388,7 +398,7 @@ type Mutation {
   createParent(parent: ParentCreateInput!): Parent!
   updateParent(id: String!): Parent!
   deleteparent(id: String!): Parent!
-  loginauth(loginuserinput: LoginUserInput!): LoginResponse!
+  login(loginInput: LoginInput!): LoginResponse!
 }
 
 input UserCreateInput {
@@ -397,8 +407,8 @@ input UserCreateInput {
   password: String
   firstName: String
   lastName: String
-  name: String
   phoneNumber: String
+  role: Role
 }
 
 input UpdateUserInput {
@@ -407,8 +417,8 @@ input UpdateUserInput {
   password: String
   firstName: String
   lastName: String
-  name: String
   phoneNumber: String
+  role: Role
 }
 
 input StudentCreateInput {
@@ -820,7 +830,7 @@ input ParentCreateInput {
   user: UserCreateInput
 }
 
-input LoginUserInput {
-  phone: String!
+input LoginInput {
+  username: String!
   password: String!
 }

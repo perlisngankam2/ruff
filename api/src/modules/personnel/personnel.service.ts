@@ -53,7 +53,7 @@ wrap(new_personnel).assign({
         return this.personnelRepository.findOne(id)
     }
 
-  findByOne(filters: FilterQuery<Personnel>): Promise<Personnel | null> {
+  findOne(filters: FilterQuery<Personnel>): Promise<Personnel | null> {
     return this.personnelRepository.findOne(filters);
   }
 
@@ -66,7 +66,7 @@ wrap(new_personnel).assign({
     if (input.user) {
       const user =
       input.user?.ID &&
-        (await this.userService.findByOne({ id: input.user?.ID }));
+        (await this.userService.findOne({ id: input.user?.ID }));
 
       if (!user) {
         throw new NotFoundError('user not found' || '');

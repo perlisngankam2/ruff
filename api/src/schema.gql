@@ -236,15 +236,15 @@ type User {
   firstName: String
   lastName: String
   name: String
-  phoneNumber: String
   role: Role
+  phoneNumber: String
   active: Boolean
   deactivatedAt: DateTime
 }
 
 enum Role {
   ADMIN
-  PERSSONNEL
+  PERSONNEL
   ECONOME
   FONDATEUR
   PRINCIPAL

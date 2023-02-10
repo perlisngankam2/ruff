@@ -158,11 +158,12 @@ const  CycleCreate =  ({
             <Box> 
                 <Button
                     rightIcon={<Icon as={IoIosAdd} boxSize="20px" />}
-                    onClick={onOpen}
-                    ml={["250px", "530px","1060px"]}
+                    onClick={onOpen} 
+                    ml={["245px", "490px","909px"]}
+                    width ={"200px"}
                     // onClick = {() => router.push(personnel/AjouterCategoryPersonnel)} 
                 >
-                        Ajouter un Cycle                               
+                        Ajouter un Cycle                              
                 </Button>
           </Box>
             <Box as={"form"} 

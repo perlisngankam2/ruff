@@ -99,7 +99,7 @@ const Class = () => {
             size="lg"
             textColor="pink.300"
           >
-            Liste des élèves
+            Liste des classes
           </Heading>
           <Hide below="sm">
             <Text>Dashboad / Classes / Liste classes</Text>
@@ -129,7 +129,7 @@ const Class = () => {
                 rightIcon={<Icon as={IoIosAdd} boxSize="20px" />}
                 onClick={() => router.push("/class/addclass")}
               >
-                Ajouter un élève
+                Ajouter une classe
             </Button>
           </Box> 
         </Flex>
@@ -175,8 +175,8 @@ const Class = () => {
                           </Td>
                             <Box 
                               display="flex"
-                              ml='-180px' 
-                               mt='8px'
+                              ml={['-140px', '-140px', '-140px', '-140px']} 
+                               mt={['8px', '8px', '8px', '8px']}
                              >
                                 <Link 
                                 href="/class/updateclass">

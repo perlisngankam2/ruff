@@ -95,7 +95,6 @@ const  SectionCreate =  () => {
                 <Button
                     rightIcon={<Icon as={IoIosAdd} boxSize="20px" />}
                     onClick={onOpen}
-                    // onClick = {() => router.push(personnel/AjouterCategoryPersonnel)} 
                 >
                         Ajouter une Section                                
                 </Button> 

@@ -137,7 +137,7 @@ const Eleves = () => {
                 rightIcon={<Icon as={IoIosAdd} boxSize="20px" />}
                 onClick={() => router.push("/eleves/ajoutereleve")}
               >
-                {/* Ajouter un élève */}
+                Ajouter un élève
             </Button>
           </Box> 
         </Flex>
@@ -153,7 +153,7 @@ const Eleves = () => {
                       <Th>Nom</Th>
                       <Th>Prenom</Th>
                       <Th >classe</Th>
-                      <Th>sexe</Th>
+                      {/* <Th>sexe</Th> */}
                       {/* <Th>Photo</Th> */}
                       <Th>Action</Th>
                   </Tr>
@@ -161,12 +161,11 @@ const Eleves = () => {
                   <Tbody>
                   {dataStudent && ( 
                     dataStudent.findAllstudents.map((student, index) =>(
-                        // <Link href='/scolarite/formulaire' key={index}>
                       <Tr key={index}>
                         <Td borderColor={'#C6B062'}>{student.lastname}</Td>
                         <Td borderColor={'#C6B062'}>{student.firstname}</Td>
                         <Td borderColor={'#C6B062'}>{student.classe}</Td>
-                        <Td borderColor={'#C6B062'}>{student.sex}</Td>
+                        {/* <Td borderColor={'#C6B062'}>{student.sex}</Td> */}
                         {/* <Td borderColor={'#C6B062'}>
                             <Avatar 
                                 size='xs' 
@@ -183,7 +182,6 @@ const Eleves = () => {
                             colorScheme={'teal'}
                             >
                               <Button
-                                // onClick = {()=>router.push('/eleves/details')}
                               >
                                 <Link
                                  href= {{
@@ -194,35 +192,34 @@ const Eleves = () => {
                                  Details
                                 </Link>
                               </Button>
-                              {/* <Link
-                              href='/eleves/scolariteform'
-                              >
-                                <IconButton aria-label='Add to friends' _hover={{color:'#E2D39C'}}  icon={<AddIcon />} />                      
-                              </Link> */}
                             </ButtonGroup> 
                           </Td>
-                            <Box ml='-100px' mt='8px'>
-                                <Link 
-                                href="/eleves/modifiereleve">
-                                    <Icon
-                                    as={FiEdit}
-                                    boxSize="40px"
-                                    p="3"
-                                    // bg="blue.100"
-                                    rounded="full"
-                                    _hover={{background:"red.100"}}
-                                    />
-                                </Link>
-                                <Link href="#" mt="-3px">
+                            <Box 
+                              display={"flex"}
+                              ml={['-105px', '-105px', '-105px', '-105px']} 
+                              mt={['8px', '8px', '8px', '8px']}
+                            >
+                              <Link 
+                              href="/eleves/modifiereleve">
                                   <Icon
-                                    as={MdDelete}
-                                    boxSize="44px"
-                                    p="3"
-                                    rounded="full"
-                                    color="colors.quaternary"
-                                    onClick={() => {removeStudent(student.id)}}
-                                    _hover={{background:"blue.100"}}
+                                  as={FiEdit}
+                                  boxSize="40px"
+                                  p="3"
+                                  // bg="blue.100"
+                                  rounded="full"
+                                  _hover={{background:"red.100"}}
                                   />
+                              </Link>
+                              <Link href="#" mt="-3px">
+                                <Icon
+                                  as={MdDelete}
+                                  boxSize="42px"
+                                  p="3"
+                                  rounded="full"
+                                  color="colors.quaternary"
+                                  onClick={() => {removeStudent(student.id)}}
+                                  _hover={{background:"blue.100"}}
+                                />
                               </Link>
                             </Box> 
                         </Tr>

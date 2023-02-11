@@ -2,13 +2,8 @@
 import { Injectable } from "@nestjs/common";
 import { PassportStrategy } from "@nestjs/passport";
 import { ExtractJwt, Strategy } from "passport-jwt";
-import { Injectable } from "@nestjs/common";
-import { PassportStrategy } from "@nestjs/passport";
-import { ExtractJwt, Strategy } from "passport-jwt";
 
 @Injectable()
-export class JwtStrategy extends PassportStrategy(Strategy){
-    constructor(){
 export class JwtStrategy extends PassportStrategy(Strategy){
     constructor(){
         super({
@@ -16,15 +11,13 @@ export class JwtStrategy extends PassportStrategy(Strategy){
             ignoreExpiration: false,
             secretOrKey:process.env.JWT_SECRET_KEY
         })
-            secretOrKey: 'hide-me'
-        })
+            
+       
     }
 
   async validate(payload: any){
     return {id: payload.sub, email: payload.sub, password: payload.sub}
   } 
 
-  async validate(payload: any){
-    return {id: payload.sub, email: payload.sub, password: payload.sub}
-  } 
+
 }

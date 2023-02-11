@@ -29,7 +29,9 @@ const RegisterForm = () => {
   const [Email , setEmail] = useState("");
   const [Password, setPassword] = useState("");
   const [createUser, error] = useMutation(CREATE_USER);
-  const toast = useToast()
+  const toast = useToast();
+  const router = useRouter();
+  
  
 
   const HandleClick = async (event) => {
@@ -43,7 +45,7 @@ const RegisterForm = () => {
           phoneNumber: PhoneNumber,
           email: Email,
           password : Password,
-          role:"ADMIN"
+          role:"ECONOME"
         }
       }
     })
@@ -96,8 +98,8 @@ const RegisterForm = () => {
                     onChange={(e) => setNom(e.target.value)}
                     name="Nom"
                     placeholder="votre nom ...."
-                    errorMessage ="Nom doit avoir 3-16 caracteres et sans inclure les caracteres speciaux"
-                    pattern = "^[A-Za-z0-9]{3-16}$"
+                    // errorMessage ="Nom doit avoir 3-16 caracteres et sans inclure les caracteres speciaux"
+                    // pattern = "^[A-Za-z0-9]{3-16}$"
 
                     
                   />
@@ -110,8 +112,8 @@ const RegisterForm = () => {
                     onChange={(e) => setPrenom(e.target.value)}
                     name="Prenom"
                     placeholder="votre prenom ...."
-                    errorMessage ="Prenom doit avoir 3-16 caracteres et sans inclure les caracteres speciaux"
-                    pattern = "^[A-Za-z0-9]{3-16}$"
+                    // errorMessage ="Prenom doit avoir 3-16 caracteres et sans inclure les caracteres speciaux"
+                    // pattern = "^[A-Za-z0-9]{3-16}$"
 
                   />
                 </FormControl>

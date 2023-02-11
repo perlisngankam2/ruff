@@ -27,10 +27,14 @@ import { HiOutlineHome, HiUserGroup } from "react-icons/hi";
 import { IoMdSchool, IoIosStats, IoIosArrowDown } from "react-icons/io";
 import { GiTakeMyMoney } from "react-icons/gi";
 import { HamburgerIcon } from "@chakra-ui/icons";
+import { useAuth } from "../../../contexts/account/Auth/Auth";
+import { LoginForm } from "../LoginForm/LoginForm";
 
 
 const Header = () => {
+
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const { removeAuthToken } = useAuth();
   return (
     <Box
       as="header"
@@ -163,7 +167,7 @@ const Header = () => {
                 <Link href="#">
                   <MenuItem>Paramètres</MenuItem>
                 </Link>
-                <Link href="#">
+                <Link href="/" onClick={removeAuthToken}>
                   <MenuItem>Se Déconnecter</MenuItem>
                 </Link>
                 <Link href="#">

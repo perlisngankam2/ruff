@@ -26,15 +26,31 @@ import PaymentNumberAlert from "../components/atoms/PaymentNumberAlert";
 import LastStudentRegisteredBox from "../components/atoms/LastStudentRegisteredBox";
 import TreasuryBox from "../components/atoms/TreasuryBox";
 import LatePayment from "../components/atoms/LatePayment";
+import { useAuth } from "../contexts/account/Auth/Auth";
+
+
 
 
 function Dashboard() {
+
+   const { isLogged } = useAuth();
+  
+  const isLoggedIn = isLogged;
+
+const { userRole } = useAuth();
+
+  const role = userRole;
+
+
+
   return (
+    <>
+    { isLoggedIn && 
     <DefaultLayout>
       <Box pt="90px" w="full">
         <Box top="-7" overflow="auto" minH="100vh" mx={6}>
           <Heading fontSize="lg" mb={4} color="yellow.500">
-            Bienvenue-GSBAB| Admin
+            Bienvenue-GSBAB| {role}
           </Heading>
 
           <Flex flexDir="row" gap="8" mb="9" flexWrap="wrap">
@@ -82,6 +98,8 @@ function Dashboard() {
         </Box>
       </Box>
     </DefaultLayout>
+    }
+    </>
   );
 }
 

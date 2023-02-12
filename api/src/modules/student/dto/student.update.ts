@@ -42,6 +42,12 @@ export class StudentUpdateInput {
   categoryStudent!: string;
 
   @Field({nullable:true})
+  section!: string;
+  
+  @Field({nullable:true})
+  cycle!: string;
+
+  @Field({nullable:true})
   fatherFirstName!: string;
 
   @Field({nullable:true})

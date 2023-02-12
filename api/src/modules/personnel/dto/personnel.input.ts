@@ -9,19 +9,33 @@ export class PersonnelCreateInput {
   ID?: string;
   
   @Field({nullable:true})
+  firstName?: string; 
+  
+  @Field({nullable:true})
+  lastName?: string;
+
+  @Field({nullable:true})
   situationMatrimonial!: string;
 
-  @Field(() => ID, { nullable: true })
-  userId?: string;
+  // @Field(() => ID, { nullable: true })
+  // userId?: string;
 
   @Field({nullable:true})
   sexe?: string;
 
   @Field({nullable:true})
+  phoneNumber?: string;
+
+  @Field({nullable:true})
   fonction?: string;
 
   @Field({nullable:true})
-  matricule?: string;
+  personnelCategory?: string;
+
+  @Field({nullable:true})
+  status!: string;
+  // @Field({nullable:true})
+  // matricule?: string;
 
   @Field({nullable:true})
   childNumber?: string;

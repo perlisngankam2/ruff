@@ -22,9 +22,12 @@ function MyApp({ Component, pageProps}) {
         tertiary: "#eef6ec",
         quaternary: "#E53E3E",
         quinzaine: "pink.300"
-      },
+      }, 
     },
-  });
+  });  
+
+  // const ApolloClient = useApollo(pageProps.initialApolloState);
+
   return (
     
     <ApolloProvider client={client}>

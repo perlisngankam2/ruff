@@ -1,3 +1,4 @@
+import { useQuery } from "@apollo/client";
 import {
   Avatar,
   Box,
@@ -13,13 +14,29 @@ import {
   Thead,
   Tr,
 } from "@chakra-ui/react";
+import { useRouter } from "next/router";
+import { useEffect } from "react";
 import DefaultLayout from "../../components/layouts/DefaultLayout";
+import { GET_PERSONNEL_BY_ID} from "../../graphql/Queries";
 
 
 const Profil = () => {
+
+  const router = useRouter();
+
+  const {data:dataPersonnelId} = useQuery(GET_PERSONNEL_BY_ID,
+  {
+    variables:{ id: router.query.id}
+  })
+
+  useEffect(() =>{
+    console.log(dataPersonnelId)
+  })
+
   return (
     <DefaultLayout>
       <Box p="3" pt="70px" w="100%" background="colors.tertiary">
+      {dataPersonnelId && (
         <Flex gap="5">
           <Box rounded="md" p="5" boxShadow="md" w="40%" background="white">
             <Center>
@@ -29,22 +46,22 @@ const Profil = () => {
               />
             </Center>
             <Text fontSize="2xl" fontWeight="bold" textAlign="center" my="2">
-              Enseignant
+              {dataPersonnelId.findOnePersonnel.fonction}
             </Text>
             <Box background="blue.500" p="3" rounded="md" color="white">
-              <Text>Nom : BLAISE ALEXANDRE</Text>
-              <Text>Prenom : MATUIDI</Text>
-              <Text>Situation matrimoniale : Celibataire</Text>
-              <Text>Numero: 694456775</Text>
-              <Text>Sexe : Masculin</Text>
+              <Text>Nom : {dataPersonnelId.findOnePersonnel.firstName}</Text>
+              <Text>Prenom : {dataPersonnelId.findOnePersonnel.lastName}</Text>
+              <Text>Situation matrimoniale :{dataPersonnelId.findOnePersonnel.situationMatrimonial} </Text>
+              <Text>Telephone: {dataPersonnelId.findOnePersonnel.phoneNumber}</Text>
+              <Text>Sexe : {dataPersonnelId.findOnePersonnel.sexe}</Text>
             </Box>
             <Box background="white" p="3" rounded="md">
-              <Text>Date d'adhésion : 23/07/2019</Text>
-              <Text>Date de naissance : 07/03/1990</Text>
-              <Text>Nombre d'enfants: 3</Text>
-              <Text> Statut: Vacataire</Text>
-              <Text> Section: Anglophone</Text>
-              <Text> Classe: CM1</Text>
+            <Text>Date de naissance :{dataPersonnelId.findOnePersonnel.dateOfBirth}</Text>
+              <Text>Date de prise de fonction :{dataPersonnelId.findOnePersonnel.dateOfStartWork} </Text>
+              <Text>Nombre d'enfants: {dataPersonnelId.findOnePersonnel.childNumber}</Text>
+              <Text> Statut: {dataPersonnelId.findOnePersonnel.status}</Text>
+              {/* <Text> Section: Anglophone</Text>
+              <Text> Classe: CM1</Text> */}
             </Box>
           </Box>
           <Box rounded="md" p="5" boxShadow="md" background="white" w="60%">
@@ -97,6 +114,7 @@ const Profil = () => {
             </TableContainer>
           </Box>
         </Flex>
+    )}
       </Box>
     </DefaultLayout>
   );

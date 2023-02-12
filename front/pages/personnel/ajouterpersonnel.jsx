@@ -15,25 +15,26 @@ import {
 
 import DefaultLayout from "../../components/layouts/DefaultLayout";
 import {useTranslation } from "next-i18next";
-import { useState, useRef } from "react";
+import { useState, useRef, use, useEffect } from "react";
 import { useRouter } from "next/router";
-import {  useMutation } from "@apollo/client";
+import {  useMutation, useQuery } from "@apollo/client";
 import { CREATE_PERSONNEL } from "../../graphql/Mutation"; 
+import { GET_ALL_PERSONNELS, GET_ALL_Category_Personnel } from "../../graphql/Queries";
  
 const AjouterPersonnel = () => {
 
-  //  const [firstName, setFirstName] = useState("");
-  //   const [lastName, setLastName] = useState("");
+   const [firstName, setFirstName] = useState("");
+    const [lastName, setLastName] = useState("");
     const [dateOfBirth, setDateOfBirth] = useState("");
     const [dateOfStartWork, setDateOfStartWork] = useState("");
     const [sexe, setSexe]= useState("");
-    // const [status, setStatus] = useState("");
-    // const [phoneNumber, setPhoneNumber] = useState
+    const [status, setStatus] = useState("");
+    const [phoneNumber, setPhoneNumber] = useState("")
     const [childNumber, setChildNumber] = useState("");
     const [situationMatrimonial, setSituationMatrimonial] = useState("");
     // const [salaire, setSalaire] = useState("");
-    // const [teacherCategory, setTeacherCategory] = useState("");
-    const [matricule, setMatricule] = useState("");
+    const [personnelCategory, setPersonnelCategory] = useState("");
+    // const [matricule, setMatricule] = useState("");
     const [fonction, setFonction] = useState("");
     // const [id, setMatricule] = useState("");
 
@@ -74,7 +75,7 @@ const AjouterPersonnel = () => {
 
   const [isPermanent, setIsPermanent] = useState(false);
   const [createPersonnel, {error}] = useMutation(CREATE_PERSONNEL);
-
+  const {data:dataCategoryPersonnel} = useQuery(GET_ALL_Category_Personnel);
   // const handleSubmit = (event) => {
   //   event.preventDefault();
   //   // router.push("/personnel");
@@ -98,25 +99,30 @@ const AjouterPersonnel = () => {
   const  handleSubmit = async (event, value) => {
      event.preventDefault();
      console.log('hh');
-
-    //  console.log(event.target.sexe.value);    
-     console.log(sexe);
+    console.log(firstName);
+    console.log(lastName);
+    console.log(phoneNumber);
+    console.log(personnelCategory);
+    console.log(sexe);
+    console.log(status)
      console.log(dateOfBirth);
      console.log(dateOfStartWork);
      console.log(fonction);
      console.log(situationMatrimonial);
      console.log(childNumber);
-     console.log(matricule);
 
     const data = await createPersonnel({
       variables: {
         createPersonnelUser: {
           ID: "",
+          firstName: firstName,
+          lastName : lastName,
+          phoneNumber: phoneNumber,
+          personnelCategory: personnelCategory,
+          status: status,
           situationMatrimonial: situationMatrimonial,
-          userId: 0,
           sexe: sexe,
           fonction: fonction,
-          matricule: matricule,
           childNumber: childNumber,
           dateOfBirth: dateOfBirth,
           dateOfStartWork: dateOfStartWork,
@@ -129,7 +135,10 @@ const AjouterPersonnel = () => {
               name: "",
               phoneNumber: ""
             }
-        }
+        },
+        refetchQueries:[{
+          query: GET_ALL_PERSONNELS
+        }]
       }}, 
       console.log('hh')
       ) 
@@ -144,6 +153,9 @@ const AjouterPersonnel = () => {
       router.push("/personnel")
   }
 
+  useEffect(() =>{
+    console.log(dataCategoryPersonnel?.findAllcategoriepersonnel);
+  })
 
   return (
     <DefaultLayout>
@@ -169,7 +181,7 @@ const AjouterPersonnel = () => {
                 </Heading>
               </Box>
               <Box display={{md:"flex"}} >
-                {/* <FormControl mr="5%">
+                <FormControl mr="5%">
                   <FormLabel fontWeight={"normal"}>
                     {t('pages.personnel.firstName')}
                   </FormLabel>
@@ -181,10 +193,9 @@ const AjouterPersonnel = () => {
                     borderColor="purple.100"
                     onChange={e => setFirstName(e.target.value)}
                     value={firstName}
-                  /> */}
-                  {/* {formik.errors.firstName?<Text>{formik.errors.firstName}</Text> : null} */}
-                {/* </FormControl> */}
-                {/* <FormControl>
+                  /> 
+                </FormControl>
+                 <FormControl>
                   <FormLabel fontWeight={"normal"}>
                     {t('pages.personnel.lastName')}
                   </FormLabel>
@@ -196,8 +207,8 @@ const AjouterPersonnel = () => {
                     borderColor="purple.100"
                     onChange={e => setLastName(e.target.value)}
                     value={lastName}
-                  /> */}
-                {/* </FormControl> */}
+                  /> 
+               </FormControl>
               </Box>
               <FormControl mt="2%">
                 <FormLabel fontWeight={"normal"}>
@@ -259,21 +270,31 @@ const AjouterPersonnel = () => {
                 <FormControl mr="5%">
                   <FormLabel fontWeight={"normal"}>
                     {/* {t('components.school.Register.birthDate')} */}
-                    matricule
+                    Category
                   </FormLabel>
-                  <Input
+                  <Select
                     type="text"
-                    id="matricule"
-                    name="matricule"
-                    placeholder="matricule"
+                    id="personnelCategory"
+                    name="personnelCategory"
+                    placeholder="Categorie du personnel"
                     borderColor="purple.100"
-                    onChange={e => setMatricule(e.target.value)}
-                    value={matricule}
+                    onChange={e => setPersonnelCategory(e.target.value)}
+                    value={personnelCategory}
                     // ref={dateOfBirthRef}
                     ref={node => {
                       input = node;
                     }}
-                  />
+                  >
+                    { 
+                          dataCategoryPersonnel && (
+                            dataCategoryPersonnel.findAllcategoriepersonnel.map((category, index) => (
+                                <option key={index}>
+                                  <option>{category.nom}</option>
+                                </option>
+                            ))
+                        )}
+
+                  </Select>
                 </FormControl>
                 <FormControl>
                   <FormLabel fontWeight={"normal"}>
@@ -318,10 +339,10 @@ const AjouterPersonnel = () => {
                 {/* </FormControl>
               </Flex> */}
               <Box  display={{md:"flex"}}mt="2%">
-                {/* <FormControl mr="5%">
-                  <FormLabel fontWeight={"normal"}> */}
-                    {/* {t('components.school.Register.maritalStatus')} */}
-                    {/* Status du personnel
+                <FormControl mr="5%">
+                  <FormLabel fontWeight={"normal"}> 
+                     {/* {t('components.school.Register.maritalStatus')} */}
+                     Status
                   </FormLabel>
                   <Select
                     id="status"
@@ -334,20 +355,18 @@ const AjouterPersonnel = () => {
                     // ref={statusRef}
                     ref={node => {
                       input = node;
-                    }} */}
-
-                  {/* > */}
-                    {/* {statuses.map((status, index) => (
-                      <option key={index}>{status}</option>
-                    ))} */}
-                   {/* <option>Permanent</option>
+                    }}
+                 > 
+                    {/* {/* {statuses.map((status, index) => (
+                      <option key={index}>{status}</option> */}
+                    <option>Permanent</option>
                     <option>Vaccataire</option>
                   </Select>
-                </FormControl> */}
-                {/* <FormControl>
-                  <FormLabel fontWeight={"normal"}> */}
+                 </FormControl> 
+                <FormControl>
+                  <FormLabel fontWeight={"normal"}> 
                     {/* {t('components.school.Register.phoneNumber')} */}
-                    {/* Telephone
+                     Telephone
                   </FormLabel>
                   <Input
                     type="tel"
@@ -357,8 +376,8 @@ const AjouterPersonnel = () => {
                     borderColor="purple.100"
                     onChange={e => setPhoneNumber(e.target.value)}
                     value={phoneNumber}
-                  /> */}
-                {/* {/* </FormControl> */}
+                  /> 
+                 </FormControl> 
               </Box> 
               {/* <Box>
                 {isPermanent && (
@@ -422,24 +441,6 @@ const AjouterPersonnel = () => {
                     <option>Autres</option>
                   </Select>
                 </FormControl>
-                {/* <FormControl ml={["0px","0px","44px"]}>
-                  <FormLabel> */}
-                    {/* {t('components.school.Register.gender')} */}
-                    {/* Nombre d'enfant
-                  </FormLabel>
-                  <Input
-                    type="number"
-                    id="childNumber"
-                    name="childNumber"
-                    placeholder="Nombre d'enfants"
-                    borderColor="purple.100"
-                    onChange={e => setChildNumber(e.target.value)}
-                    value={childNumber}
-                    width={["649px", "649px", "403px"]} */}
-                    {/* ref={childNumberRef} */}
-                    {/* ref={node => {input = node;}} */}
-                {/* //   />
-                // </FormControl> */}
               </Box>
               <ButtonGroup mt="3%" w="100%">
                 <Flex w="100%" justifyContent="space-between">

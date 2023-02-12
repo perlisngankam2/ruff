@@ -1,4 +1,4 @@
-import { Box, Heading, useToast } from "@chakra-ui/react";
+import { } from "@chakra-ui/react";
 import SearchBar from "../../components/atoms/searchbar";
 import {
   AlertDialog,
@@ -9,6 +9,9 @@ import {
   AlertDialogOverlay,
   useDisclosure,
   Button,
+  Box, 
+  Heading,
+  useToast ,
   Center,
   Flex,
   Input,
@@ -19,7 +22,6 @@ import {
   FormLabel,
   extendTheme,
   Icon,
-  useToast
 } from '@chakra-ui/react';
 
 import React from "react";
@@ -27,6 +29,7 @@ import { IoIosAdd } from "react-icons/io";
 import Link from "next/link";
 import {useMutation } from '@apollo/client';
 import { CREATE_CATEGORY_ELEVE} from "../../graphql/Mutation";
+import { GET_ALL_Category_Eleve } from "../../graphql/Queries";
 import { useState } from "react";
 import { useRouter } from "next/router";
 
@@ -55,7 +58,10 @@ function AjouterCategoryEleve  () {
                     nom: nom,
                     description: description
                 }
-            }
+            },
+            refetchQueries: [{
+                query: GET_ALL_Category_Eleve
+              }]
         })
         console.log(categorieEleveData)
          toast({

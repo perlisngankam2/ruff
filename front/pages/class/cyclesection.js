@@ -41,12 +41,13 @@ import {FiEdit} from 'react-icons/fi';
 import {MdDelete} from 'react-icons/md';
 import { GET_ALL_SECTION, GET_ONE_CYCLE } from "../../graphql/Queries";
 import { GET_ALL_CYCLE } from "../../graphql/Queries";
-import { DELETE_SECTION, DELETE_CYCLE, UPDATE_CYCLE} from "../../graphql/Mutation";
+import { DELETE_SECTION, DELETE_CYCLE, UPDATE_CYCLE, CREATE_CYCLE} from "../../graphql/Mutation";
 import {UpdateCycle} from './updatecycle';
 import { useMutation, useQuery } from "@apollo/client"; 
 import SectionCreate from "./SectionCreate";
 import CycleCreate from "./CycleCreate";
 
+// const fragment = cycleFragment
 
 const cyclesection = () => {
 
@@ -54,7 +55,7 @@ const cyclesection = () => {
     const [query , setQuery] = useState("");
     const [cycle, setCycle] = useState();
     const [name, setName] = useState("");
-    const[section, setSection] = useState("");
+    const [section, setSection] = useState("");
     // const search = (data) => {
        typeof id
     //   let datas = data.filter((item) => keys.some((key) => (
@@ -71,9 +72,65 @@ const cyclesection = () => {
     const [deleteCycle] = useMutation(DELETE_CYCLE);
     const{ data:dataDetailsCycle} = useQuery(GET_ONE_CYCLE);
     const [editCycle] = useMutation(UPDATE_CYCLE);
+    const [createCycle, {error}] = useMutation(CREATE_CYCLE);
 
-    const { isOpen:isOpens, onOpen:onOpenns, onClose } = useDisclosure();
+    const { isOpen:isOpens, onOpen:onOpenns, onClose} = useDisclosure();
     const cancelRef = React.useRef();
+    const router = useRouter();
+
+
+  //   const  addCycle = async (event, value) => {
+  //     event.preventDefault();
+  //     console.log('cccc');
+ 
+  //     console.log(name);
+  //     console.log(section);
+ 
+  //     const cycleData = await createCycle({
+  //         variables: {
+  //             cycle: {
+  //                 name: name,
+  //                 section: section
+  //             }
+  //         }
+  //     })
+  //     console.log(cycleData)
+  //     toast({
+  //         title: "Creation d'un cyle.",
+  //         description: "Le cylce a éte crée avec succes.",
+  //         status: "success",
+  //         duration: 3000,
+  //         isClosable: true,
+  //       });
+  //       router.push("/class/cyclesection")
+  // }
+
+//   const updateCycle = async(values) => {
+//     console.log("bb")
+//       // const inputCycle = {
+//       //   cycleId: fragment.id,
+//       //   input : {
+//       //     name: fragment.name,
+//       //     section: fragment.section
+//       //   }
+//       // }
+    
+//     await editCycle({
+//       variables:{
+//         cycleId: fragment.id,
+//         input : {
+//           name: values.name,
+//           section: values.section
+//         }
+//       }
+//     });
+// };
+
+  //  const defaultValues = useMemo(() =>{
+  //     name = fragment.name || "",
+  //     section = fragment.section || ""
+  // }, [fragment])
+
 
      useEffect (() => {
       console.log(data?.findAllsection);
@@ -103,19 +160,6 @@ const cyclesection = () => {
       })
     } 
 
-    const updateCycle = async(cycle) => {
-      console.log("bb")
-       
-      await editCycle({
-        variables:{
-          Id: cycle.id,
-          input:{ 
-          name: name,
-          section: section
-          }
-        }
-      })
-    }
 
   return (
     <DefaultLayout>
@@ -229,7 +273,11 @@ const cyclesection = () => {
                   Cycles
               </Heading>
           </Box>
-          <CycleCreate/>
+          <CycleCreate
+            // defaultValues={defaultValues}
+            // {...onSubmit ? updateCycle: addCycle}
+            // update={true}
+          />
             <TableContainer>
                 <Table variant='striped'>
                     <Thead>
@@ -266,7 +314,9 @@ const cyclesection = () => {
                                   onClick={() => removeCycle(cycle.id)}
                                   _hover={{background:"blue.100"}}
                                   />
-                                  <Box as={"form"} onSubmit={updateCycle}> 
+                                  <Box as={"form"} 
+                                  // onSubmit={updateCycle}
+                                  > 
                                     <AlertDialog
                                       isOpen={isOpens}
                                       leastDestructiveRef={cancelRef}

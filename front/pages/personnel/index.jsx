@@ -12,6 +12,8 @@ import {
   Text,
   VStack
 } from "@chakra-ui/react";
+
+import Routes from "../../modules/routes";
 import Link from "next/link";
 import Employee from "../../components/atoms/Employe";
 import DefaultLayout from "../../components/layouts/DefaultLayout";
@@ -65,13 +67,10 @@ const Personnel = () => {
     })
   }
   
-
-
   const handleChange = (e) => {
     setSearchName(e.target.value);
   };
   
- 
   return (
     <DefaultLayout>
       <Box p="3" pt="70px" background="colors.tertiary" w="full" minH="100vh">
@@ -117,7 +116,14 @@ const Personnel = () => {
                 fontSize="0.85em" 
                 m={["8px", "8px", "8px"]}
               >
-                {personnel.sexe}
+                {personnel.firstName}
+              </Text>
+              <Text 
+                textAlign="center" 
+                fontSize="0.85em" 
+                m={["8px", "8px", "8px"]}
+              >
+                {personnel.lastName}
               </Text>
               <Text 
                 textAlign="center"
@@ -135,8 +141,11 @@ const Personnel = () => {
                 {personnel.situationMatrimonial}
               </Text>
               <Flex justify="center" gap="4">
-                <Link href=""
-                // href={"/personnel/" + props.id}
+                <Link 
+                href={{
+                  pathname: Routes.PersonnelDetails.path,
+                  query: {id: personnel.id}
+                }}
                 >
                   <Icon
                     as={BiDetail}

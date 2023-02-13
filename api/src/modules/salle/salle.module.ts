@@ -4,7 +4,7 @@ import { Module } from '@nestjs/common';
 import { Salle } from '../../entities/salle.entity';
 
 import { NiveauEtudeModule } from '../niveau_etude/niveau_etude.module';
-import { SalleResolver } from './salle.resolever';
+import { SalleResolver } from './salle.resolver';
 import { SalleService } from './salle.service';
 
 @Module({

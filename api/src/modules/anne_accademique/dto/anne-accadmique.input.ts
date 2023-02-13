@@ -12,7 +12,7 @@ export class AnneeAccademiqueUpdateInput {
   @Field({nullable:true})
   description?: string;
 
-  @Field({nullable:true})
+  @Field(()=>Date,{nullable:true})
   anneeAccademique?: Date;
 
 }

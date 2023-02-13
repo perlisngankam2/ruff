@@ -22,13 +22,21 @@ export class CategorieEleveService {
   ): Promise<CategorieEleve> {
     const categorieEleve = new CategorieEleve()
 
-    // const reduction = input.reduction
-    //         ?   await this.reductionService.findByOne({id:input.reduction?.ID})
-    //         : await this.reductionService.create(input.reduction)
+    const reduction = input.reduction
+      ? await this.reductionService.findByOne(input.reduction_id)
+      : await this.reductionService.create(input.reduction)
 
-    categorieEleve.nom = input.nom
-    categorieEleve.description = input.description
-    // categorieEleve.reductionScolarite.id = reduction.id
+    wrap(categorieEleve).assign(
+      {
+      nom:input.nom,
+      description:input.description,
+      reductionScolarite: reduction.id
+      },
+      {
+        em: this.em,
+      },
+    );
+
  
     await this.categorieEleveRepository.persistAndFlush(categorieEleve)
     return categorieEleve
@@ -48,16 +56,16 @@ export class CategorieEleveService {
   
   async update(id:string, input: CategorieEleveUpdateInput): Promise<CategorieEleve> {
     const categorie = await this.findById(id)
-    // if (input.reduction) {
-    //     const reduction =
-    //     input.reduction?.ID &&
-    //       (await this.reductionService.findByOne({ id: input.reduction?.ID }));
+    if (input.reduction) {
+        const reduction =
+        input.reduction?.ID &&
+          (await this.reductionService.findByOne({ id: input.reduction?.ID }));
   
-    //     if (!reduction) {
-    //       throw new NotFoundError('section no exist' || '');
-    //     }
-    //     this.reductionService.update(reduction.id, input.reduction);
-    //   }
+        if (!reduction) {
+          throw new NotFoundError('section no exist' || '');
+        }
+        this.reductionService.update(reduction.id, input.reduction);
+      }
 
     wrap(categorie).assign({
       nom: input.nom || categorie.nom,
@@ -69,7 +77,7 @@ export class CategorieEleveService {
 
   async deletecategorie(id:string){
   const a= this.findById(id)
-  await this.categorieEleveRepository.nativeDelete(await a)
+  await this.categorieEleveRepository.removeAndFlush(a)
   if(!a){
   throw ("not found")
   }

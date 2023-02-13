@@ -6,17 +6,17 @@ import { CategorieRetenuCreateInput } from 'src/modules/categorie_retenu/dto/cat
 @InputType()
 export class RedutionScolariteInput {
   @Field({nullable:true})
-  ID?: string;
+  ID!: string;
 
   @Field({nullable:true})
-  name?: string;
+  name!: string;
 
   @Field({nullable:true})
-  description?: string;
+  description!: string;
 
-  @Field({defaultValue:0})
-  montant?: number;
+  @Field({nullable:true,defaultValue:0})
+  montant!: number;
 
-  @Field({defaultValue:0})
-  pourcentage?: number;
+  @Field({nullable:true, defaultValue:0})
+  pourcentage!: number;
 }

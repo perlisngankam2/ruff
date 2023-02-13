@@ -8,6 +8,7 @@ import { UserCreateInput } from './dto/user.input';
 import { UpdateUserInput } from './dto/user.update';
 import { EntityRepository } from '@mikro-orm/postgresql';
 
+
 @Injectable()
 export class UserService {
   constructor(
@@ -16,33 +17,30 @@ export class UserService {
     private readonly em: EntityManager,
   ) {}
 
-  hashpass(password:string):string{
-    const salt = bcript.genSaltSync();
-    return bcript.hashSync(password, salt);
-
-  }
-
+  
   async create(
     input: UserCreateInput,
   ): Promise<User> {
     const new_user = new User()
-    new_user.lastName = input.lastName
-    new_user.password = this.hashpass(input.password)
-    new_user.firstName = input.firstName
     new_user.email = input.email
+    new_user.lastName = input.lastName
+    new_user.password = this.hashPassword(input.password)
+    new_user.firstName = input.firstName
     new_user.phoneNumber = input.phoneNumber
-    new_user.role = input.role
     
-
     const user = await this.findOne({
       email: new_user.email
     })
     if(user){
       throw new Error('User already exists!!!!!!!!!!')
     }
-
     await this.userRepository.persistAndFlush(new_user)
     return new_user
+  }
+
+  hashPassword(password: string): string {
+    const salt = bcript.genSaltSync();
+    return bcript.hashSync(password, salt);
   }
 
   findOne(filters: FilterQuery<User>): Promise<User | null> {
@@ -52,6 +50,7 @@ export class UserService {
   findById(id:string){
     return this.userRepository.findOne(id)
   }
+
 
   getAll(): Promise<User[]> {
     return this.userRepository.findAll()
@@ -91,8 +90,21 @@ export class UserService {
     throw Error("not found")
     }
     return a
-
-
   }
+
+ async log(id:string, email:string){
+  const user = await this.findOne(id)
+
+  if(!user){
+    throw Error("not found")
+    }
+  
+  if(user.email==email){
+    return user
+  } 
+}
+
+
+
 
 }

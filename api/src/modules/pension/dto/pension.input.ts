@@ -7,8 +7,12 @@ import { SalleCreateInput } from 'src/modules/salle/dto/salle.input';
 
 @InputType()
 export class PensionCreateInput {
-  @Field({nullable:true})
-  ID?: string;
+
+  @Field(()=>ID,{nullable:true})
+  salle_id?:string
+
+  @Field(()=>ID,{nullable:true})
+  anneeAcademique_id?:string
 
   @Field({nullable:true})
   name?: string;
@@ -19,12 +23,12 @@ export class PensionCreateInput {
   @Field({defaultValue:0})
   montant?: number;
 
-  @Field({})
+  @Field(()=>ID,{nullable:true})
   dateLine?: Date;
 
-  @Field()
+  @Field(()=>SalleCreateInput,{nullable:true})
   salle?:SalleCreateInput
 
-  @Field()
+  @Field(()=>AnneeAccademiqueCreateInput,{nullable:true})
   anneeAccademique?:AnneeAccademiqueCreateInput
 }

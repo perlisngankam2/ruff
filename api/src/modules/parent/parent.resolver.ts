@@ -36,7 +36,7 @@ export class ParentResolver {
   
   @Query(() => Parent, { name: 'parent' })
   async findOneparent(@Args('id', { type: () => String }) id: string) {
-    return await this.parentService.findOne(id);
+    return await this.parentService.findByOne(id);
   }
 
   @Mutation(()=>Parent)

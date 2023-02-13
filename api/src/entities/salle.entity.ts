@@ -33,14 +33,10 @@ export class Salle{
 
     @Field({ nullable: true })
     @Property({nullable:true})
-    section!: string;
+    description!: string;
 
     @Field({ nullable: true })
-    @Property({nullable:true})
-    cycle!: string;
-
-    @Field({ nullable: true })
-    @Property({nullable:true})
+    @Property({default:0,nullable:true})
     effectif!: number;
 
     @Property({ onCreate: () => new Date() })

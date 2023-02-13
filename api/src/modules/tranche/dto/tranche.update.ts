@@ -1,5 +1,4 @@
 /* eslint-disable prettier/prettier */
-import { PensionUpdateInput } from './../../pension/dto/pension.update';
 import { Field, ID, InputType } from '@nestjs/graphql';
 import { AnneeAccademiqueCreateInput } from 'src/modules/anne_accademique/dto/anne-accademique.update';
 import { CategoriePrimeCreateInput } from 'src/modules/categorie_prime/dto/categorie-prime.input';
@@ -8,8 +7,8 @@ import { SalleCreateInput } from 'src/modules/salle/dto/salle.input';
 
 @InputType()
 export class TrancheUpdateInput {
-  @Field({nullable:true})
-  ID?: string;
+  @Field(()=>ID,{nullable:true})
+  pension_id?: string;
 
   @Field({nullable:true})
   name?: string;
@@ -17,12 +16,13 @@ export class TrancheUpdateInput {
   @Field({nullable:true})
   description?: string;
 
-  @Field({defaultValue:0})
+
+  @Field({nullable:true,defaultValue:0})
   montant?: number;
 
-  @Field({nullable:true})
+  @Field(()=>Date,{nullable:true})
   dateLine?: Date;
 
-  @Field({nullable:true})
-  pension?:PensionUpdateInput
+  @Field(()=> PensionCreateInput,{nullable:true})
+  pension?:PensionCreateInput
 }

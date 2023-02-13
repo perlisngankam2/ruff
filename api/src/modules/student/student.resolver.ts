@@ -27,7 +27,7 @@ export class StudentResolver {
   @Mutation(() => Student)
   async updateStudent(
     @Args('id') id:string,
-    @Args('input') input: StudentCreateInput,
+    @Args('input') input: StudentUpdateInput,
 
     ) {
     return this.studentService.update(id,input);
@@ -38,7 +38,7 @@ export class StudentResolver {
     return this.studentService.getAll()
   }
   
-  @Query(() => Student)
+  @Query(() => Student, { name: 'student' })
   findOnestudent(@Args('id', { type: () => String }) id: string) {
     return this.studentService.findByOne(id);
   }

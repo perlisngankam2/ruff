@@ -27,15 +27,16 @@ export class Cycle{
   
     @Field({ nullable: true })
     @Property({nullable:true})
-    name!: string;
+    name  !: string;
 
     @Field({ nullable: true })
     @Property({nullable:true})
-    section!: string;
+    description!: string;
 
     @Property({ onCreate: () => new Date() })
     createdAt = new Date();
 
     @OneToMany(() => SectionCycle, (sectionCycle) => sectionCycle.cycle)
-    sectionCycle = new Collection<SectionCycle>(this); 
+    sectionCycle = new Collection<SectionCycle>(this);
+    
    }

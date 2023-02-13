@@ -35,7 +35,7 @@ export class CycleResolver {
   
   @Query(() => Cycle)
   async findOnecycle(@Args('id', { type: () => String }) id: string) {
-    return await this.cycleService.findById(id);
+    return await this.cycleService.findByOne(id);
   }
 
   @Mutation(()=>Cycle)

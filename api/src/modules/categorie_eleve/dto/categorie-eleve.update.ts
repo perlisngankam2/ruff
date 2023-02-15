@@ -4,15 +4,15 @@ import { RedutionScolariteInput } from 'src/modules/reduction_pension/dto/reduct
 
 @InputType()
 export class CategorieEleveUpdateInput {
-  @Field({nullable:true})
-  ID?: string;
+  @Field(()=>ID,{nullable:true})
+  reduction_id!: string
 
   @Field({nullable:true})
-  nom?: string;
+  nom!: string;
 
   @Field({nullable:true})
-  description?: string;
+  description!: string;
 
-  // @Field({nullable:true})
-  // reduction?: RedutionScolariteInput;
+  @Field(()=>RedutionScolariteInput,{nullable:true})
+  reduction: RedutionScolariteInput;
 }

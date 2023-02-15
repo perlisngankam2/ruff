@@ -35,12 +35,12 @@ export class ReductionScolarite {
   @Property({ onCreate: () => new Date() })
   createdAt = new Date();
 
-  @Field({ defaultValue:0 })
-  @Property({ default:0 })
+  @Field({nullable:true})
+  @Property({nullable:true})
   montant!: number;
 
-  @Field({ defaultValue:0 })
-  @Property({ default:0 })
+  @Field({ nullable:true})
+  @Property({ nullable:true})
   pourcentage!: number;
 
   @OneToMany(()=>CategorieEleve, (categorie) => categorie.reductionScolarite)

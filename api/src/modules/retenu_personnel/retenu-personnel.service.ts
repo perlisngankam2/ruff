@@ -35,7 +35,7 @@ export class RetenuPersonnelService {
             ? await this.retenuService.findByOne(input.retenu.ID)
             : await this.retenuService.create(input.retenu)
         
-        const personnel = await this.personnelService.findOne(input.personnnel)
+        const personnel = await this.personnelService.findByOne(input.personnnel)
         if(!personnel){
             throw new NotFoundError('personnel no exist' || '');
         }
@@ -79,7 +79,7 @@ export class RetenuPersonnelService {
         if (input.personnnel) {
             const personnel =
             input.personnnel?.ID &&
-              (await this.personnelService.findOne({ id: input.personnnel?.ID }));
+              (await this.personnelService.findByOne({ id: input.personnnel?.ID }));
       
             if (!personnel) {
               throw new NotFoundError('personnel no exist' || '');

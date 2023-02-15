@@ -19,10 +19,13 @@ export class UserCreateInput {
   @Field({nullable:true})
   lastName!: string;
 
+  @Field(() => Role,{nullable: true})
+  role!: Role
+
+  // @Field({nullable:true})
+  // name!: string;
+
   @Field(() => String, { nullable: true })
   phoneNumber?: string;
-
-@Field(() => Role,{nullable: true})
-  role!: Role
 
 }

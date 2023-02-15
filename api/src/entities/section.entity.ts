@@ -33,9 +33,9 @@ export class Section {
     description!: string;
 
     
-    // @Field({ defaultValue: 0 })
-    // @Property({default:0})
-    // effectif!: number;
+    @Field({ defaultValue: 0 })
+    @Property({default:0})
+    effectif!: number;
 
     @Property({ onCreate: () => new Date() })
     createdAt = new Date();

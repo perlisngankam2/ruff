@@ -5,7 +5,9 @@ import { useState } from "react";
 import PrincipalLaout from "./PrincipalLayout";
 import EconomeSidebarLayout from "./EconomSidebarLayout";
 import ManagerLayout from "./ManagerLayout";
-import AdminLayout from "./AdminLayout";
+import AdminLayout from "./AdminLayout.jsx";
+
+import { useAuth } from "../../contexts/account/Auth/Auth";
 
 // const[userProfil, setIsProfil ]  = useState (
 //   'administrateur',
@@ -15,7 +17,7 @@ import AdminLayout from "./AdminLayout";
 //   'gesionnaire'
 // )
 
-const role = "isAdmin"
+
  
 
   // const userProfil = {
@@ -38,6 +40,11 @@ const role = "isAdmin"
 
 const SidebarLayout = ({ children }) => {
 
+  
+   const { userRole } = useAuth();
+
+  const role = userRole;
+
   return (
    
     <VStack
@@ -51,19 +58,19 @@ const SidebarLayout = ({ children }) => {
       color="#0e341f"
     >
         { 
-          (role==="isAdmin")&&
+          (role==="ADMIN")&&
             <AdminLayout/>
         }
         {
-          (role==="principal") && 
+          (role==="PRINCIPAL") && 
               <PrincipalLaout/>
         }
         {
-        (role==="econome") &&
+        (role==="ECONOME") &&
           <EconomeSidebarLayout/>
         }
         { 
-        (role==="manager") &&
+        (role==="MANAGER") &&
         <ManagerLayout/>
         }
       { children }

@@ -32,18 +32,23 @@ export class FraisInscriptionService {
         const frais = new FraisInscription()
 
         const anneAccademique = input.anneeAccademique
-        ? await this.anneAccademique.findbyOne({id:input.anneeAccademique.ID})
+        ? await this.anneAccademique.findbyOne({id:input.anneAcademique_id})
         : await this.anneAccademique.create(input.anneeAccademique)
 
         const salle = input.salle
-        ? await this.salleService.findByOne({id:input.salle.ID})
+        ? await this.salleService.findByOne({id:input.salle_id})
         : await this.salleService.create(input.salle)
 
-
-        frais.montant = input.montant
-        frais.description = input.description || null
-        frais.salle.id = salle.id
-        frais.anneeAccademique.id = anneAccademique.id
+        wrap(frais).assign({
+        montant:Number(input.montant)||0.0,
+        salle: salle.id,
+        description:input.description,
+        dateLine: new Date(input.dateLine),
+        anneeAccademique: anneAccademique.id
+        },
+        {
+          em: this.em
+        })
         
         await this.fraisRepository.persistAndFlush(frais)
         return frais
@@ -63,9 +68,7 @@ export class FraisInscriptionService {
       async update(id:string,input: UpdateFraisInscriptionInput): Promise<FraisInscription> {
         const frais = await this.findById(id)
         if (input.salle) {
-            const salle =
-            input.salle?.ID &&
-              (await this.salleService.findByOne({ id: input.salle?.ID }));
+            const salle = input.salle_id && (await this.salleService.findByOne({ id: input.salle_id }));
       
             if (!salle) {
               throw new NotFoundError('salle no exist' || '');
@@ -73,10 +76,9 @@ export class FraisInscriptionService {
             this.salleService.update(salle.id, input.salle);
           }
 
-          if (input.anneeAccademique) {
+        if (input.anneeAccademique) {
             const annee =
-            input.anneeAccademique?.ID &&
-              (await this.anneAccademique.findbyOne({ id: input.anneeAccademique?.ID }));
+            input.anneAcademique_id && (await this.anneAccademique.findbyOne({ id: input.anneAcademique_id }));
       
             if (!annee) {
               throw new NotFoundError('annee no exist' || '');

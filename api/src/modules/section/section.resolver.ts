@@ -31,7 +31,7 @@ export class SectionResolver {
     return this.sectionService.getAll()
   }
 
-  @Query(() => Section)
+  @Query(() => Section, { name: 'section' })
   findOnesection(@Args('id', { type: () => String }) id: string) {
     return this.sectionService.findByOne(id);
   }

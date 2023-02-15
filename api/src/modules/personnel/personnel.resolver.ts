@@ -31,9 +31,9 @@ export class PersonnelResolver {
     return await this.personnelService.getAll()
   }
   
-  @Query(() => Personnel)
+  @Query(() => Personnel, { name: 'personnel' })
   async findOnePersonnel(@Args('id', { type: () => String }) id: string) {
-    return await this.personnelService.findOne(id);
+    return await this.personnelService.findByOne(id);
   }
 
   @Mutation(()=>Personnel)
@@ -44,6 +44,16 @@ export class PersonnelResolver {
   @Mutation(() => Personnel)
   async deletepersonnel(@Args('id') id:string){
    return await this.personnelService.delete(id)
+  }
+
+  @Mutation(() => Personnel)
+  async updatepassword(@Args('id') id:string, @Args('password') password: string):Promise<Personnel>{
+    const a = await this.personnelService.findById(id)
+    if(!a){
+      throw Error('account not found')
+    }
+    await this.personnelService.setPassword(a,password)
+    return a
   }
 
 }

@@ -29,10 +29,17 @@ export class ReductionScolariteService {
        
         const reduction = new ReductionScolarite()
 
-        reduction.name = input.name
-        reduction.description = input.description
-        reduction.montant = input.montant
-        reduction.pourcentage = input.pourcentage
+        wrap(reduction).assign(
+          {
+           name: input.name,
+           description: input.description,
+           montant:Number(input.montant),
+           pourcentage: Number(input.pourcentage)
+          },
+          {
+            em: this.em
+          }
+        )
         await this.reductionRepository.persistAndFlush(reduction)
         return reduction
       }
@@ -54,11 +61,11 @@ export class ReductionScolariteService {
         wrap(reduction).assign({
             name:input.name || reduction.name,
             description: input.description || reduction.description,
-            montant:input.montant || reduction.montant,
-            pourcentage:input.pourcentage || reduction.pourcentage
+            montant:Number(input.montant || reduction.montant) || 0.0,
+            pourcentage:Number(input.pourcentage || reduction.pourcentage) || 0.0
         },
         { em: this.em },
-    );
+        );
         await this.reductionRepository.persistAndFlush(reduction);
         return reduction;
       }

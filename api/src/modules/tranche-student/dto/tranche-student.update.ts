@@ -1,5 +1,4 @@
 /* eslint-disable prettier/prettier */
-import { TrancheUpdateInput } from './../../tranche/dto/tranche.update';
 import { Field, ID, InputType } from '@nestjs/graphql';
 import { RegimePaiement } from 'src/entities/tranche-student.entity';
 import { AnneeAccademiqueCreateInput } from 'src/modules/anne_accademique/dto/anne-accademique.update';
@@ -11,8 +10,15 @@ import { TrancheCreateInput } from 'src/modules/tranche/dto/tranche.input';
 
 @InputType()
 export class TrancheStudentUpdateInput {
-  @Field({nullable:true})
-  ID?: string;
+
+  @Field(()=>ID,{nullable:true})
+  regimepaiement_id?:string
+
+  @Field(()=>ID,{nullable:true})
+  student_id?:string
+
+  @Field(()=>ID,{nullable:true})
+  tranche_id?:string
 
   @Field({nullable:true})
   name?: string;
@@ -20,15 +26,15 @@ export class TrancheStudentUpdateInput {
   @Field({nullable:true})
   description!: string;
 
-  @Field()
-  regimePaimemnt!: RegimePaiement;
-
   @Field({nullable:true,defaultValue:0})
-  montant?: number;
+  montant!: number;
 
-  @Field({nullable:true})
+  @Field(()=>RegimePaiement,{nullable:true})
+  regimePaimemnt?: RegimePaiement;
+
+  @Field(()=>StudentCreateInput,{nullable:true})
   student?:StudentCreateInput
   
-  @Field({nullable:true})
-  tranche?:TrancheUpdateInput
+  @Field(()=>TrancheCreateInput,{nullable:true})
+  tranche?:TrancheCreateInput
 }

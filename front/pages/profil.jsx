@@ -3,7 +3,7 @@ import { Box } from '@chakra-ui/react';
 import Sidebar from '../components/layouts/sidebar-profile/Sidebar-profile';
 import ContentProfile from '../components/layouts/Content-profil/Content-profile';
 import Cover from '../components/layouts/Cover-profile';
-import DefaultLayout from '../components/layouts/DefaultLayout';
+import DefaultLayout from "../components/layouts/DefaultLayout";
 
 export default function profil(){
 

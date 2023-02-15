@@ -1,6 +1,8 @@
 /* eslint-disable prettier/prettier */
+import { DateType } from '@mikro-orm/core';
 import { Field, ID, InputType } from '@nestjs/graphql';
 import { User } from 'src/entities/user.entity';
+import { Role } from 'src/modules/auth/roles/roles';
 import { UserCreateInput } from 'src/modules/user/dto/user.input';
 
 @InputType()
@@ -9,16 +11,8 @@ export class PersonnelUpdateInput {
   ID?: string;
   
   @Field({nullable:true})
-  firstName?: string; 
-  
-  @Field({nullable:true})
-  lastName?: string;
+  Matrimonialstatus!: string;
 
-  @Field({nullable:true})
-  situationMatrimonial!: string;
-
-  @Field({nullable:true})
-  status!: string;
   // @Field(() => ID, { nullable: true })
   // userId?: string;
 
@@ -26,25 +20,25 @@ export class PersonnelUpdateInput {
   sexe?: string;
 
   @Field({nullable:true})
-  phoneNumber?: string;
+  fonction?: Role;
 
   @Field({nullable:true})
-  fonction?: string;
+  password!:string
 
   @Field({nullable:true})
-  personnelCategory?: string;
-
-  // @Field({nullable:true})
-  // matricule?: string;
+  email!:string
 
   @Field({nullable:true})
-  childNumber?: string;
+  matricule?: string;
+
+  @Field({defaultValue:0})
+  childNumber?: number;
 
   @Field({nullable:true})
   dateOfBirth!: string;
 
   @Field({ nullable: true })
-  dateOfStartWork?: string;
+  dateOfStartWork?: Date;
 
   @Field()
   user?: UserCreateInput

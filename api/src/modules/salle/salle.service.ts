@@ -1,4 +1,3 @@
-//  eslint-disable @typescript-eslint/no-empty-function
 /* eslint-disable prettier/prettier */
 import {
     Collection,
@@ -30,22 +29,22 @@ export class SalleService {
         input: SalleCreateInput,
       ): Promise<Salle> {        
         const salle = new Salle()
-        
-        // const niveauid = this.niveauEtude.findById(input.niveauId)
-        // if(!niveauid){
-        //   throw Error("niveauid not found")
-        // }
-        // const niveau = input.niveau
-        // ? await this.niveauEtude.findByOne({id:input.niveau.ID})
-        // : await this.niveauEtude.create(input.niveau)
+
+        const niveau = input.niveau
+        ? await this.niveauEtude.findByOne({id:input.niveau_id})
+        : await this.niveauEtude.create(input.niveau)
 
 
-        salle.name = input.name
-        salle.section = input.section
-        salle.cycle = input.cycle
+        wrap(salle).assign({
+        name: input.name,
+        description: input.description,
+        effectif: input.effectif,
+        niveau: niveau.id
 
-        // salle.effectif = input.effectif
-        // salle.niveau.id = niveau.id
+        },
+        {
+          em: this.em
+        })
         
         await this.salleRepository.persistAndFlush(salle)
         return salle
@@ -61,40 +60,13 @@ export class SalleService {
       getAll(): Promise<Salle[]> {
         return this.salleRepository.findAll()
       }
-
-      async deleteSalle(id:string){
-        const a = this.findById(id)
-        await this.salleRepository.nativeDelete(await a)
-          if(!a){
-              throw Error("not found")
-            }
-            return a
-      
-      }
-
-      async updateSalle(id:string,input:SalleUpdateInput):Promise<Salle>{
-        const salle = await this.findById(id)
-
-        wrap(salle).assign({
-          name: input.name,
-          section: input.section,
-          cycle: input.cycle
-        },
-        {
-          em: this.em
-        });
-
-        await this.salleRepository.persistAndFlush(salle);
-        return salle
-        
-      }
       
       async update(id:string, input: SalleUpdateInput): Promise<Salle> {
         const salle=await this.findById(id)
         if (input.niveau) {
             const niveau =
-            input.niveau &&
-              (await this.niveauEtude.findByOne({ id: input.niveau.ID }));
+            input.niveau_id &&
+              (await this.niveauEtude.findByOne({ id: input.niveau_id }));
       
             if (!niveau) {
               throw new NotFoundError('niveau no exist' || '');
@@ -103,8 +75,8 @@ export class SalleService {
           } 
         wrap(salle).assign({
             name: input.name || salle.name,
-            section:input.section|| salle.section,
-            cycle:input.cycle || salle.cycle,
+            description: input.description || salle.description,
+            effectif:input.effectif || salle.effectif,
         },
         { em: this.em },
         );
@@ -113,7 +85,7 @@ export class SalleService {
         }
         async delete(id:string){
         const a=this.findById(id) 
-        await this.salleRepository.nativeDelete(await a)  
+        await this.salleRepository.removeAndFlush(a)  
         if(!a){
         throw Error("not found")
         } 
@@ -123,14 +95,14 @@ export class SalleService {
       // Montant attendu par salle pension
       async MontantAttendu(id:string){
         const salle = this.salleRepository.findOneOrFail(id)
-        const amount  = (await salle).fraisInscription.getEntity().montant
+        const amount  = (await (await salle).fraisInscription.load()).montant
         return amount*(await salle).effectif
       }
        
       // Montant Inscription recu par salle inscription
       async inscriptionRecuSalle(id:string){
         const salle = await this.salleRepository.findOneOrFail(id)
-        const fraisInscription = await salle.fraisInscription.getEntity()
+        const fraisInscription = await salle.fraisInscription.load()
         let amount = 0
         const inscription = await fraisInscription.inscription.matching({})
         for(let i = 0 ; i < inscription.length; i++){
@@ -151,9 +123,9 @@ export class SalleService {
   // liste des eleve ayant tout payer leur inscription par sale
       async listeInscriptionComplet(id:string){
         const salle = await this.salleRepository.findOneOrFail(id)
-        const fraisInscription = salle.fraisInscription.getEntity()
+        const fraisInscription = salle.fraisInscription.load()
         const liste = []
-        const listeInscrit = await fraisInscription.inscription.matching({})
+        const listeInscrit = await (await fraisInscription).inscription.matching({})
         for (let i = 0; i < listeInscrit.length; i++){
           if(listeInscrit[i].complete == true){
             liste.push(listeInscrit[i].student)
@@ -165,9 +137,9 @@ export class SalleService {
     // liste des eleves incriptions incompletes
     async listeInscriptionIncomplet(id:string){
         const salle = await this.salleRepository.findOneOrFail(id)
-        const fraisInscription = salle.fraisInscription.getEntity()
+        const fraisInscription = salle.fraisInscription.load()
         const liste = []
-        const listeInscrit = await fraisInscription.inscription.matching({})
+        const listeInscrit = await (await fraisInscription).inscription.matching({})
         for (let i = 0; i < listeInscrit.length; i++){
           if(listeInscrit[i].complete == false){
             liste.push(listeInscrit[i].student)

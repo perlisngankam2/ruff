@@ -30,7 +30,7 @@ export class CategorieEleveResolver {
     return await this.categorieService.getAll()
   }
   
-  @Query(() => CategorieEleve)
+  @Query(() => CategorieEleve, { name: 'categorieEleve' })
   async findOneCategorieeleve(@Args('id', { type: () => String }) id: string) {
     return await this.categorieService.findByOne(id);
   }

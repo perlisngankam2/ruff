@@ -7,9 +7,8 @@ import { UserCreateInput } from 'src/modules/user/dto/user.input';
 
 @InputType()
 export class NiveauEtudeCreateInput {
- 
-  @Field({nullable:true})
-  ID?: string;
+  @Field(()=>ID,{nullable:true})
+  sectioncycle_id?:string
   
   @Field({nullable:true})
   name?: string;
@@ -17,6 +16,6 @@ export class NiveauEtudeCreateInput {
   @Field({nullable:true})
   description?: string;
 
-  @Field({nullable:true})
-  sectionCycle:SectionCycleCreateInput
+  @Field(()=>SectionCycleCreateInput,{nullable:true})
+  sectionCycle?:SectionCycleCreateInput
 }

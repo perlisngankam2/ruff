@@ -33,12 +33,17 @@ export class NiveauEtudeService {
         const niveauEtude = new NiveauEtude()
 
         const sectionCycle = input.sectionCycle
-        ? await this.sectionCycle.findByOne({id:input.sectionCycle.ID})
+        ? await this.sectionCycle.findByOne({id:input.sectioncycle_id})
         : await this.sectionCycle.create(input.sectionCycle)
 
-        niveauEtude.name = input.name
-        niveauEtude.description = input.description || null
-        niveauEtude.sectionCycle.id = sectionCycle.id
+      wrap(niveauEtude).assign({
+       name: input.name,
+       description: input.description,
+       sectionCycle: sectionCycle.id
+      },
+      {
+        em:this.em
+      })
         
         await this.niveauEtudeRepository.persistAndFlush(niveauEtude)
         return niveauEtude
@@ -59,8 +64,8 @@ export class NiveauEtudeService {
         const niveau = await this.findById(id)
         if (input.sectionCycle) {
             const section =
-            input.sectionCycle?.ID &&
-              (await this.sectionCycle.findByOne({ id: input.sectionCycle?.ID }));
+            input.sectioncycle_id &&
+              (await this.sectionCycle.findByOne({ id: input.sectioncycle_id }));
       
             if (!section) {
               throw new NotFoundError('section no exist' || '');

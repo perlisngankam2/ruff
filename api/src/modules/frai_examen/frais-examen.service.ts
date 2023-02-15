@@ -39,23 +39,29 @@ export class FraisExamenService {
         const frais = new FraisExamen()
 
         const anneAccademique = input.anneeAccademique
-            ? await this.anneAccademique.findbyOne({id:input.anneeAccademique.ID})
+            ? await this.anneAccademique.findbyOne({id:input.anneAcademique_id})
             : await this.anneAccademique.create(input.anneeAccademique)
 
-        // const niveauEtude = input.niveauEtude
-        //     ? await this.salleService.findByOne({id:input.niveauEtude.ID})
-        //     : await this.salleService.create(input.niveauEtude)
+        const niveauEtude = input.niveauEtude
+            ? await this.salleService.findByOne({id:input.niveau_id})
+             : await this.salleService.create(input.niveauEtude)
 
         const salle = input.salle
-            ? await this.salleService.findByOne({id:input.salle.ID})
+            ? await this.salleService.findByOne({id:input.salle_id})
             : await this.salleService.create(input.salle)
 
 
-
-        frais.montant = input.montant
-        frais.description = input.description || null
-        frais.salle.id = salle.id
-        frais.anneeAccademique.id = anneAccademique.id
+        wrap(frais).assign(
+          {
+          montant: input.montant,
+          description: input.description,
+          salle: salle.id,
+          anneeAccademique: anneAccademique.id
+          },
+          {
+            em:this.em
+          }
+        )
         
         await this.fraisRepository.persistAndFlush(frais)
         return frais
@@ -76,8 +82,8 @@ export class FraisExamenService {
         const frais = await  this.findById(id) 
         if (input.salle) {
             const salle =
-            input.salle?.ID &&
-              (await this.salleService.findByOne({ id: input.salle?.ID }));
+            input.salle_id &&
+              (await this.salleService.findByOne({ id: input.salle_id }));
       
             if (!salle) {
               throw new NotFoundError('salle no exist' || '');

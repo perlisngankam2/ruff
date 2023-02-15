@@ -25,7 +25,7 @@ export class AvanceInscriptionResolver {
   }
 
   @Mutation(() => AvanceInscription)
-  updateavanceinscription(@Args('inscription') Input: AvanceInscriptionUpdateInput, viewer: AvanceInscription,) {
+  updateavanceinscription(@Args('inscription') Input: AvanceInscriptionUpdateInput, viewer: string) {
     return this.avanceinscriptionService.update(viewer,Input);
   }
 
@@ -34,9 +34,14 @@ export class AvanceInscriptionResolver {
     return this.avanceinscriptionService.getAll()
   }
   
-  @Query(() => AvanceInscription, { name: 'avanceInscription' })
+  @Query(() => AvanceInscription)
   findOneavanceincription(@Args('id', { type: () => String }) id: string) {
     return this.avanceinscriptionService.findByOne(id);
+  }
+
+  @Query(()=>Number)
+  getcumullativesum(@Args('id', { type: () => String }) id: string){
+  return this.avanceinscriptionService.getallcorrespondingadvances(id)
   }
 
 }

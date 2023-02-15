@@ -26,7 +26,7 @@ import {
 } from "@chakra-ui/react";
 import { AddIcon } from "@chakra-ui/icons";
 import { type } from "os";
-import DefaultLayout from "../components/layouts/DefaultLayout";
+import DefaultLayout from "./DefaultLayout";
 
 const index = () => {
   return (

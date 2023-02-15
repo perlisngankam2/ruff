@@ -26,5 +26,4 @@ export class CategoriePersonnelCreateInput {
   // @Field({nullable:true})
   // salaireBase?: SalaireBaseCreateInput;
 
-  
 }

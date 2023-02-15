@@ -4,12 +4,17 @@ import { AnneeAccademiqueCreateInput } from 'src/modules/anne_accademique/dto/an
 import { CategoriePrimeCreateInput } from 'src/modules/categorie_prime/dto/categorie-prime.input';
 import { NiveauEtudeCreateInput } from 'src/modules/niveau_etude/dto/niveau-etude.input';
 import { SalleCreateInput } from 'src/modules/salle/dto/salle.input';
-import { SalleUpdateInput } from 'src/modules/salle/dto/salle.update';
 
 @InputType()
 export class UpdateFraisExamentInput {
-  @Field({nullable:true})
-  ID?:  string;
+  @Field(()=>ID,{nullable:true})
+  niveau_id?: string;
+
+  @Field(()=>ID,{nullable:true})
+  salle_id?: string;
+
+  @Field(()=>ID,{nullable:true})
+  anneAcademique_id?: string;
 
   @Field({nullable:true})
   description?: string;
@@ -17,15 +22,15 @@ export class UpdateFraisExamentInput {
   @Field({defaultValue:0})
   montant?: number;
 
-  @Field({})
+  @Field(()=>Date,{nullable:true})
   dateLine?: Date;
 
-//   @Field()
-//   niveauEtude?:NiveauEtudeCreateInput
+  @Field(()=>NiveauEtudeCreateInput,{nullable:true})
+  niveauEtude?:NiveauEtudeCreateInput
 
-  @Field()
-  salle?:SalleUpdateInput
+  @Field(()=>SalleCreateInput,{nullable:true})
+  salle?:SalleCreateInput
 
-  @Field()
+  @Field(()=>AnneeAccademiqueCreateInput,{nullable:true})
   anneeAccademique?:AnneeAccademiqueCreateInput
 }

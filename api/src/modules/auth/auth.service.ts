@@ -3,9 +3,11 @@
 import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
 import { UserService } from "../user/user.service";
 import * as bcrypt from 'bcrypt';
-import { LoginInput } from "./login.input";
 import { User } from "src/entities/user.entity";
 import { JwtService } from "@nestjs/jwt";
+import { Personnel } from "src/entities/pesonnel.entity";
+import { PersonnelService } from "../personnel/personnel.service";
+
 
 
 
@@ -13,6 +15,7 @@ import { JwtService } from "@nestjs/jwt";
 @Injectable()
 export class AuthService{
     constructor(private readonly userservice: UserService,
+                private readonly personnelservice: PersonnelService,
                 private readonly jwtservice:JwtService){}
   
 async compareHash(rawPassword: string, hashedPassword: string) {
@@ -46,6 +49,37 @@ async login(user:User){
             sub: user.id}),
         user
     }
+}
+
+async validatePersonnel(email:string,passwd:string){
+  const personnel = await this.personnelservice.findByOne(
+    { email: email,
+      },
+    
+  );
+  const{password, ...result}= personnel
+
+  console.log(result);
+  if (!personnel)
+    throw new HttpException('Invalid Credentials', HttpStatus.UNAUTHORIZED);
+  const isPasswordValid = await this.compareHash(
+    passwd,
+    personnel.password,
+  );
+  console.log(isPasswordValid);
+  return isPasswordValid ? result: null;
+
+}
+
+async loginpersonnel(personnel:Personnel){
+  return {
+    access_token: this.jwtservice.sign({
+        username: personnel.email,
+        password: personnel.password, 
+        sub: personnel.id}),
+    personnel
+}
+
 }
 
 

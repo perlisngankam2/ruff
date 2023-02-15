@@ -12,7 +12,7 @@ import { RetenuPersonnelCreateInput } from 'src/modules/retenu_personnel/dto/ret
 
 @InputType()
 export class SectionCreateInput {
-  @Field({nullable:true})
+  @Field(()=>ID,{nullable:true})
   ID?: string;
 
   @Field({nullable:true})
@@ -21,6 +21,6 @@ export class SectionCreateInput {
   @Field({nullable:true})
   description?: string;
 
-  // @Field({defaultValue:0})
-  // effectif?: number;
+  @Field({nullable:true})
+  effectif?: number;
 }

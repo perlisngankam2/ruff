@@ -34,19 +34,25 @@ export class PensionService {
         const pension = new Pension()
 
         const anneAccademique = input.anneeAccademique
-            ? await this.anneAccademique.findbyOne({id:input.anneeAccademique.ID})
+            ? await this.anneAccademique.findbyOne({id:input.anneeAcademique_id})
             : await this.anneAccademique.create(input.anneeAccademique)
 
         const salle = input.salle
-            ? await this.salleService.findByOne(input.salle.ID)
+            ? await this.salleService.findByOne(input.salle_id)
             : await this.salleService.create(input.salle)
 
-
-        pension.montant = input.montant
-        pension.name = input.name
-        pension.description = input.description || null
-        pension.salle.id = salle.id
-        pension.anneeAccademique.id = anneAccademique.id
+        wrap(pension).assign(
+          {
+            montant:input.montant,
+            name: input.name,
+            description: input.description,
+            salle: salle.id,
+            anneeAccademique: anneAccademique.id
+          },
+          {
+            em:this.em
+          }
+        )
         
         await this.pensionRepository.persistAndFlush(pension)
         return pension
@@ -67,8 +73,8 @@ export class PensionService {
         const pension = await this.findById(id)
         if (input.salle) {
             const salle =
-            input.salle?.ID &&
-              (await this.salleService.findByOne({ id: input.salle?.ID }));
+            input.salle_id &&
+              (await this.salleService.findByOne({ id: input.salle_id }));
       
             if (!salle) {
               throw new NotFoundError('salle no exist' || '');
@@ -89,7 +95,7 @@ export class PensionService {
         
         wrap(pension).assign({
             name:input.name || pension.name,
-            montant: input.montant || pension.montant,
+            montant: Number(input.montant) || Number(pension.montant) || 0.0,
             description: input.description || pension.description,
             dateLine: input.dateLine || pension.dateLine
         },

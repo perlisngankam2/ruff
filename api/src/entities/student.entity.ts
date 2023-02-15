@@ -30,7 +30,7 @@ export class Student {
   id!: string;
 
   @Field({ nullable: true })
-  @Property({ unique:false })
+  @Property({ nullable:true })
   matricule!: string;
 
   @Field({ nullable: true })
@@ -41,9 +41,9 @@ export class Student {
   @Property({ nullable: true })
   lastname!: string;
 
-  @Field({ defaultValue: false })
-  @Property({ default: false })
-  dateOfBirth!: string;
+  @Field(()=>Date,{ nullable:true })
+  @Property({ nullable:true})
+  date_of_birth=new Date();
 
   @Field({ nullable: true })
   @Property({ nullable: true })
@@ -51,91 +51,31 @@ export class Student {
 
   @Field({ nullable: true })
   @Property({ nullable: true })
-  classe!: string;
+  class!: string;
 
   @Field({ nullable: true })
   @Property({ nullable: true })
   adress!: string;
 
-  @Field({ nullable: true })
-  @Property({ nullable: true })
-  transport!: string;
-
-  // @Field({ defaultValue: false })
-  // @Property({ default:false })
-  // old!: boolean;
-
-  @Field({ nullable: true })
-  @Property({ nullable: true })
-  categoryStudent!: string;
-
-  @Field({ nullable: true })
-  @Property({nullable:true})
-  section!: string;
-
-  @Field({ nullable: true })
-  @Property({nullable:true})
-  cycle!: string;
-  
-  @Field({ nullable: true })
-  @Property({ nullable: true })
-  fatherFirstName!: string;
-
-  @Field({ nullable: true })
-  @Property({ nullable: true })
-  fatherLastName!: string;
-
-  @Field({ nullable: true })
-  @Property({ nullable: true })
-  fatherPhoneNumber!: string;
-
-  @Field({ nullable: true })
-  @Property({ nullable: true })
-  fatherProfession!: string;
-
-  @Field({ nullable: true })
-  @Property({ nullable: true })
-  motherFirstName!: string;
+  @Field({ defaultValue: false })
+  @Property({ default: false })
+  transport!: boolean;
 
   @Field({ defaultValue: false })
   @Property({ default:false })
-  motherLastName!: string;
+  old!: boolean;
+
+  @Field({ defaultValue: false })
+  @Property({ default:false })
+  exclut!: boolean;
+
+  @Field({ defaultValue: false })
+  @Property({ default:false })
+  inscriptionComplete!: boolean;
 
   @Field({ nullable: true })
   @Property({ nullable: true })
-  motherPhoneNumber!: string;
-
-  @Field({ nullable: true })
-  @Property({ nullable: true })
-  motherProfession!: string;
-
-  @Field({ nullable: true })
-  @Property({ nullable: true })
-  tutorFirstName!: string;
-
-  @Field({ nullable: true })
-  @Property({ nullable: true })
-  tutorLastName!: string;
-
-  @Field({ nullable: true })
-  @Property({ nullable: true })
-  tutorPhoneNumber!: string;
-  
-  @Field({ nullable: true })
-  @Property({ nullable: true })
-  tutorProfession!: string;
-
-  // @Field({ defaultValue: false })
-  // @Property({ default:false })
-  // exclut!: boolean;
-
-  // @Field({ defaultValue: false })
-  // @Property({ default:false })
-  // inscriptionComplete!: boolean;
-
-  // @Field({ nullable: true })
-  // @Property({ nullable: true })
-  // lastSchool!: string;
+  lastSchool!: string;
   
   @Property({ onCreate: () => new Date() })
   createdAt = new Date();
@@ -150,7 +90,7 @@ export class Student {
     unique: true,
     onDelete: 'CASCADE',
   })
-  user!: IdentifiedReference<User>;
+  user!: IdentifiedReference<User>|null;
 
   @ManyToOne(() => Salle ,{
     nullable:true,
@@ -170,11 +110,11 @@ export class Student {
   })
   localisation!:IdentifiedReference<Localisation>|null
 
-  //  @ManyToOne(() => Inscription, {
-  //    nullable: true,
-  //    onDelete: 'CASCADE',
-  //  })
-  //  inscription!: IdentifiedReference<Inscription> | null;
+  // @ManyToOne(() => Inscription, {
+  //   nullable: true,
+  //   onDelete: 'CASCADE',
+  // })
+  // inscription!: IdentifiedReference<Inscription> | null;
 
   @OneToOne(() => Inscription, (inscription) => inscription.student, {
     owner: false,

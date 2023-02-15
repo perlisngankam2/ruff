@@ -20,8 +20,8 @@ export class SectionCycleResolver {
   constructor(private readonly sectionCycleService: SectionCycleService) {}
 
   @Mutation(() => SectionCycle)
-  createSectionCycle(@Args('sectionCycle') input: SectionCycleCreateInput) {
-    return this.sectionCycleService.create(input);
+  createSectionCycle(@Args('sectionCycle') sectionCycle: SectionCycleCreateInput) {
+    return this.sectionCycleService.create(sectionCycle);
   }
 
   @Query(() => [SectionCycle])

@@ -1,6 +1,7 @@
 /* eslint-disable prettier/prettier */
 import {
   Collection,
+    DateType,
     Entity,
     Enum,
     Filter,
@@ -13,6 +14,7 @@ import {
     Unique,
   } from '@mikro-orm/core';
   import { Field, ID, ObjectType } from '@nestjs/graphql';
+import { Role } from 'src/modules/auth/roles/roles';
 import { PrimaryKeyUuid } from '../decorators/PrimaryKeyUuid.decorator';
 import { CategoriePersonnel } from './categorie-personnel.entity';
 import { PrimePersonnel } from './prime-personnel.entity';
@@ -27,26 +29,18 @@ export class Personnel {
   @Field(() => ID)
   @PrimaryKeyUuid()
   id!: string;
-
-  @Field({ nullable: true })
-  @Property({ nullable: true })
-  firstName!: string;
-
-  @Field({ nullable: true })
-  @Property({ nullable: true })
-  lastName!: string;
   
   @Field({ nullable: true })
   @Property({ nullable: true })
-  phoneNumber!: string;
-  
-  @Field({ nullable: true })
-  @Property({ nullable: true })
-  personnelCategory!: string;
+  name!: string;
 
   @Field({ nullable: true })
   @Property({ nullable: true })
-  situationMatrimonial!: string;
+  surname!: string;
+
+  @Field({ nullable: true })
+  @Property({ nullable: true })
+  Matrimonialstatus!: string;
 
   @Field({ nullable: true })
   @Property({ nullable: true })
@@ -54,34 +48,44 @@ export class Personnel {
 
   @Field({ nullable: true })
   @Property({ nullable: true })
-  fonction!: string;
+  fonction!: Role
 
   @Field({ nullable: true })
   @Property({ nullable: true })
   status!: string;
 
-  // @Field(() => Date, { nullable: true })
-  // @Property({ nullable: true })
-  // dateOfStartWork!:Date
-  @Field({ defaultValue: false })
-  @Property({ default: false })
-  dateOfStartWork!: string;
-
-  // @Field(() => Date, { nullable: true }) 
-  // @Property({ nullable: true })
-  // dateOfBirth!: Date
-
-  @Field({ defaultValue: false })
-  @Property({ default: false })
-  dateOfBirth!: string;
-
-  // @Field({ nullable: true })
-  // @Property({ nullable: true })
-  // matricule!: string;
-
-  @Field({ nullable: true})
+  
+  @Field(() => Date, { nullable: true })
   @Property({ nullable: true })
-  childNumber!: string;
+  dateOfStartWork= new Date()
+
+  @Field(() => Date,{ nullable: true })
+  @Property({ nullable: true })
+  dateOfBirth= new Date()
+
+  @Field({ nullable: true })
+  @Property({ nullable: true })
+  Email_address!: string;
+
+  @Field({ nullable: true })
+  @Property({ nullable: true })
+  telephone_number!: string;
+
+  @Field({ defaultValue: 0 })
+  @Property({ default: 0 })
+  childNumber!: number;
+
+  @Field({ nullable: true })
+  @Property({ nullable: true })
+  salary!: number;
+
+  @Field({nullable: true})
+  @Property({nullable: true})
+  password!: string
+
+  @Field({nullable:true})
+  @Property({nullable:true})
+  email!: string
 
   //Relation with another table 
   @OneToOne(() => User, (user) => user.personnel, {

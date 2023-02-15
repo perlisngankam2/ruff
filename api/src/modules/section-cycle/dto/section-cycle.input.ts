@@ -5,21 +5,24 @@ import { SectionCreateInput } from 'src/modules/section/dto/section.input';
 
 @InputType()
 export class SectionCycleCreateInput {
-  @Field({nullable:true})
-  ID?: string
+  @Field(()=>ID,{nullable:true})
+  cycle_id:string
 
-  // @Field({nullable:true})
-  // nom?: string;
-
-  // @Field({nullable:true})
-  // description?: string;
-
+  @Field(()=>ID,{nullable:true})
+  section_id:string
 
   @Field({nullable:true})
-  cycle?: string;
+  nom?: string;
+
+  @Field({nullable:true})
+  description?: string;
+
+
+  @Field(()=>CycleCreateInput,{nullable:true})
+  cycle?: CycleCreateInput;
 
   
-  @Field({nullable:true})
-  section?: string;
+  @Field(()=>SectionCreateInput,{nullable:true})
+  section?: SectionCreateInput;
 
 }

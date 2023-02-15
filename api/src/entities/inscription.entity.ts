@@ -1,6 +1,7 @@
 /* eslint-disable prettier/prettier */
 import {
     Collection,
+    DateType,
     Entity,
     Enum,
     IdentifiedReference,
@@ -46,9 +47,14 @@ export class Inscription{
     @Property({default:0})
     reste!: number;
 
+    @Field({ nullable: true })
+    @Property({nullable: true })
+    dateLine!: string | null;
+
     @Property({ onCreate: () => new Date() })
     createdAt = new Date();
     
+  
     // relation entity
     @OneToOne(() => Student, (student) => student.inscription, {
       owner: true,

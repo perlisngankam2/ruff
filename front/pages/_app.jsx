@@ -5,7 +5,8 @@ import { ApolloClient, ApolloProvider, InMemoryCache } from "@apollo/client";
 import client from '../graphql/apollo-client'
 import "../styles/globals.css";
 import "@fontsource/open-sans";
-import { useApollo } from "../graphql/apollo";
+import { AuthProvider } from "../contexts/account/Auth/Auth"
+
 
 
 function MyApp({ Component, pageProps}) {
@@ -28,11 +29,15 @@ function MyApp({ Component, pageProps}) {
   // const ApolloClient = useApollo(pageProps.initialApolloState);
 
   return (
+    
     <ApolloProvider client={client}>
-      <ChakraProvider theme={theme}>
-        <Component {...pageProps} />
-      </ChakraProvider>
+        <AuthProvider>
+          <ChakraProvider theme={theme}>
+            <Component {...pageProps} />
+          </ChakraProvider>
+        </AuthProvider>
     </ApolloProvider>
+    
   );
 }
 

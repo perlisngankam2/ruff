@@ -42,22 +42,34 @@ export class TrancheStudentService {
         const trancheStudent = new TrancheStudent()
 
         const tranche = input.tranche
-            ? await this.trancheService.findByOne({id:input.tranche.ID})
+            ? await this.trancheService.findByOne({id:input.tranche_id})
             : await this.trancheService.create(input.tranche)
         
         const student = input.student
-            ? await this.studentService.findByOne({id:input.student.ID})
+            ? await this.studentService.findByOne({id:input.student_id})
             : await this.studentService.create(input.student)
 
 
-        trancheStudent.montant = input.montant
-        trancheStudent.name = input.name
-        trancheStudent.description = input.description
-        trancheStudent.regimePaimemnt = input.regimePaimemnt
-        trancheStudent.tranche.id = tranche.id
-        trancheStudent.student.id = student.id
+        wrap(trancheStudent).assign(
+            {
+             montant: input.montant,
+             name: input.name,
+             description: input.description,
+             regimePaimemnt: input.regimePaiement,
+             tranche: input.tranche_id,
+             student: input.student_id
+            },
+            {
+                em:this.em
+            }
+        )
 
-        const reduction = student.categorie.getEntity().reductionScolarite
+        const Tranchestudent = await this.findByOne({
+            tranche: trancheStudent.id,
+            student: trancheStudent.student
+        })
+
+        const reduction = (await student.categorie.load()).reductionScolarite
         const amount = (await reduction.load())
 
         if(amount.pourcentage){
@@ -68,14 +80,14 @@ export class TrancheStudentService {
             }else{
                 if(trancheStudent.montant !== new_tranche_amount && trancheStudent.regimePaimemnt === "SPECIAL" ){
                     // GENERATE AVANCE TRANCHE 
-                    const avance = await this.avance.saveAvanceTranche(trancheStudent,new_tranche_amount)
+                    const avance = await this.avance.saveAvanceTranche(Tranchestudent.id,new_tranche_amount)
                     if(avance.reste == 0){
                         trancheStudent.complete = true
                     }
                     await this.trancheStudentRepository.persistAndFlush(trancheStudent)
                 }
                 // create the avance tranche
-                await this.avance.saveAvanceTranche(trancheStudent,new_tranche_amount)
+                await this.avance.saveAvanceTranche(Tranchestudent.id,new_tranche_amount)
                 await this.trancheStudentRepository.persistAndFlush(trancheStudent)
                 //create the alert with twiolio   
             }
@@ -88,11 +100,11 @@ export class TrancheStudentService {
             }else{
                 if(trancheStudent.montant !== new_tranche_amount && trancheStudent.regimePaimemnt === "SPECIAL" ){
                     // GENERATE AVANCE TRANCHE 
-                    await this.avance.saveAvanceTranche(trancheStudent,new_tranche_amount)
+                    await this.avance.saveAvanceTranche(Tranchestudent.id,new_tranche_amount)
                     await this.trancheStudentRepository.persistAndFlush(trancheStudent)
                 }
                 // create the avance tranche
-                await this.avance.saveAvanceTranche(trancheStudent,new_tranche_amount)
+                await this.avance.saveAvanceTranche(Tranchestudent.id,new_tranche_amount)
                 await this.trancheStudentRepository.persistAndFlush(trancheStudent)
 
                 //create the alert
@@ -116,20 +128,20 @@ export class TrancheStudentService {
         const avanceTranche = tranche.avancheTranche.matching({})
         const reste = avanceTranche[-1].reste
         if(tranche.complete == false){
-            const dateLine = tranche.tranche.getEntity().dateLine
+            const dateLine = (await tranche.tranche.load()).dateLine
             const alertDate = dateLine.setDate(dateLine.getDate()-2)
 
             const toDay = new Date().getTime()
 
-            const student = tranche.student.getEntity()
-            const parent = student.user.getEntity()
+            const student = tranche.student.load()
+            const parent = (await student).user.load()
 
             if(toDay === alertDate ){
                 // create alert to parent 
                 this.twilioService.client.messages.create({
-                    body: "vous êtes prier de passer solder"+ tranche.name +"de votre enfant nome" + parent.firstName + "donc le reste est de"+reste,
+                    body: "vous êtes prier de passer solder"+ tranche.name +"de votre enfant nome" + (await parent).name + "donc le reste est de"+reste,
                     from: "+237647476798" ,
-                    to: parent.phoneNumber,
+                    to: (await parent).phoneNumber,
                   });
             }
 
@@ -139,24 +151,24 @@ export class TrancheStudentService {
     async saveTranche(id:string, avance:AvanceTranche){
         const tranche = await this.trancheStudentRepository.findOneOrFail(id)
         tranche.montant += avance.montant
-        const student = tranche.student.getEntity()
-        const categorie = student.categorie.getEntity()
-        const retenu = categorie.reductionScolarite.getEntity()
-        if(retenu.pourcentage != 0){
-            const new_amount_tranche =tranche.tranche.getEntity().montant - retenu.pourcentage*tranche.tranche.getEntity().montant
+        const student = tranche.student.load()
+        const categorie = (await student).categorie.load()
+        const retenu = (await categorie).reductionScolarite.load()
+        if((await retenu).pourcentage != 0){
+            const new_amount_tranche =(await tranche.tranche.load()).montant - (await retenu).pourcentage*(await tranche.tranche.load()).montant
             if(tranche.montant == new_amount_tranche){
                 tranche.complete = true
             }
           }
 
-        if(retenu.montant != 0 ){
-            const new_amount_tranche =tranche.tranche.getEntity().montant - retenu.montant 
+        if((await retenu).montant != 0 ){
+            const new_amount_tranche =(await tranche.tranche.load()).montant - (await retenu).montant 
             if(tranche.montant == new_amount_tranche){
                 tranche.complete = true
             } 
         }
         
-        if(tranche.montant == tranche.tranche.getEntity().montant){
+        if(tranche.montant == (await tranche.tranche.load()).montant){
             tranche.complete = true
         }
         await this.trancheStudentRepository.persistAndFlush(tranche)
@@ -166,8 +178,8 @@ export class TrancheStudentService {
         const trancheStudent = await this.findById(id)
         if (input.tranche) {
             const tranche =
-            input.tranche?.ID &&
-              (await this.trancheService.findByOne({ id: input.tranche?.ID }));
+            input.tranche_id &&
+              (await this.trancheService.findByOne({ id: input.tranche_id}));
       
             if (!tranche) {
               throw new NotFoundError('tranche no exist' || '');
@@ -177,8 +189,8 @@ export class TrancheStudentService {
 
         if (input.student) {
             const student =
-            input.student?.ID &&
-              (await this.studentService.findByOne({ id: input.student?.ID }));
+            input.student_id &&
+              (await this.studentService.findByOne({ id: input.student_id }));
       
             if (!student) {
               throw new NotFoundError('student no exist' || '');
@@ -220,5 +232,3 @@ export class TrancheStudentService {
     }
 
 }
-
-    

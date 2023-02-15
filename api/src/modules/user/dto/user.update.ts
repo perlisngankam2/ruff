@@ -1,6 +1,5 @@
 /* eslint-disable prettier/prettier */
 import { Field, InputType } from '@nestjs/graphql';
-import { Role } from 'src/modules/auth/roles/roles';
 
 
 @InputType()
@@ -21,9 +20,9 @@ export class UpdateUserInput {
   @Field({nullable:true})
   lastName!: string;
 
+  // @Field({nullable:true})
+  // name!: string;
+
   @Field(() => String, { nullable: true })
   phoneNumber?: string;
-
- @Field(() => Role,{nullable: true})
-  role!: Role
 }

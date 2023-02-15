@@ -34,7 +34,7 @@ export class AvanceTrancheService {
         const avanceTranche = new AvanceTranche()
 
         const tranche = input.tranche
-            ? await this.trancheStudent.findByOne({id:input.tranche.ID})
+            ? await this.trancheStudent.findByOne({id:input.tranche_id})
             : await this.trancheStudent.create(input.tranche)
 
         // check s'il y'a pas autre avance 
@@ -42,42 +42,49 @@ export class AvanceTrancheService {
         if(avance.length != 0){
           const reste = avance.matching({orderBy:{'createdAt':{}}})[0].reste
           if(reste != 0){
-            const newTranche = this.trancheStudent.saveTranche(tranche.id,avanceTranche)
+                 this.trancheStudent.saveTranche(tranche.id,avanceTranche)
           }
         }
         // check categorie student
-        const student = tranche.student.getEntity()
-        const reduction = student.categorie.getEntity().reductionScolarite.getEntity()
+        const student = tranche.student.load()
+        const reduction = (await (await student).categorie.load()).reductionScolarite.load()
         
-        if(reduction.pourcentage != 0){
-          const newValue = tranche.tranche.getEntity().montant - tranche.tranche.getEntity().montant*reduction.pourcentage
+        if((await reduction).pourcentage != 0){
+          const newValue = (await tranche.tranche.load()).montant - (await tranche.tranche.load()).montant*(await reduction).pourcentage
           avanceTranche.reste = newValue - tranche.montant
           if(avanceTranche.reste == 0){
               avanceTranche.complete = true
           }
         }
 
-        if(reduction.montant != 0){
-          const newValue = tranche.tranche.getEntity().montant - reduction.montant
+        if((await reduction).montant != 0){
+          const newValue = (await tranche.tranche.load()).montant - (await reduction).montant
           avanceTranche.reste = newValue - tranche.montant
           if(avanceTranche.reste == 0){
             avanceTranche.complete = true
           }
         }
 
-        avanceTranche.montant = input.montant
-        avanceTranche.name = input.name
-        avanceTranche.description = input.description
-        avanceTranche.trancheStudent.id = tranche.id
+        wrap(avanceTranche).assign({
+          montant: input.montant,
+          name: input.name,
+          description: input.description,
+          trancheStudent: tranche.id
+        },
+        {
+          em:this.em
+        })
         
         this.avanceTrancheRepository.persistAndFlush(avanceTranche)
         return avanceTranche
       }
 
-    async saveAvanceTranche(tranche:TrancheStudent,new_tranche_amount:number){
+    async saveAvanceTranche(id:string,new_tranche_amount:number){
+      const tranche = await this.trancheStudent.findById(id)
+
+
         const avance = new AvanceTranche()
 
-        this.avanceTrancheRepository.persistAndFlush(avance)
 
         wrap(avance).assign({
           name: tranche.name,

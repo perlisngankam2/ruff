@@ -34,7 +34,7 @@ import {
 } from "@chakra-ui/react";
 
 import DefaultLayout from "../../components/layouts/DefaultLayout";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { IoIosAdd } from "react-icons/io";
 import { Router, useRouter } from "next/router";
 import {FiEdit} from 'react-icons/fi';
@@ -46,8 +46,13 @@ import {UpdateCycle} from './updatecycle';
 import { useMutation, useQuery } from "@apollo/client"; 
 import SectionCreate from "./SectionCreate";
 import CycleCreate from "./CycleCreate";
+import Routes from "../../modules/routes";
+import { GlobalContext } from "../../contexts/cyclesection/AppContext";
+// const cycleFragment  = {
+//   fragment
+// }
 
-// const fragment = cycleFragment
+
 
 const cyclesection = () => {
 
@@ -57,7 +62,6 @@ const cyclesection = () => {
     const [name, setName] = useState("");
     const [section, setSection] = useState("");
     // const search = (data) => {
-       typeof id
     //   let datas = data.filter((item) => keys.some((key) => (
     //     item[key].toUpperCase().includes(query) 
     //     )
@@ -68,68 +72,23 @@ const cyclesection = () => {
    
     const {data} = useQuery(GET_ALL_SECTION);
     const{data:dataCycle} = useQuery(GET_ALL_CYCLE);
+    const [id, setId] = useState(null)
     const [deleteSection ]= useMutation(DELETE_SECTION);
     const [deleteCycle] = useMutation(DELETE_CYCLE);
     const{ data:dataDetailsCycle} = useQuery(GET_ONE_CYCLE);
     const [editCycle] = useMutation(UPDATE_CYCLE);
     const [createCycle, {error}] = useMutation(CREATE_CYCLE);
-
-    const { isOpen:isOpens, onOpen:onOpenns, onClose} = useDisclosure();
+    const { isOpen, onOpen, onClose} = useDisclosure();
+    const [isformOpen, setIsFormOpen] = useState(false)
     const cancelRef = React.useRef();
     const router = useRouter();
+    const cycleContext = useContext(GlobalContext);
 
-
-  //   const  addCycle = async (event, value) => {
-  //     event.preventDefault();
-  //     console.log('cccc');
- 
-  //     console.log(name);
-  //     console.log(section);
- 
-  //     const cycleData = await createCycle({
-  //         variables: {
-  //             cycle: {
-  //                 name: name,
-  //                 section: section
-  //             }
-  //         }
-  //     })
-  //     console.log(cycleData)
-  //     toast({
-  //         title: "Creation d'un cyle.",
-  //         description: "Le cylce a éte crée avec succes.",
-  //         status: "success",
-  //         duration: 3000,
-  //         isClosable: true,
-  //       });
-  //       router.push("/class/cyclesection")
-  // }
-
-//   const updateCycle = async(values) => {
-//     console.log("bb")
-//       // const inputCycle = {
-//       //   cycleId: fragment.id,
-//       //   input : {
-//       //     name: fragment.name,
-//       //     section: fragment.section
-//       //   }
-//       // }
-    
-//     await editCycle({
-//       variables:{
-//         cycleId: fragment.id,
-//         input : {
-//           name: values.name,
-//           section: values.section
-//         }
-//       }
-//     });
-// };
 
   //  const defaultValues = useMemo(() =>{
-  //     name = fragment.name || "",
-  //     section = fragment.section || ""
-  // }, [fragment])
+  //     name =  "",
+  //     section = ""
+  // })
 
 
      useEffect (() => {
@@ -160,6 +119,24 @@ const cyclesection = () => {
       })
     } 
 
+  
+
+  const updateCycle = async(value) => {
+        await editCycle({
+          variables:{
+            cycleId: cycle.id,
+            input : {
+              name: value.name,
+              section: value.section
+            }
+          }
+        });
+  };
+
+    const handleShowUpdateCycle = (cycle) => {
+      // setId(cycle.id)
+     
+    }
 
   return (
     <DefaultLayout>
@@ -230,7 +207,7 @@ const cyclesection = () => {
                               <Td  borderColor={'#C6B062'}>
                               <Box display="flex">
                                 <Link 
-                                  href="/eleves/modifiereleve">
+                                  href="#">
                                     <Icon
                                     as={FiEdit}
                                     boxSize="40px"
@@ -302,7 +279,7 @@ const cyclesection = () => {
                                   p="3"
                                   // bg="blue.100"
                                   rounded="full"
-                                  onClick={onOpenns}
+                                  onClick={onOpen}
                                   _hover={{background:"red.100"}}
                                 />
                                 <Icon
@@ -314,11 +291,11 @@ const cyclesection = () => {
                                   onClick={() => removeCycle(cycle.id)}
                                   _hover={{background:"blue.100"}}
                                   />
-                                  <Box as={"form"} 
-                                  // onSubmit={updateCycle}
-                                  > 
-                                    <AlertDialog
-                                      isOpen={isOpens}
+                                 {/* <Box as={"form"}  
+                                    // onSubmit={updateCycle}
+                                  >  
+                                   <AlertDialog
+                                      isOpen={isOpen}
                                       leastDestructiveRef={cancelRef}
                                       onClose={onClose}
                                       size='xl'
@@ -341,15 +318,15 @@ const cyclesection = () => {
                                                 </Box>
                                               </AlertDialogHeader>
                                               <AlertDialogBody>
-                                              <Box>
-                                                <FormControl>
+                                              <Box> */}
+                                                {/* <FormControl>
                                                     <FormLabel>Nom</FormLabel>
                                                   <Input 
                                                       id="name"
                                                       type={'text'} 
                                                       name="name"
                                                       placeholder="nom"
-                                                      onChange = {(event) => setName(event.target.value)}
+                                                      onChange = {() => setName("")}
                                                       value={cycle.name}
                                                   />
                                                 </FormControl>
@@ -359,7 +336,7 @@ const cyclesection = () => {
                                                         id="section"
                                                         name="section"
                                                         placeholder="Section"
-                                                        onChange = {(event) => setSection(event.target.value)}
+                                                        onChange = {() => setSection("")}
                                                         value={cycle.section}
                                                     >
                                                         {data &&(
@@ -372,8 +349,8 @@ const cyclesection = () => {
                                                     </Select>
                                                 </FormControl>
                                               </Box>
-                                              </AlertDialogBody>
-                                              <AlertDialogFooter>
+                                              </AlertDialogBody> */}
+                                              {/* <AlertDialogFooter>
                                                 <Button 
                                                     ref={cancelRef} 
                                                     onClick={onClose} 
@@ -381,20 +358,20 @@ const cyclesection = () => {
                                                 >
                                                     annuler 
                                                 </Button>
-                                                  {/* <Link href={'/personnel/ajoutercategorypersonnel'}> */}
-                                                  <Button 
+                                                  <Link href={'/personnel/ajoutercategorypersonnel'}> 
+                                                   <Button 
                                                     colorScheme='green'  
                                                     ml={3}
-                                                    // onClick={addCycle}
+                                                    onClick={updateCycle}
                                                   >
                                                     Enregistrer
                                                   </Button>
-                                                  {/* </Link>  */}
-                                              </AlertDialogFooter>
+                                                 </Link>  
+                                               </AlertDialogFooter>
                                           </AlertDialogContent>
                                       </AlertDialogOverlay>
-                                  </AlertDialog>
-                                </Box>
+                                  </AlertDialog>  
+                                 </Box>   */}
                               </Box>
                               </Td>
                           </Tr>

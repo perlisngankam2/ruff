@@ -20,41 +20,89 @@ import {
   useToast
 } from '@chakra-ui/react';
 
-import React, {useEffect, useState, useMemo} from "react";
+import React, {useEffect, useState, useMemo, useContext} from "react";
 import { IoIosAdd } from "react-icons/io";
 import {useMutation, useQuery } from '@apollo/client';
 import { CREATE_CYCLE, UPDATE_CYCLE } from "../../graphql/Mutation";
-import { GET_ALL_SECTION } from "../../graphql/Queries";
+import { GET_ALL_SECTION, GET_ONE_CYCLE } from "../../graphql/Queries";
 import { useRouter } from "next/router";
+import { GlobalContext } from "../../contexts/cyclesection/AppContext";
 
-const CycleSchema = {
-    name: "",
-    section: ""
-}
 
-const formData = CycleSchema
+// const CycleSchema = {
+//     name: "pearl",
+//     section: "cm2"
+// }
+
+// const FormData =  CycleSchema
+
+
+// export const CycleProps = {
+//     defaultValues: FormData,
+//     onSubmit: (value = FormData) => {}
+// };
 
 // export const CycleProps = {
 //     defaultValues:formData,
-//      onSubmit:(value = formData) 
+//      onSubmit:(value = formData) => {}
 // }
 
-const  CycleCreate =  ({
-    defaultValues,
-    onSubmit
-} = CycleProps) => {
-   
+const  CycleCreate =  (
+    // { defaultValues,
+    //     onSubmit
+    // } =  CycleProps
+    ) => {
+
+
 
     const [name, setName] = useState("");
     const[section, setSection] = useState("");
     const { isOpen, onOpen, onClose } = useDisclosure();
     const cancelRef = React.useRef();
     const [createCycle, {error}] = useMutation(CREATE_CYCLE);
-    const [editCycle] = useMutation(UPDATE_CYCLE);
+    // const [editCycle] = useMutation(UPDATE_CYCLE);
+    // const [id, setId] = useState(null)
+    const {cyleById} = useQuery(GET_ONE_CYCLE);
     const {data} = useQuery(GET_ALL_SECTION);
     const router = useRouter();
     const toast = useToast();
+    const [isformOpen, setIsFormOpen] = useState(false)
 
+    const cycleContext = useContext(GlobalContext);
+
+
+    // const {
+    //     handleSubmit,
+    //     setValue
+    //   } = FormData({
+    //     resolver : CycleSchema,
+    //     defaultValues: {
+    //       ...defaultValues
+    //     }
+    //   });
+
+    //   const onSubmitCycleForm = handleSubmit(async (values) => {
+    //     try {
+    //        onSubmit?.(values);
+    //       setValue('name', '');
+    //       setValue('section', '');
+    
+    //       toast({
+    //         description: "submit first form",
+    //         status: 'success',
+    //         isClosable: true
+    //       });
+    //     } catch (error) {
+    //       const message = formatError(error);
+    
+    //       toast({
+    //         position: 'top-right',
+    //         description: t([`errors:api.${message}`, 'errors:api.default']),
+    //         status: 'error',
+    //         isClosable: true
+    //       });
+    //     }
+    //   });
     // const updateCache = (cache, { dataCycle: { editCycle } }) => {
     //         cache.modify({
     //           fields: {   
@@ -105,47 +153,35 @@ const  CycleCreate =  ({
     //     }
     // })
 
-    let input
-    // const  addCycle = async (event) => {
-    //     event.preventDefault();
-    //     console.log('cccc');
-
-    //     console.log(name);
-    //     console.log(section);
+    // let input
    
-    //     const cycleData = await createCycle({
-    //         variables: {
-    //             cycle: {
-    //                 name: name,
-    //                 section: section
-    //             }
-    //         }
-    //     })
-    //     console.log(cycleData)
-    //     toast({
-    //         title: "Creation d'un cyle.",
-    //         description: "Le cylce a éte crée avec succes.",
-    //         status: "success",
-    //         duration: 3000,
-    //         isClosable: true,
-    //       });
-    //       router.push("/class/cyclesection")
-    // }
-
-    // const updateCycle = async(values) => {
-    //     console.log("bb")
-         
-    //     await editCycle({
-    //       variables:{
-    //         Id: fragment.id,
-    //         input:{ 
-    //         name: values.name,
-    //         section: values.section 
-    //         }
-    //       }
-    //     })
-    // }
-
+  
+    const  addCycle = async (event) => {
+        event.preventDefault();
+        console.log('cccc');
+  
+        console.log(cycleContext.name);
+        console.log(cycleContext.section);
+   
+        const cycleData = await createCycle({
+            variables: {
+                cycle: {
+                    name: cycleContext.name,
+                    section: cycleContext.section
+                }
+            }
+        })
+        console.log(cycleData)
+        toast({
+            title: "Creation d'un cyle.",
+            description: "Le cylce a éte crée avec succes.",
+            status: "success",
+            duration: 3000,
+            isClosable: true,
+          });
+          router.push("/class/cyclesection")
+    }
+   
 
     useEffect(() => {
         console.log(data?.findAllsection)
@@ -154,20 +190,20 @@ const  CycleCreate =  ({
    
   return (
     <Center>
-        <Box> 
-            <Box> 
+             <Box> 
                 <Button
                     rightIcon={<Icon as={IoIosAdd} boxSize="20px" />}
-                    onClick={onOpen} 
+                    onClick={onOpen}
                     ml={["245px", "490px","909px"]}
                     width ={"200px"}
                     // onClick = {() => router.push(personnel/AjouterCategoryPersonnel)} 
                 >
                         Ajouter un Cycle                              
                 </Button>
-          </Box>
+            </Box> 
+          {/* {isformOpen?   } */}
+        <Box> 
             <Box as={"form"} 
-            // onSubmit={_cycleOnSubmit}
             > 
                 <AlertDialog
                     isOpen={isOpen}
@@ -203,7 +239,7 @@ const  CycleCreate =  ({
                                         placeholder="nom"
                                         onChange = {(event) => setName(event.target.value)}
                                         value={name}
-                                     />
+                                    />
                                 </FormControl>
                                 <FormControl mt="15px">
                                     <FormLabel>Section</FormLabel>
@@ -212,7 +248,7 @@ const  CycleCreate =  ({
                                         name="section"
                                         placeholder="Section"
                                         onChange = {(event) => setSection(event.target.value)}
-                                        value={section}
+                                        value={section }
                                     >
                                         {data &&(
                                             data.findAllsection.map((section, index) => ( 
@@ -237,10 +273,10 @@ const  CycleCreate =  ({
                                         <Button 
                                         colorScheme='green'  
                                         ml={3}
-                                        // onClick={addCycle}
+                                        onClick={addCycle}
                                     >
                                     Creer
-                                    </Button>
+                                </Button>
                                 {/* </Link>  */}
                             </AlertDialogFooter>
                         </AlertDialogContent>

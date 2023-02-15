@@ -1,6 +1,8 @@
 const RouteName = {
     Eleve : 'eleves',
-    EleveDetails : ' EleveDetails'
+    EleveDetails : ' EleveDetails',
+    Cycle: 'cycles',
+    CycleDetails: 'cycleDetails'
 }
   
   // export const Platform = {
@@ -50,6 +52,14 @@ const RouteName = {
       // type: AuthRoute.Public,
       // platforms: [Platform.Main]
     },
+    Cycle: {
+      path: '/cycle',
+      // platforms: [Platform.Main]
+    },
+    CycleDetails: {
+      path: '/cycleDetails/[id]',
+      // platforms: [Platform.Main]
+    }
 
   };
   

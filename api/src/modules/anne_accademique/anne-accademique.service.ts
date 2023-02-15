@@ -33,8 +33,8 @@ export class AnneeAccademiqueService {
     wrap(annee).assign(
       {
         name: input.name,
-        anneeAccademique:new Date(input.anneeAccademique),
-        description: input.description
+        // anneeAccademique: new Date(input.anneeAccademique),
+        // description: input.description
       },
       {
         em: this.em,
@@ -54,8 +54,8 @@ export class AnneeAccademiqueService {
     const annee = await this.findById(id)
     wrap(annee).assign({
       name: input.name || annee.name,
-      description: input.description || annee.description,
-      anneeAccademique: input.anneeAccademique || annee.anneeAccademique
+      // description: input.description || annee.description,
+      // anneeAccademique: input.anneeAccademique || annee.anneeAccademique
     },
     {
       em: this.em,

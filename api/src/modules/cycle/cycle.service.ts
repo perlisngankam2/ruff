@@ -11,6 +11,7 @@ import { Field, ID, ObjectType } from '@nestjs/graphql';
 import { Cycle } from 'src/entities/cycle.entity';
 import { SalaireBase } from 'src/entities/salaire-base.entity';
 import { Section } from 'src/entities/section.entity';
+import { SectionService } from '../section/section.service';
 import { CycleCreateInput } from './dto/cycle.input';
 import { CycleUpdateInput } from './dto/cycle.update';
 
@@ -20,31 +21,32 @@ export class CycleService {
     constructor(
         @InjectRepository(Cycle)
         private cycleRepository: EntityRepository<Cycle>,
+        private sectionService: SectionService,
         private  em: EntityManager,
       ) {}
     
       async create(
         input: CycleCreateInput,
-      ): Promise<Cycle> {        
-        const cycle = new Cycle()
+      ): Promise<Cycle> {  
         
-        wrap(cycle).assign(
-          {
-          name: input.name,
-          description: input.description
-          },
-          {
-            em:this.em
-          }
-        )
+        const secid = this.sectionService.findById(input.section)
+        if(!secid){
+          throw Error("section not found")
+        }
+        
+        const cycle = new Cycle()
+        cycle.name = input.name
+        cycle.section = input.section || null
+        
 
         await this.cycleRepository.persistAndFlush(cycle)
         return cycle
       }
     
-      findByOne(filters: FilterQuery<Section>): Promise<Cycle | null> {
-        return this.cycleRepository.findOne(filters);
-      }
+      // findByOne(filters: FilterQuery<Section>): Promise<Cycle | null> {
+      //   return this.cycleRepository.findOne(filters);
+      // }
+
       findById(id:string){
         return this.cycleRepository.findOne(id)
       }
@@ -57,7 +59,7 @@ export class CycleService {
         const cycle = await this.findById(id)
         wrap(cycle).assign({
             name: input.name || cycle.name,
-            description: input.description || cycle.description
+            section: input.section || cycle.section
         },
         { em: this.em },
     );

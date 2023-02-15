@@ -7,14 +7,8 @@ import { SalleCreateInput } from 'src/modules/salle/dto/salle.input';
 
 @InputType()
 export class FraisExamentInput {
-  @Field(()=>ID,{nullable:true})
-  niveau_id?: string;
-
-  @Field(()=>ID,{nullable:true})
-  salle_id?: string;
-
-  @Field(()=>ID,{nullable:true})
-  anneAcademique_id?: string;
+  @Field({nullable:true})
+  ID?: string;
 
   @Field({nullable:true})
   description?: string;
@@ -22,16 +16,15 @@ export class FraisExamentInput {
   @Field({defaultValue:0})
   montant?: number;
 
-  @Field(()=>Date,{nullable:true})
+  @Field({})
   dateLine?: Date;
 
-  @Field(()=>NiveauEtudeCreateInput,{nullable:true})
+  @Field({nullable:true})
   niveauEtude?:NiveauEtudeCreateInput
 
-  @Field(()=>SalleCreateInput,{nullable:true})
+  @Field()
   salle?:SalleCreateInput
 
-  @Field(()=>AnneeAccademiqueCreateInput,{nullable:true})
+  @Field()
   anneeAccademique?:AnneeAccademiqueCreateInput
-
 }

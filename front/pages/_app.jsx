@@ -5,7 +5,6 @@ import { ApolloClient, ApolloProvider, InMemoryCache } from "@apollo/client";
 import client from '../graphql/apollo-client'
 import "../styles/globals.css";
 import "@fontsource/open-sans";
-import { AuthProvider } from "../contexts/account/Auth/Auth"
 
 
 
@@ -21,7 +20,10 @@ function MyApp({ Component, pageProps}) {
         secondary: "#e2d39c",
         tertiary: "#eef6ec",
         quaternary: "#E53E3E",
-        quinzaine: "pink.300"
+        quinzaine: "pink.300",
+        greencolor: "#2F855A",
+        bluecolor: "#BEE3F8",
+        greenColor: "green"
       }, 
     },
   });  
@@ -29,15 +31,11 @@ function MyApp({ Component, pageProps}) {
   // const ApolloClient = useApollo(pageProps.initialApolloState);
 
   return (
-    
     <ApolloProvider client={client}>
-        <AuthProvider>
-          <ChakraProvider theme={theme}>
-            <Component {...pageProps} />
-          </ChakraProvider>
-        </AuthProvider>
+      <ChakraProvider theme={theme}>
+        <Component {...pageProps} />
+      </ChakraProvider>
     </ApolloProvider>
-    
   );
 }
 

@@ -47,102 +47,60 @@ export class InscriptionService {
         const inscription = new Inscription()
 
         const anneAccademique = input.anneeAccademique
-            ? await this.anneAccademique.findbyOne({id:input.anneacademique_id})
+            ? await this.anneAccademique.findbyOne({id:input.anneeAccademique.ID})
             : await this.anneAccademique.create(input.anneeAccademique)
 
         const student = input.student
-            ? await this.studentService.findByOne({id: input.student_id})
+            ? await this.studentService.findByOne({id:input.student.ID})
             : await this.studentService.create(input.student)
 
         const frais = input.fraisInscription
-          ? await this.fraisService.findByOne({id: input.fraisincription_id})
-          : await this.fraisService.create(input.fraisInscription)
+            ? await this.fraisService.findByOne({id:input.fraisInscription.ID})
+            : await this.fraisService.create(input.fraisInscription)
+        
 
-        wrap(inscription).assign(
-          {
-          montant: Number(input.montant) || 0.0,
-          description: input.description,
-          dateLine: input.dateLine,
-          anneeAccademique: anneAccademique.id,
-          student: student.id,
-          fraisInscription: frais.id
-          },
-          {
-            em:this.em
-          }
-        )
-        // inscription.complete = false
-        // await this.inscriptionRepository.persistAndFlush(inscription)
-        // console.log(inscription)
+        inscription.montant = input.montant
+        inscription.description = input.description || null
+        inscription.anneeAccademique.id = anneAccademique.id
+        inscription.fraisInscription.id = frais.id
+        inscription.student.id = student.id
 
         // check last avance if the reste == 0 close inscription
 
         // check categorie Student and get if he has the reduction for inscription
-        // const categorie_student = student.categorie.load()
-        // console.log('===========>'+student.categorie.load())
-        // // console.log(student.categorie.getEntity)
-        // const retenu_categorie = (await categorie_student).reductionScolarite.load()
+        const categorie_student = student.categorie.getEntity()
+        const retenu_categorie = categorie_student.reductionScolarite.getEntity()
   
-        // if((await retenu_categorie).pourcentage != 0){
-        //     const new_amount_incription =frais.montant - (await retenu_categorie).pourcentage*frais.montant 
-        //     if(inscription.montant !== new_amount_incription){
-        //         // create the avance inscription
-        //         const inscript = await this.findByOne({
-        //           anneeAccademique: inscription.anneeAccademique.id,
-        //           student: inscription.student.id,
-        //           fraisInscription: inscription.fraisInscription.id
-        //         })
+        if(retenu_categorie.pourcentage != 0){
+            const new_amount_incription =frais.montant - retenu_categorie.pourcentage*frais.montant 
+            if(inscription.montant !== new_amount_incription){
+                // create the avance inscription
+                await this.avanceInscription.saveAvanceTranche(inscription,new_amount_incription)
+            }
+            inscription.complete = true
+            await this.inscriptionRepository.persistAndFlush(inscription)
+            return inscription
+          }
 
-        //         // console.log('===========>'+inscript)
-        //         await this.avanceInscription.saveAvanceTranche(inscript.id,new_amount_incription)
-        //     }
-        //     inscription.complete = true
-        //     await this.inscriptionRepository.persistAndFlush(inscription)
-        //     return inscription
-        //   }
-
-        // if((await retenu_categorie).montant != 0 ){
-        //     const new_amount_incription =frais.montant - (await retenu_categorie).montant 
-        //     if(inscription.montant !== new_amount_incription){
-        //         // create the avance inscription  
-        //         const inscript = await this.findByOne({
-        //           anneeAccademique: inscription.anneeAccademique.id,
-        //           student: inscription.student.id,
-        //           fraisInscription: inscription.fraisInscription.id
-        //         })
-                  
-        //         await this.inscriptionRepository.persistAndFlush(inscript)
-        //         return inscript
-        //         // await this.avanceInscription.saveAvanceTranche(inscript.id,new_amount_incription)
-        //     } 
-        //     inscription.complete = true
-        //     await this.inscriptionRepository.persistAndFlush(inscription)
-        //     return inscription
-        // }
-        // if(input.montant !== frais.montant){
-        //     // create avance inscription
-        //     const new_amount_incription = 0
-        //     const inscript = await this.findByOne({
-        //       montant: inscription.montant,
-        //       anneeAccademique: inscription.anneeAccademique
-        //     })
-        //     await this.avanceInscription.saveAvanceTranche(inscript.id,new_amount_incription)
-        // }
-
-
-        // je  dois d'abord recuperer tous les montants des avances avant da la stocker dans la table inscription
-        //montant_de_toutes les avance = 
-        if(input.montant<frais.montant){
-          inscription.complete=false
-          await this.inscriptionRepository.persistAndFlush(inscription)
-          return inscription
+        if(retenu_categorie.montant != 0 ){
+            const new_amount_incription =frais.montant - retenu_categorie.montant 
+            if(inscription.montant !== new_amount_incription){
+                // create the avance inscription  
+                await this.avanceInscription.saveAvanceTranche(inscription,new_amount_incription)
+            } 
+            inscription.complete = true
+            await this.inscriptionRepository.persistAndFlush(inscription)
+            return inscription
+        }
+        if(input.montant !== frais.montant){
+            // create avance inscription
+            const new_amount_incription = 0
+            await this.avanceInscription.saveAvanceTranche(inscription,new_amount_incription)
         }
         inscription.complete = true
         await this.inscriptionRepository.persistAndFlush(inscription)
         return inscription
-}
-
-
+      }
     
       findByOne(filters: FilterQuery<Inscription>): Promise<Inscription | null> {
         return this.inscriptionRepository.findOne(filters);
@@ -165,8 +123,8 @@ export class InscriptionService {
       const inscription =await this.findById(id)
         if (input.fraisInscription) {
             const fraisInscription =
-            input.fraisincription_id &&
-              (await this.fraisService.findByOne({ id: input.fraisincription_id }));
+            input.fraisInscription?.ID &&
+              (await this.fraisService.findByOne({ id: input.fraisInscription?.ID }));
       
             if (!fraisInscription) {
               throw new NotFoundError('frais inscripton no exist' || '');
@@ -176,8 +134,8 @@ export class InscriptionService {
 
         if (input.student) {
             const student =
-            input.student_id &&
-              (await this.studentService.findByOne({ id: input.student_id }));
+            input.student?.ID &&
+              (await this.studentService.findByOne({ id: input.student?.ID }));
       
             if (!student) {
               throw new NotFoundError('student no exist' || '');
@@ -187,8 +145,8 @@ export class InscriptionService {
 
           if (input.anneeAccademique) {
             const annee =
-            input.anneacademique_id &&
-              (await this.anneAccademique.findbyOne({ id: input.anneacademique_id }));
+            input.anneeAccademique?.ID &&
+              (await this.anneAccademique.findbyOne({ id: input.anneeAccademique?.ID }));
       
             if (!annee) {
               throw new NotFoundError('annee no exist' || '');
@@ -197,7 +155,7 @@ export class InscriptionService {
           }
         
         wrap(inscription).assign({
-            montant: Number(input.montant) || Number(inscription.montant) || 0.0,
+            montant: input.montant || inscription.montant,
             description: input.description || inscription.description,
             name: input.name|| inscription.name,
         },
@@ -207,7 +165,7 @@ export class InscriptionService {
         return inscription;
     }
 
-    async deleteInscription(id:string){
+    async deletePrime(id:string){
       const a= this.findById(id)
       await this.inscriptionRepository.removeAndFlush(a)  
       if(!a){
@@ -216,44 +174,29 @@ export class InscriptionService {
       return a
     }   
 
-    async saveInscription(id:string){
+    async saveInscription(id:string,avance:AvanceInscription){
         const inscription = await this.inscriptionRepository.findOneOrFail(id)
-        //ici je recuperer la somme cummulle de toutes les avances d'une inscription 
-        const cumulative_tuition_advances = this.avanceInscription.getallcorrespondingadvances(inscription.id)
-        inscription.montant = Number(cumulative_tuition_advances)
-        const student = inscription.student.load()
-        const categorie_student = (await student).categorie.load()
-        const retenu = (await categorie_student).reductionScolarite.load()
-        if((await retenu).pourcentage != 0){
-            const new_amount_incription =(await inscription.fraisInscription.load()).montant - (await retenu).pourcentage*(await inscription.fraisInscription.load()).montant
-            if(inscription.montant >= new_amount_incription){
-              inscription.complete = true
-              inscription.reste=new_amount_incription-inscription.montant
-         }
+        inscription.montant += avance.montant
+        const student = inscription.student.getEntity()
+        const categorie_student = student.categorie.getEntity()
+        const retenu = categorie_student.reductionScolarite.getEntity()
+        if(retenu.pourcentage != 0){
+            const new_amount_incription =inscription.fraisInscription.getEntity().montant - retenu.pourcentage*inscription.fraisInscription.getEntity().montant
+            if(inscription.montant == new_amount_incription){
+                inscription.complete = true
+            }
           }
 
-        if((await retenu).montant != 0 ){
-            const new_amount_incription =(await inscription.fraisInscription.load()).montant - (await retenu).montant 
-            if(inscription.montant >= new_amount_incription){
+        if(retenu.montant != 0 ){
+            const new_amount_incription =inscription.fraisInscription.getEntity().montant - retenu.montant 
+            if(inscription.montant == new_amount_incription){
                 inscription.complete = true
-                inscription.reste=new_amount_incription-inscription.montant
-           }
+            } 
         }
         
-        if(inscription.montant == (await inscription.fraisInscription.load()).montant){
+        if(inscription.montant == inscription.fraisInscription.getEntity().montant){
             inscription.complete = true
-            inscription.reste=0.0
         }
-
-        if(inscription.montant < (await inscription.fraisInscription.load()).montant ){
-          inscription.complete =false
-          inscription.reste=0.0
-        }
-
-        if(inscription.montant >= (await inscription.fraisInscription.load()).montant ){
-          inscription.complete = true
-          inscription.reste= inscription.montant-Number((await inscription.fraisInscription.load()).montant )
-      }
         await this.inscriptionRepository.persistAndFlush(inscription)
     }
 }

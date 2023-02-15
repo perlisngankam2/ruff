@@ -1,4 +1,5 @@
 /* eslint-disable prettier/prettier */
+import { SectionCycleUpdateInput } from './../../section-cycle/dto/section-cycle.update';
 import { Field, ID, InputType } from '@nestjs/graphql';
 import { TypeRetenu } from 'src/entities/categorie-retenu.entity';
 import { User } from 'src/entities/user.entity';
@@ -7,8 +8,9 @@ import { UserCreateInput } from 'src/modules/user/dto/user.input';
 
 @InputType()
 export class NiveauEtudeUpdateInput {
-  @Field(()=>ID,{nullable:true})
-  sectioncycle_id?:string
+ 
+  @Field({nullable:true})
+  ID?: string;
   
   @Field({nullable:true})
   name?: string;
@@ -16,6 +18,6 @@ export class NiveauEtudeUpdateInput {
   @Field({nullable:true})
   description?: string;
 
-  @Field(()=>SectionCycleCreateInput,{nullable:true})
-  sectionCycle?:SectionCycleCreateInput
+  @Field({nullable:true})
+  sectionCycle:SectionCycleUpdateInput
 }

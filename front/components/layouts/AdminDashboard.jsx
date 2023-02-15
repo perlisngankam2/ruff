@@ -1,14 +1,14 @@
 import { Box, Flex, Hide } from "@chakra-ui/react";
 import Header from "../molecules/Header/Header";
-import SidebarLayout from "./SidebarLayout";
+import AdminLayout from "./AdminLayout";
 
-const DefaultLayout = ({ children }) => {
+const AdminDashboard = ({ children }) => {
   return (
     <Box>
       <Header />
       <Flex>
         <Hide below="md">
-          <SidebarLayout />
+          <AdminLayout />
         </Hide>
         {children}
       </Flex>
@@ -16,4 +16,4 @@ const DefaultLayout = ({ children }) => {
   );
 };
 
-export default DefaultLayout;
+export default AdminDashboard;

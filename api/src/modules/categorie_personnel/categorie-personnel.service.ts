@@ -109,12 +109,12 @@ export class CategoriePersonnelService {
   }
 
   async delete(id : string){
- const a = this.findById(id)
- await this.categoriePersonelRepository.removeAndFlush(a)
- if(!a){
-  throw Error("not found")
- }
- return a
+    const a = this.findById(id)
+    await this.categoriePersonelRepository.nativeDelete(await a)
+      if(!a){
+          throw Error("not found")
+        }
+        return a
   }
 
 }

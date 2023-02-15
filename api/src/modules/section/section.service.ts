@@ -28,13 +28,8 @@ export class SectionService {
       ): Promise<Section> {        
         const section = new Section()
 
-        wrap(section).assign({
-          name: input.name,
-          description: input.description
-        },
-        {
-          em:this.em
-        })
+        section.name= input.name
+        section.description = input.description || null
         
 
         await this.sectionRepository.persistAndFlush(section)
@@ -66,7 +61,7 @@ export class SectionService {
       }
       async delete(id:string){
        const a= this.findById(id)
-       await this.sectionRepository.removeAndFlush(a)
+       await this.sectionRepository.nativeDelete(await a)
        if(!a){
       throw Error("not found")
        }

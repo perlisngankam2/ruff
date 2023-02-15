@@ -12,7 +12,7 @@ import {
     Property,
     Unique,
   } from '@mikro-orm/core';
-import { Field, ID, ObjectType, registerEnumType } from '@nestjs/graphql';
+import { Field, ID, ObjectType } from '@nestjs/graphql';
 import { PrimaryKeyUuid } from '../decorators/PrimaryKeyUuid.decorator';
 import { AvanceTranche } from './avance-tranche.entity';
 import { Student } from './student.entity';
@@ -22,10 +22,6 @@ export enum RegimePaiement {
   SPECIAL = 'SPECIAL',
   NORMAL = 'NORMAL',
 }
-
-registerEnumType(RegimePaiement, {
-  name: 'RegimePaiement',
-});
 
 @Entity()
 @ObjectType()

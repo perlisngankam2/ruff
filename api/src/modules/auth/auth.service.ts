@@ -3,11 +3,11 @@
 import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
 import { UserService } from "../user/user.service";
 import * as bcrypt from 'bcrypt';
+import { LoginInput } from "./login.input";
 import { User } from "src/entities/user.entity";
 import { JwtService } from "@nestjs/jwt";
 import { Personnel } from "src/entities/pesonnel.entity";
 import { PersonnelService } from "../personnel/personnel.service";
-
 
 
 
@@ -41,18 +41,8 @@ async validateUser(email:string,passwd:string) {
         return isPasswordValid ? result: null;
 }
 
-async login(user:User){
-   return {
-        access_token: this.jwtservice.sign({
-            username: user.email,
-            password: user.password, 
-            sub: user.id}),
-        user
-    }
-}
-
 async validatePersonnel(email:string,passwd:string){
-  const personnel = await this.personnelservice.findByOne(
+  const personnel = await this.personnelservice.findOne(
     { email: email,
       },
     
@@ -80,6 +70,16 @@ async loginpersonnel(personnel:Personnel){
     personnel
 }
 
+}
+
+async login(user:User){
+   return {
+        access_token: this.jwtservice.sign({
+            username: user.email,
+            password: user.password, 
+            sub: user.id}),
+        user
+    }
 }
 
 

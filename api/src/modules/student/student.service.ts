@@ -10,10 +10,8 @@ import {
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { EntityRepository } from '@mikro-orm/postgresql';
 import { Field, ID, ObjectType } from '@nestjs/graphql';
-import { Localisation } from '../../entities/localisation.entity';
 import { Pension } from 'src/entities/pension.entity';
-import { Student } from '../../entities/student.entity';
-import { User } from '../../entities/user.entity';
+import { Student } from 'src/entities/student.entity';
 import { CategorieEleveService } from '../categorie_eleve/categorie-eleve.service';
 import { InscriptionService } from '../inscription/inscription.service';
 import { LocalisationService } from '../localisation/localisation.service';
@@ -39,13 +37,11 @@ export class StudentService {
       async create(
         input: StudentCreateInput,
       ): Promise<Student> {  
-        // let localisation = new Localisation()
-        // if(localisation){
-        //  localisation = input.localisation
-        //     ? await this.localisationService.findByOne({id:input.localisation?.ID})
+        const student = new Student()
+
+        // const localisation = input.localisation
+        //     ? await this.localisationService.findByOne({id:input.localisation.ID})
         //     : await this.localisationService.create(input.localisation)
-        // }
-        // else throw Error("not found")
         
         // const inscription = input.inscription
         //     ? await this.inscriptionService.findByOne({id:input.inscription.ID})
@@ -55,55 +51,46 @@ export class StudentService {
         //     ? await this.salleService.findByOne({id:input.salle.ID})
         //     : await this.salleService.create(input.salle)
 
-        const student = new Student()
-        
-        const categorie = input.categorie
-        ? await this.categorieService.findByOne({id:input.categorie_id})
-        : await this.categorieService.create(input.categorie)
-
-        if(!categorie){
-          throw new Error('categorie student not found');
-        }
-
-        try{
-
-        wrap(student).assign(
-          {
-            firstname: input.firstname,
-            lastname: input.lastname,
-            class: input.class,
-            sex: input.sex,
-            date_of_birth : new Date(input.date_of_birth),
-            adress: input.adress,
-            categorie : categorie.id
-          },
-          {
-            em: this.em,
-          },
-        );
+        // const user = input.user
+        //     ? await this.userService.findByOne({id:input.user.ID})
+        //     : await this.userService.create(input.user)
+        student.matricule = input.matricule
+        student.firstname = input.firstname
+        student.lastname = input.lastname
+        student.classe = input.classe
+        student.sex = input.sex
+        student.dateOfBirth=input.dateOfBirth
+        student.adress=input.adress
+        student.transport=input.transport
+        student.categoryStudent = input.categoryStudent
+        student.section = input.section
+        student.cycle = input.cycle
+        student.fatherFirstName=input.fatherFirstName
+        student.fatherLastName=input.fatherLastName
+        student.fatherPhoneNumber=input.fatherPhoneNumber
+        student.fatherProfession=input.fatherProfession
+        student.motherFirstName=input.motherFirstName
+        student.motherLastName=input.motherLastName
+        student.motherPhoneNumber=input.motherPhoneNumber
+        student.motherProfession=input.motherProfession
+        student.tutorFirstName=input.tutorFirstName
+        student.tutorLastName=input.tutorLastName
+        student.tutorPhoneNumber=input.tutorPhoneNumber
+        student.tutorProfession=input.tutorProfession
         // student.salle.id = salle.id,
         // student.inscription.id = inscription.id,
-        // student.user.id = user.id
+        // student.user.id = user.id,
         // student.localisation.id = localisation.id
         
         await this.studentRepository.persistAndFlush(student)
-        
         return student
-        }
-        catch(err){
-          // Delete categorie only if it was created for this student
-          if (input.categorie) {
-            await this.categorieService.deletecategorie(categorie.id);
-          }
-    
-          throw err;
-
-        }
       }
     
       findByOne(filters: FilterQuery<Student>): Promise<Student | null> {
         return this.studentRepository.findOne(filters);
       }
+
+      
       findById(id:string){
         return this.studentRepository.findOne(id)
       }
@@ -138,14 +125,31 @@ export class StudentService {
         // }
         
         wrap(student).assign({
+            matricule:input.matricule,
             firstname:input.firstname,
             lastname:input.lastname,
-            class:input.class,
+            classe:input.classe,
             sex:input.sex,
-            date_of_birth:input.date_of_birth,
+            dateOfBirth:input.dateOfBirth,
             adress:input.adress,
-            exclut: input.exclut || student.exclut,
-            lastSchool:input.lastSchool || student.lastSchool,
+            // exclut: input.exclut || student.exclut,
+            // old: input.old,
+            transport:input.transport,
+            categoryStudent:input.categoryStudent,
+            section : input.section,
+            cycle : input.cycle,
+            fatherFirstName:input.fatherFirstName,
+            fatherLastName:input.fatherLastName,
+            fatherPhoneNumber:input.fatherPhoneNumber,
+            fatherProfession:input.fatherProfession,
+            motherFirstName:input.motherFirstName,
+            motherLastName:input.motherLastName,
+            motherPhoneNumber:input.motherPhoneNumber,
+            motherProfession:input.motherProfession,
+            tutorFirstName:input.tutorFirstName,
+            tutorLastName:input.tutorLastName,
+            tutorProfession:input.tutorProfession
+           // lastSchool:input.lastSchool || student.lastSchool,
         },
         { em: this.em },
     );
@@ -153,9 +157,10 @@ export class StudentService {
         return student;
       }
 
+      
     async delete(id:string){
       const a = this.findById(id)
-      await this.studentRepository.removeAndFlush(a)
+      await this.studentRepository.nativeDelete(await a)
       if(!a){
       throw Error("not found")
       }

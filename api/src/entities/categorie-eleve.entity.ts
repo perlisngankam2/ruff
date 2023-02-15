@@ -33,7 +33,7 @@ export class CategorieEleve {
 
 //   relation with another Entites
   @ManyToOne(() => ReductionScolarite ,{
-    nullable:false,
+    nullable:true,
     onDelete:'CASCADE'
   })
   reductionScolarite!:IdentifiedReference<ReductionScolarite>|null

@@ -45,7 +45,7 @@ export class ParentService {
         return parent
       }
     
-      findByOne(filters: FilterQuery<Parent>): Promise<Parent | null> {
+      findOne(filters: FilterQuery<Parent>): Promise<Parent | null> {
         return this.parentRepository.findOne(filters);
       }
       findById(id:string){

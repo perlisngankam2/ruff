@@ -10,7 +10,6 @@ import {
   Resolver,
 } from '@nestjs/graphql';
 import { Inscription } from 'src/entities/inscription.entity';
-import { Student } from 'src/entities/student.entity';
 import { InscriptionUpdateInput } from './dto/incription.update';
 import { InscriptionInput } from './dto/inscription.input';
 import { InscriptionService } from './inscription.service';
@@ -40,6 +39,9 @@ export class InscriptionResolver {
     return this.inscriptionService.findByOne(id);
   }
 
-}
 
+}
+function Viewer() {
+    throw new Error('Function not implemented.');
+}
 

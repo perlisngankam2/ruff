@@ -1,6 +1,5 @@
 /* eslint-disable prettier/prettier */
 import { Field, ID, InputType } from '@nestjs/graphql';
-import { truncate } from 'fs/promises';
 import { Periode } from 'src/entities/periode.entity';
 import { Prime } from 'src/entities/prime.entity';
 import { Retenue } from 'src/entities/retenu-salaire.entity';
@@ -13,7 +12,7 @@ import { RetenuPersonnelCreateInput } from 'src/modules/retenu_personnel/dto/ret
 
 @InputType()
 export class SectionUpdateInput {
-  @Field(()=>ID,{nullable:true})
+  @Field({nullable:true})
   ID?: string;
 
   @Field({nullable:true})
@@ -22,6 +21,6 @@ export class SectionUpdateInput {
   @Field({nullable:true})
   description?: string;
 
-  @Field({ nullable:true})
-  effectif?: number;
+//   @Field({defaultValue:0})
+//   effectif?: number;
 }

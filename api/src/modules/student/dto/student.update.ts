@@ -1,5 +1,5 @@
 /* eslint-disable prettier/prettier */
-import { Field, ID, InputType } from '@nestjs/graphql';
+import { Field, InputType } from '@nestjs/graphql';
 import { CategorieEleveCreateInput } from 'src/modules/categorie_eleve/dto/categorie-eleve.input';
 import { InscriptionInput } from 'src/modules/inscription/dto/inscription.input';
 import { LocalisationCreateInput } from 'src/modules/localisation/dto/localisation.input';
@@ -8,8 +8,8 @@ import { UserCreateInput } from 'src/modules/user/dto/user.input';
 
 @InputType()
 export class StudentUpdateInput {
-  @Field(()=>ID, {nullable:true})
-  categorie_id?: string
+  @Field({nullable:true})
+  ID!: string;
 
   @Field({nullable:true})
   matricule!: string;
@@ -21,39 +21,79 @@ export class StudentUpdateInput {
   lastname!: string;
 
   @Field({ nullable:true })
-  date_of_birth!: string;
+  dateOfBirth!: string;
 
   @Field({ nullable: true })
   sex!: string;
 
   @Field({ nullable: true })
-  class!: string;
+  classe!: string;
 
   @Field({ nullable: true })
   adress!: string;
 
-  @Field({ defaultValue: false })
-  transport!: boolean;
+  @Field({ nullable: true })
+  transport!: string;
 
+  // @Field({defaultValue:true})
+  // old!: boolean;
+
+   @Field({nullable:true})
+  categoryStudent!: string;
 
   @Field({nullable:true})
-  lastSchool!: string;
+  section!: string;
+  
+  @Field({nullable:true})
+  cycle!: string;
 
-  @Field({defaultValue:false})
-  exclut!: boolean;
+  @Field({nullable:true})
+  fatherFirstName!: string;
 
-  @Field(() =>CategorieEleveCreateInput,{nullable:true})
-  categorie?: CategorieEleveCreateInput;
+  @Field({nullable:true})
+  fatherLastName!: string;
 
+  @Field({nullable:true})
+  fatherPhoneNumber!: string;
+
+  @Field({nullable:true})
+  fatherProfession!: string;
+
+  @Field({nullable:true})
+  motherFirstName!: string;
+
+  @Field({nullable:true})
+  motherLastName!: string;
+
+  @Field({nullable:true})
+  motherPhoneNumber!: string;
+
+  @Field({nullable:true})
+  motherProfession!: string;
+
+  @Field({nullable:true})
+  tutorFirstName!: string;
+
+  @Field({nullable:true})
+  tutorLastName!: string;
+
+   @Field({nullable:true})
+  tutorPhoneNumber!: string;
+
+   @Field({nullable:true})
+  tutorProfession!: string;
+
+  // @Field({nullable:true})
+  // salle!: string;
+
+  // @Field({nullable:true})
+  // lastSchool!: string;
 
   // @Field({defaultValue:false})
-  // old!: boolean;
+  // exclut!: boolean;
 
   // @Field({nullable:true})
   // user!: UserCreateInput;
-
-  // @Field({nullable:true})
-  // salle!: SalleCreateInput;
 
   // @Field({nullable:true})
   // categorie!: CategorieEleveCreateInput;

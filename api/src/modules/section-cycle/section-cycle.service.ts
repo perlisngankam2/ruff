@@ -30,28 +30,28 @@ export class SectionCycleService {
       async create(
         input: SectionCycleCreateInput,
       ): Promise<SectionCycle> {        
-        const sectionCycle = new SectionCycle()
-        const section = input.section
-                ? await this.sectionService.findByOne({id:input.section_id})
-                : await this.sectionService.create(input.section)
-        
-        const cycle = input.cycle
-                ? await this.cycle.findByOne({id:input.cycle_id})
-                : await this.cycle.create(input.cycle)
+        const cycle = this.cycle.findById(input.cycle)
+        if(!cycle){
+          throw Error("cycly not found")
+        }
 
-        wrap(sectionCycle).assign(
-          {
-          description: input.description,
-          section: section.id,
-          cycle: cycle.id
-          },
-          {
-            em: this.em
-          }
-        );
+        const section = this.sectionService.findById(input.section)
+        if(!section){
+          throw Error("section not found")
+        }
 
-        await this.sectionCycleRepository.persistAndFlush(sectionCycle)
-        return sectionCycle
+        const sectioncycle = new SectionCycle()
+
+        wrap(sectioncycle).assign({
+          cycle : input.cycle,
+          section : input.section
+        },
+        {
+          em: this.em,
+        });
+        await this.sectionCycleRepository.persistAndFlush(sectioncycle)
+        return sectioncycle
+
       }
     
       findByOne(filters: FilterQuery<SectionCycle>): Promise<SectionCycle | null> {
@@ -69,7 +69,8 @@ export class SectionCycleService {
         const sectionCycle = await this.findById(id)
         if(input.cycle){
             const cycle =
-            input.cycle_id && (await this.cycle.findByOne({id:input.cycle_id}));
+            input.cycle?.ID &&
+              (await this.cycle.findById(input.cycle?.ID));
       
             if (!cycle) {
               throw new NotFoundError('prime no exist' || '');
@@ -79,7 +80,8 @@ export class SectionCycleService {
 
         if(input.section){
             const section =
-            input.section_id && (await this.sectionService.findByOne({id:input.section_id}));
+            input.section?.ID &&
+              (await this.sectionService.findByOne({id:input.section?.ID}));
       
             if (!section) {
               throw new NotFoundError('prime no exist' || '');
@@ -111,8 +113,8 @@ export class SectionCycleService {
       const section  = sectionCycle.niveau
       for(let i =0; i < section.length; i++){
         for(let j = 0; j < section[i].salle.length; j++ ){
-          montantAttendu += section[i].salle[j].effectif*(await section[i].salle[j].fraisInscription.load()).montant
-          const listeInscription = (await section[i].salle[j].fraisInscription.load()).inscription
+          montantAttendu += section[i].salle[j].effectif*section[i].salle[j].fraisInscription.getEntity().montant
+          const listeInscription = section[i].salle[j].fraisInscription.getEntity().inscription
           for (let k = 0 ; k < listeInscription.length; k++){
               montantRecu += listeInscription[k].montant
           }

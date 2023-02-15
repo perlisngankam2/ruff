@@ -6,31 +6,24 @@ import { TrancheCreateInput } from 'src/modules/tranche/dto/tranche.input';
 
 @InputType()
 export class TrancheStudentCreateInput {
-
-  @Field(()=>ID,{nullable:true})
-  regimepaiement_id?:string
-
-  @Field(()=>ID,{nullable:true})
-  student_id?:string
-
-  @Field(()=>ID,{nullable:true})
-  tranche_id?:string
+  @Field({nullable:true})
+  ID?: string;
 
   @Field({nullable:true})
   name?: string;
 
   @Field({nullable:true})
-  description!: string;
+  description?: string;
 
-  @Field({nullable:true,defaultValue:0})
-  montant!: number;
+  @Field()
+  regimePaimemnt?: RegimePaiement;
 
-  @Field(()=>RegimePaiement,{nullable:true})
-  regimePaiement?: RegimePaiement;
+  @Field({defaultValue:0})
+  montant?: number;
 
-  @Field(()=>StudentCreateInput,{nullable:true})
+  @Field()
   student?:StudentCreateInput
   
-  @Field(()=>TrancheCreateInput,{nullable:true})
+  @Field()
   tranche?:TrancheCreateInput
 }

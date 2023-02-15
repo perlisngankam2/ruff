@@ -1,7 +1,6 @@
 /* eslint-disable prettier/prettier */
 import {
     Collection,
-    DateType,
     Entity,
     Enum,
     Filter,
@@ -34,7 +33,7 @@ export class AnneeAccademique {
   description!: string;
 
   @Field(() => Date, { nullable: true })
-  @Property({ type:DateType,nullable: true })
+  @Property({ nullable: true })
   anneeAccademique!: Date | null;
 
   @OneToMany(()=> Inscription, (inscription) => inscription.anneeAccademique

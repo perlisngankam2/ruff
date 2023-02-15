@@ -34,21 +34,14 @@ export class TrancheService {
         const tranche = new Tranche()
 
         const pension = input.pension
-        ? await this.pensionService.findByOne(input.pension_id)
+        ? await this.pensionService.findByOne(input.pension.ID)
         : await this.pensionService.create(input.pension)
 
 
-        wrap(tranche).assign(
-          {
-            montant: input.montant,
-            name: input.name,
-            description: input.description,
-            pension: pension.id
-          },
-          {
-            em:this.em
-          }
-        )
+        tranche.montant = input.montant
+        tranche.name = input.name
+        tranche.description = input.description 
+        tranche.pension.id = pension.id
         
         await this.trancheRepository.persistAndFlush(tranche)
         return tranche
@@ -69,8 +62,8 @@ export class TrancheService {
         const tranche= await this.findById(id)
         if (input.pension) {
             const pension =
-            input.pension_id &&
-              (await this.pensionService.findByOne({ id: input.pension_id }));
+            input.pension?.ID &&
+              (await this.pensionService.findByOne({ id: input.pension?.ID }));
       
             if (!pension) {
               throw new NotFoundError('pension no exist' || '');

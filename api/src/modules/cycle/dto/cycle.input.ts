@@ -3,15 +3,15 @@ import { Field, ID, InputType } from '@nestjs/graphql';
 
 @InputType()
 export class CycleCreateInput {
-  @Field(()=>ID,{nullable:true})
+  @Field({nullable:true})
   ID?: string;
 
   @Field({nullable:true})
   name?: string;
 
   @Field({nullable:true})
-  description?: string;
+  section:string
 
-  @Field({nullable:true,defaultValue:0})
-  effectif?: number;
+  // @Field({defaultValue:0})
+  // effectif?: number;
 }

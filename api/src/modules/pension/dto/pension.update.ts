@@ -1,4 +1,5 @@
 /* eslint-disable prettier/prettier */
+import { SalleUpdateInput } from 'src/modules/salle/dto/salle.update';
 import { Field, ID, InputType } from '@nestjs/graphql';
 import { AnneeAccademiqueCreateInput } from 'src/modules/anne_accademique/dto/anne-accademique.update';
 import { CategoriePrimeCreateInput } from 'src/modules/categorie_prime/dto/categorie-prime.input';
@@ -7,11 +8,8 @@ import { SalleCreateInput } from 'src/modules/salle/dto/salle.input';
 
 @InputType()
 export class PensionUpdateInput {
-  @Field(()=>ID,{nullable:true})
-  salle_id?:string
-
-  @Field(()=>ID,{nullable:true})
-  anneeAcademique_id?:string
+  @Field({nullable:true})
+  ID?: string;
 
   @Field({nullable:true})
   name?: string;
@@ -22,12 +20,12 @@ export class PensionUpdateInput {
   @Field({defaultValue:0})
   montant?: number;
 
-  @Field(()=>ID,{nullable:true})
+  @Field({})
   dateLine?: Date;
 
-  @Field(()=>SalleCreateInput,{nullable:true})
-  salle?:SalleCreateInput
+  @Field()
+  salle?:SalleUpdateInput
 
-  @Field(()=>AnneeAccademiqueCreateInput,{nullable:true})
+  @Field()
   anneeAccademique?:AnneeAccademiqueCreateInput
 }

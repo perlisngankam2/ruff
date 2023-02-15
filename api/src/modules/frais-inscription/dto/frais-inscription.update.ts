@@ -1,4 +1,6 @@
 /* eslint-disable prettier/prettier */
+import { SalleUpdateInput } from './../../salle/dto/salle.update';
+/* eslint-disable prettier/prettier */
 import { Field, ID, InputType } from '@nestjs/graphql';
 import { AnneeAccademiqueCreateInput } from 'src/modules/anne_accademique/dto/anne-accademique.update';
 import { CategoriePrimeCreateInput } from 'src/modules/categorie_prime/dto/categorie-prime.input';
@@ -7,24 +9,24 @@ import { SalleCreateInput } from 'src/modules/salle/dto/salle.input';
 
 @InputType()
 export class UpdateFraisInscriptionInput {
-  @Field(()=>ID,{nullable:true})
-  salle_id?:string
-
-  @Field(()=>ID,{nullable:true})
-  anneAcademique_id?:string
+  @Field({nullable:true})
+  ID?: string;
 
   @Field({nullable:true})
   description?: string;
 
-  @Field({nullable:true, defaultValue:0})
+  @Field({defaultValue:0})
   montant?: number;
 
-  @Field({nullable:true})
+  @Field({})
   dateLine?: Date;
 
-  @Field(()=>SalleCreateInput,{nullable:true})
-  salle?:SalleCreateInput
+  @Field({nullable:true})
+  niveauEtude?:NiveauEtudeCreateInput
 
-  @Field(()=>AnneeAccademiqueCreateInput,{nullable:true})
+  @Field()
+  salle?:SalleUpdateInput
+
+  @Field()
   anneeAccademique?:AnneeAccademiqueCreateInput
 }

@@ -12,6 +12,8 @@ export class LoginResponse{
 
     @Field(() => User)
     user: User
+
+    
 }
 
 @ObjectType()
@@ -19,7 +21,6 @@ export class LoginResponsePersonnel{
     @Field()
     access_token: string
 
-    @Field(() => User)
+    @Field(() => Personnel)
     personnel: Personnel
 }
-

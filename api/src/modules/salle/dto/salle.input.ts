@@ -4,18 +4,18 @@ import { NiveauEtudeCreateInput } from 'src/modules/niveau_etude/dto/niveau-etud
 
 @InputType()
 export class SalleCreateInput {
-  @Field(()=>ID,{nullable:true})
-  niveau_id?: string;
+  @Field({nullable:true})
+  ID?: string;
 
   @Field({nullable:true})
   name?: string;
 
   @Field({nullable:true})
-  description?: string;
+  section?: string;
+  
+  @Field({nullable:true})
+  cycle?: string;
 
   @Field({nullable:true})
-  effectif?: number;
-
-  @Field(()=>NiveauEtudeCreateInput,{nullable:true})
-  niveau?: NiveauEtudeCreateInput
+  niveauId?:string;
 }

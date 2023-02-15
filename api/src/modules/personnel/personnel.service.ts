@@ -1,5 +1,5 @@
 /* eslint-disable prettier/prettier */
-import { DateType, EntityManager, FilterQuery, NotFoundError, wrap } from '@mikro-orm/core';
+import { EntityManager, FilterQuery, NotFoundError, wrap } from '@mikro-orm/core';
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { Injectable } from '@nestjs/common';
 import { User } from 'src/entities/user.entity';
@@ -28,20 +28,26 @@ export class PersonnelService {
   // if (!user) {
   //   throw new NotFoundError('user not found'|| '');
   // }
+  const new_personnel = new Personnel()
 
-
-    const new_personnel = new Personnel()
-    new_personnel.name=input.name
-    new_personnel.surname=input.surname
-    new_personnel.dateOfBirth=new Date(input.dateOfBirth)
-    new_personnel.sexe = input.sexe
-    new_personnel.Matrimonialstatus = input.Matrimonialstatus
-    new_personnel.childNumber = input.childNumber
-    new_personnel.dateOfStartWork = new Date(input.dateOfStartWork)
-    new_personnel.telephone_number = input.telephone
-    new_personnel.fonction = input.fonction
-    new_personnel.salary=input.salary
-
+wrap(new_personnel).assign({
+  firstName : input.firstName,
+  lastName : input.lastName,
+  personnelCategory :input.personnelCategory,
+  status : input.status,
+  childNumber: input.childNumber,
+  phoneNumber: input.phoneNumber,
+  email: input.email,
+  password: input.password,
+  sexe: input.sexe,
+  dateOfStartWork : input.dateOfStartWork,
+  fonction : input.fonction,
+  dateOfBirth : input.dateOfBirth,
+  situationMatrimonial : input.situationMatrimonial},
+  {
+    em:this.em
+  },
+);
     await this.personnelRepository.persistAndFlush(new_personnel)
     return new_personnel
   }
@@ -49,12 +55,17 @@ export class PersonnelService {
         return this.personnelRepository.findOne(id)
     }
 
-  findByOne(filters: FilterQuery<Personnel>): Promise<Personnel | null> {
+  findOne(filters: FilterQuery<Personnel>): Promise<Personnel | null> {
     return this.personnelRepository.findOne(filters);
   }
 
   getAll(): Promise<Personnel[]> {
     return this.personnelRepository.findAll()
+  }
+
+  hashPassword(password: string): string {
+    const salt = bcript.genSaltSync();
+    return bcript.hashSync(password, salt);
   }
   
   async update(id:string, input: PersonnelUpdateInput): Promise<Personnel> {
@@ -70,7 +81,12 @@ export class PersonnelService {
       this.userService.update(user.id, input.user);
     }    
     wrap(personnel).assign({
-      Matrimonialstatus: input.Matrimonialstatus || personnel.Matrimonialstatus,
+      firstName: input.firstName || personnel.firstName,
+      lastName: input.lastName || personnel.lastName,
+      personnelCategory: input.personnelCategory || personnel.personnelCategory,
+      status: input.status || personnel.status,
+      phoneNumber: input.phoneNumber || personnel.phoneNumber,
+      situationMatrimonial: input.situationMatrimonial || personnel.situationMatrimonial,
       sexe: input.sexe || personnel.sexe,
       fonction: input.fonction || personnel.fonction,
       childNumber: input.childNumber || personnel.childNumber,
@@ -87,24 +103,11 @@ export class PersonnelService {
 
   async delete(id:string){
   const a = this.findById(id)
-  await this.personnelRepository.removeAndFlush(a)
+  await this.personnelRepository.nativeDelete(await a)
   if(!a){
  throw Error("not found")
   }
   return a
-  }
-
-  async setPassword(account: Personnel, password: string): Promise<Personnel> {
-    account.password = this.hashPassword(password);
-
-    await this.personnelRepository.persistAndFlush(account);
-
-    return account;
-  }
-
-  hashPassword(password: string): string {
-    const salt = bcript.genSaltSync();
-    return bcript.hashSync(password, salt);
   }
 
 }

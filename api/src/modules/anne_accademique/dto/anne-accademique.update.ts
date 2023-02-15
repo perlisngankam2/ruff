@@ -9,10 +9,10 @@ export class AnneeAccademiqueCreateInput {
   @Field({nullable:true})
   name?: string;
 
-  @Field({nullable:true})
-  description?: string;
+  // @Field({nullable:true})
+  // description?: string;
 
-  @Field(()=>Date,{nullable:true})
-  anneeAccademique?:Date;
+  // @Field({nullable:true})
+  // anneeAccademique?: Date;
 
 }

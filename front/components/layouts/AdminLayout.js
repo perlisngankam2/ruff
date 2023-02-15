@@ -99,6 +99,19 @@
             </AccordionPanel>
           </AccordionItem>
           <AccordionItem>
+            <AccordionButton my={2} pl={0}>
+              <Flex align="center" gap="1">
+                <Icon as={MdOutlineClass} />
+                <Box as="span">Pension</Box>
+              </Flex>
+            </AccordionButton>
+            <AccordionPanel>
+              <Link href="/pension">
+                <Box as="span">Pension</Box>
+              </Link>
+            </AccordionPanel>
+          </AccordionItem>
+          <AccordionItem>
             <AccordionButton pl={0} my={2}>
               <Flex align="center" gap="1">
                 <Icon as={GiTakeMyMoney} />

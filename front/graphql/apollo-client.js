@@ -1,22 +1,10 @@
 import { ApolloClient, InMemoryCache, from, HttpLink } from "@apollo/client";
-import { setContext } from '@apollo/client/link/context';
+
 import { onError } from '@apollo/client/link/error';
 
 const httpLink = new HttpLink({
   uri: 'http://localhost:3002/graphql',
 })
-
-const authLink = setContext((_, { headers }) => {
-  const token = localStorage.getItem('token');
-  if (!token) return null;
-
-  return {
-    headers: {
-      ...headers,
-      authorization: token ? `Bearer ${token}` : '',
-    },
-  };
-});
 
 // Log any GraphQL errors or network error that occurred
 const errorLink = onError(({ graphQLErrors, networkError }) => {

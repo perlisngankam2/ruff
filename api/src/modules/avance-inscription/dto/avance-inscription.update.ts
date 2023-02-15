@@ -8,21 +8,21 @@ import { TrancheCreateInput } from 'src/modules/tranche/dto/tranche.input';
 
 @InputType()
 export class AvanceInscriptionUpdateInput {
-  @Field(()=>ID,{nullable:true})
-  inscription_id?:string
-  
+  @Field({nullable:true})
+  ID?: string;
+
   @Field({nullable:true})
   name?: string;
 
   @Field({nullable:true})
   description?: string;
 
-  @Field({nullable:true,defaultValue:0})
+  @Field({defaultValue:0})
   montant?: number;
 
-  @Field({nullable:true,defaultValue:0})
+  @Field({defaultValue:0})
   reste?: number;
 
-  @Field(()=>InscriptionInput,{nullable:true})
+  @Field()
   inscription?:InscriptionInput
 }

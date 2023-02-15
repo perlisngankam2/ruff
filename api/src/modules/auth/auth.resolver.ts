@@ -14,22 +14,23 @@ import { LoginResponse, LoginResponsePersonnel } from "./loginresponse";
 export class AuthResolver{
     constructor(private authservice: AuthService){}
 
-    @Query(() => Personnel)
-    @UseGuards(GqlAuthGuard)
-    async me( @Host() viewer: Personnel) {
-        return viewer
-    }
-
     @Mutation(() => LoginResponse)
     @UseGuards(GqlAuthGuard)
     login(@Args('loginInput') loginInput: LoginInput, @Context() context ){
         return this.authservice.login(context.user);
     }
-  
+
+
     @Mutation(() => LoginResponsePersonnel)
     @UseGuards(GqlAuthGuard)
     loginpersonnel(@Args('loginInput') loginInput: LoginInput, @Context() context ){
         return this.authservice.loginpersonnel(context.personnel);
+    }
+
+    @Query(() => Personnel)
+    @UseGuards(GqlAuthGuard)
+    async me( @Host() viewer: Personnel) {
+        return viewer
     }
 
 }

@@ -75,7 +75,7 @@
               </Link>
             </AccordionPanel>
           </AccordionItem>
-          <AccordionItem>
+          <AccordionItem> 
             <AccordionButton pl={0} my={2}>
               <Flex align="center" gap="1">
                 <Icon as={IoMdSchool} />

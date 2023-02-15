@@ -43,8 +43,9 @@ const SidebarLayout = ({ children }) => {
   
    const { userRole } = useAuth();
 
-  const role = userRole;
-
+  // const role = userRole;
+  const role = "ADMIN"
+  
   return (
    
     <VStack

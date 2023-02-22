@@ -26,8 +26,8 @@ export class StudentUpdateInput {
   @Field({ nullable: true })
   sex!: string;
 
-  @Field({ nullable: true })
-  classe!: string;
+  // @Field({ nullable: true })
+  // classe!: string;
 
   @Field({ nullable: true })
   adress!: string;
@@ -38,9 +38,8 @@ export class StudentUpdateInput {
   // @Field({defaultValue:true})
   // old!: boolean;
 
-   @Field({nullable:true})
-  categoryStudent!: string;
-
+  @Field({nullable:true})
+  categoryStudentId!: string
 
   @Field({nullable:true})
   fatherFirstName!: string;

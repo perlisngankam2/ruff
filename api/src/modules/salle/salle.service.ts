@@ -38,11 +38,19 @@ export class SalleService {
         // const niveau = input.niveau
         // ? await this.niveauEtude.findByOne({id:input.niveau.ID})
         // : await this.niveauEtude.create(input.niveau)
+        wrap(salle).assign(
+          {
+          name : input.name,
+          niveau : input.niveauEtudeId,
+          section : input.section,
+          cycle : input.cycle
+          },
+          {
+            em: this.em
+          }
+        )
 
-
-        salle.name = input.name
-        salle.section = input.section
-        salle.cycle = input.cycle
+       
         // salle.montantPension = input.montantPension
         // salle.effectif = input.effectif
         // salle.niveau.id = niveau.id
@@ -79,6 +87,7 @@ export class SalleService {
           name: input.name,
           section: input.section,
           cycle: input.cycle,
+          niveau: input.niveauEtudeId
           // montantPension : input.montantPension
         },
         {
@@ -104,8 +113,9 @@ export class SalleService {
           } 
         wrap(salle).assign({
             name: input.name || salle.name,
-            section:input.section|| salle.section,
-            cycle:input.cycle || salle.cycle,
+            section : input.section|| salle.section,
+            cycle : input.cycle || salle.cycle,
+            niveau: input.niveauEtudeId || salle.niveau
             // montantPension: input.montantPension || salle.montantPension
         },
         { em: this.em },

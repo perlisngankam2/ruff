@@ -32,14 +32,11 @@ export class PersonnelUpdateInput {
   @Field({nullable:true})
   fonction?: Role;
 
-  @Field(()=>ID,{nullable:true})
-  personnelCategory?: string;
-
   // @Field({nullable:true})
   // matricule?: string;
 
   @Field({nullable:true})
-  childNumber?: string;
+  childNumber?: number;
 
   @Field({nullable:true})
   dateOfBirth!: string;
@@ -49,4 +46,7 @@ export class PersonnelUpdateInput {
 
   @Field()
   user?: UserCreateInput
+
+  @Field(()=>ID, {nullable:true})
+  categoryPersonnelId?: string;
 }

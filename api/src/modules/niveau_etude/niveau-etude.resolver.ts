@@ -21,27 +21,27 @@ export class NiveauEtudeResolver {
   constructor(private readonly niveauEtudeService: NiveauEtudeService) {}
 
   @Mutation(() => NiveauEtude)
-  async createNiveauetude(@Args('niveauEtude') Input: NiveauEtudeCreateInput) {
+  async createNiveauEtude(@Args('niveauEtude') Input: NiveauEtudeCreateInput) {
     return await this.niveauEtudeService.create(Input);
   }
 
    @Mutation(() => NiveauEtude)
-  async updateniveauetude(@Args('id', { type: () => String }) id: string, Input: NiveauEtudeUpdateInput) {
+  async updateNiveauEtude(@Args('id', { type: () => String }) id: string, Input: NiveauEtudeUpdateInput) {
     return await this.niveauEtudeService.update(id,Input);
   }
 
   @Mutation(()=>NiveauEtude)
-  async deleteniveauetude(@Args('id') id:string){
+  async deleteNiveauEtude(@Args('id') id:string){
    return await this.niveauEtudeService.delete(id)
   }
 
   @Query(() => [NiveauEtude])
-  async findAllniveauetude() {
+  async findAllNiveauEtude() {
     return await this.niveauEtudeService.getAll()
   }
   
   @Query(() => NiveauEtude, { name: 'niveaEtude' })
-  async findOneniveauetude(@Args('id', { type: () => String }) id: string) {
+  async findOneNiveauEtude(@Args('id', { type: () => String }) id: string) {
     return await this.niveauEtudeService.findByOne(id);
   }
 

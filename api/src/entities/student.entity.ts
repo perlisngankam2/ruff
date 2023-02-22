@@ -49,9 +49,9 @@ export class Student {
   @Property({ nullable: true })
   sex!: string;
 
-  @Field({ nullable: true })
-  @Property({ nullable: true })
-  classe!: string;
+  // @Field({ nullable: true })
+  // @Property({ nullable: true })
+  // classe!: string;
 
   @Field({ nullable: true })
   @Property({ nullable: true })

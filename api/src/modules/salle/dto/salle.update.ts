@@ -20,7 +20,9 @@ export class SalleUpdateInput {
 
   // @Field({nullable:true})
   // montantPension?: number;
-
+  @Field(()=>ID, {nullable:true})
+  niveauEtudeId?: string;
+  
   @Field({nullable:true,defaultValue:0})
   effectif?: number;
 

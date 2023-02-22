@@ -22,6 +22,9 @@ export class SalleCreateInput {
   @Field({nullable:true,defaultValue:0})
   effectif?: number;
 
+  @Field(()=>ID, {nullable:true})
+  niveauEtudeId?: string;
+ 
   @Field({nullable:true})
   niveau: NiveauEtudeCreateInput
 }

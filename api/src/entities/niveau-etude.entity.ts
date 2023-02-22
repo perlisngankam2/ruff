@@ -66,12 +66,13 @@ export class NiveauEtude{
 
   // @OneToOne(() => FraisInscription, (fraisInscription) => fraisInscription.niveauEtude, {
   //     owner: false,
-  //     nullable: true,
   //   })
   // fraisInscription!: IdentifiedReference<FraisInscription> | null;
-
-  @OneToMany(() => Cycle, (cycle) => cycle.niveau)
-  cycle = new Collection<Cycle>(this); 
+  @ManyToOne(() => Cycle, {
+    nullable: true,
+    onDelete: 'CASCADE',
+  })
+  cycle!: IdentifiedReference<Cycle> | null;
 
   @OneToMany(() => Salle, (salle) => salle.niveau)
   salle = new Collection<Salle>(this);

@@ -65,17 +65,6 @@ export class Student {
   // @Property({ default:false })
   // old!: boolean;
 
-  @Field({ nullable: true })
-  @Property({ nullable: true })
-  categoryStudent!: string;
-
-  @Field({ nullable: true })
-  @Property({nullable:true})
-  section!: string;
-
-  @Field({ nullable: true })
-  @Property({nullable:true})
-  cycle!: string;
   
   @Field({ nullable: true })
   @Property({ nullable: true })
@@ -170,11 +159,6 @@ export class Student {
   })
   localisation!:IdentifiedReference<Localisation>|null
 
-  //  @ManyToOne(() => Inscription, {
-  //    nullable: true,
-  //    onDelete: 'CASCADE',
-  //  })
-  //  inscription!: IdentifiedReference<Inscription> | null;
 
   @OneToOne(() => Inscription, (inscription) => inscription.student, {
     owner: false,

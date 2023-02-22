@@ -33,6 +33,10 @@ export class Inscription{
     @Field({ nullable: true })
     @Property({nullable:true})
     description!: string;
+    
+    @Field({ nullable: true })
+    @Property({nullable:true})
+    dateLine!: string;
 
     @Field({ defaultValue: false })
     @Property({default:false})

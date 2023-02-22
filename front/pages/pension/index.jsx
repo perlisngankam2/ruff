@@ -31,7 +31,8 @@ import {
   AlertDialogHeader,
   AlertDialogCloseButton,
   FormControl,
-  FormLabel
+  FormLabel,
+  useToast
 } from "@chakra-ui/react";
 
 import DefaultLayout from "../../components/layouts/DefaultLayout";
@@ -39,12 +40,15 @@ import React, { useEffect, useState, useContext } from "react";
 import { Router, useRouter } from "next/router";
 import { GlobalContext } from "../../contexts/cyclesection/AppContext";
 import {IoIosAdd} from "react-icons/io"
+import {CREATE_ANNEE_ACADEMIQUE} from "../../graphql/Mutation"
+import { useMutation, useQuery } from "@apollo/client";
+import { GET_ALL_ANNEE_ACADEMIQUE } from "../../graphql/Queries";
 
 const Pension = () => {
 
     // const router = useRouter();
     const [query , setQuery] = useState("");
-    const [anneeAcademique, setAnneeAcademique] = useState("");
+    const [name, setName] = useState("");
     // const [cycle, setCycle] = useState();
     // const [name, setName] = useState("");
     // const [section, setSection] = useState("");
@@ -65,11 +69,16 @@ const Pension = () => {
     // const{ data:dataDetailsCycle} = useQuery(GET_ONE_CYCLE);
     // const [editCycle] = useMutation(UPDATE_CYCLE);
     // const [createCycle, {error}] = useMutation(CREATE_CYCLE);
+    const [createAnnerAccademique, {loading, error}] = useMutation(CREATE_ANNEE_ACADEMIQUE);
+    const {data:dataAnneAcademique} = useQuery(GET_ALL_ANNEE_ACADEMIQUE);
     const { isOpen, onOpen, onClose} = useDisclosure();
+    // const { onOpen} = useDisclosure();
+
     const [isformOpen, setIsFormOpen] = useState(false)
     const cancelRef = React.useRef();
     const router = useRouter();
-   
+
+    const toast= useToast();
 
 
   //  const defaultValues = useMemo(() =>{
@@ -97,7 +106,31 @@ const Pension = () => {
     //   })
     // }
 
+    //creation d'une annee academique
 
+    const addAnneeAcademique = async () =>{
+      await createAnnerAccademique({
+        variables:{
+          anneeAccademique: {
+            name: name
+        }
+      }
+      })
+      toast({
+        title: "Creation d'une annee academique.",
+        description: "Annee academique créée avec succes.",
+        status: "success",
+        duration: 3000,
+        isClosable: true,
+      });
+    }
+
+    useEffect(() => {
+      console.log(dataAnneAcademique)
+    })
+    
+    if (loading) return <Text>Chargement en cour...</Text>
+    if (error) return <Text>Une erreur s'est produite!</Text>
   
   return (
     <DefaultLayout>
@@ -138,8 +171,10 @@ const Pension = () => {
           </Select> */}
           {/* <SectionCreate/> */}
         </Flex>
-        <Box mt={10}>
-          <Box display={{md:"flex"}}> 
+        <Box mt={10} mb={5}>
+          <Box 
+          display={{md:"flex"}}
+          > 
             <Heading 
                mb={5}
               size="md"
@@ -159,51 +194,63 @@ const Pension = () => {
               onClick={onOpen}
             />
           </Box>
-          <AlertDialog
-            motionPreset='slideInBottom'
-            leastDestructiveRef={cancelRef}
-            onClose={onClose}
-            isOpen={isOpen}
-            isCentered
-          >
-            <AlertDialogOverlay />
-            <AlertDialogContent>
-              <AlertDialogHeader
-                 textAlign={"center"}
-              >
-                Ajoutez une anneee academique
-              </AlertDialogHeader>
-              <AlertDialogCloseButton />
-              <AlertDialogBody>
-              <Box>
-                <FormControl>
-                    <FormLabel>Nom</FormLabel>
-                    <Input 
-                        type={'text'} 
-                        name="anneeAcademique"
-                        placeholder="Annee academique"
-                        onChange = {(event) => setAnneeAcademique(event.target.value)}
-                        value={anneeAcademique}
-                    />
-                </FormControl>
-                </Box>
-              </AlertDialogBody>
-              <AlertDialogFooter>
-                <Button
-                   ref={cancelRef} 
-                   onClick={onClose}
-                   colorScheme='red'
+          <Box as="form"> 
+            <AlertDialog
+              motionPreset='slideInBottom'
+              leastDestructiveRef={cancelRef}
+              onClose={onClose}
+              // isOpen={isOpen}
+              isCentered
+            >
+              <AlertDialogOverlay />
+              <AlertDialogContent>
+                <AlertDialogHeader
+                  textAlign={"center"}
                 >
-                  annuler
-                </Button>
-                <Button colorScheme='green' ml={3}>
-                  Creer
-                </Button>
-              </AlertDialogFooter>
-            </AlertDialogContent>
-          </AlertDialog>
+                  Ajoutez une anneee academique
+                </AlertDialogHeader>
+                <AlertDialogCloseButton />
+                <AlertDialogBody>
+                <Box>
+                  <FormControl>
+                      <FormLabel>Nom</FormLabel>
+                      <Input 
+                          type={'text'} 
+                          name="name"
+                          placeholder="Annee academique"
+                          onChange = {(event) => setName(event.target.value)}
+                          value={name}
+                      />
+                  </FormControl>
+                  </Box>
+                </AlertDialogBody>
+                <AlertDialogFooter>
+                  <Button
+                    ref={cancelRef} 
+                    onClick={onClose}
+                    colorScheme='red'
+                  >
+                    annuler
+                  </Button>
+                  <Button 
+                    colorScheme='green' 
+                    ml={3}
+                    onClick = {addAnneeAcademique}
+                  >
+                    Creer
+                  </Button>
+                </AlertDialogFooter>
+              </AlertDialogContent>
+            </AlertDialog>
+          </Box>
         </Box>
-        <Box width={["400px", "400px","400px"]} border="1px" borderColor={"GREEN"}>
+
+        {/* tableau de la liste des annee academique */}
+        <Box 
+          width={["400px", "400px","400px"]} 
+          border="1px" 
+          borderColor={"GREEN"}
+        >
           <TableContainer>
             <Table size='sm' variant='striped' >
               <Thead>
@@ -213,24 +260,133 @@ const Pension = () => {
                 </Tr>
               </Thead>
               <Tbody>
-                <Tr>
-                  <Td>2022-2023</Td>
+                {dataAnneAcademique && 
+                (dataAnneAcademique.findAllAnnerAccademique.map((anneeAccademique, index) =>( 
+                <Tr key={index}>
+                  <Td>{anneeAccademique.name}</Td>
                 </Tr>
+                ))
+                )}
               </Tbody>
             </Table>
           </TableContainer>
         </Box>
 
-        <Box mt={50}>
+        <Box mt={"50px"} >
           <Box> 
+            <Box>
               <Heading 
-              mt={2}
+                mt={2}
                 size="lg"
-                textAlign={"center"}
                 color = "colors.quinzaine"
+                mb={10}
                 >
-                  Cycles
+                  Frais de scolarite
               </Heading>
+                <Icon 
+                as={IoIosAdd} 
+                boxSize="30px"
+                color={"colors.greencolor"}
+                // _hover={bg:}
+                rounded="full"
+                ml={["10px", "10px", "10px" ]}
+                _hover={{background:"colors.bluecolor"}}
+                // onClick={onOpenFrais}
+              />
+            </Box>
+
+              <AlertDialog
+                motionPreset='slideInBottom'
+                leastDestructiveRef={cancelRef}
+                onClose={onClose}
+                // isOpen={}
+                isCentered
+               >
+              <AlertDialogOverlay />
+              <AlertDialogContent>
+                <AlertDialogHeader
+                  textAlign={"center"}
+                >
+                  Ajoutez frais scolarite
+                </AlertDialogHeader>
+                <AlertDialogCloseButton />
+                <AlertDialogBody >
+                  <Box >
+                    <FormControl >
+                        <FormLabel>Classe</FormLabel>
+                        <Select 
+                            type={'text'} 
+                            name="anneeAcademique"
+                            placeholder="Annee academique"
+                        >
+                          <option>cp</option>
+                          <option>cc</option>
+                        </Select>
+                    </FormControl>
+                    <FormControl mt={4}>
+                        <FormLabel>Inscription</FormLabel>
+                        <Input 
+                            type={'text'} 
+                            name="anneeAcademique"
+                            placeholder="Annee academique"
+                        />
+                    </FormControl>
+                    <FormControl mt={4}>
+                        <FormLabel>Premiere tranche</FormLabel>
+                        <Input 
+                            type={'text'} 
+                            name="anneeAcademique"
+                            placeholder="Annee academique"
+                        />
+                    </FormControl>
+                    <FormControl mt={4}>
+                        <FormLabel>Deuxiere tranche</FormLabel>
+                        <Input 
+                            type={'text'} 
+                            name="anneeAcademique"
+                            placeholder="Annee academique"
+                        />
+                    </FormControl>
+                  </Box>
+                </AlertDialogBody>
+                <AlertDialogFooter>
+                  <Button
+                    ref={cancelRef} 
+                    onClick={onClose}
+                    colorScheme='red'
+                  >
+                    annuler
+                  </Button>
+                  <Button colorScheme='green' ml={3}>
+                    Creer
+                  </Button>
+                </AlertDialogFooter>
+              </AlertDialogContent>
+            </AlertDialog>
+            <Box>
+              <TableContainer>
+                  <Table size='sm'>
+                    <Thead>
+                      <Tr>
+                        <Th>Classe</Th>
+                        <Th>Montant inscription</Th>
+                        <Th >Montant premiere tranche</Th>
+                        <Th >Montant deuxiere tranche</Th>
+                      </Tr>
+                    </Thead>
+                    <Tbody>
+                      <Tr>
+                        <Td>inches</Td>
+                        <Td>millimetres (mm)</Td>
+                        <Td>25.4</Td>
+                        <Td >Monntant</Td>
+
+                      </Tr>
+                    </Tbody>
+                    
+                  </Table>
+                </TableContainer>
+              </Box>
           </Box>
             
         </Box>

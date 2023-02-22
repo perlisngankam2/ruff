@@ -93,7 +93,6 @@ export const GET_ALL_CYCLE =  gql `
         findAllcycle {
             id
             name
-            section
         }
     }
 `;
@@ -164,13 +163,25 @@ export const GET_STUDENT_BY_ID =  gql `
     }
 `;
 
+
+//annee academique
+export const GET_ALL_ANNEE_ACADEMIQUE = gql `
+query findAllAnnerAccademique {
+    findAllAnnerAccademique {
+        id
+        name
+        description
+        anneeAccademique
+    }
+}
+`
+
 //one cycle
 export const GET_ONE_CYCLE =  gql `
 query findOnecycle ($id: String!) {
     findOnecycle (id: $id) {
         id
         name
-        section
     }
 }
 `;

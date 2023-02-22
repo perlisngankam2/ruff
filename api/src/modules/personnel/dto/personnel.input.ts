@@ -30,7 +30,7 @@ export class PersonnelCreateInput {
   @Field({nullable:true})
   fonction?: Role;
 
-  @Field({nullable:true})
+  @Field(()=>ID,{nullable:true})
   personnelCategory?: string;
 
   @Field({nullable:true})

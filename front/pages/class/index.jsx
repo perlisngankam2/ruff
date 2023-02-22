@@ -53,11 +53,8 @@ const Class = () => {
   const router = useRouter();
   const { isOpen, onToggle, onClose } = useDisclosure()
   const [deleteClasse] = useMutation(DELETE_SALLE);
-  const {data:dataClasse} = useQuery(GET_ALL_CLASS);
-
-  useEffect(() => {
-    console.log(dataClasse?.findAllsalle);
-  })
+const {data:dataClasse} = useQuery(GET_ALL_CLASS);
+  
 
   const removeClass = async(id) => {
     await deleteClasse({
@@ -68,6 +65,9 @@ const Class = () => {
     })
   }
 
+  useEffect(() => {
+    console.log(dataClasse?.findAllsalle);
+  })
   // const handleClose = () => {
   //   setShow(false)
   // }
@@ -139,8 +139,8 @@ const Class = () => {
                   <Thead>
                   <Tr>
                       <Th>Nom</Th>
-                      <Th>Cycle</Th>
-                      <Th >section</Th>
+                      {/* <Th>Cycle</Th>
+                      <Th >section</Th> */}
                       <Th >Action</Th>
                   </Tr>
                   </Thead>
@@ -149,8 +149,10 @@ const Class = () => {
                      dataClasse.findAllsalle.map((salle, index) =>(
                       <Tr key={index}>
                         <Td borderColor={'#C6B062'}>{salle.name}</Td>
-                        <Td borderColor={'#C6B062'}>{salle.cycle}</Td>
-                        <Td borderColor={'#C6B062'}>{salle.section}</Td>
+                        {/* <Td borderColor={'#C6B062'}>{salle.cycle}</Td> */}
+                        {/* <Td borderColor={'#C6B062'}>{salle.section}</Td> */}
+                        {/* <Td borderColor={'#C6B062'}>{salle.montantPension}</Td> */}
+
                         {/* <Td borderColor={'#C6B062'}>
                             <Avatar 
                                 size='xs' 

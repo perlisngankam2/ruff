@@ -27,27 +27,22 @@ type FraisInscription {
   dateLine: DateTime
 }
 
-type Cycle {
-  id: ID!
-  name: String
-  section: String
-}
-
 type Section {
   id: ID!
   name: String
   description: String
 }
 
-type SectionCycle {
+type Cycle {
   id: ID!
-  description: String
+  name: String
 }
 
 type NiveauEtude {
   id: ID!
   name: String
   description: String
+  montantPension: Float
 }
 
 type CategoriePrime {
@@ -108,7 +103,6 @@ type Personnel {
   firstName: String
   lastName: String
   phoneNumber: String
-  personnelCategory: String
   situationMatrimonial: String
   sexe: String
   fonction: String
@@ -143,7 +137,7 @@ type Tranche {
   name: String
   description: String
   dateLine: DateTime
-  montant: Float!
+  montant: Float
 }
 
 type Pension {
@@ -176,6 +170,7 @@ type Inscription {
   id: ID!
   name: String
   description: String
+  dateLine: String
   complete: Boolean!
   montant: Float!
   reste: Float!
@@ -202,9 +197,6 @@ type Student {
   classe: String
   adress: String
   transport: String
-  categoryStudent: String
-  section: String
-  cycle: String
   fatherFirstName: String
   fatherLastName: String
   fatherPhoneNumber: String
@@ -251,6 +243,11 @@ enum Role {
   FONDATEUR
   PRINCIPAL
   GESTIONAIRE
+}
+
+type SectionCycle {
+  id: ID!
+  description: String
 }
 
 type LoginResponse {
@@ -317,7 +314,8 @@ type Query {
   findAll: [Inscription!]!
   inscription(id: String!): Inscription!
   findAllavanceinscription: [AvanceInscription!]!
-  avanceInscription(id: String!): AvanceInscription!
+  findOneavanceincription(id: String!): AvanceInscription!
+  getcumullativesum(id: String!): Float!
   findAllfraisinscription: [FraisInscription!]!
   fraisInscription(id: String!): FraisInscription!
   findAllparents: [Parent!]!
@@ -397,7 +395,7 @@ type Mutation {
   updateTrancheStudent(id: String!): TrancheStudent!
   deletetranchestudent(id: String!): TrancheStudent!
   createInscription(inscription: InscriptionInput!): Inscription!
-  update(inscription: InscriptionInput!, id: String!): Inscription!
+  update(inscription: InscriptionUpdateInput!, id: String!): Inscription!
   createAvanceInscription(avanceInscription: AvanceInscriptionCreateInput!): AvanceInscription!
   updateavanceinscription(inscription: AvanceInscriptionUpdateInput!): AvanceInscription!
   createFraisInscription(fraisInscription: FraisInscriptionInput!): FraisInscription!
@@ -441,8 +439,7 @@ input StudentCreateInput {
   adress: String
   transport: String
   categoryStudent: String
-  section: String
-  cycle: String
+  inscription: ID
   fatherFirstName: String
   fatherLastName: String
   fatherPhoneNumber: String
@@ -499,7 +496,7 @@ input PersonnelCreateInput {
   sexe: String
   phoneNumber: String
   fonction: String
-  personnelCategory: String
+  personnelCategory: ID
   status: String
   childNumber: String
   dateOfBirth: String
@@ -518,7 +515,7 @@ input PersonnelUpdateInput {
   sexe: String
   phoneNumber: String
   fonction: String
-  personnelCategory: String
+  personnelCategory: ID
   childNumber: String
   dateOfBirth: String
   dateOfStartWork: String
@@ -635,6 +632,7 @@ input NiveauEtudeUpdateInput {
   ID: String
   name: String
   description: String
+  montantPension: Float
   sectionCycle: SectionCycleUpdateInput
 }
 
@@ -649,7 +647,7 @@ input SectionCycleUpdateInput {
 input CycleUpdateInput {
   ID: String
   name: String
-  section: String
+  sectionId: ID
 }
 
 input SectionUpdateInput {
@@ -693,13 +691,14 @@ input SectionCreateInput {
 input CycleCreateInput {
   ID: String
   name: String
-  section: String
+  sectionId: ID
 }
 
 input NiveauEtudeCreateInput {
   ID: String
   name: String
   description: String
+  montantPension: Float
   sectionCycle: SectionCycleCreateInput
 }
 
@@ -714,7 +713,8 @@ input SalleCreateInput {
   name: String
   section: String
   cycle: String
-  niveauId: String
+  effectif: Float = 0
+  niveau: NiveauEtudeCreateInput
 }
 
 input AnneeAccademiqueCreateInput {
@@ -731,7 +731,7 @@ input TrancheCreateInput {
   ID: String
   name: String
   description: String
-  montant: Float! = 0
+  montant: Float
   dateLine: DateTime!
   pension: PensionCreateInput!
 }
@@ -776,52 +776,67 @@ input TrancheStudentCreateInput {
 }
 
 input InscriptionInput {
-  ID: String
+  fraisincription_id: ID
+  anneacademique_id: ID
+  student_id: ID
   name: String
   description: String
-  montant: Float! = 0
-  dateLine: DateTime!
-  fraisInscription: NiveauEtudeCreateInput
+  montant: Float
+  dateLine: String
+  fraisInscription: FraisInscriptionInput
   student: StudentCreateInput
-  anneeAccademique: AnneeAccademiqueCreateInput!
-}
-
-input AvanceInscriptionCreateInput {
-  ID: String
-  name: String
-  description: String
-  montant: Float! = 0
-  reste: Float! = 0
-  inscription: InscriptionInput!
-}
-
-input AvanceInscriptionUpdateInput {
-  ID: String
-  name: String
-  description: String
-  montant: Float! = 0
-  reste: Float! = 0
-  inscription: InscriptionInput!
+  anneeAccademique: AnneeAccademiqueCreateInput
 }
 
 input FraisInscriptionInput {
-  ID: String
+  salle_id: ID
+  anneAcademique_id: ID
   description: String
-  montant: Float! = 0
-  dateLine: DateTime!
-  niveauEtude: NiveauEtudeCreateInput
-  salle: SalleCreateInput!
-  anneeAccademique: AnneeAccademiqueCreateInput!
+  montant: Float = 0
+  dateLine: DateTime
+  salle: SalleCreateInput
+  anneeAccademique: AnneeAccademiqueCreateInput
+}
+
+input InscriptionUpdateInput {
+  fraisincription_id: ID
+  anneacademique_id: ID
+  student_id: ID
+  name: String
+  description: String
+  montant: Float
+  dateLine: String
+  fraisInscription: UpdateFraisInscriptionInput
+  student: StudentCreateInput
+  anneeAccademique: AnneeAccademiqueCreateInput
 }
 
 input UpdateFraisInscriptionInput {
-  ID: String
+  salle_id: ID
+  anneAcademique_id: ID
   description: String
-  montant: Float! = 0
-  dateLine: DateTime!
-  niveauEtude: NiveauEtudeCreateInput
-  salle: SalleUpdateInput!
-  anneeAccademique: AnneeAccademiqueCreateInput!
+  montant: Float = 0
+  dateLine: DateTime
+  salle: SalleUpdateInput
+  anneeAccademique: AnneeAccademiqueCreateInput
+}
+
+input AvanceInscriptionCreateInput {
+  inscription_id: ID
+  name: String
+  description: String
+  montant: Float = 0
+  reste: Float = 0
+  inscription: InscriptionInput
+}
+
+input AvanceInscriptionUpdateInput {
+  inscription_id: ID
+  name: String
+  description: String
+  montant: Float = 0
+  reste: Float = 0
+  inscription: InscriptionUpdateInput
 }
 
 input ParentCreateInput {

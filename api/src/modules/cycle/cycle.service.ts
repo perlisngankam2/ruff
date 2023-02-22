@@ -29,14 +29,23 @@ export class CycleService {
         input: CycleCreateInput,
       ): Promise<Cycle> {  
         
-        const secid = this.sectionService.findById(input.section)
-        if(!secid){
-          throw Error("section not found")
-        }
+        // const section = input.section
+        // ? await this.sectionService.findByOne({id:input.sectionId})
+        // : await this.sectionService.create(input.section)
+       
+         await this.sectionService.findByOne({id:input.sectionId})
         
         const cycle = new Cycle()
-        cycle.name = input.name
-        cycle.section = input.section || null
+
+        wrap(cycle).assign(
+          {
+          name: input.name,
+          section:input.sectionId
+          },
+          {
+            em: this.em
+          }
+        )
         
 
         await this.cycleRepository.persistAndFlush(cycle)
@@ -52,14 +61,17 @@ export class CycleService {
       }
     
       getAll(): Promise<Cycle[]> {
-        return this.cycleRepository.findAll()
+        return this.cycleRepository.find(
+          {
+          // relaions: ['section']
+          })
       }
       
       async update(id:string, input: CycleUpdateInput): Promise<Cycle> {
         const cycle = await this.findById(id)
         wrap(cycle).assign({
             name: input.name || cycle.name,
-            section: input.section || cycle.section
+            section: input.sectionId || cycle.section
         },
         { em: this.em },
     );

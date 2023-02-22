@@ -17,7 +17,16 @@ export class NiveauEtudeUpdateInput {
 
   @Field({nullable:true})
   description?: string;
+  
+  // @Field(()=>ID,{nullable:true})
+  // salle?: string;
+  
+  // @Field({nullable:true})
+  // cycle?: string;
 
   @Field({nullable:true})
-  sectionCycle:SectionCycleUpdateInput
+  montantPension?: number;
+
+  @Field({nullable:true})
+  sectionCycle?:SectionCycleUpdateInput
 }

@@ -1,5 +1,5 @@
-//  eslint-disable @typescript-eslint/no-empty-function
 /* eslint-disable prettier/prettier */
+
 import {
     Collection,
     Entity,
@@ -43,7 +43,7 @@ export class SalleService {
         salle.name = input.name
         salle.section = input.section
         salle.cycle = input.cycle
-
+        // salle.montantPension = input.montantPension
         // salle.effectif = input.effectif
         // salle.niveau.id = niveau.id
         
@@ -78,7 +78,8 @@ export class SalleService {
         wrap(salle).assign({
           name: input.name,
           section: input.section,
-          cycle: input.cycle
+          cycle: input.cycle,
+          // montantPension : input.montantPension
         },
         {
           em: this.em
@@ -105,6 +106,7 @@ export class SalleService {
             name: input.name || salle.name,
             section:input.section|| salle.section,
             cycle:input.cycle || salle.cycle,
+            // montantPension: input.montantPension || salle.montantPension
         },
         { em: this.em },
         );

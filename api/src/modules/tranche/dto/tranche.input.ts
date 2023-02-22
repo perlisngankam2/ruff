@@ -14,7 +14,7 @@ export class TrancheCreateInput {
   description?: string;
 
 
-  @Field({defaultValue:0})
+  @Field({nullable:true})
   montant?: number;
 
   @Field({})

@@ -29,11 +29,15 @@ const AddClass = () => {
   const [name, setName] = useState();
   const [section, setSection] = useState();
   const [cycle, setCycle] = useState();
-
+  const [montantPension, setMontantPension] = useState();
   const [createSalle] = useMutation(CREATE_SALLE);
   const {data:dataSection} = useQuery(GET_ALL_SECTION);
   const {data:dataCycle} = useQuery(GET_ALL_CYCLE);
 
+  // const bb = parseInt(montantPension)
+  // // console.log(parseFloat(montantPension))
+  // console.log(typeof bb)
+  
   let input;
   
   // const addSalle = (event) => {
@@ -43,7 +47,7 @@ const AddClass = () => {
   // if (loading) return "creation en cour..."
   // if(error)  return "erreur! ${error.message}";
   
-
+ 
   useEffect(() => {
     console.log(dataSection?.findAllsection)
     console.log("j")
@@ -57,13 +61,15 @@ const AddClass = () => {
     console.log(name);
     console.log(section);
     console.log(cycle)
+    console.log(montantPension)
 
     const cycleData = await createSalle({
         variables: {
             salle: {
                 name: name,
                 section: section,
-                cycle: cycle
+                cycle: cycle,
+                // montantPension: parseInt(montantPension)
             }
         }
     })
@@ -77,7 +83,6 @@ const AddClass = () => {
     });
     router.push("/class")
 }
-
 
 
   return (
@@ -136,7 +141,7 @@ const AddClass = () => {
                             ))
                         )}
                       </Select>
-                  </FormControl>
+                  </FormControl> 
                   <FormControl mt="15px">
                       <FormLabel>Cycle</FormLabel>
                       <Select 
@@ -155,7 +160,17 @@ const AddClass = () => {
                               ))
                           )}
                       </Select>
-                  </FormControl>
+                  </FormControl> 
+                  {/* <FormControl mt="15px">
+                      <FormLabel>Pension</FormLabel>
+                     <Input
+                       type={"number"}
+                       name="montantPension"
+                       value={montantPension}
+                       placeholder="Montant de la pension"
+                       onChange ={(event) => setMontantPension(event.target.value)}
+                     />
+                 </FormControl>*/}
                   <Flex gap={5} pt="30px">
                     <Button colorScheme="red" onClick={() => router.back()}>
                       Annuler

@@ -36,7 +36,7 @@ export class CategoriePersonnel {
   description!: string;
 
   // relation with another Entites
-  @OneToMany(() => Personnel, personnel => personnel.categorie)
+  @OneToMany(() => Personnel, personnel => personnel.category)
   personnel = new Collection<Personnel>(this);
 
   @ManyToOne(() => Prime ,{

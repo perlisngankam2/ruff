@@ -42,7 +42,7 @@ export class SalaireService {
 
     
     // check categorie prime
-    const categorie = personnel.categorie.getEntity()
+    const categorie = personnel.category.getEntity()
     const salaireBase = categorie.salaireBase.getEntity().montant
     const primes = await personnel.prime.loadItems()
     const retenus = (await personnel.retenue.loadItems())

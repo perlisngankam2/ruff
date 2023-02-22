@@ -107,27 +107,28 @@ export class SectionCycleService {
     }   
 
     async EtatInscriptionSection(id:string){
-      const sectionCycle = await this.sectionCycleRepository.findOneOrFail(id)
-      let montantAttendu = 0
-      let montantRecu = 0
-      const section  = sectionCycle.niveau
-      for(let i =0; i < section.length; i++){
-        for(let j = 0; j < section[i].salle.length; j++ ){
-          montantAttendu += section[i].salle[j].effectif*section[i].salle[j].fraisInscription.getEntity().montant
-          const listeInscription = section[i].salle[j].fraisInscription.getEntity().inscription
-          for (let k = 0 ; k < listeInscription.length; k++){
-              montantRecu += listeInscription[k].montant
-          }
-        }
-      }
+    //   const section  = sectionCycle.cycle
+    //   for(leconst sectionCycle = await this.sectionCycleRepository.findOneOrFail(id)
+    //   let montantAttendu = 0
+    //   let montantRecu = 0
+    //   t i =0; i < section.length; i++){
+    //     for(let j = 0; j < section[i].salle.length; j++ ){
+    //       montantAttendu += section[i].salle[j].effectif*section[i].salle[j].fraisInscription.getEntity().montant
+    //       const listeInscription = section[i].salle[j].fraisInscription.getEntity().inscription
+    //       for (let k = 0 ; k < listeInscription.length; k++){
+    //           montantRecu += listeInscription[k].montant
+    //       }
+    //     }
+    //   }
 
-      return {
-            "sectionCycle": sectionCycle,
-            "montantAttendu" : montantAttendu,
-            "montantRecu": montantRecu,
-            "RAR": montantAttendu - montantRecu,
-            "TRAR": ((montantAttendu - montantRecu)/montantAttendu)*100
-      }
+    //   return {
+    //         "sectionCycle": sectionCycle,
+    //         "montantAttendu" : montantAttendu,
+    //         "montantRecu": montantRecu,
+    //         "RAR": montantAttendu - montantRecu,
+    //         "TRAR": ((montantAttendu - montantRecu)/montantAttendu)*100
+    //   }
 
-    } 
+  } 
+
 }

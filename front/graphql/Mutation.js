@@ -107,10 +107,34 @@ export const CREATE_CYCLE = gql `
         createCycle (cycle: $cycle) {
             id
             name
-            section
         }
     }
 `;
+
+export const CREATE_STUDY_LEVEL = gql `
+    mutation createNiveauetude ($niveauEtude: NiveauEtudeCreateInput!) {
+        createNiveauetude (niveauEtude: $niveauEtude) {
+            id
+            name
+            description
+            montantPension
+        }
+    }
+`;
+
+//annee academique
+
+export const CREATE_ANNEE_ACADEMIQUE = gql`
+mutation createAnnerAccademique ($anneeAccademique: AnneeAccademiqueCreateInput!) {
+    createAnnerAccademique (anneeAccademique: $anneeAccademique) {
+        id
+        name
+        description
+        anneeAccademique
+    }
+}
+`;
+
 
 export const fragmentCycle = gql` fragment CycleClass on cyle {
     id
@@ -169,9 +193,8 @@ export const DELETE_CYCLE = gql `
         deletecycle (id: $id) {
             id
             name
-            section
         }
-}
+    }
 `;
 
 export const DELETE_SALLE = gql `

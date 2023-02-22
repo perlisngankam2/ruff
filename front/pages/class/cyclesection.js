@@ -39,8 +39,7 @@ import { IoIosAdd } from "react-icons/io";
 import { Router, useRouter } from "next/router";
 import {FiEdit} from 'react-icons/fi';
 import {MdDelete} from 'react-icons/md';
-import { GET_ALL_SECTION, GET_ONE_CYCLE } from "../../graphql/Queries";
-import { GET_ALL_CYCLE } from "../../graphql/Queries";
+import { GET_ALL_SECTION, GET_ONE_CYCLE, GET_ALL_CYCLE } from "../../graphql/Queries";
 import { DELETE_SECTION, DELETE_CYCLE, UPDATE_CYCLE, CREATE_CYCLE} from "../../graphql/Mutation";
 import {UpdateCycle} from './updatecycle';
 import { useMutation, useQuery } from "@apollo/client"; 
@@ -71,7 +70,7 @@ const cyclesection = () => {
     // };
    
     const {data} = useQuery(GET_ALL_SECTION);
-    const{data:dataCycle} = useQuery(GET_ALL_CYCLE);
+    const {data:dataCycle} = useQuery(GET_ALL_CYCLE);
     const [id, setId] = useState(null)
     const [deleteSection ]= useMutation(DELETE_SECTION);
     const [deleteCycle] = useMutation(DELETE_CYCLE);
@@ -90,11 +89,10 @@ const cyclesection = () => {
   //     section = ""
   // })
 
-
      useEffect (() => {
       console.log(data?.findAllsection);
       setSection(data);
-      console.log(dataCycle?.findAllcycle)
+      console.log(dataCycle?.findAllcycle) 
       console.log("hh")
     });
 
@@ -120,18 +118,17 @@ const cyclesection = () => {
     } 
 
   
-
-  const updateCycle = async(value) => {
-        await editCycle({
-          variables:{
-            cycleId: cycle.id,
-            input : {
-              name: value.name,
-              section: value.section
-            }
-          }
-        });
-  };
+  // const updateCycle = async(value) => {
+  //       await editCycle({
+  //         variables:{
+  //           cycleId: cycle.id,
+  //           input : {
+  //             name: value.name,
+  //             section: value.section
+  //           }
+  //         }
+  //       });
+  // };
 
     const handleShowUpdateCycle = (cycle) => {
       // setId(cycle.id)
@@ -270,7 +267,8 @@ const cyclesection = () => {
                         dataCycle.findAllcycle.map((cycle, index) => ( 
                           <Tr key={index}>
                               <Td  borderColor={'#C6B062'}>{cycle.name}</Td>
-                              <Td  borderColor={'#C6B062'}>{cycle.section}</Td>
+                              {/* <Td  borderColor={'#C6B062'}>{cycle.section_id}</Td> */}
+                              <Td  borderColor={'#C6B062'}>pppp</Td>
                               <Td  borderColor={'#C6B062'}>
                               <Box display="flex">
                                 <Icon

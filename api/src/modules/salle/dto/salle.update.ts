@@ -8,7 +8,7 @@ import { NiveauEtudeCreateInput } from 'src/modules/niveau_etude/dto/niveau-etud
 export class SalleUpdateInput {
   @Field({nullable:true})
   ID?: string;
-
+  
   @Field({nullable:true})
   name?: string;
 
@@ -17,6 +17,9 @@ export class SalleUpdateInput {
 
   @Field({nullable:true})
   cycle?: string;
+
+  // @Field({nullable:true})
+  // montantPension?: number;
 
   @Field({nullable:true,defaultValue:0})
   effectif?: number;

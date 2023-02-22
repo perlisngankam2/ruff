@@ -33,7 +33,7 @@ export class PersonnelService {
 wrap(new_personnel).assign({
   firstName : input.firstName,
   lastName : input.lastName,
-  personnelCategory :input.personnelCategory,
+  category :input.personnelCategory,
   status : input.status,
   childNumber: input.childNumber,
   phoneNumber: input.phoneNumber,
@@ -83,7 +83,7 @@ wrap(new_personnel).assign({
     wrap(personnel).assign({
       firstName: input.firstName || personnel.firstName,
       lastName: input.lastName || personnel.lastName,
-      personnelCategory: input.personnelCategory || personnel.personnelCategory,
+      category: input.personnelCategory || personnel.category,
       status: input.status || personnel.status,
       phoneNumber: input.phoneNumber || personnel.phoneNumber,
       situationMatrimonial: input.situationMatrimonial || personnel.situationMatrimonial,

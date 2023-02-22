@@ -29,13 +29,18 @@ export class Cycle{
     @Property({nullable:true})
     name!: string;
 
-    @Field({ nullable: true })
-    @Property({nullable:true})
-    section!: string;
-
     @Property({ onCreate: () => new Date() })
     createdAt = new Date();
 
-    @OneToMany(() => SectionCycle, (sectionCycle) => sectionCycle.cycle)
-    sectionCycle = new Collection<SectionCycle>(this); 
+    @ManyToOne(() => NiveauEtude, {
+      nullable: true,
+      onDelete: 'CASCADE',
+    })
+    niveau!: IdentifiedReference<NiveauEtude> | null;
+
+    @ManyToOne(() => Section, {
+      nullable: true,
+      onDelete: 'CASCADE',
+    })
+    section!: IdentifiedReference<Section> | null;
    }

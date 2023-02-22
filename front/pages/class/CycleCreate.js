@@ -20,10 +20,10 @@ import {
   useToast
 } from '@chakra-ui/react';
 
-import React, {useEffect, useState, useMemo, useContext} from "react";
+import React, {useEffect, useState, useMemo, useContext, use} from "react";
 import { IoIosAdd } from "react-icons/io";
 import {useMutation, useQuery } from '@apollo/client';
-import { CREATE_CYCLE, UPDATE_CYCLE } from "../../graphql/Mutation";
+import {CREATE_CYCLE, UPDATE_CYCLE } from "../../graphql/Mutation";
 import { GET_ALL_SECTION, GET_ONE_CYCLE } from "../../graphql/Queries";
 import { useRouter } from "next/router";
 import { GlobalContext } from "../../contexts/cyclesection/AppContext";
@@ -56,7 +56,7 @@ const  CycleCreate =  (
 
 
     const [name, setName] = useState("");
-    const[section, setSection] = useState("");
+    const[sectionId, setSectionId] = useState("");
     const { isOpen, onOpen, onClose } = useDisclosure();
     const cancelRef = React.useRef();
     const [createCycle, {error}] = useMutation(CREATE_CYCLE);
@@ -70,6 +70,7 @@ const  CycleCreate =  (
 
     const cycleContext = useContext(GlobalContext);
 
+    console.log(sectionId)
 
     // const {
     //     handleSubmit,
@@ -160,14 +161,14 @@ const  CycleCreate =  (
         event.preventDefault();
         console.log('cccc');
   
-        console.log(cycleContext.name);
-        console.log(cycleContext.section);
+        console.log(name);
+        console.log(sectionId)
    
         const cycleData = await createCycle({
             variables: {
                 cycle: {
-                    name: cycleContext.name,
-                    section: cycleContext.section
+                    name: name,
+                    sectionId: sectionId
                 }
             }
         })
@@ -178,11 +179,11 @@ const  CycleCreate =  (
             status: "success",
             duration: 3000,
             isClosable: true,
+
           });
           router.push("/class/cyclesection")
     }
    
-
     useEffect(() => {
         console.log(data?.findAllsection)
         console.log("j")
@@ -233,7 +234,6 @@ const  CycleCreate =  (
                                 <FormControl>
                                     <FormLabel>Nom</FormLabel>
                                     <Input 
-                                        id="name"
                                         type={'text'} 
                                         name="name"
                                         placeholder="nom"
@@ -244,16 +244,16 @@ const  CycleCreate =  (
                                 <FormControl mt="15px">
                                     <FormLabel>Section</FormLabel>
                                     <Select 
-                                        id="section"
-                                        name="section"
+                                        name="sectionId"
                                         placeholder="Section"
-                                        onChange = {(event) => setSection(event.target.value)}
-                                        value={section }
+                                        onChange = {(event) => setSectionId(event.target.value)}
+                                        value={sectionId}
                                     >
-                                        {data &&(
+                                        {data && (
                                             data.findAllsection.map((section, index) => ( 
-                                                <option key={index}>
-                                                    <option>{section.name}</option>
+                                                <option value={section?.id} key={index}>
+                                                    {section.name}
+                                                    {/* {console.log(section.id)} */}
                                                 </option>
                                             ))
                                         )}

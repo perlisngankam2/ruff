@@ -531,10 +531,10 @@ const DetailComponent = (student) => {
           {dataStudentId.findOnestudent.sex}
         </Text>
         <Text><Text as='b'>Classe : </Text>
-          {dataStudentId.findOnestudent.classe}
+          {/* {dataStudentId.findOnestudent.classe} */}
         </Text>
         <Text><Text as='b'>Section : </Text> 
-          {dataStudentId.findOnestudent.section}
+          {/* {dataStudentId.findOnestudent.section} */}
         </Text>
         <Text mt={"20px"}>Pere</Text>
         <Text><Text as='b'>Nom : </Text> 

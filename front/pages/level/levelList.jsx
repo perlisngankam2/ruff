@@ -40,7 +40,7 @@ import {
   import AddNew from "../../components/atoms/AddNew";
   import StudentBox from "../../components/atoms/StudentBox";
   import DefaultLayout from "../../components/layouts/DefaultLayout";
- 
+  import { GET_ALL_STUDY_LEVEL } from "../../graphql/queries";
   import { useMutation, useQuery } from "@apollo/client";
   import {IoIosAdd} from 'react-icons/io';
   import{ FiEdit} from 'react-icons/fi';
@@ -49,8 +49,18 @@ import {
   
   const levelList = () => {
   
+    const {data:dataStudyLevel, loading, error} = useQuery(GET_ALL_STUDY_LEVEL);
     const router = useRouter();
-   
+    const { isOpen, onToggle, onClose } = useDisclosure();
+    
+    useEffect(() =>{
+      console.log(dataStudyLevel?.findAllNiveauEtude)
+    })
+    
+    if (loading) return <Text>Chargement en cours...</Text>
+    if(error) return <Text>Une erreur s'est produite!</Text>
+
+  
     return (
       <DefaultLayout>
         <Box p="10px" pt={"70px"} background="colors.tertiary" w="full">
@@ -98,7 +108,7 @@ import {
             <Box> 
               <Button
                   rightIcon={<Icon as={IoIosAdd} boxSize="20px" />}
-                  onClick={() => router.push("/level/addLevel")}
+                  onClick={() => router.push("/addLevel")}
                 >
                   Ajouter un niveau
               </Button>
@@ -110,29 +120,25 @@ import {
                     <Thead>
                     <Tr>
                         <Th>Nom</Th>
-                        {/* <Th>Cycle</Th>
-                        <Th >section</Th> */}
+                         <Th>Pension</Th>
+                        {/* <Th >section</Th> */}
                         <Th >Action</Th>
                     </Tr>
                     </Thead>
                     <Tbody>
-                    {/* {dataClasse && ( 
-                       dataClasse.findAllsalle.map((salle, index) =>(
+                    {dataStudyLevel && ( 
+                       dataStudyLevel.findAllNiveauEtude.map((niveauEtude, index) =>(
                         <Tr key={index}>
-                          <Td borderColor={'#C6B062'}>{salle.name}</Td>
-                          {/* <Td borderColor={'#C6B062'}>{salle.cycle}</Td> */}
-                          {/* <Td borderColor={'#C6B062'}>{salle.section}</Td> */}
-                          {/* <Td borderColor={'#C6B062'}>{salle.montantPension}</Td> */}
-  
-                          {/* <Td borderColor={'#C6B062'}>
+                          <Td borderColor={'#C6B062'}>{niveauEtude.name}</Td>
+                          <Td borderColor={'#C6B062'}>{niveauEtude.montantPension}</Td> 
+                          <Td borderColor={'#C6B062'}>
                               <Avatar 
                                   size='xs' 
                                   name='Dan Abrahmov' 
                                   src='https://bit.ly/dan-abramov'
                               /> 
-                          </Td> */}
-                          
-                          {/* <Td borderColor={'#C6B062'}>
+                          </Td>
+                          <Td borderColor={'#C6B062'}>
                             <ButtonGroup 
                               size='sm' 
                               isAttached 
@@ -145,8 +151,8 @@ import {
                                   >Details</Link>
                                 </Button>
                               </ButtonGroup> 
-                            </Td> */}
-                              {/* <Box 
+                            </Td>
+                              <Box 
                                 display="flex"
                                 ml={['-140px', '-140px', '-140px', '-140px']} 
                                  mt={['8px', '8px', '8px', '8px']}
@@ -207,9 +213,8 @@ import {
                                                 </Button>
                                                 <Button 
                                                   colorScheme="green"
-                                                  onClick={() => {removeClass(salle.id),
-                                                  onClose}
-                                                  }
+                                                  // onClick={() => {removeClass(salle.id),
+                                                  // onClose}
                                                 >
                                                   Oui
                                                 </Button>
@@ -222,7 +227,7 @@ import {
                               </Box> 
                           </Tr>
                     ))
-                  )}  */}
+                  )} 
                   </Tbody>
                 </Table>
               </TableContainer>

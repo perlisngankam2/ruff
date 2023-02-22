@@ -33,7 +33,7 @@ const AjouterPersonnel = () => {
     const [childNumber, setChildNumber] = useState("");
     const [situationMatrimonial, setSituationMatrimonial] = useState("");
     // const [salaire, setSalaire] = useState("");
-    const [personnelCategory, setPersonnelCategory] = useState("");
+    const [categoryPersonnelId, setCategoryPersonnelId] = useState("");
     // const [matricule, setMatricule] = useState("");
     const [fonction, setFonction] = useState("");
     // const [id, setMatricule] = useState("");
@@ -102,7 +102,7 @@ const AjouterPersonnel = () => {
     console.log(firstName);
     console.log(lastName);
     console.log(phoneNumber);
-    console.log(personnelCategory);
+    console.log(categoryPersonnelId);
     console.log(sexe);
     console.log(status)
      console.log(dateOfBirth);
@@ -118,12 +118,12 @@ const AjouterPersonnel = () => {
           firstName: firstName,
           lastName : lastName,
           phoneNumber: phoneNumber,
-          personnelCategory: personnelCategory,
+          categoryPersonnelId: categoryPersonnelId,
           status: status,
           situationMatrimonial: situationMatrimonial,
           sexe: sexe,
           fonction: fonction,
-          childNumber: childNumber,
+          childNumber: parseInt(childNumber),
           dateOfBirth: dateOfBirth,
           dateOfStartWork: dateOfStartWork,
             user: {
@@ -132,7 +132,6 @@ const AjouterPersonnel = () => {
               password: "",
               firstName: "",
               lastName: "",
-              name: "",
               phoneNumber: ""
             }
         },
@@ -274,12 +273,11 @@ const AjouterPersonnel = () => {
                   </FormLabel>
                   <Select
                     type="text"
-                    id="personnelCategory"
-                    name="personnelCategory"
+                    name="categoryPersonnelId"
                     placeholder="Categorie du personnel"
                     borderColor="purple.100"
-                    onChange={e => setPersonnelCategory(e.target.value)}
-                    value={personnelCategory}
+                    onChange={e => setCategoryPersonnelId(e.target.value)}
+                    value={categoryPersonnelId}
                     // ref={dateOfBirthRef}
                     ref={node => {
                       input = node;
@@ -287,9 +285,9 @@ const AjouterPersonnel = () => {
                   >
                     { 
                           dataCategoryPersonnel && (
-                            dataCategoryPersonnel.findAllcategoriepersonnel.map((category, index) => (
-                                <option key={index}>
-                                  <option>{category.nom}</option>
+                            dataCategoryPersonnel.findAllcategoriepersonnel.map((categoryPersonnel, index) => (
+                                <option value={categoryPersonnel.id} key={index}>
+                                  {categoryPersonnel.nom}
                                 </option>
                             ))
                         )}

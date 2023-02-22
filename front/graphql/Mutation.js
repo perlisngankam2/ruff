@@ -8,7 +8,6 @@ export const CREATE_PERSONNEL = gql `
             firstName
             lastName
             phoneNumber
-            personnelCategory
             situationMatrimonial
             sexe
             fonction
@@ -16,8 +15,10 @@ export const CREATE_PERSONNEL = gql `
             dateOfStartWork
             dateOfBirth
             childNumber
+            password
+            email
         }
-}
+    }
 `;
 
 //categorie personnel
@@ -42,12 +43,8 @@ export const CREATE_STUDENT = gql`
             lastname
             dateOfBirth
             sex
-            classe
             adress
             transport
-            categoryStudent
-            section
-            cycle
             fatherFirstName
             fatherLastName
             fatherPhoneNumber
@@ -112,8 +109,8 @@ export const CREATE_CYCLE = gql `
 `;
 
 export const CREATE_STUDY_LEVEL = gql `
-    mutation createNiveauetude ($niveauEtude: NiveauEtudeCreateInput!) {
-        createNiveauetude (niveauEtude: $niveauEtude) {
+    mutation createNiveauEtude ($niveauEtude: NiveauEtudeCreateInput!) {
+        createNiveauEtude (niveauEtude: $niveauEtude) {
             id
             name
             description
@@ -164,7 +161,6 @@ export const DELETE_PERSONNEL = gql `
             firstName
             lastName
             phoneNumber
-            personnelCategory
             situationMatrimonial
             sexe
             fonction
@@ -172,6 +168,8 @@ export const DELETE_PERSONNEL = gql `
             dateOfStartWork
             dateOfBirth
             childNumber
+            password
+            email
         }
     }
 `;
@@ -219,12 +217,8 @@ export const DELETE_STUDENT = gql `
             lastname
             dateOfBirth
             sex
-            classe
             adress
             transport
-            categoryStudent
-            section
-            cycle
             fatherFirstName
             fatherLastName
             fatherPhoneNumber
@@ -238,7 +232,7 @@ export const DELETE_STUDENT = gql `
             tutorPhoneNumber
             tutorProfession
         }
-    }
+}
 `;
 
 

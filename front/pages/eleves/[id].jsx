@@ -367,7 +367,21 @@ const DetailComponent = (student) => {
                         >
                         </Select>
                     </FormControl>
-                    
+                    <FormControl>
+                        <FormLabel 
+                        placeholder="--motif--"
+                        >
+                          Classe 
+                        </FormLabel>
+                        <Select  
+                          isMulti
+                          options= {groupedOptions}
+                          // {[Tranches.map((tranche) => (
+                          //   <option>{tranche}</option>
+                          // ))]}
+                        >
+                        </Select>
+                    </FormControl>
                 </Flex>
             </Box>
             <Box mt='4'>

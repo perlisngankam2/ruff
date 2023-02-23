@@ -29,7 +29,7 @@ export class InscriptionUpdateInput {
   @Field({nullable:true})
   dateLine?: string
 
-  @Field(()=>NiveauEtudeCreateInput,{nullable:true})
+  @Field(()=>FraisInscriptionInput,{nullable:true})
   fraisInscription?:FraisInscriptionInput
 
   @Field(()=>StudentCreateInput,{nullable:true})

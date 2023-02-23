@@ -524,6 +524,7 @@ input SalleUpdateInput {
   name: String
   sectionId: ID
   cycle: String
+  niveauEtudeId: ID
   effectif: Float = 0
   niveau: NiveauEtudeCreateInput
 }
@@ -532,6 +533,7 @@ input NiveauEtudeCreateInput {
   ID: String
   name: String
   description: String
+  cycleId: ID
   montantPension: Float
   sectionCycle: SectionCycleCreateInput
 }
@@ -559,6 +561,7 @@ input SectionCreateInput {
 
 input PersonnelCreateInput {
   userID: ID
+  categoryPersonnelId: ID
   firstName: String
   lastName: String
   situationMatrimonial: String
@@ -571,24 +574,25 @@ input PersonnelCreateInput {
   dateOfStartWork: String
   password: String
   email: String
+  user: UserCreateInput
 }
 
 input PersonnelUpdateInput {
   userID: ID
+  categoryPersonnelId: ID
   firstName: String
   lastName: String
   situationMatrimonial: String
   sexe: String
   phoneNumber: String
   fonction: String
-  personnelCategory: ID
-  childNumber: String
+  status: String
+  childNumber: Float
   dateOfBirth: String
   dateOfStartWork: String
   password: String
   email: String
-  user: UserCreateInput!
-  categoryPersonnelId: ID
+  user: UpdateUserInput
 }
 
 input SalaireBaseCreateInput {
@@ -695,43 +699,6 @@ input PrimePersonnelCreateInput {
   personnel: PersonnelCreateInput
 }
 
-input SalleUpdateInput {
-  ID: String
-  name: String
-  section: String
-  cycle: String
-  effectif: Float = 0
-  niveau: NiveauEtudeUpdateInput
-}
-
-input NiveauEtudeUpdateInput {
-  ID: String
-  name: String
-  description: String
-  montantPension: Float
-  sectionCycle: SectionCycleUpdateInput
-}
-
-input SectionCycleUpdateInput {
-  ID: String
-  nom: String
-  description: String
-  cycle: CycleUpdateInput
-  section: SectionUpdateInput
-}
-
-input CycleUpdateInput {
-  ID: String
-  name: String
-  sectionId: ID
-}
-
-input SectionUpdateInput {
-  ID: String
-  name: String
-  description: String
-}
-
 input PeriodeCreateInput {
   ID: String
   nom: String
@@ -775,8 +742,10 @@ input CycleUpdateInput {
 input SectionCycleUpdateInput {
   ID: String
   description: String
-  montantPension: Float
-  sectionCycle: SectionCycleCreateInput
+  cycle: CycleCreateInput
+  section: SectionUpdateInput
+  cycleID: ID
+  sectionID: ID
 }
 
 input SalleCreateInput {
@@ -877,8 +846,18 @@ input InscriptionInput {
   description: String
   montant: Float
   dateLine: String
-  fraisInscription: NiveauEtudeCreateInput
+  fraisInscription: FraisInscriptionInput
   student: StudentCreateInput
+  anneeAccademique: AnneeAccademiqueCreateInput
+}
+
+input FraisInscriptionInput {
+  salle_id: ID
+  anneAcademique_id: ID
+  description: String
+  montant: Float = 0
+  dateLine: DateTime
+  salle: SalleCreateInput
   anneeAccademique: AnneeAccademiqueCreateInput
 }
 
@@ -898,16 +877,6 @@ input AvanceInscriptionUpdateInput {
   montant: Float = 0
   reste: Float = 0
   inscription: InscriptionInput
-}
-
-input FraisInscriptionInput {
-  salle_id: ID
-  anneAcademique_id: ID
-  description: String
-  montant: Float = 0
-  dateLine: DateTime
-  salle: SalleCreateInput
-  anneeAccademique: AnneeAccademiqueCreateInput
 }
 
 input UpdateFraisInscriptionInput {

@@ -29,15 +29,22 @@ export class PrimeService {
       async create(
         input: PrimeCreateInput,
       ): Promise<Prime> {
-        const categorie = input.categoriePirme
-            ? await this.categoriePrime.findByOne(input.categoriePirme)
-            : await this.categoriePrime.create(input.categoriePirme)
+        const categorie = this.categoriePrime.findById(input.categorieId)
+        if(!categorie){
+          throw Error("not found")
+        }
         const new_prime = new Prime()
-
-        new_prime.categoriePrime.id = categorie.id
-        new_prime.nom = input.nom
-        new_prime.montant = input.montant
-        new_prime.description = input.description
+        wrap(new_prime).assign(
+          {
+          categoriePrime: input.categorieId,
+          nom: input.nom,
+          montant: Number(input.montant),
+          description: input.description
+          },
+          {
+            em: this.em
+          }
+        )
         
         await this.primeRepository.persistAndFlush(new_prime)
         return new_prime

@@ -1,17 +1,20 @@
 /* eslint-disable prettier/prettier */
-import { Field, InputType } from '@nestjs/graphql';
+import { Field, ID, InputType } from '@nestjs/graphql';
 import { CategoriePrimeCreateInput } from 'src/modules/categorie_prime/dto/categorie-prime.input';
 import { PersonnelCreateInput } from 'src/modules/personnel/dto/personnel.input';
 import { PrimeCreateInput } from 'src/modules/prime/dto/prime.input';
 
 @InputType()
 export class PrimePersonnelCreateInput {
-  @Field({nullable:true})
-  ID?: string;
+  @Field(()=>ID,{nullable:true})
+  primeID?: string;
 
-  @Field()
+  @Field(()=>ID,{nullable:true})
+  personnelID?: string;
+
+  @Field(()=>PrimeCreateInput,{nullable:true})
   prime?:PrimeCreateInput;
 
-  @Field()
-  personnnel?:PersonnelCreateInput
+  @Field(()=>PersonnelCreateInput,{nullable:true})
+  personnel?:PersonnelCreateInput
 }

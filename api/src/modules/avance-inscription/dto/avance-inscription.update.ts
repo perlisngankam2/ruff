@@ -2,8 +2,7 @@
 import { Field, ID, InputType } from '@nestjs/graphql';
 import { Inscription } from 'src/entities/inscription.entity';
 import { RegimePaiement } from 'src/entities/tranche-student.entity';
-import { InscriptionUpdateInput } from 'src/modules/inscription/dto/incription.update';
-
+import { InscriptionInput } from 'src/modules/inscription/dto/inscription.input';
 import { StudentCreateInput } from 'src/modules/student/dto/student.input';
 import { TrancheCreateInput } from 'src/modules/tranche/dto/tranche.input';
 
@@ -24,6 +23,6 @@ export class AvanceInscriptionUpdateInput {
   @Field({nullable:true,defaultValue:0})
   reste?: number;
 
-  @Field(()=>InscriptionUpdateInput,{nullable:true})
-  inscription?:InscriptionUpdateInput
+  @Field(()=>InscriptionInput,{nullable:true})
+  inscription?:InscriptionInput
 }

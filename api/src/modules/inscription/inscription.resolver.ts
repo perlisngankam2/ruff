@@ -26,7 +26,7 @@ export class InscriptionResolver {
   }
 
   @Mutation(() => Inscription)
-  update(@Args('inscription') Input: InscriptionUpdateInput, @Args('id')  id: string) {
+  update(@Args('inscription') Input: InscriptionInput, @Args('id')  id: string) {
     return this.inscriptionService.update(id,Input);
   }
 

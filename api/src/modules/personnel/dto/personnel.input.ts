@@ -6,8 +6,11 @@ import { Role } from 'src/modules/auth/roles/roles';
 
 @InputType()
 export class PersonnelCreateInput {
-  @Field({nullable:true})
-  ID?: string;
+  @Field(()=>ID,{nullable:true})
+  userID?: string;
+
+  @Field(()=>ID, {nullable:true})
+  categoryPersonnelId?: string;
   
   @Field({nullable:true})
   firstName?: string; 
@@ -17,9 +20,6 @@ export class PersonnelCreateInput {
 
   @Field({nullable:true})
   situationMatrimonial!: string;
-
-  // @Field(() => ID, { nullable: true })
-  // userId?: string;
 
   @Field({nullable:true})
   sexe?: string;
@@ -44,15 +44,12 @@ export class PersonnelCreateInput {
   @Field({ nullable: true })
   dateOfStartWork?: string;
 
-  @Field()
-  user?: UserCreateInput
-
   @Field({nullable:true})
   password!:string
 
   @Field({nullable:true})
   email!:string
 
-  @Field(()=>ID, {nullable:true})
-  categoryPersonnelId?: string;
+  @Field(()=>UserCreateInput,{nullable:true})
+  user!:UserCreateInput
 }

@@ -4,14 +4,11 @@ import { CategoriePrimeCreateInput } from 'src/modules/categorie_prime/dto/categ
 
 @InputType()
 export class PrimeCreateInput {
-  @Field({nullable:true})
-  ID?: string;
+  @Field(()=>ID,{ nullable: true })
+  categorieId:string
 
   @Field({nullable:true})
   nom?: string;
-
-  @Field({ nullable: true })
-  categorieId:string
 
   @Field({nullable:true})
   description?: string;

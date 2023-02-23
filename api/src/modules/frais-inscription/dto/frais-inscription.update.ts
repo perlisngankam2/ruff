@@ -3,8 +3,7 @@ import { Field, ID, InputType } from '@nestjs/graphql';
 import { AnneeAccademiqueCreateInput } from 'src/modules/anne_accademique/dto/anne-accademique.update';
 import { CategoriePrimeCreateInput } from 'src/modules/categorie_prime/dto/categorie-prime.input';
 import { NiveauEtudeCreateInput } from 'src/modules/niveau_etude/dto/niveau-etude.input';
-import { SalleUpdateInput } from 'src/modules/salle/dto/salle.update';
-
+import { SalleCreateInput } from 'src/modules/salle/dto/salle.input';
 
 @InputType()
 export class UpdateFraisInscriptionInput {
@@ -23,8 +22,8 @@ export class UpdateFraisInscriptionInput {
   @Field({nullable:true})
   dateLine?: Date;
 
-  @Field(()=>SalleUpdateInput,{nullable:true})
-  salle?:SalleUpdateInput
+  @Field(()=>SalleCreateInput,{nullable:true})
+  salle?:SalleCreateInput
 
   @Field(()=>AnneeAccademiqueCreateInput,{nullable:true})
   anneeAccademique?:AnneeAccademiqueCreateInput

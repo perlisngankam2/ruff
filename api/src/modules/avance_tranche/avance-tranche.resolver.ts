@@ -17,7 +17,7 @@ async createavancetranche(@Args('avancetranche') input: AvanceTrancheCreateInput
 }
 
 @Mutation(() => AvanceTranche)
-async saveavancetranche(@Args('tranchestudent') input: TrancheStudent,@Args('number') number: number) {
+async saveavancetranche(@Args('tranchestudent') input:string,@Args('number') number: number) {
   return await this.avancetrancheService.saveAvanceTranche(input,number);
 }
 

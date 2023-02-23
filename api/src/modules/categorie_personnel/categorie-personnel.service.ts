@@ -27,25 +27,27 @@ export class CategoriePersonnelService {
     input: CategoriePersonnelCreateInput,
   ): Promise<CategoriePersonnel> {
 
-    // const prime = input.prime
-    // ? await this.prime.findByOne(input.prime)
-    // : await this.prime.create(input.prime)
+    const prime = this.prime.findByOne(input.primeID)
+    const retenu = this.retenu.findByOne(input.retenuID)
+    const salaire = this.salaireBaseeService.findByOne(input.salaireID)
 
-    // const retenu = input.retenu
-    // ? await this.retenu.findByOne(input.retenu)
-    // : await this.retenu.create(input.retenu)
-
-
-    // const salaire = input.salaireBase
-    // ? await this.salaireBaseeService.findByOne(input.salaireBase)
-    // : await this.salaireBaseeService.create(input.salaireBase)
-        
+    if(!(prime&&retenu&&salaire)){
+      new Error("salaire, retenu and salaire de base not found")
+    }
     const categoriePersonnel = new CategoriePersonnel()
-    categoriePersonnel.nom = input.nom
-    categoriePersonnel.description = input.description
-    // categoriePersonnel.salaireBase.id = salaire.id
-    // categoriePersonnel.retenu.id = retenu.id
-    // categoriePersonnel.prime.id = prime.id
+
+    wrap(categoriePersonnel).assign(
+      {
+      nom: input.nom,
+      description: input.description,
+      salaireBase: input.salaireID,
+      retenu: input.retenuID,
+      prime: input.primeID
+      },
+      {
+        em: this.em
+      }
+    )
 
     await this.categoriePersonelRepository.persistAndFlush(categoriePersonnel)
     return categoriePersonnel
@@ -67,8 +69,8 @@ export class CategoriePersonnelService {
     const categorie = await this.findById(id)
     if (input.prime) {
       const prime =
-      input.prime?.ID &&
-        (await this.prime.findByOne({ id: input.prime?.ID }));
+      input.primeID &&
+        (await this.prime.findByOne({ id: input.primeID }));
 
       if (!prime) {
         throw new NotFoundError('prime no exist' || '');
@@ -78,8 +80,8 @@ export class CategoriePersonnelService {
     
     if (input.retenu) {
       const retenu =
-      input.retenu?.ID &&
-        (await this.retenu.findByOne({ id: input.retenu?.ID }));
+      input.retenuID &&
+        (await this.retenu.findByOne({ id: input.retenuID }));
 
       if (!retenu) {
         throw new NotFoundError('retenu no exist' || '');
@@ -89,8 +91,8 @@ export class CategoriePersonnelService {
 
     if (input.salaireBase) {
       const salaire =
-      input.salaireBase?.ID &&
-        (await this.salaireBaseeService.findByOne({ id: input.salaireBase?.ID }));
+      input.salaireID &&
+        (await this.salaireBaseeService.findByOne({ id: input.salaireID }));
 
       if (!salaire) {
         throw new NotFoundError('salaire no exist' || '');

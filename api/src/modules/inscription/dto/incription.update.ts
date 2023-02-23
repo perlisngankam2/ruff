@@ -5,7 +5,6 @@ import { UpdateFraisInscriptionInput } from 'src/modules/frais-inscription/dto/f
 import { NiveauEtudeCreateInput } from 'src/modules/niveau_etude/dto/niveau-etude.input';
 import { StudentCreateInput } from 'src/modules/student/dto/student.input';
 
-
 @InputType()
 export class InscriptionUpdateInput {
 
@@ -13,10 +12,13 @@ export class InscriptionUpdateInput {
   fraisincription_id?:string
 
   @Field(()=>ID,{nullable:true})
-  anneacademique_id?:string
+  anneacademiqueId?:string
 
-  @Field(()=>ID,{nullable:true})
-  student_id?:string
+  @Field(()=>ID, {nullable:true})
+  salleId?: string
+
+  @Field(()=>ID, {nullable:true})
+  studentId?: string
 
   @Field({nullable:true})
   name?: string;
@@ -28,13 +30,7 @@ export class InscriptionUpdateInput {
   montant?: number;
 
   @Field({nullable:true})
-  dateLine?: string
-
-  @Field(()=>ID, {nullable:true})
-  salleId?: string
-
-  @Field(()=>ID, {nullable:true})
-  studentId?: string
+  dateLine?: string;
 
   @Field(()=>UpdateFraisInscriptionInput,{nullable:true})
   fraisInscription?:UpdateFraisInscriptionInput

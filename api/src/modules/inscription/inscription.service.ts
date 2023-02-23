@@ -66,7 +66,8 @@ export class InscriptionService {
           dateLine: input.dateLine,
           anneeAccademique: anneAccademique.id,
           student: student.id,
-          fraisInscription: frais.id
+          fraisInscription: frais.id,
+          salle: input.salleId
           },
           {
             em:this.em
@@ -208,6 +209,7 @@ export class InscriptionService {
             montant: Number(input.montant) || Number(inscription.montant) || 0.0,
             description: input.description || inscription.description,
             name: input.name|| inscription.name,
+            salle: input.salleId || inscription.salle
         },
         { em: this.em },
         );

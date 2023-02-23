@@ -28,6 +28,7 @@ export class PersonnelService {
   // if (!user) {
   //   throw new NotFoundError('user not found'|| '');
   // }
+
   const new_personnel = new Personnel()
 
 wrap(new_personnel).assign({
@@ -43,7 +44,8 @@ wrap(new_personnel).assign({
   dateOfStartWork : input.dateOfStartWork,
   fonction : input.fonction,
   dateOfBirth : input.dateOfBirth,
-  situationMatrimonial : input.situationMatrimonial},
+  situationMatrimonial : input.situationMatrimonial
+},
   {
     em:this.em
   },

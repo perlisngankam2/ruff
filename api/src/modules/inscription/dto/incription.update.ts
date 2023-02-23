@@ -30,6 +30,12 @@ export class InscriptionUpdateInput {
   @Field({nullable:true})
   dateLine?: string
 
+  @Field(()=>ID, {nullable:true})
+  salleId?: string
+
+  @Field(()=>ID, {nullable:true})
+  studentId?: string
+
   @Field(()=>UpdateFraisInscriptionInput,{nullable:true})
   fraisInscription?:UpdateFraisInscriptionInput
 

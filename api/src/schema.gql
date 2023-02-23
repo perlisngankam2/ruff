@@ -785,6 +785,8 @@ input InscriptionInput {
   description: String
   montant: Float
   dateLine: String
+  salleId: ID
+  studentId: ID
   fraisInscription: FraisInscriptionInput
   student: StudentCreateInput
   anneeAccademique: AnneeAccademiqueCreateInput
@@ -808,6 +810,8 @@ input InscriptionUpdateInput {
   description: String
   montant: Float
   dateLine: String
+  salleId: ID
+  studentId: ID
   fraisInscription: UpdateFraisInscriptionInput
   student: StudentCreateInput
   anneeAccademique: AnneeAccademiqueCreateInput

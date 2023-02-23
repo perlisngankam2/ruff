@@ -28,11 +28,17 @@ export class InscriptionInput {
   @Field({nullable:true})
   dateLine?: string;
 
+  @Field(()=>ID, {nullable:true})
+  salleId?: string;
+
+  @Field(()=>ID, {nullable:true})
+  studentId?: string;
+
   @Field(()=>FraisInscriptionInput,{nullable:true})
-  fraisInscription?:FraisInscriptionInput
+  fraisInscription?:FraisInscriptionInput;
 
   @Field(()=>StudentCreateInput,{nullable:true})
-  student?:StudentCreateInput
+  student?:StudentCreateInput;
 
   @Field({nullable:true})
   anneeAccademique?:AnneeAccademiqueCreateInput

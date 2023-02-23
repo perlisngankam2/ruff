@@ -30,12 +30,12 @@ export class SectionCycleService {
       async create(
         input: SectionCycleCreateInput,
       ): Promise<SectionCycle> {        
-        const cycle = this.cycle.findById(input.cycle)
+        const cycle = this.cycle.findById(input.cycleID)
         if(!cycle){
           throw Error("cycly not found")
         }
 
-        const section = this.sectionService.findById(input.section)
+        const section = this.sectionService.findById(input.sectionID)
         if(!section){
           throw Error("section not found")
         }
@@ -43,8 +43,8 @@ export class SectionCycleService {
         const sectioncycle = new SectionCycle()
 
         wrap(sectioncycle).assign({
-          cycle : input.cycle,
-          section : input.section
+          cycle : input.cycleID,
+          section : input.sectionID
         },
         {
           em: this.em,
@@ -69,8 +69,8 @@ export class SectionCycleService {
         const sectionCycle = await this.findById(id)
         if(input.cycle){
             const cycle =
-            input.cycle?.ID &&
-              (await this.cycle.findById(input.cycle?.ID));
+            input.cycleID &&
+              (await this.cycle.findById(input.cycleID));
       
             if (!cycle) {
               throw new NotFoundError('prime no exist' || '');
@@ -96,6 +96,7 @@ export class SectionCycleService {
         await this.sectionCycleRepository.persistAndFlush(sectionCycle);
         return sectionCycle;
       }
+      
     async delete(id:string){
     const a=this.findById(id)
     await this.sectionCycleRepository.removeAndFlush(a)

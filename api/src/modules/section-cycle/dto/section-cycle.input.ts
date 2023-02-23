@@ -11,15 +11,19 @@ export class SectionCycleCreateInput {
   // @Field({nullable:true})
   // nom?: string;
 
-  // @Field({nullable:true})
-  // description?: string;
-
-
   @Field({nullable:true})
-  cycle?: string;
+  description?: string;
 
-  
-  @Field({nullable:true})
-  section?: string;
+  @Field(()=>CycleCreateInput,{nullable:true})
+  cycle?: CycleCreateInput
+
+  @Field(()=>SectionCreateInput,{nullable:true})
+  section?: SectionCreateInput
+
+  @Field(()=>ID,{nullable:true})
+  cycleID?: string;
+
+  @Field(()=>ID,{nullable:true})
+  sectionID?: string;
 
 }

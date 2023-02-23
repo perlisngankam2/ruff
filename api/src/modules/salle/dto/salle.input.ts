@@ -10,8 +10,8 @@ export class SalleCreateInput {
   @Field({nullable:true})
   name?: string;
 
-  @Field({nullable:true})
-  section?: string;
+  @Field(()=>ID,{nullable:true})
+  sectionId?: string;
 
   @Field({nullable:true})
   cycle?: string;

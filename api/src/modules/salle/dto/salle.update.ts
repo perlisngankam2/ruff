@@ -12,8 +12,8 @@ export class SalleUpdateInput {
   @Field({nullable:true})
   name?: string;
 
-  @Field({nullable:true})
-  section?: string;
+  @Field(()=>ID,{nullable:true})
+  sectionId?: string;
 
   @Field({nullable:true})
   cycle?: string;
@@ -25,5 +25,5 @@ export class SalleUpdateInput {
   effectif?: number;
 
   @Field({nullable:true})
-  niveau: NiveauEtudeUpdateInput
+  niveau: NiveauEtudeCreateInput
 }

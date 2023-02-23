@@ -51,7 +51,6 @@ export class SalaireService {
 
     if(personnel.status === "PERMANENT"){
       let sommePrime = 0
-      
       for(let i = 0; i < primes.length; i++){
         sommePrime += primes[i].prime.getEntity().montant
       }

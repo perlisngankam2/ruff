@@ -40,9 +40,16 @@ export class SalleService {
         // : await this.niveauEtude.create(input.niveau)
 
 
-        salle.name = input.name
-        salle.section = input.section
-        salle.cycle = input.cycle
+
+
+        wrap(salle).assign({
+        name: input.name,
+        section: input.sectionId,
+        cycle: input.cycle
+        },
+        {
+          em: this.em
+        })
         // salle.montantPension = input.montantPension
         // salle.effectif = input.effectif
         // salle.niveau.id = niveau.id
@@ -77,7 +84,7 @@ export class SalleService {
 
         wrap(salle).assign({
           name: input.name,
-          section: input.section,
+          section: input.sectionId,
           cycle: input.cycle,
           // montantPension : input.montantPension
         },
@@ -104,7 +111,7 @@ export class SalleService {
           } 
         wrap(salle).assign({
             name: input.name || salle.name,
-            section:input.section|| salle.section,
+            section:input.sectionId|| salle.section,
             cycle:input.cycle || salle.cycle,
             // montantPension: input.montantPension || salle.montantPension
         },

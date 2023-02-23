@@ -31,19 +31,25 @@ export class RetenuPersonnelService {
       async create(
         input: RetenuPersonnelCreateInput,
       ): Promise<RetenuPersonnel> {
-        const retenu = input.retenu
-            ? await this.retenuService.findByOne(input.retenu.ID)
-            : await this.retenuService.create(input.retenu)
+        const retenu = this.retenuService.findByOne(input.retenuID)
         
-        const personnel = await this.personnelService.findOne(input.personnnel)
-        if(!personnel){
-            throw new NotFoundError('personnel no exist' || '');
+        const personnel = this.personnelService.findOne(input.personnelID)
+
+        if(!(retenu&&personnel)){
+          throw Error("retenu and personnel not found")
         }
-        
+
         const retenuPersonnel = new RetenuPersonnel()
 
-        retenuPersonnel.personnel.id = personnel.id
-        retenuPersonnel.retenue.id = retenu.id
+        wrap(retenuPersonnel).assign(
+          {
+          personnel: input.personnelID,
+          retenue: input.retenuID
+          },
+          {
+            em: this.em
+          }
+        )
         
 
         await this.retenuPersonnelRepository.persistAndFlush(retenuPersonnel)
@@ -78,8 +84,8 @@ export class RetenuPersonnelService {
           
         if (input.personnnel) {
             const personnel =
-            input.personnnel?.ID &&
-              (await this.personnelService.findOne({ id: input.personnnel?.ID }));
+            input.personnelID &&
+              (await this.personnelService.findOne({ id: input.personnelID}));
       
             if (!personnel) {
               throw new NotFoundError('personnel no exist' || '');

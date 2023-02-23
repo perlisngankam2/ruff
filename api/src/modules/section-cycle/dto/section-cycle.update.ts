@@ -18,20 +18,25 @@ import { SectionUpdateInput } from 'src/modules/section/dto/section.update';
 @InputType()
 export class SectionCycleUpdateInput {
   @Field({nullable:true})
-  ID?: string;
+  ID?: string
 
-  @Field({nullable:true})
-  nom?: string;
+  // @Field({nullable:true})
+  // nom?: string;
 
   @Field({nullable:true})
   description?: string;
 
-
-  @Field({nullable:true})
+  @Field(()=>CycleCreateInput,{nullable:true})
   cycle?: CycleUpdateInput
 
+  @Field(()=>SectionUpdateInput,{nullable:true})
+  section?: SectionUpdateInput
+
+  @Field(()=>ID,{nullable:true})
+  cycleID?: string;
+
   
-  @Field({nullable:true})
-  section?: SectionUpdateInput;
+  @Field(()=>ID,{nullable:true})
+  sectionID?: string;
 
 }

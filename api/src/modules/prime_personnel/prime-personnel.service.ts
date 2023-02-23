@@ -36,7 +36,7 @@ export class PrimePersonnelService {
             ? await this.primeService.findByOne(input.prime)
             : await this.primeService.create(input.prime)
         
-        const personnel = await this.personnelService.findOne(input.personnnel)
+        const personnel = await this.personnelService.findOne(input.personnelID)
         if(!personnel){
             throw new NotFoundError('personnel no exist' || '');
         }
@@ -66,8 +66,8 @@ export class PrimePersonnelService {
         const  primePersonnel= await this.findById(id)
         if (input.prime) {
             const prime =
-            input.prime?.ID &&
-              (await this.primeService.findByOne({ id: input.prime?.ID }));
+            input.primeID &&
+              (await this.primeService.findByOne({ id: input.primeID}));
       
             if (!prime) {
               throw new NotFoundError('prime no exist' || '');
@@ -75,19 +75,19 @@ export class PrimePersonnelService {
             this.primeService.update(prime.id, input.prime);
           }  
           
-          if (input.personnnel) {
+          if (input.personnel) {
             const personnel =
-            input.personnnel?.ID &&
-              (await this.personnelService.findOne({ id: input.personnnel?.ID }));
+            input.personnelID &&
+              (await this.personnelService.findOne({ id: input.personnelID }));
       
             if (!personnel) {
               throw new NotFoundError('personnel no exist' || '');
             }
-            this.personnelService.update(personnel.id, input.personnnel);
+            this.personnelService.update(personnel.id, input.personnel);
           }  
         wrap(primePersonnel).assign({
             prime: input.prime || primePersonnel.prime,
-            personnel: input.personnnel || primePersonnel.personnel
+            personnel: input.personnel || primePersonnel.personnel
           },
           { em: this.em },
     );

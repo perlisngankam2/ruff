@@ -24,10 +24,10 @@ export class PersonnelService {
   ): Promise<Personnel> {
 
   
-  // const user = await this.userService.findById(input.userId)
-  // if (!user) {
-  //   throw new NotFoundError('user not found'|| '');
-  // }
+  const user = await this.userService.findById(input.userID)
+  if (!user) {
+    throw new NotFoundError('user not found'|| '');
+   }
   const new_personnel = new Personnel()
 
 wrap(new_personnel).assign({

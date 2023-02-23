@@ -1,10 +1,9 @@
 /* eslint-disable prettier/prettier */
 import { Field, ID, InputType } from '@nestjs/graphql';
 import { AnneeAccademiqueCreateInput } from 'src/modules/anne_accademique/dto/anne-accademique.update';
-import { UpdateFraisInscriptionInput } from 'src/modules/frais-inscription/dto/frais-inscription.update';
+import { FraisInscriptionInput } from 'src/modules/frais-inscription/dto/frais-inscription.input';
 import { NiveauEtudeCreateInput } from 'src/modules/niveau_etude/dto/niveau-etude.input';
 import { StudentCreateInput } from 'src/modules/student/dto/student.input';
-
 
 @InputType()
 export class InscriptionUpdateInput {
@@ -30,8 +29,8 @@ export class InscriptionUpdateInput {
   @Field({nullable:true})
   dateLine?: string
 
-  @Field(()=>UpdateFraisInscriptionInput,{nullable:true})
-  fraisInscription?:UpdateFraisInscriptionInput
+  @Field(()=>NiveauEtudeCreateInput,{nullable:true})
+  fraisInscription?:FraisInscriptionInput
 
   @Field(()=>StudentCreateInput,{nullable:true})
   student?:StudentCreateInput

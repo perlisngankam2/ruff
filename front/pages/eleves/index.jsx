@@ -152,7 +152,7 @@ const Eleves = () => {
                   <Tr>
                       <Th>Nom</Th>
                       <Th>Prenom</Th>
-                      <Th >classe</Th>
+                      {/* <Th >classe</Th> */}
                       {/* <Th>sexe</Th> */}
                       {/* <Th>Photo</Th> */}
                       <Th>Action</Th>
@@ -164,7 +164,7 @@ const Eleves = () => {
                       <Tr key={index}>
                         <Td borderColor={'#C6B062'}>{student.lastname}</Td>
                         <Td borderColor={'#C6B062'}>{student.firstname}</Td>
-                        <Td borderColor={'#C6B062'}>{student.classe}</Td>
+                        {/* <Td borderColor={'#C6B062'}>{student.classe}</Td> */}
                         {/* <Td borderColor={'#C6B062'}>{student.sex}</Td> */}
                         {/* <Td borderColor={'#C6B062'}>
                             <Avatar 

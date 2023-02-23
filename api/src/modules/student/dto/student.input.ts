@@ -26,8 +26,8 @@ export class StudentCreateInput {
   @Field({ nullable: true })
   sex!: string;
 
-  @Field({ nullable: true })
-  classe!: string;
+  // @Field({ nullable: true })
+  // classe!: string;
 
   @Field({ nullable: true })
   adress!: string;
@@ -39,7 +39,7 @@ export class StudentCreateInput {
   // old!: boolean;
 
   @Field({nullable:true})
-  categoryStudent!: string;
+  categoryStudentId!: string;
 
   @Field(()=>ID,{nullable:true})
   inscription!: string

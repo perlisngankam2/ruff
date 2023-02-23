@@ -80,7 +80,7 @@ export class Personnel {
 
   @Field({ nullable: true})
   @Property({ nullable: true })
-  childNumber!: string;
+  childNumber!: number;
 
   @Field({nullable: true})
   @Property({nullable: true})
@@ -104,6 +104,7 @@ export class Personnel {
     onDelete:'CASCADE'
   })
   category!:IdentifiedReference<CategoriePersonnel>|null
+
 
 // relation with another Entites
   @OneToMany(() => PrimePersonnel, prime => prime.personnel)

@@ -19,7 +19,7 @@ import { useMutation, useQuery } from "@apollo/client";
 import { MdDescription } from "react-icons/md";
 import DefaultLayout from "../../components/layouts/DefaultLayout";
 import { CREATE_SALLE} from "../../graphql/Mutation";
-import { GET_ALL_SECTION , GET_ALL_CYCLE} from "../../graphql/Queries";
+import { GET_ALL_SECTION , GET_ALL_CYCLE, GET_ALL_STUDY_LEVEL} from "../../graphql/Queries";
 
 const AddClass = () => {
 
@@ -28,11 +28,11 @@ const AddClass = () => {
   const teachers = ["Ryan Jones", "Illary Daenarys ", "Julian Clinton"];
   const [name, setName] = useState();
   const [section, setSection] = useState();
-  const [cycle, setCycle] = useState();
+  const [niveauEtudeId, setNiveauEtudeId] = useState();
   const [montantPension, setMontantPension] = useState();
   const [createSalle] = useMutation(CREATE_SALLE);
   const {data:dataSection} = useQuery(GET_ALL_SECTION);
-  const {data:dataCycle} = useQuery(GET_ALL_CYCLE);
+  const {data:dataStudyLevel} = useQuery(GET_ALL_STUDY_LEVEL);
 
   // const bb = parseInt(montantPension)
   // // console.log(parseFloat(montantPension))
@@ -49,9 +49,9 @@ const AddClass = () => {
   
  
   useEffect(() => {
-    console.log(dataSection?.findAllsection)
+    // console.log(dataSection?.findAllsection)
     console.log("j")
-    console.log(dataCycle?.findAllcycle)
+    console.log(dataStudyLevel?.findAllNiveauEtude)
   }, [dataSection])
   
   const  addClasse = async (event, value) => {
@@ -60,15 +60,15 @@ const AddClass = () => {
 
     console.log(name);
     console.log(section);
-    console.log(cycle)
-    console.log(montantPension)
+    console.log(cycle);
+    console.log(montantPension);
+    console.log(niveauEtudeId);
 
     const cycleData = await createSalle({
         variables: {
             salle: {
                 name: name,
-                section: section,
-                cycle: cycle,
+                niveauEtudeId: niveauEtudeId
                 // montantPension: parseInt(montantPension)
             }
         }
@@ -124,38 +124,19 @@ const AddClass = () => {
                     />
                   </FormControl>
                   <FormControl mt="15px">
-                      <FormLabel>Section</FormLabel>
-                      <Select 
-                        id="section"
-                        name="section"
-                        placeholder="Section"
-                        minW="300px"
-                        onChange = {(event) => setSection(event.target.value)}
-                        value={section}
-                      >
-                        {dataSection &&(
-                            dataSection.findAllsection.map((section, index) => ( 
-                                <option key={index}>
-                                    <option>{section.name}</option>
-                                </option>
-                            ))
-                        )}
-                      </Select>
-                  </FormControl> 
-                  <FormControl mt="15px">
-                      <FormLabel>Cycle</FormLabel>
+                      <FormLabel>Niveau d'etude</FormLabel>
                       <Select 
                         id="cycle"
-                        name="cycle"
-                        placeholder="Cycle"
+                        name="niveauEtudeId"
+                        placeholder="Nom"
                         minW="300px"
-                        onChange = {(event) => setCycle(event.target.value)}
-                        value={cycle}
+                        onChange = {(event) => setNiveauEtudeId(event.target.value)}
+                        value={niveauEtudeId}
                       >
-                          {dataCycle &&(
-                              dataCycle.findAllcycle.map((cycle, index) => ( 
-                                  <option key={index}>
-                                      <option>{cycle.name}</option>
+                          {dataStudyLevel &&(
+                              dataStudyLevel.findAllNiveauEtude.map((niveauEtude, index) => ( 
+                                  <option value={niveauEtude.id} key={index}>
+                                    {niveauEtude.name}
                                   </option>
                               ))
                           )}

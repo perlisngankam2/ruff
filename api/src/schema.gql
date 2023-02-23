@@ -117,7 +117,7 @@ type Personnel {
   status: String
   dateOfStartWork: String!
   dateOfBirth: String!
-  childNumber: String
+  childNumber: Float
   password: String
   email: String
 }
@@ -212,7 +212,6 @@ type Student {
   lastname: String
   dateOfBirth: String!
   sex: String
-  classe: String
   adress: String
   transport: String
   fatherFirstName: String
@@ -311,7 +310,7 @@ type Query {
   findOnesection(id: String!): Section!
   findAllcycle: [Cycle!]!
   findOnecycle(id: String!): Cycle!
-  findAllniveauetude: [NiveauEtude!]!
+  findAllNiveauEtude: [NiveauEtude!]!
   niveaEtude(id: String!): NiveauEtude!
   etatInscriptionNiveau(id: String!): NiveauEtude!
   findAllsectioncycle: [SectionCycle!]!
@@ -393,9 +392,9 @@ type Mutation {
   createCycle(cycle: CycleCreateInput!): Cycle!
   updatecycle(id: String!, input: CycleUpdateInput!): Cycle!
   deletecycle(id: String!): Cycle!
-  createNiveauetude(niveauEtude: NiveauEtudeCreateInput!): NiveauEtude!
-  updateniveauetude(id: String!): NiveauEtude!
-  deleteniveauetude(id: String!): NiveauEtude!
+  createNiveauEtude(niveauEtude: NiveauEtudeCreateInput!): NiveauEtude!
+  updateNiveauEtude(id: String!): NiveauEtude!
+  deleteNiveauEtude(id: String!): NiveauEtude!
   createSectionCycle(sectionCycle: SectionCycleCreateInput!): SectionCycle!
   updatesectioncycle(id: String!, input: SectionCycleUpdateInput!): SectionCycle!
   deletesectioncycle(id: String!): SectionCycle!
@@ -460,10 +459,9 @@ input StudentCreateInput {
   lastname: String
   dateOfBirth: String
   sex: String
-  classe: String
   adress: String
   transport: String
-  categoryStudent: String
+  categoryStudentId: String
   inscription: ID
   fatherFirstName: String
   fatherLastName: String
@@ -567,14 +565,12 @@ input PersonnelCreateInput {
   sexe: String
   phoneNumber: String
   fonction: String
-  personnelCategory: ID
   status: String
-  childNumber: String
+  childNumber: Float
   dateOfBirth: String
   dateOfStartWork: String
   password: String
   email: String
-  user: UserCreateInput!
 }
 
 input PersonnelUpdateInput {
@@ -586,13 +582,13 @@ input PersonnelUpdateInput {
   phoneNumber: String
   fonction: String
   personnelCategory: ID
-  status: String
   childNumber: String
   dateOfBirth: String
   dateOfStartWork: String
   password: String
   email: String
   user: UserCreateInput!
+  categoryPersonnelId: ID
 }
 
 input SalaireBaseCreateInput {
@@ -699,6 +695,43 @@ input PrimePersonnelCreateInput {
   personnel: PersonnelCreateInput
 }
 
+input SalleUpdateInput {
+  ID: String
+  name: String
+  section: String
+  cycle: String
+  effectif: Float = 0
+  niveau: NiveauEtudeUpdateInput
+}
+
+input NiveauEtudeUpdateInput {
+  ID: String
+  name: String
+  description: String
+  montantPension: Float
+  sectionCycle: SectionCycleUpdateInput
+}
+
+input SectionCycleUpdateInput {
+  ID: String
+  nom: String
+  description: String
+  cycle: CycleUpdateInput
+  section: SectionUpdateInput
+}
+
+input CycleUpdateInput {
+  ID: String
+  name: String
+  sectionId: ID
+}
+
+input SectionUpdateInput {
+  ID: String
+  name: String
+  description: String
+}
+
 input PeriodeCreateInput {
   ID: String
   nom: String
@@ -742,10 +775,8 @@ input CycleUpdateInput {
 input SectionCycleUpdateInput {
   ID: String
   description: String
-  cycle: CycleCreateInput
-  section: SectionUpdateInput
-  cycleID: ID
-  sectionID: ID
+  montantPension: Float
+  sectionCycle: SectionCycleCreateInput
 }
 
 input SalleCreateInput {
@@ -754,6 +785,7 @@ input SalleCreateInput {
   sectionId: ID
   cycle: String
   effectif: Float = 0
+  niveauEtudeId: ID
   niveau: NiveauEtudeCreateInput
 }
 

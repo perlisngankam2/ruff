@@ -53,7 +53,7 @@ const Class = () => {
   const router = useRouter();
   const { isOpen, onToggle, onClose } = useDisclosure()
   const [deleteClasse] = useMutation(DELETE_SALLE);
-const {data:dataClasse} = useQuery(GET_ALL_CLASS);
+  const {data:dataClasse} = useQuery(GET_ALL_CLASS);
   
 
   const removeClass = async(id) => {

@@ -13,6 +13,7 @@ export class CycleUpdateInput {
   @Field(()=>ID,{nullable:true})
   sectionId?: string;
 
+
   // @Field(()=> SectionUpdateInput, {nullable:true})
   // section?: SectionUpdateInput
 

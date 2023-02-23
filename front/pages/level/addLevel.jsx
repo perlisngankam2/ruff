@@ -19,6 +19,7 @@ import {
   import { MdDescription } from "react-icons/md";
   import DefaultLayout from "../../components/layouts/DefaultLayout";
   import { CREATE_STUDY_LEVEL} from "../../graphql/Mutation";
+  import {GET_ALL_CYCLE} from "../../graphql/queries";
 //   import { GET_ALL_SECTION , GET_ALL_CYCLE} from "../../graphql/Queries";
   
   const AddLevel = () => {
@@ -28,11 +29,11 @@ import {
     const teachers = ["Ryan Jones", "Illary Daenarys ", "Julian Clinton"];
     const [name, setName] = useState();
     const [montantPension, setMontantPension] = useState();
-
+    const [cycleId, setCycleId] = useState("");
     const [createStudyLevel] = useMutation(CREATE_STUDY_LEVEL)
     // const [createSalle] = useMutation(CREATE_SALLE);
     // const {data:dataSection} = useQuery(GET_ALL_SECTION);
-    // const {data:dataCycle} = useQuery(GET_ALL_CYCLE);
+    const {data:dataCycle} = useQuery(GET_ALL_CYCLE);
   
     // const bb = parseInt(montantPension)
     // // console.log(parseFloat(montantPension))
@@ -48,27 +49,28 @@ import {
     // if(error)  return "erreur! ${error.message}";
     
    
-    // useEffect(() => {
-    //   console.log(dataSection?.findAllsection)
-    //   console.log("j")
-    //   console.log(dataCycle?.findAllcycle)
-    // }, [dataSection])
+    useEffect(() => {
+      // console.log(dataSection?.findAllsection)
+      console.log("j")
+      console.log(dataCycle?.findAllcycle)
+    }, [dataCycle])
     
     const  addStudyLevel = async (event, value) => {
       event.preventDefault();
   
       console.log(name);
       console.log(montantPension)
+      console.log(cycleId)
   
        await createStudyLevel({
           variables: {
             niveauEtude: {
                   name: name,
-                  montantPension: parseInt(montantPension)
+                  montantPension: parseInt(montantPension),
+                  cycleId: cycleId
               }
           }
       })
-      console.log(cycleData)
       toast({
         title: "Creation d'un niveau d'etude.",
         description: "Le niveau a ete créée avec succes.",
@@ -76,7 +78,7 @@ import {
         duration: 3000,
         isClosable: true,
       });
-      router.push("/levelList")
+      router.push("/level/levelList")
   }
   
   
@@ -128,25 +130,24 @@ import {
                          onChange ={(event) => setMontantPension(event.target.value)}
                        />
                     </FormControl>
-                    {/* <FormControl mt="15px">
-                        <FormLabel>Classe</FormLabel>
+                    <FormControl mt="15px">
+                        <FormLabel>Cycle</FormLabel>
                         <Select 
-                          id="cycle"
-                          name="classId"
+                          name="cycleId"
                           placeholder="Cycle"
                           minW="300px"
-                          onChange = {(event) => setCLassId(event.target.value)}
-                          value={classId}
-                        > */}
-                            {/* {dataCycle &&(
+                          onChange = {(event) => setCycleId(event.target.value)}
+                          value={cycleId}
+                        >
+                         {dataCycle &&(
                                 dataCycle.findAllcycle.map((cycle, index) => ( 
-                                    <option key={index}>
-                                        <option>{cycle.name}</option>
+                                    <option value={cycle.id} key={index}>
+                                        {cycle.name}
                                     </option>
                                 ))
-                            )} */}
-                        {/* </Select>
-                    </FormControl> */}
+                            )} 
+                        </Select>
+                    </FormControl> 
                     <Flex gap={5} pt="30px">
                       <Button colorScheme="red" onClick={() => router.back()}>
                         Annuler

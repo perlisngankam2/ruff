@@ -42,7 +42,7 @@ export class NiveauEtudeService {
            description: input.description,
           //  sectionCycle: sectionCycle.id,
           //  salle: input.salle,
-          //  cycle: input.cycle,
+           cycle: input.cycleId,
            montantPension: input.montantPension
           },
           {
@@ -50,7 +50,6 @@ export class NiveauEtudeService {
           }
         )
 
-       
         await this.niveauEtudeRepository.persistAndFlush(niveauEtude)
         return niveauEtude
       }
@@ -83,7 +82,7 @@ export class NiveauEtudeService {
             name: input.name || niveau.name,
             description: input.description || niveau.description,
             // salle : input.salle  || niveau.salle,
-            // cycle : input.cycle  || niveau.cycle,
+            cycle : input.cycleId  || niveau.cycle,
             montantPension : input.montantPension  || niveau.montantPension
             
         },

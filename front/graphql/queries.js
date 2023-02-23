@@ -3,20 +3,21 @@ import Personnel from '../pages/personnel';
 
 //personnel
 export const GET_ALL_PERSONNELS = gql `
-    query findAllpersonnel {
+    query findAllpersonnel { 
         findAllpersonnel {
-        id
-        firstName
-        lastName
-        phoneNumber
-        personnelCategory
-        situationMatrimonial
-        sexe
-        fonction
-        status
-        dateOfStartWork
-        dateOfBirth
-        childNumber
+            id
+            firstName
+            lastName
+            phoneNumber
+            situationMatrimonial
+            sexe
+            fonction
+            status
+            dateOfStartWork
+            dateOfBirth
+            childNumber
+            password
+            email
         }
     }
 `;
@@ -35,7 +36,7 @@ export const GET_ALL_Category_Personnel = gql `
 
 //student
 export const GET_ALL_STUDENT =  gql `
-    query findAllstudents {
+query findAllstudents {
         findAllstudents {
             id
             matricule
@@ -43,12 +44,8 @@ export const GET_ALL_STUDENT =  gql `
             lastname
             dateOfBirth
             sex
-            classe
             adress
             transport
-            categoryStudent
-            section
-            cycle
             fatherFirstName
             fatherLastName
             fatherPhoneNumber
@@ -119,7 +116,6 @@ export const GET_PERSONNEL_BY_ID =  gql `
             firstName
             lastName
             phoneNumber
-            personnelCategory
             situationMatrimonial
             sexe
             fonction
@@ -127,6 +123,8 @@ export const GET_PERSONNEL_BY_ID =  gql `
             dateOfStartWork
             dateOfBirth
             childNumber
+            password
+            email
         }
     }
 `;
@@ -141,12 +139,8 @@ export const GET_STUDENT_BY_ID =  gql `
             lastname
             dateOfBirth
             sex
-            classe
             adress
             transport
-            categoryStudent
-            section
-            cycle
             fatherFirstName
             fatherLastName
             fatherPhoneNumber
@@ -175,6 +169,19 @@ query findAllAnnerAccademique {
     }
 }
 `
+//niveau d'etude
+export const GET_ALL_STUDY_LEVEL = gql `
+    query findAllNiveauEtude {
+        findAllNiveauEtude {
+            id
+            name
+            description
+            montantPension
+        }
+    }
+`
+
+
 
 //one cycle
 export const GET_ONE_CYCLE =  gql `

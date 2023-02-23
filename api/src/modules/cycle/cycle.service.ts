@@ -40,13 +40,12 @@ export class CycleService {
         wrap(cycle).assign(
           {
           name: input.name,
-          section:input.sectionId
+          section: input.sectionId
           },
           {
             em: this.em
           }
         )
-        
 
         await this.cycleRepository.persistAndFlush(cycle)
         return cycle

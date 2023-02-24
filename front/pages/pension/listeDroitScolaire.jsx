@@ -40,16 +40,18 @@ import React, { useEffect, useState, useContext } from "react";
 import { Router, useRouter } from "next/router";
 import { GlobalContext } from "../../contexts/cyclesection/AppContext";
 import {IoIosAdd} from "react-icons/io"
-import {CREATE_ANNEE_ACADEMIQUE} from "../../graphql/Mutation"
+import {CREATE_ANNEE_ACADEMIQUE, CREATE_FRAIS_INSCRIPTION} from "../../graphql/Mutation"
 import { useMutation, useQuery } from "@apollo/client";
-import { GET_ALL_ANNEE_ACADEMIQUE } from "../../graphql/Queries";
+import { GET_ALL_ANNEE_ACADEMIQUE, GET_ALL_FRAIS_INSCRIPTION} from "../../graphql/Queries";
 
 const Pension = () => {
 
     // const router = useRouter();
     const [query , setQuery] = useState("");
     const [name, setName] = useState("");
-    // const [cycle, setCycle] = useState();
+    const [montant, setMontant] = useState();
+    const [anneeAcademiqueId, setAnneeAcademiqueId] = useState("");
+    const [nameFraisInscription, setNameFraisInscription] = useState("");
     // const [name, setName] = useState("");
     // const [section, setSection] = useState("");
     // const search = (data) => {
@@ -69,8 +71,10 @@ const Pension = () => {
     // const{ data:dataDetailsCycle} = useQuery(GET_ONE_CYCLE);
     // const [editCycle] = useMutation(UPDATE_CYCLE);
     // const [createCycle, {error}] = useMutation(CREATE_CYCLE);
-    const [createAnnerAccademique, {loading, error}] = useMutation(CREATE_ANNEE_ACADEMIQUE);
-    const {data:dataAnneAcademique} = useQuery(GET_ALL_ANNEE_ACADEMIQUE);
+    const [createAnneeAccademique, {loading, error}] = useMutation(CREATE_ANNEE_ACADEMIQUE);
+    const {data:dataAnneeAcademique} = useQuery(GET_ALL_ANNEE_ACADEMIQUE);
+    const {data:dataFraisInscription} = useQuery(GET_ALL_FRAIS_INSCRIPTION)
+    const [createdFraisInscription] = useMutation(CREATE_FRAIS_INSCRIPTION);
     const { isOpen, onOpen, onClose} = useDisclosure();
     // const { onOpen} = useDisclosure();
 
@@ -85,7 +89,6 @@ const Pension = () => {
   //     name =  "",
   //     section = ""
   // })
-
 
     //  useEffect (() => {
     //   console.log(data?.findAllsection);
@@ -109,7 +112,7 @@ const Pension = () => {
     //creation d'une annee academique
 
     const addAnneeAcademique = async () =>{
-      await createAnnerAccademique({
+      await createAnneeAccademique({
         variables:{
           anneeAccademique: {
             name: name
@@ -125,8 +128,26 @@ const Pension = () => {
       });
     }
 
+    const addFraisInscription = async() => {
+      console.log(nameFraisInscription),
+      console.log(anneeAcademiqueId)
+      console.log(montant)
+      await createdFraisInscription({
+        variables:{
+          fraisInscription:{
+            nameFraisInscription: nameFraisInscription,
+            montant: parseInt(montant),
+            anneeAcademiqueId: anneeAcademiqueId
+          }
+
+        }
+      })
+    }
+
+
     useEffect(() => {
-      console.log(dataAnneAcademique)
+      console.log(dataAnneeAcademique)
+      console.log(dataFraisInscription?.findAllfraisinscription)
     })
     
     if (loading) return <Text>Chargement en cour...</Text>
@@ -197,8 +218,8 @@ const Pension = () => {
           <Box as="form"> 
             <AlertDialog
               motionPreset='slideInBottom'
-              leastDestructiveRef={cancelRef}
-              onClose={onClose}
+              // leastDestructiveRef={cancelRef}
+              // onClose={onClose}
               // isOpen={isOpen}
               isCentered
             >
@@ -260,8 +281,8 @@ const Pension = () => {
                 </Tr>
               </Thead>
               <Tbody>
-                {dataAnneAcademique && 
-                (dataAnneAcademique.findAllAnnerAccademique.map((anneeAccademique, index) =>( 
+                {dataAnneeAcademique && 
+                (dataAnneeAcademique.findAllAnnerAccademique.map((anneeAccademique, index) =>( 
                 <Tr key={index}>
                   <Td>{anneeAccademique.name}</Td>
                 </Tr>
@@ -291,7 +312,7 @@ const Pension = () => {
                 rounded="full"
                 ml={["10px", "10px", "10px" ]}
                 _hover={{background:"colors.bluecolor"}}
-                // onClick={onOpenFrais}
+                onClick={onOpen}
               />
             </Box>
 
@@ -299,7 +320,7 @@ const Pension = () => {
                 motionPreset='slideInBottom'
                 leastDestructiveRef={cancelRef}
                 onClose={onClose}
-                // isOpen={}
+                isOpen={isOpen}
                 isCentered
                >
               <AlertDialogOverlay />
@@ -312,7 +333,7 @@ const Pension = () => {
                 <AlertDialogCloseButton />
                 <AlertDialogBody >
                   <Box >
-                    <FormControl >
+                    {/* <FormControl>
                         <FormLabel>Classe</FormLabel>
                         <Select 
                             type={'text'} 
@@ -322,30 +343,44 @@ const Pension = () => {
                           <option>cp</option>
                           <option>cc</option>
                         </Select>
-                    </FormControl>
+                    </FormControl> */}
                     <FormControl mt={4}>
-                        <FormLabel>Inscription</FormLabel>
+                      <FormLabel>Nom</FormLabel>
                         <Input 
                             type={'text'} 
-                            name="anneeAcademique"
-                            placeholder="Annee academique"
+                            name="nameFraisInscription"
+                            value={nameFraisInscription}
+                            onChange ={(event)=> setNameFraisInscription(event.target.value)}
+                            placeholder="Nom"
                         />
                     </FormControl>
                     <FormControl mt={4}>
-                        <FormLabel>Premiere tranche</FormLabel>
+                        <FormLabel>Montant</FormLabel>
                         <Input 
-                            type={'text'} 
-                            name="anneeAcademique"
-                            placeholder="Annee academique"
+                            type={"number"} 
+                            name="montant"
+                            value={montant}
+                            placeholder="Valeur"
+                            onChange = {(event)=> setMontant(event.target.value)}
                         />
                     </FormControl>
                     <FormControl mt={4}>
-                        <FormLabel>Deuxiere tranche</FormLabel>
-                        <Input 
+                        <FormLabel>Annee academique</FormLabel>
+                        <Select 
                             type={'text'} 
-                            name="anneeAcademique"
+                            name="anneeAcademiqueId"
+                            value={anneeAcademiqueId}
                             placeholder="Annee academique"
-                        />
+                            onChange = {(event)=> setAnneeAcademiqueId(event.target.value)}
+                        >
+                          {dataAnneeAcademique &&
+                            dataAnneeAcademique.findAllAnnerAccademique.map((anneeAcademique, index) => (
+                              <option value={anneeAcademique.id} key={index}>
+                                {anneeAcademique.name}
+                              </option>
+                            ))
+                          }
+                        </Select>
                     </FormControl>
                   </Box>
                 </AlertDialogBody>
@@ -357,7 +392,11 @@ const Pension = () => {
                   >
                     annuler
                   </Button>
-                  <Button colorScheme='green' ml={3}>
+                  <Button 
+                    colorScheme='green' 
+                    ml={3}
+                    onClick={addFraisInscription}
+                  >
                     Creer
                   </Button>
                 </AlertDialogFooter>
@@ -369,20 +408,23 @@ const Pension = () => {
                     <Thead>
                       <Tr>
                         <Th>Nom</Th>
-                        <Th>Montant inscription</Th>
-                        <Th >Montant premiere tranche</Th>
-                        <Th >Montant deuxiere tranche</Th>
+                        <Th >Montant</Th>
+                        <Th>Annee academique</Th>
+                        {/* <Th >Montant deuxiere tranche</Th> */}
                       </Tr>
                     </Thead>
                     <Tbody>
-                      <Tr>
-                        <Td>inches</Td>
-                        {/* <Td>millimetres (mm)</Td>
+                      { dataFraisInscription && (
+                      
+                        dataFraisInscription.findAllfraisinscription.map((fraisInscription, index) => (
+                      <Tr key={index}>
+                        <Td>{fraisInscription.nameFraisInscription}</Td>
+                        <Td>{fraisInscription.montant}</Td>
                         <Td>25.4</Td>
-                        <Td >Monntant</Td> */}
+                        {/* <Td >Monntant</Td>  */}
                       </Tr>
+                       )))}
                     </Tbody>
-                    
                   </Table>
                 </TableContainer>
               </Box>

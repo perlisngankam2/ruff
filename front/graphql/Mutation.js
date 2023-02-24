@@ -120,18 +120,40 @@ export const CREATE_STUDY_LEVEL = gql `
 `;
 
 //annee academique
-
 export const CREATE_ANNEE_ACADEMIQUE = gql`
-mutation createAnnerAccademique ($anneeAccademique: AnneeAccademiqueCreateInput!) {
-    createAnnerAccademique (anneeAccademique: $anneeAccademique) {
-        id
-        name
-        description
-        anneeAccademique
+    mutation createAnnerAccademique ($anneeAccademique: AnneeAccademiqueCreateInput!) {
+        createAnnerAccademique (anneeAccademique: $anneeAccademique) {
+            id
+            name
+            description
+        }
     }
-}
 `;
 
+//frais inscription
+export const CREATE_FRAIS_INSCRIPTION = gql`
+    mutation createFraisInscription ($fraisInscription: FraisInscriptionInput!) {
+        createFraisInscription (fraisInscription: $fraisInscription) {
+            id
+            nameFraisInscription
+            montant
+        }
+    }
+`;
+
+
+//reduction scolarite
+export const CREATE_REDUCTION_SCOLARITE = gql `
+    mutation createreductionscolarite ($reductionscolarite: RedutionScolariteInput!) {
+        createreductionscolarite (reductionscolarite: $reductionscolarite) {
+            id
+            name
+            description
+            montant
+            pourcentage
+        }
+    }
+`;
 
 export const fragmentCycle = gql` fragment CycleClass on cyle {
     id

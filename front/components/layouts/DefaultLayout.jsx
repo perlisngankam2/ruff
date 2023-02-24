@@ -1,16 +1,8 @@
 import { Box, Flex, Hide } from "@chakra-ui/react";
 import Header from "../molecules/Header/Header";
-import SidebarLayout from "../layouts/SidebarLayout";
-import React, { useState } from 'react';
-// import { useAuth } from "../contexts/account/Auth/Auth";
-// import { useRouter } from "next/router";
+import SidebarLayout from "./SidebarLayout";
 
-const DefaultLayout = ({children}) => {
-
-//  const { isLogged } = useAuth();
-  
-//   const isLoggedIn = isLogged;
-  
+const DefaultLayout = ({ children }) => {
   return (
    <Box h="full" >
       <Header />
@@ -24,7 +16,6 @@ const DefaultLayout = ({children}) => {
       </Flex>
     </Box>
   );
-  
 };
 
 export default DefaultLayout;

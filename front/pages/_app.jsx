@@ -22,7 +22,10 @@ function MyApp({ Component, pageProps}) {
         secondary: "#e2d39c",
         tertiary: "#eef6ec",
         quaternary: "#E53E3E",
-        quinzaine: "pink.300"
+        quinzaine: "pink.300",
+        greencolor: "#2F855A",
+        bluecolor: "#BEE3F8",
+        greenColor: "green"
       }, 
     },
   });  
@@ -30,7 +33,6 @@ function MyApp({ Component, pageProps}) {
   // const ApolloClient = useApollo(pageProps.initialApolloState);
 
   return (
-    
     <ApolloProvider client={client}>
         <AuthProvider>
           <AccountProvider>
@@ -40,7 +42,6 @@ function MyApp({ Component, pageProps}) {
           </AccountProvider>
         </AuthProvider>
     </ApolloProvider>
-    
   );
 }
 

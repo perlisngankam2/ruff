@@ -15,8 +15,17 @@ export class NiveauEtudeCreateInput {
   name?: string;
 
   @Field({nullable:true})
-  description?: string;
+  description?: string
+  
+  // @Field(()=>ID,{nullable:true})
+  // salle?: string;
+
+  @Field(()=>ID,{nullable:true})
+  cycleId?: string;
 
   @Field({nullable:true})
-  sectionCycle:SectionCycleCreateInput
+  montantPension?: number;
+
+  @Field(()=>SectionCycleCreateInput,{nullable:true})
+  sectionCycle?:SectionCycleCreateInput
 }

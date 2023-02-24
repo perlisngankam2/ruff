@@ -44,6 +44,6 @@ export class SectionCycle {
       })
     section!: IdentifiedReference<Section> | null;
 
-    @OneToMany(() => NiveauEtude, (niveau) => niveau.sectionCycle)
-    niveau = new Collection<NiveauEtude>(this);
+    // @OneToMany(() => NiveauEtude, (niveau) => niveau.sectionCycle)
+    // niveau = new Collection<NiveauEtude>(this);
 }

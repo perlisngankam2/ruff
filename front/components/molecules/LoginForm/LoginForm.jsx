@@ -18,7 +18,7 @@ import { NextLink } from "next/link";
 import { Link } from "@chakra-ui/react";
 import { LOGIN_USER} from "../../../graphql/Mutation";
 import { useMutation, useQuery } from "@apollo/client";
-import { useEffect, useState, createContext, useContext } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { GET_USER_CONNECTED} from  "../../../graphql/queries"
 import dashboard from "../../../pages/dashboard.jsx";
@@ -28,7 +28,7 @@ import { useAuth } from '../../../contexts/account/Auth/Auth'
 const LoginForm = () => {
   const[email , setEmail] = useState("");
   const[password , setPassword] = useState("");
-  const [loginInput , { data }] = useMutation(LOGIN_USER);
+  const [loginInput , error] = useMutation(LOGIN_USER);
   const [user, setUser] = useState(null);
   const router = useRouter();
   const { setAuthToken } = useAuth();
@@ -59,7 +59,6 @@ console.log(dataUser)
 
 
   return (
-
     <Flex w="full">
       <Hide below="md">
         <Box flex="3" background="rgb(226, 211, 155)" height="100vh">

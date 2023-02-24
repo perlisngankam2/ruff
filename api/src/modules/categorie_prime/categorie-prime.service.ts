@@ -22,6 +22,14 @@ export class CategoriePrimeService {
     const categoriePrime = new CategoriePrime()
     categoriePrime.nom = input.nom
     categoriePrime.description = input.description
+
+    wrap(categoriePrime).assign({
+    nom : input.nom,
+    description: input.description
+    },
+    {
+      em: this.em
+    })
     
     await this.categoriePrimeRepository.persistAndFlush(categoriePrime)
     return categoriePrime

@@ -4,8 +4,7 @@ import { User } from 'src/entities/user.entity';
 import { UserCreateInput } from 'src/modules/user/dto/user.input';
 
 @InputType()
-export class CategoriePrimeCreateInput {
-     
+export class CategoriePrimeCreateInput {    
   @Field({nullable:true})
   ID?: string;
 

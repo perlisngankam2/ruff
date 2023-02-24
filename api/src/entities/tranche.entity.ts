@@ -40,8 +40,8 @@ export class Tranche {
   @Property({ nullable: true })
   dateLine!: Date | null;
 
-  @Field({ defaultValue:0 })
-  @Property({ default:0 })
+  @Field({ nullable: true })
+  @Property({ nullable: true})
   montant!: number;
 
   @OneToMany(()=>TrancheStudent, (trancheStudent) => trancheStudent.tranche)

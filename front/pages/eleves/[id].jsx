@@ -7,7 +7,7 @@ import {
   AlertDialogContent,
   AlertDialogOverlay,
   useDisclosure,
-  Select,
+  // Select,
   Spacing,
   FormControl,
   FormLabel,
@@ -45,7 +45,7 @@ import {
     Spacer,
     br,
 } from "@chakra-ui/react";
-
+import { Select} from 'chakra-react-select';
 
 import { useRouter } from "next/router";
 import React, { useEffect } from "react";
@@ -145,6 +145,43 @@ import { client } from "../../graphql/apollo-client";
 //     revalidate: 1,
 //   }
 // }
+
+// export const tranches =[
+//   {value:"Inscription", label: "Blue"},
+//    {value:"Tranche 1", label: "Blue"},
+//    { value:"Tranche 2", label: "Blue"}, 
+//    {value:"Tranche 3", label: "Blue"}
+// ]
+
+// const trancheTableOptions = (
+//   tranches.map((tranche) =>({
+//     tranche
+// })))
+
+// export const groupedOptions = [
+//   {
+//     label: "valeur pension",
+//     options: trancheTableOptions
+//   }
+// ]
+
+export const colorOptions = [ 
+  { value: "blue", label: "Blue", color: "#0052CC" },
+  { value: "purple", label: "Purple", color: "#5243AA" },
+  { value: "red", label: "Red", color: "#FF5630" },
+  { value: "orange", label: "Orange", color: "#FF8B00" },
+  { value: "yellow", label: "Yellow", color: "#FFC400" },
+  { value: "green", label: "Green", color: "#36B37E" }
+]
+
+export const groupedOptions = [
+  {
+    label: "Colours",
+    options: colorOptions
+  }
+];
+
+
 const DetailComponent = (student) => {
 
 
@@ -152,7 +189,7 @@ const DetailComponent = (student) => {
     const { isOpen, onOpen, onClose } = useDisclosure()
     const cancelRef = React.useRef()
     const classe = ["MATERNELLE","SIL","CP","CM1","CM2"]
-    const Tranches =["Inscription","Tranche 1", "Tranche 2","Tranche 3"]
+    
     // const {loading, error, data:dataStudent} = useQuery(GET_ALL_ATUDENT);
     // const {data:singleStudent} = useQuery(GET_STUDENT_BY_ID);
     // console.log(data);
@@ -174,6 +211,9 @@ const DetailComponent = (student) => {
 
     // console.log(dataStudentId)
  
+     
+
+     
     useEffect(() =>{
       
       dataStudentId && console.log(dataStudentId.findOnestudent)
@@ -187,7 +227,12 @@ const DetailComponent = (student) => {
 
   return (
     <DefaultLayout >
-      <Box p={3} pt="70px" background="colors.tertiary" w='150%'>
+      <Box 
+        p={3} 
+        pt="70px" 
+        background="colors.tertiary" 
+        w='150%'
+      >
       <Flex
           align="center"
           justify="space-between"
@@ -209,27 +254,56 @@ const DetailComponent = (student) => {
           </Hide>
         </Flex>
         <Center>
-        <Flex gap='2' mt='5' fontSize={'sm'}>
+        <Flex 
+          gap='2' 
+          mt='5' 
+          fontSize={'sm'}
+        >
           <Center >
-            <Button bg='colors.primary' height='40px' color='white' borderRadius={'md'} onClick={onOpen}>Payer la Scolarite</Button>
+            <Button 
+              bg='colors.primary' 
+              height='40px' 
+              color='white' 
+              borderRadius={'md'} 
+              onClick={onOpen}
+            >
+              Payer la Scolarite
+            </Button>
               <AlertDialog
                 isOpen={isOpen}
                 leastDestructiveRef={cancelRef}
                 onClose={onClose}
                 size='xl'
             >
-        <AlertDialogOverlay>
-          <AlertDialogContent  >
-            <AlertDialogHeader fontSize='sm' fontWeight='base' mt='0'>
-            <Box  bg={"colors.secondary"} borderBottomRightRadius={10} borderBottomLeftRadius={10}>
-                <Heading as='H4' textAlign={'center'} fontSize={['15px','20px','26px']} p='2' >
-                        Groupe Scolaire Bilingue Awono Bilongue
-                </Heading>
-            </Box>
-            </AlertDialogHeader>
-            <AlertDialogBody>
-            <Box>
-              <Flex gap={5} flexWrap={['wrap','wrap','nowrap']} align='end' >
+              <AlertDialogOverlay>
+                  <AlertDialogContent  >
+                    <AlertDialogHeader 
+                      fontSize='sm' 
+                      fontWeight='base' 
+                      mt='0'
+                    >
+                    <Box  
+                      bg={"colors.secondary"} 
+                      borderBottomRightRadius={10} 
+                      borderBottomLeftRadius={10}
+                    >
+                        <Heading 
+                          as='H4' 
+                          textAlign={'center'} 
+                          fontSize={['15px','20px','26px']} 
+                          p='2' 
+                        >
+                                Groupe Scolaire Bilingue Awono Bilongue
+                        </Heading>
+                    </Box>
+                    </AlertDialogHeader>
+                    <AlertDialogBody>
+            {/* <Box>
+              <Flex 
+                gap={5} 
+                flexWrap={['wrap','wrap','nowrap']} 
+                align='end' 
+              >
                   <FormControl>
                       <FormLabel>Matricule</FormLabel>
                   <Input type={'text'} ></Input>
@@ -245,70 +319,106 @@ const DetailComponent = (student) => {
                   </Select>
                   </FormControl>
               </Flex>
-            </Box>
-            <Box mt='4'>
+            </Box> */}
+            {/* <Box mt='4'>
               <Flex align='end'>
                   <FormControl>
                       <FormLabel>Noms et prenoms</FormLabel>
                       <Input type={'text'} ></Input>
                   </FormControl>
               </Flex>
-            </Box>
-              <Box mt='4'>
-                        <Flex gap={5} flexWrap={['wrap', 'wrap', 'nowrap']} align='end' >
-                              <FormControl>
-                                  <FormLabel>Nom du remettant</FormLabel>
-                                  <Input type={'text'} ></Input>
-                              </FormControl>
+            </Box> */}
+              {/* <Box mt='4'>
+                <Flex 
+                  gap={5} 
+                  flexWrap={['wrap', 'wrap', 'nowrap']} 
+                  align='end' 
+                >
+                  <FormControl>
+                      <FormLabel>Nom du remettant</FormLabel>
+                      <Input type={'text'} ></Input>
+                  </FormControl>
 
-                              <FormControl>
-                                    <FormLabel>Tel du remettant</FormLabel>
-                                    <Input type={'text'} ></Input>
-                                    
-                              </FormControl>
-
-
-                        </Flex>
-              </Box>
+                  <FormControl>
+                        <FormLabel>Tel du remettant</FormLabel>
+                        <Input type={'text'} ></Input>
+                        
+                  </FormControl>
+                </Flex>
+              </Box> */}
             <Box mt='4'>
-                <Flex gap={5} flexWrap={['wrap','wrap','nowrap']} align='end'>
+                <Flex 
+                  gap={5} 
+                  flexWrap={['wrap','wrap','nowrap']} 
+                  align='end'
+                >
                     <FormControl>
-                            <FormLabel placeholder="--motif--">Motif</FormLabel>
-                        <Select  default>
-                            {Tranches.map((tranche) => (
-                                <option>{tranche}</option>
-                            ))}
+                        <FormLabel 
+                        placeholder="--motif--"
+                        >
+                          Motif
+                        </FormLabel>
+                        <Select  
+                          isMulti
+                          options= {groupedOptions}
+                          // {[Tranches.map((tranche) => (
+                          //   <option>{tranche}</option>
+                          // ))]}
+                        >
                         </Select>
                     </FormControl>
-
                     <FormControl>
-                            <FormLabel>Montant attendu</FormLabel>
-                        <Input type={'text'} disabled='disabled' placeholder='0000000' color='gray'></Input>
+                        <FormLabel 
+                        placeholder="--motif--"
+                        >
+                          Classe 
+                        </FormLabel>
+                        <Select  
+                          isMulti
+                          options= {groupedOptions}
+                          // {[Tranches.map((tranche) => (
+                          //   <option>{tranche}</option>
+                          // ))]}
+                        >
+                        </Select>
                     </FormControl>
                 </Flex>
             </Box>
             <Box mt='4'>
-                <Flex gap={5} flexWrap={['wrap','wrap','nowrap']} align='end'>
-                    <FormControl>
-                            <FormLabel>Montant percu</FormLabel>
-                            <Input type={'number'} ></Input>
-                        
+                <Flex 
+                  gap={5} 
+                  flexWrap={['wrap','wrap','nowrap']} 
+                  align='end'
+                >
+                  <FormControl>
+                    <FormLabel>Montant attendu</FormLabel>
+                      <Input 
+                        type={'text'} 
+                        disabled='disabled' 
+                        placeholder='0000000' 
+                        color='gray'
+                      />
                     </FormControl>
-
                     <FormControl>
-                            <FormLabel>Delai</FormLabel>
-                            <Input type={'date'} ></Input>
-                        
+                      <FormLabel>Montant percu</FormLabel>
+                      <Input type={'number'} />
                     </FormControl>
-
+                    
+                    {/* <FormControl>
+                        <FormLabel>Delai</FormLabel>
+                        <Input type={'date'} ></Input>
+                    </FormControl>
                     <FormControl>
-                            <FormLabel>reste a payer</FormLabel>
-                        <Input type={'number'} disabled='disabled' textColor={'red.300'}></Input>
-                    </FormControl>
+                        <FormLabel>reste a payer</FormLabel>
+                      <Input 
+                        type={'number'} 
+                        disabled='disabled' 
+                        textColor={'red.300'}
+                      />
+                    </FormControl> */}
                 </Flex>
             </Box>
             </AlertDialogBody>
-
             <AlertDialogFooter>
               <Button ref={cancelRef} onClick={onClose} colorScheme='red' >
                 annuler
@@ -323,36 +433,85 @@ const DetailComponent = (student) => {
         </AlertDialogOverlay>
       </AlertDialog>
           </Center>
-          <Center bg='#FC8A94'  height='40px' color='white' borderRadius={'md'}>
+          <Center 
+            bg='#FC8A94' 
+            height='40px' 
+            color='white' 
+            borderRadius={'md'}
+           >
               <Text m='2'>note</Text>
           </Center>
-          <Center bg='#5370CC'  height='40px' color='white' borderRadius={'md'}>
+          <Center 
+            bg='#5370CC'  
+            height='40px' 
+            color='white' 
+            borderRadius={'md'}
+          >
               <Text m='2'>Imprimer</Text>
           </Center>
-          <Center bg='#328D57'  height='40px' color='white' borderRadius={'md'}>
+          <Center 
+            bg='#328D57'  
+            height='40px' 
+            color='white' 
+            borderRadius={'md'}
+          >
               <Text m='2'>Nouvelle Photo</Text>
           </Center>
-          <Center bg='#6688F6'  height='40px' color='white' borderRadius={'md'}>
+          <Center 
+            bg='#6688F6'  
+            height='40px' 
+            color='white' 
+            borderRadius={'md'}
+          >
               <Text m='2'>Payer la Scolarite</Text>
           </Center>
-          <Center bg='#FA6060'  height='40px' color='white' borderRadius={'md'}>
+          <Center 
+            g='#FA6060' 
+            height='40px' 
+            color='white' 
+            borderRadius={'md'}
+            bg="#e2d39c"
+           >
               <Text m='2'>Bulletin</Text>
           </Center>
-          <Center bg='#60736A'  height='40px' color='white' borderRadius={'md'}>
+          <Center 
+            g='#60736A'  
+            height='40px' 
+            color='white' 
+            borderRadius={'md'}
+            bg="green.500"
+          >
               <Text m='2'>Notifier Absence</Text>
           </Center>
-          <Center bg='#DA7E86'  height='40px' color='white' borderRadius={'md'}>
+          <Center 
+            bg='#DA7E86' 
+            height='40px' 
+            color='white' borderRadius={'md'}
+           >
               <Text m='2'>Envoie SMS</Text>
           </Center>
         </Flex>
         </Center>
   {dataStudentId && (
-  <SimpleGrid spacing={4} templateColumns='repeat(auto-fill, minmax(400px, 1fr))' m='5'>
-    <Card bgColor="#CCDEDE" borderWidth={'1.5px'} borderColor='#E2D39C'>
+  <SimpleGrid 
+    spacing={4} 
+    templateColumns='repeat(auto-fill, minmax(400px, 1fr))' m='5'
+  >
+    <Card 
+      bgColor="#CCDEDE" 
+      borderWidth={'1.5px'} 
+      borderColor='#E2D39C'
+    >
       
       <CardHeader>
-        <Flex flexDirection={'horizontal'}>
-        <Heading size='sm'  color='white' background={'#767676'}>
+        <Flex 
+          flexDirection={'horizontal'}
+        >
+        <Heading 
+          size='sm'  
+          color='white' 
+          background={'#767676'}
+        >
           <Text m='1'>
           Informations personnelles<br/>
           Annee scolaire : 2021 - 2022
@@ -368,19 +527,43 @@ const DetailComponent = (student) => {
       
       <CardBody fontSize={'sm'}>
         
-        <Flex flexDirection={'column'} spacing='5'>
-        <Text><Text as='b'>Nom : </Text> {dataStudentId.findOnestudent.firstname}</Text>
-        <Text><Text as='b'>Prenom : </Text> {dataStudentId.findOnestudent.lastname}</Text>
-        <Text><Text as='b'>Matricule : </Text>{dataStudentId.findOnestudent.matricule}</Text>
-        <Text><Text as='b'>Sexe : </Text>{dataStudentId.findOnestudent.sex}</Text>
-        <Text><Text as='b'>Classe : </Text>{dataStudentId.findOnestudent.classe}</Text>
-        <Text><Text as='b'>Section : </Text> {dataStudentId.findOnestudent.section}</Text>
+        <Flex 
+          flexDirection={'column'} 
+          spacing='5'
+        >
+        <Text>
+          <Text as='b'>Nom : </Text> 
+            {dataStudentId.findOnestudent.firstname}
+         </Text>
+        <Text><Text as='b'>Prenom : </Text>
+          {dataStudentId.findOnestudent.lastname}
+         </Text>
+        <Text><Text as='b'>Matricule : </Text>
+          {dataStudentId.findOnestudent.matricule}
+        </Text>
+        <Text><Text as='b'>Sexe : </Text>
+          {dataStudentId.findOnestudent.sex}
+        </Text>
+        <Text><Text as='b'>Classe : </Text>
+          {/* {dataStudentId.findOnestudent.classe} */}
+        </Text>
+        <Text><Text as='b'>Section : </Text> 
+          {/* {dataStudentId.findOnestudent.section} */}
+        </Text>
         <Text mt={"20px"}>Pere</Text>
-        <Text><Text as='b'>Nom : </Text> {dataStudentId.findOnestudent.fatherFirstName}</Text>
-        <Text><Text as='b'>Contact: </Text>{dataStudentId.findOnestudent.fatherPhoneNumber} </Text>
+        <Text><Text as='b'>Nom : </Text> 
+          {dataStudentId.findOnestudent.fatherFirstName}
+        </Text>
+        <Text><Text as='b'>Contact: </Text>
+          {dataStudentId.findOnestudent.fatherPhoneNumber} 
+        </Text>
         <Text mt={"20px"}>mere</Text>
-        <Text><Text as='b'>Nom : </Text>{dataStudentId.findOnestudent.motherFirstName} </Text>
-        <Text><Text as='b'>Contact: </Text> {dataStudentId.findOnestudent.motherPhoneNumber}</Text>
+        <Text><Text as='b'>Nom : </Text>
+          {dataStudentId.findOnestudent.motherFirstName}
+        </Text>
+        <Text><Text as='b'>Contact: </Text> 
+          {dataStudentId.findOnestudent.motherPhoneNumber}
+        </Text>
         {/* <Text><Text as='b'>Email du pere : </Text>amostinanfon17@gmail.com</Text> */}
         {/* <Text><Text as='b'>Email de la mere : </Text>amostinanfon37@yahoo.com</Text> */}
         </Flex>
@@ -388,15 +571,37 @@ const DetailComponent = (student) => {
       <CardFooter>
       </CardFooter>
     </Card>
-    <Card bgColor="#CCDEDE" borderWidth={'1.5px'} borderColor='#E2D39C' fontSize={'sm'}>
+    <Card 
+      bgColor="#CCDEDE" 
+      borderWidth={'1.5px'} 
+      borderColor='#E2D39C' 
+      fontSize={'sm'}
+    >
         <CardHeader>
           <Box>
-            <Heading size='sm' w={'50%'}>
-              <Text bgColor={'#767676'} p='1' color={'white'}>PAIEMENT SCOLARITE</Text>
+            <Heading 
+              size='sm'
+              w={'50%'}
+             >
+              <Text 
+                bgColor={'#767676'} 
+                p='1' 
+                color={'white'}
+              >
+                PAIEMENT SCOLARITE
+              </Text>
             </Heading>
             <Box>
-            <Text color={'#AB9442'}>
-              <Text as='b' color='#AB9442' mr='2'>Derniere scolarite :</Text>
+            <Text 
+              color={'#AB9442'}
+            >
+              <Text 
+                as='b' 
+                color='#AB9442' 
+                mr='2'
+              >
+                Derniere scolarite :
+              </Text>
               153000
               </Text> 
               <Box fontWeight={800}>
@@ -410,24 +615,52 @@ const DetailComponent = (student) => {
         </CardHeader>
       <CardBody>
         <Box>
-          <Heading size='sm' w={'50%'}>
-            <Text bgColor={'#767676'} p='1' color={'white'}>ABSENCE</Text>
+          <Heading 
+            size='sm' 
+            w={'50%'}
+          >
+            <Text 
+              bgColor={'#767676'} 
+              p='1' 
+              color={'white'}
+            >
+              ABSENCE
+            </Text>
           </Heading>
           <Box>
             <Text color={'#AB9442'}>
-              <Text as='b' color='#AB9442'>Absente le : </Text>
-              20.12.2022 (Maladie)
+              <Text 
+                as='b'
+                color='#AB9442'
+              >
+                Absente le : 
+              </Text>
+                20.12.2022 (Maladie)
             </Text>
           </Box>
         </Box>
         <Box mt={'5'}>
-          <Heading size='sm' w={'50%'}>
-            <Text bgColor={'#767676'} p='1' color={'white'}>Transport</Text>
+          <Heading 
+            size='sm' 
+            w={'50%'}
+          >
+            <Text 
+              bgColor={'#767676'} 
+              p='1' 
+              color={'white'}
+            >
+              Transport
+            </Text>
           </Heading>
           <Box>
             <Text color={'#AB9442'}>
-              <Text as='b' color='#AB9442'>Transport (dernier paiement) : </Text>
-              54.000 (Maladie)
+              <Text 
+                as='b' 
+                color='#AB9442'
+              >
+                Transport (dernier paiement) : 
+              </Text>
+                54.000 (Maladie)
             </Text>
           </Box>
         </Box>

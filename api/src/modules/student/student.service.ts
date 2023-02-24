@@ -43,9 +43,9 @@ export class StudentService {
         //     ? await this.localisationService.findByOne({id:input.localisation.ID})
         //     : await this.localisationService.create(input.localisation)
         
-        // const inscription = input.inscription
-        //     ? await this.inscriptionService.findByOne({id:input.inscription.ID})
-        //     : await this.inscriptionService.create(input.inscription)
+        //  const inscription = input.inscription
+        //      ? await this.inscriptionService.findByOne({id:input.inscription_id})
+        //   : await this.inscriptionService.create(input.inscription)
 
         // const salle = input.salle
         //     ? await this.salleService.findByOne({id:input.salle.ID})
@@ -54,29 +54,34 @@ export class StudentService {
         // const user = input.user
         //     ? await this.userService.findByOne({id:input.user.ID})
         //     : await this.userService.create(input.user)
-        student.matricule = input.matricule
-        student.firstname = input.firstname
-        student.lastname = input.lastname
-        student.classe = input.classe
-        student.sex = input.sex
-        student.dateOfBirth=input.dateOfBirth
-        student.adress=input.adress
-        student.transport=input.transport
-        student.categoryStudent = input.categoryStudent
-        student.section = input.section
-        student.cycle = input.cycle
-        student.fatherFirstName=input.fatherFirstName
-        student.fatherLastName=input.fatherLastName
-        student.fatherPhoneNumber=input.fatherPhoneNumber
-        student.fatherProfession=input.fatherProfession
-        student.motherFirstName=input.motherFirstName
-        student.motherLastName=input.motherLastName
-        student.motherPhoneNumber=input.motherPhoneNumber
-        student.motherProfession=input.motherProfession
-        student.tutorFirstName=input.tutorFirstName
-        student.tutorLastName=input.tutorLastName
-        student.tutorPhoneNumber=input.tutorPhoneNumber
-        student.tutorProfession=input.tutorProfession
+        wrap(student).assign(
+          {
+            matricule: input.matricule,
+            firstname: input.firstname,
+            lastname: input.lastname,
+            // classe : input.classe,
+            sex: input.sex,
+            dateOfBirth:input.dateOfBirth,
+            adress:input.adress,
+            transport:input.transport,
+            categorie : input.categoryStudentId,
+            fatherFirstName:input.fatherFirstName,
+            fatherLastName:input.fatherLastName,
+            fatherPhoneNumber:input.fatherPhoneNumber,
+            fatherProfession:input.fatherProfession,
+            motherFirstName:input.motherFirstName,
+            motherLastName:input.motherLastName,
+            motherPhoneNumber:input.motherPhoneNumber,
+            motherProfession:input.motherProfession,
+            tutorFirstName:input.tutorFirstName,
+            tutorLastName:input.tutorLastName,
+            tutorPhoneNumber:input.tutorPhoneNumber,
+            tutorProfession:input.tutorProfession,
+          },
+          {
+            em:this.em
+          }
+        )
         // student.salle.id = salle.id,
         // student.inscription.id = inscription.id,
         // student.user.id = user.id,
@@ -128,16 +133,14 @@ export class StudentService {
             matricule:input.matricule,
             firstname:input.firstname,
             lastname:input.lastname,
-            classe:input.classe,
+            // classe:input.classe,
             sex:input.sex,
             dateOfBirth:input.dateOfBirth,
             adress:input.adress,
             // exclut: input.exclut || student.exclut,
             // old: input.old,
             transport:input.transport,
-            categoryStudent:input.categoryStudent,
-            section : input.section,
-            cycle : input.cycle,
+            categorie:input.categoryStudentId,
             fatherFirstName:input.fatherFirstName,
             fatherLastName:input.fatherLastName,
             fatherPhoneNumber:input.fatherPhoneNumber,

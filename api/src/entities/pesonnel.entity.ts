@@ -42,9 +42,6 @@ export class Personnel {
   @Property({ nullable: true })
   phoneNumber!: string;
   
-  @Field({ nullable: true })
-  @Property({ nullable: true })
-  personnelCategory!: string;
 
   @Field({ nullable: true })
   @Property({ nullable: true })
@@ -83,7 +80,15 @@ export class Personnel {
 
   @Field({ nullable: true})
   @Property({ nullable: true })
-  childNumber!: string;
+  childNumber!: number;
+
+  @Field({nullable: true})
+  @Property({nullable: true})
+  password!: string
+
+  @Field({nullable:true})
+  @Property({nullable:true})
+  email!: string
 
   @Field({nullable: true})
   @Property({nullable: true})
@@ -106,7 +111,8 @@ export class Personnel {
     nullable:true,
     onDelete:'CASCADE'
   })
-  categorie!:IdentifiedReference<CategoriePersonnel>|null
+  category!:IdentifiedReference<CategoriePersonnel>|null
+
 
 // relation with another Entites
   @OneToMany(() => PrimePersonnel, prime => prime.personnel)

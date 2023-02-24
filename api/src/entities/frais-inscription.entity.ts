@@ -27,16 +27,15 @@ export class FraisInscription{
 
     @Field({ nullable: true })
     @Property({nullable:true})
-    description!: string;
+    nameFraisInscription!: string;
 
     @Field({ defaultValue: 0 })
     @Property({default:0})
     montant!: number;
 
-    @Field(() => Date, { nullable: true })
-    @Property({ nullable: true })
-    dateLine!: Date | null;
-
+    // @Field(() => Date, { nullable: true })
+    // @Property({ nullable: true })
+    // dateLine!: Date | null;
 
     // relation entity1001
     @ManyToOne(() => AnneeAccademique ,{

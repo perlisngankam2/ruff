@@ -3,20 +3,21 @@ import Personnel from '../pages/personnel';
 
 //personnel
 export const GET_ALL_PERSONNELS = gql `
-    query findAllpersonnel {
+    query findAllpersonnel { 
         findAllpersonnel {
-        id
-        firstName
-        lastName
-        phoneNumber
-        personnelCategory
-        situationMatrimonial
-        sexe
-        fonction
-        status
-        dateOfStartWork
-        dateOfBirth
-        childNumber
+            id
+            firstName
+            lastName
+            phoneNumber
+            situationMatrimonial
+            sexe
+            fonction
+            status
+            dateOfStartWork
+            dateOfBirth
+            childNumber
+            password
+            email
         }
     }
 `;
@@ -35,7 +36,7 @@ export const GET_ALL_Category_Personnel = gql `
 
 //student
 export const GET_ALL_STUDENT =  gql `
-    query findAllstudents {
+query findAllstudents {
         findAllstudents {
             id
             matricule
@@ -43,12 +44,8 @@ export const GET_ALL_STUDENT =  gql `
             lastname
             dateOfBirth
             sex
-            classe
             adress
             transport
-            categoryStudent
-            section
-            cycle
             fatherFirstName
             fatherLastName
             fatherPhoneNumber
@@ -93,7 +90,6 @@ export const GET_ALL_CYCLE =  gql `
         findAllcycle {
             id
             name
-            section
         }
     }
 `;
@@ -111,6 +107,16 @@ export const GET_ALL_CLASS =  gql `
 `;
 
 
+export const GET_ALL_FRAIS_INSCRIPTION =  gql `
+    query findAllfraisinscription {
+        findAllfraisinscription {
+            id
+            nameFraisInscription
+            montant
+        }
+    }
+`;
+
 
 // one Personnel
 export const GET_PERSONNEL_BY_ID =  gql `
@@ -120,7 +126,6 @@ export const GET_PERSONNEL_BY_ID =  gql `
             firstName
             lastName
             phoneNumber
-            personnelCategory
             situationMatrimonial
             sexe
             fonction
@@ -128,6 +133,8 @@ export const GET_PERSONNEL_BY_ID =  gql `
             dateOfStartWork
             dateOfBirth
             childNumber
+            password
+            email
         }
     }
 `;
@@ -142,12 +149,8 @@ export const GET_STUDENT_BY_ID =  gql `
             lastname
             dateOfBirth
             sex
-            classe
             adress
             transport
-            categoryStudent
-            section
-            cycle
             fatherFirstName
             fatherLastName
             fatherPhoneNumber
@@ -164,13 +167,48 @@ export const GET_STUDENT_BY_ID =  gql `
     }
 `;
 
+
+//annee academique
+export const GET_ALL_ANNEE_ACADEMIQUE = gql `
+    query findAllAnnerAccademique {
+        findAllAnnerAccademique {
+            id
+            name
+            description
+        }
+    }
+`
+//niveau d'etude
+export const GET_ALL_STUDY_LEVEL = gql `
+    query findAllNiveauEtude {
+        findAllNiveauEtude {
+            id
+            name
+            description
+            montantPension
+        }
+    }
+`
+
+//get reduction scolarite
+export const GET_ALL_REDUCTION_SCOLARITE = gql  `
+    query findAllreductionscolarite {
+        findAllreductionscolarite {
+            id
+            name
+            description
+            montant
+            pourcentage
+        }
+    }
+`;
+
 //one cycle
 export const GET_ONE_CYCLE =  gql `
 query findOnecycle ($id: String!) {
     findOnecycle (id: $id) {
         id
         name
-        section
     }
 }
 `;

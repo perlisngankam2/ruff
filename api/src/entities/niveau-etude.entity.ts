@@ -18,6 +18,7 @@ import { FraisInscription } from './frais-inscription.entity';
 import { Pension } from './pension.entity';
 import { Salle } from './salle.entity';
 import { SectionCycle } from './section-cycle.entity';
+import { Cycle} from './cycle.entity';
 
 
 @Entity()
@@ -34,6 +35,18 @@ export class NiveauEtude{
     @Field({ nullable: true })
     @Property({nullable:true})
     description!: string;
+
+    // @Field({ nullable: true })
+    // @Property({nullable:true})
+    // section!: string;
+
+    // @Field({ nullable: true })
+    // @Property({nullable:true})
+    // cycle!: string;
+
+    @Field({nullable: true})
+    @Property({nullable: true})
+    montantPension!: number;
 
     @Property({ onCreate: () => new Date() })
     createdAt = new Date();
@@ -53,18 +66,15 @@ export class NiveauEtude{
 
   // @OneToOne(() => FraisInscription, (fraisInscription) => fraisInscription.niveauEtude, {
   //     owner: false,
-  //     nullable: true,
   //   })
   // fraisInscription!: IdentifiedReference<FraisInscription> | null;
-
-
-  @ManyToOne(() => SectionCycle, {
-        nullable: true,
-        onDelete: 'CASCADE',
-      })
-  sectionCycle!: IdentifiedReference<SectionCycle> | null;
+  @ManyToOne(() => Cycle, {
+    nullable: true,
+    onDelete: 'CASCADE',
+  })
+  cycle!: IdentifiedReference<Cycle> | null;
 
   @OneToMany(() => Salle, (salle) => salle.niveau)
-    salle = new Collection<Salle>(this);
+  salle = new Collection<Salle>(this);
     
 }

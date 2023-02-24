@@ -31,19 +31,24 @@ export class FraisInscriptionService {
       ): Promise<FraisInscription> {  
         const frais = new FraisInscription()
 
-        const anneAccademique = input.anneeAccademique
-        ? await this.anneAccademique.findbyOne({id:input.anneeAccademique.ID})
-        : await this.anneAccademique.create(input.anneeAccademique)
+        const anneAccademique = await this.anneAccademique.findbyOne({id:input.anneeAcademiqueId})
 
-        const salle = input.salle
-        ? await this.salleService.findByOne({id:input.salle.ID})
-        : await this.salleService.create(input.salle)
+        const salle = await this.salleService.findByOne({id:input.salleId})
 
+        if(!(anneAccademique&&salle)){
+          new Error("not found")
+        }
 
-        frais.montant = input.montant
-        frais.description = input.description || null
-        frais.salle.id = salle.id
-        frais.anneeAccademique.id = anneAccademique.id
+        wrap(frais).assign({
+        montant:Number(input.montant)||0.0,
+        salle:input.salleId,
+        nameFraisInscription: input.nameFraisInscription,
+        // dateLine: new Date(input.dateLine),
+        anneeAccademique: input.anneeAcademiqueId
+        },
+        {
+          em: this.em
+        })
         
         await this.fraisRepository.persistAndFlush(frais)
         return frais
@@ -63,9 +68,7 @@ export class FraisInscriptionService {
       async update(id:string,input: UpdateFraisInscriptionInput): Promise<FraisInscription> {
         const frais = await this.findById(id)
         if (input.salle) {
-            const salle =
-            input.salle?.ID &&
-              (await this.salleService.findByOne({ id: input.salle?.ID }));
+            const salle = input.salleId && (await this.salleService.findByOne({ id: input.salleId }));
       
             if (!salle) {
               throw new NotFoundError('salle no exist' || '');
@@ -73,10 +76,9 @@ export class FraisInscriptionService {
             this.salleService.update(salle.id, input.salle);
           }
 
-          if (input.anneeAccademique) {
+        if (input.anneeAcademiqueId) {
             const annee =
-            input.anneeAccademique?.ID &&
-              (await this.anneAccademique.findbyOne({ id: input.anneeAccademique?.ID }));
+            input.anneeAcademiqueId && (await this.anneAccademique.findbyOne({ id: input.anneeAcademiqueId }));
       
             if (!annee) {
               throw new NotFoundError('annee no exist' || '');
@@ -86,8 +88,8 @@ export class FraisInscriptionService {
         
         wrap(frais).assign({
             montant: input.montant || frais.montant,
-            description: input.description || frais.description,
-            dateLine: input.dateLine || frais.dateLine
+            nameFraisInscription: input.nameFraisInscription || frais.nameFraisInscription,
+            // dateLine: input.dateLine || frais.dateLine
         },
         { em: this.em },
     );

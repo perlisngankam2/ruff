@@ -42,7 +42,7 @@ export class SalaireService {
 
     
     // check categorie prime
-    const categorie = personnel.categorie.getEntity()
+    const categorie = personnel.category.getEntity()
     const salaireBase = categorie.salaireBase.getEntity().montant
     const primes = await personnel.prime.loadItems()
     const retenus = (await personnel.retenue.loadItems())
@@ -51,7 +51,6 @@ export class SalaireService {
 
     if(personnel.status === "PERMANENT"){
       let sommePrime = 0
-      
       for(let i = 0; i < primes.length; i++){
         sommePrime += primes[i].prime.getEntity().montant
       }

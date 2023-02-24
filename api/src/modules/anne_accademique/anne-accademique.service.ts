@@ -33,7 +33,7 @@ export class AnneeAccademiqueService {
     wrap(annee).assign(
       {
         name: input.name,
-        anneeAccademique: new Date(input.anneeAccademique),
+        // anneeAccademique:new Date(input.anneeAccademique),
         description: input.description
       },
       {
@@ -55,7 +55,7 @@ export class AnneeAccademiqueService {
     wrap(annee).assign({
       name: input.name || annee.name,
       description: input.description || annee.description,
-      anneeAccademique: input.anneeAccademique || annee.anneeAccademique
+      // anneeAccademique: input.anneeAccademique || annee.anneeAccademique
     },
     {
       em: this.em,

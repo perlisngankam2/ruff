@@ -8,7 +8,6 @@ export const CREATE_PERSONNEL = gql `
             firstName
             lastName
             phoneNumber
-            personnelCategory
             situationMatrimonial
             sexe
             fonction
@@ -16,8 +15,10 @@ export const CREATE_PERSONNEL = gql `
             dateOfStartWork
             dateOfBirth
             childNumber
+            password
+            email
         }
-}
+    }
 `;
 
 //categorie personnel
@@ -42,12 +43,8 @@ export const CREATE_STUDENT = gql`
             lastname
             dateOfBirth
             sex
-            classe
             adress
             transport
-            categoryStudent
-            section
-            cycle
             fatherFirstName
             fatherLastName
             fatherPhoneNumber
@@ -107,7 +104,53 @@ export const CREATE_CYCLE = gql `
         createCycle (cycle: $cycle) {
             id
             name
-            section
+        }
+    }
+`;
+
+export const CREATE_STUDY_LEVEL = gql `
+    mutation createNiveauEtude ($niveauEtude: NiveauEtudeCreateInput!) {
+        createNiveauEtude (niveauEtude: $niveauEtude) {
+            id
+            name
+            description
+            montantPension
+        }
+    }
+`;
+
+//annee academique
+export const CREATE_ANNEE_ACADEMIQUE = gql`
+    mutation createAnnerAccademique ($anneeAccademique: AnneeAccademiqueCreateInput!) {
+        createAnnerAccademique (anneeAccademique: $anneeAccademique) {
+            id
+            name
+            description
+        }
+    }
+`;
+
+//frais inscription
+export const CREATE_FRAIS_INSCRIPTION = gql`
+    mutation createFraisInscription ($fraisInscription: FraisInscriptionInput!) {
+        createFraisInscription (fraisInscription: $fraisInscription) {
+            id
+            nameFraisInscription
+            montant
+        }
+    }
+`;
+
+
+//reduction scolarite
+export const CREATE_REDUCTION_SCOLARITE = gql `
+    mutation createreductionscolarite ($reductionscolarite: RedutionScolariteInput!) {
+        createreductionscolarite (reductionscolarite: $reductionscolarite) {
+            id
+            name
+            description
+            montant
+            pourcentage
         }
     }
 `;
@@ -140,7 +183,6 @@ export const DELETE_PERSONNEL = gql `
             firstName
             lastName
             phoneNumber
-            personnelCategory
             situationMatrimonial
             sexe
             fonction
@@ -148,6 +190,8 @@ export const DELETE_PERSONNEL = gql `
             dateOfStartWork
             dateOfBirth
             childNumber
+            password
+            email
         }
     }
 `;
@@ -169,9 +213,8 @@ export const DELETE_CYCLE = gql `
         deletecycle (id: $id) {
             id
             name
-            section
         }
-}
+    }
 `;
 
 export const DELETE_SALLE = gql `
@@ -196,12 +239,8 @@ export const DELETE_STUDENT = gql `
             lastname
             dateOfBirth
             sex
-            classe
             adress
             transport
-            categoryStudent
-            section
-            cycle
             fatherFirstName
             fatherLastName
             fatherPhoneNumber
@@ -215,7 +254,7 @@ export const DELETE_STUDENT = gql `
             tutorPhoneNumber
             tutorProfession
         }
-    }
+}
 `;
 
 

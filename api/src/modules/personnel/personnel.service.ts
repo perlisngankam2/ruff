@@ -24,16 +24,16 @@ export class PersonnelService {
   ): Promise<Personnel> {
 
   
-  // const user = await this.userService.findById(input.userId)
-  // if (!user) {
-  //   throw new NotFoundError('user not found'|| '');
-  // }
+  const user = await this.userService.findById(input.userID)
+  if (!user) {
+    throw new NotFoundError('user not found'|| '');
+   }
   const new_personnel = new Personnel()
 
 wrap(new_personnel).assign({
   firstName : input.firstName,
   lastName : input.lastName,
-  personnelCategory :input.personnelCategory,
+  category :input.categoryPersonnelId,
   status : input.status,
   childNumber: input.childNumber,
   phoneNumber: input.phoneNumber,
@@ -43,7 +43,8 @@ wrap(new_personnel).assign({
   dateOfStartWork : input.dateOfStartWork,
   fonction : input.fonction,
   dateOfBirth : input.dateOfBirth,
-  situationMatrimonial : input.situationMatrimonial},
+  situationMatrimonial : input.situationMatrimonial
+},
   {
     em:this.em
   },
@@ -83,7 +84,7 @@ wrap(new_personnel).assign({
     wrap(personnel).assign({
       firstName: input.firstName || personnel.firstName,
       lastName: input.lastName || personnel.lastName,
-      personnelCategory: input.personnelCategory || personnel.personnelCategory,
+      category: input.categoryPersonnelId || personnel.category,
       status: input.status || personnel.status,
       phoneNumber: input.phoneNumber || personnel.phoneNumber,
       situationMatrimonial: input.situationMatrimonial || personnel.situationMatrimonial,

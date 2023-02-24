@@ -1,5 +1,5 @@
 /* eslint-disable prettier/prettier */
-import { Field, ID, InputType } from '@nestjs/graphql';
+import { Field,ID,InputType } from '@nestjs/graphql';
 import { Inscription } from 'src/entities/inscription.entity';
 import { RegimePaiement } from 'src/entities/tranche-student.entity';
 import { InscriptionInput } from 'src/modules/inscription/dto/inscription.input';
@@ -8,21 +8,24 @@ import { TrancheCreateInput } from 'src/modules/tranche/dto/tranche.input';
 
 @InputType()
 export class AvanceInscriptionCreateInput {
-  @Field({nullable:true})
-  ID?: string;
 
+  @Field(()=>ID,{nullable:true})
+  inscription_id?:string
+  
   @Field({nullable:true})
   name?: string;
 
   @Field({nullable:true})
   description?: string;
 
-  @Field({defaultValue:0})
+  @Field({nullable:true,defaultValue:0})
   montant?: number;
 
-  @Field({defaultValue:0})
+  @Field({nullable:true,defaultValue:0})
   reste?: number;
 
-  @Field()
-  inscription?:InscriptionInput
+  @Field(()=>InscriptionInput,{nullable:true})
+  inscription?:InscriptionInput 
+
+
 }

@@ -3,11 +3,15 @@ import { Field, ID, InputType } from '@nestjs/graphql';
 import { User } from 'src/entities/user.entity';
 import { UserCreateInput } from 'src/modules/user/dto/user.input';
 import { Role } from 'src/modules/auth/roles/roles';
+import { UpdateUserInput } from 'src/modules/user/dto/user.update';
 
 @InputType()
 export class PersonnelUpdateInput {
-  @Field({nullable:true})
-  ID?: string;
+  @Field(()=>ID,{nullable:true})
+  userID?: string;
+
+  @Field(()=>ID, {nullable:true})
+  categoryPersonnelId?: string;
   
   @Field({nullable:true})
   firstName?: string; 
@@ -19,11 +23,6 @@ export class PersonnelUpdateInput {
   situationMatrimonial!: string;
 
   @Field({nullable:true})
-  status!: string;
-  // @Field(() => ID, { nullable: true })
-  // userId?: string;
-
-  @Field({nullable:true})
   sexe?: string;
 
   @Field({nullable:true})
@@ -33,13 +32,12 @@ export class PersonnelUpdateInput {
   fonction?: Role;
 
   @Field({nullable:true})
-  personnelCategory?: string;
-
+  status!: string;
   // @Field({nullable:true})
   // matricule?: string;
 
   @Field({nullable:true})
-  childNumber?: string;
+  childNumber?: number;
 
   @Field({nullable:true})
   dateOfBirth!: string;
@@ -47,6 +45,12 @@ export class PersonnelUpdateInput {
   @Field({ nullable: true })
   dateOfStartWork?: string;
 
-  @Field()
-  user?: UserCreateInput
+  @Field({nullable:true})
+  password!:string
+
+  @Field({nullable:true})
+  email!:string
+
+  @Field(()=>UpdateUserInput,{nullable:true})
+  user!:UpdateUserInput
 }

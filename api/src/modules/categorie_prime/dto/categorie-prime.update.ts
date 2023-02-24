@@ -5,6 +5,8 @@ import { UserCreateInput } from 'src/modules/user/dto/user.input';
 
 @InputType()
 export class CategoriePrimeUpdate {
+  @Field({nullable:true})
+  ID?: string;
  
   @Field({nullable:true})
   nom?: string;

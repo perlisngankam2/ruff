@@ -41,7 +41,7 @@ import { boolean } from 'yup';
 //   error: FieldError,
 // } & SelectProps;
 
-export const colorOptions = [
+export const colorOptions = [ 
   { value: "blue", label: "Blue", color: "#0052CC" },
   { value: "purple", label: "Purple", color: "#5243AA" },
   { value: "red", label: "Red", color: "#FF5630" },

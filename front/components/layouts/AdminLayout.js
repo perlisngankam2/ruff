@@ -76,6 +76,24 @@
             </AccordionPanel>
           </AccordionItem>
           <AccordionItem>
+            <AccordionButton my={2} pl={0}>
+              <Flex align="center" gap="1">
+                <Icon as={MdOutlineClass} />
+                <Box as="span">Niveaux</Box>
+              </Flex>
+            </AccordionButton>
+            <AccordionPanel>
+              <Link href="/level/levelList">
+                <Box as="span">Liste des niveaux</Box>
+              </Link>
+            </AccordionPanel>
+            <AccordionPanel>
+              <Link href="/level/addLevel">
+                <Box as="span">Ajouter un niveau</Box>
+              </Link>
+            </AccordionPanel>
+          </AccordionItem>
+          <AccordionItem> 
             <AccordionButton pl={0} my={2}>
               <Flex align="center" gap="1">
                 <Icon as={IoMdSchool} />
@@ -95,6 +113,32 @@
             <AccordionPanel>
               <Link href="/eleves/categoryeleve">
                 <Box as="span">Categorie des élèves</Box>
+              </Link>
+            </AccordionPanel>
+          </AccordionItem>
+          <AccordionItem>
+            <AccordionButton my={2} pl={0}>
+              <Flex align="center" gap="1">
+                <Icon as={MdOutlineClass} />
+                <Box as="span">Pension</Box>
+              </Flex>
+            </AccordionButton>
+            <AccordionPanel>
+              <Link href="pension/listeDroitScolaire">
+                <Box as="span">Pension</Box>
+              </Link>
+            </AccordionPanel>
+          </AccordionItem  >
+          <AccordionItem>
+            <AccordionButton my={2} pl={0}>
+              <Flex align="center" gap="1">
+                <Icon as={MdOutlineClass} />
+                <Box as="span">Reduction</Box>
+              </Flex>
+            </AccordionButton>
+            <AccordionPanel>
+              <Link href="reduction/reductionStudent">
+                <Box as="span">Reduction scolarite</Box>
               </Link>
             </AccordionPanel>
           </AccordionItem>

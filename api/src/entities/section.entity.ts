@@ -40,7 +40,7 @@ export class Section {
     @Property({ onCreate: () => new Date() })
     createdAt = new Date();
 
-    @OneToMany(() => SectionCycle, (sectionCycle) => sectionCycle.section)
-    sectionCycle = new Collection<SectionCycle>(this);
+    @OneToMany(() => Cycle, (cycle) => cycle.section)
+    cycle = new Collection<SectionCycle>(this);
 
 }

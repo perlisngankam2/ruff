@@ -24,12 +24,12 @@ import {
   Icon,
 } from '@chakra-ui/react';
 
-import React from "react";
+import React, { useEffect } from "react";
 import { IoIosAdd } from "react-icons/io";
 import Link from "next/link";
-import {useMutation } from '@apollo/client';
+import {useMutation, useQuery } from '@apollo/client';
 import { CREATE_CATEGORY_ELEVE} from "../../graphql/Mutation";
-import { GET_ALL_Category_Eleve } from "../../graphql/queries";
+import { GET_ALL_Category_Eleve, GET_ALL_REDUCTION_SCOLARITE } from "../../graphql/Queries";
 import { useState } from "react";
 import { useRouter } from "next/router";
 
@@ -37,11 +37,12 @@ import { useRouter } from "next/router";
 function AjouterCategoryEleve  () {
 
     const [nom, setNom] = useState("");
-    const[description, setDescription] = useState("");
+    const [description, setDescription] = useState("");
+    const [reductionScolariteId, setReductionScolariteId] = useState();
     const { isOpen, onOpen, onClose } = useDisclosure();
     const cancelRef = React.useRef();
     const [SubmitCategoryEleve, {error}] = useMutation(CREATE_CATEGORY_ELEVE);
-
+    const {data:dataReductionScolarite, loading} = useQuery(GET_ALL_REDUCTION_SCOLARITE);
     const router = useRouter();
     const toast = useToast();
     let input
@@ -56,7 +57,8 @@ function AjouterCategoryEleve  () {
             variables: {
                 createCategorieEleve: {
                     nom: nom,
-                    description: description
+                    description: description,
+                    reductionScolariteId: reductionScolariteId
                 }
             },
             refetchQueries: [{
@@ -73,6 +75,10 @@ function AjouterCategoryEleve  () {
            });
            router.push("/eleves/categoryeleve");
     }
+
+    useEffect(() => {
+        console.log(dataReductionScolarite?.findAllreductionscolarite)
+    })
 
 
   return (
@@ -140,6 +146,27 @@ function AjouterCategoryEleve  () {
                                         onChange = {(event) => setDescription(event.target.value)}
                                         ref={node => {input = node;}}
                                     />
+                                </FormControl>
+                                <FormControl mt="15px">
+                                    <FormLabel>Reduction</FormLabel>
+                                    <Select 
+                                        name="reductionScolariteId"
+                                        value={reductionScolariteId}
+                                        placeholder="valeur"
+                                        onChange = {(event) => setReductionScolariteId (event.target.value)}
+                                        ref={node => {input = node;}}
+                                    >
+                                        {
+                                            dataReductionScolarite?.findAllreductionscolarite.map((reductionscolarite, index) =>(
+                                                <option 
+                                                    value={reductionscolarite.id} 
+                                                    key={index}
+                                                >
+                                                    {reductionscolarite.montant}
+                                                </option>
+                                            ))
+                                        }
+                                    </Select>
                                 </FormControl>
                             </Box>
                             </AlertDialogBody>

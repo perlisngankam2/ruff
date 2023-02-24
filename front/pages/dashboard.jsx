@@ -46,13 +46,11 @@ const { userRole } = useAuth();
 
 
   return (
-    <>
-    { isLoggedIn && 
     <DefaultLayout>
       <Box pt="90px" w="full">
         <Box top="-7" overflow="auto" minH="100vh" mx={6}>
           <Heading fontSize="lg" mb={4} color="yellow.500">
-            Bienvenue-GSBAB| {role}
+            Bienvenue-GSBAB| Admin
           </Heading>
 
           <Flex flexDir="row" gap="8" mb="9" flexWrap="wrap">
@@ -99,8 +97,6 @@ const { userRole } = useAuth();
         </Box>
       </Box>
     </DefaultLayout>
-    }
-    </>
   );
 }
 

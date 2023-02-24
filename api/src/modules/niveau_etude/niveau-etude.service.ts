@@ -32,14 +32,24 @@ export class NiveauEtudeService {
       ): Promise<NiveauEtude> {  
         const niveauEtude = new NiveauEtude()
 
-        const sectionCycle = input.sectionCycle
-        ? await this.sectionCycle.findByOne({id:input.sectionCycle.ID})
-        : await this.sectionCycle.create(input.sectionCycle)
+        // const sectionCycle = input.sectionCycle
+        // ? await this.sectionCycle.findByOne({id:input.section})
+        // : await this.sectionCycle.create(input.sectionCycle)
 
-        niveauEtude.name = input.name
-        niveauEtude.description = input.description || null
-        niveauEtude.sectionCycle.id = sectionCycle.id
-        
+        wrap(niveauEtude).assign(
+          {
+           name: input.name,
+           description: input.description,
+          //  sectionCycle: sectionCycle.id,
+          //  salle: input.salle,
+           cycle: input.cycleId,
+           montantPension: input.montantPension
+          },
+          {
+            em:this.em
+          }
+        )
+
         await this.niveauEtudeRepository.persistAndFlush(niveauEtude)
         return niveauEtude
       }
@@ -71,6 +81,10 @@ export class NiveauEtudeService {
         wrap(niveau).assign({
             name: input.name || niveau.name,
             description: input.description || niveau.description,
+            // salle : input.salle  || niveau.salle,
+            cycle : input.cycleId  || niveau.cycle,
+            montantPension : input.montantPension  || niveau.montantPension
+            
         },
         { em: this.em },
     );

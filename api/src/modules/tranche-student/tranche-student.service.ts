@@ -14,7 +14,7 @@ import { Field, ID, ObjectType } from '@nestjs/graphql';
 import { verify } from 'crypto';
 import { TwilioService } from 'nestjs-twilio';
 import { AvanceTranche } from 'src/entities/avance-tranche.entity';
-import { TrancheStudent } from 'src/entities/tranche-student.entity';
+import { RegimePaiement, TrancheStudent } from 'src/entities/tranche-student.entity';
 import { Tranche } from 'src/entities/tranche.entity';
 import { AvanceTrancheService } from '../avance_tranche/avance-tranche.service';
 import { StudentService } from '../student/student.service';
@@ -42,61 +42,42 @@ export class TrancheStudentService {
         const trancheStudent = new TrancheStudent()
 
         const tranche = input.tranche
-            ? await this.trancheService.findByOne({id:input.tranche.ID})
+            ? await this.trancheService.findByOne({id:input.tranche_id})
             : await this.trancheService.create(input.tranche)
         
         const student = input.student
-            ? await this.studentService.findByOne({id:input.student.ID})
+            ? await this.studentService.findByOne({id:input.student_id})
             : await this.studentService.create(input.student)
 
 
-        trancheStudent.montant = input.montant
-        trancheStudent.name = input.name
-        trancheStudent.description = input.description
-        trancheStudent.regimePaimemnt = input.regimePaimemnt
-        trancheStudent.tranche.id = tranche.id
-        trancheStudent.student.id = student.id
-
-        const reduction = student.categorie.getEntity().reductionScolarite
-        const amount = (await reduction.load())
-
-        if(amount.pourcentage){
-            const new_tranche_amount = tranche.montant - (amount.pourcentage*tranche.montant)
-            if(trancheStudent.montant == new_tranche_amount && trancheStudent.regimePaimemnt === "NORMAL"){
-                trancheStudent.complete = true
-                await this.trancheStudentRepository.persistAndFlush(trancheStudent)
-            }else{
-                if(trancheStudent.montant !== new_tranche_amount && trancheStudent.regimePaimemnt === "SPECIAL" ){
-                    // GENERATE AVANCE TRANCHE 
-                    const avance = await this.avance.saveAvanceTranche(trancheStudent,new_tranche_amount)
-                    if(avance.reste == 0){
-                        trancheStudent.complete = true
-                    }
-                    await this.trancheStudentRepository.persistAndFlush(trancheStudent)
-                }
-                // create the avance tranche
-                await this.avance.saveAvanceTranche(trancheStudent,new_tranche_amount)
-                await this.trancheStudentRepository.persistAndFlush(trancheStudent)
-                //create the alert with twiolio   
+        wrap(trancheStudent).assign(
+            {
+             montant: Number(input.montant) || 0.0,
+             name: input.name,
+             description: input.description,
+             regimePaimemnt: input.regimePaiement,
+             tranche: tranche.id,
+             student: student.id
+            },
+            {
+                em:this.em
             }
+        )
+
+        if(input.montant<tranche.montant){
+            trancheStudent.complete=false
+            await this.trancheStudentRepository.persistAndFlush(trancheStudent)  
+            return trancheStudent       
+        }
+        if(input.montant > tranche.montant){
+           trancheStudent.complete = true
+           trancheStudent.reste = input.montant - tranche.montant
+           await this.trancheStudentRepository.persistAndFlush(trancheStudent)  
+           return trancheStudent  
         }
 
-        const new_tranche_amount = tranche.montant - amount.montant
-            if(trancheStudent.montant === new_tranche_amount && trancheStudent.regimePaimemnt === "NORMAL"){
-                trancheStudent.complete = true
-                await this.trancheStudentRepository.persistAndFlush(trancheStudent)
-            }else{
-                if(trancheStudent.montant !== new_tranche_amount && trancheStudent.regimePaimemnt === "SPECIAL" ){
-                    // GENERATE AVANCE TRANCHE 
-                    await this.avance.saveAvanceTranche(trancheStudent,new_tranche_amount)
-                    await this.trancheStudentRepository.persistAndFlush(trancheStudent)
-                }
-                // create the avance tranche
-                await this.avance.saveAvanceTranche(trancheStudent,new_tranche_amount)
-                await this.trancheStudentRepository.persistAndFlush(trancheStudent)
-
-                //create the alert
-        }
+        trancheStudent.complete = true
+        await this.trancheStudentRepository.persistAndFlush(trancheStudent)  
         return trancheStudent
       }
     
@@ -116,58 +97,89 @@ export class TrancheStudentService {
         const avanceTranche = tranche.avancheTranche.matching({})
         const reste = avanceTranche[-1].reste
         if(tranche.complete == false){
-            const dateLine = tranche.tranche.getEntity().dateLine
+            const dateLine = (await tranche.tranche.load()).dateLine
             const alertDate = dateLine.setDate(dateLine.getDate()-2)
 
             const toDay = new Date().getTime()
 
-            const student = tranche.student.getEntity()
-            const parent = student.user.getEntity()
+            const student = tranche.student.load()
+            const parent = (await student).user.load()
 
             if(toDay === alertDate ){
                 // create alert to parent 
                 this.twilioService.client.messages.create({
-                    body: "vous êtes prier de passer solder"+ tranche.name +"de votre enfant nome" + parent.firstName + "donc le reste est de"+reste,
+                    body: "vous êtes prier de passer solder"+ tranche.name +"de votre enfant nome" + (await parent).name + "donc le reste est de"+reste,
                     from: "+237647476798" ,
-                    to: parent.phoneNumber,
+                    to: (await parent).phoneNumber,
                   });
             }
 
         }
     }
 
-    async saveTranche(id:string, avance:AvanceTranche){
+    async saveTranche(id:string){
         const tranche = await this.trancheStudentRepository.findOneOrFail(id)
-        tranche.montant += avance.montant
-        const student = tranche.student.getEntity()
-        const categorie = student.categorie.getEntity()
-        const retenu = categorie.reductionScolarite.getEntity()
-        if(retenu.pourcentage != 0){
-            const new_amount_tranche =tranche.tranche.getEntity().montant - retenu.pourcentage*tranche.tranche.getEntity().montant
-            if(tranche.montant == new_amount_tranche){
+        tranche.montant = Number((await this.em.find(AvanceTranche,{trancheStudent: id})).map(a=>a.montant).reduce(function(a,b){return a+b}))
+        const student = tranche.student.load()
+        const categorie = (await student).categorie.load()
+        const retenu = (await categorie).reductionScolarite.load()
+
+        
+        if((await retenu).pourcentage != 0){
+            const new_amount_tranche =(await tranche.tranche.load()).montant - (await retenu).pourcentage*(await tranche.tranche.load()).montant
+            if(tranche.montant >= new_amount_tranche && tranche.regimePaimemnt === "NORMAL"){
                 tranche.complete = true
+                tranche.reste = new_amount_tranche - tranche.montant
             }
+            if(tranche.montant >= new_amount_tranche && tranche.regimePaimemnt === "SPECIAL"){
+                tranche.complete = true
+                tranche.regimePaimemnt = RegimePaiement.NORMAL
+                tranche.reste = new_amount_tranche - tranche.montant
+            }
+            
           }
 
-        if(retenu.montant != 0 ){
-            const new_amount_tranche =tranche.tranche.getEntity().montant - retenu.montant 
-            if(tranche.montant == new_amount_tranche){
+        if((await retenu).montant != 0 ){
+            const new_amount_tranche =(await tranche.tranche.load()).montant - (await retenu).montant 
+            if(tranche.montant >= new_amount_tranche ){
                 tranche.complete = true
-            } 
+                tranche.reste = new_amount_tranche - tranche.montant
+               
+            }
+            if(tranche.montant >= new_amount_tranche){
+                tranche.complete = true
+                tranche.regimePaimemnt = RegimePaiement.NORMAL
+                tranche.reste = new_amount_tranche - tranche.montant
+            }
         }
         
-        if(tranche.montant == tranche.tranche.getEntity().montant){
+        if(tranche.montant == (await tranche.tranche.load()).montant){
             tranche.complete = true
+            tranche.regimePaimemnt = RegimePaiement.NORMAL
+            tranche.reste = 0.0
         }
+
+        if(tranche.montant > (await tranche.tranche.load()).montant){
+            tranche.complete = true
+            tranche.regimePaimemnt = RegimePaiement.NORMAL
+            tranche.reste = tranche.montant - Number((await tranche.tranche.load()).montant)
+        }   
+
+        if(tranche.montant < (await tranche.tranche.load()).montant){
+            tranche.complete = false
+            tranche.reste = 0.0
+        }
+        
         await this.trancheStudentRepository.persistAndFlush(tranche)
+        
     }
       
     async update(id:string, input: TrancheStudentUpdateInput): Promise<TrancheStudent> {
         const trancheStudent = await this.findById(id)
         if (input.tranche) {
             const tranche =
-            input.tranche?.ID &&
-              (await this.trancheService.findByOne({ id: input.tranche?.ID }));
+            input.tranche_id &&
+              (await this.trancheService.findByOne({ id: input.tranche_id}));
       
             if (!tranche) {
               throw new NotFoundError('tranche no exist' || '');
@@ -177,8 +189,8 @@ export class TrancheStudentService {
 
         if (input.student) {
             const student =
-            input.student?.ID &&
-              (await this.studentService.findByOne({ id: input.student?.ID }));
+            input.student_id &&
+              (await this.studentService.findByOne({ id: input.student_id }));
       
             if (!student) {
               throw new NotFoundError('student no exist' || '');
@@ -221,4 +233,48 @@ export class TrancheStudentService {
 
 }
 
-    
+// const Tranchestudent = await this.findByOne({
+//     tranche: trancheStudent.tranche,
+//     student: trancheStudent.student
+// })
+
+// const reduction = (await student.categorie.load()).reductionScolarite
+// const amount = (await reduction.load())
+
+// if(amount.pourcentage){
+//     const new_tranche_amount = tranche.montant - (amount.pourcentage*tranche.montant)
+//     if(trancheStudent.montant == new_tranche_amount && trancheStudent.regimePaimemnt === "NORMAL"){
+//         trancheStudent.complete = true
+//         await this.trancheStudentRepository.persistAndFlush(trancheStudent)
+//     }else{
+//         if(trancheStudent.montant !== new_tranche_amount && trancheStudent.regimePaimemnt === "SPECIAL" ){
+//             // GENERATE AVANCE TRANCHE 
+//             const avance = await this.avance.saveAvanceTranche(Tranchestudent.id,new_tranche_amount)
+//             if(avance.reste == 0){
+//                 trancheStudent.complete = true
+//             }
+//             await this.trancheStudentRepository.persistAndFlush(trancheStudent)
+//         }
+//         // create the avance tranche
+//         await this.avance.saveAvanceTranche(Tranchestudent.id,new_tranche_amount)
+//         await this.trancheStudentRepository.persistAndFlush(trancheStudent)
+//         //create the alert with twiolio   
+//     }
+// }
+
+// const new_tranche_amount = tranche.montant - amount.montant
+//     if(trancheStudent.montant === new_tranche_amount && trancheStudent.regimePaimemnt === "NORMAL"){
+//         trancheStudent.complete = true
+//         await this.trancheStudentRepository.persistAndFlush(trancheStudent)
+//     }else{
+//         if(trancheStudent.montant !== new_tranche_amount && trancheStudent.regimePaimemnt === "SPECIAL" ){
+//             // GENERATE AVANCE TRANCHE 
+//             await this.avance.saveAvanceTranche(Tranchestudent.id,new_tranche_amount)
+//             await this.trancheStudentRepository.persistAndFlush(trancheStudent)
+//         }
+//         // create the avance tranche
+//         await this.avance.saveAvanceTranche(Tranchestudent.id,new_tranche_amount)
+//         await this.trancheStudentRepository.persistAndFlush(trancheStudent)
+
+//         //create the alert
+// }

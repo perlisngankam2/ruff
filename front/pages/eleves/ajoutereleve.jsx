@@ -27,14 +27,14 @@ const AjouterEleve = () => {
   const [matricule, setMatricule] = useState("");
   const [firstname, setFirstname] = useState("");
   const [lastname, setLastname] = useState("");
-  const [classe, setClass] = useState("");
+  // const [classe, setClass] = useState("");
   const [dateOfBirth, setDateOfBirth] = useState("");
   const [sex, setSex] = useState("");
   const [adress, setAdress] = useState("");
   const [transport, setTransport] = useState(false);
-  const [categoryStudent, setCategoryStudent] = useState("");
-  const [cycle, setCycle] = useState("");
-  const [section, setSection] = useState("");
+  const [categoryStudentId, setCategoryStudentId] = useState("");
+  // const [cycle, setCycle] = useState("");
+  // const [section, setSection] = useState("");
   const [fatherFirstName, setFatherFirstName] = useState("");
   const [fatherLastName, setFatherLastName] = useState("");
   const [fatherProfession, setFatherProfession] = useState("");
@@ -70,12 +70,12 @@ const AjouterEleve = () => {
           matricule: matricule,
           firstname: firstname,
           lastname: lastname,
-          classe: classe,
+          // classe: classe,
           dateOfBirth: dateOfBirth,
           sex: sex,
           adress: adress,
           transport: transport,
-          categoryStudent: categoryStudent,
+          categoryStudentId: categoryStudentId,
           fatherFirstName: fatherFirstName,
           fatherLastName: fatherLastName,
           fatherPhoneNumber: fatherPhoneNumber,
@@ -174,22 +174,28 @@ const AjouterEleve = () => {
                 Informations de l'élève
               </Heading>
               <Box mx={2} mt="5">
-                <Flex gap={3} flexWrap={["wrap", "wrap", "nowrap"]}>
-                  <Input
-                    placeholder="Nom de l'élève"
-                    value={firstname}
-                    onChange={(e) => setFirstname(e.target.value)}
-                    name="nom"
-                    variant="flushed"
-                  />
-                  <Input
-                    placeholder="Prenom"
-                    name="prenom"
-                    value={lastname}
-                    onChange={(e) => setLastname(e.target.value)}
-                    variant="flushed"
-                  />
-                  <Select
+                <Flex gap={5} flexWrap={["wrap", "wrap", "nowrap"]}>
+                  <FormControl>
+                      <FormLabel>Nom</FormLabel>
+                    <Input
+                      // placeholder="Nom de l'élève"
+                      value={firstname}
+                      onChange={(e) => setFirstname(e.target.value)}
+                      name="nom"
+                      variant="flushed"
+                    />
+                  </FormControl>
+                    <FormControl> 
+                      <FormLabel>Prenom</FormLabel>
+                    <Input
+                      // placeholder="Prenom"
+                      name="prenom"
+                      value={lastname}
+                      onChange={(e) => setLastname(e.target.value)}
+                      variant="flushed"
+                    />
+                  </FormControl>
+                  {/* <Select
                     placeholder="Selectionner la classe"
                     name="classe"
                     value={classe}
@@ -204,12 +210,12 @@ const AjouterEleve = () => {
                           </option>
                       ))
                     )}
-                  </Select>
+                  </Select> */}
                 </Flex>
 
                 <Flex
-                  gap={3}
-                  mt="5"
+                  gap={5}
+                  mt="8"
                   align="end"
                   flexWrap={["wrap", "wrap", "nowrap"]}
                 >
@@ -235,7 +241,13 @@ const AjouterEleve = () => {
                       <option>Feminin</option>
                     </Select>
                   </FormControl>
-                  <FormControl>
+               
+                </Flex>
+                <Flex 
+                gap={5}
+                mt="8"
+                >
+                <FormControl>
                     <FormLabel>Adresse</FormLabel>
                     <Input
                       type="text"
@@ -245,8 +257,6 @@ const AjouterEleve = () => {
                       variant="flushed"
                     />
                   </FormControl>
-                </Flex>
-                <Flex>
                   <FormControl>
                       <FormLabel>Matricule</FormLabel>
                       <Input
@@ -257,39 +267,44 @@ const AjouterEleve = () => {
                         variant="flushed"
                       />
                     </FormControl>
-                  <Select
-                    placeholder="Transport"
-                    name="transport"
-                    value={transport}
-                    onChange={(e) => setTransport(e.target.value)}
-                    variant="flushed"
-                  >
-                    <option>Oui</option>
-                    <option>Non</option>
-                  </Select>
-
                 </Flex>
-                <Flex>
+                <Flex 
+                  gap={5} 
+                  mt="8"
+                 >
+                  <FormControl>
+                        <FormLabel>Transport</FormLabel>
+                        <Select
+                      placeholder="Transport"
+                      name="transport"
+                      value={transport}
+                      onChange={(e) => setTransport(e.target.value)}
+                      variant="flushed"
+                    >
+                      <option>Oui</option>
+                      <option>Non</option>
+                    </Select>
+                  </FormControl>
                   <FormControl>
                       <FormLabel>Categrorie</FormLabel>
                       <Select
                         placeholder="Categorie"
-                        name="categoryStudent"
-                        value={categoryStudent}
-                        onChange={(e) => setCategoryStudent(e.target.value)}
+                        name="categoryStudentId"
+                        value={categoryStudentId}
+                        onChange={(e) => setCategoryStudentId(e.target.value)}
                         variant="flushed"
                       >
                         { 
                           dataCategoryStudent && (
-                            dataCategoryStudent.findAllcategorieeleve.map((category, index) => (
-                                <option key={index}>
-                                  <option>{category.nom}</option>
+                            dataCategoryStudent.findAllcategorieeleve.map((categoryStudent, index) => (
+                                <option value={categoryStudent.id }key={index}>
+                                  {categoryStudent.nom}
                                 </option>
                             ))
                         )}
                       </Select>
                     </FormControl>
-                    <FormControl>
+                    {/* <FormControl>
                       <FormLabel>Cycle</FormLabel>
                       <Select
                         placeholder="Cycle"
@@ -307,9 +322,9 @@ const AjouterEleve = () => {
                             ))
                         )}
                       </Select>
-                    </FormControl>
+                    </FormControl> */}
                 </Flex>
-                <Flex>
+                {/* <Flex>
                     <FormControl>
                       <FormLabel>Section</FormLabel>
                       <Select
@@ -329,7 +344,7 @@ const AjouterEleve = () => {
                         )}
                       </Select>
                     </FormControl>
-                </Flex>
+                </Flex> */}
               </Box>
             </Box>
           ) : step === 2 ? (

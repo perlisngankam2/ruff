@@ -12,13 +12,15 @@ const DefaultLayout = ({children}) => {
 //   const isLoggedIn = isLogged;
   
   return (
-   <Box>
+   <Box h="full" >
       <Header />
-      <Flex>
+      <Flex h="100vh">
         <Hide below="md">
           <SidebarLayout />
         </Hide>
+        <Box w='full' bg='#f7f7fb' overflowY="auto">
         {children}
+        </Box>
       </Flex>
     </Box>
   );

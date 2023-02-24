@@ -20,31 +20,32 @@ export const AuthProvider = ({ children }) => {
     useEffect(() => {
     setLoading(true);
     setAuthToken(localStorage.getItem('token'));
+    setUserRole(localStorage.getItem('userRole'));
     setLoading(false);
   }, []);
 
 
   const setToken = (access_token,userRole) => {
     localStorage.setItem('token', access_token);
+     localStorage.setItem('userRole', userRole);
         setAuthToken(access_token);
         setUserRole(userRole)
   };
 
+  
   const isLogged = !!authToken;
-  console.log("valeur");
+  // console.log("valeur");
     console.log(isLogged);
-    console.log(userRole);
+    // console.log(userRole);
 
   const removeToken = () => {
     localStorage.removeItem('token');
         setAuthToken(null);
+    localStorage.removeItem('userRole');
+        setUserRole(null);
 
   };
 
-    // const isloggedin = () => {
-    //   const token = localStorage.getItem('token');
-    //   return 
-    // }
 
   return (
     <AuthContext.Provider 

@@ -7,7 +7,7 @@ import EconomeSidebarLayout from "./EconomSidebarLayout";
 import ManagerLayout from "./ManagerLayout";
 import AdminLayout from "./AdminLayout.jsx";
 
-import { useAuth } from "../../contexts/account/Auth/Auth";
+import { useAccount } from "../../contexts/account/Account";
 
 // const[userProfil, setIsProfil ]  = useState (
 //   'administrateur',
@@ -41,14 +41,14 @@ import { useAuth } from "../../contexts/account/Auth/Auth";
 const SidebarLayout = ({ children }) => {
 
   
-   const { userRole } = useAuth();
+   const { account, loaded } = useAccount();
 
-  const role = userRole;
+  // const role = userRole;
 
   return (
    
     <VStack
-      background="#e2d39c"
+      background="colors.secondary"
       p="7"
       gap={3}
       minH="100vh"
@@ -58,19 +58,19 @@ const SidebarLayout = ({ children }) => {
       color="#0e341f"
     >
         { 
-          (role==="ADMIN")&&
+          (account?.me?.fonction==="ADMIN")&&
             <AdminLayout/>
         }
         {
-          (role==="PRINCIPAL") && 
+          (account?.me?.fonction==="PRINCIPAL") && 
               <PrincipalLaout/>
         }
         {
-        (role==="ECONOME") &&
+        (account?.me?.fonction==="ECONOME") &&
           <EconomeSidebarLayout/>
         }
         { 
-        (role==="MANAGER") &&
+        (account?.me?.fonction==="MANAGER") &&
         <ManagerLayout/>
         }
       { children }

@@ -6,6 +6,7 @@ import client from '../graphql/apollo-client'
 import "../styles/globals.css";
 import "@fontsource/open-sans";
 import { AuthProvider } from "../contexts/account/Auth/Auth"
+import { AccountProvider } from "../contexts/account/Account";
 
 
 
@@ -32,9 +33,11 @@ function MyApp({ Component, pageProps}) {
     
     <ApolloProvider client={client}>
         <AuthProvider>
+          <AccountProvider>
           <ChakraProvider theme={theme}>
             <Component {...pageProps} />
           </ChakraProvider>
+          </AccountProvider>
         </AuthProvider>
     </ApolloProvider>
     

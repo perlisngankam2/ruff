@@ -17,7 +17,7 @@ import {
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 import DefaultLayout from "../../components/layouts/DefaultLayout";
-import { GET_PERSONNEL_BY_ID} from "../../graphql/Queries";
+import { GET_PERSONNEL_BY_ID} from "../../graphql/queries";
 
 
 const Profil = () => {

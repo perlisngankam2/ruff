@@ -37,6 +37,8 @@ wrap(new_personnel).assign({
   status : input.status,
   childNumber: input.childNumber,
   phoneNumber: input.phoneNumber,
+  email: input.email,
+  password: input.password,
   sexe: input.sexe,
   dateOfStartWork : input.dateOfStartWork,
   fonction : input.fonction,
@@ -59,6 +61,11 @@ wrap(new_personnel).assign({
 
   getAll(): Promise<Personnel[]> {
     return this.personnelRepository.findAll()
+  }
+
+  hashPassword(password: string): string {
+    const salt = bcript.genSaltSync();
+    return bcript.hashSync(password, salt);
   }
   
   async update(id:string, input: PersonnelUpdateInput): Promise<Personnel> {

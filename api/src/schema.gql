@@ -116,6 +116,8 @@ type Personnel {
   dateOfStartWork: String!
   dateOfBirth: String!
   childNumber: String
+  password: String
+  email: String
 }
 
 type Salle {
@@ -256,6 +258,11 @@ type LoginResponse {
   user: User!
 }
 
+type LoginResponsePersonnel {
+  access_token: String!
+  personnel: Personnel!
+}
+
 type Query {
   findAlluser: [User!]!
   user(id: String!): User!
@@ -315,6 +322,7 @@ type Query {
   fraisInscription(id: String!): FraisInscription!
   findAllparents: [Parent!]!
   parent(id: String!): Parent!
+  me: Personnel!
 }
 
 type Mutation {
@@ -399,6 +407,7 @@ type Mutation {
   updateParent(id: String!): Parent!
   deleteparent(id: String!): Parent!
   login(loginInput: LoginInput!): LoginResponse!
+  loginpersonnel(loginInput: LoginInput!): LoginResponsePersonnel!
 }
 
 input UserCreateInput {
@@ -496,6 +505,8 @@ input PersonnelCreateInput {
   dateOfBirth: String
   dateOfStartWork: String
   user: UserCreateInput!
+  password: String
+  email: String
 }
 
 input PersonnelUpdateInput {

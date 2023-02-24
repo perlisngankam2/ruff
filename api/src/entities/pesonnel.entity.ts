@@ -1,4 +1,5 @@
 /* eslint-disable prettier/prettier */
+
 import {
   Collection,
     Entity,
@@ -20,6 +21,7 @@ import { RetenuPersonnel } from './retenu-personnel.entity';
 import { Salle } from './salle.entity';
 import { User } from './user.entity';
 
+import { Role } from './../modules/auth/roles/roles';
 
 @Entity()
 @ObjectType()
@@ -54,7 +56,7 @@ export class Personnel {
 
   @Field({ nullable: true })
   @Property({ nullable: true })
-  fonction!: string;
+  fonction!: Role;
 
   @Field({ nullable: true })
   @Property({ nullable: true })
@@ -82,6 +84,14 @@ export class Personnel {
   @Field({ nullable: true})
   @Property({ nullable: true })
   childNumber!: string;
+
+  @Field({nullable: true})
+  @Property({nullable: true})
+  password!: string
+
+  @Field({nullable:true})
+  @Property({nullable:true})
+  email!: string
 
   //Relation with another table 
   @OneToOne(() => User, (user) => user.personnel, {

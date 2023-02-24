@@ -35,7 +35,7 @@ import { IoIosAdd } from "react-icons/io";
 import{ FiEdit} from 'react-icons/fi';
 import {MdDelete} from 'react-icons/md';
 import { Router, useRouter } from "next/router";
-import { GET_ALL_STUDENT, GET_STUDENT_BY_ID} from "../../graphql/Queries";
+import { GET_ALL_STUDENT, GET_STUDENT_BY_ID} from "../../graphql/queries";
 import { DELETE_STUDENT } from "../../graphql/Mutation";
 import { useMutation, useQuery } from "@apollo/client";
 // import { initializeApollo } from "../../graphql/apollo";

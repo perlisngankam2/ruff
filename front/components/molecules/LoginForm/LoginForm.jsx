@@ -16,12 +16,14 @@ import {
 import { useFormik } from "formik";
 import { NextLink } from "next/link";
 import { Link } from "@chakra-ui/react";
-import { LOGIN_USER } from "../../../graphql/Mutation";
+import { LOGIN_USER} from "../../../graphql/Mutation";
 import { useMutation, useQuery } from "@apollo/client";
 import { useEffect, useState, createContext, useContext } from "react";
 import { useRouter } from "next/router";
-import dashboard from "../../../pages/Dashboard";
+import { GET_USER_CONNECTED} from  "../../../graphql/queries"
+import dashboard from "../../../pages/dashboard.jsx";
 import { useAuth } from '../../../contexts/account/Auth/Auth'
+
 
 const LoginForm = () => {
   const[email , setEmail] = useState("");
@@ -30,9 +32,11 @@ const LoginForm = () => {
   const [user, setUser] = useState(null);
   const router = useRouter();
   const { setAuthToken } = useAuth();
- console.log(setAuthToken.isLogged)
+  const { dataUser, called, loading } = useQuery(GET_USER_CONNECTED);
 
+//  console.log(setAuthToken.isLogged)
 
+console.log(dataUser)
 
    const HandleClick = async (event) => {
         event.preventDefault();
@@ -46,8 +50,7 @@ const LoginForm = () => {
                   }
               });
 
-
-                console.log(login.data.login)
+                // console.log(login.data.login)
                   if (login.data.login) {
                     setAuthToken?.(login.data.login.access_token , login.data.login.user.role);
                     router.push('/dashboard');

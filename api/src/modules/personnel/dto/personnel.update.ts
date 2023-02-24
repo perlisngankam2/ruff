@@ -2,6 +2,7 @@
 import { Field, ID, InputType } from '@nestjs/graphql';
 import { User } from 'src/entities/user.entity';
 import { UserCreateInput } from 'src/modules/user/dto/user.input';
+import { Role } from 'src/modules/auth/roles/roles';
 
 @InputType()
 export class PersonnelUpdateInput {
@@ -29,7 +30,7 @@ export class PersonnelUpdateInput {
   phoneNumber?: string;
 
   @Field({nullable:true})
-  fonction?: string;
+  fonction?: Role;
 
   @Field({nullable:true})
   personnelCategory?: string;

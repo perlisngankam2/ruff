@@ -175,4 +175,23 @@ query findOnecycle ($id: String!) {
 }
 `;
 
-
+export const GET_USER_CONNECTED = gql `
+query me {
+    me {
+        id
+        firstName
+        lastName
+        phoneNumber
+        personnelCategory
+        situationMatrimonial
+        sexe
+        fonction
+        status
+        dateOfStartWork
+        dateOfBirth
+        childNumber
+        password
+        email
+    }
+} 
+`;

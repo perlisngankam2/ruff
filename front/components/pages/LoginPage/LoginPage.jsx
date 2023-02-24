@@ -1,5 +1,5 @@
 import { Box, Center } from "@chakra-ui/react";
-import LoginForm from "../../../components/molecules/LoginForm/LoginForm";
+import LoginForm from "../../molecules/LoginForm/LoginForm";
 
 const LoginPage = () => {
   return (

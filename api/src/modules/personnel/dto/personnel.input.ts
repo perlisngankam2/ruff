@@ -2,6 +2,7 @@
 import { Field, ID, InputType } from '@nestjs/graphql';
 import { User } from 'src/entities/user.entity';
 import { UserCreateInput } from 'src/modules/user/dto/user.input';
+import { Role } from 'src/modules/auth/roles/roles';
 
 @InputType()
 export class PersonnelCreateInput {
@@ -27,7 +28,7 @@ export class PersonnelCreateInput {
   phoneNumber?: string;
 
   @Field({nullable:true})
-  fonction?: string;
+  fonction?: Role;
 
   @Field({nullable:true})
   personnelCategory?: string;
@@ -48,4 +49,10 @@ export class PersonnelCreateInput {
 
   @Field()
   user?: UserCreateInput
+
+  @Field({nullable:true})
+  password!:string
+
+  @Field({nullable:true})
+  email!:string
 }

@@ -30,9 +30,8 @@ scalar DateTime
 
 type FraisInscription {
   id: ID!
-  description: String
+  nameFraisInscription: String
   montant: Float!
-  dateLine: DateTime
 }
 
 type Section {
@@ -170,7 +169,6 @@ type AnneeAccademique {
   id: ID!
   name: String
   description: String
-  anneeAccademique: DateTime
 }
 
 type AvanceInscription {
@@ -337,7 +335,7 @@ type Query {
   findOneavanceincription(id: String!): AvanceInscription!
   getcumullativesum(id: String!): Float!
   findAllfraisinscription: [FraisInscription!]!
-  fraisInscription(id: String!): FraisInscription!
+  findOnefraisincription(id: String!): FraisInscription!
   findAllparents: [Parent!]!
   parent(id: String!): Parent!
   me: Personnel!
@@ -503,12 +501,14 @@ input CategorieEleveCreateInput {
   ID: String
   nom: String
   description: String
+  reductionScolariteId: String
 }
 
 input CategorieEleveUpdateInput {
   ID: String
   nom: String
   description: String
+  reductionScolariteId: String
 }
 
 input RedutionScolariteInput {
@@ -762,14 +762,12 @@ input AnneeAccademiqueCreateInput {
   ID: String
   name: String
   description: String
-  anneeAccademique: DateTime
 }
 
 input AnneeAccademiqueUpdateInput {
   ID: String
   name: String
   description: String
-  anneeAccademique: DateTime
 }
 
 input TrancheCreateInput {
@@ -853,11 +851,10 @@ input InscriptionInput {
 }
 
 input FraisInscriptionInput {
-  salle_id: ID
-  anneAcademique_id: ID
-  description: String
+  salleId: ID
+  anneeAcademiqueId: ID
+  nameFraisInscription: String
   montant: Float = 0
-  dateLine: DateTime
   salle: SalleCreateInput
   anneeAccademique: AnneeAccademiqueCreateInput
 }
@@ -881,11 +878,10 @@ input AvanceInscriptionUpdateInput {
 }
 
 input UpdateFraisInscriptionInput {
-  salle_id: ID
-  anneAcademique_id: ID
-  description: String
+  salleId: ID
+  anneeAcademiqueId: ID
+  nameFraisInscription: String
   montant: Float = 0
-  dateLine: DateTime
   salle: SalleCreateInput
   anneeAccademique: AnneeAccademiqueCreateInput
 }

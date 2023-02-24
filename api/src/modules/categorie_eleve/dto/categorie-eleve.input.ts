@@ -13,6 +13,9 @@ export class CategorieEleveCreateInput {
 
   @Field({nullable:true})
   description?: string;
+  
+  @Field({nullable:true})
+  reductionScolariteId?: string;
 
   // @Field({nullable:true})
   // reduction?: RedutionScolariteInput;

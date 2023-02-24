@@ -29,7 +29,7 @@ export class FraisInscriptionResolver {
     return this.fraisService.getAll()
   }
   
-  @Query(() => FraisInscription, { name: 'fraisInscription' })
+  @Query(() => FraisInscription)
   findOnefraisincription(@Args('id', { type: () => String }) id: string) {
     return this.fraisService.findByOne(id);
   }

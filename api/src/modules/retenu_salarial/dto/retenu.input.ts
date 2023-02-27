@@ -6,13 +6,10 @@ import { CategorieRetenuCreateInput } from 'src/modules/categorie_retenu/dto/cat
 @InputType()
 export class RetenuCreateInput {
   @Field({nullable:true})
-  ID?: string;
+  categorieretenuId?: string;
 
   @Field({nullable:true})
   nom?: string;
-
-  @Field({ nullable: true })
-  categorieId:string
 
   @Field({nullable:true})
   description?: string;
@@ -20,6 +17,6 @@ export class RetenuCreateInput {
   @Field({defaultValue:0})
   montant?: number;
 
-  @Field()
+  @Field(()=>CategorieRetenuCreateInput,{nullable:true})
   categorieRetenu?:CategorieRetenuCreateInput
 }

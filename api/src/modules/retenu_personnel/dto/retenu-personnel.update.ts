@@ -6,10 +6,10 @@ import { RetenuCreateInput } from 'src/modules/retenu_salarial/dto/retenu.input'
 @InputType()
 export class RetenuPersonnelUpdateInput {
   @Field(()=>ID,{nullable:true})
-  retenuID?: string;
+  retenuId?: string;
 
   @Field(()=>ID,{nullable:true})
-  personnelID?:string
+  personnelId?:string
 
   @Field()
   retenu?:RetenuCreateInput;

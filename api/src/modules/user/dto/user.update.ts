@@ -24,6 +24,6 @@ export class UpdateUserInput {
   @Field(() => String, { nullable: true })
   phoneNumber?: string;
 
- @Field(() => Role,{nullable: true})
+  @Field(() => Role,{nullable: true})
   role!: Role
 }

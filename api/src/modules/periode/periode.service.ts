@@ -30,9 +30,13 @@ export class PeriodeService {
       ): Promise<Periode> {
        const periode = new Periode()
 
-        periode.nom = input.nom
-        input.description = input.description
-        input.datePeriode = input.datePeriode
+       wrap(periode).assign({
+        nom: input.nom,
+        description: input.description,
+        datePeriode: input.datePeriode
+       },{
+        em:this.em
+       })
         
         await this.periodeRepository.persistAndFlush(periode)
         return periode

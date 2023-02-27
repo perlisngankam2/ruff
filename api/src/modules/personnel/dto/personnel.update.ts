@@ -4,6 +4,7 @@ import { User } from 'src/entities/user.entity';
 import { UserCreateInput } from 'src/modules/user/dto/user.input';
 import { Role } from 'src/modules/auth/roles/roles';
 import { UpdateUserInput } from 'src/modules/user/dto/user.update';
+import { Status } from 'src/entities/pesonnel.entity';
 
 @InputType()
 export class PersonnelUpdateInput {
@@ -32,7 +33,7 @@ export class PersonnelUpdateInput {
   fonction?: Role;
 
   @Field({nullable:true})
-  status!: string;
+  status!:Status;
   // @Field({nullable:true})
   // matricule?: string;
 

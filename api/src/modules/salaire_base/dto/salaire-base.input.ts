@@ -4,15 +4,15 @@ import { CategoriePersonnelCreateInput } from 'src/modules/categorie_personnel/d
 
 @InputType()
 export class SalaireBaseCreateInput {
-  @Field({nullable:true})
-  ID?: string;
-
-  @Field({ nullable: true })
-  categorieId:string
+  @Field(()=>ID,{ nullable: true })
+  categoriepersonnelId:string
 
   @Field({nullable:true})
   description?: string;
 
   @Field({defaultValue:0})
   montant?: number;
+
+  @Field(()=>CategoriePersonnelCreateInput,{nullable:true})
+  categoriePersonnel?:CategoriePersonnelCreateInput
 }

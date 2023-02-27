@@ -13,15 +13,24 @@ import {
     Property,
     Unique,
   } from '@mikro-orm/core';
-  import { Field, ID, ObjectType } from '@nestjs/graphql';
+  import { Field, ID, ObjectType, registerEnumType } from '@nestjs/graphql';
 import { PrimaryKeyUuid } from '../decorators/PrimaryKeyUuid.decorator';
 import { CategoriePersonnel } from './categorie-personnel.entity';
 import { PrimePersonnel } from './prime-personnel.entity';
 import { RetenuPersonnel } from './retenu-personnel.entity';
 import { Salle } from './salle.entity';
 import { User } from './user.entity';
-
 import { Role } from './../modules/auth/roles/roles';
+
+export enum Status{
+  PERMANENT='PERMANENT',
+  NON_PERMANENT='NON_PERMANENT'
+}
+
+registerEnumType(Status, {
+  name: 'Status',
+});
+
 
 @Entity()
 @ObjectType()
@@ -56,8 +65,11 @@ export class Personnel {
   fonction!: Role;
 
   @Field({ nullable: true })
-  @Property({ nullable: true })
-  status!: string;
+  @Enum({
+    items: () => Status,
+    default: Status.PERMANENT,
+  })
+  status!: Status;
 
   // @Field(() => Date, { nullable: true })
   // @Property({ nullable: true })

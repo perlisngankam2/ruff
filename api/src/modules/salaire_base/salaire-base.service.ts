@@ -27,8 +27,15 @@ export class SalaireBaseService {
       ): Promise<SalaireBase> {        
         const salaireBase = new SalaireBase()
 
-        salaireBase.montant = input.montant
-        salaireBase.description = input.description || null
+        wrap(salaireBase).assign(
+          {
+           montant: input.montant,
+           description: input.description
+          },
+          {
+            em:this.em
+          }
+        )
         
 
         await this.salaireBaseRepository.persistAndFlush(salaireBase)

@@ -26,12 +26,19 @@ export class UserService {
     input: UserCreateInput,
   ): Promise<User> {
     const new_user = new User()
-    new_user.lastName = input.lastName
-    new_user.password = this.hashpass(input.password)
-    new_user.firstName = input.firstName
-    new_user.email = input.email
-    new_user.phoneNumber = input.phoneNumber
-    new_user.role = input.role
+    wrap(new_user).assign(
+      {
+    lastName: input.lastName,
+    password: this.hashpass(input.password),
+    firstName: input.firstName,
+    email: input.email,
+    phoneNumber: input.phoneNumber,
+    role: input.role
+      },
+      {
+        em: this.em
+      }
+    )
     
 
     const user = await this.findOne({

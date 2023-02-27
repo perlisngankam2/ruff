@@ -48,11 +48,11 @@ export class InscriptionService {
         const inscription = new Inscription()
 
         const anneAccademique = input.anneeAccademique
-            ? await this.anneAccademique.findbyOne({id:input.anneacademique_id})
+            ? await this.anneAccademique.findbyOne({id:input.anneacademiqueId})
             : await this.anneAccademique.create(input.anneeAccademique)
 
         const student = input.student
-            ? await this.studentService.findByOne({id: input.student_id})
+            ? await this.studentService.findByOne({id: input.studentId})
             : await this.studentService.create(input.student)
 
         const frais = input.fraisInscription
@@ -66,7 +66,8 @@ export class InscriptionService {
           dateLine: input.dateLine,
           anneeAccademique: anneAccademique.id,
           student: student.id,
-          fraisInscription: frais.id
+          fraisInscription: frais.id,
+          salle: input.salleId
           },
           {
             em:this.em
@@ -184,8 +185,8 @@ export class InscriptionService {
 
         if (input.student) {
             const student =
-            input.student_id &&
-              (await this.studentService.findByOne({ id: input.student_id }));
+            input.studentId &&
+              (await this.studentService.findByOne({ id: input.studentId }));
       
             if (!student) {
               throw new NotFoundError('student no exist' || '');
@@ -195,8 +196,8 @@ export class InscriptionService {
 
           if (input.anneeAccademique) {
             const annee =
-            input.anneacademique_id &&
-              (await this.anneAccademique.findbyOne({ id: input.anneacademique_id }));
+            input.anneacademiqueId &&
+              (await this.anneAccademique.findbyOne({ id: input.anneacademiqueId }));
       
             if (!annee) {
               throw new NotFoundError('annee no exist' || '');
@@ -208,6 +209,7 @@ export class InscriptionService {
             montant: Number(input.montant) || Number(inscription.montant) || 0.0,
             description: input.description || inscription.description,
             name: input.name|| inscription.name,
+            salle: input.salleId || inscription.salle
         },
         { em: this.em },
         );

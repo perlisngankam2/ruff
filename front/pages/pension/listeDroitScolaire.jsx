@@ -368,7 +368,7 @@ const Pension = () => {
                   <Table size='sm'>
                     <Thead>
                       <Tr>
-                        <Th>Classe</Th>
+                        <Th>Nom</Th>
                         <Th>Montant inscription</Th>
                         <Th >Montant premiere tranche</Th>
                         <Th >Montant deuxiere tranche</Th>
@@ -377,10 +377,9 @@ const Pension = () => {
                     <Tbody>
                       <Tr>
                         <Td>inches</Td>
-                        <Td>millimetres (mm)</Td>
+                        {/* <Td>millimetres (mm)</Td>
                         <Td>25.4</Td>
-                        <Td >Monntant</Td>
-
+                        <Td >Monntant</Td> */}
                       </Tr>
                     </Tbody>
                     

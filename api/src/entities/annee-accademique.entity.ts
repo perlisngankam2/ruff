@@ -14,6 +14,7 @@ import {
   } from '@mikro-orm/core';
   import { Field, ID, ObjectType } from '@nestjs/graphql';
 import { PrimaryKeyUuid } from '../decorators/PrimaryKeyUuid.decorator';
+import { Expense } from './expense.entity';
 import { Inscription } from './inscription.entity';
 import { Pension } from './pension.entity';
 
@@ -43,4 +44,8 @@ export class AnneeAccademique {
   @OneToMany(()=> Pension, (pension) => pension.anneeAccademique
     )
   pension = new Collection<Pension>(this)
+
+  @OneToMany(()=> Expense, (expense) => expense.anneeAccademique
+  )
+  expense = new Collection<Expense>(this)
 }

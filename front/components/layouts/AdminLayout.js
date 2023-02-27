@@ -124,7 +124,7 @@
               </Flex>
             </AccordionButton>
             <AccordionPanel>
-              <Link href="class/pension">
+              <Link href="pension/listeDroitScolaire">
                 <Box as="span">Pension</Box>
               </Link>
             </AccordionPanel>

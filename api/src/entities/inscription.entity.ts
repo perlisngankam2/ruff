@@ -61,6 +61,8 @@ export class Inscription{
     })
     student!: IdentifiedReference<Student> | null;
    
+
+
     @OneToMany(()=> AvanceInscription, (avanceInscription) => avanceInscription.inscription)
     avanceInscription = new Collection<AvanceInscription>(this)
 
@@ -76,12 +78,16 @@ export class Inscription{
     // })
     // fraisInscription!:IdentifiedReference<FraisInscription>|null
    
-   
+    
     @ManyToOne(() => AnneeAccademique ,{
         nullable:true,
         onDelete:'CASCADE'
       })
     anneeAccademique!:IdentifiedReference<AnneeAccademique>|null
 
-    
+    @ManyToOne(() => Salle ,{
+        nullable:true,
+        onDelete:'CASCADE'
+      })
+    salle!:IdentifiedReference<Salle>|null
 }

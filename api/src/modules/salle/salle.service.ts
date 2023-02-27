@@ -152,7 +152,7 @@ export class SalleService {
       // Montant Inscription recu par salle inscription
       async inscriptionRecuSalle(id:string){
         const salle = await this.salleRepository.findOneOrFail(id)
-        const fraisInscription = await salle.fraisInscription.getEntity()
+        const fraisInscription = await salle.fraisInscription.load()
         let amount = 0
         const inscription = await fraisInscription.inscription.matching({})
         for(let i = 0 ; i < inscription.length; i++){
@@ -173,9 +173,9 @@ export class SalleService {
   // liste des eleve ayant tout payer leur inscription par sale
       async listeInscriptionComplet(id:string){
         const salle = await this.salleRepository.findOneOrFail(id)
-        const fraisInscription = salle.fraisInscription.getEntity()
+        const fraisInscription = salle.fraisInscription.load()
         const liste = []
-        const listeInscrit = await fraisInscription.inscription.matching({})
+        const listeInscrit = await (await fraisInscription).inscription.matching({})
         for (let i = 0; i < listeInscrit.length; i++){
           if(listeInscrit[i].complete == true){
             liste.push(listeInscrit[i].student)

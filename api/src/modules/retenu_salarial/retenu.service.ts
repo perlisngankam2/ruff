@@ -32,15 +32,20 @@ export class RetenuService {
         input: RetenuCreateInput,
       ): Promise<Retenue> {
         const categorie = input.categorieRetenu
-            ? await this.categorieRetenu.findByOne(input.categorieRetenu)
+            ? await this.categorieRetenu.findByOne(input.categorieretenuId)
             : await this.categorieRetenu.create(input.categorieRetenu)
         
         const retenu = new Retenue()
 
-        retenu.categorieRetenu.id = categorie.id
-        retenu.nom = input.nom
-        retenu.description = input.description
-        retenu.montant = input.montant
+        wrap(retenu).assign({
+          categorieRetenu: categorie.id,
+          nom: input.nom,
+          description: input.description,
+          montant: input.montant
+        },
+        {
+
+        })
         await this.retenuRepository.persistAndFlush(retenu)
         return retenu
       }
@@ -61,8 +66,8 @@ export class RetenuService {
 
         if (input.categorieRetenu) {
             const categorie =
-            input.categorieRetenu?.ID &&
-              (await this.categorieRetenu.findByOne({ id: input.categorieRetenu?.ID }));
+            input.categorieretenuId &&
+              (await this.categorieRetenu.findByOne({ id: input.categorieretenuId}));
       
             if (!categorie) {
               throw new NotFoundError('categorie no exist' || '');

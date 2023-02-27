@@ -16,6 +16,13 @@ type CategorieEleve {
   description: String
 }
 
+type Expense {
+  id: ID!
+  title: String
+  amount: Float
+  description: String
+}
+
 type FraisExamen {
   id: ID!
   description: String
@@ -428,6 +435,11 @@ type Mutation {
   createParent(parent: ParentCreateInput!): Parent!
   updateParent(id: String!): Parent!
   deleteparent(id: String!): Parent!
+  createExpense(input: ExpenseCreateInput!): Expense!
+  updateExpense(id: String!, input: ExpenseUpdateInput!): Expense!
+  deleteExpense(id: String!): Expense!
+  findoneexpense(id: String!): Expense!
+  findallexpenses: [Expense!]!
   login(loginInput: LoginInput!): LoginResponse!
   loginpersonnel(loginInput: LoginInput!): LoginResponsePersonnel!
 }
@@ -596,18 +608,10 @@ input PersonnelUpdateInput {
 }
 
 input SalaireBaseCreateInput {
-  ID: String
-  categorieId: String
+  categoriepersonnelId: ID
   description: String
   montant: Float! = 0
-}
-
-input SalaireBaseUpdateInput {
-  ID: String
-  categorieId: String
-  description: String
-  montant: Float! = 0
-  categoriePersonnel: CategoriePersonnelCreateInput!
+  categoriePersonnel: CategoriePersonnelCreateInput
 }
 
 input CategoriePersonnelCreateInput {
@@ -626,7 +630,7 @@ input PrimeCreateInput {
   nom: String
   description: String
   montant: Float! = 0
-  categoriePirme: CategoriePrimeCreateInput!
+  categoriePirme: CategoriePrimeCreateInput
 }
 
 input CategoriePrimeCreateInput {
@@ -636,12 +640,11 @@ input CategoriePrimeCreateInput {
 }
 
 input RetenuCreateInput {
-  ID: String
+  categorieretenuId: String
   nom: String
-  categorieId: String
   description: String
   montant: Float! = 0
-  categorieRetenu: CategorieRetenuCreateInput!
+  categorieRetenu: CategorieRetenuCreateInput
 }
 
 input CategorieRetenuCreateInput {
@@ -651,18 +654,11 @@ input CategorieRetenuCreateInput {
   type: String
 }
 
-input PrimeUpdateInput {
-  categorieId: ID
-  nom: String
+input SalaireBaseUpdateInput {
+  categoriepersonnelId: ID
   description: String
   montant: Float! = 0
-  categoriePirme: CategoriePrimeCreateInput!
-}
-
-input CategoriePrimeUpdate {
-  ID: String
-  nom: String
-  description: String
+  categoriePersonnel: CategoriePersonnelUpdate
 }
 
 input CategoriePersonnelUpdate {
@@ -676,13 +672,26 @@ input CategoriePersonnelUpdate {
   salaireBase: SalaireBaseCreateInput
 }
 
-input RetenuUpdateInput {
-  ID: String
+input PrimeUpdateInput {
+  categorieId: ID
   nom: String
-  categorieId: String
   description: String
   montant: Float! = 0
-  categorieRetenu: CategorieRetenuCreateInput!
+  categoriePirme: CategoriePrimeUpdate
+}
+
+input CategoriePrimeUpdate {
+  ID: String
+  nom: String
+  description: String
+}
+
+input RetenuUpdateInput {
+  categorieretenuId: String
+  nom: String
+  description: String
+  montant: Float! = 0
+  categorieRetenu: CategorieRetenuUpdateInput
 }
 
 input CategorieRetenuUpdateInput {
@@ -693,8 +702,8 @@ input CategorieRetenuUpdateInput {
 }
 
 input PrimePersonnelCreateInput {
-  primeID: ID
-  personnelID: ID
+  primeId: ID
+  personnelId: ID
   prime: PrimeCreateInput
   personnel: PersonnelCreateInput
 }
@@ -714,15 +723,15 @@ input PeriodeUpdateInput {
 }
 
 input RetenuPersonnelCreateInput {
-  retenuID: ID
-  personnelID: ID
+  retenuId: ID
+  personnelId: ID
   retenu: RetenuCreateInput!
   personnnel: PersonnelCreateInput!
 }
 
 input RetenuPersonnelUpdateInput {
-  retenuID: ID
-  personnelID: ID
+  retenuId: ID
+  personnelId: ID
   retenu: RetenuCreateInput!
   personnnel: PersonnelCreateInput!
 }
@@ -840,8 +849,9 @@ enum RegimePaiement {
 
 input InscriptionInput {
   fraisincription_id: ID
-  anneacademique_id: ID
-  student_id: ID
+  anneacademiqueId: ID
+  salleId: ID
+  studentId: ID
   name: String
   description: String
   montant: Float
@@ -900,6 +910,20 @@ input ParentCreateInput {
   parent: Boolean! = false
   childNumber: Float! = 0
   user: UserCreateInput
+}
+
+input ExpenseCreateInput {
+  academicyearId: ID
+  title: String
+  amount: Float
+  description: String
+}
+
+input ExpenseUpdateInput {
+  academicyearId: ID
+  title: String
+  amount: Float
+  description: String
 }
 
 input LoginInput {

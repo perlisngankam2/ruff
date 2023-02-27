@@ -5,7 +5,7 @@ import { useState } from "react";
 import PrincipalLaout from "./PrincipalLayout";
 import EconomeSidebarLayout from "./EconomSidebarLayout";
 import ManagerLayout from "./ManagerLayout";
-import AdminLayout from "./AdminLayout.jsx";
+import AdminLayout from "./AdminLayout";
 
 import { useAccount } from "../../contexts/account/Account";
 
@@ -17,7 +17,7 @@ import { useAccount } from "../../contexts/account/Account";
 //   'gesionnaire'
 // )
 
-const role = "isAdmin"
+// const role = "isAdmin"
  
 
   // const userProfil = {
@@ -58,19 +58,19 @@ const SidebarLayout = ({ children }) => {
       color="#0e341f"
     >
         { 
-          (account?.me?.fonction==="ADMIN")&&
+          (account?.role==="ADMIN")&&
             <AdminLayout/>
         }
         {
-          (account?.me?.fonction==="PRINCIPAL") && 
+          (account?.role==="PRINCIPAL") && 
               <PrincipalLaout/>
         }
         {
-        (account?.me?.fonction==="ECONOME") &&
+        (account?.role==="ECONOME") &&
           <EconomeSidebarLayout/>
         }
         { 
-        (account?.me?.fonction==="MANAGER") &&
+        (account?.user?.role==="MANAGER") &&
         <ManagerLayout/>
         }
       { children }

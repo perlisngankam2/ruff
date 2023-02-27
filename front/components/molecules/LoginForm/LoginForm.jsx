@@ -50,9 +50,9 @@ console.log(dataUser)
                   }
               });
 
-                // console.log(login.data.login)
+                console.log(login.data.login)
                   if (login.data.login) {
-                    setAuthToken?.(login.data.login.access_token , login.data.login.user.role);
+                    setAuthToken?.(login.data.login.access_token , login.data.login.user.id);
                     router.push('/dashboard');
                   }
        };

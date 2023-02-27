@@ -5,7 +5,7 @@ const AuthContextProps = {
   authToken: "",
   setAuthToken: (data) => {},
   removeAuthToken: () => {},
-  userRole: "",
+  userID: "",
   isLogged: false,
 }
 
@@ -14,22 +14,22 @@ export const AuthContext = createContext({AuthContextProps});
 export const AuthProvider = ({ children }) => {
 
   const [authToken, setAuthToken] = useState();
-  const [userRole, setUserRole] = useState();
+  const [userID, setUserID] = useState();
   const [loading, setLoading] = useState(true);
 
     useEffect(() => {
     setLoading(true);
     setAuthToken(localStorage.getItem('token'));
-    setUserRole(localStorage.getItem('userRole'));
+    setUserID(localStorage.getItem('userID'));
     setLoading(false);
   }, []);
 
 
-  const setToken = (access_token,userRole) => {
+  const setToken = (access_token,userID) => {
     localStorage.setItem('token', access_token);
-     localStorage.setItem('userRole', userRole);
+     localStorage.setItem('userID', userID);
         setAuthToken(access_token);
-        setUserRole(userRole)
+        setUserID(userID)
   };
 
   
@@ -41,8 +41,8 @@ export const AuthProvider = ({ children }) => {
   const removeToken = () => {
     localStorage.removeItem('token');
         setAuthToken(null);
-    localStorage.removeItem('userRole');
-        setUserRole(null);
+    localStorage.removeItem('userID');
+        setUserID(null);
 
   };
 
@@ -52,7 +52,7 @@ export const AuthProvider = ({ children }) => {
     value={{
         authToken,
         setAuthToken: setToken,
-        userRole: userRole,
+        userID: userID,
         removeAuthToken: removeToken,
         isLogged: isLogged,
         loading

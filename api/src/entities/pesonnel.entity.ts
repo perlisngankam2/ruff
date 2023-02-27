@@ -90,13 +90,6 @@ export class Personnel {
   @Property({nullable:true})
   email!: string
 
-  @Field({nullable: true})
-  @Property({nullable: true})
-  password!: string
-
-  @Field({nullable:true})
-  @Property({nullable:true})
-  email!: string
 
   //Relation with another table 
   @OneToOne(() => User, (user) => user.personnel, {

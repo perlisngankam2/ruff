@@ -1,6 +1,10 @@
-import { FormControl, FormLabel, Grid, Input, Select } from "@chakra-ui/react";
+import { FormControl, FormLabel, Grid, Input, Select, Text } from "@chakra-ui/react";
+import { useAccount } from "../../../contexts/account/Account"
 
 function AccountSetting(){
+
+    const { account ,loaded } = useAccount();
+    console.log(account)
 
     return(
         <Grid
@@ -9,7 +13,7 @@ function AccountSetting(){
         >
             <FormControl id='nom'>
                 <FormLabel>Noms</FormLabel>
-                <Input focusBorderColor="brand.blue" type="text" placeholder='Don'/>
+                <Text>{account?.firstName} </Text>
             </FormControl>
             <FormControl id='prenom'>
                 <FormLabel>Prenoms</FormLabel>

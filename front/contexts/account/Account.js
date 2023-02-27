@@ -13,18 +13,40 @@ export const AccountContext = createContext(
 );
 
 export const AccountProvider  = ({ children }) => {
-  const { dataUser, called, loading } = useQuery(GET_USER_CONNECTED);
-  const { authToken, removeAuthToken } = useAuth();
+
+ const { authToken, removeAuthToken,userID } = useAuth();
+
+const { data: dataUser, called, loading } = useQuery(GET_USER_CONNECTED, 
+    {
+    variables:{ id: userID}
+  });
+  
+ 
+
+
+
   const router = useRouter();
 
   useEffect(() => {
     
     if (authToken) {
-      dataUser;
+  
+     console.log(dataUser?.user);
       
     }
     
-  }, [authToken, dataUser]);
+  }, [authToken, dataUser?.user]);
+
+
+  //   const {data:dataPersonnelId} = useQuery(GET_PERSONNEL_BY_ID,
+  // {
+  //   variables:{ id: router.query.id}
+  // })
+
+  // useEffect(() =>{
+  //   console.log(dataPersonnelId)
+  // })
+
 
   // console.log(dataUser?.me)
 
@@ -44,7 +66,7 @@ export const AccountProvider  = ({ children }) => {
 
   return (
     <AccountContext.Provider
-      value={{ account: dataUser?.me, loaded: !loading && called }}
+      value={{ account: dataUser?.user, loaded: !loading && called }}
     >
       {children}
     </AccountContext.Provider>

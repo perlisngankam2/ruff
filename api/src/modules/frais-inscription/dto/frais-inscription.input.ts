@@ -9,19 +9,19 @@ import { SalleCreateInput } from 'src/modules/salle/dto/salle.input';
 export class FraisInscriptionInput {
   
   @Field(()=>ID,{nullable:true})
-  salle_id?:string
+  salleId?:string
 
   @Field(()=>ID,{nullable:true})
-  anneAcademique_id?:string
+  anneeAcademiqueId?:string
 
   @Field({nullable:true})
-  description?: string;
+  nameFraisInscription?: string;
 
   @Field({nullable:true, defaultValue:0})
   montant?: number;
 
-  @Field({nullable:true})
-  dateLine?: Date;
+  // @Field({nullable:true})
+  // dateLine?: Date;
 
   @Field(()=>SalleCreateInput,{nullable:true})
   salle?:SalleCreateInput

@@ -26,10 +26,19 @@ export class CategorieEleveService {
     //         ?   await this.reductionService.findByOne({id:input.reduction?.ID})
     //         : await this.reductionService.create(input.reduction)
 
-    categorieEleve.nom = input.nom
-    categorieEleve.description = input.description
-    // categorieEleve.reductionScolarite.id = reduction.id
- 
+    await this.reductionService.findByOne({id: input.reductionScolariteId})
+
+    wrap(categorieEleve).assign(
+      {
+        nom : input.nom,
+        description : input.description,
+        reductionScolarite: input.reductionScolariteId
+      // categorieEleve.reductionScolarite.id = reduction.id}
+    },
+    {
+      em: this.em
+    }
+  )
     await this.categorieEleveRepository.persistAndFlush(categorieEleve)
     return categorieEleve
   }
@@ -61,7 +70,8 @@ export class CategorieEleveService {
 
     wrap(categorie).assign({
       nom: input.nom || categorie.nom,
-      description: input.description || categorie.description
+      description: input.description || categorie.description,
+      reductionScolarite: input.reductionScolariteId || categorie.reductionScolarite
     });
     await this.categorieEleveRepository.persistAndFlush(categorie);
     return categorie;

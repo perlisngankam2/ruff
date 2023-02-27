@@ -7,6 +7,8 @@ import EconomeSidebarLayout from "./EconomSidebarLayout";
 import ManagerLayout from "./ManagerLayout";
 import AdminLayout from "./AdminLayout";
 
+import { useAccount } from "../../contexts/account/Account";
+
 // const[userProfil, setIsProfil ]  = useState (
 //   'administrateur',
 //   'fondateur',
@@ -15,7 +17,7 @@ import AdminLayout from "./AdminLayout";
 //   'gesionnaire'
 // )
 
-const role = "isAdmin"
+// const role = "isAdmin"
  
 
   // const userProfil = {
@@ -39,15 +41,14 @@ const role = "isAdmin"
 const SidebarLayout = ({ children }) => {
 
   
-  //  const { userRole } = useAuth();
+   const { account, loaded } = useAccount();
 
   // const role = userRole;
-  const role = "isAdmin"
-  
+
   return (
    
     <VStack
-      background="#e2d39c"
+      background="colors.secondary"
       p="7"
       gap={3}
       minH="100vh"
@@ -57,19 +58,19 @@ const SidebarLayout = ({ children }) => {
       color="#0e341f"
     >
         { 
-          (role==="isAdmin")&&
+          (account?.role==="ADMIN")&&
             <AdminLayout/>
         }
         {
-          (role==="principal") && 
+          (account?.role==="PRINCIPAL") && 
               <PrincipalLaout/>
         }
         {
-        (role==="econome") &&
+        (account?.role==="ECONOME") &&
           <EconomeSidebarLayout/>
         }
         { 
-        (role==="manager") &&
+        (account?.user?.role==="MANAGER") &&
         <ManagerLayout/>
         }
       { children }

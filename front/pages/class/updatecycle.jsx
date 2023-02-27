@@ -24,7 +24,7 @@ import React, {useEffect, useState} from "react";
 import { IoIosAdd } from "react-icons/io";
 import {useMutation, useQuery } from '@apollo/client';
 import { CREATE_CYCLE, UPDATE_CYCLE } from "../../graphql/Mutation";
-import { GET_ALL_SECTION } from "../../graphql/Queries";
+import { GET_ALL_SECTION } from "../../graphql/queries";
 import { useRouter } from "next/router";
 
 

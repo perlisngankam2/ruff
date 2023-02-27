@@ -102,6 +102,7 @@ export class Personnel {
   @Property({nullable:true})
   email!: string
 
+
   //Relation with another table 
   @OneToOne(() => User, (user) => user.personnel, {
     owner: true,

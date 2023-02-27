@@ -53,7 +53,7 @@ import Link from "next/link";
 import DefaultLayout from "../../components/layouts/DefaultLayout";
 import { GiBoxUnpacking } from "react-icons/gi";
 import { useQuery, fetchGraphQLQuery, gql, useLazyQuery } from "@apollo/client";
-import { GET_ALL_STUDENT, GET_STUDENT_BY_ID} from "../../graphql/Queries";
+import { GET_ALL_STUDENT, GET_STUDENT_BY_ID} from "../../graphql/queries";
 import { client } from "../../graphql/apollo-client";
 
 

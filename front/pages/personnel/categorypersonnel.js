@@ -9,7 +9,7 @@ import {
   InputRightAddon,
   Table,
   TableContainer,
-  Tbody,
+  Tbody, 
   Td,
   Text,
   Th,
@@ -24,7 +24,7 @@ import AjouterCategoryPersonnel from './AjouterCategoryPersonnel';
 import { Router, useRouter } from "next/router";
 import {FiEdit} from 'react-icons/fi';
 import {MdDelete} from 'react-icons/md';
-import { GET_ALL_Category_Personnel } from "../../graphql/Queries";
+import { GET_ALL_Category_Personnel } from "../../graphql/queries";
 import { DELETE_CATEGORY_PERSONNEL } from "../../graphql/Mutation";
 import { useQuery, useMutation } from "@apollo/client"; 
 import { useEffect, useState } from "react";

@@ -27,7 +27,7 @@ import AjouterCategoryEleve from './AjouterCategoryEleve';
 import { Router, useRouter } from "next/router";
 import {FiEdit} from 'react-icons/fi';
 import {MdDelete} from 'react-icons/md';
-import { GET_ALL_Category_Eleve } from "../../graphql/Queries";
+import { GET_ALL_Category_Eleve } from "../../graphql/queries";
 import { DELETE_CATEGORY_STUDENT } from "../../graphql/Mutation";
 import { useMutation, useQuery } from "@apollo/client"; 
 import { useEffect, useState } from "react";

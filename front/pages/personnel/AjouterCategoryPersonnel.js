@@ -27,7 +27,7 @@ import { IoIosAdd } from "react-icons/io";
 import Link from "next/link";
 import {useMutation } from '@apollo/client';
 import { CREATE_CATEGORY_PERSONNEL } from "../../graphql/Mutation";
-import { GET_ALL_Category_Personnel } from "../../graphql/Queries";
+import { GET_ALL_Category_Personnel } from "../../graphql/queries";
 import { useState } from "react";
 import { useRouter } from "next/router";
 

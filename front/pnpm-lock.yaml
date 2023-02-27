@@ -23,6 +23,8 @@ specifiers:
   graphql: ^16.6.0
   i18next: ^22.4.6
   i18next-hmr: ^1.11.1
+  jwt-decode: ^3.1.2
+  lodash: ^4.17.21
   moment: ^2.29.4
   next: 13.0.6
   next-i18next: ^13.0.2
@@ -31,6 +33,7 @@ specifiers:
   react-hook-form: ^7.41.5
   react-i18next: ^12.1.1
   react-icons: ^4.7.1
+  react-paginate: ^8.1.4
   typescript: 4.9.4
   yup: ^0.32.11
 
@@ -53,6 +56,8 @@ dependencies:
   framer-motion: 7.10.3_biqbaboplfbrettd7655fr4n2y
   graphql: 16.6.0
   i18next: 22.4.9
+  jwt-decode: 3.1.2
+  lodash: 4.17.21
   moment: 2.29.4
   next: 13.0.6_pjwopsidmaokadturxaafygjp4
   next-i18next: 13.0.3_sp6ssuu5mhgjmnm6wurdkno6tq
@@ -61,6 +66,7 @@ dependencies:
   react-hook-form: 7.43.0_react@18.2.0
   react-i18next: 12.1.4_iakk3dtjhjpukdoa4oua5khgci
   react-icons: 4.7.1_react@18.2.0
+  react-paginate: 8.1.4_react@18.2.0
   yup: 0.32.11
 
 devDependencies:
@@ -4162,6 +4168,15 @@ packages:
 
   /react-is/16.13.1:
     resolution: {integrity: sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ==}
+    dev: false
+
+  /react-paginate/8.1.4_react@18.2.0:
+    resolution: {integrity: sha512-c3rxjcTEqeDQa6LqXifxLeFguY2qy2CHGRphVjHLFFMGfIHyaJ+v3bOvIlLYEeohwQ1q+cQpknjsqBVrkc/SNA==}
+    peerDependencies:
+      react: ^16 || ^17 || ^18
+    dependencies:
+      prop-types: 15.8.1
+      react: 18.2.0
     dev: false
 
   /react-remove-scroll-bar/2.3.4_kzbn2opkn2327fwg5yzwzya5o4:

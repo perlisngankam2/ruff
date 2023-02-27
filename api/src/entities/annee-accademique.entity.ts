@@ -33,9 +33,9 @@ export class AnneeAccademique {
   @Property({ nullable: true })
   description!: string;
 
-  @Field(() => Date, { nullable: true })
-  @Property({ nullable: true })
-  anneeAccademique!: Date | null;
+  // @Field(() => Date, { nullable: true })
+  // @Property({ nullable: true })
+  // anneeAccademique!: Date | null;
 
   @OneToMany(()=> Inscription, (inscription) => inscription.anneeAccademique
   )

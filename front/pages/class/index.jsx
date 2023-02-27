@@ -40,7 +40,7 @@ import { useEffect, useState } from "react";
 import AddNew from "../../components/atoms/AddNew";
 import StudentBox from "../../components/atoms/StudentBox";
 import DefaultLayout from "../../components/layouts/DefaultLayout";
-import { GET_ALL_CLASS } from "../../graphql/Queries";
+import { GET_ALL_CLASS } from "../../graphql/queries";
 import { DELETE_SALLE } from "../../graphql/Mutation";
 import { useMutation, useQuery } from "@apollo/client";
 import {IoIosAdd} from 'react-icons/io';

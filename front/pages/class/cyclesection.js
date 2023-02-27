@@ -45,6 +45,7 @@ import {UpdateCycle} from './updatecycle';
 import { useMutation, useQuery } from "@apollo/client"; 
 import SectionCreate from "./SectionCreate";
 import CycleCreate from "./CycleCreate";
+import ReactPaginate from "react-paginate";
 import Routes from "../../modules/routes";
 import { GlobalContext } from "../../contexts/cyclesection/AppContext";
 // const cycleFragment  = {
@@ -81,6 +82,52 @@ const cyclesection = () => {
     const [isformOpen, setIsFormOpen] = useState(false)
     const cancelRef = React.useRef();
     const router = useRouter();
+    const [pageNumber, setPageNumber] = useState(0);
+
+    const usersPerPage = 10;
+    const pagesVisited = pageNumber * usersPerPage;
+
+    const displayUsers = data?.findAllsection.slice(pagesVisited, pagesVisited + usersPerPage)
+    . map((section, index) => ( 
+                          <Tr key={index}>
+                              <Td  borderColor={'#C6B062'}>{section.name}</Td>
+                              <Td  borderColor={'#C6B062'}>{section.description}</Td>
+                              <Td  borderColor={'#C6B062'}>
+                              <Box display="flex">
+                                <Link 
+                                  href="/eleves/modifiereleve">
+                                    <Icon
+                                    as={FiEdit}
+                                    boxSize="40px"
+                                    p="3"
+                                    // bg="blue.100"
+                                    rounded="full"
+                                  _hover={{background:"red.100"}}
+                                    />
+                                </Link>
+                                <Box href="#" mt="-3px"
+                                    onClick={() => removeSection(section.id)}
+                                >
+                                  <Icon
+                                    as={MdDelete}
+                                    boxSize="44px"
+                                    p="3"
+                                    rounded="full"
+                                    color="colors.quaternary"
+                                    _hover={{background:"blue.100"}}
+
+                                  />
+                              </Box>
+                              </Box>
+                              </Td>
+                          </Tr>
+                        ))
+
+    const pageCount = Math.ceil(data?.findAllsection.length / usersPerPage);
+
+    const changePage = ({ selected }) => {
+      setPageNumber(selected);
+    };
     const cycleContext = useContext(GlobalContext);
 
 
@@ -185,7 +232,8 @@ const cyclesection = () => {
                 Sections
             </Heading>
           </Box>
-            <TableContainer>
+          <Box mb={5}>
+          <TableContainer>
                 <Table variant='striped'>
                     <Thead>
                     <Tr>
@@ -196,6 +244,8 @@ const cyclesection = () => {
                     </Thead>
                       {data && ( 
                     <Tbody>
+                      {displayUsers}
+                      
                       {
                         data.findAllsection.map((section, index) => ( 
                           <Tr key={index}>
@@ -234,8 +284,29 @@ const cyclesection = () => {
                     </Tbody>
                       )}
                 </Table>
-            </TableContainer>
-        </Box>
+            </TableContainer> 
+
+            
+            </Box>
+
+        <ReactPaginate 
+        previousLabel={"<<"}
+        nextLabel={">>"}
+        pageCount={pageCount}
+        onPageChange={changePage}
+        containerClassName={"paginationBttns"}
+        previousLinkClassName={"previousBttn"}
+        nextLinkClassName={"nextBttn"}
+        disabledClassName={"paginationDisabled"}
+        activeClassName={"paginationActive"}
+        />
+
+
+         
+
+
+
+</Box>
         <Box mt={50}>
           <Box> 
               <Heading 

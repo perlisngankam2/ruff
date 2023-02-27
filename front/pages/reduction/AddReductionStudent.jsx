@@ -12,102 +12,88 @@ import {
     Center,
   Flex,
   Input,
-
+  Select,
+  Spacing,
+  Text,
   FormControl,
   FormLabel,
   extendTheme,
   Icon,
   useToast
 } from '@chakra-ui/react';
+
 import React from "react";
 import { IoIosAdd } from "react-icons/io";
+import Link from "next/link";
 import {useMutation } from '@apollo/client';
-import { CREATE_SECTION } from "../../graphql/Mutation";
-import { GET_ALL_SECTION } from "../../graphql/queries";
+import { CREATE_REDUCTION_SCOLARITE } from "../../graphql/Mutation";
 import { useState } from "react";
 import { useRouter } from "next/router";
 
-
-const  SectionCreate =  () => {
+function addReductionStudent  () {
 
     const [name, setName] = useState("");
-    const[description, setDescription] = useState("");
+    const[montant, setMontant] = useState();
     const { isOpen, onOpen, onClose } = useDisclosure();
     const cancelRef = React.useRef();
-    const [createSection, {error}] = useMutation(CREATE_SECTION);
-
-    const router = useRouter()
+    
     const toast = useToast();
-    // const addCategoryPersonnel = async (event, value) => {
-    //     console.log("value")
-    //     event.preventDefault();
-       
-    //     console.log(event.target.name.value);
-    //     console.log(event.target.description.value);
-
-    //     // const categoryData = await createCategoryPersonnel({
-    //             // variables: {
-    //         //     createcategoriepersonnnel: { 
-    //         //         
-    //         //             nom : event.target.value,
-    //         //             description: event.target.value
-    //         //     }
-    //         //   }
-    //     // })
-    //     // console.log(categoryData)
-    // }
-
-    let input
-    const  addSection = async (event, value) => {
+    const router = useRouter()
+    const [createReductionScolarite, {loading, error}] = useMutation(CREATE_REDUCTION_SCOLARITE);
+    
+    const addReductionScolarite = async (event) => {
         event.preventDefault();
-        console.log('cccc');
-   
+       
         console.log(name);
-        console.log(description);
-   
-        const sectionData = await createSection({
-            variables: {
-                section: {
-                    name: name,
-                    description: description
-                }
-            },
-        refetchQueries:[{
-          query: GET_ALL_SECTION
-        }]
+        console.log(montant);
+
+        await createReductionScolarite({
+                 variables: {
+                    reductionscolarite: { 
+                     name : name,
+                     montant: parseInt(montant)
+                 }
+               }
         })
-        console.log(sectionData)
-        toast({
-            title: "Creation d'une section.",
-            description: "La classe a été créée avec succes.",
-            status: "success",
-            duration: 3000,
-            isClosable: true,
-          });
-          router.push("/class/cyclesection")
     }
 
+    let input
    
+
+    // const pearl = () => {
+    //     console.log("pepijjhnb  arl")
+    // }
+
   return (
     <Center>
         <Box> 
             <Box> 
                 <Button
                     rightIcon={<Icon as={IoIosAdd} boxSize="20px" />}
+                    // borderRadius={'md'} 
                     onClick={onOpen}
+                    // onClick = {() => router.push(personnel/AjouterCategoryPersonnel)} 
                 >
-                        Ajouter une Section                                
-                </Button> 
+                    {/* <Link href={'/personnel/ajoutercategorypersonnel'}>                                 */}
+                        Ajouter une reduction                                 
+                    {/* </Link>               */}
+                </Button>
           </Box>
-            <Box as={"form"}  onSubmit={() => router.push("/class/cyclesection")}> 
+            <Box 
+                as={"form"} 
+                
+                     > 
                 <AlertDialog
                     isOpen={isOpen}
                     leastDestructiveRef={cancelRef}
-                    onClose={onClose}
                     size='xl'
+                    onClose={onClose}
                 >
-                    <AlertDialogOverlay>
-                        <AlertDialogContent  >
+                    <AlertDialogOverlay
+                     
+                    >
+                        <AlertDialogContent 
+                        >
                             <AlertDialogHeader 
                                 fontSize='sm' 
                                 fontWeight='base' 
@@ -115,11 +101,12 @@ const  SectionCreate =  () => {
                             >
                                 <Box>
                                     <Heading 
+                                        // as='H4' 
                                         textAlign={'center'} 
                                         fontSize={['15px','20px','26px']} 
                                         p='2' 
                                     >
-                                    Ajouter une section
+                                        Ajouter une reduction de scolarite
                                     </Heading>
                                 </Box>
                             </AlertDialogHeader>
@@ -128,7 +115,6 @@ const  SectionCreate =  () => {
                                 <FormControl>
                                     <FormLabel>Nom</FormLabel>
                                     <Input 
-                                        id="name"
                                         type={'text'} 
                                         name="name"
                                         placeholder="nom"
@@ -138,15 +124,14 @@ const  SectionCreate =  () => {
                                      />
                                 </FormControl>
                                 <FormControl mt="15px">
-                                    <FormLabel>Description</FormLabel>
+                                    <FormLabel>Monntant</FormLabel>
                                     <Input 
-                                        id="description"
-                                        type={'text'} 
-                                        name="description"
-                                        placeholder="Description"
-                                        onChange = {(event) => setDescription(event.target.value)}
+                                        type={"number"} 
+                                        name="montant"
+                                        placeholder="Valeur du montant"
+                                        onChange = {(event) => setMontant(event.target.value)}
                                         ref={node => {input = node;}}
-                                        value={description}
+                                        value={montant}
                                     />
                                 </FormControl>
                             </Box>
@@ -154,7 +139,7 @@ const  SectionCreate =  () => {
                             <AlertDialogFooter>
                                 <Button 
                                     ref={cancelRef} 
-                                    onClick={onClose} 
+                                    onClick={onClose}   
                                     colorScheme='red' 
                                 >
                                     annuler 
@@ -163,7 +148,8 @@ const  SectionCreate =  () => {
                                     <Button 
                                     colorScheme='green'  
                                     ml={3}
-                                    onClick={addSection}
+                                    // onClick={onClose}
+                                    onClick={ addReductionScolarite}
                                     >
                                     Creer
                                     </Button>
@@ -177,5 +163,5 @@ const  SectionCreate =  () => {
     </Center>
     
     );
-}
-export default SectionCreate;
+  }
+export default addReductionStudent;

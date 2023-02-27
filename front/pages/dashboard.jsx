@@ -27,6 +27,8 @@ import LastStudentRegisteredBox from "../components/atoms/LastStudentRegisteredB
 import TreasuryBox from "../components/atoms/TreasuryBox";
 import LatePayment from "../components/atoms/LatePayment";
 import { useAuth } from "../contexts/account/Auth/Auth";
+import { useAccount } from "../contexts/account/Account";
+import { useRouter } from "next/router";
 import { HiUsers } from "react-icons/hi";
 import { GiGraduateCap, GiReceiveMoney } from "react-icons/gi";
 
@@ -35,13 +37,19 @@ import { GiGraduateCap, GiReceiveMoney } from "react-icons/gi";
 
  const dashboard = () => {
 
-   const { isLogged } = useAuth();
-  
-  const isLoggedIn = isLogged;
+   const { authToken } = useAuth();
 
-const { userRole } = useAuth();
+const { account } =  useAccount();
+  const router = useRouter();
 
-  const role = userRole;
+    useEffect(() => {
+    
+    if (authToken=="null") {
+      router.push("/")
+      
+    }
+    
+  }, [])
 
 
 
@@ -50,7 +58,7 @@ const { userRole } = useAuth();
       <Box pt="90px" w="full">
         <Box top="-7" overflow="auto" minH="100vh" mx={6}>
           <Heading fontSize="lg" mb={4} color="yellow.500">
-            Bienvenue-GSBAB| Admin
+            Bienvenue-GSBAB| {account?.role}
           </Heading>
 
           <Flex flexDir="row" gap="8" mb="9" flexWrap="wrap">

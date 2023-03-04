@@ -27,10 +27,16 @@ import { HiOutlineHome, HiUserGroup } from "react-icons/hi";
 import { IoMdSchool, IoIosStats, IoIosArrowDown } from "react-icons/io";
 import { GiTakeMyMoney } from "react-icons/gi";
 import { HamburgerIcon } from "@chakra-ui/icons";
+import { useAuth } from "../../../contexts/account/Auth/Auth";
+import { useAccount } from "../../../contexts/account/Account";
 
 
 const Header = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const { removeAuthToken } = useAuth()
+  const { account } = useAccount()
+
+
   return (
     <Box
       as="header"
@@ -150,7 +156,7 @@ const Header = () => {
               <MenuButton>
                 <Flex align="center" gap="1">
                   <Avatar
-                    src="https://www.mykhel.com/thumb/250x90x250/football/players/4/19054.jpg"
+                  name={ account?.firstName + ' ' + account?.lastName } 
                     size="md"
                   />
                   <Icon as={IoIosArrowDown} boxSize="5"/>
@@ -163,7 +169,7 @@ const Header = () => {
                 <Link href="#">
                   <MenuItem>Paramètres</MenuItem>
                 </Link>
-                <Link href="#">
+                <Link href="/" onClick={removeAuthToken}>
                   <MenuItem>Se Déconnecter</MenuItem>
                 </Link>
                 <Link href="#">

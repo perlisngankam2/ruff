@@ -3,23 +3,21 @@ import Personnel from '../pages/personnel';
 
 //personnel
 export const GET_ALL_PERSONNELS = gql `
-    query findAllpersonnel { 
-        findAllpersonnel {
-            id
-            firstName
-            lastName
-            phoneNumber
-            situationMatrimonial
-            sexe
-            fonction
-            status
-            dateOfStartWork
-            dateOfBirth
-            childNumber
-            password
-            email
-        }
+   query findAllpersonnel {
+    findAllpersonnel {
+        id
+        firstName
+        lastName
+        phoneNumber
+        situationMatrimonial
+        sexe
+        fonction
+        status
+        dateOfStartWork
+        dateOfBirth
+        childNumber
     }
+}
 `;
 
 //category personnel
@@ -119,24 +117,22 @@ export const GET_ALL_FRAIS_INSCRIPTION =  gql `
 
 
 // one Personnel
-export const GET_PERSONNEL_BY_ID =  gql `
-    query findOnePersonnel ($id: String!) {
-        findOnePersonnel (id: $id) {
-            id
-            firstName
-            lastName
-            phoneNumber
-            situationMatrimonial
-            sexe
-            fonction
-            status
-            dateOfStartWork
-            dateOfBirth
-            childNumber
-            password
-            email
-        }
+export const GET_ALL_PERSONNEL_BY_ID = gql `
+query findOnePersonnel ($id: String!) {
+    findOnePersonnel (id: $id) {
+        id
+        firstName
+        lastName
+        phoneNumber
+        situationMatrimonial
+        sexe
+        fonction
+        status
+        dateOfStartWork
+        dateOfBirth
+        childNumber
     }
+}
 `;
 
 //one student
@@ -229,3 +225,25 @@ query user ($id: String!) {
     }
 }
 `;
+
+
+export const GET_ALL_USER = gql `
+query findAlluser {
+    findAlluser {
+        id
+        email
+        password
+        firstName
+        lastName
+        name
+        role
+        phoneNumber
+        active
+        deactivatedAt
+    }
+}
+`;
+
+
+
+

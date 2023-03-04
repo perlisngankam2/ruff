@@ -80,7 +80,7 @@ export class SalaireService {
       }
       throw new Error('confirm payement')
     }
-    if(personnel.status == Status.NON_PERMANENT){
+    if(personnel.status == Status.VACATAIRE){
       wrap(salaire).assign(
         {
         montant: Number(salaireBase),

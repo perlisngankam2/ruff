@@ -45,12 +45,12 @@ export class PersonnelCreateInput {
   @Field({ nullable: true })
   dateOfStartWork?: string;
 
-  @Field({nullable:true})
-  password!:string
+  // @Field({nullable:true})
+  // password!:string
 
-  @Field({nullable:true})
-  email!:string
+  // @Field({nullable:true})
+  // email!:string
 
-  @Field(()=>UserCreateInput,{nullable:true})
-  user!:UserCreateInput
+  // @Field(()=>UserCreateInput,{nullable:true})
+  // user!:UserCreateInput
 }

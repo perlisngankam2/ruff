@@ -124,8 +124,6 @@ type Personnel {
   dateOfStartWork: String!
   dateOfBirth: String!
   childNumber: Float
-  password: String
-  email: String
 }
 
 type Salle {
@@ -260,7 +258,7 @@ type User {
 
 enum Role {
   ADMIN
-  PERSONNEL
+  ENSEIGNANT
   ECONOME
   FONDATEUR
   PRINCIPAL
@@ -275,11 +273,6 @@ type SectionCycle {
 type LoginResponse {
   access_token: String!
   user: User!
-}
-
-type LoginResponsePersonnel {
-  access_token: String!
-  personnel: Personnel!
 }
 
 type Query {
@@ -367,6 +360,7 @@ type Mutation {
   createpersonnel(createPersonnelUser: PersonnelCreateInput!): Personnel!
   updatepersonnel(id: String!, input: PersonnelUpdateInput!): Personnel!
   deletepersonnel(id: String!): Personnel!
+  getpersonnelaccount(id: String!): User!
   createsalairebase(salaireBase: SalaireBaseCreateInput!): SalaireBase!
   updatesalairebase(id: String!, input: SalaireBaseUpdateInput!): SalaireBase!
   deletesalairebase(id: String!): SalaireBase!
@@ -439,7 +433,6 @@ type Mutation {
   findoneexpense(id: String!): Expense!
   findallexpenses: [Expense!]!
   login(loginInput: LoginInput!): LoginResponse!
-  loginpersonnel(loginInput: LoginInput!): LoginResponsePersonnel!
 }
 
 input UserCreateInput {
@@ -584,9 +577,6 @@ input PersonnelCreateInput {
   childNumber: Float
   dateOfBirth: String
   dateOfStartWork: String
-  password: String
-  email: String
-  user: UserCreateInput
 }
 
 input PersonnelUpdateInput {
@@ -602,9 +592,6 @@ input PersonnelUpdateInput {
   childNumber: Float
   dateOfBirth: String
   dateOfStartWork: String
-  password: String
-  email: String
-  user: UpdateUserInput
 }
 
 input SalaireBaseCreateInput {
@@ -615,14 +602,20 @@ input SalaireBaseCreateInput {
 }
 
 input CategoriePersonnelCreateInput {
-  primeID: ID
-  retenuID: ID
-  salaireID: ID
   nom: String
   description: String
-  prime: PrimeCreateInput
-  retenu: RetenuCreateInput
-  salaireBase: SalaireBaseCreateInput
+}
+
+input SalaireBaseUpdateInput {
+  categoriepersonnelId: ID
+  description: String
+  montant: Float! = 0
+  categoriePersonnel: CategoriePersonnelUpdate
+}
+
+input CategoriePersonnelUpdate {
+  nom: String
+  description: String
 }
 
 input PrimeCreateInput {
@@ -634,6 +627,20 @@ input PrimeCreateInput {
 }
 
 input CategoriePrimeCreateInput {
+  ID: String
+  nom: String
+  description: String
+}
+
+input PrimeUpdateInput {
+  categorieId: ID
+  nom: String
+  description: String
+  montant: Float! = 0
+  categoriePirme: CategoriePrimeUpdate
+}
+
+input CategoriePrimeUpdate {
   ID: String
   nom: String
   description: String
@@ -652,38 +659,6 @@ input CategorieRetenuCreateInput {
   nom: String
   description: String
   type: String
-}
-
-input SalaireBaseUpdateInput {
-  categoriepersonnelId: ID
-  description: String
-  montant: Float! = 0
-  categoriePersonnel: CategoriePersonnelUpdate
-}
-
-input CategoriePersonnelUpdate {
-  primeID: ID
-  retenuID: ID
-  salaireID: ID
-  nom: String
-  description: String
-  prime: PrimeCreateInput
-  retenu: RetenuCreateInput
-  salaireBase: SalaireBaseCreateInput
-}
-
-input PrimeUpdateInput {
-  categorieId: ID
-  nom: String
-  description: String
-  montant: Float! = 0
-  categoriePirme: CategoriePrimeUpdate
-}
-
-input CategoriePrimeUpdate {
-  ID: String
-  nom: String
-  description: String
 }
 
 input RetenuUpdateInput {

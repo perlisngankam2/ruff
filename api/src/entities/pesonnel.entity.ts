@@ -24,7 +24,7 @@ import { Role } from './../modules/auth/roles/roles';
 
 export enum Status{
   PERMANENT='PERMANENT',
-  NON_PERMANENT='NON_PERMANENT'
+  VACATAIRE='VACATAIRE'
 }
 
 registerEnumType(Status, {
@@ -61,7 +61,10 @@ export class Personnel {
   sexe!: string;
 
   @Field({ nullable: true })
-  @Property({ nullable: true })
+  @Enum({
+    items: () => Role,
+    default: Role.ADMIN,
+  })
   fonction!: Role;
 
   @Field({ nullable: true })
@@ -94,13 +97,13 @@ export class Personnel {
   @Property({ nullable: true })
   childNumber!: number;
 
-  @Field({nullable: true})
-  @Property({nullable: true})
-  password!: string
+  // @Field({nullable: true})
+  // @Property({nullable: true})
+  // password!: string
 
-  @Field({nullable:true})
-  @Property({nullable:true})
-  email!: string
+  // @Field({nullable:true})
+  // @Property({nullable:true})
+  // email!: string
 
 
   //Relation with another table 

@@ -46,4 +46,9 @@ export class PersonnelResolver {
    return await this.personnelService.delete(id)
   }
 
+  @Mutation(()=>User)
+  async getpersonnelaccount(@Args('id') id:string){
+    return await this.personnelService.getcorrespondingaccount(id)
+  }
+
 }

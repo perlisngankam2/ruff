@@ -2,34 +2,32 @@ import { gql } from "@apollo/client";
 
 //personnel
 export const CREATE_PERSONNEL = gql `
-    mutation createpersonnel ($createPersonnelUser: PersonnelCreateInput!) {
-        createpersonnel (createPersonnelUser: $createPersonnelUser) {
-            id
-            firstName
-            lastName
-            phoneNumber
-            situationMatrimonial
-            sexe
-            fonction
-            status
-            dateOfStartWork
-            dateOfBirth
-            childNumber
-            password
-            email
-        }
+mutation createpersonnel ($createPersonnelUser: PersonnelCreateInput!) {
+    createpersonnel (createPersonnelUser: $createPersonnelUser) {
+        id
+        firstName
+        lastName
+        phoneNumber
+        situationMatrimonial
+        sexe
+        fonction
+        status
+        dateOfStartWork
+        dateOfBirth
+        childNumber
     }
+}
 `;
 
 //categorie personnel
 export const CREATE_CATEGORY_PERSONNEL = gql`
-    mutation createcategoriepersonnnel ($createCategoriePersonnel: CategoriePersonnelCreateInput!) {
-        createcategoriepersonnnel (createCategoriePersonnel: $createCategoriePersonnel) {
-            id
-            nom
-            description
-        }
+mutation createcategoriepersonnnel ($createCategoriePersonnel: CategoriePersonnelCreateInput!) {
+    createcategoriepersonnnel (createCategoriePersonnel: $createCategoriePersonnel) {
+        id
+        nom
+        description
     }
+}
 `;
 
 
@@ -177,23 +175,21 @@ export const DELETE_CATEGORY_PERSONNEL = gql `
 
 //delete personnel
 export const DELETE_PERSONNEL = gql `
-    mutation deletepersonnel ($id: String!) {
-        deletepersonnel (id: $id) {
-            id
-            firstName
-            lastName
-            phoneNumber
-            situationMatrimonial
-            sexe
-            fonction
-            status
-            dateOfStartWork
-            dateOfBirth
-            childNumber
-            password
-            email
-        }
+mutation deletepersonnel ($id: String!) {
+    deletepersonnel (id: $id) {
+        id
+        firstName
+        lastName
+        phoneNumber
+        situationMatrimonial
+        sexe
+        fonction
+        status
+        dateOfStartWork
+        dateOfBirth
+        childNumber
     }
+}
 `;
 
 

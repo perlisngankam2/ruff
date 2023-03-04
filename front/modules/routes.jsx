@@ -2,7 +2,9 @@ const RouteName = {
     Eleve : 'eleves',
     EleveDetails : ' EleveDetails',
     Cycle: 'cycles',
-    CycleDetails: 'cycleDetails'
+    CycleDetails: 'cycleDetails',
+    Payment:'payment',
+    PaySlip: 'PaySlip',
 }
   
   // export const Platform = {
@@ -47,6 +49,16 @@ const RouteName = {
       // type: AuthRoute.Public,
       // platforms: [Platform.Main]
     },
+    
+    Payment: {
+      path: '/payment',
+    },
+    PaymentDetails: {
+      path: '/payment/[id]'
+    },
+    Perselll:{
+      path: "/de"
+    },
     PersonnelDetails: {
       path: '/personnel/[id]',
       // type: AuthRoute.Public,
@@ -60,6 +72,7 @@ const RouteName = {
       path: '/cycleDetails/[id]',
       // platforms: [Platform.Main]
     }
+  
 
   };
   

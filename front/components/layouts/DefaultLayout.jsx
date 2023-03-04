@@ -6,7 +6,7 @@ const DefaultLayout = ({ children }) => {
   return (
    <Box h="full" >
       <Header />
-      <Flex h="100vh">
+      <Flex >
         <Hide below="md">
           <SidebarLayout />
         </Hide>

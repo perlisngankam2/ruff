@@ -20,6 +20,7 @@ import { useRouter } from "next/router";
 import {  useMutation, useQuery } from "@apollo/client";
 import { CREATE_PERSONNEL } from "../../graphql/Mutation"; 
 import { GET_ALL_PERSONNELS, GET_ALL_Category_Personnel } from "../../graphql/Queries";
+import { GET_ALL_USER } from "../../graphql/queries";
  
 const AjouterPersonnel = () => {
 
@@ -34,6 +35,7 @@ const AjouterPersonnel = () => {
     const [situationMatrimonial, setSituationMatrimonial] = useState("");
     // const [salaire, setSalaire] = useState("");
     const [categoryPersonnelId, setCategoryPersonnelId] = useState("");
+    const[userID, setUserID] = useState("");
     // const [matricule, setMatricule] = useState("");
     const [fonction, setFonction] = useState("");
     // const [id, setMatricule] = useState("");
@@ -48,6 +50,7 @@ const AjouterPersonnel = () => {
   const toast = useToast();
   const { t } = useTranslation();
   const router = useRouter();
+  const {data} = useQuery(GET_ALL_USER);
 
 //propriete manquante//
   // firstName
@@ -71,7 +74,7 @@ const AjouterPersonnel = () => {
   //   childNumber: "",
   // });
 
- 
+  
 
   const [isPermanent, setIsPermanent] = useState(false);
   const [createPersonnel, {error}] = useMutation(CREATE_PERSONNEL);
@@ -110,11 +113,12 @@ const AjouterPersonnel = () => {
      console.log(fonction);
      console.log(situationMatrimonial);
      console.log(childNumber);
+     console.log(userID)
 
     const data = await createPersonnel({
       variables: {
         createPersonnelUser: {
-          ID: "",
+          userID: userID,
           firstName: firstName,
           lastName : lastName,
           phoneNumber: phoneNumber,
@@ -126,14 +130,6 @@ const AjouterPersonnel = () => {
           childNumber: parseInt(childNumber),
           dateOfBirth: dateOfBirth,
           dateOfStartWork: dateOfStartWork,
-            user: {
-              ID: "",
-              email: "",
-              password: "",
-              firstName: "",
-              lastName: "",
-              phoneNumber: ""
-            }
         },
         refetchQueries:[{
           query: GET_ALL_PERSONNELS
@@ -357,8 +353,8 @@ const AjouterPersonnel = () => {
                  > 
                     {/* {/* {statuses.map((status, index) => (
                       <option key={index}>{status}</option> */}
-                    <option>Permanent</option>
-                    <option>Vaccataire</option>
+                    <option>PERMANENT</option>
+                    <option>VACATAIRE</option>
                   </Select>
                  </FormControl> 
                 <FormControl>
@@ -439,6 +435,28 @@ const AjouterPersonnel = () => {
                     <option>Autres</option>
                   </Select>
                 </FormControl>
+                
+              </Box>
+              <Box>
+              <FormControl mt="15px">
+                  <FormLabel>Compte Associé</FormLabel>
+                  <Select 
+                      name="userID"
+                      placeholder="Compte"
+                      onChange = {(event) => setUserID(event.target.value)}
+                      value={userID}
+                  >
+                      {data && (
+                          data.findAlluser.map((user, index) => ( 
+                              <option value={user?.id} key={index}>
+                                  {user.email}
+                                  {/* {console.log(section.id)} */}
+                              </option>
+                          ))
+                      )}
+                  </Select>
+              </FormControl>
+
               </Box>
               <ButtonGroup mt="3%" w="100%">
                 <Flex w="100%" justifyContent="space-between">

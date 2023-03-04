@@ -20,7 +20,7 @@ function MyApp({ Component, pageProps}) {
       colors: {
         primary: "#0e341f",
         secondary: "#e2d39c",
-        tertiary: "#eef6ec",
+        tertiary: "f6f7fb",
         quaternary: "#E53E3E",
         quinzaine: "pink.300",
         greencolor: "#2F855A",

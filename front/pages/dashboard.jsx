@@ -31,16 +31,25 @@ import { useAccount } from "../contexts/account/Account";
 import { useRouter } from "next/router";
 import { HiUsers } from "react-icons/hi";
 import { GiGraduateCap, GiReceiveMoney } from "react-icons/gi";
+import React, { createContext, useContext, useEffect } from 'react';
+import { GET_ALL_PERSONNELS } from "../graphql/queries";
+import {useMutation, useQuery } from '@apollo/client';
 
 
 
 
  const dashboard = () => {
 
+  const { account } =  useAccount();
+  const {personnelData} = useQuery(GET_ALL_PERSONNELS,
+     {
+    variables:{ userID: account?.id}
+  })
+
    const { authToken } = useAuth();
 
-const { account } =  useAccount();
   const router = useRouter();
+  console.log(personnelData);
 
     useEffect(() => {
     

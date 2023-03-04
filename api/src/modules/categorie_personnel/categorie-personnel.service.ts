@@ -27,22 +27,22 @@ export class CategoriePersonnelService {
     input: CategoriePersonnelCreateInput,
   ): Promise<CategoriePersonnel> {
 
-    const prime = this.prime.findByOne(input.primeID)
-    const retenu = this.retenu.findByOne(input.retenuID)
-    const salaire = this.salaireBaseeService.findByOne(input.salaireID)
+    // const prime = this.prime.findByOne(input.primeID)
+    // const retenu = this.retenu.findByOne(input.retenuID)
+    // const salaire = this.salaireBaseeService.findByOne(input.salaireID)
 
-    if(!(prime&&retenu&&salaire)){
-      new Error("salaire, retenu and salaire de base not found")
-    }
+    // if(!(prime&&retenu&&salaire)){
+    //   new Error("salaire, retenu and salaire de base not found")
+    // }
     const categoriePersonnel = new CategoriePersonnel()
 
     wrap(categoriePersonnel).assign(
       {
       nom: input.nom,
       description: input.description,
-      salaireBase: input.salaireID,
-      retenu: input.retenuID,
-      prime: input.primeID
+      // salaireBase: input.salaireID,
+      // retenu: input.retenuID,
+      // prime: input.primeID
       },
       {
         em: this.em
@@ -67,38 +67,38 @@ export class CategoriePersonnelService {
   
   async update(id:string, input: CategoriePersonnelUpdate): Promise<CategoriePersonnel> {
     const categorie = await this.findById(id)
-    if (input.prime) {
-      const prime =
-      input.primeID &&
-        (await this.prime.findByOne({ id: input.primeID }));
+    // if (input.prime) {
+    //   const prime =
+    //   input.primeID &&
+    //     (await this.prime.findByOne({ id: input.primeID }));
 
-      if (!prime) {
-        throw new NotFoundError('prime no exist' || '');
-      }
-      this.prime.update(prime.id, input.prime);
-    } 
+    //   if (!prime) {
+    //     throw new NotFoundError('prime no exist' || '');
+    //   }
+    //   this.prime.update(prime.id, input.prime);
+    // } 
     
-    if (input.retenu) {
-      const retenu =
-      input.retenuID &&
-        (await this.retenu.findByOne({ id: input.retenuID }));
+    // if (input.retenu) {
+    //   const retenu =
+    //   input.retenuID &&
+    //     (await this.retenu.findByOne({ id: input.retenuID }));
 
-      if (!retenu) {
-        throw new NotFoundError('retenu no exist' || '');
-      }
-      this.retenu.update(retenu.id, input.retenu);
-    } 
+    //   if (!retenu) {
+    //     throw new NotFoundError('retenu no exist' || '');
+    //   }
+    //   this.retenu.update(retenu.id, input.retenu);
+    // } 
 
-    if (input.salaireBase) {
-      const salaire =
-      input.salaireID &&
-        (await this.salaireBaseeService.findByOne({ id: input.salaireID }));
+    // if (input.salaireBase) {
+    //   const salaire =
+    //   input.salaireID &&
+    //     (await this.salaireBaseeService.findByOne({ id: input.salaireID }));
 
-      if (!salaire) {
-        throw new NotFoundError('salaire no exist' || '');
-      }
-      this.salaireBaseeService.update(salaire.id, input.salaireBase);
-    } 
+    //   if (!salaire) {
+    //     throw new NotFoundError('salaire no exist' || '');
+    //   }
+    //   this.salaireBaseeService.update(salaire.id, input.salaireBase);
+    // } 
 
     wrap(categorie).assign({
       nom: input.nom || categorie.nom,

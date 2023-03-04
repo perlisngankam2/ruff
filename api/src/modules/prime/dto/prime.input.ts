@@ -17,6 +17,6 @@ export class PrimeCreateInput {
   @Field({defaultValue:0})
   montant?: number;
 
-  @Field(()=>CategoriePrimeCreateInput,{nullable:true})
-  categoriePirme?:CategoriePrimeCreateInput
+  // @Field(()=>CategoriePrimeCreateInput,{nullable:true})
+  // categoriePirme?:CategoriePrimeCreateInput
 }

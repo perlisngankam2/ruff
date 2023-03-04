@@ -6,7 +6,8 @@ import PrincipalLaout from "./PrincipalLayout";
 import EconomeSidebarLayout from "./EconomSidebarLayout";
 import ManagerLayout from "./ManagerLayout";
 import AdminLayout from "./AdminLayout";
-
+import { GET_PERSONNEL_BY_USERID } from "../../graphql/queries";
+import { useMutation, useQuery } from '@apollo/client'; 
 import { useAccount } from "../../contexts/account/Account";
 
 // const[userProfil, setIsProfil ]  = useState (
@@ -41,7 +42,11 @@ import { useAccount } from "../../contexts/account/Account";
 const SidebarLayout = ({ children }) => {
 
   
-   const { account, loaded } = useAccount();
+  const { account, loaded } = useAccount();
+  const { data: personnelData, called, loading } = useQuery(GET_PERSONNEL_BY_USERID,
+     {
+    variables:{ userid: account?.id }
+  })
 
   // const role = userRole;
 
@@ -61,16 +66,17 @@ const SidebarLayout = ({ children }) => {
           (account?.role==="ADMIN")&&
             <AdminLayout/>
         }
+
         {
-          (account?.role==="PRINCIPAL") && 
+          (personnelData?.getpersonnelbyaccount.fonction==="principal") && 
               <PrincipalLaout/>
         }
         {
-        (account?.role==="ECONOME") &&
+        (personnelData?.getpersonnelbyaccount.fonction==="econome") &&
           <EconomeSidebarLayout/>
         }
         { 
-        (account?.user?.role==="MANAGER") &&
+        (personnelData?.getpersonnelbyaccount.fonction==="manager") &&
         <ManagerLayout/>
         }
       { children }

@@ -17,6 +17,6 @@ export class PrimeUpdateInput {
   @Field({defaultValue:0})
   montant?: number;
 
-  @Field(()=>CategoriePrimeUpdate,{nullable:true})
-  categoriePirme?:CategoriePrimeUpdate
+  // @Field(()=>CategoriePrimeUpdate,{nullable:true})
+  // categoriePirme?:CategoriePrimeUpdate
 }

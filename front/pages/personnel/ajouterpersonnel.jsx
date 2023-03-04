@@ -19,7 +19,7 @@ import { useState, useRef, use, useEffect } from "react";
 import { useRouter } from "next/router";
 import {  useMutation, useQuery } from "@apollo/client";
 import { CREATE_PERSONNEL } from "../../graphql/Mutation"; 
-import { GET_ALL_PERSONNELS, GET_ALL_Category_Personnel } from "../../graphql/Queries";
+import { GET_ALL_PERSONNELS, GET_ALL_Category_Personnel } from "../../graphql/queries";
 import { GET_ALL_USER } from "../../graphql/queries";
  
 const AjouterPersonnel = () => {

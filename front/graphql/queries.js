@@ -3,12 +3,13 @@ import Personnel from '../pages/personnel';
 
 //personnel
 export const GET_ALL_PERSONNELS = gql `
-   query findAllpersonnel {
+query findAllpersonnel {
     findAllpersonnel {
         id
         firstName
         lastName
         phoneNumber
+        salary
         situationMatrimonial
         sexe
         fonction
@@ -240,6 +241,27 @@ query findAlluser {
         phoneNumber
         active
         deactivatedAt
+    }
+}
+`;
+
+//personnel by userid
+
+export const GET_PERSONNEL_BY_USERID= gql `
+query getpersonnelbyaccount ($userid: String!) {
+    getpersonnelbyaccount (userid: $userid) {
+        id
+        firstName
+        lastName
+        phoneNumber
+        salary
+        situationMatrimonial
+        sexe
+        fonction
+        status
+        dateOfStartWork
+        dateOfBirth
+        childNumber
     }
 }
 `;

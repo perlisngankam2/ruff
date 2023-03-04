@@ -331,6 +331,20 @@ mutation login ($loginInput: LoginInput!) {
 }
 `;
 
+//prime
+
+export const CREATE_PRIME = gql `
+mutation createprime ($prime: PrimeCreateInput!) {
+    createprime (prime: $prime) {
+        id
+        nom
+        description
+        montant
+    }
+}
+`;
+
+
 
 
 

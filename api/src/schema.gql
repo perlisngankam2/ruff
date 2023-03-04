@@ -291,6 +291,8 @@ type Query {
   primePersonnel(id: String!): PrimePersonnel!
   findAllpersonnel: [Personnel!]!
   findOnePersonnel(id: String!): Personnel!
+  getpersonnelaccount(id: String!): User!
+  getpersonnelbyaccount(userid: String!): Personnel!
   findAllsalaire: [SalaireBase!]!
   salaireBase(id: String!): SalaireBase!
   findAllprime: [Prime!]!
@@ -364,8 +366,6 @@ type Mutation {
   createpersonnel(createPersonnelUser: PersonnelCreateInput!): Personnel!
   updatepersonnel(id: String!, input: PersonnelUpdateInput!): Personnel!
   deletepersonnel(id: String!): Personnel!
-  getpersonnelaccount(id: String!): User!
-  getpersonnelbyaccount(userid: String!): Personnel!
   createsalairebase(salaireBase: SalaireBaseCreateInput!): SalaireBase!
   updatesalairebase(id: String!, input: SalaireBaseUpdateInput!): SalaireBase!
   deletesalairebase(id: String!): SalaireBase!
@@ -632,13 +632,6 @@ input PrimeCreateInput {
   nom: String
   description: String
   montant: Float! = 0
-  categoriePirme: CategoriePrimeCreateInput
-}
-
-input CategoriePrimeCreateInput {
-  ID: String
-  nom: String
-  description: String
 }
 
 input PrimeUpdateInput {
@@ -646,7 +639,12 @@ input PrimeUpdateInput {
   nom: String
   description: String
   montant: Float! = 0
-  categoriePirme: CategoriePrimeUpdate
+}
+
+input CategoriePrimeCreateInput {
+  ID: String
+  nom: String
+  description: String
 }
 
 input CategoriePrimeUpdate {

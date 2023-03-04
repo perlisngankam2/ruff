@@ -26,7 +26,7 @@ export class CategorieEleveService {
     //         ?   await this.reductionService.findByOne({id:input.reduction?.ID})
     //         : await this.reductionService.create(input.reduction)
 
-    await this.reductionService.findByOne({id: input.reductionScolariteId})
+    // await this.reductionService.findByOne({id: input.reductionScolariteId})
 
     wrap(categorieEleve).assign(
       {

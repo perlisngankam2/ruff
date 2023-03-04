@@ -9,6 +9,7 @@ import {
   } from '@mikro-orm/core';
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { EntityRepository } from '@mikro-orm/postgresql';
+import { Injectable } from '@nestjs/common';
   import { Field, ID, ObjectType } from '@nestjs/graphql';
 import { Prime } from 'src/entities/prime.entity';
 import { Retenue } from 'src/entities/retenu-salaire.entity';
@@ -18,8 +19,7 @@ import { RetenuCreateInput } from './dto/retenu.input';
 import { RetenuUpdateInput } from './dto/retenu.update';
 
 
-@Entity()
-@ObjectType()
+@Injectable()
 export class RetenuService {
     constructor(
         @InjectRepository(Retenue)

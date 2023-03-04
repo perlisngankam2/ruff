@@ -35,7 +35,7 @@ export class InscriptionResolver {
     return this.inscriptionService.getAll()
   }
   
-  @Query(() => Inscription, { name: 'inscription' })
+  @Query(() => Inscription)
   findOne(@Args('id', { type: () => String }) id: string) {
     return this.inscriptionService.findByOne(id);
   }

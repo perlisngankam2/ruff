@@ -7,6 +7,7 @@ import {
   } from '@mikro-orm/core';
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { EntityRepository } from '@mikro-orm/postgresql';
+import { Injectable } from '@nestjs/common';
 import { Field, ID, ObjectType } from '@nestjs/graphql';
 import { Cycle } from 'src/entities/cycle.entity';
 import { SalaireBase } from 'src/entities/salaire-base.entity';
@@ -15,8 +16,7 @@ import { SectionService } from '../section/section.service';
 import { CycleCreateInput } from './dto/cycle.input';
 import { CycleUpdateInput } from './dto/cycle.update';
 
-@Entity()
-@ObjectType()
+@Injectable()
 export class CycleService {
     constructor(
         @InjectRepository(Cycle)

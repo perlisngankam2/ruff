@@ -8,14 +8,14 @@ import {
   } from '@mikro-orm/core';
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { EntityRepository } from '@mikro-orm/postgresql';
+import { Injectable } from '@nestjs/common';
   import { Field, ID, ObjectType } from '@nestjs/graphql';
 import { ReductionScolarite } from 'src/entities/reduction-scolarite.entity';
 import { RedutionScolariteInput } from './dto/reduction-scolarite.input';
 import { UpdateReductionScolariteInput } from './dto/reduction-scolarite.update';
 
 
-@Entity()
-@ObjectType()
+@Injectable()
 export class ReductionScolariteService {
     constructor(
         @InjectRepository(ReductionScolarite)

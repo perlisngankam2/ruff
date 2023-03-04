@@ -9,6 +9,7 @@ import {
   } from '@mikro-orm/core';
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { EntityRepository } from '@mikro-orm/postgresql';
+import { Injectable } from '@nestjs/common';
   import { Field, ID, ObjectType } from '@nestjs/graphql';
 import { PrimePersonnel } from 'src/entities/prime-personnel.entity';
 import { Prime } from 'src/entities/prime.entity';
@@ -18,8 +19,7 @@ import { PrimeService } from '../prime/prime.service';
 import { PrimePersonnelCreateInput } from './dto/prime-personnel.input';
 import { PrimePersonnelUpdateInput } from './dto/prime-personnel.update';
 
-@Entity()
-@ObjectType()
+@Injectable()
 export class PrimePersonnelService {
     constructor(
         @InjectRepository(PrimePersonnel)

@@ -9,6 +9,7 @@ import {
   } from '@mikro-orm/core';
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { EntityRepository } from '@mikro-orm/postgresql';
+import { Injectable } from '@nestjs/common';
 import { Field, ID, ObjectType } from '@nestjs/graphql';
 import { Cycle } from 'src/entities/cycle.entity';
 import { NiveauEtude } from 'src/entities/niveau-etude.entity';
@@ -17,8 +18,7 @@ import { SectionCycleService } from '../section-cycle/section-cycle.service';
 import { NiveauEtudeCreateInput } from './dto/niveau-etude.input';
 import { NiveauEtudeUpdateInput } from './dto/niveau-etude.update';
 
-@Entity()
-@ObjectType()
+@Injectable()
 export class NiveauEtudeService {
     constructor(
         @InjectRepository(NiveauEtude)

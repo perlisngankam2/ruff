@@ -6,6 +6,7 @@ import {
     Enum,
     Filter,
     IdentifiedReference,
+    ManyToMany,
     ManyToOne,
     OneToMany,
     OneToOne,
@@ -21,6 +22,8 @@ import { RetenuPersonnel } from './retenu-personnel.entity';
 import { Salle } from './salle.entity';
 import { User } from './user.entity';
 import { Role } from './../modules/auth/roles/roles';
+import { Prime } from './prime.entity';
+import { Salaire } from './salaire.entity';
 
 export enum Status{
   PERMANENT='PERMANENT',
@@ -51,6 +54,9 @@ export class Personnel {
   @Property({ nullable: true })
   phoneNumber!: string;
   
+  @Field({ nullable: true })
+  @Property({ nullable: true })
+  salary!: number;
 
   @Field({ nullable: true })
   @Property({ nullable: true })
@@ -132,5 +138,11 @@ export class Personnel {
     onDelete:'cascade'
   })
   salle!:IdentifiedReference<Salle>|null
+
+  @ManyToMany(() => Prime, primes => primes.personnel,{owner: true})
+  primes = new Collection<Personnel>(this);
+
+  @ManyToMany(() => Salaire, salaire => salaire.personnel)
+  salaire = new Collection<Salaire>(this);
 
 }

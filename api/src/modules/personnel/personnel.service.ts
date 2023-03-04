@@ -82,7 +82,7 @@ export class PersonnelService {
     if (input.user) {
       const user =
       input.user?.ID &&
-        (await this.userService.findOne({ id: input.user?.ID }));
+        (await this.userService.findOne({ id: input.user?.ID}));
 
       if (!user) {
         throw new NotFoundError('user not found' || '');

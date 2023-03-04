@@ -11,6 +11,12 @@ export class PersonnelUpdateInput {
   @Field(()=>ID,{nullable:true})
   userID?: string;
 
+  @Field(()=>ID,{nullable:true})
+  primeId?:string
+
+  @Field(({nullable:true}))
+  salary:number
+  
   @Field(()=>ID, {nullable:true})
   categoryPersonnelId?: string;
   

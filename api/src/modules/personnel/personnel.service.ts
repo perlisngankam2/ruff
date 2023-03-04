@@ -30,7 +30,7 @@ export class PersonnelService {
   //  }
   const new_personnel = new Personnel()
 
-wrap(new_personnel).assign({
+  wrap(new_personnel).assign({
   firstName : input.firstName,
   lastName : input.lastName,
   category :input.categoryPersonnelId,
@@ -44,7 +44,9 @@ wrap(new_personnel).assign({
   dateOfStartWork : input.dateOfStartWork,
   fonction : input.fonction,
   dateOfBirth : input.dateOfBirth,
-  situationMatrimonial : input.situationMatrimonial
+  situationMatrimonial : input.situationMatrimonial,
+  prime:input.primeId,
+  salary:input.salary
 },
   {
     em:this.em
@@ -69,6 +71,12 @@ wrap(new_personnel).assign({
     const salt = bcript.genSaltSync();
     return bcript.hashSync(password, salt);
   }
+
+  async getcorrespondingaccount(id:string){
+    const tbl = (await this.findOne(id)).user.load()
+    return tbl
+  }
+
   
   async update(id:string, input: PersonnelUpdateInput): Promise<Personnel> {
     const personnel = await this.findById(id)
@@ -112,9 +120,13 @@ wrap(new_personnel).assign({
   return a
   }
 
-  async getcorrespondingaccount(id:string){
-    const tbl = (await this.findOne(id)).user.load()
-    return tbl
+  async findpersonnelbyaccount(userid:string){
+   const user= this.userService.findOne(userid)
+   const personnel = await this.em.find(Personnel,{user: (await user).id})
+   if(!personnel){
+    throw Error("personnel not found")
+   }
+   return personnel
   }
 
 }

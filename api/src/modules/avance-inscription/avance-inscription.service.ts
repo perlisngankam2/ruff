@@ -11,7 +11,7 @@ import {
   } from '@mikro-orm/core';
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { EntityRepository } from '@mikro-orm/postgresql';
-import { forwardRef, Inject } from '@nestjs/common';
+import { forwardRef, Inject, Injectable } from '@nestjs/common';
 import { Field, ID, ObjectType } from '@nestjs/graphql';
 import { AvanceInscription } from '../../entities/avance-inscription.entity';
 import { Inscription } from '../../entities/inscription.entity';
@@ -20,8 +20,7 @@ import { AvanceInscriptionCreateInput } from './dto/avance-inscription.input';
 import { AvanceInscriptionUpdateInput } from './dto/avance-inscription.update';
 
 
-@Entity()
-@ObjectType()
+@Injectable()
 export class AvanceInscriptionService {
     constructor(
         @InjectRepository(AvanceInscription)

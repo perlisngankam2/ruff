@@ -8,6 +8,7 @@ import {
   } from '@mikro-orm/core';
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { EntityRepository } from '@mikro-orm/postgresql';
+import { Injectable } from '@nestjs/common';
 import { Field, ID, ObjectType } from '@nestjs/graphql';
 import { FraisInscription } from 'src/entities/frais-inscription.entity';
 import { AnneeAccademiqueService } from '../anne_accademique/anne-accademique.service';
@@ -15,8 +16,7 @@ import { SalleService } from '../salle/salle.service';
 import { FraisInscriptionInput } from './dto/frais-inscription.input';
 import { UpdateFraisInscriptionInput } from './dto/frais-inscription.update';
 
-@Entity()
-@ObjectType()
+@Injectable()
 export class FraisInscriptionService {
     constructor(
         @InjectRepository(FraisInscription)

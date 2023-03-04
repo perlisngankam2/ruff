@@ -9,7 +9,7 @@ import {
   } from '@mikro-orm/core';
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { EntityRepository } from '@mikro-orm/postgresql';
-import { forwardRef, Inject } from '@nestjs/common';
+import { forwardRef, Inject, Injectable } from '@nestjs/common';
 import {ObjectType } from '@nestjs/graphql';
 import { AvanceTranche } from '../../entities/avance-tranche.entity';
 import { TrancheStudentService } from '../tranche-student/tranche-student.service';
@@ -18,8 +18,7 @@ import { AvanceTrancheUpdateInput } from './dto/avance-tranche.update';
 
 
 
-@Entity()
-@ObjectType()
+@Injectable()
 export class AvanceTrancheService {
     constructor(
         @InjectRepository(AvanceTranche)

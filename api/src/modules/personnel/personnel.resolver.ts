@@ -51,4 +51,8 @@ export class PersonnelResolver {
     return await this.personnelService.getcorrespondingaccount(id)
   }
 
+  @Mutation(()=>Personnel)
+  async getpersonnelbyaccount(@Args('userid') userid:string){
+    return await this.personnelService.findpersonnelbyaccount(userid)
+  }
 }

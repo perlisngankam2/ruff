@@ -8,14 +8,14 @@ import {
   } from '@mikro-orm/core';
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { EntityRepository } from '@mikro-orm/postgresql';
+import { Injectable } from '@nestjs/common';
 import { Field, ID, ObjectType } from '@nestjs/graphql';
 import { SalaireBase } from 'src/entities/salaire-base.entity';
 import { Section } from 'src/entities/section.entity';
 import { SectionCreateInput } from './dto/section.input';
 import { SectionUpdateInput } from './dto/section.update';
 
-@Entity()
-@ObjectType()
+@Injectable()
 export class SectionService {
     constructor(
         @InjectRepository(Section)

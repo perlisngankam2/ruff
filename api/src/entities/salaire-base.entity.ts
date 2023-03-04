@@ -5,6 +5,7 @@ import {
     Enum,
     Filter,
     IdentifiedReference,
+    ManyToMany,
     ManyToOne,
     OneToMany,
     OneToOne,
@@ -36,4 +37,6 @@ export class SalaireBase {
   @OneToMany(() => CategoriePersonnel, categorie => categorie.salaireBase)
   categoriePersonnel = new Collection<CategoriePersonnel>(this);
   
+  // @ManyToMany(() => CategoriePersonnel, categoriePersonnel => categoriePersonnel.salairebase)
+  // categoriePersonnel = new Collection<CategoriePersonnel>(this);
 }

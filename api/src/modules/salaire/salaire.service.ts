@@ -22,9 +22,9 @@ export class SalaireService {
   constructor(
     @InjectRepository(Salaire)
     private salaireRepository: EntityRepository<Salaire>,
-    private salaireBaseeService: SalaireBaseService,
+    // private salaireBaseeService: SalaireBaseService,
     private retenuPersonnel : RetenuPersonnelService,
-    private primePersonnel: PrimePersonnelService,
+    private   Primeservice: PrimeService,
     private periodeService: PeriodeService,
     private personnel : PersonnelService,
     private readonly em: EntityManager,
@@ -37,29 +37,27 @@ export class SalaireService {
     const personnel = await this.personnel.findOne(input.personnelId)
     
     const periode = await this.periodeService.findByOne(input.periodeId)
-    // check categorie prime
-    const categorie = personnel.category.load()
+    // // check categorie prime
+    //const categorie = personnel.category.load()
 
-    const salaireBase = Number((await (await categorie).salaireBase.load()).montant)
-   
+    const salaireBase = Number(personnel.salary)
     const retenus = this.retenuPersonnel.getallretenupersonnel(input.personnelId)
-
-    const primes = this.primePersonnel.getallpersonnelprime(input.personnelId)
+    const primes = Number(this.Primeservice.getallpersonnelprime(input.personnelId))
   
 
     const salaire = new Salaire()
 
     if(personnel.status == Status.PERMANENT){
-      let sommePrime = 0
-      for(let i = 0; i < (await primes).length; i++){
-        sommePrime += Number((await primes[i]).montant)
-      }
+      // let sommePrime = 0
+      // for(let i = 0; i < (await primes).length; i++){
+      //   sommePrime += Number((await primes[i]).montant)
+      // }
 
       let sommeRetenus = 0
       for(let j = 0; j < (await retenus).length; j++){
         sommeRetenus += Number((await retenus[j]).montant)
       }
-      const salaireNette = salaireBase + sommePrime - sommeRetenus
+      const salaireNette = salaireBase + primes - sommeRetenus
 
 
 

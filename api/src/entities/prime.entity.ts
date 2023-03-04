@@ -5,6 +5,7 @@ import {
     Enum,
     Filter,
     IdentifiedReference,
+    ManyToMany,
     ManyToOne,
     OneToMany,
     OneToOne,
@@ -40,8 +41,8 @@ export class Prime {
   montant!: number;
 
 // relation with another Entites
-  @OneToMany(() => CategoriePersonnel, personnel => personnel.prime)
-  personnel = new Collection<CategoriePersonnel>(this);
+  @OneToMany(() => CategoriePersonnel, personnels => personnels.prime)
+  personnels = new Collection<CategoriePersonnel>(this);
 
   @OneToMany(() => PrimePersonnel, prime_personnel => prime_personnel.prime)
   primePersonnel = new Collection<PrimePersonnel>(this);
@@ -52,6 +53,9 @@ export class Prime {
     onDelete: 'CASCADE'
   })
   categoriePrime!:IdentifiedReference<CategoriePrime>|null
+
+  @ManyToMany(() => Personnel, personnel => personnel.primes)
+  personnel = new Collection<Personnel>(this);
 
   
 }

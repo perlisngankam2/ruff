@@ -10,14 +10,14 @@ import {
   } from '@mikro-orm/core';
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { EntityRepository } from '@mikro-orm/postgresql';
+import { Injectable } from '@nestjs/common';
 import { Field, ID, ObjectType } from '@nestjs/graphql';
 import { Salle } from 'src/entities/salle.entity';
 import { NiveauEtudeService } from '../niveau_etude/niveau-etude.service';
 import { SalleCreateInput } from './dto/salle.input';
 import { SalleUpdateInput } from './dto/salle.update';
 
-@Entity()
-@ObjectType()
+@Injectable()
 export class SalleService {
     constructor(
         @InjectRepository(Salle)

@@ -9,6 +9,7 @@ import {
   } from '@mikro-orm/core';
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { EntityRepository } from '@mikro-orm/postgresql';
+import { Injectable } from '@nestjs/common';
 import { Field, ID, ObjectType } from '@nestjs/graphql';
 import { Pension } from 'src/entities/pension.entity';
 import { Tranche } from 'src/entities/tranche.entity';
@@ -18,8 +19,7 @@ import { SalleService } from '../salle/salle.service';
 import { TrancheCreateInput } from './dto/tranche.input';
 import { TrancheUpdateInput } from './dto/tranche.update';
 
-@Entity()
-@ObjectType()
+@Injectable()
 export class TrancheService {
     constructor(
         @InjectRepository(Tranche)

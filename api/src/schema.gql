@@ -126,6 +126,7 @@ type Salle {
   name: String
   section: String
   cycle: String
+  montantPensionSalle: Float
   effectif: Float
 }
 
@@ -143,8 +144,7 @@ type TrancheStudent {
   id: ID!
   name: String
   description: String
-  montant: Float!
-  regimePaimemnt: String!
+  montant: Float
   complete: Boolean!
   reste: Float!
 }
@@ -452,6 +452,7 @@ input UpdateUserInput {
 
 input StudentCreateInput {
   ID: String
+  salleId: String
   matricule: String
   firstname: String
   lastname: String
@@ -524,6 +525,7 @@ input SalleUpdateInput {
   name: String
   sectionId: ID
   cycle: String
+  montantPensionSalle: Float
   niveauEtudeId: ID
   effectif: Float = 0
   niveau: NiveauEtudeCreateInput
@@ -753,6 +755,7 @@ input SalleCreateInput {
   name: String
   sectionId: ID
   cycle: String
+  montantPensionSalle: Float
   effectif: Float = 0
   niveauEtudeId: ID
   niveau: NiveauEtudeCreateInput
@@ -771,12 +774,11 @@ input AnneeAccademiqueUpdateInput {
 }
 
 input TrancheCreateInput {
-  pension_id: ID
+  anneeAcademiqueId: ID
   name: String
   description: String
   montant: Float = 0
   dateLine: DateTime
-  pension: PensionCreateInput
 }
 
 input PensionCreateInput {
@@ -821,19 +823,12 @@ input AvanceTrancheCreateInput {
 }
 
 input TrancheStudentCreateInput {
-  student_id: ID
-  tranche_id: ID
+  studentId: ID
   name: String
   description: String
-  montant: Float = 0
-  regimePaiement: RegimePaiement
+  montant: Float
   student: StudentCreateInput
   tranche: TrancheCreateInput
-}
-
-enum RegimePaiement {
-  SPECIAL
-  NORMAL
 }
 
 input InscriptionInput {

@@ -126,7 +126,7 @@ const Personnel = () => {
                 {personnel.lastName}
               </Text>
               <Text 
-                textAlign="center"
+                textAlign="center" 
                 fontWeight="bold" 
                 fontSize="0.85em"
               >

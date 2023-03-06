@@ -39,9 +39,9 @@ export class Salle{
     @Property({nullable:true})
     cycle!: string;
 
-    // @Field({nullable: true})
-    // @Property({nullable: true})
-    // montantPension!: number;
+    @Field({nullable: true})
+    @Property({nullable: true})
+    montantPensionSalle!: number;
 
     @Field({ nullable: true })
     @Property({nullable:true})

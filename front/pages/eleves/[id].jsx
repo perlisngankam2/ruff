@@ -7,7 +7,7 @@ import {
   AlertDialogContent,
   AlertDialogOverlay,
   useDisclosure,
-  // Select,
+  Select,
   Spacing,
   FormControl,
   FormLabel,
@@ -16,6 +16,7 @@ import {
     Heading , 
     Input, 
     Stack , 
+    Checkbox,
     Center , 
     Flex , 
     Text , 
@@ -44,17 +45,26 @@ import {
     Hide,
     Spacer,
     br,
+    Icon
 } from "@chakra-ui/react";
-import { Select} from 'chakra-react-select';
+import { Select as Selects} from 'chakra-react-select';
 
 import { useRouter } from "next/router";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import DefaultLayout from "../../components/layouts/DefaultLayout";
 import { GiBoxUnpacking } from "react-icons/gi";
-import { useQuery, fetchGraphQLQuery, gql, useLazyQuery } from "@apollo/client";
-import { GET_ALL_STUDENT, GET_STUDENT_BY_ID} from "../../graphql/Queries";
-import { client } from "../../graphql/apollo-client";
+import {FormSelect} from "../../components/atoms/FormSelect"
+import {IoIosAdd} from "react-icons/io"
+import { useQuery, useMutation } from "@apollo/client";
+import { 
+  GET_ALL_STUDENT, 
+  GET_STUDENT_BY_ID, 
+  GET_ALL_CLASS, 
+  GET_ALL_FRAIS_INSCRIPTION, 
+  GET_ALL_TRANCHE_PENSION
+} from "../../graphql/Queries";
+import { CREATE_TRANCHE_STUDENT } from "../../graphql/Mutation";
 
 
 // export const getStaticPath = async() => {
@@ -174,56 +184,72 @@ export const colorOptions = [
   { value: "green", label: "Green", color: "#36B37E" }
 ]
 
-export const groupedOptions = [
-  {
-    label: "Colours",
-    options: colorOptions
-  }
-];
 
 
 const DetailComponent = (student) => {
 
-
   const router = useRouter();
-    const { isOpen, onOpen, onClose } = useDisclosure()
-    const cancelRef = React.useRef()
-    const classe = ["MATERNELLE","SIL","CP","CM1","CM2"]
-    
-    // const {loading, error, data:dataStudent} = useQuery(GET_ALL_ATUDENT);
-    // const {data:singleStudent} = useQuery(GET_STUDENT_BY_ID);
-    // console.log(data);
-    // const {data: dataStudent} = useQuery (GET_ALL_STUDENT);
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const { isOpen:isOpenns, onOpen:onOpenns, onClose:onClosses } = useDisclosure();
 
-    const {data:dataStudentId, loading, error} = useQuery(GET_STUDENT_BY_ID,
+  const cancelRef = React.useRef()
+  // const classe = ["MATERNELLE","SIL","CP","CM1","CM2"]
+  const [classId, setClassId] = useState("");
+  const [tranchePensionId,  setTranchePensionId] = useState("");
+  const [motif, setMotif] = useState("");
+  const [montant, setMontant] = useState();
+  const [studentId, setStudentId] = useState("");
+  // const {loading, error, data:dataStudent} = useQuery(GET_ALL_ATUDENT);
+  // const {data:singleStudent} = useQuery(GET_STUDENT_BY_ID);
+  // console.log(data);
+  const {data: dataStudent} = useQuery (GET_ALL_STUDENT);
+  
+  const {data:dataStudentId, loading, error} = useQuery(GET_STUDENT_BY_ID,
       {
         variables: {id: router.query.id}
       }
-    )
+  )
+    
+    const {data:dataClass} = useQuery(GET_ALL_CLASS);
+    const {data:dataFraisInscription} = useQuery(GET_ALL_FRAIS_INSCRIPTION);
+    const {data:dataTranchePension} = useQuery(GET_ALL_TRANCHE_PENSION);
+    const [createTrancheStudent] = useMutation(CREATE_TRANCHE_STUDENT);
 
-    // const query = router.query.id 
-    // console.log(query)
-    // const getStudentById = async(id) => {
-    //     await dataStudentId ({
-    //       variables: {Id: id}
-    //     })
-    // }
+        const tranches = []
+        const loadTranches = () => {
+          dataTranchePension?.findAlltranche?.map((item , index) => { 
+            tranches.push(
+              {
+                label: item?.name,
+                value: item?.id
+              }
+            )
+          })
+        }
+        
 
-    // console.log(dataStudentId)
- 
-     
+      const addTrancheStudent = async () => {
+        await createTrancheStudent({
+          variables:{
+            trancheStudent:{
+              // studentId: studentId,
+              montant: parseInt(montant)
+            }
+          }
+        })
+      }
 
-     
-    useEffect(() =>{
-      
-      dataStudentId && console.log(dataStudentId.findOnestudent)
-      //  console.log(dataStudent.);
+        useEffect(() =>{
+          loadTranches()
+          dataStudentId && console.log(dataStudentId.findOnestudent)
+       console.log(dataClass);
+      //  console.log(dataFraisInscription);
+      console.log(dataTranchePension?.findAlltranche);
+        console.log(dataStudent?.findAllstudents);
      })
 
      if (loading) return <Text>Chargement en cour...</Text>
     if (error) return <Text>Une erreur s'est produite!</Text>
-
-   
 
   return (
     <DefaultLayout >
@@ -260,6 +286,9 @@ const DetailComponent = (student) => {
           fontSize={'sm'}
         >
           <Center >
+
+ {/* FORMULAIRE DE PAIEMENT DE SCOLARITE */}
+
             <Button 
               bg='colors.primary' 
               height='40px' 
@@ -274,7 +303,7 @@ const DetailComponent = (student) => {
                 leastDestructiveRef={cancelRef}
                 onClose={onClose}
                 size='xl'
-            >
+              >
               <AlertDialogOverlay>
                   <AlertDialogContent  >
                     <AlertDialogHeader 
@@ -287,140 +316,97 @@ const DetailComponent = (student) => {
                       borderBottomRightRadius={10} 
                       borderBottomLeftRadius={10}
                     >
-                        <Heading 
-                          as='H4' 
-                          textAlign={'center'} 
-                          fontSize={['15px','20px','26px']} 
-                          p='2' 
-                        >
-                                Groupe Scolaire Bilingue Awono Bilongue
-                        </Heading>
+                      <Heading 
+                        as='H4' 
+                        textAlign={'center'} 
+                        fontSize={['15px','20px','26px']} 
+                        p='2' 
+                      >
+                          Groupe Scolaire Bilingue Awono Bilongue
+                      </Heading>
                     </Box>
                     </AlertDialogHeader>
-                    <AlertDialogBody>
-            {/* <Box>
+                  <AlertDialogBody>
+
+
+            <Box mt='4'>
+
+              {/* BOUTON D'INITIALISATION DE LA PENSION */}
+              <Box display="flex"> 
+                <Text 
+                  mb={5}
+                  size="md"
+                  color = "colors.quinzaine"
+                >
+                  Initialisez le paiement
+                </Text>
+                <Icon 
+                  as={IoIosAdd} 
+                  boxSize="30px"
+                  color={"colors.greencolor"}
+                  rounded="full"
+                  ml={["5px", "5px", "5px" ]}
+                  mr={["5px"]}
+                  _hover={{background:"colors.bluecolor"}}
+                  onClick={onOpenns}
+                />
+                </Box> 
+                {/* <Flex 
+                  gap={25} 
+                  flexWrap={['wrap','wrap','nowrap']} 
+                  align='end'
+                > */}
+                  {/* <Checkbox colorScheme='green' >
+                    Checkbox
+                  </Checkbox>
+                  <Checkbox colorScheme='green' >
+                    Checkbox
+                  </Checkbox>
+                  <Checkbox colorScheme='green' >
+                    Checkbox
+                  </Checkbox> */}
+              <FormControl>
+                <FormLabel>
+                  Motif
+                </FormLabel>
+                <Selects  
+                  isMulti
+                  options= {tranches}
+                  placeholder="--motif--"
+                  // name=""
+                  // value={motif}
+                >
+                </Selects>
+              </FormControl>
+            </Box>
+            <Box mt='4'>
               <Flex 
                 gap={5} 
                 flexWrap={['wrap','wrap','nowrap']} 
-                align='end' 
+                align='end'
               >
-                  <FormControl>
-                      <FormLabel>Matricule</FormLabel>
-                  <Input type={'text'} ></Input>
+                <FormControl>
+                  <FormLabel>Montant attendu</FormLabel>
+                    <Input 
+                      type={'text'} 
+                      disabled='disabled' 
+                      placeholder='0000000' 
+                      color='gray'
+                    />
                   </FormControl>
-
                   <FormControl>
-                      <FormLabel>Classe</FormLabel>
-                      
-                  <Select placeholder='--classe--'>
-                    {classe.map((cat) => (
-                      <option>{cat}</option>
-                      ))}
-                  </Select>
-                  </FormControl>
-              </Flex>
-            </Box> */}
-            {/* <Box mt='4'>
-              <Flex align='end'>
-                  <FormControl>
-                      <FormLabel>Noms et prenoms</FormLabel>
-                      <Input type={'text'} ></Input>
+                    <FormLabel>Montant percu</FormLabel>
+                    <Input type={'number'} />
                   </FormControl>
               </Flex>
-            </Box> */}
-              {/* <Box mt='4'>
-                <Flex 
-                  gap={5} 
-                  flexWrap={['wrap', 'wrap', 'nowrap']} 
-                  align='end' 
-                >
-                  <FormControl>
-                      <FormLabel>Nom du remettant</FormLabel>
-                      <Input type={'text'} ></Input>
-                  </FormControl>
-
-                  <FormControl>
-                        <FormLabel>Tel du remettant</FormLabel>
-                        <Input type={'text'} ></Input>
-                        
-                  </FormControl>
-                </Flex>
-              </Box> */}
-            <Box mt='4'>
-                <Flex 
-                  gap={5} 
-                  flexWrap={['wrap','wrap','nowrap']} 
-                  align='end'
-                >
-                    <FormControl>
-                        <FormLabel 
-                        placeholder="--motif--"
-                        >
-                          Motif
-                        </FormLabel>
-                        <Select  
-                          isMulti
-                          options= {groupedOptions}
-                          // {[Tranches.map((tranche) => (
-                          //   <option>{tranche}</option>
-                          // ))]}
-                        >
-                        </Select>
-                    </FormControl>
-                    <FormControl>
-                        <FormLabel 
-                        placeholder="--motif--"
-                        >
-                          Classe 
-                        </FormLabel>
-                        <Select  
-                          isMulti
-                          options= {groupedOptions}
-                          // {[Tranches.map((tranche) => (
-                          //   <option>{tranche}</option>
-                          // ))]}
-                        >
-                        </Select>
-                    </FormControl>
-                </Flex>
-            </Box>
-            <Box mt='4'>
-                <Flex 
-                  gap={5} 
-                  flexWrap={['wrap','wrap','nowrap']} 
-                  align='end'
-                >
-                  <FormControl>
-                    <FormLabel>Montant attendu</FormLabel>
-                      <Input 
-                        type={'text'} 
-                        disabled='disabled' 
-                        placeholder='0000000' 
-                        color='gray'
-                      />
-                    </FormControl>
-                    <FormControl>
-                      <FormLabel>Montant percu</FormLabel>
-                      <Input type={'number'} />
-                    </FormControl>
-                    
-                    {/* <FormControl>
-                        <FormLabel>Delai</FormLabel>
-                        <Input type={'date'} ></Input>
-                    </FormControl>
-                    <FormControl>
-                        <FormLabel>reste a payer</FormLabel>
-                      <Input 
-                        type={'number'} 
-                        disabled='disabled' 
-                        textColor={'red.300'}
-                      />
-                    </FormControl> */}
-                </Flex>
             </Box>
             </AlertDialogBody>
             <AlertDialogFooter>
-              <Button ref={cancelRef} onClick={onClose} colorScheme='red' >
+              <Button 
+                ref={cancelRef} 
+                onClick={onClose} 
+                colorScheme='red' 
+              >
                 annuler
               </Button>
              <Link href={'#'}>
@@ -447,7 +433,7 @@ const DetailComponent = (student) => {
             color='white' 
             borderRadius={'md'}
           >
-              <Text m='2'>Imprimer</Text>
+            <Text m='2'>Imprimer</Text>
           </Center>
           <Center 
             bg='#328D57'  
@@ -518,9 +504,9 @@ const DetailComponent = (student) => {
           </Text>
         </Heading>
         <Avatar size='md' 
-                  name='Dan Abrahmov' 
-                  src='https://bit.ly/dan-abramov'
-                  ml='10' 
+          name='Dan Abrahmov' 
+          src='https://bit.ly/dan-abramov'
+          ml='10' 
         />
         </Flex>
       </CardHeader>
@@ -545,7 +531,7 @@ const DetailComponent = (student) => {
           {dataStudentId.findOnestudent.sex}
         </Text>
         <Text><Text as='b'>Classe : </Text>
-          {/* {dataStudentId.findOnestudent.classe} */}
+          {dataStudentId.findOnestudent.classe}
         </Text>
         <Text><Text as='b'>Section : </Text> 
           {/* {dataStudentId.findOnestudent.section} */}
@@ -668,6 +654,68 @@ const DetailComponent = (student) => {
       <CardFooter>
       </CardFooter>
     </Card>
+
+ {/* FORMULAIRE initialisation PAIEMENT DE SCOLARITE */}
+    
+      <AlertDialog
+          isOpen={isOpenns}
+          leastDestructiveRef={cancelRef}
+          onClose={onClosses}
+          size='xl'
+        >
+          <AlertDialogOverlay>
+            <AlertDialogContent  width={"300px"}>
+              <Box mt={"20px"}> 
+                  <Heading 
+                    textAlign="center"
+                    size="md"
+                  >
+                    Initialiser le paiement
+                  </Heading>
+                  <AlertDialogBody>
+                    <Box mt='4'>
+                      <FormControl mt="5px">
+                        <FormLabel>Montant</FormLabel>
+                        <Input
+                          type="number"
+                          name="montant"
+                          value={montant}
+                          onChange={(event)=> setMontant(event.target.value)}
+                        />
+                      </FormControl>
+                      <FormControl>
+                          <FormLabel>Eleve</FormLabel>
+                        <Input
+                          type="text"
+                          name="studentId"
+                          value={dataStudentId.findOnestudent.lastname}
+                          isDisabled
+                        />
+                      </FormControl>
+                    </Box>
+                  </AlertDialogBody>
+                <AlertDialogFooter>
+                  <Button 
+                    ref={cancelRef} 
+                    onClick={onClosses} 
+                    colorScheme='red' 
+                  >
+                    annuler
+                  </Button>
+                <Link href={'#'}>
+                    <Button 
+                      colorScheme='green'  
+                      ml={3}
+                      onClick={addTrancheStudent}
+                    >
+                      Initialiser
+                    </Button>
+                  </Link> 
+                </AlertDialogFooter>
+              </Box>
+            </AlertDialogContent>
+          </AlertDialogOverlay>
+        </AlertDialog>
 </SimpleGrid>
 )} 
       </Box>

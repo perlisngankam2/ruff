@@ -19,7 +19,7 @@ import {
   import { MdDescription } from "react-icons/md";
   import DefaultLayout from "../../components/layouts/DefaultLayout";
   import { CREATE_STUDY_LEVEL} from "../../graphql/Mutation";
-  import {GET_ALL_CYCLE} from "../../graphql/queries";
+  import {GET_ALL_CYCLE} from "../../graphql/Queries";
 //   import { GET_ALL_SECTION , GET_ALL_CYCLE} from "../../graphql/Queries";
   
   const AddLevel = () => {
@@ -102,7 +102,7 @@ import {
                 as="form"
                 width="500px"
               > 
-                <Heading color={"colors.primary"}>Creation d'une classe</Heading>
+                <Heading color={"colors.primary"}>Creation d'un niveau d'etude</Heading>
                 <Stack
                   gap={2}
                   align="start"

@@ -17,6 +17,7 @@ import { PrimaryKeyUuid } from '../decorators/PrimaryKeyUuid.decorator';
 import { Pension } from './pension.entity';
 import { Personnel } from './pesonnel.entity';
 import { TrancheStudent } from './tranche-student.entity';
+import { AnneeAccademique } from './annee-accademique.entity';
 
 @Entity()
 @ObjectType()
@@ -47,8 +48,14 @@ export class Tranche {
   @OneToMany(()=>TrancheStudent, (trancheStudent) => trancheStudent.tranche)
   trancheStudent = new Collection<TrancheStudent>(this)
 
+  @ManyToOne(() => AnneeAccademique ,{
+    nullable:true,
+    onDelete:'CASCADE'
+  })
+  anneeAccademique!:IdentifiedReference<AnneeAccademique>|null
+
   @ManyToOne(() => Pension ,{
-    nullable:false,
+    nullable:true,
     onDelete:'CASCADE'
   })
   pension!:IdentifiedReference<Pension>|null

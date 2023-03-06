@@ -6,7 +6,7 @@ const Account = () => {
         <Box>
 
         </Box>
-    )
+    ) 
 }
 
 export default Account;

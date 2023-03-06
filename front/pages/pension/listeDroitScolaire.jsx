@@ -36,13 +36,13 @@ import {
 } from "@chakra-ui/react";
 
 import DefaultLayout from "../../components/layouts/DefaultLayout";
-import React, { useEffect, useState, useContext } from "react";
+import React, { useEffect, useState, useContext, use } from "react";
 import { Router, useRouter } from "next/router";
 import { GlobalContext } from "../../contexts/cyclesection/AppContext";
 import {IoIosAdd} from "react-icons/io"
-import {CREATE_ANNEE_ACADEMIQUE, CREATE_FRAIS_INSCRIPTION} from "../../graphql/Mutation"
+import {CREATE_ANNEE_ACADEMIQUE, CREATE_FRAIS_INSCRIPTION, CREATE_TRANCHE_PENSION} from "../../graphql/Mutation"
 import { useMutation, useQuery } from "@apollo/client";
-import { GET_ALL_ANNEE_ACADEMIQUE, GET_ALL_FRAIS_INSCRIPTION} from "../../graphql/Queries";
+import { GET_ALL_ANNEE_ACADEMIQUE, GET_ALL_FRAIS_INSCRIPTION, GET_ALL_TRANCHE, GET_ALL_TRANCHE_PENSION} from "../../graphql/Queries";
 
 const Pension = () => {
 
@@ -50,8 +50,9 @@ const Pension = () => {
     const [query , setQuery] = useState("");
     const [name, setName] = useState("");
     const [montant, setMontant] = useState();
+    const [dateLine, setDateLine] = useState("");
     const [anneeAcademiqueId, setAnneeAcademiqueId] = useState("");
-    const [nameFraisInscription, setNameFraisInscription] = useState("");
+    // const [nameFraisInscription, setNameFraisInscription] = useState("");
     // const [name, setName] = useState("");
     // const [section, setSection] = useState("");
     // const search = (data) => {
@@ -71,10 +72,14 @@ const Pension = () => {
     // const{ data:dataDetailsCycle} = useQuery(GET_ONE_CYCLE);
     // const [editCycle] = useMutation(UPDATE_CYCLE);
     // const [createCycle, {error}] = useMutation(CREATE_CYCLE);
+
+    // HOOk des mutation et des query
     const [createAnneeAccademique, {loading, error}] = useMutation(CREATE_ANNEE_ACADEMIQUE);
     const {data:dataAnneeAcademique} = useQuery(GET_ALL_ANNEE_ACADEMIQUE);
-    const {data:dataFraisInscription} = useQuery(GET_ALL_FRAIS_INSCRIPTION)
+    const {data:dataFraisInscription} = useQuery(GET_ALL_FRAIS_INSCRIPTION);
+    const {data:dataTranchePension} = useQuery(GET_ALL_TRANCHE_PENSION);
     const [createdFraisInscription] = useMutation(CREATE_FRAIS_INSCRIPTION);
+    const [createTranchePension] = useMutation(CREATE_TRANCHE_PENSION);
     const { isOpen, onOpen, onClose} = useDisclosure();
     // const { onOpen} = useDisclosure();
 
@@ -127,27 +132,39 @@ const Pension = () => {
         isClosable: true,
       });
     }
-
-    const addFraisInscription = async() => {
-      console.log(nameFraisInscription),
-      console.log(anneeAcademiqueId)
-      console.log(montant)
-      await createdFraisInscription({
+    
+    const addTranchePension = async() => {
+      console.log(name);
+      console.log(anneeAcademiqueId);
+      console.log(montant);
+      console.log(dateLine);
+      await createTranchePension({
         variables:{
-          fraisInscription:{
-            nameFraisInscription: nameFraisInscription,
+          tranche:{
+            name: name,
             montant: parseInt(montant),
-            anneeAcademiqueId: anneeAcademiqueId
-          }
-
+            dateLine: new Date(dateLine),
+            anneeAcademiqueId: anneeAcademiqueId,
+          }, 
+          refetchQueries:[{
+            query: GET_ALL_TRANCHE_PENSION
+          }]
         }
       })
+      toast({
+        title: "Creation frais inscription.",
+        description: "Creation d'un montant de frais d'inscription.",
+        status: "success",
+        duration: 3000,
+        isClosable: true,
+      });
     }
 
 
     useEffect(() => {
       console.log(dataAnneeAcademique)
-      console.log(dataFraisInscription?.findAllfraisinscription)
+      // console.log(dataFraisInscription?.findAllfraisinscription)
+      console.log(dataTranchePension);
     })
     
     if (loading) return <Text>Chargement en cour...</Text>
@@ -197,11 +214,10 @@ const Pension = () => {
           display={{md:"flex"}}
           > 
             <Heading 
-               mb={5}
+              mb={5}
               size="md"
               color = "colors.quinzaine"
-              
-              >
+            >
                 Annee academique
             </Heading>
             <Icon 
@@ -212,7 +228,7 @@ const Pension = () => {
               rounded="full"
               ml={["10px", "10px", "10px" ]}
               _hover={{background:"colors.bluecolor"}}
-              onClick={onOpen}
+              // onClick={onOpen}
             />
           </Box>
           <Box as="form"> 
@@ -236,11 +252,11 @@ const Pension = () => {
                   <FormControl>
                       <FormLabel>Nom</FormLabel>
                       <Input 
-                          type={'text'} 
-                          name="name"
-                          placeholder="Annee academique"
-                          onChange = {(event) => setName(event.target.value)}
-                          value={name}
+                        type={'text'} 
+                        name="name"
+                        placeholder="Annee academique"
+                        onChange = {(event) => setName(event.target.value)}
+                        value={name}
                       />
                   </FormControl>
                   </Box>
@@ -266,7 +282,8 @@ const Pension = () => {
           </Box>
         </Box>
 
-        {/* tableau de la liste des annee academique */}
+
+        {/* TABLEAU DE LA LISTE DES ANNEES ACADEMIQUES*/}
         <Box 
           width={["400px", "400px","400px"]} 
           border="1px" 
@@ -277,7 +294,6 @@ const Pension = () => {
               <Thead>
                 <Tr>
                   <Th>Nom</Th>
-                  
                 </Tr>
               </Thead>
               <Tbody>
@@ -293,6 +309,8 @@ const Pension = () => {
           </TableContainer>
         </Box>
 
+
+{/* FORMULAIRE DE CREATION DES TRANCHES DE LA PENSIONS */}
         <Box mt={"50px"} >
           <Box> 
             <Box>
@@ -315,7 +333,6 @@ const Pension = () => {
                 onClick={onOpen}
               />
             </Box>
-
               <AlertDialog
                 motionPreset='slideInBottom'
                 leastDestructiveRef={cancelRef}
@@ -348,9 +365,9 @@ const Pension = () => {
                       <FormLabel>Nom</FormLabel>
                         <Input 
                             type={'text'} 
-                            name="nameFraisInscription"
-                            value={nameFraisInscription}
-                            onChange ={(event)=> setNameFraisInscription(event.target.value)}
+                            name="name"
+                            value={name}
+                            onChange ={(event)=> setName(event.target.value)}
                             placeholder="Nom"
                         />
                     </FormControl>
@@ -362,6 +379,16 @@ const Pension = () => {
                             value={montant}
                             placeholder="Valeur"
                             onChange = {(event)=> setMontant(event.target.value)}
+                        />
+                    </FormControl>
+                    <FormControl mt={4}>
+                        <FormLabel>Date limite paiement</FormLabel>
+                        <Input 
+                            type={"date"} 
+                            name="dateLine"
+                            value={dateLine}
+                            placeholder="Date limite de paiement"
+                            onChange = {(event)=> setDateLine(event.target.value)}
                         />
                     </FormControl>
                     <FormControl mt={4}>
@@ -395,13 +422,16 @@ const Pension = () => {
                   <Button 
                     colorScheme='green' 
                     ml={3}
-                    onClick={addFraisInscription}
+                    onClick={addTranchePension}
                   >
                     Creer
                   </Button>
                 </AlertDialogFooter>
               </AlertDialogContent>
             </AlertDialog>
+
+
+            {/* TABLEAU DE LA LISTE DES TRANCHES DE LA PENSION */}
             <Box>
               <TableContainer>
                   <Table size='sm'>
@@ -409,18 +439,19 @@ const Pension = () => {
                       <Tr>
                         <Th>Nom</Th>
                         <Th >Montant</Th>
+                        <Th>Date limite</Th>
                         <Th>Annee academique</Th>
                         {/* <Th >Montant deuxiere tranche</Th> */}
                       </Tr>
                     </Thead>
                     <Tbody>
-                      { dataFraisInscription && (
+                      { dataTranchePension && (
                       
-                        dataFraisInscription.findAllfraisinscription.map((fraisInscription, index) => (
+                        dataTranchePension.findAlltranche.map((tranche, index) => (
                       <Tr key={index}>
-                        <Td>{fraisInscription.nameFraisInscription}</Td>
-                        <Td>{fraisInscription.montant}</Td>
-                        <Td>25.4</Td>
+                        <Td>{tranche.name}</Td>
+                        <Td>{tranche.montant}</Td>
+                        <Td>{tranche.dateLine}</Td>
                         {/* <Td >Monntant</Td>  */}
                       </Tr>
                        )))}

@@ -1,16 +1,16 @@
 /* eslint-disable prettier/prettier */
 import {
-    Collection,
-    Entity,
-    Enum,
-    Filter,
-    IdentifiedReference,
-    ManyToOne,
-    OneToMany,
-    OneToOne,
-    PrimaryKey,
-    Property,
-    Unique,
+  Collection,
+  Entity,
+  Enum,
+  Filter,
+  IdentifiedReference,
+  ManyToOne,
+  OneToMany,
+  OneToOne,
+  PrimaryKey,
+  Property,
+  Unique,
   } from '@mikro-orm/core';
 import { Field, ID, ObjectType, registerEnumType } from '@nestjs/graphql';
 import { PrimaryKeyUuid } from '../decorators/PrimaryKeyUuid.decorator';
@@ -45,16 +45,17 @@ export class TrancheStudent {
   @Property({ onCreate: () => new Date() })
   createdAt = new Date();
 
-  @Field({ defaultValue:0 })
-  @Property({ default:0 })
+  @Field({nullable:true})
+  @Property({nullable:true})
   montant!: number;
 
   @Field()
-  @Enum({
-    items: () => RegimePaiement,
-    default: RegimePaiement.NORMAL,
-  })
-  regimePaimemnt!: RegimePaiement;
+
+  // @Enum({
+  //   items: () => RegimePaiement,
+  //   default: RegimePaiement.NORMAL,
+  // })
+  // regimePaimemnt!: RegimePaiement;
 
   @Field({defaultValue:false})
   @Property({default:false})

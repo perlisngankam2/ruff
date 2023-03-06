@@ -367,7 +367,7 @@ const AjouterPersonnel = () => {
                      Telephone
                   </FormLabel>
                   <Input
-                    type="tel"
+                    type='tel'
                     id="phoneNumber"
                     name="phoneNumber"
                     placeholder="Numero de téléphone"

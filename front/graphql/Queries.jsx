@@ -1,5 +1,4 @@
 import {gql} from '@apollo/client';
-import Personnel from '../pages/personnel';
 
 //personnel
 export const GET_ALL_PERSONNELS = gql `
@@ -94,6 +93,7 @@ export const GET_ALL_CYCLE =  gql `
     }
 `;
 
+//liste des classes
 export const GET_ALL_CLASS =  gql `
     query findAllsalle {
         findAllsalle {
@@ -101,6 +101,7 @@ export const GET_ALL_CLASS =  gql `
             name
             section
             cycle
+            montantPensionSalle
             effectif
         }
     }
@@ -203,14 +204,28 @@ export const GET_ALL_REDUCTION_SCOLARITE = gql  `
     }
 `;
 
+//recuperqtion de toutes les tranches
+export const GET_ALL_TRANCHE_PENSION = gql `
+    query findAlltranche {
+        findAlltranche {
+            id
+            name
+            description
+            dateLine
+            montant
+        }
+    }
+`;
+
 //one cycle
 export const GET_ONE_CYCLE =  gql `
-query findOnecycle ($id: String!) {
-    findOnecycle (id: $id) {
-        id
-        name
+    query findOnecycle ($id: String!) {
+        findOnecycle (id: $id) {
+            id
+            name
+        }
     }
-}
 `;
+
 
 

@@ -41,6 +41,7 @@ export class SalleService {
         wrap(salle).assign(
           {
           name : input.name,
+          montantPensionSalle: input.montantPensionSalle,
           niveau : input.niveauEtudeId,
           section : input.sectionId,
           cycle : input.cycle
@@ -55,6 +56,7 @@ export class SalleService {
 
         wrap(salle).assign({
         name: input.name,
+        montantPensionSalle: input.montantPensionSalle,
         section: input.sectionId,
         cycle: input.cycle
         },
@@ -95,6 +97,7 @@ export class SalleService {
 
         wrap(salle).assign({
           name: input.name,
+          montantPensionSalle: input.montantPensionSalle,
           section: input.sectionId,
           cycle: input.cycle,
           niveau: input.niveauEtudeId
@@ -115,7 +118,7 @@ export class SalleService {
             const niveau =
             input.niveau &&
               (await this.niveauEtude.findByOne({ id: input.niveau.ID }));
-      
+       
             if (!niveau) {
               throw new NotFoundError('niveau no exist' || '');
             }
@@ -123,6 +126,7 @@ export class SalleService {
           } 
         wrap(salle).assign({
             name: input.name || salle.name,
+            montantPensionSalle: input.montantPensionSalle || salle.montantPensionSalle,
             section : input.sectionId|| salle.section,
             cycle : input.cycle || salle.cycle,
             niveau: input.niveauEtudeId || salle.niveau

@@ -11,6 +11,10 @@ export class StudentCreateInput {
   @Field({nullable:true})
   ID!: string;
 
+    
+  @Field({nullable:true})
+  salleId!: string;
+
   @Field({nullable:true})
   matricule!: string;
 

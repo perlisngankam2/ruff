@@ -2,7 +2,7 @@ import { ChakraProvider, extendTheme } from "@chakra-ui/react";
 import { appWithTranslation } from 'next-i18next';
 import i18nextConfig from  '../plugins/next-i18next.config';
 import { ApolloClient, ApolloProvider, InMemoryCache } from "@apollo/client";
-import client from '../graphql/apollo-client'
+import client from "../graphql/apollo-client";
 import "../styles/globals.css";
 import "@fontsource/open-sans";
 

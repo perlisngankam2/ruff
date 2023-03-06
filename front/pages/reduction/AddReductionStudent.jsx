@@ -29,6 +29,7 @@ import {useMutation } from '@apollo/client';
 import { CREATE_REDUCTION_SCOLARITE } from "../../graphql/Mutation";
 import { useState } from "react";
 import { useRouter } from "next/router";
+import { GET_ALL_REDUCTION_SCOLARITE } from "../../graphql/Queries";
 
 function addReductionStudent  () {
 
@@ -48,13 +49,22 @@ function addReductionStudent  () {
         console.log(montant);
 
         await createReductionScolarite({
-                 variables: {
+                variables: {
                     reductionscolarite: { 
-                     name : name,
-                     montant: parseInt(montant)
-                 }
-               }
-        })
+                        name : name,
+                        montant: parseInt(montant)
+                    },
+                refetchQueries:[{
+                query: GET_ALL_REDUCTION_SCOLARITE
+                }]
+            }}) 
+        toast({
+            title: "Creation d'une reduction.",
+            description: "Creation de la reduction réussit.",
+            status: "success",
+            duration: 3000,
+            isClosable: true,
+        });
     }
 
     let input

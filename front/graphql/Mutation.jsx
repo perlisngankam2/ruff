@@ -1,5 +1,7 @@
 import { gql } from "@apollo/client";
 
+// npx mikro-orm schema:update --run
+
 //personnel
 export const CREATE_PERSONNEL = gql `
     mutation createpersonnel ($createPersonnelUser: PersonnelCreateInput!) {
@@ -81,6 +83,7 @@ export const CREATE_SALLE = gql `
             name
             section
             cycle
+            montantPensionSalle
             effectif
         }
     }
@@ -155,6 +158,33 @@ export const CREATE_REDUCTION_SCOLARITE = gql `
     }
 `;
 
+//cretion de lq tranche
+export const CREATE_TRANCHE_PENSION = gql `
+    mutation createTranche ($tranche: TrancheCreateInput!) {
+        createTranche (tranche: $tranche) {
+            id
+            name
+            description
+            dateLine
+            montant
+        }
+    }
+`
+
+//fronction d'initialisation du paiemt d'une pension pour un eleve donne
+export  const CREATE_TRANCHE_STUDENT = gql `
+mutation createTrancheStudent ($trancheStudent: TrancheStudentCreateInput!) {
+    createTrancheStudent (trancheStudent: $trancheStudent) {
+        id
+        name
+        description
+        montant
+        complete
+        reste
+    }
+}
+`;
+
 export const fragmentCycle = gql` fragment CycleClass on cyle {
     id
     name
@@ -224,6 +254,7 @@ export const DELETE_SALLE = gql `
             name
             section
             cycle
+            montantPensionSalle
             effectif
         }
     }
@@ -279,6 +310,7 @@ export const UPDATE_CLASS = gql `
             name
             section
             cycle
+            montantPensionSalle
             effectif
         }
     }
@@ -297,7 +329,6 @@ export const UPDATE_CYCLE = gql `
 `;
 
 //create user
-
 export const CREATE_USER = gql `
     mutation createuser ($createUser: UserCreateInput!) {
         createuser (createUser: $createUser) {

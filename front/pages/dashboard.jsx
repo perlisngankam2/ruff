@@ -26,22 +26,64 @@ import PaymentNumberAlert from "../components/atoms/PaymentNumberAlert";
 import LastStudentRegisteredBox from "../components/atoms/LastStudentRegisteredBox";
 import TreasuryBox from "../components/atoms/TreasuryBox";
 import LatePayment from "../components/atoms/LatePayment";
+import { useAuth } from "../contexts/account/Auth/Auth";
+import { useAccount } from "../contexts/account/Account";
+import { useRouter } from "next/router";
+import { HiUsers } from "react-icons/hi";
+import { GiGraduateCap, GiReceiveMoney } from "react-icons/gi";
+import React, { createContext, useContext, useEffect } from 'react';
+import { GET_PERSONNEL_BY_USERID } from "../graphql/queries";
+import {useMutation, useQuery } from '@apollo/client';
 
 
-function Dashboard() {
+
+
+ const dashboard = () => {
+
+  const { account } =  useAccount();
+ console.log(  account?.id );
+
+  const { data: personnelData, called, loading } = useQuery(GET_PERSONNEL_BY_USERID,
+     {
+    variables:{ userid: account?.id }
+  })
+
+  //  const { authToken } = useAuth();
+
+  // const router = useRouter();
+  console.log(personnelData?.getpersonnelbyaccount);
+
+  //   useEffect(() => {
+    
+  //   if (authToken=="null") {
+  //     router.push("/")
+      
+  //   }
+    
+  // }, [])
+
+
+
   return (
+
     <DefaultLayout>
       <Box pt="90px" w="full">
         <Box top="-7" overflow="auto" minH="100vh" mx={6}>
+          {account?.role === null ?
           <Heading fontSize="lg" mb={4} color="yellow.500">
-            Bienvenue-GSBAB| Admin
+            Bienvenue-GSBAB| {personnelData?.getpersonnelbyaccount.fonction}
+          </Heading>:
+
+          <Heading fontSize="lg" mb={4} color="yellow.500">
+            Bienvenue-GSBAB| {account?.role}
           </Heading>
 
+          }
+
           <Flex flexDir="row" gap="8" mb="9" flexWrap="wrap">
-            <DashboardCard color="red.400" name="Elèves" />
-            <DashboardCard color="blue.400" name="Personnel" />
-            <DashboardCard color="green.400" name="Classes" />
-            <DashboardCard color="yellow.400" name="Elèves" />
+            <DashboardCard color="red.200" name="Elèves" icon={GiGraduateCap} />
+            <DashboardCard color="gray.400" name="Personnel" icon={HiUsers} />
+            <DashboardCard color="green.200" name="Classes" icon={GiGraduateCap} />
           </Flex>
 
           <Flex
@@ -85,4 +127,4 @@ function Dashboard() {
   );
 }
 
-export default Dashboard;
+export default dashboard;

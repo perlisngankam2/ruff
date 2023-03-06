@@ -45,6 +45,8 @@ import { Authmodule } from './modules/auth/auth.module';
 import { ParentStudentModule } from './modules/parent-student/parent-student.module';
 import { LocalisationModule } from './modules/localisation/localisation.module';
 import ormConfig from './modules/orm/orm/orm.config';
+import { ExpenseModule } from './modules/expenses/expense.module';
+import { StatisticModule } from './modules/statistics/statistics.module';
 
 @Module({
   imports: [
@@ -80,6 +82,8 @@ import ormConfig from './modules/orm/orm/orm.config';
     SectionCycleModule,
     AvancePensionModule,
     AvanceInscriptionModule,
+    ExpenseModule,
+    StatisticModule,
 
   
     ConfigModule.forRoot({

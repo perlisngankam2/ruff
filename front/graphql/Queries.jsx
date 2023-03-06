@@ -2,23 +2,22 @@ import {gql} from '@apollo/client';
 
 //personnel
 export const GET_ALL_PERSONNELS = gql `
-    query findAllpersonnel { 
-        findAllpersonnel {
-            id
-            firstName
-            lastName
-            phoneNumber
-            situationMatrimonial
-            sexe
-            fonction
-            status
-            dateOfStartWork
-            dateOfBirth
-            childNumber
-            password
-            email
-        }
+query findAllpersonnel {
+    findAllpersonnel {
+        id
+        firstName
+        lastName
+        phoneNumber
+        salary
+        situationMatrimonial
+        sexe
+        fonction
+        status
+        dateOfStartWork
+        dateOfBirth
+        childNumber
     }
+}
 `;
 
 //category personnel
@@ -120,24 +119,22 @@ export const GET_ALL_FRAIS_INSCRIPTION =  gql `
 
 
 // one Personnel
-export const GET_PERSONNEL_BY_ID =  gql `
-    query findOnePersonnel ($id: String!) {
-        findOnePersonnel (id: $id) {
-            id
-            firstName
-            lastName
-            phoneNumber
-            situationMatrimonial
-            sexe
-            fonction
-            status
-            dateOfStartWork
-            dateOfBirth
-            childNumber
-            password
-            email
-        }
+export const GET_ALL_PERSONNEL_BY_ID = gql `
+query findOnePersonnel ($id: String!) {
+    findOnePersonnel (id: $id) {
+        id
+        firstName
+        lastName
+        phoneNumber
+        situationMatrimonial
+        sexe
+        fonction
+        status
+        dateOfStartWork
+        dateOfBirth
+        childNumber
     }
+}
 `;
 
 //one student
@@ -226,6 +223,64 @@ export const GET_ONE_CYCLE =  gql `
         }
     }
 `;
+
+export const GET_USER_CONNECTED = gql `
+query user ($id: String!) {
+    user (id: $id) {
+        id
+        email
+        password
+        firstName
+        lastName
+        name
+        role
+        phoneNumber
+        active
+        deactivatedAt
+    }
+}
+`;
+
+
+export const GET_ALL_USER = gql `
+query findAlluser {
+    findAlluser {
+        id
+        email
+        password
+        firstName
+        lastName
+        name
+        role
+        phoneNumber
+        active
+        deactivatedAt
+    }
+}
+`;
+
+//personnel by userid
+
+export const GET_PERSONNEL_BY_USERID= gql `
+query getpersonnelbyaccount ($userid: String!) {
+    getpersonnelbyaccount (userid: $userid) {
+        id
+        firstName
+        lastName
+        phoneNumber
+        salary
+        situationMatrimonial
+        sexe
+        fonction
+        status
+        dateOfStartWork
+        dateOfBirth
+        childNumber
+    }
+}
+`;
+
+
 
 
 

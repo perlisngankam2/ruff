@@ -23,4 +23,38 @@ a {
     color: white;
     background: black;
   }
+
+
+}
+
+.paginationBttns {
+  list-style: none;
+  display: flex;
+  justify-content: center;
+}
+
+.paginationBttns a {
+  padding: 2px;
+  margin: 8px;
+  border-radius: 3px;
+  font-size: 15px;
+  cursor: pointer;
+}
+
+.paginationBttns a:hover {
+  color: white;
+  background-color: rgb(73, 74, 75);
+}
+
+.paginationActive a {
+  color: green;
+  /* background-color: rgb(27, 29, 30); */
+}
+
+.nextBttn {
+  background-color: lightgray;
+  
+}
+.previousBttn {
+  background-color: lightgray;
 }

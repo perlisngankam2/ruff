@@ -1,5 +1,5 @@
 import { Box, Center } from "@chakra-ui/react";
-import RegisterForm from "../../../components/molecules/RegisterForm/RegisterForm";
+import RegisterForm from "../../molecules/RegisterForm/RegisterForm";
 
 const RegisterPage = () => {
   return (

@@ -27,7 +27,7 @@ import { IoIosAdd } from "react-icons/io";
 import Link from "next/link";
 import {useMutation } from '@apollo/client';
 import { CREATE_CATEGORY_PERSONNEL } from "../../graphql/Mutation";
-import { GET_ALL_Category_Personnel } from "../../graphql/Queries";
+import { GET_ALL_Category_Personnel } from "../../graphql/queries";
 import { useState } from "react";
 import { useRouter } from "next/router";
 
@@ -112,7 +112,7 @@ function ajoutercategorypersonnel  () {
           </Box>
             <Box 
                 as={"form"} 
-                onClick={addCategoryPersonnel}
+                
                      > 
                 <AlertDialog
                     isOpen={isOpen}
@@ -150,8 +150,7 @@ function ajoutercategorypersonnel  () {
                                         type={'text'} 
                                         name="nom"
                                         placeholder="nom"
-                                        onChange = {(event) => setNom(event.target.value)}
-                                        ref={node => {input = node;}}
+                                        onChange = {e => setNom(event.target.value)}
                                         value={nom}
                                      />
                                 </FormControl>
@@ -162,8 +161,7 @@ function ajoutercategorypersonnel  () {
                                         type={'text'} 
                                         name="description"
                                         placeholder="Description"
-                                        onChange = {(event) => setDescription(event.target.value)}
-                                        ref={node => {input = node;}}
+                                        onChange={e => setDescription(e.target.value)}
                                         value={description}
                                     />
                                 </FormControl>
@@ -181,7 +179,8 @@ function ajoutercategorypersonnel  () {
                                     <Button 
                                     colorScheme='green'  
                                     ml={3}
-                                    onClick={onClose}
+                                    // onClick={onClose}
+                                    onClick={addCategoryPersonnel}
                                     >
                                     Creer
                                     </Button>

@@ -5,7 +5,8 @@ const PaymentNumberAlert = () => {
   return (
     <Box
       display="flex"
-      background="pink"
+      bg= "rgba(255,255,255,0.48)"
+      boxShadow="md"
       p="1"
       rounded="5"
       alignItems="center"
@@ -14,8 +15,8 @@ const PaymentNumberAlert = () => {
       gap="3"
       pr="10"
     >
-      <Icon as={AiOutlineAlert} color="red" boxSize="14" />
-      <Text fontSize="xl" align="flex-start">
+      <Icon as={AiOutlineAlert} color="red.500" boxSize="14" />
+      <Text fontSize="xl" align="flex-start" color="red.500">
         7 paiements de salaire a faire ce mois
       </Text>
     </Box>

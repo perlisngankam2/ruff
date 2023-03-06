@@ -37,6 +37,7 @@ export class CategorieRetenu {
   @Property({ nullable: true })
   description!: string;
 
+  @Field({ nullable: true })
   @Enum({     
     items: () => TypeRetenu,
     default: TypeRetenu.AUTRES  

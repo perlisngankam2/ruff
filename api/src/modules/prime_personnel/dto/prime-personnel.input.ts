@@ -7,10 +7,10 @@ import { PrimeCreateInput } from 'src/modules/prime/dto/prime.input';
 @InputType()
 export class PrimePersonnelCreateInput {
   @Field(()=>ID,{nullable:true})
-  primeID?: string;
+  primeId?: string;
 
   @Field(()=>ID,{nullable:true})
-  personnelID?: string;
+  personnelId?: string;
 
   @Field(()=>PrimeCreateInput,{nullable:true})
   prime?:PrimeCreateInput;

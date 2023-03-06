@@ -17,14 +17,14 @@ import {
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 import DefaultLayout from "../../components/layouts/DefaultLayout";
-import { GET_PERSONNEL_BY_ID} from "../../graphql/Queries";
+import { GET_ALL_PERSONNEL_BY_ID} from "../../graphql/queries";
 
 
 const Profil = () => {
 
   const router = useRouter();
 
-  const {data:dataPersonnelId} = useQuery(GET_PERSONNEL_BY_ID,
+  const {data:dataPersonnelId} = useQuery(GET_ALL_PERSONNEL_BY_ID,
   {
     variables:{ id: router.query.id}
   })

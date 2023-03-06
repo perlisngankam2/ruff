@@ -4,12 +4,19 @@ import { User } from 'src/entities/user.entity';
 import { UserCreateInput } from 'src/modules/user/dto/user.input';
 import { Role } from 'src/modules/auth/roles/roles';
 import { UpdateUserInput } from 'src/modules/user/dto/user.update';
+import { Status } from 'src/entities/pesonnel.entity';
 
 @InputType()
 export class PersonnelUpdateInput {
   @Field(()=>ID,{nullable:true})
   userID?: string;
 
+  @Field(()=>ID,{nullable:true})
+  primeId?:string
+
+  @Field(({nullable:true}))
+  salary:number
+  
   @Field(()=>ID, {nullable:true})
   categoryPersonnelId?: string;
   
@@ -32,7 +39,7 @@ export class PersonnelUpdateInput {
   fonction?: Role;
 
   @Field({nullable:true})
-  status!: string;
+  status!:Status;
   // @Field({nullable:true})
   // matricule?: string;
 
@@ -45,12 +52,12 @@ export class PersonnelUpdateInput {
   @Field({ nullable: true })
   dateOfStartWork?: string;
 
-  @Field({nullable:true})
-  password!:string
+  // @Field({nullable:true})
+  // password!:string
 
-  @Field({nullable:true})
-  email!:string
+  // @Field({nullable:true})
+  // email!:string
 
-  @Field(()=>UpdateUserInput,{nullable:true})
-  user!:UpdateUserInput
+  // @Field(()=>UpdateUserInput,{nullable:true})
+  // user!:UpdateUserInput
 }

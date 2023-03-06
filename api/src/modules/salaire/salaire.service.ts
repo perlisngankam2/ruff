@@ -13,15 +13,18 @@ import { SalaireCreateInput } from './dto/salaire.input';
 import { PersonnelService } from '../personnel/personnel.service';
 import { PeriodeService } from '../periode/periode.service';
 import { EntityRepository } from '@mikro-orm/postgresql';
+import { Personnel, Status } from 'src/entities/pesonnel.entity';
+import { CategoriePersonnelUpdate } from '../categorie_personnel/dto/categorie-personnel.update';
+import { SalaireUpdateInput } from './dto/salaire.update';
 
 @Injectable()
 export class SalaireService {
   constructor(
     @InjectRepository(Salaire)
     private salaireRepository: EntityRepository<Salaire>,
-    private salaireBaseeService: SalaireBaseService,
+    // private salaireBaseeService: SalaireBaseService,
     private retenuPersonnel : RetenuPersonnelService,
-    private primePersonnel: PrimePersonnelService,
+    private   Primeservice: PrimeService,
     private periodeService: PeriodeService,
     private personnel : PersonnelService,
     private readonly em: EntityManager,
@@ -31,50 +34,70 @@ export class SalaireService {
     input: SalaireCreateInput,
   ): Promise<Salaire> {
 
-    const personnel = input.personnel
-        ? await this.personnel.findOne(input.personnel)
-        : await this.personnel.createPersonnel(input.personnel)
-
+    const personnel = await this.personnel.findOne(input.personnelId)
     
-    const periode = input.periode
-        ? await this.periodeService.findByOne(input.periode)
-        : await this.periodeService.create(input.periode)
+    const periode = await this.periodeService.findByOne(input.periodeId)
+    // // check categorie prime
+    //const categorie = personnel.category.load()
 
-    
-    // check categorie prime
-    const categorie = personnel.category.getEntity()
-    const salaireBase = categorie.salaireBase.getEntity().montant
-    const primes = await personnel.prime.loadItems()
-    const retenus = (await personnel.retenue.loadItems())
+    const salaireBase = Number(personnel.salary)
+    const retenus = this.retenuPersonnel.getallretenupersonnel(input.personnelId)
+    const primes = Number(this.Primeservice.getallpersonnelprime(input.personnelId))
+  
 
     const salaire = new Salaire()
 
-    if(personnel.status === "PERMANENT"){
-      let sommePrime = 0
-      for(let i = 0; i < primes.length; i++){
-        sommePrime += primes[i].prime.getEntity().montant
-      }
+    if(personnel.status == Status.PERMANENT){
+      // let sommePrime = 0
+      // for(let i = 0; i < (await primes).length; i++){
+      //   sommePrime += Number((await primes[i]).montant)
+      // }
 
       let sommeRetenus = 0
-      for(let j = 0; j < retenus.length; j++){
-        sommeRetenus += retenus[j].retenue.getEntity().montant
+      for(let j = 0; j < (await retenus).length; j++){
+        sommeRetenus += Number((await retenus[j]).montant)
       }
-      const salaireNette = salaireBase + sommePrime - sommeRetenus
+      const salaireNette = salaireBase + primes - sommeRetenus
 
-      salaire.montant = salaireNette + sommeRetenus + sommePrime
-      salaire.payer = input.payer
-      salaire.personnel.id = personnel.id
-      salaire.periode.id = periode.id
+
+
+      wrap(salaire).assign(
+        {
+         montant: Number(salaireNette),
+         payer: input.payer,
+         personnel: input.personnelId,
+         periode: input.periodeId
+        },
+        {
+        em: this.em
+        }
+      )
   
       if(input.payer == true){
           this.salaireRepository.persistAndFlush(salaire)
       }
       throw new Error('confirm payement')
     }
-    if(personnel.status === "NON PERMANENT"){
+    if(personnel.status == Status.VACATAIRE){
+      wrap(salaire).assign(
+        {
+        montant: Number(salaireBase),
+        payer: input.payer,
+        personnel: personnel.id,
+        periode: periode.id
+        },
+        {
+          em: this.em
+        }
+      )
+      if(input.payer==false){
+        this.salaireRepository.persistAndFlush(salaire)
+      }
+      throw console.error('salarie a ete payer');
+      
 
     }
-    return salaire
+  return salaire
  
   }
 
@@ -89,52 +112,35 @@ export class SalaireService {
   getAll(): Promise<Salaire[]> {
     return this.salaireRepository.findAll()
   }
+
+
   
-//   async update(categorie: CategoriePersonnel, input: CategoriePersonnelUpdate): Promise<CategoriePersonnel> {
+ async update(id:string, input: SalaireUpdateInput): Promise<Salaire> {
+     
+  const personnel = await this.personnel.findOne(input.personnelId)
+
+  const periode = await this.periodeService.findByOne(input.periodeId) 
+  
+  const salaire = await this.findByOne(id)
+
+  wrap(salaire).assign(
+    {
+      montant: input.montant,
+      payer: input.payer,
+      personnel: personnel.id,
+      periode: periode.id
+    },
+    {
+      em: this.em
+    }
+  )
     
-//     if (input.prime) {
-//       const prime =
-//       input.prime?.ID &&
-//         (await this.prime.findByOne({ id: input.prime?.ID }));
+  await this.salaireRepository.persistAndFlush(salaire);
 
-//       if (!prime) {
-//         throw new NotFoundError('prime no exist' || '');
-//       }
-//       this.prime.update(prime, input.prime);
-//     } 
-    
-//     if (input.retenu) {
-//       const retenu =
-//       input.retenu?.ID &&
-//         (await this.retenu.findByOne({ id: input.retenu?.ID }));
+  return salaire;
+   }
 
-//       if (!retenu) {
-//         throw new NotFoundError('retenu no exist' || '');
-//       }
-//       this.retenu.update(retenu, input.retenu);
-//     } 
-
-//     if (input.salaireBase) {
-//       const salaire =
-//       input.salaireBase?.ID &&
-//         (await this.salaireBaseeService.findByOne({ id: input.salaireBase?.ID }));
-
-//       if (!salaire) {
-//         throw new NotFoundError('salaire no exist' || '');
-//       }
-//       this.salaireBaseeService.update(salaire, input.salaireBase);
-//     } 
-
-//     wrap(categorie).assign({
-//       nom: input.nom || categorie.nom,
-//       description: input.description || categorie.description
-//     });
-
-//     await this.salaireRepository.persistAndFlush(categorie);
-
-//     return categorie;
-//   }
-
+   
   async delete(id:string){
     const a= this.findById(id)
     await this.salaireRepository.removeAndFlush(a)

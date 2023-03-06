@@ -6,6 +6,9 @@ import PrincipalLaout from "./PrincipalLayout";
 import EconomeSidebarLayout from "./EconomSidebarLayout";
 import ManagerLayout from "./ManagerLayout";
 import AdminLayout from "./AdminLayout";
+import { GET_PERSONNEL_BY_USERID } from "../../graphql/queries";
+import { useMutation, useQuery } from '@apollo/client'; 
+import { useAccount } from "../../contexts/account/Account";
 
 // const[userProfil, setIsProfil ]  = useState (
 //   'administrateur',
@@ -15,7 +18,7 @@ import AdminLayout from "./AdminLayout";
 //   'gesionnaire'
 // )
 
-const role = "isAdmin"
+// const role = "isAdmin"
  
 
   // const userProfil = {
@@ -39,15 +42,18 @@ const role = "isAdmin"
 const SidebarLayout = ({ children }) => {
 
   
-  //  const { userRole } = useAuth();
+  const { account, loaded } = useAccount();
+  const { data: personnelData, called, loading } = useQuery(GET_PERSONNEL_BY_USERID,
+     {
+    variables:{ userid: account?.id }
+  })
 
   // const role = userRole;
-  const role = "isAdmin"
-  
+
   return (
    
     <VStack
-      background="#e2d39c"
+      background="colors.secondary"
       p="7"
       gap={3}
       minH="100vh"
@@ -57,19 +63,20 @@ const SidebarLayout = ({ children }) => {
       color="#0e341f"
     >
         { 
-          (role==="isAdmin")&&
+          (account?.role==="ADMIN")&&
             <AdminLayout/>
         }
+
         {
-          (role==="principal") && 
+          (personnelData?.getpersonnelbyaccount.fonction==="principal") && 
               <PrincipalLaout/>
         }
         {
-        (role==="econome") &&
+        (personnelData?.getpersonnelbyaccount.fonction==="econome") &&
           <EconomeSidebarLayout/>
         }
         { 
-        (role==="manager") &&
+        (personnelData?.getpersonnelbyaccount.fonction==="manager") &&
         <ManagerLayout/>
         }
       { children }

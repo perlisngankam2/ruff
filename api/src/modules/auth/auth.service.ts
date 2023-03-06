@@ -41,36 +41,36 @@ async validateUser(email:string,passwd:string) {
         return isPasswordValid ? result: null;
 }
 
-async validatePersonnel(email:string,passwd:string){
-  const personnel = await this.personnelservice.findOne(
-    { email: email,
-      },
+// async validatePersonnel(email:string,passwd:string){
+//   const personnel = await this.personnelservice.findOne(
+//     { email: email,
+//       },
     
-  );
-  const{password, ...result}= personnel
+//   );
+//   const{password, ...result}= personnel
 
-  console.log(result);
-  if (!personnel)
-    throw new HttpException('Invalid Credentials', HttpStatus.UNAUTHORIZED);
-  const isPasswordValid = await this.compareHash(
-    passwd,
-    personnel.password,
-  );
-  console.log(isPasswordValid);
-  return isPasswordValid ? result: null;
+//   console.log(result);
+//   if (!personnel)
+//     throw new HttpException('Invalid Credentials', HttpStatus.UNAUTHORIZED);
+//   const isPasswordValid = await this.compareHash(
+//     passwd,
+//     personnel.password,
+//   );
+//   console.log(isPasswordValid);
+//   return isPasswordValid ? result: null;
 
-}
+// }
 
-async loginpersonnel(personnel:Personnel){
-  return {
-    access_token: this.jwtservice.sign({
-        username: personnel.email,
-        password: personnel.password, 
-        sub: personnel.id}),
-    personnel
-}
+// async loginpersonnel(personnel:Personnel){
+//   return {
+//     access_token: this.jwtservice.sign({
+//         username: personnel.email,
+//         password: personnel.password, 
+//         sub: personnel.id}),
+//     personnel
+// }
 
-}
+// }
 
 async login(user:User){
    return {

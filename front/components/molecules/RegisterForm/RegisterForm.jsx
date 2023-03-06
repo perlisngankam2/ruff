@@ -30,6 +30,7 @@ const RegisterForm = () => {
   const [Password, setPassword] = useState("");
   const [createUser, error] = useMutation(CREATE_USER);
   const toast = useToast()
+  const router = useRouter()
  
 
   const HandleClick = async (event) => {

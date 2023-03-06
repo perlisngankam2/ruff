@@ -10,6 +10,7 @@ import {
   } from '@mikro-orm/core';
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { EntityRepository } from '@mikro-orm/postgresql';
+import { Injectable } from '@nestjs/common';
 import { Field, ID, ObjectType } from '@nestjs/graphql';
 import { RetenuPersonnel } from '../../entities/retenu-personnel.entity';
 import { PersonnelService } from '../personnel/personnel.service';
@@ -17,8 +18,7 @@ import { RetenuService } from '../retenu_salarial/retenu.service';
 import { RetenuPersonnelCreateInput } from './dto/retenu-personnel.input';
 import { RetenuPersonnelUpdateInput } from './dto/retenu-personnel.update';
 
-@Entity()
-@ObjectType()
+@Injectable()
 export class RetenuPersonnelService {
     constructor(
         @InjectRepository(RetenuPersonnel)
@@ -31,9 +31,9 @@ export class RetenuPersonnelService {
       async create(
         input: RetenuPersonnelCreateInput,
       ): Promise<RetenuPersonnel> {
-        const retenu = this.retenuService.findByOne(input.retenuID)
+        const retenu = this.retenuService.findByOne(input.retenuId)
         
-        const personnel = this.personnelService.findOne(input.personnelID)
+        const personnel = this.personnelService.findOne(input.personnelId)
 
         if(!(retenu&&personnel)){
           throw Error("retenu and personnel not found")
@@ -43,8 +43,8 @@ export class RetenuPersonnelService {
 
         wrap(retenuPersonnel).assign(
           {
-          personnel: input.personnelID,
-          retenue: input.retenuID
+          personnel: input.personnelId,
+          retenue: input.retenuId
           },
           {
             em: this.em
@@ -72,8 +72,8 @@ export class RetenuPersonnelService {
         const retenuPersonnel = await this.findById(id)
         if (input.retenu) {
             const retenu =
-            input.retenu?.ID &&
-              (await this.retenuService.findByOne({ id: input.retenu?.ID }));
+            input.retenuId &&
+              (await this.retenuService.findByOne({ id: input.retenuId }));
       
             if (!retenu) {
               throw new NotFoundError('prime no exist' || '');
@@ -84,8 +84,8 @@ export class RetenuPersonnelService {
           
         if (input.personnnel) {
             const personnel =
-            input.personnelID &&
-              (await this.personnelService.findOne({ id: input.personnelID}));
+            input.personnelId &&
+              (await this.personnelService.findOne({ id: input.personnelId}));
       
             if (!personnel) {
               throw new NotFoundError('personnel no exist' || '');
@@ -102,6 +102,11 @@ export class RetenuPersonnelService {
         return retenuPersonnel;
       }
     
+      async getallretenupersonnel(id:string){
+      const a = (await this.em.find(RetenuPersonnel,{personnel: id})).map(a=>a.retenue.load()).map(a=>a)
+      return a
+      }
+
       async delete(id:string){
       const a = this.findById(id)
       await this.retenuPersonnelRepository.removeAndFlush(a)

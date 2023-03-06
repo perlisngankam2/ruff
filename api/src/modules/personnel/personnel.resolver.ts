@@ -46,4 +46,18 @@ export class PersonnelResolver {
    return await this.personnelService.delete(id)
   }
 
+  @Query(()=>User)
+  async getpersonnelaccount(@Args('id') id:string){
+    return await this.personnelService.getcorrespondingaccount(id)
+  }
+
+@Query(()=>Personnel)
+  async getpersonnelbyaccount(@Args('userid') userid:string){
+    const personnel=await this.personnelService.findpersonnelbyaccount(userid)
+    if(!personnel){
+      throw Error("not found")
+    }
+    return personnel
+  }
+
 }

@@ -17,7 +17,7 @@
   
   const AdminLayout = ({ children }) => {
     return (
-     <Box> 
+     <Box h="100%"> 
         <Accordion allowToggle>
           <AccordionItem>
             <AccordionButton pl={0} my={2}>
@@ -49,6 +49,11 @@
             <AccordionPanel>
               <Link href="/personnel/categorypersonnel">
                 <Box as="span">Categorie personnel</Box>
+              </Link>
+            </AccordionPanel>
+            <AccordionPanel>
+              <Link href="/comptePersonnel">
+                <Box as="span">Compte personnel</Box>
               </Link>
             </AccordionPanel>
           </AccordionItem>
@@ -175,6 +180,16 @@
             <AccordionPanel>
               <Link href="/payment/lastpayments">
                 <Box as="span">Derniers paiements</Box>
+              </Link>
+            </AccordionPanel>
+            <AccordionPanel>
+              <Link href="/payment/ajouterprime">
+                <Box as="span">Ajouter une prime</Box>
+              </Link>
+            </AccordionPanel>
+            <AccordionPanel>
+              <Link href="/payment/ajouterretenue">
+                <Box as="span">Ajouter une retenue</Box>
               </Link>
             </AccordionPanel>
           </AccordionItem>

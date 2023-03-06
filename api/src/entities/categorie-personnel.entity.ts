@@ -5,6 +5,7 @@ import {
     Enum,
     Filter,
     IdentifiedReference,
+    ManyToMany,
     ManyToOne,
     OneToMany,
     OneToOne,
@@ -51,10 +52,13 @@ export class CategoriePersonnel {
   })
   retenu!:IdentifiedReference<Retenue>|null
 
-  @ManyToOne(() => SalaireBase ,{
-    nullable:true,
-    onDelete:'CASCADE'
-  })
+   @ManyToOne(() => SalaireBase ,{
+   nullable:true,
+   onDelete:'CASCADE'
+   })
   salaireBase!:IdentifiedReference<SalaireBase>|null
+
+  // @ManyToMany(() => SalaireBase, salairebase => salairebase.categoriePersonnel)
+  // salairebase = new Collection<SalaireBase>(this);
   
 }

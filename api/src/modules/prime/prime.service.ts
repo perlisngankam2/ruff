@@ -9,6 +9,7 @@ import {
   } from '@mikro-orm/core';
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { EntityRepository } from '@mikro-orm/postgresql';
+import { Injectable } from '@nestjs/common';
   import { Field, ID, ObjectType } from '@nestjs/graphql';
 import { Prime } from 'src/entities/prime.entity';
 import { CategoriePrimeService } from '../categorie_prime/categorie-prime.service';
@@ -16,8 +17,7 @@ import { PrimeCreateInput } from './dto/prime.input';
 import { PrimeUpdateInput } from './dto/prime.update';
 
 
-@Entity()
-@ObjectType()
+@Injectable()
 export class PrimeService {
     constructor(
         @InjectRepository(Prime)
@@ -63,16 +63,16 @@ export class PrimeService {
       
       async update(id:string,input: PrimeUpdateInput): Promise<Prime> {
         const prime = await this.findById(id)
-        if (input.categoriePirme) {
-            const categorie =
-            input.categoriePirme?.ID &&
-              (await this.categoriePrime.findByOne({ id: input.categoriePirme?.ID }));
+        // if (input.categoriePirme) {
+        //     const categorie =
+        //     input.categoriePirme?.ID &&
+        //       (await this.categoriePrime.findByOne({ id: input.categoriePirme?.ID }));
       
-            if (!categorie) {
-              throw new NotFoundError('categorie no exist' || '');
-            }
-            this.categoriePrime.update(categorie.id, input.categoriePirme);
-          }   
+        //     if (!categorie) {
+        //       throw new NotFoundError('categorie no exist' || '');
+        //     }
+        //     this.categoriePrime.update(categorie.id, input.categoriePirme);
+        //   }   
         wrap(prime).assign({
             nom:input.nom || prime.nom,
             description: input.description || prime.description,
@@ -83,6 +83,11 @@ export class PrimeService {
         await this.primeRepository.persistAndFlush(prime);
         return prime;
       }
+
+      async getallpersonnelprime(id:string){
+        const a = (await this.em.find(Prime,{personnel: id})).map(a=>a.montant).reduce(function(a,b){ return a+b})
+        return a
+       }
     
       async delete(id:string){
        const a = this.findById(id)

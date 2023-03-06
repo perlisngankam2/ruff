@@ -9,6 +9,7 @@ import {
   } from '@mikro-orm/core';
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { EntityRepository } from '@mikro-orm/postgresql';
+import { Injectable } from '@nestjs/common';
   import { Field, ID, ObjectType } from '@nestjs/graphql';
 import { PrimePersonnel } from 'src/entities/prime-personnel.entity';
 import { Prime } from 'src/entities/prime.entity';
@@ -18,8 +19,7 @@ import { PrimeService } from '../prime/prime.service';
 import { PrimePersonnelCreateInput } from './dto/prime-personnel.input';
 import { PrimePersonnelUpdateInput } from './dto/prime-personnel.update';
 
-@Entity()
-@ObjectType()
+@Injectable()
 export class PrimePersonnelService {
     constructor(
         @InjectRepository(PrimePersonnel)
@@ -36,16 +36,22 @@ export class PrimePersonnelService {
             ? await this.primeService.findByOne(input.prime)
             : await this.primeService.create(input.prime)
         
-        const personnel = await this.personnelService.findOne(input.personnelID)
+        const personnel = await this.personnelService.findOne(input.personnelId)
         if(!personnel){
             throw new NotFoundError('personnel no exist' || '');
         }
         
         const primePersonnel = new PrimePersonnel()
 
-        primePersonnel.personnel.id = personnel.id
-        primePersonnel.prime.id = prime.id
-        
+        wrap(primePersonnel).assign(
+          {
+           personnel: personnel.id,
+           prime: prime.id
+          },
+          {
+            em: this.em
+          }
+        )
 
         await this.primePersonnelRepository.persistAndFlush(primePersonnel)
         return primePersonnel
@@ -61,13 +67,18 @@ export class PrimePersonnelService {
       getAll(): Promise<PrimePersonnel[]> {
         return this.primePersonnelRepository.findAll()
       }
+
+     async getallpersonnelprime(id:string){
+       const a = (await this.em.find(PrimePersonnel,{personnel: id})).map(a=>a.prime.load()).map(a=>a)
+       return a
+      }
       
       async update(id:string, input: PrimePersonnelUpdateInput): Promise<PrimePersonnel> {
         const  primePersonnel= await this.findById(id)
         if (input.prime) {
             const prime =
-            input.primeID &&
-              (await this.primeService.findByOne({ id: input.primeID}));
+            input.primeId &&
+              (await this.primeService.findByOne({ id: input.primeId}));
       
             if (!prime) {
               throw new NotFoundError('prime no exist' || '');
@@ -77,8 +88,8 @@ export class PrimePersonnelService {
           
           if (input.personnel) {
             const personnel =
-            input.personnelID &&
-              (await this.personnelService.findOne({ id: input.personnelID }));
+            input.personnelId &&
+              (await this.personnelService.findOne({ id: input.personnelId }));
       
             if (!personnel) {
               throw new NotFoundError('personnel no exist' || '');

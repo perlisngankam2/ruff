@@ -8,13 +8,13 @@ import {
   } from '@mikro-orm/core';
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { EntityRepository } from '@mikro-orm/postgresql';
+import { Injectable } from '@nestjs/common';
 import { Field, ID, ObjectType } from '@nestjs/graphql';
 import { SalaireBase } from 'src/entities/salaire-base.entity';
 import { SalaireBaseCreateInput } from './dto/salaire-base.input';
 import { SalaireBaseUpdateInput } from './dto/salaire-base.update';
 
-@Entity()
-@ObjectType()
+@Injectable()
 export class SalaireBaseService {
     constructor(
         @InjectRepository(SalaireBase)
@@ -27,8 +27,15 @@ export class SalaireBaseService {
       ): Promise<SalaireBase> {        
         const salaireBase = new SalaireBase()
 
-        salaireBase.montant = input.montant
-        salaireBase.description = input.description || null
+        wrap(salaireBase).assign(
+          {
+           montant: input.montant,
+           description: input.description
+          },
+          {
+            em:this.em
+          }
+        )
         
 
         await this.salaireBaseRepository.persistAndFlush(salaireBase)

@@ -8,6 +8,7 @@ import {
   } from '@mikro-orm/core';
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { EntityRepository } from '@mikro-orm/postgresql';
+import { Injectable } from '@nestjs/common';
   import { Field, ID, ObjectType } from '@nestjs/graphql';
 import { Periode } from 'src/entities/periode.entity';
 import { Prime } from 'src/entities/prime.entity';
@@ -16,8 +17,7 @@ import { PeriodeCreateInput } from './dto/periode.input';
 import { PeriodeUpdateInput } from './dto/periode.update';
 
 
-@Entity()
-@ObjectType()
+@Injectable()
 export class PeriodeService {
     constructor(
         @InjectRepository(Periode)
@@ -30,9 +30,13 @@ export class PeriodeService {
       ): Promise<Periode> {
        const periode = new Periode()
 
-        periode.nom = input.nom
-        input.description = input.description
-        input.datePeriode = input.datePeriode
+       wrap(periode).assign({
+        nom: input.nom,
+        description: input.description,
+        datePeriode: input.datePeriode
+       },{
+        em:this.em
+       })
         
         await this.periodeRepository.persistAndFlush(periode)
         return periode

@@ -6,6 +6,7 @@ import {
     Enum,
     Filter,
     IdentifiedReference,
+    ManyToMany,
     ManyToOne,
     OneToMany,
     OneToOne,
@@ -13,15 +14,26 @@ import {
     Property,
     Unique,
   } from '@mikro-orm/core';
-  import { Field, ID, ObjectType } from '@nestjs/graphql';
+  import { Field, ID, ObjectType, registerEnumType } from '@nestjs/graphql';
 import { PrimaryKeyUuid } from '../decorators/PrimaryKeyUuid.decorator';
 import { CategoriePersonnel } from './categorie-personnel.entity';
 import { PrimePersonnel } from './prime-personnel.entity';
 import { RetenuPersonnel } from './retenu-personnel.entity';
 import { Salle } from './salle.entity';
 import { User } from './user.entity';
-
 import { Role } from './../modules/auth/roles/roles';
+import { Prime } from './prime.entity';
+import { Salaire } from './salaire.entity';
+
+export enum Status{
+  PERMANENT='PERMANENT',
+  VACATAIRE='VACATAIRE'
+}
+
+registerEnumType(Status, {
+  name: 'Status',
+});
+
 
 @Entity()
 @ObjectType()
@@ -42,6 +54,9 @@ export class Personnel {
   @Property({ nullable: true })
   phoneNumber!: string;
   
+  @Field({ nullable: true })
+  @Property({ nullable: true })
+  salary!: number;
 
   @Field({ nullable: true })
   @Property({ nullable: true })
@@ -52,12 +67,18 @@ export class Personnel {
   sexe!: string;
 
   @Field({ nullable: true })
-  @Property({ nullable: true })
+  @Enum({
+    items: () => Role,
+    default: Role.ADMIN,
+  })
   fonction!: Role;
 
   @Field({ nullable: true })
-  @Property({ nullable: true })
-  status!: string;
+  @Enum({
+    items: () => Status,
+    default: Status.PERMANENT,
+  })
+  status!: Status;
 
   // @Field(() => Date, { nullable: true })
   // @Property({ nullable: true })
@@ -82,13 +103,14 @@ export class Personnel {
   @Property({ nullable: true })
   childNumber!: number;
 
-  @Field({nullable: true})
-  @Property({nullable: true})
-  password!: string
+  // @Field({nullable: true})
+  // @Property({nullable: true})
+  // password!: string
 
-  @Field({nullable:true})
-  @Property({nullable:true})
-  email!: string
+  // @Field({nullable:true})
+  // @Property({nullable:true})
+  // email!: string
+
 
   //Relation with another table 
   @OneToOne(() => User, (user) => user.personnel, {
@@ -119,5 +141,11 @@ export class Personnel {
     onDelete:'cascade'
   })
   salle!:IdentifiedReference<Salle>|null
+
+  @ManyToMany(() => Prime, primes => primes.personnel,{owner: true})
+  primes = new Collection<Personnel>(this);
+
+  @ManyToMany(() => Salaire, salaire => salaire.personnel)
+  salaire = new Collection<Salaire>(this);
 
 }

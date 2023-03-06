@@ -24,26 +24,29 @@ export class PersonnelService {
   ): Promise<Personnel> {
 
   
-  const user = await this.userService.findById(input.userID)
-  if (!user) {
-    throw new NotFoundError('user not found'|| '');
-   }
+   await this.userService.findById(input.userID)
+  // if (!user) {
+  //   throw new NotFoundError('user not found'|| '');
+  //  }
   const new_personnel = new Personnel()
 
-wrap(new_personnel).assign({
+  wrap(new_personnel).assign({
   firstName : input.firstName,
   lastName : input.lastName,
   category :input.categoryPersonnelId,
+  user: input.userID,
   status : input.status,
   childNumber: input.childNumber,
   phoneNumber: input.phoneNumber,
-  email: input.email,
-  password: input.password,
+  // email: input.email,
+  // password: input.password,
   sexe: input.sexe,
   dateOfStartWork : input.dateOfStartWork,
   fonction : input.fonction,
   dateOfBirth : input.dateOfBirth,
-  situationMatrimonial : input.situationMatrimonial
+  situationMatrimonial : input.situationMatrimonial,
+  prime:input.primeId,
+  salary:input.salary
 },
   {
     em:this.em
@@ -68,19 +71,25 @@ wrap(new_personnel).assign({
     const salt = bcript.genSaltSync();
     return bcript.hashSync(password, salt);
   }
+
+  async getcorrespondingaccount(id:string){
+    const tbl = (await this.findOne(id)).user.load()
+    return tbl
+  }
+
   
   async update(id:string, input: PersonnelUpdateInput): Promise<Personnel> {
     const personnel = await this.findById(id)
-    if (input.user) {
-      const user =
-      input.user?.ID &&
-        (await this.userService.findOne({ id: input.user?.ID }));
+    // if (input.user) {
+    //   const user =
+    //   input.user?.ID &&
+    //     (await this.userService.findOne({ id: input.user?.ID}));
 
-      if (!user) {
-        throw new NotFoundError('user not found' || '');
-      }
-      this.userService.update(user.id, input.user);
-    }    
+    //   if (!user) {
+    //     throw new NotFoundError('user not found' || '');
+    //   }
+    //   this.userService.update(user.id, input.user);
+    // }    
     wrap(personnel).assign({
       firstName: input.firstName || personnel.firstName,
       lastName: input.lastName || personnel.lastName,
@@ -109,6 +118,10 @@ wrap(new_personnel).assign({
  throw Error("not found")
   }
   return a
+  }
+
+async findpersonnelbyaccount(userid:string){
+   return (await this.em.find(Personnel,{user: userid}))[0]
   }
 
 }

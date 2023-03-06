@@ -1,6 +1,16 @@
-import { FormControl, FormLabel, Grid, Input, Select } from "@chakra-ui/react";
+import { FormControl, FormLabel, Grid, Input, Select, Text } from "@chakra-ui/react";
+import { useAccount } from "../../../contexts/account/Account";
+import { GET_PERSONNEL_BY_USERID } from "../../../graphql/queries";
+import { useMutation, useQuery } from '@apollo/client'; 
 
 function AccountSetting(){
+
+    const { account ,loaded } = useAccount();
+     const { data: personnelData, called, loading } = useQuery(GET_PERSONNEL_BY_USERID,
+     {
+    variables:{ userid: account?.id }
+  })
+    console.log(account)
 
     return(
         <Grid
@@ -9,19 +19,31 @@ function AccountSetting(){
         >
             <FormControl id='nom'>
                 <FormLabel>Noms</FormLabel>
-                <Input focusBorderColor="brand.blue" type="text" placeholder='Don'/>
+                {account?.firstName === null?
+                <Text>{personnelData?.getpersonnelbyaccount.firstName} </Text>
+                :
+                <Text>{account?.firstName} </Text>
+                }
             </FormControl>
             <FormControl id='prenom'>
                 <FormLabel>Prenoms</FormLabel>
-                <Input focusBorderColor="brand.blue" type="text" placeholder='Willfried'/>
+                {account?.lastName === null?
+                <Text>{personnelData?.getpersonnelbyaccount.lastName} </Text>
+                :
+                <Text>{account?.lastName} </Text>
+                }
             </FormControl>
             <FormControl id='telephone'>
                 <FormLabel>Telephone</FormLabel>
-                <Input focusBorderColor="brand.blue" type="tel" placeholder='(+237) 656 39 18 82'/>
+                  {account?.phoneNumber === null?
+                <Text>{personnelData?.getpersonnelbyaccount.phoneNumber} </Text>
+                :
+                <Text>{account?.phoneNumber} </Text>
+                }
             </FormControl>
             <FormControl id='adressemail'>
                 <FormLabel>Adresse Mail</FormLabel>
-                <Input focusBorderColor="brand.blue" type="email" placeholder='donwillfried@gmail.com'/>
+                <Text>{account?.email} </Text>
             </FormControl>
             <FormControl id='pays'>
                 <FormLabel>Pays</FormLabel>

@@ -3,11 +3,18 @@ import { Field, ID, InputType } from '@nestjs/graphql';
 import { User } from 'src/entities/user.entity';
 import { UserCreateInput } from 'src/modules/user/dto/user.input';
 import { Role } from 'src/modules/auth/roles/roles';
+import { Status } from 'src/entities/pesonnel.entity';
 
 @InputType()
 export class PersonnelCreateInput {
   @Field(()=>ID,{nullable:true})
   userID?: string;
+
+  @Field(()=>ID,{nullable:true})
+  primeId?:string
+
+  @Field(({nullable:true}))
+  salary:number
 
   @Field(()=>ID, {nullable:true})
   categoryPersonnelId?: string;
@@ -31,7 +38,7 @@ export class PersonnelCreateInput {
   fonction?: Role;
 
   @Field({nullable:true})
-  status!: string;
+  status!: Status;
   // @Field({nullable:true})
   // matricule?: string;
 
@@ -44,12 +51,12 @@ export class PersonnelCreateInput {
   @Field({ nullable: true })
   dateOfStartWork?: string;
 
-  @Field({nullable:true})
-  password!:string
+  // @Field({nullable:true})
+  // password!:string
 
-  @Field({nullable:true})
-  email!:string
+  // @Field({nullable:true})
+  // email!:string
 
-  @Field(()=>UserCreateInput,{nullable:true})
-  user!:UserCreateInput
+  // @Field(()=>UserCreateInput,{nullable:true})
+  // user!:UserCreateInput
 }

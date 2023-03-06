@@ -9,7 +9,7 @@ import {
   } from '@mikro-orm/core';
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { EntityRepository } from '@mikro-orm/postgresql';
-import { forwardRef, Inject } from '@nestjs/common';
+import { forwardRef, Inject, Injectable } from '@nestjs/common';
 import { Field, ID, ObjectType } from '@nestjs/graphql';
 import { verify } from 'crypto';
 import { TwilioService } from 'nestjs-twilio';
@@ -22,8 +22,7 @@ import { TrancheService } from '../tranche/tranche.service';
 import { TrancheStudentCreateInput } from './dto/tranche-student.input';
 import { TrancheStudentUpdateInput } from './dto/tranche-student.update';
 
-@Entity()
-@ObjectType()
+@Injectable()
 export class TrancheStudentService {
     constructor(
         @InjectRepository(TrancheStudent)
@@ -171,6 +170,7 @@ export class TrancheStudentService {
         }
         
         await this.trancheStudentRepository.persistAndFlush(tranche)
+        return tranche
         
     }
       

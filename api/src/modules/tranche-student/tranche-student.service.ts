@@ -48,6 +48,8 @@ export class TrancheStudentService {
             ? await this.studentService.findByOne({id:input.student_id})
             : await this.studentService.create(input.student)
 
+        const a= 
+
 
         wrap(trancheStudent).assign(
             {

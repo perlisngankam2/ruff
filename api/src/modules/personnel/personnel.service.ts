@@ -120,12 +120,7 @@ export class PersonnelService {
   }
 
   async findpersonnelbyaccount(userid:string){
-   const user= this.userService.findOne(userid)
-   const personnel = await this.em.find(Personnel,{user: (await user).id})
-   if(!personnel){
-    throw Error("personnel not found")
-   }
-   return personnel
+   return (await this.em.find(Personnel,{user: userid}))[0]
   }
 
 }

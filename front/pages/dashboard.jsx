@@ -50,22 +50,24 @@ import {useMutation, useQuery } from '@apollo/client';
 
   //  const { authToken } = useAuth();
 
-  // const router = useRouter();
+  const router = useRouter();
   console.log(personnelData?.getpersonnelbyaccount);
 
-  //   useEffect(() => {
+    useEffect(() => {
     
-  //   if (authToken=="null") {
-  //     router.push("/")
+    if (account?.id === undefined ) {
+      router.push("/")
       
-  //   }
+    }
     
-  // }, [])
+  }, [])
 
 
 
   return (
-
+<>
+ 
+{account?.id &&(
     <DefaultLayout>
       <Box pt="90px" w="full">
         <Box top="-7" overflow="auto" minH="100vh" mx={6}>
@@ -124,6 +126,8 @@ import {useMutation, useQuery } from '@apollo/client';
         </Box>
       </Box>
     </DefaultLayout>
+    )}
+    </>
   );
 }
 

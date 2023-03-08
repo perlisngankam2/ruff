@@ -13,10 +13,12 @@ import { Injectable } from '@nestjs/common';
 import { Field, ID, ObjectType } from '@nestjs/graphql';
 import { Pension } from 'src/entities/pension.entity';
 import { Student } from 'src/entities/student.entity';
+import { TrancheStudent } from 'src/entities/tranche-student.entity';
 import { CategorieEleveService } from '../categorie_eleve/categorie-eleve.service';
 import { InscriptionService } from '../inscription/inscription.service';
 import { LocalisationService } from '../localisation/localisation.service';
 import { SalleService } from '../salle/salle.service';
+import { TrancheStudentService } from '../tranche-student/tranche-student.service';
 import { UserService } from '../user/user.service';
 import { StudentCreateInput } from './dto/student.input';
 import { StudentUpdateInput } from './dto/student.update';
@@ -172,4 +174,8 @@ export class StudentService {
       return a
         
       }   
+
+      async findTrancheStudentByStudent(studentid:string){
+        return (await this.em.find(TrancheStudent,{student:studentid}))[0]
+       }
 }

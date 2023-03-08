@@ -21,21 +21,17 @@ export const AccountProvider  = ({ children }) => {
       variables:{ id: userID}
     });
     
- 
-
-
 
   const router = useRouter();
 
   useEffect(() => {
-    
 
 
     if (authToken) {
   
      console.log(dataUser?.user);
       
-    }
+    } 
     
   }, [authToken, dataUser?.user]);
 

@@ -16,6 +16,7 @@ import {
 import { PrimaryKeyUuid } from '../decorators/PrimaryKeyUuid.decorator';
 import { Personnel } from './pesonnel.entity';
 import { TrancheStudent } from './tranche-student.entity';
+import { Tranche } from './tranche.entity';
 
 @Entity()
 @ObjectType()
@@ -52,8 +53,14 @@ export class AvanceTranche {
   complete!: boolean;
 
   @ManyToOne(() => TrancheStudent ,{
-    nullable:true,
+    nullable:false,
     onDelete:'CASCADE'
   })
   trancheStudent!:IdentifiedReference<TrancheStudent>|null
+
+  @ManyToOne(() => Tranche ,{
+    nullable:false,
+    onDelete:'CASCADE'
+  })
+  tranche!:IdentifiedReference<TrancheStudent>|null
 }

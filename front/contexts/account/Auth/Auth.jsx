@@ -1,4 +1,5 @@
 import React, { createContext, useState, useEffect, useContext } from 'react';
+import { useRouter } from "next/router";
 
 const AuthContextProps = {
 
@@ -16,12 +17,16 @@ export const AuthProvider = ({ children }) => {
   const [authToken, setAuthToken] = useState();
   const [userID, setUserID] = useState();
   const [loading, setLoading] = useState(true);
+  const router = useRouter();
 
     useEffect(() => {
     setLoading(true);
     setAuthToken(localStorage.getItem('token'));
     setUserID(localStorage.getItem('userID'));
     setLoading(false);
+    // if(!authToken){
+    //     router.push('/')
+    // }
   }, []);
 
 

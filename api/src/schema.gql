@@ -282,6 +282,7 @@ type Query {
   user(id: String!): User!
   findAllstudents: [Student!]!
   findOnestudent(id: String!): Student!
+  getTrancheStudentByStudent(studentid: String!): TrancheStudent!
   findAlllocalistaion: [Localisation!]!
   localisation(id: String!): Localisation!
   findAllcategorieeleve: [CategorieEleve!]!
@@ -802,14 +803,12 @@ input UpdateFraisExamentInput {
 }
 
 input AvanceTrancheCreateInput {
-  student_id: ID
-  tranche_id: ID
+  trancheId: ID
+  trancheStudentId: ID
   name: String
   description: String
   montant: Float
   reste: Float = 0
-  student: StudentCreateInput
-  tranche: TrancheCreateInput
 }
 
 input TrancheStudentCreateInput {
@@ -817,8 +816,6 @@ input TrancheStudentCreateInput {
   name: String
   description: String
   montant: Float
-  student: StudentCreateInput
-  tranche: TrancheCreateInput
 }
 
 input InscriptionInput {

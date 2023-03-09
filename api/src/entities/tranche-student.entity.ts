@@ -68,14 +68,14 @@ export class TrancheStudent {
   @ManyToOne(() => Student ,{
     nullable:false,
     onDelete:'CASCADE',
-    // unique: true
+    unique: true
   })
   student!:IdentifiedReference<Student>|null
 
   @ManyToOne(() => Tranche ,{
     nullable:true,
     onDelete:'CASCADE',
-    // unique:true
+    unique:true
   })
   tranche!:IdentifiedReference<Tranche>|null
 

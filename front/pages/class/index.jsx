@@ -31,17 +31,32 @@ import {
   PopoverArrow,
   PopoverCloseButton,
   PopoverAnchor,
-  useDisclosure
+  useDisclosure,
+  AlertDialog,
+  AlertDialogOverlay,
+  AlertDialogContent,
+  AlertDialogBody,
+  AlertDialogFooter,
+  FormControl,
+  FormLabel,
+  useToast
+  
 } from "@chakra-ui/react";
 
 import { useRouter } from "next/router";
 
-import { useEffect, useState } from "react";
+import React, { use, useEffect, useState } from "react";
 import AddNew from "../../components/atoms/AddNew";
 import StudentBox from "../../components/atoms/StudentBox";
 import DefaultLayout from "../../components/layouts/DefaultLayout";
-import { GET_ALL_CLASS } from "../../graphql/queries";
-import { DELETE_SALLE } from "../../graphql/Mutation";
+import { 
+  GET_ALL_CLASS,
+  GET_ALL_PERSONNELS 
+} from "../../graphql/queries";
+import { 
+  DELETE_SALLE,
+  CREATE_PERSONNEL_SALLE
+ } from "../../graphql/Mutation";
 import { useMutation, useQuery } from "@apollo/client";
 import {IoIosAdd} from 'react-icons/io';
 import{ FiEdit} from 'react-icons/fi';
@@ -51,10 +66,17 @@ import {MdDelete} from 'react-icons/md';
 const Class = () => {
 
   const router = useRouter();
-  const { isOpen, onToggle, onClose } = useDisclosure()
+  const cancelRef = React.useRef()
+  const toast = useToast();
+  const { isOpen, onToggle, onClose, onOpen } = useDisclosure();
+  const { isOpen:isOpenn, onClose:onClosse, onOpen:onOpenn } = useDisclosure();
+
   const [deleteClasse] = useMutation(DELETE_SALLE);
   const {data:dataClasse} = useQuery(GET_ALL_CLASS);
-  
+  const {data:dataEnseignant} = useQuery(GET_ALL_PERSONNELS)
+  const [createPersonnelSalle] = useMutation(CREATE_PERSONNEL_SALLE)
+  const [salleId, setSalleId] = useState("");
+  const [personnelId, setPersonnelId] = useState("");
 
   const removeClass = async(id) => {
     await deleteClasse({
@@ -72,6 +94,23 @@ const Class = () => {
   //   setShow(false)
   // }
 
+  const addPersonnelSalle = async () => {
+    await createPersonnelSalle({
+      variables:{
+        input:{ 
+        salleId: salleId,
+        personnelId: personnelId
+        }
+      }
+    }),
+    toast({
+      title: "Affection du personnel a la salle.",
+      description: "Affecte avec succes.",
+      status: "success",
+      duration: 3000,
+      isClosable: true,
+    });
+  }
   return (
     <DefaultLayout>
       <Box p="10px" pt={"70px"} background="colors.tertiary" w="full">
@@ -133,6 +172,109 @@ const Class = () => {
             </Button>
           </Box> 
         </Flex>
+
+        {/* FORMULAIRE D'AFFECTATION D'UN PROFESSEUR A UNE CLASSE */}
+        <Box> 
+          <Box display="flex"> 
+            <Text 
+              mb={5}
+              size="md"
+              color = "colors.quinzaine"
+              >
+              Affecter un enseignant
+            </Text>
+            <Icon 
+              as={IoIosAdd} 
+              boxSize="30px"
+              color={"colors.greencolor"}
+              rounded="full"
+              ml={["5px", "5px", "5px" ]}
+              mr={["5px"]}
+              _hover={{background:"colors.bluecolor"}}
+              onClick={onOpenn}
+              />
+          </Box>
+          <AlertDialog
+            isOpen={isOpenn}
+            leastDestructiveRef={cancelRef}
+            onClose={onClosse}
+            size='xl'
+          >
+            <AlertDialogOverlay>
+              <AlertDialogContent  width={"300px"}>
+                <Box mt={"20px"}> 
+                    <Heading 
+                      textAlign="center"
+                      size="md"
+                    >
+                      Affectez un enseignant a une classe
+                    </Heading>
+                    <AlertDialogBody>
+                      <Box mt='4'>
+                        <FormControl mt="5px">
+                          <FormLabel>classe</FormLabel>
+                          <Select
+                            name="salleId"
+                            placeholder="classe"
+                            value={salleId}
+                            onChange={(event)=> setSalleId(event.target.value)}
+                          >
+                            {dataClasse && 
+                              dataClasse.findAllsalle.map((salle, index) =>(
+                                <option value={salle?.id}>
+                                  {salle.name}
+                                </option>
+                              ))
+
+                            }
+                          </Select>
+                        </FormControl>
+                        <FormControl mt={"10px"}>
+                            <FormLabel>Enseigant</FormLabel>
+                          <Select
+                            // type="text"
+                            name="personnelId"
+                            value={personnelId}
+                            onChange={(event)=> setPersonnelId(event.target.value)}
+
+                            // isDisabled
+                            placeholder="enseignant"
+                          >
+                            {dataEnseignant &&
+                              dataEnseignant?.findAllpersonnel.map((personnel, index) =>(
+                                <option value={personnel?.id} key={index}>
+                                  {personnel.firstName} 
+                                </option>
+                              ))
+                            }
+                          </Select>
+                        </FormControl>
+                      </Box>
+                    </AlertDialogBody>
+                  <AlertDialogFooter>
+                    <Button 
+                      ref={cancelRef} 
+                      onClick={onClosse} 
+                      colorScheme='red' 
+                    >
+                      annuler
+                    </Button>
+                  <Link href={'#'}>
+                      <Button 
+                        colorScheme='green'  
+                        ml={3}
+                        onClick={addPersonnelSalle}
+                      >
+                        Initialiser
+                      </Button>
+                    </Link> 
+                  </AlertDialogFooter>
+                </Box>
+              </AlertDialogContent>
+            </AlertDialogOverlay>
+          </AlertDialog>
+        </Box>
+        <Box></Box>
         <Box mt={10}>
            <TableContainer>
               <Table variant='striped'>

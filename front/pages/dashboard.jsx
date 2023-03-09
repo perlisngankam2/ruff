@@ -31,8 +31,13 @@ import { useAccount } from "../contexts/account/Account";
 import { useRouter } from "next/router";
 import { HiUsers } from "react-icons/hi";
 import { GiGraduateCap, GiReceiveMoney } from "react-icons/gi";
-import React, { createContext, useContext, useEffect } from 'react';
-import { GET_PERSONNEL_BY_USERID } from "../graphql/queries";
+import React, { createContext, use, useContext, useEffect } from 'react';
+import { 
+  GET_PERSONNEL_BY_USERID, 
+  GET_ALL_STUDENT,
+  GET_ALL_CLASS,
+  GET_ALL_PERSONNELS
+} from "../graphql/queries";
 import {useMutation, useQuery } from '@apollo/client';
 
 
@@ -47,7 +52,9 @@ import {useMutation, useQuery } from '@apollo/client';
      {
     variables:{ userid: account?.id }
   })
-
+  const {data:dataStudent} = useQuery(GET_ALL_STUDENT);
+  const {data:dataClass} = useQuery(GET_ALL_CLASS);
+  const {data:dataPersonnel} = useQuery(GET_ALL_PERSONNELS)
   //  const { authToken } = useAuth();
 
   const router = useRouter();
@@ -57,6 +64,8 @@ import {useMutation, useQuery } from '@apollo/client';
     
     if (account?.id === undefined ) {
       router.push("/")
+
+
       
     }
     
@@ -83,9 +92,24 @@ import {useMutation, useQuery } from '@apollo/client';
           }
 
           <Flex flexDir="row" gap="8" mb="9" flexWrap="wrap">
-            <DashboardCard color="red.200" name="Elèves" icon={GiGraduateCap} />
-            <DashboardCard color="gray.400" name="Personnel" icon={HiUsers} />
-            <DashboardCard color="green.200" name="Classes" icon={GiGraduateCap} />
+            <DashboardCard 
+              color="red.200" 
+              name="Elèves" 
+              icon={GiGraduateCap}
+              total={dataStudent?.findAllstudents.length} 
+            />
+            <DashboardCard 
+              color="gray.400" 
+              name="Personnel" 
+              icon={HiUsers} 
+              total={dataPersonnel?.findAllpersonnel.length}
+            />
+            <DashboardCard 
+              color="green.200" 
+              name="Classes" 
+              icon={GiGraduateCap} 
+              total={dataClass?.findAllsalle.length}
+            />
           </Flex>
 
           <Flex

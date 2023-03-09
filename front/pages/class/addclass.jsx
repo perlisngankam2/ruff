@@ -105,7 +105,12 @@ const AddClass = () => {
               as="form"
               width="500px"
             > 
-              <Heading color={"colors.primary"}>Creation d'une classe</Heading>
+              <Heading 
+                color={"colors.primary"}
+                textAlign={"center"}
+              >
+                Creation d'une classe
+              </Heading>
               <Stack
                 gap={2}
                 align="start"

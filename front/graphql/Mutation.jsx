@@ -198,6 +198,14 @@ export const CREATE_AVANCE_TRANCHE = gql `
     }
 `;
 
+export const CREATE_PERSONNEL_SALLE = gql `
+    mutation createPersonnelSalle ($input: PersonnelSalleCreateInput!) {
+        createPersonnelSalle (input: $input) {
+            id
+        }
+    }
+`;
+
 export const fragmentCycle = gql` fragment CycleClass on cyle {
     id
     name

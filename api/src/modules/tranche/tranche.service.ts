@@ -35,8 +35,7 @@ export class TrancheService {
 
         // const pension = input.pension
         // ? await this.pensionService.findByOne(input.pension_id)
-        // : await this.pensionService.create(input.pension)
-
+        // : await this.pensionService.create(input.pension) 
 
         wrap(tranche).assign(
           {
@@ -44,7 +43,7 @@ export class TrancheService {
             name: input.name,
             description: input.description,
             dateLine: input.dateLine,
-            anneeAccademique: input.anneeAcademiqueId
+            anneeAccademique: input.anneeAcademiqueId,
             // pension: pension.id
           },
           {
@@ -94,11 +93,11 @@ export class TrancheService {
         return tranche;
       }
       async delete(id:string){
-       const a = this.findById(id) 
-       await this.trancheRepository.removeAndFlush(a)
-       if(!a){
-       throw Error("not found")
-       }
-       return a 
+        const a = this.findById(id) 
+        await this.trancheRepository.removeAndFlush(a)
+        if(!a){
+        throw Error("not found")
+      }
+        return a 
       }   
 }

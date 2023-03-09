@@ -29,9 +29,9 @@ export class TrancheStudentUpdateInput {
   // @Field(()=>RegimePaiement,{nullable:true})
   // regimePaimemnt?: RegimePaiement;
 
-  @Field(()=>StudentCreateInput,{nullable:true})
-  student?:StudentCreateInput
+  // @Field(()=>StudentCreateInput,{nullable:true})
+  // student?:StudentCreateInput
   
-  @Field(()=>TrancheCreateInput,{nullable:true})
-  tranche?:TrancheCreateInput
+  // @Field(()=>TrancheCreateInput,{nullable:true})
+  // tranche?:TrancheCreateInput
 }

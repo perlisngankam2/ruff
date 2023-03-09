@@ -106,7 +106,7 @@ export const GET_ALL_CLASS =  gql `
     }
 `;
 
-
+//get al frais inscription
 export const GET_ALL_FRAIS_INSCRIPTION =  gql `
     query findAllfraisinscription {
         findAllfraisinscription {
@@ -224,6 +224,7 @@ export const GET_ONE_CYCLE =  gql `
     }
 `;
 
+
 export const GET_USER_CONNECTED = gql `
 query user ($id: String!) {
     user (id: $id) {
@@ -259,8 +260,21 @@ query findAlluser {
 }
 `;
 
-//personnel by userid
+//Tranche student by studentIf
+export const GET_TRANCHE_STUDENT_BY_STUDENT_ID = gql `
+    query getTrancheStudentByStudent ($studentid: String!) {
+        getTrancheStudentByStudent (studentid: $studentid) {
+            id
+            name
+            description
+            montant
+            complete
+            reste
+        }
+    }
+`;
 
+//personnel by userid
 export const GET_PERSONNEL_BY_USERID= gql `
 query getpersonnelbyaccount ($userid: String!) {
     getpersonnelbyaccount (userid: $userid) {

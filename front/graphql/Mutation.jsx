@@ -171,16 +171,39 @@ export const CREATE_TRANCHE_PENSION = gql `
 
 //fronction d'initialisation du paiemt d'une pension pour un eleve donne
 export  const CREATE_TRANCHE_STUDENT = gql `
-mutation createTrancheStudent ($trancheStudent: TrancheStudentCreateInput!) {
-    createTrancheStudent (trancheStudent: $trancheStudent) {
-        id
-        name
-        description
-        montant
-        complete
-        reste
+    mutation createTrancheStudent ($trancheStudent: TrancheStudentCreateInput!) {
+        createTrancheStudent (trancheStudent: $trancheStudent) {
+            id
+            name
+            description
+            montant
+            complete
+            reste
+        }
     }
-}
+`;
+
+//mutation de creation de l'avance tranche de la pension
+export const CREATE_AVANCE_TRANCHE = gql `
+    mutation createavancetranche ($avancetranche: AvanceTrancheCreateInput!) {
+        createavancetranche (avancetranche: $avancetranche) {
+            id
+            name
+            description
+            dateLine
+            montant
+            reste
+            complete
+        }
+    }
+`;
+
+export const CREATE_PERSONNEL_SALLE = gql `
+    mutation createPersonnelSalle ($input: PersonnelSalleCreateInput!) {
+        createPersonnelSalle (input: $input) {
+            id
+        }
+    }
 `;
 
 export const fragmentCycle = gql` fragment CycleClass on cyle {

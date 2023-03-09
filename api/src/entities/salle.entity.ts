@@ -16,6 +16,7 @@ import { FraisExamen } from './frais-exament.entity';
 import { FraisInscription } from './frais-inscription.entity';
 import { NiveauEtude } from './niveau-etude.entity';
 import { Pension } from './pension.entity';
+import { PersonnelSalle } from './personnelsalle.entity';
 import { Personnel } from './pesonnel.entity';
 import { Student } from './student.entity';
 
@@ -81,6 +82,9 @@ export class Salle{
 
     @OneToMany(()=>Student, (student) => student.salle)
     student = new Collection<Student>(this)
+
+    @OneToMany(()=>PersonnelSalle, (personnelsalle) => personnelsalle.salle)
+    personnelsalle = new Collection<PersonnelSalle>(this)
 
 
 }

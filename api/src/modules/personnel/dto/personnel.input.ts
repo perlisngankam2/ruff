@@ -13,8 +13,8 @@ export class PersonnelCreateInput {
   @Field(()=>ID,{nullable:true})
   userID?: string;
 
-  @Field(()=>ID,{nullable:true})
-  primeId?:string
+  // @Field(()=>ID,{nullable:true})
+  // primeId?:string
 
   @Field(({nullable:true}))
   salary:number

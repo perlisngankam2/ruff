@@ -47,10 +47,12 @@ import { LocalisationModule } from './modules/localisation/localisation.module';
 import ormConfig from './modules/orm/orm/orm.config';
 import { ExpenseModule } from './modules/expenses/expense.module';
 import { StatisticModule } from './modules/statistics/statistics.module';
+import { PersonnelSalleModule } from './modules/personnel_salle/personnelsalle.module';
 
 @Module({
   imports: [
     UserModule, 
+    PersonnelSalleModule,
     StudentModule, 
     PersonnelModule, 
     SalaireBaseModule, 

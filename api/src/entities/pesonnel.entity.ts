@@ -24,6 +24,7 @@ import { User } from './user.entity';
 import { Role } from './../modules/auth/roles/roles';
 import { Prime } from './prime.entity';
 import { Salaire } from './salaire.entity';
+import { PersonnelSalle } from './personnelsalle.entity';
 
 export enum Status{
   PERMANENT='PERMANENT',
@@ -147,5 +148,8 @@ export class Personnel {
 
   @ManyToMany(() => Salaire, salaire => salaire.personnel,{nullable:true})
   salaire = new Collection<Salaire>(this);
+
+  @OneToMany(()=>PersonnelSalle, (personnelsalle) => personnelsalle.personnel)
+  personnelsalle = new Collection<PersonnelSalle>(this)
 
 }

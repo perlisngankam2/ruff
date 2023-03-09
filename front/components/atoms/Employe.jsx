@@ -29,15 +29,14 @@ import { DELETE_PERSONNEL } from "../../graphql/Mutation";
 
 const Employee = (props) => {
 
-    const router = useRouter();
+  const router = useRouter();
   const {data:dataPersonnel, loading, error} = useQuery(GET_ALL_PERSONNELS)
   const [deletePersonnel] = useMutation(DELETE_PERSONNEL);
   const [personnel, setPersonnel] = useState([]);
   
-
   useEffect (() => {
     setPersonnel(dataPersonnel)
-  console.log(dataPersonnel) 
+    console.log(dataPersonnel) 
 }, [dataPersonnel])
  
   if (loading) return <Text>Chargement en cour...</Text>

@@ -12,42 +12,43 @@ import {
   FormControl,
   FormLabel,
   extendTheme, 
-    HStack ,
-    Heading , 
-    Input, 
-    Stack , 
-    Checkbox,
-    Center , 
-    Flex , 
-    Text , 
-    Card ,
-    CardBody ,
-    VStack ,
-    CardFooter ,
-    CardHeader,
-    Avatar , 
-    IconButton , 
-    BsThreeDotsVertical ,
-    BiLike , 
-    BiChat ,
-    Table,
-    Thead,
-    Tbody,
-    Tfoot,
-    Tr,
-    Th,
-    SimpleGrid,
-    Td,
-    TableCaption,
-    TableContainer,
-    color,
-    Button,
-    Hide,
-    Spacer,
-    br,
-    Icon
+  HStack ,
+  Heading , 
+  Input, 
+  Stack , 
+  Checkbox,
+  Center , 
+  Flex , 
+  Text , 
+  Card ,
+  CardBody ,
+  VStack ,
+  CardFooter ,
+  CardHeader,
+  Avatar , 
+  IconButton , 
+  BsThreeDotsVertical ,
+  BiLike , 
+  BiChat ,
+  Table,
+  Thead,
+  Tbody,
+  Tfoot,
+  Tr,
+  Th,
+  SimpleGrid,
+  Td,
+  TableCaption,
+  TableContainer,
+  color,
+  Button,
+  Hide,
+  Spacer,
+  br,
+  Icon,
+  useToast
 } from "@chakra-ui/react";
-import { Select as Selects} from 'chakra-react-select';
+// import { Select as Selects} from 'chakra-react-select';
 
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
@@ -62,10 +63,13 @@ import {
   GET_STUDENT_BY_ID, 
   GET_ALL_CLASS, 
   GET_ALL_FRAIS_INSCRIPTION, 
-  GET_ALL_TRANCHE_PENSION
+  GET_ALL_TRANCHE_PENSION,
+  GET_TRANCHE_STUDENT_BY_STUDENT_ID
 } from "../../graphql/Queries";
-import { CREATE_TRANCHE_STUDENT } from "../../graphql/Mutation";
-
+import {
+  CREATE_TRANCHE_STUDENT, 
+  CREATE_AVANCE_TRANCHE
+} from "../../graphql/Mutation"
 
 // export const getStaticPath = async() => {
 //   // const apolloClient = initializeApollo();
@@ -184,11 +188,10 @@ export const colorOptions = [
   { value: "green", label: "Green", color: "#36B37E" }
 ]
 
-
-
 const DetailComponent = (student) => {
 
   const router = useRouter();
+  const toast = useToast();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { isOpen:isOpenns, onOpen:onOpenns, onClose:onClosses } = useDisclosure();
 
@@ -198,22 +201,30 @@ const DetailComponent = (student) => {
   const [tranchePensionId,  setTranchePensionId] = useState("");
   const [motif, setMotif] = useState("");
   const [montant, setMontant] = useState();
-  const [studentId, setStudentId] = useState("");
+  const [trancheId, setTrancheId] = useState("");
   // const {loading, error, data:dataStudent} = useQuery(GET_ALL_ATUDENT);
   // const {data:singleStudent} = useQuery(GET_STUDENT_BY_ID);
   // console.log(data);
+
   const {data: dataStudent} = useQuery (GET_ALL_STUDENT);
   
   const {data:dataStudentId, loading, error} = useQuery(GET_STUDENT_BY_ID,
       {
         variables: {id: router.query.id}
       }
-  )
-    
+  );
+
+  const {data:dataTrancheStudentBySudentId} = useQuery(GET_TRANCHE_STUDENT_BY_STUDENT_ID,
+    {
+      variables: {studentid: router.query.id} 
+    }
+  ); 
+
     const {data:dataClass} = useQuery(GET_ALL_CLASS);
     const {data:dataFraisInscription} = useQuery(GET_ALL_FRAIS_INSCRIPTION);
     const {data:dataTranchePension} = useQuery(GET_ALL_TRANCHE_PENSION);
     const [createTrancheStudent] = useMutation(CREATE_TRANCHE_STUDENT);
+    const [createAvanceTranche] = useMutation(CREATE_AVANCE_TRANCHE);
 
         const tranches = []
         const loadTranches = () => {
@@ -226,26 +237,60 @@ const DetailComponent = (student) => {
             )
           })
         }
-        
 
-      const addTrancheStudent = async () => {
+      const addTrancheStudent = async (id) => {
+        console.log(id)
+        console.log(montant)
         await createTrancheStudent({
           variables:{
             trancheStudent:{
-              // studentId: studentId,
+              studentId: id,
               montant: parseInt(montant)
             }
           }
-        })
+        }),
+        toast({
+          title: "Initialisation de la pension.",
+          description: "Initialisation reussit.",
+          status: "success",
+          duration: 3000,
+          isClosable: true,
+        });
       }
+
+
+      const addAvanceTranche = async (id) => {
+        console.log(id)
+        console.log(montant)
+        console.log(trancheId)
+        await createAvanceTranche({
+          variables: {
+            avancetranche:{
+              trancheStudentId: id,
+              montant: parseInt(montant),
+              trancheId: trancheId
+            }
+          }
+        }),
+        toast({
+          title: "paiement tranche pension.",
+          description: " paye avec succes.",
+          status: "success",
+          duration: 3000,
+          isClosable: true,
+        });
+      }
+
 
         useEffect(() =>{
           loadTranches()
-          dataStudentId && console.log(dataStudentId.findOnestudent)
-       console.log(dataClass);
-      //  console.log(dataFraisInscription);
-      console.log(dataTranchePension?.findAlltranche);
-        console.log(dataStudent?.findAllstudents);
+          // dataStudentId && console.log(dataStudentId.findOnestudent)
+          // console.log(dataClass);
+          //  console.log(dataFraisInscription);
+          console.log(dataTranchePension?.findAlltranche);
+            // console.log(dataStudent?.findAllstudents);
+
+          console.log(dataTrancheStudentBySudentId?.getTrancheStudentByStudent)
      })
 
      if (loading) return <Text>Chargement en cour...</Text>
@@ -257,7 +302,7 @@ const DetailComponent = (student) => {
         p={3} 
         pt="70px" 
         background="colors.tertiary" 
-        w='150%'
+        // w='150%'
       >
       <Flex
           align="center"
@@ -298,126 +343,7 @@ const DetailComponent = (student) => {
             >
               Payer la Scolarite
             </Button>
-              <AlertDialog
-                isOpen={isOpen}
-                leastDestructiveRef={cancelRef}
-                onClose={onClose}
-                size='xl'
-              >
-              <AlertDialogOverlay>
-                  <AlertDialogContent  >
-                    <AlertDialogHeader 
-                      fontSize='sm' 
-                      fontWeight='base' 
-                      mt='0'
-                    >
-                    <Box  
-                      bg={"colors.secondary"} 
-                      borderBottomRightRadius={10} 
-                      borderBottomLeftRadius={10}
-                    >
-                      <Heading 
-                        as='H4' 
-                        textAlign={'center'} 
-                        fontSize={['15px','20px','26px']} 
-                        p='2' 
-                      >
-                          Groupe Scolaire Bilingue Awono Bilongue
-                      </Heading>
-                    </Box>
-                    </AlertDialogHeader>
-                  <AlertDialogBody>
 
-
-            <Box mt='4'>
-
-              {/* BOUTON D'INITIALISATION DE LA PENSION */}
-              <Box display="flex"> 
-                <Text 
-                  mb={5}
-                  size="md"
-                  color = "colors.quinzaine"
-                >
-                  Initialisez le paiement
-                </Text>
-                <Icon 
-                  as={IoIosAdd} 
-                  boxSize="30px"
-                  color={"colors.greencolor"}
-                  rounded="full"
-                  ml={["5px", "5px", "5px" ]}
-                  mr={["5px"]}
-                  _hover={{background:"colors.bluecolor"}}
-                  onClick={onOpenns}
-                />
-                </Box> 
-                {/* <Flex 
-                  gap={25} 
-                  flexWrap={['wrap','wrap','nowrap']} 
-                  align='end'
-                > */}
-                  {/* <Checkbox colorScheme='green' >
-                    Checkbox
-                  </Checkbox>
-                  <Checkbox colorScheme='green' >
-                    Checkbox
-                  </Checkbox>
-                  <Checkbox colorScheme='green' >
-                    Checkbox
-                  </Checkbox> */}
-              <FormControl>
-                <FormLabel>
-                  Motif
-                </FormLabel>
-                <Selects  
-                  isMulti
-                  options= {tranches}
-                  placeholder="--motif--"
-                  // name=""
-                  // value={motif}
-                >
-                </Selects>
-              </FormControl>
-            </Box>
-            <Box mt='4'>
-              <Flex 
-                gap={5} 
-                flexWrap={['wrap','wrap','nowrap']} 
-                align='end'
-              >
-                <FormControl>
-                  <FormLabel>Montant attendu</FormLabel>
-                    <Input 
-                      type={'text'} 
-                      disabled='disabled' 
-                      placeholder='0000000' 
-                      color='gray'
-                    />
-                  </FormControl>
-                  <FormControl>
-                    <FormLabel>Montant percu</FormLabel>
-                    <Input type={'number'} />
-                  </FormControl>
-              </Flex>
-            </Box>
-            </AlertDialogBody>
-            <AlertDialogFooter>
-              <Button 
-                ref={cancelRef} 
-                onClick={onClose} 
-                colorScheme='red' 
-              >
-                annuler
-              </Button>
-             <Link href={'#'}>
-                <Button colorScheme='green'  ml={3}>
-                  payer
-                </Button>
-              </Link> 
-            </AlertDialogFooter>
-          </AlertDialogContent>
-        </AlertDialogOverlay>
-      </AlertDialog>
           </Center>
           <Center 
             bg='#FC8A94' 
@@ -706,7 +632,7 @@ const DetailComponent = (student) => {
                     <Button 
                       colorScheme='green'  
                       ml={3}
-                      onClick={addTrancheStudent}
+                      onClick={() => addTrancheStudent(dataStudentId.findOnestudent.id)}
                     >
                       Initialiser
                     </Button>
@@ -716,6 +642,163 @@ const DetailComponent = (student) => {
             </AlertDialogContent>
           </AlertDialogOverlay>
         </AlertDialog>
+
+        {/* FORMULAIRE DE PAIEMENT DE LA SCOLARITE */}
+
+          <Box
+            as="form"
+          > 
+                <AlertDialog
+                    isOpen={isOpen}
+                    leastDestructiveRef={cancelRef}
+                    onClose={onClose}
+                    size='xl'
+                  >
+                  <AlertDialogOverlay>
+                    <AlertDialogContent  >
+                        <AlertDialogHeader 
+                          fontSize='sm' 
+                          fontWeight='base' 
+                          mt='0'
+                        >
+                        <Box  
+                          bg={"colors.secondary"} 
+                          borderBottomRightRadius={10} 
+                          borderBottomLeftRadius={10}
+                        >
+                          <Heading 
+                            as='H4' 
+                            textAlign={'center'} 
+                            fontSize={['15px','20px','26px']} 
+                            p='2' 
+                          >
+                              Groupe Scolaire Bilingue Awono Bilongue
+                          </Heading>
+                        </Box>
+                        </AlertDialogHeader>
+                      <AlertDialogBody>
+                        <Box mt='4'>
+                          {/* BOUTON D'INITIALISATION DE LA PENSION */}
+                            <Box display="flex"> 
+                              <Text 
+                                mb={5}
+                                size="md"
+                                color = "colors.quinzaine"
+                              >
+                                Initialisez le paiement
+                              </Text>
+                              <Icon 
+                                as={IoIosAdd} 
+                                boxSize="30px"
+                                color={"colors.greencolor"}
+                                rounded="full"
+                                ml={["5px", "5px", "5px" ]}
+                                mr={["5px"]}
+                                _hover={{background:"colors.bluecolor"}}
+                                onClick={onOpenns}
+                              />
+                              </Box> 
+                            {/* <Flex 
+                              gap={25} 
+                              flexWrap={['wrap','wrap','nowrap']} 
+                              align='end'
+                            > */}
+                              {/* <Checkbox colorScheme='green' >
+                                Checkbox
+                              </Checkbox>
+                              <Checkbox colorScheme='green' >
+                                Checkbox
+                              </Checkbox>
+                              <Checkbox colorScheme='green' >
+                                Checkbox
+                              </Checkbox> */}
+                          <FormControl>
+                            <FormLabel>
+                              Motif
+                            </FormLabel>
+                              <Select
+                                name="trancheId"
+                                value={trancheId}
+                                onChange={(event) => setTrancheId(event.target.value)}
+                              >
+                                {
+                                  dataTranchePension && (
+                                    dataTranchePension.findAlltranche.map((tranche, index) =>(
+                                      <option value={tranche?.id} key={index}>
+                                          {tranche.name}
+                                      </option>
+                                    ))
+                                  )
+                                }
+                              </Select>
+                          </FormControl>
+                        </Box>
+                        <Box mt='4'>
+                          <Flex 
+                            gap={5} 
+                            flexWrap={['wrap','wrap','nowrap']} 
+                            align='end'
+                          >
+                            {/* <FormControl> */}
+                              {/* <FormLabel>Montant attendu</FormLabel>
+                                <Input 
+                                  type={'text'} 
+                                  disabled='disabled' 
+                                  placeholder='0000000' 
+                                  color='gray'
+                                />
+                              </FormControl> */}
+                              <FormControl>
+                                <FormLabel>Montant percu</FormLabel>
+                                <Input 
+                                  type={'number'} 
+                                  name="montant"
+                                  value={montant}
+                                  onChange={(event) => setMontant(event.target.value)}
+
+                                />
+                              </FormControl>
+                          </Flex>
+                          <Flex 
+                            gap={5} 
+                            flexWrap={['wrap','wrap','nowrap']} 
+                            align='end'
+                            mt="15px"
+                          >
+                            {/* { dataTrancheStudentBySudentId && ( */}
+                              <FormControl>
+                                <FormLabel>Pension total paye</FormLabel>
+                                <Input 
+                                  type={'text'} 
+                                  value={dataTrancheStudentBySudentId?.getTrancheStudentByStudent.montant} 
+                                />
+                              </FormControl>
+                            {/* )} */}
+                          </Flex>
+                        </Box>
+                      </AlertDialogBody>
+                      <AlertDialogFooter>
+                        <Button 
+                          ref={cancelRef} 
+                          onClick={onClose} 
+                          colorScheme='red' 
+                        >
+                          annuler
+                        </Button>
+                      <Link href={'#'}>
+                          <Button 
+                            colorScheme='green'  
+                            ml={3}
+                            onClick={() => addAvanceTranche(dataTrancheStudentBySudentId?.getTrancheStudentByStudent.id)}
+                          >
+                            payer
+                          </Button>
+                        </Link> 
+                      </AlertDialogFooter>
+                    </AlertDialogContent>
+                  </AlertDialogOverlay>
+                </AlertDialog>
+              </Box>
 </SimpleGrid>
 )} 
       </Box>

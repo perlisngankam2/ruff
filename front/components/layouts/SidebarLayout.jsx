@@ -45,8 +45,9 @@ const SidebarLayout = ({ children }) => {
   const { account, loaded } = useAccount();
   const { data: personnelData, called, loading } = useQuery(GET_PERSONNEL_BY_USERID,
      {
-    variables:{ userid: account?.id }
-  })
+        variables:{ userid: account?.id }
+    }
+  )
 
   // const role = userRole;
 
@@ -54,9 +55,9 @@ const SidebarLayout = ({ children }) => {
    
     <VStack
       background="colors.secondary"
+      overflowY="auto"
       p="7"
       gap={3}
-      minH="100vh"
       minW={"230px"}
       align="left"
       paddingTop={"80px"}

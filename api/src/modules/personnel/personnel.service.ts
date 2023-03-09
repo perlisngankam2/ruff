@@ -45,7 +45,7 @@ export class PersonnelService {
   fonction : input.fonction,
   dateOfBirth : input.dateOfBirth,
   situationMatrimonial : input.situationMatrimonial,
-  prime:input.primeId,
+  // prime:input.primeId,
   salary:input.salary
 },
   {

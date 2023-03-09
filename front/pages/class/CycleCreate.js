@@ -174,7 +174,7 @@ const  CycleCreate =  (
         })
         console.log(cycleData)
         toast({
-            title: "Creation d'un cyle.",
+            title: "Creation d'un cycle.",
             description: "Le cylce a éte crée avec succes.",
             status: "success",
             duration: 3000,

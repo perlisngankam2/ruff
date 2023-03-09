@@ -1,25 +1,23 @@
 import {gql} from '@apollo/client';
-import Personnel from '../pages/personnel';
 
 //personnel
 export const GET_ALL_PERSONNELS = gql `
-    query findAllpersonnel { 
-        findAllpersonnel {
-            id
-            firstName
-            lastName
-            phoneNumber
-            situationMatrimonial
-            sexe
-            fonction
-            status
-            dateOfStartWork
-            dateOfBirth
-            childNumber
-            password
-            email
-        }
+query findAllpersonnel {
+    findAllpersonnel {
+        id
+        firstName
+        lastName
+        phoneNumber
+        salary
+        situationMatrimonial
+        sexe
+        fonction
+        status
+        dateOfStartWork
+        dateOfBirth
+        childNumber
     }
+}
 `;
 
 //category personnel
@@ -94,6 +92,7 @@ export const GET_ALL_CYCLE =  gql `
     }
 `;
 
+//liste des classes
 export const GET_ALL_CLASS =  gql `
     query findAllsalle {
         findAllsalle {
@@ -101,6 +100,7 @@ export const GET_ALL_CLASS =  gql `
             name
             section
             cycle
+            montantPensionSalle
             effectif
         }
     }
@@ -119,24 +119,22 @@ export const GET_ALL_FRAIS_INSCRIPTION =  gql `
 
 
 // one Personnel
-export const GET_PERSONNEL_BY_ID =  gql `
-    query findOnePersonnel ($id: String!) {
-        findOnePersonnel (id: $id) {
-            id
-            firstName
-            lastName
-            phoneNumber
-            situationMatrimonial
-            sexe
-            fonction
-            status
-            dateOfStartWork
-            dateOfBirth
-            childNumber
-            password
-            email
-        }
+export const GET_ALL_PERSONNEL_BY_ID = gql `
+query findOnePersonnel ($id: String!) {
+    findOnePersonnel (id: $id) {
+        id
+        firstName
+        lastName
+        phoneNumber
+        situationMatrimonial
+        sexe
+        fonction
+        status
+        dateOfStartWork
+        dateOfBirth
+        childNumber
     }
+}
 `;
 
 //one student
@@ -203,14 +201,27 @@ export const GET_ALL_REDUCTION_SCOLARITE = gql  `
     }
 `;
 
+//recuperqtion de toutes les tranches
+export const GET_ALL_TRANCHE_PENSION = gql `
+    query findAlltranche {
+        findAlltranche {
+            id
+            name
+            description
+            dateLine
+            montant
+        }
+    }
+`;
+
 //one cycle
 export const GET_ONE_CYCLE =  gql `
-query findOnecycle ($id: String!) {
-    findOnecycle (id: $id) {
-        id
-        name
+    query findOnecycle ($id: String!) {
+        findOnecycle (id: $id) {
+            id
+            name
+        }
     }
-}
 `;
 
 export const GET_USER_CONNECTED = gql `
@@ -229,3 +240,47 @@ query user ($id: String!) {
     }
 }
 `;
+
+
+export const GET_ALL_USER = gql `
+query findAlluser {
+    findAlluser {
+        id
+        email
+        password
+        firstName
+        lastName
+        name
+        role
+        phoneNumber
+        active
+        deactivatedAt
+    }
+}
+`;
+
+//personnel by userid
+
+export const GET_PERSONNEL_BY_USERID= gql `
+query getpersonnelbyaccount ($userid: String!) {
+    getpersonnelbyaccount (userid: $userid) {
+        id
+        firstName
+        lastName
+        phoneNumber
+        salary
+        situationMatrimonial
+        sexe
+        fonction
+        status
+        dateOfStartWork
+        dateOfBirth
+        childNumber
+    }
+}
+`;
+
+
+
+
+

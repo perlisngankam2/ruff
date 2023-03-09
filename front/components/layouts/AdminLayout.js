@@ -51,6 +51,11 @@
                 <Box as="span">Categorie personnel</Box>
               </Link>
             </AccordionPanel>
+            <AccordionPanel>
+              <Link href="/comptePersonnel">
+                <Box as="span">Compte personnel</Box>
+              </Link>
+            </AccordionPanel>
           </AccordionItem>
           <AccordionItem>
             <AccordionButton my={2} pl={0}>
@@ -175,6 +180,16 @@
             <AccordionPanel>
               <Link href="/payment/lastpayments">
                 <Box as="span">Derniers paiements</Box>
+              </Link>
+            </AccordionPanel>
+            <AccordionPanel>
+              <Link href="/payment/ajouterprime">
+                <Box as="span">Ajouter une prime</Box>
+              </Link>
+            </AccordionPanel>
+            <AccordionPanel>
+              <Link href="/payment/ajouterretenue">
+                <Box as="span">Ajouter une retenue</Box>
               </Link>
             </AccordionPanel>
           </AccordionItem>

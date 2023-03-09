@@ -7,14 +7,14 @@ import { SalaireBaseCreateInput } from 'src/modules/salaire_base/dto/salaire-bas
 @InputType()
 export class CategoriePersonnelUpdate {
 
-  @Field(()=>ID,{nullable:true})
-  primeID?: string;
+  // @Field(()=>ID,{nullable:true})
+  // primeID?: string;
 
-  @Field(()=>ID,{nullable:true})
-  retenuID?: string;
+  // @Field(()=>ID,{nullable:true})
+  // retenuID?: string;
 
-  @Field(()=>ID,{nullable:true})
-  salaireID?: string;
+  // @Field(()=>ID,{nullable:true})
+  // salaireID?: string;
 
   @Field({nullable:true})
   nom?: string;
@@ -22,13 +22,13 @@ export class CategoriePersonnelUpdate {
   @Field({nullable:true})
   description?: string;
   
-  @Field(()=>PrimeCreateInput,{nullable:true})
-  prime?: PrimeCreateInput;
+  // @Field(()=>PrimeCreateInput,{nullable:true})
+  // prime?: PrimeCreateInput;
 
-  @Field(()=>RetenuCreateInput,{nullable:true})
-  retenu?: RetenuCreateInput;
+  // @Field(()=>RetenuCreateInput,{nullable:true})
+  // retenu?: RetenuCreateInput;
 
-  @Field(()=>SalaireBaseCreateInput,{nullable:true})
-  salaireBase?: SalaireBaseCreateInput;
+  // @Field(()=>SalaireBaseCreateInput,{nullable:true})
+  // salaireBase?: SalaireBaseCreateInput;
 
 }

@@ -63,16 +63,16 @@ export class PrimeService {
       
       async update(id:string,input: PrimeUpdateInput): Promise<Prime> {
         const prime = await this.findById(id)
-        if (input.categoriePirme) {
-            const categorie =
-            input.categoriePirme?.ID &&
-              (await this.categoriePrime.findByOne({ id: input.categoriePirme?.ID }));
+        // if (input.categoriePirme) {
+        //     const categorie =
+        //     input.categoriePirme?.ID &&
+        //       (await this.categoriePrime.findByOne({ id: input.categoriePirme?.ID }));
       
-            if (!categorie) {
-              throw new NotFoundError('categorie no exist' || '');
-            }
-            this.categoriePrime.update(categorie.id, input.categoriePirme);
-          }   
+        //     if (!categorie) {
+        //       throw new NotFoundError('categorie no exist' || '');
+        //     }
+        //     this.categoriePrime.update(categorie.id, input.categoriePirme);
+        //   }   
         wrap(prime).assign({
             nom:input.nom || prime.nom,
             description: input.description || prime.description,

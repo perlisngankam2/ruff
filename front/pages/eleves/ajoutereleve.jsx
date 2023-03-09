@@ -33,6 +33,7 @@ const AjouterEleve = () => {
   const [adress, setAdress] = useState("");
   const [transport, setTransport] = useState(false);
   const [categoryStudentId, setCategoryStudentId] = useState("");
+  const [salleId, setSalleId] = useState("");
   // const [cycle, setCycle] = useState("");
   // const [section, setSection] = useState("");
   const [fatherFirstName, setFatherFirstName] = useState("");
@@ -54,7 +55,7 @@ const AjouterEleve = () => {
   const [progress, setProgress] = useState(33.33);
   const [prenom, setPrenom] = useState("");
   const [age, setAge] = useState("");
-  const {data:dataClass} = useQuery(GET_ALL_CLASS);
+  const{data: dataClass} = useQuery(GET_ALL_CLASS);
   const {data:dataCategoryStudent} = useQuery(GET_ALL_Category_Eleve);
   const [ createStudent, error] = useMutation(CREATE_STUDENT)
   const {data:dataSection} = useQuery(GET_ALL_SECTION);
@@ -76,6 +77,7 @@ const AjouterEleve = () => {
           adress: adress,
           transport: transport,
           categoryStudentId: categoryStudentId,
+          salleId: salleId,
           fatherFirstName: fatherFirstName,
           fatherLastName: fatherLastName,
           fatherPhoneNumber: fatherPhoneNumber,
@@ -110,10 +112,10 @@ const AjouterEleve = () => {
   //newData(numberIn)
 
   useEffect(() => {
-    console.log(dataClass?.findAllsalle)
+    console.log(dataClass?.findAllsalle);
     console.log(dataCategoryStudent?.findAllcategorieeleve)
-    console.log(dataSection?.findAllsection)
-    console.log(dataCycle?.findAllcycle)
+    // console.log(dataSection?.findAllsection)
+    // console.log(dataCycle?.findAllcycle)
   })
 
   // const handleSubmit = (e) => {
@@ -304,25 +306,27 @@ const AjouterEleve = () => {
                         )}
                       </Select>
                     </FormControl>
-                    {/* <FormControl>
-                      <FormLabel>Cycle</FormLabel>
-                      <Select
-                        placeholder="Cycle"
-                        name="cycle"
-                        value={cycle}
-                        onChange={(e) => setCycle(e.target.value)}
-                        variant="flushed"
-                      >
-                        { 
-                          dataCycle && (
-                            dataCycle.findAllcycle.map((cycle, index) => (
-                                <option key={index}>
-                                  <option>{cycle.name}</option>
-                                </option>
-                            ))
-                        )}
-                      </Select>
-                    </FormControl> */}
+                </Flex>
+                <Flex>
+                <FormControl>
+                  <FormLabel>Classe</FormLabel>
+                  <Select
+                    placeholder="Classe"
+                    name="salleId"
+                    value={salleId}
+                    onChange={(e) => setSalleId(e.target.value)}
+                    variant="flushed"
+                  >
+                    { 
+                      dataClass && (
+                        dataClass.findAllsalle.map((classe, index) => (
+                            <option value={classe.id} key={index}>
+                              {classe.name}
+                            </option>
+                        ))
+                    )}
+                  </Select>
+                </FormControl>
                 </Flex>
                 {/* <Flex>
                     <FormControl>

@@ -2,7 +2,7 @@ import { ChakraProvider, extendTheme } from "@chakra-ui/react";
 import { appWithTranslation } from 'next-i18next';
 import i18nextConfig from  '../plugins/next-i18next.config';
 import { ApolloClient, ApolloProvider, InMemoryCache } from "@apollo/client";
-import client from '../graphql/apollo-client'
+import client from "../graphql/apollo-client";
 import "../styles/globals.css";
 import "@fontsource/open-sans";
 import { AuthProvider } from "../contexts/account/Auth/Auth"
@@ -20,7 +20,7 @@ function MyApp({ Component, pageProps}) {
       colors: {
         primary: "#0e341f",
         secondary: "#e2d39c",
-        tertiary: "#eef6ec",
+        tertiary: "f6f7fb",
         quaternary: "#E53E3E",
         quinzaine: "pink.300",
         greencolor: "#2F855A",

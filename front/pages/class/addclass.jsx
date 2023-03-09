@@ -29,7 +29,7 @@ const AddClass = () => {
   const [name, setName] = useState();
   const [section, setSection] = useState();
   const [niveauEtudeId, setNiveauEtudeId] = useState();
-  const [montantPension, setMontantPension] = useState();
+  const [montantPensionSalle, setMontantPensionSalle] = useState();
   const [createSalle] = useMutation(CREATE_SALLE);
   const {data:dataSection} = useQuery(GET_ALL_SECTION);
   const {data:dataStudyLevel} = useQuery(GET_ALL_STUDY_LEVEL);
@@ -61,15 +61,15 @@ const AddClass = () => {
     console.log(name);
     console.log(section);
     console.log(cycle);
-    console.log(montantPension);
+    console.log(montantPensionSalle);
     console.log(niveauEtudeId);
 
     const cycleData = await createSalle({
         variables: {
             salle: {
                 name: name,
-                niveauEtudeId: niveauEtudeId
-                // montantPension: parseInt(montantPension)
+                niveauEtudeId: niveauEtudeId,
+                montantPensionSalle: parseInt(montantPensionSalle)
             }
         }
     })
@@ -121,6 +121,17 @@ const AddClass = () => {
                       name="name"
                       value={name}
                       onChange = {(event) => setName(event.target.value)}
+                    />
+                  </FormControl>
+                  <FormControl>
+                    <FormLabel>Montant pension:</FormLabel>
+                    <Input 
+                      placeholder="Valeur de la pension" 
+                      type="number"
+                      // maxW="300px"
+                      name="montantPensionSalle"
+                      value={montantPensionSalle}
+                      onChange = {(event) => setMontantPensionSalle(event.target.value)}
                     />
                   </FormControl>
                   <FormControl mt="15px">

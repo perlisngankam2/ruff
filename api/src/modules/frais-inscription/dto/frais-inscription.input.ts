@@ -7,7 +7,7 @@ import { SalleCreateInput } from 'src/modules/salle/dto/salle.input';
 
 @InputType()
 export class FraisInscriptionInput {
-  
+
   @Field(()=>ID,{nullable:true})
   salleId?:string
 

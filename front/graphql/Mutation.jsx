@@ -1,35 +1,35 @@
 import { gql } from "@apollo/client";
 
+// npx mikro-orm schema:update --run
+
 //personnel
 export const CREATE_PERSONNEL = gql `
-    mutation createpersonnel ($createPersonnelUser: PersonnelCreateInput!) {
-        createpersonnel (createPersonnelUser: $createPersonnelUser) {
-            id
-            firstName
-            lastName
-            phoneNumber
-            situationMatrimonial
-            sexe
-            fonction
-            status
-            dateOfStartWork
-            dateOfBirth
-            childNumber
-            password
-            email
-        }
+mutation createpersonnel ($createPersonnelUser: PersonnelCreateInput!) {
+    createpersonnel (createPersonnelUser: $createPersonnelUser) {
+        id
+        firstName
+        lastName
+        phoneNumber
+        situationMatrimonial
+        sexe
+        fonction
+        status
+        dateOfStartWork
+        dateOfBirth
+        childNumber
     }
+}
 `;
 
 //categorie personnel
 export const CREATE_CATEGORY_PERSONNEL = gql`
-    mutation createcategoriepersonnnel ($createCategoriePersonnel: CategoriePersonnelCreateInput!) {
-        createcategoriepersonnnel (createCategoriePersonnel: $createCategoriePersonnel) {
-            id
-            nom
-            description
-        }
+mutation createcategoriepersonnnel ($createCategoriePersonnel: CategoriePersonnelCreateInput!) {
+    createcategoriepersonnnel (createCategoriePersonnel: $createCategoriePersonnel) {
+        id
+        nom
+        description
     }
+}
 `;
 
 
@@ -81,6 +81,7 @@ export const CREATE_SALLE = gql `
             name
             section
             cycle
+            montantPensionSalle
             effectif
         }
     }
@@ -155,6 +156,33 @@ export const CREATE_REDUCTION_SCOLARITE = gql `
     }
 `;
 
+//cretion de lq tranche
+export const CREATE_TRANCHE_PENSION = gql `
+    mutation createTranche ($tranche: TrancheCreateInput!) {
+        createTranche (tranche: $tranche) {
+            id
+            name
+            description
+            dateLine
+            montant
+        }
+    }
+`
+
+//fronction d'initialisation du paiemt d'une pension pour un eleve donne
+export  const CREATE_TRANCHE_STUDENT = gql `
+mutation createTrancheStudent ($trancheStudent: TrancheStudentCreateInput!) {
+    createTrancheStudent (trancheStudent: $trancheStudent) {
+        id
+        name
+        description
+        montant
+        complete
+        reste
+    }
+}
+`;
+
 export const fragmentCycle = gql` fragment CycleClass on cyle {
     id
     name
@@ -177,23 +205,21 @@ export const DELETE_CATEGORY_PERSONNEL = gql `
 
 //delete personnel
 export const DELETE_PERSONNEL = gql `
-    mutation deletepersonnel ($id: String!) {
-        deletepersonnel (id: $id) {
-            id
-            firstName
-            lastName
-            phoneNumber
-            situationMatrimonial
-            sexe
-            fonction
-            status
-            dateOfStartWork
-            dateOfBirth
-            childNumber
-            password
-            email
-        }
+mutation deletepersonnel ($id: String!) {
+    deletepersonnel (id: $id) {
+        id
+        firstName
+        lastName
+        phoneNumber
+        situationMatrimonial
+        sexe
+        fonction
+        status
+        dateOfStartWork
+        dateOfBirth
+        childNumber
     }
+}
 `;
 
 
@@ -224,6 +250,7 @@ export const DELETE_SALLE = gql `
             name
             section
             cycle
+            montantPensionSalle
             effectif
         }
     }
@@ -279,6 +306,7 @@ export const UPDATE_CLASS = gql `
             name
             section
             cycle
+            montantPensionSalle
             effectif
         }
     }
@@ -297,7 +325,6 @@ export const UPDATE_CYCLE = gql `
 `;
 
 //create user
-
 export const CREATE_USER = gql `
     mutation createuser ($createUser: UserCreateInput!) {
         createuser (createUser: $createUser) {
@@ -334,6 +361,20 @@ mutation login ($loginInput: LoginInput!) {
     }
 }
 `;
+
+//prime
+
+export const CREATE_PRIME = gql `
+mutation createprime ($prime: PrimeCreateInput!) {
+    createprime (prime: $prime) {
+        id
+        nom
+        description
+        montant
+    }
+}
+`;
+
 
 
 

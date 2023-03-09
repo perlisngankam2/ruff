@@ -7,6 +7,8 @@ export class SalleCreateInput {
   @Field({nullable:true})
   ID?: string;
   
+
+
   @Field({nullable:true})
   name?: string;
 
@@ -16,8 +18,8 @@ export class SalleCreateInput {
   @Field({nullable:true})
   cycle?: string;
 
-  // @Field({nullable:true})
-  // montantPension?: number;
+  @Field({nullable:true})
+  montantPensionSalle?: number;
 
   @Field({nullable:true,defaultValue:0})
   effectif?: number;

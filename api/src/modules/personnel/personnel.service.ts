@@ -24,21 +24,22 @@ export class PersonnelService {
   ): Promise<Personnel> {
 
   
-  const user = await this.userService.findById(input.userID)
-  if (!user) {
-    throw new NotFoundError('user not found'|| '');
-   }
+   await this.userService.findById(input.userID)
+  // if (!user) {
+  //   throw new NotFoundError('user not found'|| '');
+  //  }
   const new_personnel = new Personnel()
 
   wrap(new_personnel).assign({
   firstName : input.firstName,
   lastName : input.lastName,
   category :input.categoryPersonnelId,
+  user: input.userID,
   status : input.status,
   childNumber: input.childNumber,
   phoneNumber: input.phoneNumber,
-  email: input.email,
-  password: input.password,
+  // email: input.email,
+  // password: input.password,
   sexe: input.sexe,
   dateOfStartWork : input.dateOfStartWork,
   fonction : input.fonction,
@@ -79,16 +80,16 @@ export class PersonnelService {
   
   async update(id:string, input: PersonnelUpdateInput): Promise<Personnel> {
     const personnel = await this.findById(id)
-    if (input.user) {
-      const user =
-      input.user?.ID &&
-        (await this.userService.findOne({ id: input.user?.ID}));
+    // if (input.user) {
+    //   const user =
+    //   input.user?.ID &&
+    //     (await this.userService.findOne({ id: input.user?.ID}));
 
-      if (!user) {
-        throw new NotFoundError('user not found' || '');
-      }
-      this.userService.update(user.id, input.user);
-    }    
+    //   if (!user) {
+    //     throw new NotFoundError('user not found' || '');
+    //   }
+    //   this.userService.update(user.id, input.user);
+    // }    
     wrap(personnel).assign({
       firstName: input.firstName || personnel.firstName,
       lastName: input.lastName || personnel.lastName,
@@ -119,7 +120,7 @@ export class PersonnelService {
   return a
   }
 
-  async findpersonnelbyaccount(userid:string){
+async findpersonnelbyaccount(userid:string){
    return (await this.em.find(Personnel,{user: userid}))[0]
   }
 

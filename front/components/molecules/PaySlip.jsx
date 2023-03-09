@@ -10,10 +10,12 @@ import PaySlipMiddle from "../atoms/PaySlipMiddle";
 import PaySlipFolderSalaryBox from "../atoms/PaySlipFolderSalaryBox";
 import PaySlipLogoBox from "../atoms/PaySlipLogoBox";
 import PaySlipInformationEmployeeBox from "../atoms/PaySlipInformationEmployeeBox";
+import DefaultLayout from "../layouts/DefaultLayout";
 
 
 const PaySlip = () => {
     return ( 
+        <DefaultLayout>
         <Center>
             <Box>
 
@@ -41,6 +43,7 @@ const PaySlip = () => {
                 <PaySlipBottom />
             </Box>
         </Center>
+        </DefaultLayout>
      );
 }
  

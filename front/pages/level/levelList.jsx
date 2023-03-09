@@ -40,7 +40,7 @@ import {
   import AddNew from "../../components/atoms/AddNew";
   import StudentBox from "../../components/atoms/StudentBox";
   import DefaultLayout from "../../components/layouts/DefaultLayout";
-  import { GET_ALL_STUDY_LEVEL } from "../../graphql/queries";
+  import { GET_ALL_STUDY_LEVEL } from "../../graphql/Queries";
   import { useMutation, useQuery } from "@apollo/client";
   import {IoIosAdd} from 'react-icons/io';
   import{ FiEdit} from 'react-icons/fi';
@@ -107,8 +107,8 @@ import {
             </Select>
             <Box> 
               <Button
-                  rightIcon={<Icon as={IoIosAdd} boxSize="20px" />}
-                  onClick={() => router.push("/addLevel")}
+                  rightIcon={<Icon as={IoIosAdd} boxSize="20px"/>}
+                  onClick={() => router.push("/level/addLevel")}
                 >
                   Ajouter un niveau
               </Button>

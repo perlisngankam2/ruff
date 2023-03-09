@@ -208,7 +208,7 @@ export class InscriptionService {
             montant: Number(input.montant) || Number(inscription.montant) || 0.0,
             description: input.description || inscription.description,
             name: input.name|| inscription.name,
-            salle: input.salleId || inscription.salle
+            salle: input.salleId || inscription.salle   
         },
         { em: this.em },
         );

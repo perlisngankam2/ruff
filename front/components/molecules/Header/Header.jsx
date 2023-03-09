@@ -27,10 +27,21 @@ import { HiOutlineHome, HiUserGroup } from "react-icons/hi";
 import { IoMdSchool, IoIosStats, IoIosArrowDown } from "react-icons/io";
 import { GiTakeMyMoney } from "react-icons/gi";
 import { HamburgerIcon } from "@chakra-ui/icons";
+import { useAuth } from "../../../contexts/account/Auth/Auth";
+import { useAccount } from "../../../contexts/account/Account";
+import { GET_PERSONNEL_BY_USERID } from "../../../graphql/queries";
+import { useMutation, useQuery } from '@apollo/client'; 
 
 
 const Header = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const { removeAuthToken } = useAuth()
+  const { account } = useAccount()
+     const { data: personnelData, called, loading } = useQuery(GET_PERSONNEL_BY_USERID,
+     {
+    variables:{ userid: account?.id }
+  })
+
   return (
     <Box
       as="header"
@@ -149,10 +160,17 @@ const Header = () => {
             <Menu>
               <MenuButton>
                 <Flex align="center" gap="1">
+                  {account?.firstName === null && account?.firstName === null ?
                   <Avatar
-                    src="https://www.mykhel.com/thumb/250x90x250/football/players/4/19054.jpg"
+                  name={ personnelData?.getpersonnelbyaccount.firstName + ' ' + personnelData?.getpersonnelbyaccount.lastName } 
                     size="md"
                   />
+                :
+                 <Avatar
+                  name={ account?.firstName + ' ' + account?.lastName } 
+                    size="md"
+                  />
+                }
                   <Icon as={IoIosArrowDown} boxSize="5"/>
                 </Flex>
               </MenuButton>
@@ -163,7 +181,7 @@ const Header = () => {
                 <Link href="#">
                   <MenuItem>Paramètres</MenuItem>
                 </Link>
-                <Link href="#">
+                <Link href="/" onClick={removeAuthToken}>
                   <MenuItem>Se Déconnecter</MenuItem>
                 </Link>
                 <Link href="#">

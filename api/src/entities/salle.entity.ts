@@ -41,7 +41,7 @@ export class Salle{
 
     @Field({nullable: true})
     @Property({nullable: true})
-    montantPension!: number;
+    montantPensionSalle!: number;
 
     @Field({ nullable: true })
     @Property({nullable:true})

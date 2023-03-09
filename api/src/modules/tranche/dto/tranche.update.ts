@@ -7,8 +7,11 @@ import { SalleCreateInput } from 'src/modules/salle/dto/salle.input';
 
 @InputType()
 export class TrancheUpdateInput {
+  // @Field(()=>ID,{nullable:true})
+  // pension_id?: string;
+
   @Field(()=>ID,{nullable:true})
-  pension_id?: string;
+  anneeAcademiqueId?:string
 
   @Field({nullable:true})
   name?: string;
@@ -23,6 +26,6 @@ export class TrancheUpdateInput {
   @Field(()=>Date,{nullable:true})
   dateLine?: Date;
 
-  @Field(()=> PensionCreateInput,{nullable:true})
-  pension?:PensionCreateInput
+  // @Field(()=> PensionCreateInput,{nullable:true})
+  // pension?:PensionCreateInput
 }

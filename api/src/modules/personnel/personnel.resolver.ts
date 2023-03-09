@@ -46,12 +46,12 @@ export class PersonnelResolver {
    return await this.personnelService.delete(id)
   }
 
-  @Mutation(()=>User)
+  @Query(()=>User)
   async getpersonnelaccount(@Args('id') id:string){
     return await this.personnelService.getcorrespondingaccount(id)
   }
 
-  @Query(()=>Personnel)
+@Query(()=>Personnel)
   async getpersonnelbyaccount(@Args('userid') userid:string){
     const personnel=await this.personnelService.findpersonnelbyaccount(userid)
     if(!personnel){
@@ -59,4 +59,5 @@ export class PersonnelResolver {
     }
     return personnel
   }
+
 }

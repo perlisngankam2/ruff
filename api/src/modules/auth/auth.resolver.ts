@@ -21,11 +21,11 @@ export class AuthResolver{
     }
 
 
-    @Mutation(() => LoginResponsePersonnel)
-    @UseGuards(GqlAuthGuard)
-    loginpersonnel(@Args('loginInput') loginInput: LoginInput, @Context() context ){
-        return this.authservice.loginpersonnel(context.personnel);
-    }
+    // @Mutation(() => LoginResponsePersonnel)
+    // @UseGuards(GqlAuthGuard)
+    // loginpersonnel(@Args('loginInput') loginInput: LoginInput, @Context() context ){
+    //     return this.authservice.loginpersonnel(context.personnel);
+    // }
 
     @Query(() => Personnel)
     @UseGuards(GqlAuthGuard)

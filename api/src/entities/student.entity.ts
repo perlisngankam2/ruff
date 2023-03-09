@@ -159,7 +159,6 @@ export class Student {
   })
   localisation!:IdentifiedReference<Localisation>|null
 
-
   @OneToOne(() => Inscription, (inscription) => inscription.student, {
     owner: false,
     nullable: true,

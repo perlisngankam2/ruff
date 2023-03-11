@@ -24,6 +24,7 @@ import { Tranche } from './tranche.entity';
 @Entity()
 @ObjectType()
 export class Pension {
+  
   @Field(() => ID)
   @PrimaryKeyUuid()
   id!: string;

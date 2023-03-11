@@ -419,7 +419,6 @@ type Mutation {
   createTranche(tranche: TrancheCreateInput!): Tranche!
   updatetranche(id: String!): Tranche!
   createPension(pension: PensionCreateInput!): Pension!
-  updatePension(id: String!): Pension!
   deletepension(id: String!): Pension!
   createFraisExamen(fraisExamen: FraisExamentInput!): FraisExamen!
   updatefraisexam(id: String!, input: UpdateFraisExamentInput!): FraisExamen!
@@ -791,14 +790,12 @@ input TrancheCreateInput {
 }
 
 input PensionCreateInput {
-  salle_id: ID
-  anneeAcademique_id: ID
+  salleId: ID
+  anneeAcademiqueId: ID
   name: String
   description: String
   montant: Float! = 0
   dateLine: ID
-  salle: SalleCreateInput
-  anneeAccademique: AnneeAccademiqueCreateInput
 }
 
 input FraisExamentInput {

@@ -198,6 +198,19 @@ export const CREATE_AVANCE_TRANCHE = gql `
     }
 `;
 
+//mutation d'affection de la pension a une classe 
+export const CREATE_MONTANT_SCOLARITE_CLASS = gql `
+    mutation createPension ($pension: PensionCreateInput!) {
+        createPension (pension: $pension) {
+            id
+            name
+            description
+            montant
+            dateLine
+        }
+    }
+`;
+
 export const CREATE_PERSONNEL_SALLE = gql `
     mutation createPersonnelSalle ($input: PersonnelSalleCreateInput!) {
         createPersonnelSalle (input: $input) {

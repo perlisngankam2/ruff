@@ -23,6 +23,7 @@ import { useRouter } from "next/router";
 import DefaultLayout from "../components/layouts/DefaultLayout";
 
 function comptePersonnel() {
+
   const [Nom , setNom] = useState("");
   const [Prenom , setPrenom] = useState("");
   const [PhoneNumber, setPhoneNumber] = useState("");
@@ -35,7 +36,6 @@ function comptePersonnel() {
 
   const HandleClick = async (event) => {
   event.preventDefault();
-
   const userData = await createUser({
         variables:{
         createUser: { 
@@ -52,6 +52,9 @@ function comptePersonnel() {
       duration: 3000,
       isClosable: true,
     });
+    router.push("/personnel")
+    setEmail("");
+    setPassword("");
   }
 
 
@@ -131,7 +134,7 @@ function comptePersonnel() {
                   <FormControl>
                     <FormLabel>Email</FormLabel>
                     <Input 
-                      placeholder="Nom de la classe" 
+                      placeholder="Email" 
                       type="email"
                       // maxW="300px"
                       name="email"

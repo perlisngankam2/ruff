@@ -96,7 +96,6 @@ const AjouterEleve = () => {
         query: GET_ALL_STUDENT
       }]
     })
-    console.log(studentData)
     toast({
       title: "Creation d'un élève.",
       description: "Creation de l'élève réussit.",
@@ -105,6 +104,30 @@ const AjouterEleve = () => {
       isClosable: true,
     });
     router.push("/eleves")
+    
+    setMatricule("");
+    setFirstname("");
+    setLastname("");
+   // const [classe, setClass] = useState("");
+    setDateOfBirth("");
+    setSex("");
+    setAdress("");
+    setTransport("");
+    categoryStudentId("");
+    setSalleId("");
+    setFatherFirstName("");
+    setFatherLastName("");
+    setFatherProfession("");
+    setFatherPhoneNumber("");
+    setMotherFirstName("");
+    setMotherLastName("");
+    setMotherProfession("");
+    setMotherPhoneNumber("");
+    setTutorFirstName("");
+    setTutorLastName("");
+    setTutorProfession("");
+   setTutorPhoneNumber("");
+
   }
 
   //newDtata.sethour(10)

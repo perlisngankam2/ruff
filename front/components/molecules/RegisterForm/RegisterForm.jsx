@@ -99,8 +99,6 @@ const RegisterForm = () => {
                     placeholder="votre nom ...."
                     errorMessage ="Nom doit avoir 3-16 caracteres et sans inclure les caracteres speciaux"
                     pattern = "^[A-Za-z0-9]{3-16}$"
-
-                    
                   />
                 </FormControl>
                 <FormControl mb={3} isRequired>
@@ -146,7 +144,6 @@ const RegisterForm = () => {
                     placeholder="********"
                   />
                 </FormControl>
-
                 <Button w="100%" colorScheme="green" type="submit" mb={5}>
                   S'inscrire
                 </Button>

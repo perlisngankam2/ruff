@@ -40,7 +40,6 @@ const AjouterPersonnel = () => {
     const [fonction, setFonction] = useState("");
     // const [id, setMatricule] = useState("");
 
-   
     // const dateOfBirthRef = useRef()
     // const dateOfStartWorkRef = useRef()
     // const sexeRef = useRef()
@@ -146,6 +145,19 @@ const AjouterPersonnel = () => {
         isClosable: true,
       });
       router.push("/personnel")
+      setFirstName("");
+      setLastName("");
+      setDateOfBirth("");
+      setDateOfStartWork("");
+      setFonction("");
+      setPhoneNumber("");
+      setSexe("");
+      setSituationMatrimonial("");
+      setStatus("");
+      setChildNumber("");
+      setCategoryPersonnelId("");
+      setUserID("");
+
   }
 
   useEffect(() =>{
@@ -295,11 +307,9 @@ const AjouterPersonnel = () => {
                     {/* {t('components.school.Register.institute')} */}
                    Fonction
                   </FormLabel>
-                  <Input
-                    type="text"
-                    id="fonction"
+                  <Select
                     name="fonction"
-                    placeholder="Date de prise de fonction"
+                    placeholder="Fonction"
                     borderColor="purple.100"
                     onChange={e => setFonction(e.target.value)}
                     value={fonction}
@@ -307,7 +317,12 @@ const AjouterPersonnel = () => {
                     ref={node => {
                       input = node;
                     }}
-                  />
+                  >
+                    <option>Fondateur</option>
+                    <option>Principal</option>
+                    <option>Econome</option>
+                    <option>Gestionnaire</option>
+                  </Select>
                 </FormControl>
               </Box>
               {/* <Flex mt="2%"> */}

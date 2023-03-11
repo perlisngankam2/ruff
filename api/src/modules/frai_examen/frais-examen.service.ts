@@ -39,7 +39,7 @@ export class FraisExamenService {
         const frais = new FraisExamen()
 
         const anneAccademique = input.anneeAccademique
-            ? await this.anneAccademique.findbyOne({id:input.anneeAccademique.ID})
+            ? await this.anneAccademique.findByOne({id:input.anneeAccademique.ID})
             : await this.anneAccademique.create(input.anneeAccademique)
 
         // const niveauEtude = input.niveauEtude
@@ -88,7 +88,7 @@ export class FraisExamenService {
           if (input.anneeAccademique) {
             const annee =
             input.anneeAccademique?.ID &&
-              (await this.anneAccademique.findbyOne({ id: input.anneeAccademique?.ID }));
+              (await this.anneAccademique.findByOne({ id: input.anneeAccademique?.ID }));
       
             if (!annee) {
               throw new NotFoundError('annee no exist' || '');

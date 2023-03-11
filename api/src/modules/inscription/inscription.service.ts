@@ -47,7 +47,7 @@ export class InscriptionService {
         const inscription = new Inscription()
 
         const anneAccademique = input.anneeAccademique
-            ? await this.anneAccademique.findbyOne({id:input.anneacademiqueId})
+            ? await this.anneAccademique.findByOne({id:input.anneacademiqueId})
             : await this.anneAccademique.create(input.anneeAccademique)
 
         const student = input.student
@@ -196,7 +196,7 @@ export class InscriptionService {
           if (input.anneeAccademique) {
             const annee =
             input.anneacademiqueId &&
-              (await this.anneAccademique.findbyOne({ id: input.anneacademiqueId }));
+              (await this.anneAccademique.findByOne({ id: input.anneacademiqueId }));
       
             if (!annee) {
               throw new NotFoundError('annee no exist' || '');

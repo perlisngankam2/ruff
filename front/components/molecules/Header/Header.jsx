@@ -155,19 +155,24 @@ const Header = () => {
             </DrawerContent>
           </Drawer>
 
-          <Image src="/logo_blanc.png" w="150px" />
+          <Image 
+            src="/logo_blanc.png" 
+            w="150px" 
+            ml={"15px"}
+          />
           <Box>
             <Menu>
-              <MenuButton>
+              <MenuButton mr="12px">
                 <Flex align="center" gap="1">
                   {account?.firstName === null && account?.firstName === null ?
                   <Avatar
-                  name={ personnelData?.getpersonnelbyaccount.firstName + ' ' + personnelData?.getpersonnelbyaccount.lastName } 
+                    name={ personnelData?.getpersonnelbyaccount.firstName + ' ' + personnelData?.getpersonnelbyaccount.lastName } 
                     size="md"
+                    mr={"10px"}
                   />
                 :
                  <Avatar
-                  name={ account?.firstName + ' ' + account?.lastName } 
+                    name={ account?.firstName + ' ' + account?.lastName } 
                     size="md"
                   />
                 }

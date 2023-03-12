@@ -121,6 +121,19 @@
               </Link>
             </AccordionPanel>
           </AccordionItem>
+          <AccordionItem> 
+            <AccordionButton pl={0} my={2}>
+              <Flex align="center" gap="1">
+                <Icon as={IoMdSchool} />
+                <Box as="span">Cours</Box>
+              </Flex>
+            </AccordionButton>
+            <AccordionPanel>
+              <Link href="/cours/listeDesCours">
+                <Box as="span">Liste des cours</Box>
+              </Link>
+            </AccordionPanel>
+          </AccordionItem>
           <AccordionItem>
             <AccordionButton my={2} pl={0}>
               <Flex align="center" gap="1">

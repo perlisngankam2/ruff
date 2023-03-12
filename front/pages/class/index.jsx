@@ -139,7 +139,7 @@ const Class = () => {
       onClosses();
         // console.log(sectionData)
       toast({
-          title: "Qffection du ,ontqnt de scolarite a une classe.",
+          title: "Affection du montqnt de scolarite a une classe.",
           description: "Qffection reussit.",
           status: "success",
           duration: 3000,
@@ -150,6 +150,8 @@ const Class = () => {
     setAnneeAcademiqueId("");
     setMontant("");
   }
+
+  
   return (
     <DefaultLayout>
       <Box p="10px" pt={"70px"} background="colors.tertiary" w="full">

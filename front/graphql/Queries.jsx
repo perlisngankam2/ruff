@@ -303,8 +303,8 @@ export const GET_ALL_MONTANT_PENSION_CLASS = gql`
             dateLine
         }
     }
-;
-`
+ `;
+
 
 
 

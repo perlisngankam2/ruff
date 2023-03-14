@@ -31,14 +31,14 @@ export class RetenuService {
       async create(
         input: RetenuCreateInput,
       ): Promise<Retenue> {
-        const categorie = input.categorieRetenu
-            ? await this.categorieRetenu.findByOne(input.categorieretenuId)
-            : await this.categorieRetenu.create(input.categorieRetenu)
+        // const categorie = input.categorieRetenu
+        //     ? await this.categorieRetenu.findByOne(input.categorieretenuId)
+        //     : await this.categorieRetenu.create(input.categorieRetenu)
         
         const retenu = new Retenue()
 
         wrap(retenu).assign({
-          categorieRetenu: categorie.id,
+          // categorieRetenu: categorie.id,
           nom: input.nom,
           description: input.description,
           montant: input.montant

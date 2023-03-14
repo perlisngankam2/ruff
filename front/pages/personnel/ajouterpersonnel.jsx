@@ -32,12 +32,14 @@ const AjouterPersonnel = () => {
     const [status, setStatus] = useState("");
     const [phoneNumber, setPhoneNumber] = useState("")
     const [childNumber, setChildNumber] = useState("");
+    const [salaire, setSalaire] = useState("");
     const [situationMatrimonial, setSituationMatrimonial] = useState("");
     // const [salaire, setSalaire] = useState("");
     const [categoryPersonnelId, setCategoryPersonnelId] = useState("");
     const[userID, setUserID] = useState("");
     // const [matricule, setMatricule] = useState("");
     const [fonction, setFonction] = useState("");
+    const [ filteredData, setFilteredData]=useState([])
     // const [id, setMatricule] = useState("");
 
    
@@ -99,6 +101,18 @@ const AjouterPersonnel = () => {
   // };
 
   let input;
+  const handleChange = (e) => {
+    const newFilter =   dataPersonnel.findAllpersonnel
+              .filter((personnel) =>{
+              return  (personnel.firstName.toLowerCase().includes (searchName.toLowerCase()) || personnel.lastName.toLowerCase().includes (searchName.toLowerCase()) || personnel.fonction.toLowerCase().includes (searchName.toLowerCase()))
+              
+            } );
+  
+        setFilteredData(newFilter);
+    
+            
+  };
+
   const  handleSubmit = async (event, value) => {
      event.preventDefault();
      console.log('hh');
@@ -122,6 +136,7 @@ const AjouterPersonnel = () => {
           firstName: firstName,
           lastName : lastName,
           phoneNumber: phoneNumber,
+          salary: parseInt(salaire),
           categoryPersonnelId: categoryPersonnelId,
           status: status,
           situationMatrimonial: situationMatrimonial,
@@ -437,9 +452,9 @@ const AjouterPersonnel = () => {
                 </FormControl>
                 
               </Box>
-              <Box>
-              <FormControl mt="15px">
-                  <FormLabel>Compte Associé</FormLabel>
+              <Box display={{md:"flex"}} mt="2%">
+              <FormControl mr="5%" >
+                  <FormLabel fontWeight={"normal"}>Compte Associé</FormLabel>
                   <Select 
                       name="userID"
                       placeholder="Compte"
@@ -448,6 +463,7 @@ const AjouterPersonnel = () => {
                   >
                       {data && (
                           data.findAlluser.map((user, index) => ( 
+                            
                               <option value={user?.id} key={index}>
                                   {user.email}
                                   {/* {console.log(section.id)} */}
@@ -456,6 +472,24 @@ const AjouterPersonnel = () => {
                       )}
                   </Select>
               </FormControl>
+              <FormControl mr="5%">
+                  <FormLabel fontWeight={"normal"}>
+                    {/* {t('components.school.Register.birthDate')} */}
+                    Salaire
+                  </FormLabel>
+                  <Input
+                    type="text"
+                    id="salaire"
+                    name="childNumber"
+                    placeholder="--salaire de base--"
+                    borderColor="purple.100"
+                    onChange={e => setSalaire(e.target.value)}
+                    value={salaire}
+                    // ref={dateOfBirthRef}
+                    // ref={node => {input = node;
+                    // }}
+                  />
+                </FormControl>
 
               </Box>
               <ButtonGroup mt="3%" w="100%">

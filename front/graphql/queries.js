@@ -125,6 +125,7 @@ query findOnePersonnel ($id: String!) {
         firstName
         lastName
         phoneNumber
+        salary
         situationMatrimonial
         sexe
         fonction
@@ -262,6 +263,17 @@ query getpersonnelbyaccount ($userid: String!) {
         dateOfStartWork
         dateOfBirth
         childNumber
+    }
+}
+`;
+
+export const GET_PRIME= gql `
+query findAllprime {
+    findAllprime {
+        id
+        nom
+        description
+        montant
     }
 }
 `;

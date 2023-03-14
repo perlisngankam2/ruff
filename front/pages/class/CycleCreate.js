@@ -68,7 +68,7 @@ const  CycleCreate =  (
     const toast = useToast();
     const [isformOpen, setIsFormOpen] = useState(false)
 
-    const cycleContext = useContext(GlobalContext);
+    // const cycleContext = useContext(GlobalContext);
 
     console.log(sectionId)
 

@@ -34,33 +34,42 @@ import { GiGraduateCap, GiReceiveMoney } from "react-icons/gi";
 import React, { createContext, useContext, useEffect } from 'react';
 import { GET_PERSONNEL_BY_USERID } from "../graphql/queries";
 import {useMutation, useQuery } from '@apollo/client';
+import { GoBriefcase } from "react-icons/go";
+import { GET_ALL_PERSONNELS } from "../graphql/queries";
 
 
 
 
  const dashboard = () => {
 
+  const {data:dataPersonnel, error} = useQuery(GET_ALL_PERSONNELS)
+  const { authToken } = useAuth();
+  const router = useRouter();
   const { account } =  useAccount();
- console.log(  account?.id );
+
+  //debug
+      console.log(  account?.id );
 
   const { data: personnelData, called, loading } = useQuery(GET_PERSONNEL_BY_USERID,
-     {
+    {
     variables:{ userid: account?.id }
   })
 
-  //  const { authToken } = useAuth();
 
-  // const router = useRouter();
-  console.log(personnelData?.getpersonnelbyaccount);
+    //debug
+      console.log(personnelData?.getpersonnelbyaccount);
 
-  //   useEffect(() => {
+//   useEffect(() => {
+  
+//     //debug
+//     console.log(authToken);
+
+// //   if (authToken === undefined) {
+// //     router.push("/")
     
-  //   if (authToken=="null") {
-  //     router.push("/")
-      
-  //   }
-    
-  // }, [])
+// //   }
+  
+// // }, [])
 
 
 
@@ -82,7 +91,7 @@ import {useMutation, useQuery } from '@apollo/client';
 
           <Flex flexDir="row" gap="8" mb="9" flexWrap="wrap">
             <DashboardCard color="red.200" name="Elèves" icon={GiGraduateCap} />
-            <DashboardCard color="gray.400" name="Personnel" icon={HiUsers} />
+            <DashboardCard color="gray.400" name="Personnel" icon={GoBriefcase} total={dataPersonnel?.findAllpersonnel.length} />
             <DashboardCard color="green.200" name="Classes" icon={GiGraduateCap} />
           </Flex>
 

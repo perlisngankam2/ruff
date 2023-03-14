@@ -8,6 +8,7 @@ mutation createpersonnel ($createPersonnelUser: PersonnelCreateInput!) {
         firstName
         lastName
         phoneNumber
+        salary
         situationMatrimonial
         sexe
         fonction
@@ -340,6 +341,45 @@ mutation createprime ($prime: PrimeCreateInput!) {
         nom
         description
         montant
+    }
+}
+`;
+
+// retenue
+
+export const CREATE_RETENUE = gql `
+mutation createretenuesalarial ($retenue: RetenuCreateInput!) {
+    createretenuesalarial (retenue: $retenue) {
+        id
+        nom
+        description
+        montant
+    }
+}
+`;
+
+//prime personel
+
+export const CREATE_PRIME_PERSONNEL = gql `
+mutation createprimepersonnel ($primePersonnel: PrimePersonnelCreateInput!) {
+    createprimepersonnel (primePersonnel: $primePersonnel) {
+        id
+        startDate
+        endDate
+    }
+}
+`;
+
+//Salaire personnel
+
+export const CREATE_SALAIRE = gql `
+mutation createsalaire ($input: SalaireCreateInput!) {
+    createsalaire (input: $input) {
+        id
+        payer
+        montant
+        jourPaie
+        moisPaie
     }
 }
 `;

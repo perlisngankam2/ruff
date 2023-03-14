@@ -37,14 +37,14 @@ function ajouterprime() {
           nom: Nom,
           description: Description, 
           montant: parseInt(Montant),
-          categorieId: categoryPersonnelId,
+          // categorieId: categoryPersonnelId,
         }
       }
     })
-    console.log(userData)
+    // console.log(userData)
     toast({
-      title: "Account created.",
-      description: "We've created your account for you.",
+      title: "Succès.",
+      description: "La prime a été crée .",
       status: "success",
       duration: 3000,
       isClosable: true,
@@ -108,7 +108,7 @@ function ajouterprime() {
                   /> 
 </Box>
                   
-<Box pb={'15px'}>
+{/* <Box pb={'15px'}>
    <Select
                     type="text"
                     name="categoryPersonnelId"
@@ -132,7 +132,7 @@ function ajouterprime() {
 
   
                    
-</Box>
+</Box> */}
 
              <Box pb={'15px'}>
    <Input
@@ -157,10 +157,11 @@ function ajouterprime() {
           <Divider />
           
         </Box>
-        <Center><Button type="submit" leftIcon={<CheckIcon />} colorScheme='teal' variant='solid' mx='auto' my='auto'>
-    Soumettre
-  </Button>
-          </Center>
+        <Center>
+          <Button type="submit" leftIcon={<CheckIcon />} colorScheme='teal' variant='solid' mx='auto' my='auto'>
+                Soumettre
+           </Button>
+        </Center>
          </Box>
         </Box>
 

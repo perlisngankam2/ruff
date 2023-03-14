@@ -5,8 +5,8 @@ import { CategoriePrimeUpdate } from 'src/modules/categorie_prime/dto/categorie-
 
 @InputType()
 export class PrimeCreateInput {
-  @Field(()=>ID,{ nullable: true })
-  categorieId:string
+  // @Field(()=>ID,{ nullable: true })
+  // categorieId:string
 
   @Field({nullable:true})
   nom?: string;

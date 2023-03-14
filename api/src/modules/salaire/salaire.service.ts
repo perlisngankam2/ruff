@@ -36,13 +36,13 @@ export class SalaireService {
 
     const personnel = await this.personnel.findOne(input.personnelId)
     
-    const periode = await this.periodeService.findByOne(input.periodeId)
+    // const periode = await this.periodeService.findByOne(input.periodeId)
     // // check categorie prime
     //const categorie = personnel.category.load()
 
     const salaireBase = Number(personnel.salary)
-    const retenus = this.retenuPersonnel.getallretenupersonnel(input.personnelId)
-    const primes = Number(this.Primeservice.getallpersonnelprime(input.personnelId))
+    // const retenus = this.retenuPersonnel.getallretenupersonnel(input.personnelId)
+    // const primes = Number(this.Primeservice.getallpersonnelprime(input.personnelId))
   
 
     const salaire = new Salaire()
@@ -53,11 +53,12 @@ export class SalaireService {
       //   sommePrime += Number((await primes[i]).montant)
       // }
 
-      let sommeRetenus = 0
-      for(let j = 0; j < (await retenus).length; j++){
-        sommeRetenus += Number((await retenus[j]).montant)
-      }
-      const salaireNette = salaireBase + primes - sommeRetenus
+      // let sommeRetenus = 0
+      // for(let j = 0; j < (await retenus).length; j++){
+      //   sommeRetenus += Number((await retenus[j]).montant)
+      // }
+    //   const salaireNette = salaireBase + primes - sommeRetenus
+    const salaireNette = salaireBase
 
 
 
@@ -66,7 +67,10 @@ export class SalaireService {
          montant: Number(salaireNette),
          payer: input.payer,
          personnel: input.personnelId,
-         periode: input.periodeId
+         jourPaie: input.jourPaie,
+         moisPaie: input.moisPaie
+
+        //  periode: input.periodeId
         },
         {
         em: this.em
@@ -84,7 +88,9 @@ export class SalaireService {
         montant: Number(salaireBase),
         payer: input.payer,
         personnel: personnel.id,
-        periode: periode.id
+        jourPaie: input.jourPaie,
+        moisPaie: input.moisPaie
+        // periode: periode.id
         },
         {
           em: this.em
@@ -119,7 +125,7 @@ export class SalaireService {
      
   const personnel = await this.personnel.findOne(input.personnelId)
 
-  const periode = await this.periodeService.findByOne(input.periodeId) 
+//   const periode = await this.periodeService.findByOne(input.periodeId) 
   
   const salaire = await this.findByOne(id)
 
@@ -128,7 +134,7 @@ export class SalaireService {
       montant: input.montant,
       payer: input.payer,
       personnel: personnel.id,
-      periode: periode.id
+    //   periode: periode.id
     },
     {
       em: this.em

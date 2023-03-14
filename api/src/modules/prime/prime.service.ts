@@ -29,16 +29,16 @@ export class PrimeService {
       async create(
         input: PrimeCreateInput,
       ): Promise<Prime> {
-        const categorie = this.categoriePrime.findById(input.categorieId)
-        if(!categorie){
-          throw Error("not found")
-        }
+        // const categorie = this.categoriePrime.findById(input.categorieId)
+        // if(!categorie){
+        //   throw Error("not found")
+        // }
         const new_prime = new Prime()
         wrap(new_prime).assign(
           {
-          categoriePrime: input.categorieId,
+          // categoriePrime: input.categorieId,
           nom: input.nom,
-          montant: Number(input.montant),
+          montant: input.montant,
           description: input.description
           },
           {

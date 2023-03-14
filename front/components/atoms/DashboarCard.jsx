@@ -14,7 +14,7 @@ const DashboardCard = (props) => {
           {props.name}
         </Text>
         <Text fontSize="2xl" >
-          254
+          {props.total}
         </Text>
       </Flex>
 

@@ -128,7 +128,7 @@ const cyclesection = () => {
     const changePage = ({ selected }) => {
       setPageNumber(selected);
     };
-    const cycleContext = useContext(GlobalContext);
+    // const cycleContext = useContext(GlobalContext);
 
 
   //  const defaultValues = useMemo(() =>{
@@ -246,7 +246,7 @@ const cyclesection = () => {
                     <Tbody>
                       {displayUsers}
                       
-                      {
+                      {/* {
                         data.findAllsection.map((section, index) => ( 
                           <Tr key={index}>
                               <Td  borderColor={'#C6B062'}>{section.name}</Td>
@@ -280,7 +280,7 @@ const cyclesection = () => {
                               </Box>
                               </Td>
                           </Tr>
-                        ))}
+                        ))} */}
                     </Tbody>
                       )}
                 </Table>
@@ -338,7 +338,7 @@ const cyclesection = () => {
                         dataCycle.findAllcycle.map((cycle, index) => ( 
                           <Tr key={index}>
                               <Td  borderColor={'#C6B062'}>{cycle.name}</Td>
-                              {/* <Td  borderColor={'#C6B062'}>{cycle.section_id}</Td> */}
+                              {/* <Td  borderColor={'#C6B062'}>{cycle.sectionId}</Td> */}
                               <Td  borderColor={'#C6B062'}>pppp</Td>
                               <Td  borderColor={'#C6B062'}>
                               <Box display="flex">

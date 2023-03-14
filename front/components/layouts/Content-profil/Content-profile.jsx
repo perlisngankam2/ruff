@@ -7,7 +7,7 @@ import CompanySettings from './CompanySettings';
 import Notifications from './Notifications';
 
 const ContentProfile =() =>{
-    const tabs = ['paramettre compte', 'Paramettre company', 'Notification']
+    const tabs = ['Paramètre Compte', 'Paramètre Compagnie', 'Notification']
     return(
         <Box
           as='main'

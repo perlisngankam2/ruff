@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { Args, Mutation, Query, Resolver } from "@nestjs/graphql";
 import { PersonnelSalle } from "src/entities/personnelsalle.entity";
 import { PersonnelSalleCreateInput } from "./dto/personnelsalle.create.input";

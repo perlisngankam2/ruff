@@ -28,6 +28,9 @@ export class AvanceTrancheUpdateInput {
   @Field({nullable:true,defaultValue:0})
   reste?: number;
 
+  @Field(()=>TrancheStudentCreateInput,{nullable:true})
+  tranchestudentinput: TrancheStudentCreateInput
+
   // @Field(()=>StudentCreateInput,{nullable:true})
   // student?:StudentCreateInput
   

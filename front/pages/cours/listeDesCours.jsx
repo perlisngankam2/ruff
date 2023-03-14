@@ -19,7 +19,15 @@ import {
    Thead,
    Tr,
    Link,
-   Icon
+   Icon,
+   AlertDialog,
+  AlertDialogBody,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogContent,
+  AlertDialogOverlay,
+  useDisclosure,
+  Button
   } from "@chakra-ui/react";
   
   import DefaultLayout from "../../components/layouts/DefaultLayout";
@@ -31,12 +39,17 @@ import AjouterCours from "./addCours";
 //   import { GET_ALL_Category_Eleve } from "../../graphql/queries";
 //   import { DELETE_CATEGORY_STUDENT } from "../../graphql/Mutation";
   import { useMutation, useQuery } from "@apollo/client"; 
-  import { useEffect, useState } from "react";
-  
+  import React, { use, useEffect, useState } from "react";
+  import { GET_ALL_COURSES, loading, error } from "../../graphql/Queries";
+  import { DELETE_COURSE } from "../../graphql/Mutation";
+
+
   const ListeDesCours = () => {
   
      // const router = useRouter();
      const [query , setQuery] = useState("");
+     const cancelRef = React.useRef()
+     const { isOpen, onOpen, onClose } = useDisclosure()
      // //const [classeValue , setClasseValue ] = useState("");
      // const [data, setData] = useState([]);
      // const keys = ["first_name", "last_name", "email", "classe"];
@@ -53,20 +66,22 @@ import AjouterCours from "./addCours";
   
     //  const {data:dataCategoryEleve} = useQuery(GET_ALL_Category_Eleve);
     //  const [deleteCategoryStudent] = useMutation(DELETE_CATEGORY_STUDENT);
+    const {data:dataCourse} = useQuery(GET_ALL_COURSES);
+    const [deleteCourse] = useMutation(DELETE_COURSE);
+
+      useEffect (() => {
+       console.log(dataCourse?.findAllCourse);
+     });
   
-  
-    //   useEffect (() => {
-    //    console.log(dataCategoryEleve?.findAllcategorieeleve);
-    //  });
-  
-    //  const removeCategoryStudent= async (id) => {
-    //    await deleteCategoryStudent({
-    //      variables:{id},
-    //      refetchQueries: [{
-    //        query: GET_ALL_Category_Eleve
-    //      }]
-    //    })
-    //  }
+     const removeCourse= async (id) => {
+       await deleteCourse({
+         variables:{id},
+         refetchQueries: [{
+           query: GET_ALL_COURSES
+         }]
+       })
+       onClose();
+     }
   
   
    return (
@@ -92,7 +107,6 @@ import AjouterCours from "./addCours";
              <Text>Dashboad/cours/liste des matiere </Text>
            </Hide>
          </Flex>
-  
          <Flex gap={10} mt={5}>
            <InputGroup>
              <Input
@@ -119,20 +133,20 @@ import AjouterCours from "./addCours";
                          <Th>Actions</Th>
                        </Tr>
                      </Thead>
-                     {/* {dataCategoryEleve && (  */}
+                     {dataCourse && ( 
                      <Tbody>
-                       {/* {
-                         dataCategoryEleve.findAllcategorieeleve.map((categoryStudent, index) => (  */}
+                       {
+                         dataCourse.findAllCourse.map((course, index) => ( 
                            <Tr 
-                            // key={index} 
-                            // borderColor={'#C6B062'}
+                            key={index} 
+                            borderColor={'#C6B062'}
                            >
-                               <Td borderColor={'#C6B062'}></Td>
-                               <Td borderColor={'#C6B062'}></Td>
+                               <Td borderColor={'#C6B062'}>{course.title} </Td>
+                               <Td borderColor={'#C6B062'}>{course.time}</Td>
                                <Td borderColor={'#C6B062'}>
                                <Box display="flex">
                                  <Link 
-                                   href="/eleves/modifiereleve">
+                                   href="#">
                                      <Icon
                                      as={FiEdit}
                                      boxSize="40px"
@@ -149,18 +163,18 @@ import AjouterCours from "./addCours";
                                      rounded="full"
                                      color="colors.quaternary"
                                      _hover={{background:"blue.100"}}
-                                    //  onClick = {() =>{removeCategoryStudent(categoryStudent.id)}}
+                                     onClick={onOpen}
                                    />
-                                   {/* <Box> 
+                                   <Box> 
                                     <AlertDialog
                                       isOpen={isOpen}
                                       leastDestructiveRef={cancelRef}
                                       onClose={onClose}
                                       isCentered
-                                    >  */}
-                                        {/* <AlertDialogOverlay */}
-                                          {/* // alignSelf={"center"} */}
-                                        {/* >
+                                    > 
+                                        <AlertDialogOverlay
+                                          alignSelf={"center"} 
+                                        >
                                           <AlertDialogContent
                                           width={"380px"}
                                           >
@@ -172,11 +186,11 @@ import AjouterCours from "./addCours";
                                               Confirmation de suppression
                                             </AlertDialogHeader>
                                             <AlertDialogBody textAlign={"center"}>
-                                            Voulez-vous supprimer cette ce cycle?
+                                            Voulez-vous supprimer cette matiere?
                                             </AlertDialogBody>
 
                                             <AlertDialogFooter>
-                                              <Button 
+                                              <Button        
                                                 ref={cancelRef} 
                                                 onClick={onClose}
                                                 colorScheme="red"
@@ -185,7 +199,7 @@ import AjouterCours from "./addCours";
                                               </Button>
                                               <Button 
                                                 colorScheme='green' 
-                                                onClick={() => removeSection(section.id)}
+                                                onClick={() => removeCourse(course.id)}
                                                 ml={3}
                                               >
                                                 Supprimer
@@ -194,14 +208,14 @@ import AjouterCours from "./addCours";
                                           </AlertDialogContent>
                                         </AlertDialogOverlay>
                                     </AlertDialog>
-                                  </Box> */}
+                                  </Box> 
                                   </Box>
                                </Box>
                                </Td>
                            </Tr>
-                         {/* ))} */}
+                          ))}
                      </Tbody>
-                       {/* )} */}
+                        )} 
                  </Table>
              </TableContainer>
          </Box>

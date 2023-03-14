@@ -52,6 +52,7 @@ export class PersonnelService {
     em:this.em
   },
 );
+
     await this.personnelRepository.persistAndFlush(new_personnel)
     return new_personnel
   //  }

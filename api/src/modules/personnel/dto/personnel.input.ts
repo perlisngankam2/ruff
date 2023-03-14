@@ -7,6 +7,9 @@ import { Status } from 'src/entities/pesonnel.entity';
 
 @InputType()
 export class PersonnelCreateInput {
+  @Field(()=>ID)
+  id!:string 
+
   @Field(()=>ID,{nullable:true})
   userID?: string;
 

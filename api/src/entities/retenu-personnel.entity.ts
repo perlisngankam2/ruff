@@ -43,7 +43,7 @@ export class RetenuPersonnel {
   personnel!:IdentifiedReference<Personnel>|null
 
   @ManyToOne(() => Salaire ,{
-    nullable:false,
+    nullable:true,
     onDelete:'CASCADE'
   })
   salaire!:IdentifiedReference<Salaire>|null

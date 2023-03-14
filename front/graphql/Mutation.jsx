@@ -219,6 +219,15 @@ export const CREATE_PERSONNEL_SALLE = gql `
     }
 `;
 
+export const CREATE_COURSE = gql`
+    mutation createCourse ($input: CourseCreateInput!) {
+        createCourse (input: $input) {
+            id
+            title
+            time
+        }
+    }
+`;
 export const fragmentCycle = gql` fragment CycleClass on cyle {
     id
     name
@@ -333,6 +342,17 @@ export const DELETE_CATEGORY_STUDENT = gql `
     }
 `;
 
+//SUPPRESSION D;UN COURS
+
+export const DELETE_COURSE = gql `
+    mutation deleteCourse ($id: String!) {
+        deleteCourse (id: $id) {
+            id
+            title
+            time
+        }
+    }
+`;
 
 //update class
 export const UPDATE_CLASS = gql `

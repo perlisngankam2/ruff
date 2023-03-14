@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { MikroOrmModule } from "@mikro-orm/nestjs";
 import { Module } from "@nestjs/common";
 import { PersonnelSalle } from "src/entities/personnelsalle.entity";

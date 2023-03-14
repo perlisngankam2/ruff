@@ -270,7 +270,13 @@ const DetailComponent = (student) => {
             avancetranche:{
               trancheStudentId: id,
               montant: parseInt(montant),
-              trancheId: trancheId
+              trancheId: trancheId,
+              tranchestudentinput: {
+                studentId: id,
+                name: "",
+                description: "",
+                montant : 0
+              }
             }
           }
         })
@@ -596,7 +602,6 @@ const DetailComponent = (student) => {
     </Card>
 
  {/* FORMULAIRE initialisation PAIEMENT DE SCOLARITE */}
-    
       <AlertDialog
           isOpen={isOpenns}
           leastDestructiveRef={cancelRef}
@@ -658,7 +663,6 @@ const DetailComponent = (student) => {
         </AlertDialog>
 
         {/* FORMULAIRE DE PAIEMENT DE LA SCOLARITE */}
-
           <Box
             as="form"
           > 
@@ -693,7 +697,7 @@ const DetailComponent = (student) => {
                       <AlertDialogBody>
                         <Box mt='4'>
                           {/* BOUTON D'INITIALISATION DE LA PENSION */}
-                            <Box display="flex"> 
+                            {/* <Box display="flex"> 
                               <Text 
                                 mb={5}
                                 size="md"
@@ -711,21 +715,21 @@ const DetailComponent = (student) => {
                                 _hover={{background:"colors.bluecolor"}}
                                 onClick={onOpenns}
                               />
-                              </Box> 
-                            {/* <Flex 
-                              gap={25} 
+                              </Box>  */}
+                            <Flex 
+                              gap={5} 
                               flexWrap={['wrap','wrap','nowrap']} 
-                              align='end'
-                            > */}
-                              {/* <Checkbox colorScheme='green' >
-                                Checkbox
-                              </Checkbox>
-                              <Checkbox colorScheme='green' >
-                                Checkbox
-                              </Checkbox>
-                              <Checkbox colorScheme='green' >
-                                Checkbox
-                              </Checkbox> */}
+                              align='end'  
+                              ml={"300px"}
+                              mb="10px"
+                            >
+                                <Text>Pension total payée:</Text>
+                                <Text 
+                                  type={'text'} 
+                                >
+                                  {dataTrancheStudentBySudentId?.getTrancheStudentByStudent.montant} FCFA
+                              </Text>
+                          </Flex>
                           <FormControl>
                             <FormLabel>
                               Motif
@@ -774,22 +778,19 @@ const DetailComponent = (student) => {
                                 />
                               </FormControl>
                           </Flex>
-                          <Flex 
-                            gap={5} 
-                            flexWrap={['wrap','wrap','nowrap']} 
-                            align='end'
-                            mt="15px"
-                          >
-                            {/* { dataTrancheStudentBySudentId && ( */}
-                              <FormControl>
-                                <FormLabel>Pension total paye</FormLabel>
-                                <Input 
-                                  type={'text'} 
-                                  value={dataTrancheStudentBySudentId?.getTrancheStudentByStudent.montant} 
-                                />
-                              </FormControl>
-                            {/* )} */}
-                          </Flex>
+                        </Box>
+                        <Box> 
+                          <FormControl>
+                            {/* <FormLabel> Eleve</FormLabel> */}
+                            <Input 
+                              type={'hidden'} 
+                              name="studentId"
+                              // value={studentId}
+                              // onChange={(event) => setStudenId(event.target.value)}
+                              value={dataStudentId.findOnestudent.lastname}
+
+                            />
+                          </FormControl>
                         </Box>
                       </AlertDialogBody>
                       <AlertDialogFooter>

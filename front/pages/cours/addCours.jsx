@@ -28,24 +28,29 @@ import React, { useEffect } from "react";
 import { IoIosAdd } from "react-icons/io";
 import Link from "next/link";
 import {useMutation, useQuery } from '@apollo/client';
-import { CREATE_CATEGORY_ELEVE} from "../../graphql/Mutation";
-import { GET_ALL_Category_Eleve, GET_ALL_REDUCTION_SCOLARITE } from "../../graphql/Queries";
+import { CREATE_CATEGORY_ELEVE, CREATE_COURSE} from "../../graphql/Mutation";
+import { 
+    GET_ALL_Category_Eleve, 
+    GET_ALL_REDUCTION_SCOLARITE,
+    GET_ALL_COURSES
+} from "../../graphql/Queries";
 import { useState } from "react";
 import { useRouter } from "next/router";
 
 
 function AjouterCours () {
 
-    const [nom, setNom] = useState("");
-    const [tauxHoraire, setTauxHoraire] = useState("");
+    const router = useRouter();
+    const toast = useToast();
+    let input
+    const [title, setTitle] = useState("");
+    const [time, setTime] = useState("");
     const [reductionScolariteId, setReductionScolariteId] = useState();
     const { isOpen, onOpen, onClose } = useDisclosure();
     const cancelRef = React.useRef();
     const [SubmitCategoryEleve, {error}] = useMutation(CREATE_CATEGORY_ELEVE);
     const {data:dataReductionScolarite, loading} = useQuery(GET_ALL_REDUCTION_SCOLARITE);
-    const router = useRouter();
-    const toast = useToast();
-    let input
+    const [createCourse] = useMutation(CREATE_COURSE);
 
     // const  addCategoryEleve = async (event, value) => {
     //     event.preventDefault();
@@ -79,6 +84,31 @@ function AjouterCours () {
     //     setNom("");
     //     setDescription("");
     // }
+
+    const addCourse = async () =>{
+        console.log(time)
+        await createCourse({
+            variables:{
+                input:{
+                 title: title,
+                 time: parseInt(time)
+                }
+            },
+            refetchQueries: [{
+                query: GET_ALL_COURSES
+            }]
+        })
+        onClose();
+        toast({
+            title: "Ajout d'un cours.",
+            description: "Ajout du cours reussit.",
+            status: "success",
+            duration: 3000,
+            isClosable: true,
+        });
+        setTitle("");
+        setTime("")
+    }
 
     // useEffect(() => {
     //     console.log(dataReductionScolarite?.findAllreductionscolarite)
@@ -132,10 +162,10 @@ function AjouterCours () {
                                     <Input 
                                         id="nom"
                                         type={'text'} 
-                                        name="nom"
-                                        value={nom}
-                                        placeholder="nom"
-                                        onChange = {(event) => setNom(event.target.value)}
+                                        name="title"
+                                        value={title}
+                                        placeholder="Nom"
+                                        onChange = {(event) => setTitle(event.target.value)}
                                         ref={node => {input = node;}}
                                      />
                                 </FormControl>
@@ -143,11 +173,11 @@ function AjouterCours () {
                                     <FormLabel>Taux horaire</FormLabel>
                                     <Input 
                                         id="description"
-                                        type={'time'} 
-                                        name="tauxHoraire"
-                                        value={tauxHoraire}
+                                        type={'number'} 
+                                        name="time"
+                                        value={time}
                                         placeholder="Nombre d'heure du cours"
-                                        onChange = {(event) => setTauxHoraire(event.target.value)}
+                                        onChange = {(event) => setTime(event.target.value)}
                                         ref={node => {input = node;}}
                                     />
                                 </FormControl>
@@ -186,7 +216,7 @@ function AjouterCours () {
                                     <Button 
                                     colorScheme='green'  
                                     ml={3}
-                                    // onClick={addCategoryEleve}
+                                    onClick={addCourse}
                                     >
                                         Ajoutez
                                     </Button>

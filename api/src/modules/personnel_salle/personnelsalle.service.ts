@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import {  EntityManager, EntityRepository, FilterQuery, wrap } from "@mikro-orm/core";
 import { InjectRepository } from "@mikro-orm/nestjs";
 import { Injectable } from "@nestjs/common";
@@ -22,7 +23,8 @@ export class PersonnelSalleService {
         const personnelsalle = new PersonnelSalle()
         wrap(personnelsalle).assign({
           salle: input.salleId,
-          personnel: input.personnelId
+          personnel: input.personnelId,
+          course: input.courseId
         },
         {
             em: this.em

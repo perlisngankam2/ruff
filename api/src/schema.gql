@@ -59,6 +59,12 @@ type NiveauEtude {
   montantPension: Float
 }
 
+type Course {
+  id: ID!
+  title: String
+  time: Float
+}
+
 type CategoriePrime {
   id: ID!
   nom: String
@@ -88,6 +94,13 @@ type Retenue {
 
 type RetenuPersonnel {
   id: ID!
+}
+
+type Salaire {
+  id: ID!
+  description: String
+  payer: Boolean!
+  montant: Float!
 }
 
 type PrimePersonnel {
@@ -158,6 +171,7 @@ type TrancheStudent {
   montant: Float
   complete: Boolean!
   reste: Float!
+  surplus: Float!
 }
 
 type Tranche {
@@ -172,7 +186,7 @@ type Pension {
   id: ID!
   name: String
   description: String
-  montant: Float!
+  montantPension: Float!
   dateLine: DateTime
 }
 
@@ -347,9 +361,13 @@ type Query {
   getcumullativesum(id: String!): Float!
   findAllfraisinscription: [FraisInscription!]!
   findOnefraisincription(id: String!): FraisInscription!
+  findallsalaire: [Salaire!]!
+  getonesalaire(id: String!): Salaire!
   findAllparents: [Parent!]!
   parent(id: String!): Parent!
   totalNumberofStudentsinClass(id: String!): Float!
+  findAllCourse: [Course!]!
+  findOneCourse(id: String!): Course!
   me: Personnel!
 }
 
@@ -436,6 +454,8 @@ type Mutation {
   createFraisInscription(fraisInscription: FraisInscriptionInput!): FraisInscription!
   deletefraisincription(id: String!): FraisInscription!
   upodatefraisinscription(id: String!, input: UpdateFraisInscriptionInput!): FraisInscription!
+  createsalaire(input: SalaireCreateInput!): Salaire!
+  updatesalire(id: String!, input: SalaireUpdateInput!): Salaire!
   createParent(parent: ParentCreateInput!): Parent!
   updateParent(id: String!): Parent!
   deleteparent(id: String!): Parent!
@@ -444,6 +464,8 @@ type Mutation {
   deleteExpense(id: String!): Expense!
   findoneexpense(id: String!): Expense!
   findallexpenses: [Expense!]!
+  createCourse(input: CourseCreateInput!): Course!
+  deleteCourse(id: String!): Course!
   login(loginInput: LoginInput!): LoginResponse!
 }
 
@@ -470,9 +492,11 @@ input UpdateUserInput {
 input PersonnelSalleCreateInput {
   salleId: ID
   personnelId: ID
+  courseId: ID
 }
 
 input PersonnelCreateInput {
+  id: ID!
   userID: ID
   salary: Float
   categoryPersonnelId: ID
@@ -824,13 +848,14 @@ input AvanceTrancheCreateInput {
   description: String
   montant: Float
   reste: Float = 0
+  tranchestudentinput: TrancheStudentCreateInput
 }
 
 input TrancheStudentCreateInput {
   studentId: ID
   name: String
   description: String
-  montant: Float
+  montant: Float = 0
 }
 
 input InscriptionInput {
@@ -883,6 +908,34 @@ input UpdateFraisInscriptionInput {
   anneeAccademique: AnneeAccademiqueCreateInput
 }
 
+input SalaireCreateInput {
+  periodeId: ID
+  personnelId: ID
+  primeId: ID
+  retenuId: ID
+  description: String
+  payer: Boolean! = false
+  montant: Float! = 0
+  periode: PeriodeCreateInput
+  personnel: PersonnelCreateInput
+  prime: PrimePersonnelCreateInput
+  retenu: RetenuPersonnelCreateInput
+}
+
+input SalaireUpdateInput {
+  periodeId: ID
+  personnelId: ID
+  primeId: ID
+  retenuId: ID
+  description: String
+  payer: Boolean! = false
+  montant: Float! = 0
+  periode: PeriodeUpdateInput
+  personnel: PersonnelUpdateInput
+  prime: PrimePersonnelUpdateInput
+  retenu: RetenuPersonnelUpdateInput
+}
+
 input ParentCreateInput {
   ID: String
   firstname: String
@@ -908,6 +961,11 @@ input ExpenseUpdateInput {
   title: String
   amount: Float
   description: String
+}
+
+input CourseCreateInput {
+  title: String
+  time: Float
 }
 
 input LoginInput {

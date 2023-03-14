@@ -46,22 +46,12 @@ export class AvanceTrancheService {
 
 
         if(!tranchestudent)  {
-           // throw Error("tranchestudent not found")
+           
           const tranchestudents= this.trancheStudentservice.create(input.tranchestudentinput) 
           console.log("========>"+tranchestudents)
           const student = (await tranchestudents).student.load()
           const reduction = (await (await student).categorie.load()).reductionScolarite.load()
-        
-        // check s'il y'a pas autre avance 
-        // const avance = tranche.avancheTranche
-        // if(avance.length != 0){
-        //   const reste = avance.matching({orderBy:{'createdAt':{}}})[0].reste
-        //   if(reste != 0){
-        //          this.trancheStudent.saveTranche(tranche.id)
-        //   }
-        // }
-        // check categorie student
-        const fraistranche = tranche.montant
+          const fraistranche = tranche.montant
 
 
         wrap(avanceTranche).assign({
@@ -186,7 +176,7 @@ export class AvanceTrancheService {
 
 
 
-     ///!!!!!!!!!!!!!!!  SI L'ID EST CORRECT !!!!!!!
+     ///!!!!!!!!!!!!!!!  SI L'INSCRIPTION EXISTE EST CORRECT !!!!!!!
 
      if(tranchestudent)  
      {

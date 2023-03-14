@@ -688,6 +688,9 @@ input SalaireBaseCreateInput {
 }
 
 input CategoriePersonnelCreateInput {
+  primeID: ID
+  retenuID: ID
+  salaireID: ID
   nom: String
   description: String
 }
@@ -700,6 +703,9 @@ input SalaireBaseUpdateInput {
 }
 
 input CategoriePersonnelUpdate {
+  primeID: ID
+  retenuID: ID
+  salaireID: ID
   nom: String
   description: String
 }

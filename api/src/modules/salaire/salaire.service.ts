@@ -41,7 +41,7 @@ export class SalaireService {
     // // check categorie prime
     //const categorie = personnel.category.load()
 
-    const salaireBase = Number(personnel.salary)
+   
     const retenus = Number(this.retenuPersonnel.getallretenupersonnel(input.retenuId))||0.0
     const primes = Number(this.primepersonnelservice.getallpersonnelprime(input.primeId))||0.0
 
@@ -49,6 +49,7 @@ export class SalaireService {
       if((await this.getAll()).map(a=>a.personnel).filter(async a=>(await a.load()).id === personnel.id).length > 1){
         throw Error("!!!!!!!!!!! CE PERSONNEL A DEJA ETE PAYER !!!!!!!!!!!!")
       }
+      const salaireBase = (await (await personnel.category.load()).salaireBase.load()).montant
 
       const salaire = new Salaire()
 
@@ -90,16 +91,6 @@ export class SalaireService {
       }
 
     }
-    
-      // let sommePrime = 0
-      // for(let i = 0; i < (await primes).length; i++){
-      //   sommePrime += Number((await primes[i]).montant)
-      // }
-
-      // let sommeRetenus = 0
-      // for(let j = 0; j < (await retenus).length; j++){
-      //   sommeRetenus += Number((await retenus[j]).montant)
-      // }
       
  
   }

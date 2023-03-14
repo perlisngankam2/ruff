@@ -46,7 +46,7 @@ export class Retenue {
   categoriePersonnel = new Collection<CategoriePersonnel>(this);
 
   @ManyToOne(() => CategorieRetenu ,{
-    nullable:false,
+    nullable:true,
     onDelete:'CASCADE'
   })
   categorieRetenu!:IdentifiedReference<CategorieRetenu>|null

@@ -10,13 +10,16 @@ import { RetenuPersonnelModule } from '../retenu_personnel/retenu_personnel.modu
 import { SalaireResolver } from './salaire.resolver';
 import { SalaireService } from './salaire.service';
 
+
+
+
 @Module({
 imports:[MikroOrmModule.forFeature({ entities: [Salaire] }),
-RetenuPersonnelModule,
-PrimePersonnelModule,
-PeriodeModule,
-PersonnelModule,
-PrimeModule
+ RetenuPersonnelModule,
+ PrimePersonnelModule,
+ PeriodeModule,
+ PersonnelModule,
+ PrimeModule
 ],
 providers:[SalaireService,SalaireResolver],
 exports:[SalaireService]

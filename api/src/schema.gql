@@ -103,8 +103,18 @@ type Salaire {
   montant: Float!
 }
 
+type Salaire {
+  id: ID!
+  payer: Boolean!
+  montant: Float!
+  jourPaie: String
+  moisPaie: String
+}
+
 type PrimePersonnel {
   id: ID!
+  startDate: String
+  endDate: String
 }
 
 type Prime {
@@ -363,6 +373,8 @@ type Query {
   findOnefraisincription(id: String!): FraisInscription!
   findallsalaire: [Salaire!]!
   getonesalaire(id: String!): Salaire!
+  findallsalaire: [Salaire!]!
+  getonesalaire(id: String!): Salaire!
   findAllparents: [Parent!]!
   parent(id: String!): Parent!
   totalNumberofStudentsinClass(id: String!): Float!
@@ -454,6 +466,8 @@ type Mutation {
   createFraisInscription(fraisInscription: FraisInscriptionInput!): FraisInscription!
   deletefraisincription(id: String!): FraisInscription!
   upodatefraisinscription(id: String!, input: UpdateFraisInscriptionInput!): FraisInscription!
+  createsalaire(input: SalaireCreateInput!): Salaire!
+  updatesalire(id: String!, input: SalaireUpdateInput!): Salaire!
   createsalaire(input: SalaireCreateInput!): Salaire!
   updatesalire(id: String!, input: SalaireUpdateInput!): Salaire!
   createParent(parent: ParentCreateInput!): Parent!
@@ -685,6 +699,78 @@ input RedutionScolariteInput {
   pourcentage: Float = 0
 }
 
+input SalleUpdateInput {
+  ID: String
+  name: String
+  sectionId: ID
+  cycle: String
+  niveauEtudeId: ID
+  effectif: Float = 0
+  niveau: NiveauEtudeCreateInput
+}
+
+input NiveauEtudeCreateInput {
+  ID: String
+  name: String
+  description: String
+  cycleId: ID
+  montantPension: Float
+  sectionCycle: SectionCycleCreateInput
+}
+
+input SectionCycleCreateInput {
+  ID: String
+  description: String
+  cycle: CycleCreateInput
+  section: SectionCreateInput
+  cycleID: ID
+  sectionID: ID
+}
+
+input CycleCreateInput {
+  ID: String
+  name: String
+  sectionId: ID
+}
+
+input SectionCreateInput {
+  ID: String
+  name: String
+  description: String
+}
+
+input PersonnelCreateInput {
+  userID: ID
+  salary: Float
+  categoryPersonnelId: ID
+  firstName: String
+  lastName: String
+  situationMatrimonial: String
+  sexe: String
+  phoneNumber: String
+  fonction: String
+  status: String
+  childNumber: Float
+  dateOfBirth: String
+  dateOfStartWork: String
+}
+
+input PersonnelUpdateInput {
+  userID: ID
+  salary: Float
+  categoryPersonnelId: ID
+  firstName: String
+  lastName: String
+  situationMatrimonial: String
+  sexe: String
+  phoneNumber: String
+  fonction: String
+  status: String
+  childNumber: Float
+  dateOfBirth: String
+  dateOfStartWork: String
+}
+
 input SalaireBaseCreateInput {
   categoriepersonnelId: ID
   description: String
@@ -693,6 +779,9 @@ input SalaireBaseCreateInput {
 }
 
 input CategoriePersonnelCreateInput {
+  primeID: ID
+  retenuID: ID
+  salaireID: ID
   nom: String
   description: String
 }
@@ -705,12 +794,20 @@ input SalaireBaseUpdateInput {
 }
 
 input CategoriePersonnelUpdate {
+  primeID: ID
+  retenuID: ID
+  salaireID: ID
   nom: String
   description: String
 }
 
+input PrimeCreateInput {
+  nom: String
+  description: String
+  montant: Float! = 0
+}
+
 input PrimeUpdateInput {
-  categorieId: ID
   nom: String
   description: String
   montant: Float! = 0
@@ -729,18 +826,9 @@ input CategoriePrimeUpdate {
 }
 
 input RetenuCreateInput {
-  categorieretenuId: String
   nom: String
   description: String
   montant: Float! = 0
-  categorieRetenu: CategorieRetenuCreateInput
-}
-
-input CategorieRetenuCreateInput {
-  ID: String
-  nom: String
-  description: String
-  type: String
 }
 
 input RetenuUpdateInput {
@@ -758,11 +846,18 @@ input CategorieRetenuUpdateInput {
   type: String
 }
 
+input CategorieRetenuCreateInput {
+  ID: String
+  nom: String
+  description: String
+  type: String
+}
+
 input PrimePersonnelCreateInput {
   primeId: ID
   personnelId: ID
-  prime: PrimeCreateInput
-  personnel: PersonnelCreateInput
+  startdate: String
+  enddate: String
 }
 
 input PeriodeCreateInput {
@@ -934,6 +1029,22 @@ input SalaireUpdateInput {
   personnel: PersonnelUpdateInput
   prime: PrimePersonnelUpdateInput
   retenu: RetenuPersonnelUpdateInput
+}
+
+input SalaireCreateInput {
+  personnelId: ID
+  payer: Boolean! = false
+  montant: Float! = 0
+  jourPaie: String
+  moisPaie: String
+}
+
+input SalaireUpdateInput {
+  personnelId: ID
+  payer: Boolean! = false
+  montant: Float! = 0
+  jourPaie: String
+  moisPaie: String
 }
 
 input ParentCreateInput {

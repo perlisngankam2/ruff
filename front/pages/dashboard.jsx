@@ -39,17 +39,22 @@ import {
   GET_ALL_PERSONNELS
 } from "../graphql/queries";
 import {useMutation, useQuery } from '@apollo/client';
+import { GoBriefcase } from "react-icons/go";
+import { GET_ALL_PERSONNELS } from "../graphql/queries";
 
 
 
 
  const dashboard = () => {
-
+  const { authToken } = useAuth();
+  const router = useRouter();
   const { account } =  useAccount();
- console.log(  account?.id );
+
+  //debug
+      console.log(  account?.id );
 
   const { data: personnelData, called, loading } = useQuery(GET_PERSONNEL_BY_USERID,
-     {
+    {
     variables:{ userid: account?.id }
   })
   const {data:dataStudent} = useQuery(GET_ALL_STUDENT);
@@ -57,7 +62,7 @@ import {useMutation, useQuery } from '@apollo/client';
   const {data:dataPersonnel} = useQuery(GET_ALL_PERSONNELS)
   //  const { authToken } = useAuth();
 
-  const router = useRouter();
+
   console.log(personnelData?.getpersonnelbyaccount);
 
     useEffect(() => {

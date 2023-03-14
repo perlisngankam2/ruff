@@ -126,6 +126,7 @@ query findOnePersonnel ($id: String!) {
         firstName
         lastName
         phoneNumber
+        salary
         situationMatrimonial
         sexe
         fonction
@@ -316,6 +317,17 @@ export const GET_ALL_MONTANT_PENSION_CLASS = gql`
  `;
 
 
+
+export const GET_PRIME= gql `
+query findAllprime {
+    findAllprime {
+        id
+        nom
+        description
+        montant
+    }
+}
+`;
 
 
 

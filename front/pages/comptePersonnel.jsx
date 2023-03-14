@@ -12,7 +12,8 @@ import {
   Select,
   Stack,
   VStack,
-  useToast
+  useToast,
+  Text
 } from "@chakra-ui/react";
 import { useFormik } from "formik";
 import Link from "next/link";
@@ -29,9 +30,17 @@ function comptePersonnel() {
   const [PhoneNumber, setPhoneNumber] = useState("");
   const [Email , setEmail] = useState("");
   const [Password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [passwordsMatch, setPasswordsMatch] = useState(true);
   const [createUser, error] = useMutation(CREATE_USER);
   const toast = useToast()
   const router = useRouter()
+
+
+  const handleConfirmPasswordChange = (event) => {
+  setConfirmPassword(event.target.value);
+  setPasswordsMatch(event.target.value === Password);
+  };
  
 
   const HandleClick = async (event) => {
@@ -52,9 +61,12 @@ function comptePersonnel() {
       duration: 3000,
       isClosable: true,
     });
-    router.push("/personnel")
+
     setEmail("");
     setPassword("");
+    setConfirmPassword("")
+    router.push("/personnel")
+
   }
 
 
@@ -153,6 +165,18 @@ function comptePersonnel() {
                       onChange = {(event) => setPassword(event.target.value)}
                     />
                   </FormControl>
+                     <FormControl>
+                    <FormLabel>confirmation mot de passe </FormLabel>
+                    <Input 
+                      placeholder="********"
+                      type="password"
+                      // maxW="300px"
+                      name="Password"
+                      value={confirmPassword}
+                      onChange={handleConfirmPasswordChange}
+                    />
+                  </FormControl>
+                  {!passwordsMatch && <Text color='red'>Les mots de passe ne correspondent pas.</Text>}
                   
                   <Flex gap={5} pt="30px">
                     <Button colorScheme="red" onClick={() => router.back()}>

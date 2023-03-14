@@ -12,9 +12,16 @@ export class PrimePersonnelCreateInput {
   @Field(()=>ID,{nullable:true})
   personnelId?: string;
 
-  @Field(()=>PrimeCreateInput,{nullable:true})
-  prime?:PrimeCreateInput;
+  @Field({nullable:true})
+  startdate?: string;
 
-  @Field(()=>PersonnelCreateInput,{nullable:true})
-  personnel?:PersonnelCreateInput
+  @Field({nullable:true})
+  enddate?: string;
+
+
+  // @Field(()=>PrimeCreateInput,{nullable:true})
+  // prime?:PrimeCreateInput;
+
+  // @Field(()=>PersonnelCreateInput,{nullable:true})
+  // personnel?:PersonnelCreateInput
 }

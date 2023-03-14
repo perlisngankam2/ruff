@@ -10,20 +10,20 @@ import { RetenuPersonnelUpdateInput } from 'src/modules/retenu_personnel/dto/ret
 
 @InputType()
 export class SalaireUpdateInput {
-  @Field(()=>ID,{ nullable: true })
-  periodeId:string
+  // @Field(()=>ID,{ nullable: true })
+  // periodeId:string
 
   @Field(()=>ID,{ nullable: true })
   personnelId:string
 
-  @Field(()=>ID,{ nullable: true })
-  primeId:string
+  // @Field(()=>ID,{ nullable: true })
+  // primeId:string
 
-  @Field(()=>ID,{ nullable: true })
-  retenuId:string
+  // @Field(()=>ID,{ nullable: true })
+  // retenuId:string
 
-  @Field({nullable:true})
-  description?: string;
+  // @Field({nullable:true})
+  // description?: string;
 
   @Field({defaultValue:false})
   payer?: boolean;
@@ -31,16 +31,22 @@ export class SalaireUpdateInput {
   @Field({defaultValue:0})
   montant?: number;
 
-  @Field(()=>PeriodeUpdateInput,{nullable:true})
-  periode?: PeriodeUpdateInput;
+  @Field({nullable:true})
+  jourPaie?: string;
 
-  @Field(()=>PersonnelUpdateInput,{nullable:true})
-  personnel?: PersonnelUpdateInput;
+  @Field({nullable:true})
+  moisPaie?: string;
 
-  @Field(()=>PrimePersonnelUpdateInput,{nullable:true})
-  prime?: PrimePersonnelUpdateInput;
+  // @Field(()=>PeriodeUpdateInput,{nullable:true})
+  // periode?: PeriodeUpdateInput;
 
-  @Field(()=>RetenuPersonnelUpdateInput,{nullable:true})
-  retenu?:RetenuPersonnelUpdateInput;
+  // @Field(()=>PersonnelUpdateInput,{nullable:true})
+  // personnel?: PersonnelUpdateInput;
+
+  // @Field(()=>PrimePersonnelUpdateInput,{nullable:true})
+  // prime?: PrimePersonnelUpdateInput;
+
+  // @Field(()=>RetenuPersonnelUpdateInput,{nullable:true})
+  // retenu?:RetenuPersonnelUpdateInput;
 
 }

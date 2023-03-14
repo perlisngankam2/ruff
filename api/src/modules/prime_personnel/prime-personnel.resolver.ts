@@ -36,10 +36,10 @@ export class PrimePersonnelResolver {
     return await this.primePersonnelService.findByOne(id);
   }
 
-  @Mutation(()=>PrimePersonnel)
-  async updateprimepersonnel(@Args('id') id:string,@Args('input') input:PrimePersonnelUpdateInput){
-    return await this.primePersonnelService.update(id,input)
-  }
+  // @Mutation(()=>PrimePersonnel)
+  // async updateprimepersonnel(@Args('id') id:string,@Args('input') input:PrimePersonnelUpdateInput){
+  //   return await this.primePersonnelService.update(id,input)
+  // }
 
   @Mutation(()=> PrimePersonnel)
   async deleteprimepersonnel(@Args('id') id:string){

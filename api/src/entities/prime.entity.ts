@@ -49,7 +49,7 @@ export class Prime {
 
 
   @ManyToOne(() => CategoriePrime ,{
-    nullable:false,
+    nullable:true,
     onDelete: 'CASCADE'
   })
   categoriePrime!:IdentifiedReference<CategoriePrime>|null

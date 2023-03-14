@@ -28,6 +28,15 @@ export class PrimePersonnel {
 
   @Property({ onCreate: () => new Date() })
   createdAt = new Date();
+
+  @Field({ nullable: true })
+  @Property({ nullable: true })
+  startDate!: string; 
+
+  @Field({ nullable: true })
+  @Property({ nullable: true })
+  endDate!: string; 
+
   
 // relation with another Entites
 

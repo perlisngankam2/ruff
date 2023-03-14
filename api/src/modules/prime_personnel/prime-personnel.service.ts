@@ -36,17 +36,19 @@ export class PrimePersonnelService {
             ? await this.primeService.findByOne(input.primeId)
             : await this.primeService.create(input.prime)
         
-        const personnel = await this.personnelService.findOne(input.personnelId)
-        if(!personnel){
-            throw new NotFoundError('personnel no exist' || '');
+        const personnel = await this.personnelService.findById(input.personnelId)
+        if(!(personnel&&prime)){
+            throw Error("not found");
         }
         
         const primePersonnel = new PrimePersonnel()
 
         wrap(primePersonnel).assign(
           {
-           personnel: personnel.id,
-           prime: prime.id
+           personnel:input.personnelId,
+           prime: input.primeId,
+           startDate: input.startdate,
+           endDate: input.enddate
           },
           {
             em: this.em
@@ -73,38 +75,38 @@ export class PrimePersonnelService {
        return a
       }
       
-      async update(id:string, input: PrimePersonnelUpdateInput): Promise<PrimePersonnel> {
-        const  primePersonnel= await this.findById(id)
-        if (input.prime) {
-            const prime =
-            input.primeId &&
-              (await this.primeService.findByOne({ id: input.primeId}));
+    //   async update(id:string, input: PrimePersonnelUpdateInput): Promise<PrimePersonnel> {
+    //     const  primePersonnel= await this.findById(id)
+    //     if (input.prime) {
+    //         const prime =
+    //         input.primeId &&
+    //           (await this.primeService.findByOne({ id: input.primeId}));
       
-            if (!prime) {
-              throw new NotFoundError('prime no exist' || '');
-            }
-            this.primeService.update(prime.id, input.prime);
-          }  
+    //         if (!prime) {
+    //           throw new NotFoundError('prime no exist' || '');
+    //         }
+    //         this.primeService.update(prime.id, input.prime);
+    //       }  
           
-          if (input.personnel) {
-            const personnel =
-            input.personnelId &&
-              (await this.personnelService.findOne({ id: input.personnelId }));
+    //       if (input.personnel) {
+    //         const personnel =
+    //         input.personnelId &&
+    //           (await this.personnelService.findOne({ id: input.personnelId }));
       
-            if (!personnel) {
-              throw new NotFoundError('personnel no exist' || '');
-            }
-            this.personnelService.update(personnel.id, input.personnel);
-          }  
-        wrap(primePersonnel).assign({
-            prime: input.prime || primePersonnel.prime,
-            personnel: input.personnel || primePersonnel.personnel
-          },
-          { em: this.em },
-    );
-        await this.primePersonnelRepository.persistAndFlush(primePersonnel);
-        return primePersonnel;
-      }
+    //         if (!personnel) {
+    //           throw new NotFoundError('personnel no exist' || '');
+    //         }
+    //         this.personnelService.update(personnel.id, input.personnel);
+    //       }  
+    //     wrap(primePersonnel).assign({
+    //         prime: input.prime || primePersonnel.prime,
+    //         personnel: input.personnel || primePersonnel.personnel
+    //       },
+    //       { em: this.em },
+    // );
+    //     await this.primePersonnelRepository.persistAndFlush(primePersonnel);
+    //     return primePersonnel;
+    //   }
     
       async delete(id:string){
        const a = this.findById(id)

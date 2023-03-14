@@ -59,6 +59,12 @@ type NiveauEtude {
   montantPension: Float
 }
 
+type Course {
+  id: ID!
+  title: String
+  time: String
+}
+
 type CategoriePrime {
   id: ID!
   nom: String
@@ -88,6 +94,13 @@ type Retenue {
 
 type RetenuPersonnel {
   id: ID!
+}
+
+type Salaire {
+  id: ID!
+  description: String
+  payer: Boolean!
+  montant: Float!
 }
 
 type PrimePersonnel {
@@ -158,6 +171,7 @@ type TrancheStudent {
   montant: Float
   complete: Boolean!
   reste: Float!
+  surplus: Float!
 }
 
 type Tranche {
@@ -172,7 +186,7 @@ type Pension {
   id: ID!
   name: String
   description: String
-  montant: Float!
+  montantPension: Float!
   dateLine: DateTime
 }
 
@@ -284,8 +298,8 @@ type LoginResponse {
 type Query {
   findAlluser: [User!]!
   user(id: String!): User!
-  findAllPersonnelSalle: [PersonnelSalle!]!
-  findOnePersonnelSalle(id: String!): PersonnelSalle!
+  findAllPersonnelSalle: [Course!]!
+  findOnePersonnelSalle(id: String!): Course!
   findAllpersonnel: [Personnel!]!
   findOnePersonnel(id: String!): Personnel!
   getpersonnelaccount(id: String!): User!
@@ -347,6 +361,8 @@ type Query {
   getcumullativesum(id: String!): Float!
   findAllfraisinscription: [FraisInscription!]!
   findOnefraisincription(id: String!): FraisInscription!
+  findallsalaire: [Salaire!]!
+  getonesalaire(id: String!): Salaire!
   findAllparents: [Parent!]!
   parent(id: String!): Parent!
   totalNumberofStudentsinClass(id: String!): Float!
@@ -357,8 +373,8 @@ type Mutation {
   createuser(createUser: UserCreateInput!): User!
   updateuser(id: String!, input: UpdateUserInput!): User!
   deleteuser(id: String!): User!
-  createPersonnelSalle(input: PersonnelSalleCreateInput!): PersonnelSalle!
-  deletePersonnelSalle(id: String!): PersonnelSalle!
+  createPersonnelSalle(input: CourseCreateInput!): Course!
+  deletePersonnelSalle(id: String!): Course!
   createpersonnel(createPersonnelUser: PersonnelCreateInput!): Personnel!
   updatepersonnel(id: String!, input: PersonnelUpdateInput!): Personnel!
   deletepersonnel(id: String!): Personnel!
@@ -437,6 +453,8 @@ type Mutation {
   createFraisInscription(fraisInscription: FraisInscriptionInput!): FraisInscription!
   deletefraisincription(id: String!): FraisInscription!
   upodatefraisinscription(id: String!, input: UpdateFraisInscriptionInput!): FraisInscription!
+  createsalaire(input: SalaireCreateInput!): Salaire!
+  updatesalire(id: String!, input: SalaireUpdateInput!): Salaire!
   createParent(parent: ParentCreateInput!): Parent!
   updateParent(id: String!): Parent!
   deleteparent(id: String!): Parent!
@@ -468,12 +486,13 @@ input UpdateUserInput {
   role: Role
 }
 
-input PersonnelSalleCreateInput {
-  salleId: ID
-  personnelId: ID
+input CourseCreateInput {
+  title: String
+  time: String
 }
 
 input PersonnelCreateInput {
+  id: ID!
   userID: ID
   salary: Float
   categoryPersonnelId: ID
@@ -827,6 +846,7 @@ input AvanceTrancheCreateInput {
   description: String
   montant: Float
   reste: Float = 0
+  tranchestudentinput: TrancheStudentCreateInput
 }
 
 input TrancheStudentCreateInput {
@@ -884,6 +904,34 @@ input UpdateFraisInscriptionInput {
   montant: Float = 0
   salle: SalleCreateInput
   anneeAccademique: AnneeAccademiqueCreateInput
+}
+
+input SalaireCreateInput {
+  periodeId: ID
+  personnelId: ID
+  primeId: ID
+  retenuId: ID
+  description: String
+  payer: Boolean! = false
+  montant: Float! = 0
+  periode: PeriodeCreateInput
+  personnel: PersonnelCreateInput
+  prime: PrimePersonnelCreateInput
+  retenu: RetenuPersonnelCreateInput
+}
+
+input SalaireUpdateInput {
+  periodeId: ID
+  personnelId: ID
+  primeId: ID
+  retenuId: ID
+  description: String
+  payer: Boolean! = false
+  montant: Float! = 0
+  periode: PeriodeUpdateInput
+  personnel: PersonnelUpdateInput
+  prime: PrimePersonnelUpdateInput
+  retenu: RetenuPersonnelUpdateInput
 }
 
 input ParentCreateInput {

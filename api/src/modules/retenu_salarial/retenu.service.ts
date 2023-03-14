@@ -44,7 +44,7 @@ export class RetenuService {
           montant: input.montant
         },
         {
-
+          em: this.em
         })
         await this.retenuRepository.persistAndFlush(retenu)
         return retenu

@@ -9,4 +9,7 @@ export class PersonnelSalleUpdateInput {
 
   @Field(()=>ID,{nullable:true})
   personnelId?:string
+
+  @Field(()=>ID,{nullable:true})
+  courseId?:string
 }

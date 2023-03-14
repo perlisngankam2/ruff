@@ -49,7 +49,7 @@ export class TrancheStudent {
   @Property({nullable:true})
   montant!: number;
 
-  @Field()
+  // @Field()
   // @Enum({
   //   items: () => RegimePaiement,
   //   default: RegimePaiement.NORMAL,
@@ -60,9 +60,13 @@ export class TrancheStudent {
   @Property({default:false})
   complete!: boolean;
 
-  @Field({ defaultValue:0 })
-  @Property({ default:0 })
+  @Field({ defaultValue:0.000 })
+  @Property({ default:0.000 })
   reste!: number;
+
+  @Field({ defaultValue:0.000 })
+  @Property({ default:0.000 })
+  surplus!: number;
 
   @ManyToOne(() => Student ,{
     nullable:false,

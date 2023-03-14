@@ -50,7 +50,7 @@ export class TrancheStudentService {
 
         wrap(trancheStudent).assign(
             {
-             montant: Number(input.montant) || 0.0,
+             montant: Number(input.montant) || 0.000000,
              name: input.name,
              description: input.description,
             //  regimePaimemnt: input.regimePaiement,
@@ -62,18 +62,17 @@ export class TrancheStudentService {
             }
         )
 
-        if(input.montant<amount){
-           trancheStudent.complete=false
-           trancheStudent.reste = amount - input.montant
-           await this.trancheStudentRepository.persistAndFlush(trancheStudent)  
-             return trancheStudent       
-         }
-         if(input.montant >amount){
-            trancheStudent.complete = true
-            trancheStudent.reste = input.montant - amount
-            await this.trancheStudentRepository.persistAndFlush(trancheStudent)  
-            return trancheStudent  
-         }
+        // if(input.montant<tranche.montant){
+        //     trancheStudent.complete=false
+        //     await this.trancheStudentRepository.persistAndFlush(trancheStudent)  
+        //     return trancheStudent       
+        // }
+        // if(input.montant > tranche.montant){
+        //    trancheStudent.complete = true
+        //    trancheStudent.reste = input.montant - tranche.montant
+        //    await this.trancheStudentRepository.persistAndFlush(trancheStudent)  
+        //    return trancheStudent  
+        // }
 
         trancheStudent.complete = true
         await this.trancheStudentRepository.persistAndFlush(trancheStudent)  
@@ -120,6 +119,7 @@ export class TrancheStudentService {
         const tranchestudent = await this.trancheStudentRepository.findOneOrFail(id)
         tranchestudent.montant = Number((await this.em.find(AvanceTranche,{trancheStudent: id})).map(a=>a.montant).reduce(function(a,b){return a+b}))
         const student = tranchestudent.student.load()
+        const montantsalle =(await (await (await student).salle.load()).pension.load()).montantPension
         const tranchemontant = Number((await (await this.em.find(AvanceTranche,{trancheStudent: id})).map(a=>a.tranche.load())[0]).montant)
         const categorie = (await student).categorie.load()
         const retenu = (await categorie).reductionScolarite.load()
@@ -153,21 +153,21 @@ export class TrancheStudentService {
             }
         }
         
-        if(tranchestudent.montant == tranchemontant){
+        if(tranchestudent.montant == montantsalle){
             tranchestudent.complete = true
             // tranche.regimePaimemnt = RegimePaiement.NORMAL
             tranchestudent.reste = 0.0
         }
 
-        if(tranchestudent.montant > tranchemontant){
+        if(tranchestudent.montant > montantsalle){
             tranchestudent.complete = true
             // tranche.regimePaimemnt = RegimePaiement.NORMAL
-            tranchestudent.reste = tranchestudent.montant - tranchemontant
+            tranchestudent.surplus = tranchestudent.montant - montantsalle
         }   
 
-        if(tranchestudent.montant < tranchemontant){
+        if(tranchestudent.montant < montantsalle){
             tranchestudent.complete = false
-            tranchestudent.reste = 0.0
+            tranchestudent.reste = montantsalle - tranchestudent.montant
         }
         
         await this.trancheStudentRepository.persistAndFlush(tranchestudent)

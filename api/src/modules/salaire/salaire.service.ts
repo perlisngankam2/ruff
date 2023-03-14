@@ -26,6 +26,7 @@ export class SalaireService {
     private retenuPersonnel : RetenuPersonnelService,
     private   Primeservice: PrimeService,
     private periodeService: PeriodeService,
+    private primepersonnelservice: PrimePersonnelService,
     private personnel : PersonnelService,
     private readonly em: EntityManager,
   ) {}
@@ -41,25 +42,19 @@ export class SalaireService {
     //const categorie = personnel.category.load()
 
     const salaireBase = Number(personnel.salary)
-    const retenus = this.retenuPersonnel.getallretenupersonnel(input.personnelId)
-    const primes = Number(this.Primeservice.getallpersonnelprime(input.personnelId))
-  
+    const retenus = Number(this.retenuPersonnel.getallretenupersonnel(input.retenuId))||0.0
+    const primes = Number(this.primepersonnelservice.getallpersonnelprime(input.primeId))||0.0
 
-    const salaire = new Salaire()
-
-    if(personnel.status == Status.PERMANENT){
-      // let sommePrime = 0
-      // for(let i = 0; i < (await primes).length; i++){
-      //   sommePrime += Number((await primes[i]).montant)
-      // }
-
-      let sommeRetenus = 0
-      for(let j = 0; j < (await retenus).length; j++){
-        sommeRetenus += Number((await retenus[j]).montant)
+    if(personnel){
+      if((await this.getAll()).map(a=>a.personnel).filter(async a=>(await a.load()).id === personnel.id).length > 1){
+        throw Error("!!!!!!!!!!! CE PERSONNEL A DEJA ETE PAYER !!!!!!!!!!!!")
       }
-      const salaireNette = salaireBase + primes - sommeRetenus
 
+      const salaire = new Salaire()
 
+      if(personnel.status == Status.PERMANENT){
+
+      const salaireNette = salaireBase + primes - retenus
 
       wrap(salaire).assign(
         {
@@ -72,13 +67,13 @@ export class SalaireService {
         em: this.em
         }
       )
-  
-      if(input.payer == true){
-          this.salaireRepository.persistAndFlush(salaire)
+
+      this.salaireRepository.persistAndFlush(salaire)
+      return salaire
+
       }
-      throw new Error('confirm payement')
-    }
-    if(personnel.status == Status.VACATAIRE){
+
+      if(personnel.status == Status.VACATAIRE){
       wrap(salaire).assign(
         {
         montant: Number(salaireBase),
@@ -90,14 +85,22 @@ export class SalaireService {
           em: this.em
         }
       )
-      if(input.payer==false){
-        this.salaireRepository.persistAndFlush(salaire)
+      this.salaireRepository.persistAndFlush(salaire)
+      return salaire
       }
-      throw console.error('salarie a ete payer');
-      
 
     }
-  return salaire
+    
+      // let sommePrime = 0
+      // for(let i = 0; i < (await primes).length; i++){
+      //   sommePrime += Number((await primes[i]).montant)
+      // }
+
+      // let sommeRetenus = 0
+      // for(let j = 0; j < (await retenus).length; j++){
+      //   sommeRetenus += Number((await retenus[j]).montant)
+      // }
+      
  
   }
 

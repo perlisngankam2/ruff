@@ -103,7 +103,7 @@ export class RetenuPersonnelService {
       }
     
       async getallretenupersonnel(id:string){
-      const a = (await this.em.find(RetenuPersonnel,{personnel: id})).map(a=>a.retenue.load()).map(a=>a)
+      const a = (await this.em.find(RetenuPersonnel,{retenue: id})).map(async a=>(await a.retenue.load()).montant).reduce(async function(a,b){return await a+ await b})
       return a
       }
 

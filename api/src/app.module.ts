@@ -48,6 +48,7 @@ import ormConfig from './modules/orm/orm/orm.config';
 import { ExpenseModule } from './modules/expenses/expense.module';
 import { StatisticModule } from './modules/statistics/statistics.module';
 import { PersonnelSalleModule } from './modules/personnel_salle/personnelsalle.module';
+import { CourseModule } from './modules/course/course.module';
 
 @Module({
   imports: [
@@ -86,6 +87,7 @@ import { PersonnelSalleModule } from './modules/personnel_salle/personnelsalle.m
     AvanceInscriptionModule,
     ExpenseModule,
     StatisticModule,
+    CourseModule,
 
   
     ConfigModule.forRoot({
@@ -95,7 +97,6 @@ import { PersonnelSalleModule } from './modules/personnel_salle/personnelsalle.m
     MikroOrmModule.forRoot({
       ...mikroOrmConfig,
      autoLoadEntities:false,
-      
     }),
 
     // gestion grapQl

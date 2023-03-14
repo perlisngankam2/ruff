@@ -44,7 +44,7 @@ export class PensionService {
 
         wrap(pension).assign(
           {
-            montant:input.montant,
+            montantPension:input.montant,
             name: input.name,
             description: input.description,
             salle: salle.id,
@@ -96,7 +96,7 @@ export class PensionService {
         
         wrap(pension).assign({
             name:input.name || pension.name,
-            montant: Number(input.montant) || Number(pension.montant) || 0.0,
+            montantPension: Number(input.montant) || Number(pension.montantPension) || 0.0,
             description: input.description || pension.description,
             dateLine: input.dateLine || pension.dateLine
         },

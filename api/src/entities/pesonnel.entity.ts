@@ -146,7 +146,7 @@ export class Personnel {
   @ManyToMany(() => Prime, primes => primes.personnel,{owner: true,nullable:true})
   primes = new Collection<Personnel>(this);
 
-  @ManyToMany(() => Salaire, salaire => salaire.personnel,{nullable:true})
+  @OneToMany(() => Salaire, salaire => salaire.personnel,{nullable:true})
   salaire = new Collection<Salaire>(this);
 
   @OneToMany(()=>PersonnelSalle, (personnelsalle) => personnelsalle.personnel)

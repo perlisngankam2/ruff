@@ -44,7 +44,7 @@ export class PrimePersonnel {
   personnel!:IdentifiedReference<Personnel>|null 
   
   @ManyToOne(() => Salaire ,{
-    nullable:false,
+    nullable:true,
     onDelete:'CASCADE'
   })
   salaire!:IdentifiedReference<Salaire>|null

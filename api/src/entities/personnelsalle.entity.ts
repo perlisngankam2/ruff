@@ -2,6 +2,7 @@
 import { Entity, IdentifiedReference, ManyToOne, Property } from "@mikro-orm/core";
 import { Field, ID, ObjectType } from "@nestjs/graphql";
 import { PrimaryKeyUuid } from "src/decorators/PrimaryKeyUuid.decorator";
+import { Course } from "./course.entity";
 import { Personnel } from "./pesonnel.entity";
 import { Salle } from "./salle.entity";
 
@@ -25,5 +26,12 @@ export class PersonnelSalle {
     // unique:true
   })
   salle!:IdentifiedReference<Salle>|null
+
+  @ManyToOne(() => Course ,{
+    nullable:false,
+    onDelete:'CASCADE',
+    // unique: true
+  })
+  course!:IdentifiedReference<Course>|null
 
 }

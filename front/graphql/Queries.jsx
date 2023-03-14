@@ -1,5 +1,4 @@
 import {gql} from '@apollo/client';
-import Personnel from '../pages/personnel';
 
 //personnel
 export const GET_ALL_PERSONNELS = gql `
@@ -93,6 +92,7 @@ export const GET_ALL_CYCLE =  gql `
     }
 `;
 
+//liste des classes
 export const GET_ALL_CLASS =  gql `
     query findAllsalle {
         findAllsalle {
@@ -100,12 +100,13 @@ export const GET_ALL_CLASS =  gql `
             name
             section
             cycle
+            montantPensionSalle
             effectif
         }
     }
 `;
 
-
+//get al frais inscription
 export const GET_ALL_FRAIS_INSCRIPTION =  gql `
     query findAllfraisinscription {
         findAllfraisinscription {
@@ -201,15 +202,29 @@ export const GET_ALL_REDUCTION_SCOLARITE = gql  `
     }
 `;
 
+//recuperqtion de toutes les tranches
+export const GET_ALL_TRANCHE_PENSION = gql `
+    query findAlltranche {
+        findAlltranche {
+            id
+            name
+            description
+            dateLine
+            montant
+        }
+    }
+`;
+
 //one cycle
 export const GET_ONE_CYCLE =  gql `
-query findOnecycle ($id: String!) {
-    findOnecycle (id: $id) {
-        id
-        name
+    query findOnecycle ($id: String!) {
+        findOnecycle (id: $id) {
+            id
+            name
+        }
     }
-}
 `;
+
 
 export const GET_USER_CONNECTED = gql `
 query user ($id: String!) {
@@ -246,8 +261,21 @@ query findAlluser {
 }
 `;
 
-//personnel by userid
+//Tranche student by studentIf
+export const GET_TRANCHE_STUDENT_BY_STUDENT_ID = gql `
+    query getTrancheStudentByStudent ($studentid: String!) {
+        getTrancheStudentByStudent (studentid: $studentid) {
+            id
+            name
+            description
+            montant
+            complete
+            reste
+        }
+    }
+`;
 
+//personnel by userid
 export const GET_PERSONNEL_BY_USERID= gql `
 query getpersonnelbyaccount ($userid: String!) {
     getpersonnelbyaccount (userid: $userid) {
@@ -266,6 +294,19 @@ query getpersonnelbyaccount ($userid: String!) {
     }
 }
 `;
+export const GET_ALL_MONTANT_PENSION_CLASS = gql`
+    query findAllpension {
+        findAllpension {
+            id
+            name
+            description
+            montant
+            dateLine
+        }
+    }
+;
+`
+
 
 export const GET_PRIME= gql `
 query findAllprime {

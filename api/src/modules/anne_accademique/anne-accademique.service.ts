@@ -17,7 +17,7 @@ export class AnneeAccademiqueService {
   ) {}
 
 
-   async findbyOne(filters: FilterQuery<AnneeAccademique>): Promise<AnneeAccademique | null> {
+   async findByOne(filters: FilterQuery<AnneeAccademique>): Promise<AnneeAccademique | null> {
      return await this.anneAccademiquePrimeRepository.findOne(filters);
     }
 

@@ -1,5 +1,7 @@
 import { gql } from "@apollo/client";
 
+// npx mikro-orm schema:update --run
+
 //personnel
 export const CREATE_PERSONNEL = gql `
 mutation createpersonnel ($createPersonnelUser: PersonnelCreateInput!) {
@@ -80,6 +82,7 @@ export const CREATE_SALLE = gql `
             name
             section
             cycle
+            montantPensionSalle
             effectif
         }
     }
@@ -154,6 +157,69 @@ export const CREATE_REDUCTION_SCOLARITE = gql `
     }
 `;
 
+//cretion de lq tranche
+export const CREATE_TRANCHE_PENSION = gql `
+    mutation createTranche ($tranche: TrancheCreateInput!) {
+        createTranche (tranche: $tranche) {
+            id
+            name
+            description
+            dateLine
+            montant
+        }
+    }
+`
+
+//fronction d'initialisation du paiemt d'une pension pour un eleve donne
+export  const CREATE_TRANCHE_STUDENT = gql `
+    mutation createTrancheStudent ($trancheStudent: TrancheStudentCreateInput!) {
+        createTrancheStudent (trancheStudent: $trancheStudent) {
+            id
+            name
+            description
+            montant
+            complete
+            reste
+        }
+    }
+`;
+
+//mutation de creation de l'avance tranche de la pension
+export const CREATE_AVANCE_TRANCHE = gql `
+    mutation createavancetranche ($avancetranche: AvanceTrancheCreateInput!) {
+        createavancetranche (avancetranche: $avancetranche) {
+            id
+            name
+            description
+            dateLine
+            montant
+            reste
+            complete
+        }
+    }
+`;
+
+//mutation d'affection de la pension a une classe 
+export const CREATE_MONTANT_SCOLARITE_CLASS = gql `
+    mutation createPension ($pension: PensionCreateInput!) {
+        createPension (pension: $pension) {
+            id
+            name
+            description
+            montant
+            dateLine
+        }
+    }
+`;
+
+export const CREATE_PERSONNEL_SALLE = gql `
+    mutation createPersonnelSalle ($input: PersonnelSalleCreateInput!) {
+        createPersonnelSalle (input: $input) {
+            id
+        }
+    }
+`;
+
 export const fragmentCycle = gql` fragment CycleClass on cyle {
     id
     name
@@ -221,6 +287,7 @@ export const DELETE_SALLE = gql `
             name
             section
             cycle
+            montantPensionSalle
             effectif
         }
     }
@@ -276,6 +343,7 @@ export const UPDATE_CLASS = gql `
             name
             section
             cycle
+            montantPensionSalle
             effectif
         }
     }
@@ -294,7 +362,6 @@ export const UPDATE_CYCLE = gql `
 `;
 
 //create user
-
 export const CREATE_USER = gql `
     mutation createuser ($createUser: UserCreateInput!) {
         createuser (createUser: $createUser) {

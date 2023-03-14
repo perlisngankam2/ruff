@@ -19,7 +19,6 @@ import { CycleService } from './cycle.service';
 import { CycleCreateInput } from './dto/cycle.input';
 import { CycleUpdateInput } from './dto/cycle.update';
 
-
 @Resolver(() => Cycle)
 export class CycleResolver {
   constructor(private readonly cycleService: CycleService) {}

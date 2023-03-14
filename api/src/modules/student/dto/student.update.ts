@@ -12,6 +12,9 @@ export class StudentUpdateInput {
   ID!: string;
 
   @Field({nullable:true})
+  salleId!: string;
+  
+  @Field({nullable:true})
   matricule!: string;
 
   @Field({ nullable: true })

@@ -24,10 +24,10 @@ export class PensionResolver {
     return await this.pensionService.create(Input);
   }
 
-   @Mutation(() => Pension)
-   async updatePension(@Args('id', { type: () => String }) id: string, Input: PensionUpdateInput) {
-     return await this.pensionService.update(id,Input);
-  }
+  //  @Mutation(() => Pension)
+  //  async updatePension(@Args('id', { type: () => String }) id: string, Input: PensionUpdateInput) {
+  //    return await this.pensionService.update(id,Input);
+  // }
 
   @Query(() => [Pension])
   async findAllpension() {

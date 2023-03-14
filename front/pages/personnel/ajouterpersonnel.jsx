@@ -18,7 +18,7 @@ import {useTranslation } from "next-i18next";
 import { useState, useRef, use, useEffect } from "react";
 import { useRouter } from "next/router";
 import {  useMutation, useQuery } from "@apollo/client";
-import { CREATE_PERSONNEL } from "../../graphql/Mutation"; 
+import {  CREATE_PERSONNEL} from "../../graphql/Mutation"; 
 import { GET_ALL_PERSONNELS, GET_ALL_Category_Personnel } from "../../graphql/queries";
 import { GET_ALL_USER } from "../../graphql/queries";
  
@@ -42,7 +42,6 @@ const AjouterPersonnel = () => {
     const [ filteredData, setFilteredData]=useState([])
     // const [id, setMatricule] = useState("");
 
-   
     // const dateOfBirthRef = useRef()
     // const dateOfStartWorkRef = useRef()
     // const sexeRef = useRef()
@@ -161,6 +160,19 @@ const AjouterPersonnel = () => {
         isClosable: true,
       });
       router.push("/personnel")
+      setFirstName("");
+      setLastName("");
+      setDateOfBirth("");
+      setDateOfStartWork("");
+      setFonction("");
+      setPhoneNumber("");
+      setSexe("");
+      setSituationMatrimonial("");
+      setStatus("");
+      setChildNumber("");
+      setCategoryPersonnelId("");
+      setUserID("");
+
   }
 
   useEffect(() =>{
@@ -310,11 +322,9 @@ const AjouterPersonnel = () => {
                     {/* {t('components.school.Register.institute')} */}
                    Fonction
                   </FormLabel>
-                  <Input
-                    type="text"
-                    id="fonction"
+                  <Select
                     name="fonction"
-                    placeholder="Date de prise de fonction"
+                    placeholder="Fonction"
                     borderColor="purple.100"
                     onChange={e => setFonction(e.target.value)}
                     value={fonction}
@@ -322,7 +332,12 @@ const AjouterPersonnel = () => {
                     ref={node => {
                       input = node;
                     }}
-                  />
+                  >
+                    <option>Fondateur</option>
+                    <option>Principal</option>
+                    <option>Econome</option>
+                    <option>Gestionnaire</option>
+                  </Select>
                 </FormControl>
               </Box>
               {/* <Flex mt="2%"> */}
@@ -378,7 +393,7 @@ const AjouterPersonnel = () => {
                      Telephone
                   </FormLabel>
                   <Input
-                    type="tel"
+                    type='tel'
                     id="phoneNumber"
                     name="phoneNumber"
                     placeholder="Numero de téléphone"

@@ -1,16 +1,16 @@
 {
     "pages": {
-            "AjouterPersonnel": { 
-                "heading": "Ajouter un personnel",
-                "firstName": "Nom",
-                "lastName": "Prénom",
-                "birthDate": "Date de naissance",
-                "gender": "Sexe",
-                "salary": "Salaire",
-                "fonction": "Fonction",
-                "phoneNumber": "Numero de téléphone",
-                "matricule": "Matricule",
-                "maritalStatus": "Situation matrimoniale"
+        "AjouterPersonnel": { 
+            "heading": "Ajouter un personnel",
+            "firstName": "Nom",
+            "lastName": "Prénom",
+            "birthDate": "Date de naissance",
+            "gender": "Sexe",
+            "salary": "Salaire",
+            "fonction": "Fonction",
+            "phoneNumber": "Numero de téléphone",
+            "matricule": "Matricule",
+            "maritalStatus": "Situation matrimoniale"
         }
     }   
    

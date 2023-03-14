@@ -79,6 +79,8 @@ const cyclesection = () => {
     const [editCycle] = useMutation(UPDATE_CYCLE);
     const [createCycle, {error}] = useMutation(CREATE_CYCLE);
     const { isOpen, onOpen, onClose} = useDisclosure();
+    const { isOpen:isOpennns, onOpen:onOpennns, onClose:onClossses} = useDisclosure();
+
     const [isformOpen, setIsFormOpen] = useState(false)
     const cancelRef = React.useRef();
     const router = useRouter();
@@ -136,7 +138,7 @@ const cyclesection = () => {
   //     section = ""
   // })
 
-     useEffect (() => {
+    useEffect (() => {
       console.log(data?.findAllsection);
       setSection(data);
       console.log(dataCycle?.findAllcycle) 
@@ -151,8 +153,8 @@ const cyclesection = () => {
         refetchQueries:[{
           query: GET_ALL_SECTION
         }]
-
       })
+      onClose();
     }
 
     const removeCycle = async (id) => {
@@ -162,6 +164,7 @@ const cyclesection = () => {
           query: GET_ALL_CYCLE
         }]
       })
+      onClose();
     } 
 
   
@@ -179,7 +182,6 @@ const cyclesection = () => {
 
     const handleShowUpdateCycle = (cycle) => {
       // setId(cycle.id)
-     
     }
 
   return (
@@ -285,10 +287,7 @@ const cyclesection = () => {
                       )}
                 </Table>
             </TableContainer> 
-
-            
             </Box>
-
         <ReactPaginate 
         previousLabel={"<<"}
         nextLabel={">>"}
@@ -300,10 +299,6 @@ const cyclesection = () => {
         disabledClassName={"paginationDisabled"}
         activeClassName={"paginationActive"}
         />
-
-
-         
-
 
 
 </Box>

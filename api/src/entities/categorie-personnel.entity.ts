@@ -52,10 +52,10 @@ export class CategoriePersonnel {
   })
   retenu!:IdentifiedReference<Retenue>|null
 
-   @ManyToOne(() => SalaireBase ,{
-   nullable:true,
-   onDelete:'CASCADE'
-   })
+  @ManyToOne(() => SalaireBase ,{
+    nullable:true,
+    onDelete:'CASCADE'
+  })
   salaireBase!:IdentifiedReference<SalaireBase>|null
 
   // @ManyToMany(() => SalaireBase, salairebase => salairebase.categoriePersonnel)

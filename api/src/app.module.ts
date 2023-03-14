@@ -47,10 +47,13 @@ import { LocalisationModule } from './modules/localisation/localisation.module';
 import ormConfig from './modules/orm/orm/orm.config';
 import { ExpenseModule } from './modules/expenses/expense.module';
 import { StatisticModule } from './modules/statistics/statistics.module';
+import { PersonnelSalleModule } from './modules/personnel_salle/personnelsalle.module';
+import { CourseModule } from './modules/course/course.module';
 
 @Module({
   imports: [
     UserModule, 
+    PersonnelSalleModule,
     StudentModule, 
     PersonnelModule, 
     SalaireBaseModule, 
@@ -84,6 +87,7 @@ import { StatisticModule } from './modules/statistics/statistics.module';
     AvanceInscriptionModule,
     ExpenseModule,
     StatisticModule,
+    CourseModule,
 
   
     ConfigModule.forRoot({
@@ -93,7 +97,6 @@ import { StatisticModule } from './modules/statistics/statistics.module';
     MikroOrmModule.forRoot({
       ...mikroOrmConfig,
      autoLoadEntities:false,
-      
     }),
 
     // gestion grapQl

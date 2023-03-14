@@ -40,40 +40,39 @@ export class TrancheStudentService {
       ): Promise<TrancheStudent> {  
         const trancheStudent = new TrancheStudent()
 
-        const tranche = input.tranche
-            ? await this.trancheService.findByOne({id:input.tranche_id})
-            : await this.trancheService.create(input.tranche)
+        // const tranche = input.tranche
+        //     ? await this.trancheService.findByOne({id:input.tranche_id})
+        //     : await this.trancheService.create(input.tranche)
         
-        const student = input.student
-            ? await this.studentService.findByOne({id:input.student_id})
-            : await this.studentService.create(input.student)
-
+        // const student = input.student
+             await this.studentService.findByOne({id:input.studentId})
+            // : await this.studentService.create(input.student)
 
         wrap(trancheStudent).assign(
             {
-             montant: Number(input.montant) || 0.0,
+             montant: Number(input.montant) || 0.000000,
              name: input.name,
              description: input.description,
-             regimePaimemnt: input.regimePaiement,
-             tranche: tranche.id,
-             student: student.id
+            //  regimePaimemnt: input.regimePaiement,
+            //  tranche: tranche.id,
+             student: input.studentId
             },
             {
                 em:this.em
             }
         )
 
-        if(input.montant<tranche.montant){
-            trancheStudent.complete=false
-            await this.trancheStudentRepository.persistAndFlush(trancheStudent)  
-            return trancheStudent       
-        }
-        if(input.montant > tranche.montant){
-           trancheStudent.complete = true
-           trancheStudent.reste = input.montant - tranche.montant
-           await this.trancheStudentRepository.persistAndFlush(trancheStudent)  
-           return trancheStudent  
-        }
+        // if(input.montant<tranche.montant){
+        //     trancheStudent.complete=false
+        //     await this.trancheStudentRepository.persistAndFlush(trancheStudent)  
+        //     return trancheStudent       
+        // }
+        // if(input.montant > tranche.montant){
+        //    trancheStudent.complete = true
+        //    trancheStudent.reste = input.montant - tranche.montant
+        //    await this.trancheStudentRepository.persistAndFlush(trancheStudent)  
+        //    return trancheStudent  
+        // }
 
         trancheStudent.complete = true
         await this.trancheStudentRepository.persistAndFlush(trancheStudent)  
@@ -117,86 +116,88 @@ export class TrancheStudentService {
     }
 
     async saveTranche(id:string){
-        const tranche = await this.trancheStudentRepository.findOneOrFail(id)
-        tranche.montant = Number((await this.em.find(AvanceTranche,{trancheStudent: id})).map(a=>a.montant).reduce(function(a,b){return a+b}))
-        const student = tranche.student.load()
+        const tranchestudent = await this.trancheStudentRepository.findOneOrFail(id)
+        tranchestudent.montant = Number((await this.em.find(AvanceTranche,{trancheStudent: id})).map(a=>a.montant).reduce(function(a,b){return a+b}))
+        const student = tranchestudent.student.load()
+        const montantsalle =(await (await (await student).salle.load()).pension.load()).montantPension
+        const tranchemontant = Number((await (await this.em.find(AvanceTranche,{trancheStudent: id})).map(a=>a.tranche.load())[0]).montant)
         const categorie = (await student).categorie.load()
         const retenu = (await categorie).reductionScolarite.load()
 
         
-        if((await retenu).pourcentage != 0){
-            const new_amount_tranche =(await tranche.tranche.load()).montant - (await retenu).pourcentage*(await tranche.tranche.load()).montant
-            if(tranche.montant >= new_amount_tranche && tranche.regimePaimemnt === "NORMAL"){
-                tranche.complete = true
-                tranche.reste = new_amount_tranche - tranche.montant
-            }
-            if(tranche.montant >= new_amount_tranche && tranche.regimePaimemnt === "SPECIAL"){
-                tranche.complete = true
-                tranche.regimePaimemnt = RegimePaiement.NORMAL
-                tranche.reste = new_amount_tranche - tranche.montant
-            }
+        // if((await retenu).pourcentage != 0){
+        //     const new_amount_tranche =(await tranche.tranche.load()).montant - (await retenu).pourcentage*(await tranche.tranche.load()).montant
+        //     if(tranche.montant >= new_amount_tranche && tranche.regimePaimemnt === "NORMAL"){
+        //         tranche.complete = true
+        //         tranche.reste = new_amount_tranche - tranche.montant
+        //     }
+        //     if(tranche.montant >= new_amount_tranche && tranche.regimePaimemnt === "SPECIAL"){
+        //         tranche.complete = true
+        //         tranche.regimePaimemnt = RegimePaiement.NORMAL
+        //         tranche.reste = new_amount_tranche - tranche.montant
+        //     }
             
-          }
+        //   }
 
         if((await retenu).montant != 0 ){
-            const new_amount_tranche =(await tranche.tranche.load()).montant - (await retenu).montant 
-            if(tranche.montant >= new_amount_tranche ){
-                tranche.complete = true
-                tranche.reste = new_amount_tranche - tranche.montant
+            const new_amount_tranche =(tranchestudent.montant) - (await retenu).montant 
+            if(tranchemontant > new_amount_tranche ){
+                tranchestudent.complete = false
+                tranchestudent.reste = tranchemontant - new_amount_tranche
                
             }
-            if(tranche.montant >= new_amount_tranche){
-                tranche.complete = true
-                tranche.regimePaimemnt = RegimePaiement.NORMAL
-                tranche.reste = new_amount_tranche - tranche.montant
+            if(tranchestudent.montant < new_amount_tranche){
+                tranchestudent.complete = true
+                // tranche.regimePaimemnt = RegimePaiement.NORMAL
+                tranchestudent.reste = new_amount_tranche - tranchemontant
             }
         }
         
-        if(tranche.montant == (await tranche.tranche.load()).montant){
-            tranche.complete = true
-            tranche.regimePaimemnt = RegimePaiement.NORMAL
-            tranche.reste = 0.0
+        if(tranchestudent.montant == montantsalle){
+            tranchestudent.complete = true
+            // tranche.regimePaimemnt = RegimePaiement.NORMAL
+            tranchestudent.reste = 0.0
         }
 
-        if(tranche.montant > (await tranche.tranche.load()).montant){
-            tranche.complete = true
-            tranche.regimePaimemnt = RegimePaiement.NORMAL
-            tranche.reste = tranche.montant - Number((await tranche.tranche.load()).montant)
+        if(tranchestudent.montant > montantsalle){
+            tranchestudent.complete = true
+            // tranche.regimePaimemnt = RegimePaiement.NORMAL
+            tranchestudent.surplus = tranchestudent.montant - montantsalle
         }   
 
-        if(tranche.montant < (await tranche.tranche.load()).montant){
-            tranche.complete = false
-            tranche.reste = 0.0
+        if(tranchestudent.montant < montantsalle){
+            tranchestudent.complete = false
+            tranchestudent.reste = montantsalle - tranchestudent.montant
         }
         
-        await this.trancheStudentRepository.persistAndFlush(tranche)
-        return tranche
+        await this.trancheStudentRepository.persistAndFlush(tranchestudent)
+        return tranchestudent
         
     }
       
     async update(id:string, input: TrancheStudentUpdateInput): Promise<TrancheStudent> {
         const trancheStudent = await this.findById(id)
-        if (input.tranche) {
-            const tranche =
-            input.tranche_id &&
-              (await this.trancheService.findByOne({ id: input.tranche_id}));
+        // if (input.tranche) {
+        //     const tranche =
+        //     input.tranche_id &&
+        //       (await this.trancheService.findByOne({ id: input.tranche_id}));
       
-            if (!tranche) {
-              throw new NotFoundError('tranche no exist' || '');
-            }
-            this.trancheService.update(tranche.id, input.tranche);
-        }
+        //     if (!tranche) {
+        //       throw new NotFoundError('tranche no exist' || '');
+        //     }
+        //     this.trancheService.update(tranche.id, input.tranche);
+        // }
 
-        if (input.student) {
-            const student =
-            input.student_id &&
-              (await this.studentService.findByOne({ id: input.student_id }));
+        // if (input.student) {
+        //     const student =
+        //     input.studentId &&
+        //       (await this.studentService.findByOne({ id: input.studentId }));
       
-            if (!student) {
-              throw new NotFoundError('student no exist' || '');
-            }
-            this.studentService.update(student.id, input.student);
-        }
+        //     if (!student) {
+        //       throw new NotFoundError('student no exist' || '');
+        //     }
+        //     this.studentService.update(student.id, input.student);
+        // }
  
         wrap(trancheStudent).assign({
             name:input.name || trancheStudent.name,
@@ -224,7 +225,7 @@ export class TrancheStudentService {
 
     async delete(id:string){
     const a = this.findById(id)
-    await this.trancheStudentRepository.removeAndFlush(a)
+    await this.trancheStudentRepository.nativeDelete(await a)
     if(!a){
     throw Error("not found")
     }

@@ -31,8 +31,13 @@ import { useAccount } from "../contexts/account/Account";
 import { useRouter } from "next/router";
 import { HiUsers } from "react-icons/hi";
 import { GiGraduateCap, GiReceiveMoney } from "react-icons/gi";
-import React, { createContext, useContext, useEffect } from 'react';
-import { GET_PERSONNEL_BY_USERID } from "../graphql/queries";
+import React, { createContext, use, useContext, useEffect } from 'react';
+import { 
+  GET_PERSONNEL_BY_USERID, 
+  GET_ALL_STUDENT,
+  GET_ALL_CLASS,
+  GET_ALL_PERSONNELS
+} from "../graphql/queries";
 import {useMutation, useQuery } from '@apollo/client';
 import { GoBriefcase } from "react-icons/go";
 import { GET_ALL_PERSONNELS } from "../graphql/queries";
@@ -41,8 +46,6 @@ import { GET_ALL_PERSONNELS } from "../graphql/queries";
 
 
  const dashboard = () => {
-
-  const {data:dataPersonnel, error} = useQuery(GET_ALL_PERSONNELS)
   const { authToken } = useAuth();
   const router = useRouter();
   const { account } =  useAccount();
@@ -54,45 +57,63 @@ import { GET_ALL_PERSONNELS } from "../graphql/queries";
     {
     variables:{ userid: account?.id }
   })
+  const {data:dataStudent} = useQuery(GET_ALL_STUDENT);
+  const {data:dataClass} = useQuery(GET_ALL_CLASS);
+  const {data:dataPersonnel} = useQuery(GET_ALL_PERSONNELS)
+  //  const { authToken } = useAuth();
 
 
-    //debug
-      console.log(personnelData?.getpersonnelbyaccount);
+  console.log(personnelData?.getpersonnelbyaccount);
 
-//   useEffect(() => {
-  
-//     //debug
-//     console.log(authToken);
-
-// //   if (authToken === undefined) {
-// //     router.push("/")
+    useEffect(() => {
     
-// //   }
-  
-// // }, [])
+    if (account?.id === undefined ) {
+      router.push("/")
+
+
+      
+    }
+    
+  }, [])
 
 
 
   return (
-
+<>
+ 
+{account?.id &&(
     <DefaultLayout>
       <Box pt="90px" w="full">
         <Box top="-7" overflow="auto" minH="100vh" mx={6}>
           {account?.role === null ?
-          <Heading fontSize="lg" mb={4} color="yellow.500">
-            Bienvenue-GSBAB| {personnelData?.getpersonnelbyaccount.fonction}
-          </Heading>:
+            <Heading fontSize="lg" mb={4} color="yellow.500">
+              Bienvenue-GSBAB| {personnelData?.getpersonnelbyaccount.fonction}
+            </Heading>:
 
-          <Heading fontSize="lg" mb={4} color="yellow.500">
-            Bienvenue-GSBAB| {account?.role}
-          </Heading>
-
+            <Heading fontSize="lg" mb={4} color="yellow.500">
+              Bienvenue-GSBAB| {account?.role}
+            </Heading>
           }
 
           <Flex flexDir="row" gap="8" mb="9" flexWrap="wrap">
-            <DashboardCard color="red.200" name="Elèves" icon={GiGraduateCap} />
-            <DashboardCard color="gray.400" name="Personnel" icon={GoBriefcase} total={dataPersonnel?.findAllpersonnel.length} />
-            <DashboardCard color="green.200" name="Classes" icon={GiGraduateCap} />
+            <DashboardCard 
+              color="red.200" 
+              name="Elèves" 
+              icon={GiGraduateCap}
+              total={dataStudent?.findAllstudents.length} 
+            />
+            <DashboardCard 
+              color="gray.400" 
+              name="Personnel" 
+              icon={HiUsers} 
+              total={dataPersonnel?.findAllpersonnel.length}
+            />
+            <DashboardCard 
+              color="green.200" 
+              name="Classes" 
+              icon={GiGraduateCap} 
+              total={dataClass?.findAllsalle.length}
+            />
           </Flex>
 
           <Flex
@@ -133,6 +154,8 @@ import { GET_ALL_PERSONNELS } from "../graphql/queries";
         </Box>
       </Box>
     </DefaultLayout>
+    )}
+    </>
   );
 }
 

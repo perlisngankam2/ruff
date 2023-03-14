@@ -19,7 +19,7 @@ import { useMutation, useQuery } from "@apollo/client";
 import { MdDescription } from "react-icons/md";
 import DefaultLayout from "../../components/layouts/DefaultLayout";
 import { CREATE_SALLE} from "../../graphql/Mutation";
-import { GET_ALL_SECTION , GET_ALL_CYCLE, GET_ALL_STUDY_LEVEL} from "../../graphql/Queries";
+import { GET_ALL_SECTION , GET_ALL_CYCLE, GET_ALL_STUDY_LEVEL, GET_ALL_CLASS} from "../../graphql/Queries";
 
 const AddClass = () => {
 
@@ -29,7 +29,7 @@ const AddClass = () => {
   const [name, setName] = useState();
   const [section, setSection] = useState();
   const [niveauEtudeId, setNiveauEtudeId] = useState();
-  const [montantPension, setMontantPension] = useState();
+  const [montantPensionSalle, setMontantPensionSalle] = useState();
   const [createSalle] = useMutation(CREATE_SALLE);
   const {data:dataSection} = useQuery(GET_ALL_SECTION);
   const {data:dataStudyLevel} = useQuery(GET_ALL_STUDY_LEVEL);
@@ -61,17 +61,20 @@ const AddClass = () => {
     console.log(name);
     console.log(section);
     console.log(cycle);
-    console.log(montantPension);
+    console.log(montantPensionSalle);
     console.log(niveauEtudeId);
 
     const cycleData = await createSalle({
         variables: {
             salle: {
-                name: name,
-                niveauEtudeId: niveauEtudeId
-                // montantPension: parseInt(montantPension)
+              name: name,
+              niveauEtudeId: niveauEtudeId,
+              montantPensionSalle: parseInt(montantPensionSalle)
             }
-        }
+        },
+        refetchQueries:[{
+          query: GET_ALL_CLASS
+        }]
     })
     console.log(cycleData)
     toast({
@@ -83,7 +86,6 @@ const AddClass = () => {
     });
     router.push("/class")
 }
-
 
   return (
     <DefaultLayout>
@@ -105,7 +107,12 @@ const AddClass = () => {
               as="form"
               width="500px"
             > 
-              <Heading color={"colors.primary"}>Creation d'une classe</Heading>
+              <Heading 
+                color={"colors.primary"}
+                textAlign={"center"}
+              >
+                Creation d'une classe
+              </Heading>
               <Stack
                 gap={2}
                 align="start"
@@ -121,6 +128,17 @@ const AddClass = () => {
                       name="name"
                       value={name}
                       onChange = {(event) => setName(event.target.value)}
+                    />
+                  </FormControl>
+                  <FormControl>
+                    <FormLabel>Montant pension:</FormLabel>
+                    <Input 
+                      placeholder="Valeur de la pension" 
+                      type="number"
+                      // maxW="300px"
+                      name="montantPensionSalle"
+                      value={montantPensionSalle}
+                      onChange = {(event) => setMontantPensionSalle(event.target.value)}
                     />
                   </FormControl>
                   <FormControl mt="15px">

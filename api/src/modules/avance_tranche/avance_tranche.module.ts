@@ -6,11 +6,13 @@ import { TrancheStudent } from 'src/entities/tranche-student.entity';
 import { TrancheStudentModule } from '../tranche-student/tranche-student.module';
 import { AvanceTrancheService } from './avance-tranche.service';
 import { AvanceTrancheResolver } from './avance-tranche.resolver';
+import { TrancheModule } from '../tranche/tranche.module';
 
 @Module({
     imports:[
         MikroOrmModule.forFeature({ entities: [AvanceTranche] }),
-        forwardRef(() => TrancheStudentModule)
+        forwardRef(() => TrancheStudentModule),
+        TrancheModule
     ],
     providers:[AvanceTrancheService,AvanceTrancheResolver],
     exports:[AvanceTrancheService]

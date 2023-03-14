@@ -33,17 +33,18 @@ export class TrancheService {
       ): Promise<Tranche> {  
         const tranche = new Tranche()
 
-        const pension = input.pension
-        ? await this.pensionService.findByOne(input.pension_id)
-        : await this.pensionService.create(input.pension)
-
+        // const pension = input.pension
+        // ? await this.pensionService.findByOne(input.pension_id)
+        // : await this.pensionService.create(input.pension) 
 
         wrap(tranche).assign(
           {
             montant: input.montant,
             name: input.name,
             description: input.description,
-            pension: pension.id
+            dateLine: input.dateLine,
+            anneeAccademique: input.anneeAcademiqueId,
+            // pension: pension.id
           },
           {
             em:this.em
@@ -67,21 +68,22 @@ export class TrancheService {
       
       async update(id:string, input: TrancheUpdateInput): Promise<Tranche> {
         const tranche= await this.findById(id)
-        if (input.pension) {
-            const pension =
-            input.pension_id &&
-              (await this.pensionService.findByOne({ id: input.pension_id }));
+        // if (input.pension) {
+        //     const pension =
+        //     input.pension_id &&
+        //       (await this.pensionService.findByOne({ id: input.pension_id }));
       
-            if (!pension) {
-              throw new NotFoundError('pension no exist' || '');
-            }
-            this.pensionService.update(pension.id, input.pension);
-          }
+        //     if (!pension) {
+        //       throw new NotFoundError('pension no exist' || '');
+        //     }
+        //     this.pensionService.update(pension.id, input.pension);
+        //   }
 
          
         wrap(tranche).assign({
             name:input.name || tranche.name,
             montant: input.montant || tranche.montant,
+            anneeAccademique:input.anneeAcademiqueId,
             description: input.description || tranche.description,
             dateLine: input.dateLine || tranche.dateLine
         },
@@ -91,11 +93,11 @@ export class TrancheService {
         return tranche;
       }
       async delete(id:string){
-       const a = this.findById(id) 
-       await this.trancheRepository.removeAndFlush(a)
-       if(!a){
-       throw Error("not found")
-       }
-       return a 
+        const a = this.findById(id) 
+        await this.trancheRepository.removeAndFlush(a)
+        if(!a){
+        throw Error("not found")
+      }
+        return a 
       }   
 }

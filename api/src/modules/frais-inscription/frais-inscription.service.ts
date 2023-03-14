@@ -31,7 +31,7 @@ export class FraisInscriptionService {
       ): Promise<FraisInscription> {  
         const frais = new FraisInscription()
 
-        const anneAccademique = await this.anneAccademique.findbyOne({id:input.anneeAcademiqueId})
+        const anneAccademique = await this.anneAccademique.findByOne({id:input.anneeAcademiqueId})
 
         const salle = await this.salleService.findByOne({id:input.salleId})
 
@@ -78,7 +78,7 @@ export class FraisInscriptionService {
 
         if (input.anneeAcademiqueId) {
             const annee =
-            input.anneeAcademiqueId && (await this.anneAccademique.findbyOne({ id: input.anneeAcademiqueId }));
+            input.anneeAcademiqueId && (await this.anneAccademique.findByOne({ id: input.anneeAcademiqueId }));
       
             if (!annee) {
               throw new NotFoundError('annee no exist' || '');

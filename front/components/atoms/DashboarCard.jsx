@@ -3,8 +3,21 @@ import { GiGraduateCap, GiReceiveMoney } from "react-icons/gi";
 
 const DashboardCard = (props) => {
   return (
-    <Box borderRadius="20px" w="300px" h={119} boxShadow="md" borderLeft="5px solid" borderLeftColor={props.color} bg='rgba(255,255,255,0.48)'>
-      <Flex position="relative" justify="space-between" p="1em" top={-3} mr={3}>
+    <Box 
+      borderRadius="20px" 
+      w="300px" 
+      h={119} boxShadow="md" 
+      borderLeft="5px solid" 
+      borderLeftColor={props.color} 
+      bg='rgba(255,255,255,0.48)'
+    >
+      <Flex 
+        position="relative" 
+        justify="space-between" 
+        p="1em" 
+        top={-3}
+        mr={3}
+       >
         <Text
           letterSpacing="tight"
           fontSize="2xl"
@@ -13,7 +26,7 @@ const DashboardCard = (props) => {
         >
           {props.name}
         </Text>
-        <Text fontSize="2xl" >
+        <Text fontSize="2xl">
           {props.total}
         </Text>
       </Flex>

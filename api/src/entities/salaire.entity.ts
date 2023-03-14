@@ -1,19 +1,18 @@
 /* eslint-disable prettier/prettier */
 import {
-    Collection,
-    Entity,
-    Enum,
-    Filter,
-    IdentifiedReference,
-    ManyToMany,
-    ManyToOne,
-    OneToMany,
-    OneToOne,
-    PrimaryKey,
-    Property,
-    Unique,
-  } from '@mikro-orm/core';
-  import { Field, ID, ObjectType } from '@nestjs/graphql';
+  Collection,
+  Entity,
+  Enum,
+  Filter,
+  IdentifiedReference,
+  ManyToOne,
+  OneToMany,
+  OneToOne,
+  PrimaryKey,
+  Property,
+  Unique,
+} from '@mikro-orm/core';
+import { Field, ID, ObjectType } from '@nestjs/graphql';
 import { PrimaryKeyUuid } from '../decorators/PrimaryKeyUuid.decorator';
 import { Periode } from './periode.entity';
 import { Personnel } from './pesonnel.entity';
@@ -24,58 +23,46 @@ import { RetenuPersonnel } from './retenu-personnel.entity';
 @Entity()
 @ObjectType()
 export class Salaire {
-  @Field(() => ID)
-  @PrimaryKeyUuid()
-  id!: string;
+@Field(() => ID)
+@PrimaryKeyUuid()
+id!: string;
 
-  // @Field({ nullable: true })
-  // @Property({ nullable: true })
-  // description!: string;
-
-  
-  @Field({ defaultValue: false })
-  @Property({ default: false })
-  payer!: boolean;
+@Field({ nullable: true })
+@Property({ nullable: true })
+description!: string;
 
 
-  @Field({ defaultValue: 0 })
-  @Property({ default: 0 })
-  montant!: number ;
+@Field({ defaultValue: true })
+@Property({ default: true })
+payer!: boolean;
 
-  @Field({ nullable: true })
-  @Property({ nullable: true })
-  jourPaie!: string; 
 
-  @Field({ nullable: true })
-  @Property({ nullable: true })
-  moisPaie!: string; 
-  
+@Field({ defaultValue: 0 })
+@Property({ default: 0 })
+montant!: number ;
+
 // relation with another Entites
-  @ManyToOne(() => Periode ,{
-    nullable:true,
-    onDelete:'CASCADE'
-  })
-  periode!:IdentifiedReference<Periode>|null
+@ManyToOne(() => Periode ,{
+  nullable:false,
+  onDelete:'CASCADE'
+})
+periode!:IdentifiedReference<Periode>|null
 
-  // @ManyToOne(() => Personnel ,{
-  //   nullable:true,
-  //   onDelete:'CASCADE'
-  // })
-  // personnel!:IdentifiedReference<Personnel>|null
+@ManyToOne(() => Personnel ,{
+  nullable:false,
+  onDelete:'CASCADE'
+})
+personnel!:IdentifiedReference<Personnel>|null
 
-  @OneToMany(() => PrimePersonnel, primePersonel => primePersonel.salaire)
-  primePersonnel = new Collection<PrimePersonnel>(this);
+@OneToMany(() => PrimePersonnel, primePersonel => primePersonel.salaire)
+primePersonnel = new Collection<PrimePersonnel>(this);
 
-  @OneToMany(() => RetenuPersonnel, retenuPernole => retenuPernole.salaire)
-  retenuPersonnel = new Collection<RetenuPersonnel>(this);
+@OneToMany(() => RetenuPersonnel, retenuPernole => retenuPernole.salaire)
+retenuPersonnel = new Collection<RetenuPersonnel>(this);
 
-  @ManyToMany(() => Personnel, personnel => personnel.salaire,{owner: true})
-  personnel = new Collection<Personnel>(this);
- 
-  // @ManyToOne(() => RetenuPersonnel ,{
-  //   nullable:false,
-  //   onDelete:'SET NULL'
-  // })
-  // retenuPersonnel!:IdentifiedReference<RetenuPersonnel>|null
-
+// @ManyToOne(() => RetenuPersonnel ,{
+//   nullable:false,
+//   onDelete:'SET NULL'
+// })
+// retenuPersonnel!:IdentifiedReference<RetenuPersonnel>|null
 }

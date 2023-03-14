@@ -4,14 +4,14 @@ import SidebarLayout from "./SidebarLayout";
 
 const DefaultLayout = ({ children }) => {
   return (
-   <Box h="100vh" >
+    <Box h="100vh">
       <Header />
-      <Flex >
-        <Hide below="md" minH='100vh'>
+      <Flex h="100vh">
+        <Hide below="md">
           <SidebarLayout />
         </Hide>
         <Box w='full' bg='#f7f7fb' overflowY="auto">
-        {children}
+          {children}
         </Box>
       </Flex>
     </Box>

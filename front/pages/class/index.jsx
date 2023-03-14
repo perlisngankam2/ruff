@@ -31,17 +31,35 @@ import {
   PopoverArrow,
   PopoverCloseButton,
   PopoverAnchor,
-  useDisclosure
+  useDisclosure,
+  AlertDialog,
+  AlertDialogOverlay,
+  AlertDialogContent,
+  AlertDialogBody,
+  AlertDialogFooter,
+  FormControl,
+  FormLabel,
+  useToast,
+  AlertDialogHeader
+  
 } from "@chakra-ui/react";
 
 import { useRouter } from "next/router";
 
-import { useEffect, useState } from "react";
+import React, { use, useEffect, useState } from "react";
 import AddNew from "../../components/atoms/AddNew";
 import StudentBox from "../../components/atoms/StudentBox";
 import DefaultLayout from "../../components/layouts/DefaultLayout";
-import { GET_ALL_CLASS } from "../../graphql/queries";
-import { DELETE_SALLE } from "../../graphql/Mutation";
+import { 
+  GET_ALL_CLASS,
+  GET_ALL_PERSONNELS,
+  GET_ALL_ANNEE_ACADEMIQUE 
+} from "../../graphql/queries";
+import { 
+  DELETE_SALLE,
+  CREATE_PERSONNEL_SALLE,
+  CREATE_MONTANT_SCOLARITE_CLASS
+ } from "../../graphql/Mutation";
 import { useMutation, useQuery } from "@apollo/client";
 import {IoIosAdd} from 'react-icons/io';
 import{ FiEdit} from 'react-icons/fi';
@@ -51,10 +69,23 @@ import {MdDelete} from 'react-icons/md';
 const Class = () => {
 
   const router = useRouter();
-  const { isOpen, onToggle, onClose } = useDisclosure()
+  const cancelRef = React.useRef()
+  const toast = useToast();
+  const { isOpen, onToggle, onClose, onOpen } = useDisclosure();
+  const { isOpen:isOpenn, onClose:onClosse, onOpen:onOpenn } = useDisclosure();
+  const { isOpen:isOpennes, onClose:onClosses, onOpen:onOpennes } = useDisclosure();
+
+  const [salleId, setSalleId] = useState("");
+  const [personnelId, setPersonnelId] = useState("");
+  const [anneeAcademiqueId, setAnneeAcademiqueId] = useState("");
+  const [montant, setMontant] = useState();
+
   const [deleteClasse] = useMutation(DELETE_SALLE);
   const {data:dataClasse} = useQuery(GET_ALL_CLASS);
-  
+  const {data:dataEnseignant} = useQuery(GET_ALL_PERSONNELS);
+  const {data:dataAnneeAcademique} = useQuery(GET_ALL_ANNEE_ACADEMIQUE);
+  const [createPersonnelSalle] = useMutation(CREATE_PERSONNEL_SALLE);
+  const [createMonantPensionClasse] = useMutation(CREATE_MONTANT_SCOLARITE_CLASS);
 
   const removeClass = async(id) => {
     await deleteClasse({
@@ -63,6 +94,7 @@ const Class = () => {
         query: GET_ALL_CLASS
       }]
     })
+    onClose();
   }
 
   useEffect(() => {
@@ -72,6 +104,52 @@ const Class = () => {
   //   setShow(false)
   // }
 
+  const addPersonnelSalle = async () => {
+    await createPersonnelSalle({
+      variables:{
+        input:{ 
+        salleId: salleId,
+        personnelId: personnelId
+        }
+      }
+    })
+    onClosse();
+    toast({
+      title: "Affection du personnel a la salle.",
+      description: "Affecte avec succes.",
+      status: "success",
+      duration: 3000,
+      isClosable: true,
+    });
+    setPersonnelId("")
+    setSalleId("")
+  }
+
+  const AddMontantPensionClasse = async () =>{
+    await createMonantPensionClasse({
+      variables:{
+        pension:{
+          salleId: salleId,
+          anneeAcademiqueId: anneeAcademiqueId,
+          montant: parseInt(montant)
+        }
+
+      }
+    })
+      onClosses();
+        // console.log(sectionData)
+      toast({
+          title: "Qffection du ,ontqnt de scolarite a une classe.",
+          description: "Qffection reussit.",
+          status: "success",
+          duration: 3000,
+          isClosable: true,
+      });
+      // router.push("/class/cyclesection")
+    setSalleId("");
+    setAnneeAcademiqueId("");
+    setMontant("");
+  }
   return (
     <DefaultLayout>
       <Box p="10px" pt={"70px"} background="colors.tertiary" w="full">
@@ -133,14 +211,232 @@ const Class = () => {
             </Button>
           </Box> 
         </Flex>
+
+        {/* FORMULAIRE D'AFFECTATION D'UN PROFESSEUR A UNE CLASSE */}
+        <Box> 
+          <Flex gap={1} ml={["200px","300px", "700px"]} mt={["10px"]}> 
+            <Text 
+              mb={5}
+              fontSize="14px"
+              color = "colors.quinzaine"
+              >
+              Affecter un enseignant
+            </Text>
+            <Icon 
+              as={IoIosAdd} 
+              boxSize="30px"
+              color={"colors.greencolor"}
+              rounded="full"
+              // ml={["5px", "5px", "5px" ]}
+              mt={["-3px"]}
+              _hover={{background:"colors.bluecolor"}}
+              onClick={onOpenn}
+              />
+          </Flex>
+          <AlertDialog
+            isOpen={isOpenn}
+            leastDestructiveRef={cancelRef}
+            onClose={onClosse}
+            size='xl'
+          >
+            <AlertDialogOverlay>
+              <AlertDialogContent  width={"300px"}>
+                <Box mt={"20px"}> 
+                    <Heading 
+                      textAlign="center"
+                      size="md"
+                    >
+                      Affectez un enseignant a une classe
+                    </Heading>
+                    <AlertDialogBody>
+                      <Box mt='4'>
+                        <FormControl mt="5px">
+                          <FormLabel>classe</FormLabel>
+                          <Select
+                            name="salleId"
+                            placeholder="classe"
+                            value={salleId}
+                            onChange={(event)=> setSalleId(event.target.value)}
+                          >
+                            {dataClasse && 
+                              dataClasse.findAllsalle.map((salle, index) =>(
+                                <option value={salle?.id}>
+                                  {salle.name}
+                                </option>
+                              ))
+
+                            }
+                          </Select>
+                        </FormControl>
+                        <FormControl mt={"10px"}>
+                            <FormLabel>Enseigant</FormLabel>
+                          <Select
+                            // type="text"
+                            name="personnelId"
+                            value={personnelId}
+                            onChange={(event)=> setPersonnelId(event.target.value)}
+
+                            // isDisabled
+                            placeholder="enseignant"
+                          >
+                            {dataEnseignant &&
+                              dataEnseignant?.findAllpersonnel.map((personnel, index) =>(
+                                <option value={personnel?.id} key={index}>
+                                  {personnel.firstName} 
+                                </option>
+                              ))
+                            }
+                          </Select>
+                        </FormControl>
+                      </Box>
+                    </AlertDialogBody>
+                  <AlertDialogFooter>
+                    <Button 
+                      ref={cancelRef} 
+                      onClick={onClosse} 
+                      colorScheme='red' 
+                    >
+                      annuler
+                    </Button>
+                  <Link href={'#'}>
+                      <Button 
+                        colorScheme='green'  
+                        ml={3}
+                        onClick={addPersonnelSalle}
+                      >
+                        Affectez  
+                    </Button>
+                    </Link> 
+                  </AlertDialogFooter>
+                </Box>
+              </AlertDialogContent>
+            </AlertDialogOverlay>
+          </AlertDialog>
+        </Box>
+
+{/* FORMULAIRE D'AFFECTATION DE LA PENSION POUR UNE ANNEE ACADEMIQUE */}
+
+    <Box>
+      <Flex gap={1} ml={["200px","300px", "700px"]} mt={["10px"]}> 
+        <Text 
+          mb={5}
+          fontSize="14px"
+          color = "colors.quinzaine"
+        >
+          Ajouter la pension de la classe
+        </Text>
+        <Icon 
+          as={IoIosAdd} 
+          boxSize="30px"
+          color={"colors.greencolor"}
+          rounded="full"
+          // ml={["5px", "5px", "5px" ]}
+          mt={["-3px"]}
+          _hover={{background:"colors.bluecolor"}}
+          onClick={onOpennes}
+          />
+      </Flex>
+      <AlertDialog
+        isOpen={isOpennes}
+        leastDestructiveRef={cancelRef}
+        onClose={onClosses}
+        size='xl'
+      >
+        <AlertDialogOverlay>
+          <AlertDialogContent  width={"400px"}>
+            <Box mt={"20px"}> 
+                <Heading 
+                  textAlign="center"
+                  size="md"
+                >
+                  Ajoutez une pension
+                </Heading>
+                <AlertDialogBody>
+                  <Box mt='4'>
+                    <FormControl mt="5px">
+                      <FormLabel>classe</FormLabel>
+                      <Select
+                        name="salleId"
+                        placeholder="classe"
+                        value={salleId}
+                        onChange={(event)=> setSalleId(event.target.value)}
+                      >
+                        {dataClasse && 
+                          dataClasse.findAllsalle.map((salle, index) =>(
+                            <option value={salle?.id}>
+                              {salle.name}
+                            </option>
+                          ))
+
+                        }
+                      </Select>
+                    </FormControl>
+                    <FormControl mt={"10px"}>
+                        <FormLabel>Montant scolarite</FormLabel>
+                      <Input
+                        // type="text"
+                        name="montant"
+                        value={montant}
+                        onChange={(event)=> setMontant(event.target.value)}
+                        // isDisabled
+                        placeholder="Montant de la scolarite"
+                      />
+                    </FormControl>
+                    <FormControl mt={"10px"}>
+                        <FormLabel>Enseigant</FormLabel>
+                      <Select
+                        // type="text"
+                        name="anneeAcademiqueId"
+                        value={anneeAcademiqueId}
+                        onChange={(event)=> setAnneeAcademiqueId(event.target.value)}
+
+                        // isDisabled
+                        placeholder="Annee academique"
+                      >
+                        {dataAnneeAcademique &&
+                            dataAnneeAcademique.findAllAnnerAccademique.map((anneeAcademique, index) => (
+                              <option value={anneeAcademique.id} key={index}>
+                                {anneeAcademique.name}
+                              </option>
+                            ))
+                          }
+                      </Select>
+                    </FormControl>
+                  </Box>
+                </AlertDialogBody>
+              <AlertDialogFooter>
+                <Button 
+                  ref={cancelRef} 
+                  onClick={onClosses} 
+                  colorScheme='red' 
+                >
+                  annuler
+                </Button>
+              <Link href={'#'}>
+                  <Button 
+                    colorScheme='green'  
+                    ml={3}
+                    onClick={AddMontantPensionClasse}
+                  >
+                    Affectez  
+                  </Button>
+                </Link> 
+              </AlertDialogFooter>
+            </Box>
+          </AlertDialogContent>
+        </AlertDialogOverlay>
+      </AlertDialog>
+    </Box>
+
+{/* LISTE DES CLASSES */}
         <Box mt={10}>
            <TableContainer>
               <Table variant='striped'>
                   <Thead>
                   <Tr>
                       <Th>Nom</Th>
-                      {/* <Th>Cycle</Th>
-                      <Th >section</Th> */}
+                      <Th>Montant pension</Th>
+                      {/* <Th >section</Th>  */}
                       <Th >Action</Th>
                   </Tr>
                   </Thead>
@@ -149,7 +445,7 @@ const Class = () => {
                      dataClasse.findAllsalle.map((salle, index) =>(
                       <Tr key={index}>
                         <Td borderColor={'#C6B062'}>{salle.name}</Td>
-                        {/* <Td borderColor={'#C6B062'}>{salle.cycle}</Td> */}
+                        <Td borderColor={'#C6B062'}>{salle.montantPensionSalle}</Td>
                         {/* <Td borderColor={'#C6B062'}>{salle.section}</Td> */}
                         {/* <Td borderColor={'#C6B062'}>{salle.montantPension}</Td> */}
 
@@ -201,52 +497,43 @@ const Class = () => {
                                     _hover={{background:"blue.100"}}
                                   />
                                   <Box> 
-                                      <Popover
-                                        returnFocusOnClose={false}
-                                        isOpen={isOpen}
-                                        onClose={onClose}
-                                        closeOnBlur={false}
-                                        plcement="bottom"
-                                      >
-                                        <PopoverContent>
-                                          <PopoverArrow />
-                                          <PopoverCloseButton />
-                                          <PopoverBody>
-                                            <Text 
-                                            fontSize={"17px"}
+                                  <AlertDialog
+                                    isOpen={isOpen}
+                                    leastDestructiveRef={cancelRef}
+                                    onClose={onClose}
+                                  >
+                                      <AlertDialogOverlay>
+                                        <AlertDialogContent>
+                                          <AlertDialogHeader 
+                                            fontSize='lg' 
+                                            fontWeight='bold'
                                             textAlign={"center"}
-                                            mt={"5px"}
-                                            mb={"15px"}
-                                            fontWeight="bold"
-                                            > 
-                                              Confirmation de supression
-                                            </Text>
-                                            Voulez-vous supprimer cet element?
-                                          </PopoverBody>
-                                          <PopoverFooter 
-                                            display='flex' 
-                                            justifyContent='flex-end'
-                                          >
-                                            <ButtonGroup size='sm'>
-                                              <Button 
-                                                colorScheme='red' 
-                                                onClick={onClose}
-                                              >
-                                                Non
-                                              </Button>
-                                              <Button 
-                                                colorScheme="green"
-                                                onClick={() => {removeClass(salle.id),
-                                                onClose}
-                                                }
-                                              >
-                                                Oui
-                                              </Button>
-                                            </ButtonGroup>
-                                          </PopoverFooter>
-                                        </PopoverContent>
-                                      </Popover>
-                                      </Box>
+                                            >
+                                            Confirmation de suppression
+                                          </AlertDialogHeader>
+                                          <AlertDialogBody textAlign={"center"}>
+                                          Voulez-vous supprimer cette classe?
+                                          </AlertDialogBody>
+
+                                          <AlertDialogFooter>
+                                            <Button 
+                                              ref={cancelRef} 
+                                              onClick={onClose}
+                                            >
+                                              Annuler 
+                                            </Button>
+                                            <Button 
+                                              colorScheme='red' 
+                                              onClick={() => {removeClass(salle.id)}}
+                                              ml={3}
+                                            >
+                                              Supprimer
+                                            </Button>
+                                          </AlertDialogFooter>
+                                        </AlertDialogContent>
+                                      </AlertDialogOverlay>
+                                  </AlertDialog>
+                                    </Box>
                                   </Box>
                             </Box> 
                         </Tr>

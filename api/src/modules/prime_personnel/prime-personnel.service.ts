@@ -32,11 +32,9 @@ export class PrimePersonnelService {
       async create(
         input: PrimePersonnelCreateInput,
       ): Promise<PrimePersonnel> {
-        // const prime = input.prime
-        //     ? await this.primeService.findByOne(input.prime)
-        //     : await this.primeService.create(input.prime)
-
-        const prime = await this.primeService.findByOne(input.primeId)
+        const prime = input.prime
+            ? await this.primeService.findByOne(input.primeId)
+            : await this.primeService.create(input.prime)
         
         const personnel = await this.personnelService.findById(input.personnelId)
         if(!(personnel&&prime)){
@@ -73,7 +71,7 @@ export class PrimePersonnelService {
       }
 
      async getallpersonnelprime(id:string){
-       const a = (await this.em.find(PrimePersonnel,{personnel: id})).map(a=>a.prime.load()).map(a=>a)
+       const a = (await this.em.find(PrimePersonnel,{prime: id})).map(async a=>(await a.prime.load()).montant).reduce(async function(a,b){return await a+await b})
        return a
       }
       

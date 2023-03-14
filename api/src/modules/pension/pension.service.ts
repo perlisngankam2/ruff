@@ -18,7 +18,6 @@ import { SalleService } from '../salle/salle.service';
 import { PensionCreateInput } from './dto/pension.input';
 import { PensionUpdateInput } from './dto/pension.update';
 
-
 @Injectable()
 export class PensionService {
     constructor(
@@ -32,23 +31,24 @@ export class PensionService {
       async create(
         input: PensionCreateInput,
       ): Promise<Pension> {  
+
         const pension = new Pension()
 
-        const anneAccademique = input.anneeAccademique
-            ? await this.anneAccademique.findbyOne({id:input.anneeAcademique_id})
-            : await this.anneAccademique.create(input.anneeAccademique)
+        await this.anneAccademique.findByOne({id:input.anneeAcademiqueId})
+            
+            // : await this.anneAccademique.create(input.anneeAccademique)
 
-        const salle = input.salle
-            ? await this.salleService.findByOne(input.salle_id)
-            : await this.salleService.create(input.salle)
+        await this.salleService.findByOne({id:input.salleId})
+             
+            // : await this.salleService.create(input.salle)
 
         wrap(pension).assign(
           {
-            montant:input.montant,
+            montantPension:input.montant,
             name: input.name,
             description: input.description,
-            salle: salle.id,
-            anneeAccademique: anneAccademique.id
+            salle: input.salleId,
+            anneeAccademique: input.anneeAcademiqueId
           },
           {
             em:this.em
@@ -70,41 +70,41 @@ export class PensionService {
         return this.pensionRepository.findAll()
       }
       
-      async update(id:string, input: PensionUpdateInput): Promise<Pension> {
-        const pension = await this.findById(id)
-        if (input.salle) {
-            const salle =
-            input.salle_id &&
-              (await this.salleService.findByOne({ id: input.salle_id }));
+    //   async update(id:string, input: PensionUpdateInput): Promise<Pension> {
+    //     const pension = await this.findById(id)
+    //     if (input.salle) {
+    //         const salle =
+    //         input.salle_id &&
+    //           (await this.salleService.findByOne({ id: input.salle_id }));
       
-            if (!salle) {
-              throw new NotFoundError('salle no exist' || '');
-            }
-            this.salleService.update(salle.id, input.salle);
-          }
+    //         if (!salle) {
+    //           throw new NotFoundError('salle no exist' || '');
+    //         }
+    //         this.salleService.update(salle.id, input.salle);
+    //       }
 
-          if (input.anneeAccademique) {
-            const annee =
-            input.anneeAcademique_id &&
-              (await this.anneAccademique.findbyOne({ id: input.anneeAcademique_id }));
+    //       if (input.anneeAccademique) {
+    //         const annee =
+    //         input.anneeAcademique_id &&
+    //           (await this.anneAccademique.findbyOne({ id: input.anneeAcademique_id }));
       
-            if (!annee) {
-              throw new NotFoundError('annee no exist' || '');
-            }
-            this.anneAccademique.update(annee.id, input.anneeAccademique);
-          }
+    //         if (!annee) {
+    //           throw new NotFoundError('annee no exist' || '');
+    //         }
+    //         this.anneAccademique.update(annee.id, input.anneeAccademique);
+    //       }
         
-        wrap(pension).assign({
-            name:input.name || pension.name,
-            montant: Number(input.montant) || Number(pension.montant) || 0.0,
-            description: input.description || pension.description,
-            dateLine: input.dateLine || pension.dateLine
-        },
-        { em: this.em },
-    );
-        await this.pensionRepository.persistAndFlush(pension);
-        return pension;
-      }
+    //     wrap(pension).assign({
+    //         name:input.name || pension.name,
+    //         montant: Number(input.montant) || Number(pension.montant) || 0.0,
+    //         description: input.description || pension.description,
+    //         dateLine: input.dateLine || pension.dateLine
+    //     },
+    //     { em: this.em },
+    // );
+      //   await this.pensionRepository.persistAndFlush(pension);
+      //   return pension;
+      // }
       async delete(id:string){
         const a = this.findById(id)
         await this.pensionRepository.removeAndFlush(a)

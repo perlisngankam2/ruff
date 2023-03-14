@@ -8,14 +8,14 @@ import { UserCreateInput } from 'src/modules/user/dto/user.input';
 
 @InputType()
 export class CategoriePersonnelCreateInput {
-  // @Field(()=>ID,{nullable:true})
-  // primeID?: string;
+  @Field(()=>ID,{nullable:true})
+  primeID?: string;
 
-  // @Field(()=>ID,{nullable:true})
-  // retenuID?: string;
+  @Field(()=>ID,{nullable:true})
+  retenuID?: string;
 
-  // @Field(()=>ID,{nullable:true})
-  // salaireID?: string;
+  @Field(()=>ID,{nullable:true})
+  salaireID?: string;
 
   @Field({nullable:true})
   nom?: string;

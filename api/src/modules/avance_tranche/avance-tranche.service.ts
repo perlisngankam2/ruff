@@ -11,8 +11,10 @@ import { InjectRepository } from '@mikro-orm/nestjs';
 import { EntityRepository } from '@mikro-orm/postgresql';
 import { forwardRef, Inject, Injectable } from '@nestjs/common';
 import {ObjectType } from '@nestjs/graphql';
+import { TrancheStudent } from 'src/entities/tranche-student.entity';
 import { AvanceTranche } from '../../entities/avance-tranche.entity';
 import { TrancheStudentService } from '../tranche-student/tranche-student.service';
+import { TrancheService } from '../tranche/tranche.service';
 import { AvanceTrancheCreateInput } from './dto/avance-tranche.input';
 import { AvanceTrancheUpdateInput } from './dto/avance-tranche.update';
 
@@ -24,7 +26,8 @@ export class AvanceTrancheService {
         @InjectRepository(AvanceTranche)
         private avanceTrancheRepository: EntityRepository<AvanceTranche>,
         @Inject(forwardRef(() => TrancheStudentService))
-        private trancheStudent: TrancheStudentService,
+        private trancheStudentservice: TrancheStudentService,
+        private trancheservice: TrancheService,
         private  em: EntityManager,
       ) {}
     
@@ -33,30 +36,31 @@ export class AvanceTrancheService {
       ): Promise<AvanceTranche> {  
         const avanceTranche = new AvanceTranche()
 
-        const tranche = input.tranche
-            ? await this.trancheStudent.findByOne({id:input.tranche_id})
-            : await this.trancheStudent.create(input.tranche)
+        const tranchestudent = await this.trancheStudentservice.findByOne(input.trancheStudentId)        
 
-        // check s'il y'a pas autre avance 
-        // const avance = tranche.avancheTranche
-        // if(avance.length != 0){
-        //   const reste = avance.matching({orderBy:{'createdAt':{}}})[0].reste
-        //   if(reste != 0){
-        //          this.trancheStudent.saveTranche(tranche.id)
-        //   }
-        // }
-        // check categorie student
-        const fraistranche = (await tranche.tranche.load())
-        const student = tranche.student.load()
-        const reduction = (await (await student).categorie.load()).reductionScolarite.load()
-        
-   
+        const tranche = await this.trancheservice.findByOne(input.trancheId)
+
+        if(!tranche){
+          throw Error("tranche not found")
+        }
+
+
+        if(!tranchestudent)  {
+           
+          const tranchestudents= this.trancheStudentservice.create(input.tranchestudentinput) 
+          console.log("========>"+tranchestudents)
+          const student = (await tranchestudents).student.load()
+          const reduction = (await (await student).categorie.load()).reductionScolarite.load()
+          const fraistranche = tranche.montant
+
 
         wrap(avanceTranche).assign({
           montant: Number(input.montant),
           name: input.name,
           description: input.description,
-          trancheStudent: tranche.id
+          trancheStudent: input.trancheStudentId,
+          tranche: input.trancheId
+          
         },
         {
           em:this.em
@@ -77,89 +81,222 @@ export class AvanceTrancheService {
         //     avanceTranche.complete = true
         //   }
         // }
+        if ((await this.em.find(AvanceTranche,{trancheStudent: (await tranchestudents).id})).map(a=>a.montant).length>=1) {
+          const totalamount= Number((await this.em.find(AvanceTranche,{trancheStudent: (await tranchestudents).id})).map(a=>a.montant).reduce(function(a,b){return a+b}))
+        
+          if(totalamount == tranche.montant){
+            throw Error("!!!!!!VOUS NE POUVEZ PLUS FAIRE DES AVANCES CAR LA SOMME DE LA PENSION A ETE ATTEINTE!!!!!!!!!!!!")
+          }
+        }
 
         if((await reduction).pourcentage != 0){
-          const newValue = (await tranche.tranche.load()).montant - (await tranche.tranche.load()).montant*(await reduction).pourcentage
+          const newValue = (await tranchestudent.tranche.load()).montant - (await tranchestudent.tranche.load()).montant*(await reduction).pourcentage
            if(input.montant < newValue){
                // create the avance tranche
               wrap(avanceTranche).assign({
               montant: Number(input.montant),
               name: input.name,
               description: input.description,
-              trancheStudent: tranche.id,
+              trancheStudent: (await tranchestudents).id,
+              tranche:tranche.id,
               complete: false
               },
               {
                 em:this.em
               })
-              this.trancheStudent.saveTranche(tranche.id)
+              this.trancheStudentservice.saveTranche(tranchestudent.id)
               this.avanceTrancheRepository.persistAndFlush(avanceTranche)
               return avanceTranche
               // console.log('===========>'+inscript)   
            }
-           tranche.complete = true
+          //  tranchestudent.complete = true
            avanceTranche.complete=true
-           this.trancheStudent.saveTranche(tranche.id)
+           this.trancheStudentservice.saveTranche(tranche.id)
            this.avanceTrancheRepository.persistAndFlush(avanceTranche)
            return avanceTranche
         }
 
         if((await reduction).montant!= 0){
-          const newValue = (await tranche.tranche.load()).montant - (await tranche.tranche.load()).montant*(await reduction).pourcentage
+          const newValue = tranche.montant - tranche.montant*(await reduction).pourcentage
            if(input.montant < newValue){
                // create the avance tranche
               wrap(avanceTranche).assign({
               montant: Number(input.montant),
               name: input.name,
               description: input.description,
-              trancheStudent: tranche.id,
+              trancheStudent:(await tranchestudents).id,
+              tranche: tranche.id,
               complete: false
               },
               {
                 em:this.em
               })
-              this.trancheStudent.saveTranche(tranche.id)
+              this.trancheStudentservice.saveTranche(tranchestudent.id)
               this.avanceTrancheRepository.persistAndFlush(avanceTranche)
               return avanceTranche
               // console.log('===========>'+inscript)   
            }
 
-           if(input.montant < fraistranche.montant){
-            // create avance inscription
-            wrap(avanceTranche).assign({
-             montant: Number(input.montant)||0.0,
-             name: input.name,
-             description: input.description,
-             trancheStudent: tranche.id,
-             complete: false
-             },
-             {
-               em:this.em
-             })
-             // ici je dois verifier si l'accumulation de toutes les montants des avances d'une inscription
-             this.trancheStudent.saveTranche(tranche.id)
-             this.avanceTrancheRepository.persistAndFlush(avanceTranche)
-             return avanceTranche
-           
-        }
        
-           tranche.complete = true
+           tranchestudent.complete = true
            avanceTranche.complete=true
-           this.trancheStudent.saveTranche(tranche.id)
+           this.trancheStudentservice.saveTranche(tranchestudent.id)
            this.avanceTrancheRepository.persistAndFlush(avanceTranche)
            return avanceTranche
         }
+
+        if(input.montant < fraistranche){
+          // create avance inscription
+          wrap(avanceTranche).assign({
+           montant: Number(input.montant)||0.0,
+           name: input.name,
+           description: input.description,
+           trancheStudent: (await tranchestudents).id,
+           tranche: tranche.id,
+           complete: false
+           },
+           {
+             em:this.em
+           })
+
+           // ici je dois verifier si l'accumulation de toutes les montants des avances d'une inscription
+           this.trancheStudentservice.saveTranche((await tranchestudents).id)
+           this.avanceTrancheRepository.persistAndFlush(avanceTranche)
+           return avanceTranche
+         
+      }
           
 
-        tranche.complete = true
-        this.trancheStudent.saveTranche(tranche.id)
+        // tranchestudent.complete = true
+        avanceTranche.complete = true
+        this.trancheStudentservice.saveTranche(tranchestudent.id)
         this.avanceTrancheRepository.persistAndFlush(avanceTranche)
         return avanceTranche
+     }
+
+
+
+     ///!!!!!!!!!!!!!!!  SI L'INSCRIPTION EXISTE EST CORRECT !!!!!!!
+
+     if(tranchestudent)  
+     {
+      // throw Error("tranchestudent not found")
+     const student = (tranchestudent).student.load()
+     const reduction = (await (await student).categorie.load()).reductionScolarite.load()
+   
+  
+   const fraistranche = tranche.montant
+
+
+   wrap(avanceTranche).assign({
+     montant: Number(input.montant),
+     name: input.name,
+     description: input.description,
+     trancheStudent: input.trancheStudentId,
+     tranche: input.trancheId
+     
+   },
+   {
+     em:this.em
+   })
+
+ 
+   if ((await this.em.find(AvanceTranche,{trancheStudent: tranchestudent.id})).map(a=>a.montant).length>=1) {
+    const totalamount= Number((await this.em.find(AvanceTranche,{trancheStudent: tranchestudent.id})).map(a=>a.montant).reduce(function(a,b){return a+b}))
+  
+    if(totalamount == tranche.montant){
+      throw Error("!!!!!!VOUS NE POUVEZ PLUS FAIRE DES AVANCES CAR LA SOMME DE LA PENSION A ETE ATTEINTE!!!!!!!!!!!!")
+    }
+  }
+
+   if((await reduction).pourcentage != 0){
+     const newValue = (await tranchestudent.tranche.load()).montant - (await tranchestudent.tranche.load()).montant*(await reduction).pourcentage
+      if(input.montant < newValue){
+          // create the avance tranche
+         wrap(avanceTranche).assign({
+         montant: Number(input.montant),
+         name: input.name,
+         description: input.description,
+         trancheStudent: tranchestudent.id,
+         tranche:tranche.id,
+         complete: false
+         },
+         {
+           em:this.em
+         })
+         this.trancheStudentservice.saveTranche(tranchestudent.id)
+         this.avanceTrancheRepository.persistAndFlush(avanceTranche)
+         return avanceTranche
+         // console.log('===========>'+inscript)   
       }
+      tranchestudent.complete = true
+      avanceTranche.complete=true
+      this.trancheStudentservice.saveTranche(tranche.id)
+      this.avanceTrancheRepository.persistAndFlush(avanceTranche)
+      return avanceTranche
+   }
+
+   if((await reduction).montant!= 0){
+     const newValue = tranche.montant - tranche.montant*(await reduction).pourcentage
+      if(input.montant < newValue){
+          // create the avance tranche
+         wrap(avanceTranche).assign({
+         montant: Number(input.montant),
+         name: input.name,
+         description: input.description,
+         trancheStudent: tranchestudent.id,
+         tranche: tranche.id,
+         complete: false
+         },
+         {
+           em:this.em
+         })
+         this.trancheStudentservice.saveTranche(tranchestudent.id)
+         this.avanceTrancheRepository.persistAndFlush(avanceTranche)
+         return avanceTranche
+         // console.log('===========>'+inscript)   
+      }
+  
+      tranchestudent.complete = true
+      avanceTranche.complete=true
+      this.trancheStudentservice.saveTranche(tranchestudent.id)
+      this.avanceTrancheRepository.persistAndFlush(avanceTranche)
+      return avanceTranche
+   }
+
+   if(input.montant < fraistranche){
+    // create avance inscription
+    wrap(avanceTranche).assign({
+     montant: Number(input.montant)||0.0,
+     name: input.name,
+     description: input.description,
+     trancheStudent: tranchestudent.id,
+     tranche: tranche.id,
+     complete: false
+     },
+     {
+       em:this.em
+     })
+
+     // ici je dois verifier si l'accumulation de toutes les montants des avances d'une inscription
+     this.trancheStudentservice.saveTranche(tranchestudent.id)
+     this.avanceTrancheRepository.persistAndFlush(avanceTranche)
+     return avanceTranche
+   
+}
+     
+
+   tranchestudent.complete = true
+   this.trancheStudentservice.saveTranche(tranchestudent.id)
+   this.avanceTrancheRepository.persistAndFlush(avanceTranche)
+   return avanceTranche
+}
+      
+}
 
 
     async saveAvanceTranche(id:string,new_tranche_amount:number){
-      const tranche = await this.trancheStudent.findById(id)
+      const tranche = await this.trancheStudentservice.findById(id)
 
 
         const avance = new AvanceTranche()
@@ -193,19 +330,18 @@ export class AvanceTrancheService {
         return this.avanceTrancheRepository.findAll()
       }
     
-      
     async update(id:string, input: AvanceTrancheUpdateInput): Promise<AvanceTranche> {
         const avance = await this.findByIdavancetranche(id)
-          if (input.tranche) {
-              const tranche =
-              input.tranche_id &&
-                (await this.trancheStudent.findByOne({ id: input.tranche_id}));
+          // if (input.tranche) {
+          //     const tranche =
+          //     input.trancheStudentId &&
+          //       (await this.trancheStudent.findByOne({ id: input.trancheStudentId}));
         
-              if (!tranche) {
-                throw new NotFoundError('inscription no exist' || '');
-              }
-              this.trancheStudent.update(tranche.id, input.tranche);
-          }
+          //     if (!tranche) {
+          //       throw new NotFoundError('inscription no exist' || '');
+          //     }
+          //     this.trancheStudent.update(tranche.id, input.tranche);
+          // }
   
    
           wrap(avance).assign({

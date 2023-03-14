@@ -24,6 +24,7 @@ import { User } from './user.entity';
 import { Role } from './../modules/auth/roles/roles';
 import { Prime } from './prime.entity';
 import { Salaire } from './salaire.entity';
+import { PersonnelSalle } from './personnelsalle.entity';
 
 export enum Status{
   PERMANENT='PERMANENT',
@@ -129,10 +130,10 @@ export class Personnel {
 
 
 // relation with another Entites
-  @OneToMany(() => PrimePersonnel, prime => prime.personnel)
+  @OneToMany(() => PrimePersonnel, prime => prime.personnel,{nullable:true})
   prime = new Collection<PrimePersonnel>(this);
 
-  @OneToMany(() => RetenuPersonnel, retenue => retenue.personnel)
+  @OneToMany(() => RetenuPersonnel, retenue => retenue.personnel,{nullable:true})
   retenue = new Collection<RetenuPersonnel>(this);
 
   // only for categorie Teacher
@@ -142,10 +143,13 @@ export class Personnel {
   })
   salle!:IdentifiedReference<Salle>|null
 
-  @ManyToMany(() => Prime, primes => primes.personnel,{owner: true})
+  @ManyToMany(() => Prime, primes => primes.personnel,{owner: true,nullable:true})
   primes = new Collection<Personnel>(this);
 
-  @ManyToMany(() => Salaire, salaire => salaire.personnel)
+  @OneToMany(() => Salaire, salaire => salaire.personnel,{nullable:true})
   salaire = new Collection<Salaire>(this);
+
+  @OneToMany(()=>PersonnelSalle, (personnelsalle) => personnelsalle.personnel)
+  personnelsalle = new Collection<PersonnelSalle>(this)
 
 }

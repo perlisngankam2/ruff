@@ -1,16 +1,16 @@
 /* eslint-disable prettier/prettier */
 import {
-    Collection,
-    Entity,
-    Enum,
-    Filter,
-    IdentifiedReference,
-    ManyToOne,
-    OneToMany,
-    OneToOne,
-    PrimaryKey,
-    Property,
-    Unique,
+  Collection,
+  Entity,
+  Enum,
+  Filter,
+  IdentifiedReference,
+  ManyToOne,
+  OneToMany,
+  OneToOne,
+  PrimaryKey,
+  Property,
+  Unique,
   } from '@mikro-orm/core';
 import { Field, ID, ObjectType, registerEnumType } from '@nestjs/graphql';
 import { PrimaryKeyUuid } from '../decorators/PrimaryKeyUuid.decorator';
@@ -45,34 +45,40 @@ export class TrancheStudent {
   @Property({ onCreate: () => new Date() })
   createdAt = new Date();
 
-  @Field({ defaultValue:0 })
-  @Property({ default:0 })
+  @Field({nullable:true})
+  @Property({nullable:true})
   montant!: number;
 
-  @Field()
-  @Enum({
-    items: () => RegimePaiement,
-    default: RegimePaiement.NORMAL,
-  })
-  regimePaimemnt!: RegimePaiement;
+  // @Field()
+  // @Enum({
+  //   items: () => RegimePaiement,
+  //   default: RegimePaiement.NORMAL,
+  // })
+  // regimePaimemnt!: RegimePaiement;
 
   @Field({defaultValue:false})
   @Property({default:false})
   complete!: boolean;
 
-  @Field({ defaultValue:0 })
-  @Property({ default:0 })
+  @Field({ defaultValue:0.000 })
+  @Property({ default:0.000 })
   reste!: number;
+
+  @Field({ defaultValue:0.000 })
+  @Property({ default:0.000 })
+  surplus!: number;
 
   @ManyToOne(() => Student ,{
     nullable:false,
-    onDelete:'CASCADE'
+    onDelete:'CASCADE',
+    unique: true
   })
   student!:IdentifiedReference<Student>|null
 
   @ManyToOne(() => Tranche ,{
-    nullable:false,
-    onDelete:'CASCADE'
+    nullable:true,
+    onDelete:'CASCADE',
+    unique:true
   })
   tranche!:IdentifiedReference<Tranche>|null
 

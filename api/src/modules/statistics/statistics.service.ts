@@ -76,7 +76,7 @@ export class StatisticService {
   }
 
   async balanceeExpected(salle_id:string){
-    const a = Number((await this.salleservice.getAll()).filter(a=>a.id===salle_id).map(a=>a.montantPension))
+    const a = Number((await this.salleservice.getAll()).filter(a=>a.id===salle_id).map(a=>a.montantPensionSalle))
     return a
   }
 

@@ -56,8 +56,8 @@ const RouteName = {
     PaymentDetails: {
       path: '/payment/[id]'
     },
-    Perselll:{
-      path: "/de"
+    Receipt:{
+      path: '/eleves/recu/[id]'
     },
     PersonnelDetails: {
       path: '/personnel/[id]',

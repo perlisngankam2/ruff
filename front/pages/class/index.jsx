@@ -499,43 +499,49 @@ const Class = () => {
                                     _hover={{background:"blue.100"}}
                                   />
                                   <Box> 
-                                  <AlertDialog
-                                    isOpen={isOpen}
-                                    leastDestructiveRef={cancelRef}
-                                    onClose={onClose}
-                                  >
-                                      <AlertDialogOverlay>
-                                        <AlertDialogContent>
-                                          <AlertDialogHeader 
-                                            fontSize='lg' 
-                                            fontWeight='bold'
-                                            textAlign={"center"}
-                                            >
-                                            Confirmation de suppression
-                                          </AlertDialogHeader>
-                                          <AlertDialogBody textAlign={"center"}>
-                                          Voulez-vous supprimer cette classe?
-                                          </AlertDialogBody>
+                                    <AlertDialog
+                                      isOpen={isOpen}
+                                      leastDestructiveRef={cancelRef}
+                                      onClose={onClose}
+                                      isCentered
+                                    >
+                                        <AlertDialogOverlay
+                                          // alignSelf={"center"}
+                                        >
+                                          <AlertDialogContent
+                                          width={"380px"}
+                                          >
+                                            <AlertDialogHeader 
+                                              fontSize='lg' 
+                                              fontWeight='bold'
+                                              textAlign={"center"}
+                                              >
+                                              Confirmation de suppression
+                                            </AlertDialogHeader>
+                                            <AlertDialogBody textAlign={"center"}>
+                                            Voulez-vous supprimer cette classe?
+                                            </AlertDialogBody>
 
-                                          <AlertDialogFooter>
-                                            <Button 
-                                              ref={cancelRef} 
-                                              onClick={onClose}
-                                            >
-                                              Annuler 
-                                            </Button>
-                                            <Button 
-                                              colorScheme='red' 
-                                              onClick={() => {removeClass(salle.id)}}
-                                              ml={3}
-                                            >
-                                              Supprimer
-                                            </Button>
-                                          </AlertDialogFooter>
-                                        </AlertDialogContent>
-                                      </AlertDialogOverlay>
-                                  </AlertDialog>
-                                    </Box>
+                                            <AlertDialogFooter>
+                                              <Button 
+                                                ref={cancelRef} 
+                                                onClick={onClose}
+                                                colorScheme="red"
+                                              >
+                                                Annuler 
+                                              </Button>
+                                              <Button 
+                                                colorScheme='green' 
+                                                onClick={() => {removeClass(salle.id)}}
+                                                ml={3}
+                                              >
+                                                Supprimer
+                                              </Button>
+                                            </AlertDialogFooter>
+                                          </AlertDialogContent>
+                                        </AlertDialogOverlay>
+                                    </AlertDialog>
+                                  </Box>
                                   </Box>
                             </Box> 
                         </Tr>

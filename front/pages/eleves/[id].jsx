@@ -58,6 +58,7 @@ import { GiBoxUnpacking } from "react-icons/gi";
 import {FormSelect} from "../../components/atoms/FormSelect"
 import {IoIosAdd} from "react-icons/io"
 import { useQuery, useMutation } from "@apollo/client";
+import Routes from "../../modules/routes";
 import { 
   GET_ALL_STUDENT, 
   GET_STUDENT_BY_ID, 
@@ -249,6 +250,7 @@ const DetailComponent = (student) => {
             }
           }
         }),
+        onClosses();
         toast({
           title: "Initialisation de la pension.",
           description: "Initialisation reussit.",
@@ -271,7 +273,9 @@ const DetailComponent = (student) => {
               trancheId: trancheId
             }
           }
-        }),
+        })
+        onClose();
+        router.push("payment/receipt")
         toast({
           title: "paiement tranche pension.",
           description: " paye avec succes.",
@@ -279,6 +283,7 @@ const DetailComponent = (student) => {
           duration: 3000,
           isClosable: true,
         });
+        
       }
 
 
@@ -330,10 +335,9 @@ const DetailComponent = (student) => {
           mt='5' 
           fontSize={'sm'}
         >
-          <Center >
-
  {/* FORMULAIRE DE PAIEMENT DE SCOLARITE */}
 
+          <Center >
             <Button 
               bg='colors.primary' 
               height='40px' 
@@ -345,13 +349,32 @@ const DetailComponent = (student) => {
             </Button>
 
           </Center>
+          <Center>
+            <Button
+             bg='blue.300'  
+             // height='40px' 
+             color='white' 
+             // borderRadius={'md'}
+            > 
+              <Link 
+               href={""}
+                // m='2'
+                // href= {{
+                //   pathname: Routes.Receipt?.path || '',
+                //   query: {id: student.id}
+                // }}
+              >
+                Consulter le recu
+              </Link>
+            </Button>
+          </Center>
           <Center 
             bg='#FC8A94' 
             height='40px' 
             color='white' 
             borderRadius={'md'}
-           >
-              <Text m='2'>note</Text>
+          >
+            <Text m='2'>note</Text>
           </Center>
           <Center 
             bg='#5370CC'  
@@ -367,15 +390,7 @@ const DetailComponent = (student) => {
             color='white' 
             borderRadius={'md'}
           >
-              <Text m='2'>Nouvelle Photo</Text>
-          </Center>
-          <Center 
-            bg='#6688F6'  
-            height='40px' 
-            color='white' 
-            borderRadius={'md'}
-          >
-              <Text m='2'>Payer la Scolarite</Text>
+            <Text m='2'>Nouvelle Photo</Text>
           </Center>
           <Center 
             g='#FA6060' 
@@ -383,8 +398,8 @@ const DetailComponent = (student) => {
             color='white' 
             borderRadius={'md'}
             bg="#e2d39c"
-           >
-              <Text m='2'>Bulletin</Text>
+          >
+            <Text m='2'>Bulletin</Text>
           </Center>
           <Center 
             g='#60736A'  
@@ -393,17 +408,17 @@ const DetailComponent = (student) => {
             borderRadius={'md'}
             bg="green.500"
           >
-              <Text m='2'>Notifier Absence</Text>
+            <Text m='2'>Notifier Absence</Text>
           </Center>
           <Center 
             bg='#DA7E86' 
             height='40px' 
             color='white' borderRadius={'md'}
            >
-              <Text m='2'>Envoie SMS</Text>
+            <Text m='2'>Envoie SMS</Text>
           </Center>
         </Flex>
-        </Center>
+      </Center>
   {dataStudentId && (
   <SimpleGrid 
     spacing={4} 
@@ -414,7 +429,6 @@ const DetailComponent = (student) => {
       borderWidth={'1.5px'} 
       borderColor='#E2D39C'
     >
-      
       <CardHeader>
         <Flex 
           flexDirection={'horizontal'}
@@ -720,6 +734,7 @@ const DetailComponent = (student) => {
                                 name="trancheId"
                                 value={trancheId}
                                 onChange={(event) => setTrancheId(event.target.value)}
+                                placeholder={"Motif"}
                               >
                                 {
                                   dataTranchePension && (

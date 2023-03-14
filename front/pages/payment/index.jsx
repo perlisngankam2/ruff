@@ -77,25 +77,21 @@ const Payment = () => {
         
                {filteredData.length !=0 &&(
                  <Box py='9px' w='290px' bg={'white'} boxShadow="md" borderRadius="7px" overflow={"hidden"} overflowY='auto' placeItems={'center'} margin="0 auto">
-            
            {filteredData.map((personnel, index) => (
-             
               <Grid key={index} marginLeft='10px' >
-               
               <Link  
                   href= {{
                       pathname: Routes.PaymentDetails?.path || '',
                       query: {id: personnel.id}
                   }}
-                  
-                  >
+              >
                   <Text 
-                  width={'200px'}  
-                  display={'flex'} 
-                  alignItems='center' 
-                  color='black' 
-                  textDecoration="none"
-                  _hover={{background:"lightgrey", color:'white'}}
+                    width={'200px'}  
+                    display={'flex'} 
+                    alignItems='center' 
+                    color='black' 
+                    textDecoration="none"
+                    _hover={{background:"lightgrey", color:'white'}}
                 >
                   {personnel.firstName} {personnel.lastName} - {personnel.fonction.toLowerCase()}
                 </Text>

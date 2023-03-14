@@ -96,7 +96,7 @@ function AjouterCours () {
                     // onClick = {() => router.push(personnel/AjouterCategoryPersonnel)} 
                 >
                     {/* <Link href={'/personnel/ajoutercategorypersonnel'}>                                 */}
-                        Ajouter une matiere                               
+                        Ajoutez une matiere                               
                     {/* </Link>               */}
                 </Button>
           </Box>
@@ -108,7 +108,7 @@ function AjouterCours () {
                     size='xl'
                 >
                     <AlertDialogOverlay>
-                        <AlertDialogContent  >
+                        <AlertDialogContent  width={"400px"}>
                             <AlertDialogHeader 
                                 fontSize='sm' 
                                 fontWeight='base' 
@@ -143,7 +143,7 @@ function AjouterCours () {
                                     <FormLabel>Taux horaire</FormLabel>
                                     <Input 
                                         id="description"
-                                        type={'text'} 
+                                        type={'time'} 
                                         name="tauxHoraire"
                                         value={tauxHoraire}
                                         placeholder="Nombre d'heure du cours"

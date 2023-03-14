@@ -141,7 +141,7 @@ import AjouterCours from "./addCours";
                                      _hover={{background:"blue.100"}}
                                      />
                                  </Link>
-                                 <Link href="#" mt="-3px">
+                                 <Box href="#" mt="-3px">
                                    <Icon
                                      as={MdDelete}
                                      boxSize="44px"
@@ -151,7 +151,51 @@ import AjouterCours from "./addCours";
                                      _hover={{background:"blue.100"}}
                                     //  onClick = {() =>{removeCategoryStudent(categoryStudent.id)}}
                                    />
-                               </Link>
+                                   {/* <Box> 
+                                    <AlertDialog
+                                      isOpen={isOpen}
+                                      leastDestructiveRef={cancelRef}
+                                      onClose={onClose}
+                                      isCentered
+                                    >  */}
+                                        {/* <AlertDialogOverlay */}
+                                          {/* // alignSelf={"center"} */}
+                                        {/* >
+                                          <AlertDialogContent
+                                          width={"380px"}
+                                          >
+                                            <AlertDialogHeader 
+                                              fontSize='lg' 
+                                              fontWeight='bold'
+                                              textAlign={"center"}
+                                              >
+                                              Confirmation de suppression
+                                            </AlertDialogHeader>
+                                            <AlertDialogBody textAlign={"center"}>
+                                            Voulez-vous supprimer cette ce cycle?
+                                            </AlertDialogBody>
+
+                                            <AlertDialogFooter>
+                                              <Button 
+                                                ref={cancelRef} 
+                                                onClick={onClose}
+                                                colorScheme="red"
+                                              >
+                                                Annuler 
+                                              </Button>
+                                              <Button 
+                                                colorScheme='green' 
+                                                onClick={() => removeSection(section.id)}
+                                                ml={3}
+                                              >
+                                                Supprimer
+                                              </Button>
+                                            </AlertDialogFooter>
+                                          </AlertDialogContent>
+                                        </AlertDialogOverlay>
+                                    </AlertDialog>
+                                  </Box> */}
+                                  </Box>
                                </Box>
                                </Td>
                            </Tr>

@@ -58,15 +58,15 @@ const Personnel = () => {
   if (loading) return <Text>Chargement en cour...</Text>
   if (error) return <Text>Une erreur s'est produite!</Text>
 
-  const removePersonnel = async(id) => {
-    await deletePersonnel({
-        variables: {id},
+  // const removePersonnel = async(id) => {
+  //   await deletePersonnel({
+  //       variables: {id},
         
-        refetchQueries:[{
-          query: GET_ALL_PERSONNELS
-        }]
-    })
-  }
+  //       refetchQueries:[{
+  //         query: GET_ALL_PERSONNELS
+  //       }]
+  //   })
+  // }
   
   const handleChange = (e) => {
     setSearchName(e.target.value);

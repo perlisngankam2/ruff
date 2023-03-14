@@ -16,9 +16,18 @@ import {
   Thead,
   Tr,
   Link,
-  Icon
+  Icon,
+  AlertDialog,
+  AlertDialogBody,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogContent,
+  AlertDialogOverlay,
+  useDisclosure,
+  Button
 } from "@chakra-ui/react";
 
+import React, { useEffect, useState } from "react";
 import DefaultLayout from "../../components/layouts/DefaultLayout";
 import AjouterCategoryPersonnel from './AjouterCategoryPersonnel';
 import { Router, useRouter } from "next/router";
@@ -27,12 +36,14 @@ import {MdDelete} from 'react-icons/md';
 import { GET_ALL_Category_Personnel } from "../../graphql/queries";
 import { DELETE_CATEGORY_PERSONNEL } from "../../graphql/Mutation";
 import { useQuery, useMutation } from "@apollo/client"; 
-import { useEffect, useState } from "react";
 
 const Category = () => {
 
     // const router = useRouter();
     const [query , setQuery] = useState("");
+    const { isOpen, onToggle, onClose, onOpen } = useDisclosure();
+    const cancelRef = React.useRef()
+
     // //const [classeValue , setClasseValue ] = useState("");
     // const [data, setData] = useState([]);
     // const keys = ["first_name", "last_name", "email", "classe"];
@@ -156,8 +167,52 @@ const Category = () => {
                                     rounded="full"
                                     color="colors.quaternary"
                                     _hover={{background:"blue.100"}}
-                                    onClick={() => deleteCategoryPersonnel(category.id)}
+                                    onClick={onToggle}
                                   />
+                                  <Box> 
+                                    <AlertDialog
+                                      isOpen={isOpen}
+                                      leastDestructiveRef={cancelRef}
+                                      onClose={onClose}
+                                      isCentered
+                                    >
+                                        <AlertDialogOverlay
+                                          // alignSelf={"center"}
+                                        >
+                                          <AlertDialogContent
+                                          width={"380px"}
+                                          >
+                                            <AlertDialogHeader 
+                                              fontSize='lg' 
+                                              fontWeight='bold'
+                                              textAlign={"center"}
+                                              >
+                                              Confirmation de suppression
+                                            </AlertDialogHeader>
+                                            <AlertDialogBody textAlign={"center"}>
+                                            Voulez-vous supprimer cette categorie?
+                                            </AlertDialogBody>
+
+                                            <AlertDialogFooter>
+                                              <Button 
+                                                ref={cancelRef} 
+                                                onClick={onClose}
+                                                colorScheme="red"
+                                              >
+                                                Annuler 
+                                              </Button>
+                                              <Button 
+                                                colorScheme='green' 
+                                                onClick={() => deleteCategoryPersonnel(category.id)}  
+                                                ml={3}
+                                              >
+                                                Supprimer
+                                              </Button>
+                                            </AlertDialogFooter>
+                                          </AlertDialogContent>
+                                        </AlertDialogOverlay>
+                                    </AlertDialog>
+                                  </Box>
                                 </Box>
                               </Box>
                               </Td>

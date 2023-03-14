@@ -7,15 +7,12 @@ import {
   Flex,
   Heading,
   Icon,
-  Input,
-  InputGroup,
-  InputRightElement,
-  Popover,
-  PopoverArrow,
-  PopoverBody,
-  PopoverCloseButton,
-  PopoverContent,
-  PopoverFooter,
+  AlertDialog,
+  AlertDialogBody,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogContent,
+  AlertDialogOverlay,
   Text,
   VStack,
   useDisclosure
@@ -28,7 +25,7 @@ import { FiSearch, FiEdit } from "react-icons/fi";
 import { MdDelete } from "react-icons/md";
 import { BiDetail } from "react-icons/bi";
 import { Formik } from "formik";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { IoIosAdd } from "react-icons/io";
 import { Router, useRouter } from "next/router";
 import { useMutation, useQuery } from "@apollo/client";
@@ -38,6 +35,7 @@ import { DELETE_PERSONNEL } from "../../graphql/Mutation";
 const Employee = (props) => {
 
   const router = useRouter();
+  const cancelRef = React.useRef()
   const {data:dataPersonnel, loading, error} = useQuery(GET_ALL_PERSONNELS)
   const [deletePersonnel] = useMutation(DELETE_PERSONNEL);
   const [personnel, setPersonnel] = useState([]);
@@ -58,7 +56,7 @@ const Employee = (props) => {
           query: GET_ALL_PERSONNELS
         }]
     })
-    onClose
+    onClose();
   }
   return (
          <Box
@@ -136,51 +134,50 @@ const Employee = (props) => {
                     color="white"
                     onClick={onToggle}
                   />
-                  <Box> 
-                    <Popover
-                      returnFocusOnClose={false}
-                      isOpen={isOpen}
-                      onClose={onClose}
-                      closeOnBlur={false}
-                      plcement="Center"
-                    >
-                      <PopoverContent>
-                        <PopoverArrow />
-                        <PopoverCloseButton />
-                        <PopoverBody>
-                          <Text 
-                          fontSize={"17px"}
-                          textAlign={"center"}
-                          mt={"5px"}
-                          mb={"15px"}
-                          fontWeight="bold"
-                          > 
-                            Confirmation de supression
-                          </Text>
-                            Voulez-vous supprimer ce personnel?
-                        </PopoverBody>
-                        <PopoverFooter 
-                          display='flex' 
-                          justifyContent='flex-end'
-                        >
-                          <ButtonGroup size='sm'>
-                            <Button
-                              colorScheme='red' 
-                              onClick={onClose}
+                    <Box> 
+                      <AlertDialog
+                        isOpen={isOpen}
+                        leastDestructiveRef={cancelRef}
+                        onClose={onClose}
+                        isCentered
+                      >
+                          <AlertDialogOverlay
+                            // alignSelf={"center"}
+                          >
+                            <AlertDialogContent
+                            width={"380px"}
                             >
-                              Non
-                            </Button>
-                            <Button 
-                              colorScheme="green"
-                              onClick={() => removePersonnel(props.id)}
-                            >
-                              Oui
-                            </Button>
-                          </ButtonGroup>
-                        </PopoverFooter>
-                      </PopoverContent>
-                    </Popover>
-                  </Box>
+                              <AlertDialogHeader 
+                                fontSize='lg' 
+                                fontWeight='bold'
+                                textAlign={"center"}
+                                >
+                                Confirmation de suppression
+                              </AlertDialogHeader>
+                              <AlertDialogBody textAlign={"center"}>
+                              Voulez-vous supprimer cet Personnel?
+                              </AlertDialogBody>
+
+                              <AlertDialogFooter>
+                                <Button 
+                                  ref={cancelRef} 
+                                  onClick={onClose}
+                                  colorScheme="red"
+                                >
+                                  Annuler 
+                                </Button>
+                                <Button 
+                                  colorScheme='green' 
+                                  onClick={() => {removePersonnel(props.id)}}
+                                  ml={3}
+                                >
+                                  Supprimer
+                                </Button>
+                              </AlertDialogFooter>
+                            </AlertDialogContent>
+                          </AlertDialogOverlay>
+                      </AlertDialog>
+                    </Box>
                 </Box>
               </Flex>
             </Box>

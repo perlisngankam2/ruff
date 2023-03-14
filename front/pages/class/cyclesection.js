@@ -78,8 +78,8 @@ const cyclesection = () => {
     const{ data:dataDetailsCycle} = useQuery(GET_ONE_CYCLE);
     const [editCycle] = useMutation(UPDATE_CYCLE);
     const [createCycle, {error}] = useMutation(CREATE_CYCLE);
-    const { isOpen, onOpen, onClose} = useDisclosure();
-    const { isOpen:isOpennns, onOpen:onOpennns, onClose:onClossses} = useDisclosure();
+    const { isOpen, onOpen, onClose, onToggle} = useDisclosure();
+    const { isOpen:isOpennns, onOpen:onOpennns, onClose:onClossses, onToggle:onToggles} = useDisclosure();
 
     const [isformOpen, setIsFormOpen] = useState(false)
     const cancelRef = React.useRef();
@@ -91,39 +91,39 @@ const cyclesection = () => {
 
     const displayUsers = data?.findAllsection.slice(pagesVisited, pagesVisited + usersPerPage)
     . map((section, index) => ( 
-                          <Tr key={index}>
-                              <Td  borderColor={'#C6B062'}>{section.name}</Td>
-                              <Td  borderColor={'#C6B062'}>{section.description}</Td>
-                              <Td  borderColor={'#C6B062'}>
-                              <Box display="flex">
-                                <Link 
-                                  href="/eleves/modifiereleve">
-                                    <Icon
-                                    as={FiEdit}
-                                    boxSize="40px"
-                                    p="3"
-                                    // bg="blue.100"
-                                    rounded="full"
-                                  _hover={{background:"red.100"}}
-                                    />
-                                </Link>
-                                <Box href="#" mt="-3px"
-                                    onClick={() => removeSection(section.id)}
-                                >
-                                  <Icon
-                                    as={MdDelete}
-                                    boxSize="44px"
-                                    p="3"
-                                    rounded="full"
-                                    color="colors.quaternary"
-                                    _hover={{background:"blue.100"}}
+      <Tr key={index}>
+          <Td  borderColor={'#C6B062'}>{section.name}</Td>
+          <Td  borderColor={'#C6B062'}>{section.description}</Td>
+          <Td  borderColor={'#C6B062'}>
+          <Box display="flex">
+            <Link 
+              href="/eleves/modifiereleve">
+                <Icon
+                as={FiEdit}
+                boxSize="40px"
+                p="3"
+                // bg="blue.100"
+                rounded="full"
+              _hover={{background:"red.100"}}
+                />
+            </Link>
+            <Box href="#" mt="-3px"
+                onClick={() => removeSection(section.id)}
+            >
+              <Icon
+                as={MdDelete}
+                boxSize="44px"
+                p="3"
+                rounded="full"
+                color="colors.quaternary"
+                _hover={{background:"blue.100"}}
 
-                                  />
-                              </Box>
-                              </Box>
-                              </Td>
-                          </Tr>
-                        ))
+              />
+          </Box>
+          </Box>
+          </Td>
+      </Tr>
+    ))
 
     const pageCount = Math.ceil(data?.findAllsection.length / usersPerPage);
 
@@ -236,216 +236,301 @@ const cyclesection = () => {
           </Box>
           <Box mb={5}>
           <TableContainer>
-                <Table variant='striped'>
-                    <Thead>
-                    <Tr>
-                        <Th>Nom</Th>
-                        <Th>Description</Th>
-                        <Th>Actions</Th>
-                    </Tr>
-                    </Thead>
-                      {data && ( 
-                    <Tbody>
-                      {displayUsers}
-                      
-                      {
-                        data.findAllsection.map((section, index) => ( 
-                          <Tr key={index}>
-                              <Td  borderColor={'#C6B062'}>{section.name}</Td>
-                              <Td  borderColor={'#C6B062'}>{section.description}</Td>
-                              <Td  borderColor={'#C6B062'}>
-                              <Box display="flex">
-                                <Link 
-                                  href="#">
-                                    <Icon
-                                    as={FiEdit}
-                                    boxSize="40px"
-                                    p="3"
-                                    // bg="blue.100"
-                                    rounded="full"
-                                  _hover={{background:"red.100"}}
-                                    />
-                                </Link>
-                                <Box href="#" mt="-3px"
-                                    onClick={() => removeSection(section.id)}
-                                >
-                                  <Icon
-                                    as={MdDelete}
-                                    boxSize="44px"
-                                    p="3"
-                                    rounded="full"
-                                    color="colors.quaternary"
-                                    _hover={{background:"blue.100"}}
-
-                                  />
-                              </Box>
-                              </Box>
-                              </Td>
-                          </Tr>
-                        ))}
-                    </Tbody>
-                      )}
-                </Table>
-            </TableContainer> 
-            </Box>
-        <ReactPaginate 
-        previousLabel={"<<"}
-        nextLabel={">>"}
-        pageCount={pageCount}
-        onPageChange={changePage}
-        containerClassName={"paginationBttns"}
-        previousLinkClassName={"previousBttn"}
-        nextLinkClassName={"nextBttn"}
-        disabledClassName={"paginationDisabled"}
-        activeClassName={"paginationActive"}
-        />
-
-
-</Box>
-        <Box mt={50}>
-          <Box> 
-              <Heading 
-              mt={2}
-                size="lg"
-                textAlign={"center"}
-                color = "colors.quinzaine"
-                >
-                  Cycles
-              </Heading>
-          </Box>
-          <CycleCreate
-            // defaultValues={defaultValues}
-            // {...onSubmit ? updateCycle: addCycle}
-            // update={true}
-          />
-            <TableContainer>
-                <Table variant='striped'>
-                    <Thead>
-                    <Tr>
-                        <Th>Nom</Th>
-                        <Th>Setion</Th>
-                        <Th>Actions</Th>
-                    </Tr>
-                    </Thead>
-                      {dataCycle && ( 
-                    <Tbody>
-                      {
-                        dataCycle.findAllcycle.map((cycle, index) => ( 
-                          <Tr key={index}>
-                              <Td  borderColor={'#C6B062'}>{cycle.name}</Td>
-                              {/* <Td  borderColor={'#C6B062'}>{cycle.section_id}</Td> */}
-                              <Td  borderColor={'#C6B062'}>pppp</Td>
-                              <Td  borderColor={'#C6B062'}>
-                              <Box display="flex">
+            <Table variant='striped'>
+                <Thead>
+                <Tr>
+                    <Th>Nom</Th>
+                    <Th>Description</Th>
+                    <Th>Actions</Th>
+                </Tr>
+                </Thead>
+                  {data && ( 
+                <Tbody>
+                  {displayUsers}
+                  
+                  {
+                    data.findAllsection.map((section, index) => ( 
+                      <Tr key={index}>
+                          <Td  borderColor={'#C6B062'}>{section.name}</Td>
+                          <Td  borderColor={'#C6B062'}>{section.description}</Td>
+                          <Td  borderColor={'#C6B062'}>
+                          <Box display="flex">
+                            <Link 
+                              href="#">
                                 <Icon
-                                  as={FiEdit}
-                                  boxSize="40px"
-                                  p="3"
-                                  // bg="blue.100"
-                                  rounded="full"
-                                  onClick={onOpen}
-                                  _hover={{background:"red.100"}}
+                                as={FiEdit}
+                                boxSize="40px"
+                                p="3"
+                                // bg="blue.100"
+                                rounded="full"
+                              _hover={{background:"red.100"}}
                                 />
-                                <Icon
-                                  as={MdDelete}
-                                  boxSize="44px"
-                                  p="3"
-                                  rounded="full"
-                                  color="colors.quaternary"
-                                  onClick={() => removeCycle(cycle.id)}
-                                  _hover={{background:"blue.100"}}
-                                  />
-                                 {/* <Box as={"form"}  
-                                    // onSubmit={updateCycle}
-                                  >  
-                                   <AlertDialog
-                                      isOpen={isOpen}
-                                      leastDestructiveRef={cancelRef}
-                                      onClose={onClose}
-                                      size='xl'
+                            </Link>
+                            <Box href="#" mt="-3px"
+                            >
+                              <Icon
+                                as={MdDelete}
+                                boxSize="44px"
+                                p="3"
+                                rounded="full"
+                                color="colors.quaternary"
+                                _hover={{background:"blue.100"}}
+                                onClick={onToggles}
+                              />
+                              <Box> 
+                                <AlertDialog
+                                  isOpen={isOpen}
+                                  leastDestructiveRef={cancelRef}
+                                  onClose={onClose}
+                                  isCentered
+                                >
+                                    <AlertDialogOverlay
+                                      // alignSelf={"center"}
                                     >
-                                      <AlertDialogOverlay>
-                                          <AlertDialogContent>
-                                              <AlertDialogHeader 
-                                                  fontSize='sm' 
-                                                  fontWeight='base' 
-                                                  mt='0'
-                                              >
-                                                <Box>
-                                                  <Heading 
-                                                      textAlign={'center'} 
-                                                      fontSize={['15px','20px','26px']} 
-                                                      p='2' 
-                                                  >
-                                                      Modifier le cycle
-                                                  </Heading>
-                                                </Box>
-                                              </AlertDialogHeader>
-                                              <AlertDialogBody>
-                                              <Box> */}
-                                                {/* <FormControl>
-                                                    <FormLabel>Nom</FormLabel>
-                                                  <Input 
-                                                      id="name"
-                                                      type={'text'} 
-                                                      name="name"
-                                                      placeholder="nom"
-                                                      onChange = {() => setName("")}
-                                                      value={cycle.name}
-                                                  />
-                                                </FormControl>
-                                                <FormControl mt="15px">
-                                                    <FormLabel>Section</FormLabel>
-                                                    <Select 
-                                                        id="section"
-                                                        name="section"
-                                                        placeholder="Section"
-                                                        onChange = {() => setSection("")}
-                                                        value={cycle.section}
-                                                    >
-                                                        {data &&(
-                                                            data.findAllsection.map((section, index) => ( 
-                                                                <option key={index}>
-                                                                    <option>{section.name}</option>
-                                                                </option>
-                                                            ))
-                                                        )}
-                                                    </Select>
-                                                </FormControl>
-                                              </Box>
-                                              </AlertDialogBody> */}
-                                              {/* <AlertDialogFooter>
-                                                <Button 
-                                                    ref={cancelRef} 
-                                                    onClick={onClose} 
-                                                    colorScheme='red' 
-                                                >
-                                                    annuler 
-                                                </Button>
-                                                  <Link href={'/personnel/ajoutercategorypersonnel'}> 
-                                                   <Button 
-                                                    colorScheme='green'  
-                                                    ml={3}
-                                                    onClick={updateCycle}
-                                                  >
-                                                    Enregistrer
-                                                  </Button>
-                                                 </Link>  
-                                               </AlertDialogFooter>
-                                          </AlertDialogContent>
-                                      </AlertDialogOverlay>
-                                  </AlertDialog>  
-                                 </Box>   */}
+                                      <AlertDialogContent
+                                      width={"380px"}
+                                      >
+                                        <AlertDialogHeader 
+                                          fontSize='lg' 
+                                          fontWeight='bold'
+                                          textAlign={"center"}
+                                          >
+                                          Confirmation de suppression
+                                        </AlertDialogHeader>
+                                        <AlertDialogBody textAlign={"center"}>
+                                        Voulez-vous supprimer cette ce cycle?
+                                        </AlertDialogBody>
+
+                                        <AlertDialogFooter>
+                                          <Button 
+                                            ref={cancelRef} 
+                                            onClick={onClose}
+                                            colorScheme="red"
+                                          >
+                                            Annuler 
+                                          </Button>
+                                          <Button 
+                                            colorScheme='green' 
+                                            onClick={() => removeSection(section.id)}
+                                            ml={3}
+                                          >
+                                            Supprimer
+                                          </Button>
+                                        </AlertDialogFooter>
+                                      </AlertDialogContent>
+                                    </AlertDialogOverlay>
+                                </AlertDialog>
                               </Box>
-                              </Td>
-                          </Tr>
-                        ))}
-                    </Tbody>
-                      )}
-                </Table>
-            </TableContainer>
-            
-        </Box>
+                          </Box>
+                          </Box>
+                          </Td>
+                      </Tr>
+                    ))}
+                </Tbody>
+                  )}
+            </Table>
+        </TableContainer> 
+      </Box>
+    <ReactPaginate 
+      previousLabel={"<<"}
+      nextLabel={">>"}
+      pageCount={pageCount}
+      onPageChange={changePage}
+      containerClassName={"paginationBttns"}
+      previousLinkClassName={"previousBttn"}
+      nextLinkClassName={"nextBttn"}
+      disabledClassName={"paginationDisabled"}
+      activeClassName={"paginationActive"}
+    />
+</Box>
+    <Box mt={50}>
+      <Box> 
+          <Heading 
+          mt={2}
+            size="lg"
+            textAlign={"center"}
+            color = "colors.quinzaine"
+            >
+              Cycles
+          </Heading>
+      </Box>
+      <CycleCreate
+        // defaultValues={defaultValues}
+        // {...onSubmit ? updateCycle: addCycle}
+        // update={true}
+      />
+        <TableContainer>
+            <Table variant='striped'>
+                <Thead>
+                <Tr>
+                    <Th>Nom</Th>
+                    <Th>Setion</Th>
+                    <Th>Actions</Th>
+                </Tr>
+                </Thead>
+                  {dataCycle && ( 
+                <Tbody>
+                  {
+                    dataCycle.findAllcycle.map((cycle, index) => ( 
+                      <Tr key={index}>
+                          <Td  borderColor={'#C6B062'}>{cycle.name}</Td>
+                          {/* <Td  borderColor={'#C6B062'}>{cycle.section_id}</Td> */}
+                          <Td  borderColor={'#C6B062'}>pppp</Td>
+                          <Td  borderColor={'#C6B062'}>
+                          <Box display="flex">
+                            <Icon
+                              as={FiEdit}
+                              boxSize="40px"
+                              p="3"
+                              // bg="blue.100"
+                              rounded="full"
+                              onClick={onOpen}
+                              _hover={{background:"red.100"}}
+                            />
+                            <Icon
+                              as={MdDelete}
+                              boxSize="44px"
+                              p="3"
+                              rounded="full"
+                              color="colors.quaternary"
+                              _hover={{background:"blue.100"}}
+                              onClick={onToggle}
+                              />
+
+                              <Box> 
+                                <AlertDialog
+                                  isOpen={isOpen}
+                                  leastDestructiveRef={cancelRef}
+                                  onClose={onClose}
+                                  isCentered
+                                >
+                                    <AlertDialogOverlay
+                                      // alignSelf={"center"}
+                                    >
+                                      <AlertDialogContent
+                                      width={"380px"}
+                                      >
+                                        <AlertDialogHeader 
+                                          fontSize='lg' 
+                                          fontWeight='bold'
+                                          textAlign={"center"}
+                                          >
+                                          Confirmation de suppression
+                                        </AlertDialogHeader>
+                                        <AlertDialogBody textAlign={"center"}>
+                                        Voulez-vous supprimer cette ce cycle?
+                                        </AlertDialogBody>
+
+                                        <AlertDialogFooter>
+                                          <Button 
+                                            ref={cancelRef} 
+                                            onClick={onClose}
+                                            colorScheme="red"
+                                          >
+                                            Annuler 
+                                          </Button>
+                                          <Button 
+                                            colorScheme='green' 
+                                             onClick={() => removeCycle(cycle.id)}
+                                            ml={3}
+                                          >
+                                            Supprimer
+                                          </Button>
+                                        </AlertDialogFooter>
+                                      </AlertDialogContent>
+                                    </AlertDialogOverlay>
+                                </AlertDialog>
+                              </Box>
+                              {/* <Box as={"form"}  
+                                // onSubmit={updateCycle}
+                              >  
+                                <AlertDialog
+                                  isOpen={isOpen}
+                                  leastDestructiveRef={cancelRef}
+                                  onClose={onClose}
+                                  size='xl'
+                                >
+                                  <AlertDialogOverlay>
+                                      <AlertDialogContent>
+                                          <AlertDialogHeader 
+                                              fontSize='sm' 
+                                              fontWeight='base' 
+                                              mt='0'
+                                          >
+                                            <Box>
+                                              <Heading 
+                                                  textAlign={'center'} 
+                                                  fontSize={['15px','20px','26px']} 
+                                                  p='2' 
+                                              >
+                                                  Modifier le cycle
+                                              </Heading>
+                                            </Box>
+                                          </AlertDialogHeader>
+                                          <AlertDialogBody>
+                                          <Box> */}
+                                            {/* <FormControl>
+                                                <FormLabel>Nom</FormLabel>
+                                              <Input 
+                                                  id="name"
+                                                  type={'text'} 
+                                                  name="name"
+                                                  placeholder="nom"
+                                                  onChange = {() => setName("")}
+                                                  value={cycle.name}
+                                              />
+                                            </FormControl>
+                                            <FormControl mt="15px">
+                                                <FormLabel>Section</FormLabel>
+                                                <Select 
+                                                    id="section"
+                                                    name="section"
+                                                    placeholder="Section"
+                                                    onChange = {() => setSection("")}
+                                                    value={cycle.section}
+                                                >
+                                                    {data &&(
+                                                        data.findAllsection.map((section, index) => ( 
+                                                            <option key={index}>
+                                                                <option>{section.name}</option>
+                                                            </option>
+                                                        ))
+                                                    )}
+                                                </Select>
+                                            </FormControl>
+                                          </Box>
+                                          </AlertDialogBody> */}
+                                          {/* <AlertDialogFooter>
+                                            <Button 
+                                                ref={cancelRef} 
+                                                onClick={onClose} 
+                                                colorScheme='red' 
+                                            >
+                                                annuler 
+                                            </Button>
+                                              <Link href={'/personnel/ajoutercategorypersonnel'}> 
+                                                <Button 
+                                                colorScheme='green'  
+                                                ml={3}
+                                                onClick={updateCycle}
+                                              >
+                                                Enregistrer
+                                              </Button>
+                                              </Link>  
+                                            </AlertDialogFooter>
+                                      </AlertDialogContent>
+                                  </AlertDialogOverlay>
+                              </AlertDialog>  
+                              </Box>   */}
+                          </Box>
+                          </Td>
+                      </Tr>
+                    ))}
+                </Tbody>
+                  )}
+            </Table>
+        </TableContainer>
+      </Box>
       </Box>
     </DefaultLayout>
   );

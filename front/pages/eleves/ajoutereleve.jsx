@@ -65,7 +65,7 @@ const AjouterEleve = () => {
   const HandleClick = async (event) => {
     event.preventDefault();
     
-  const studentData =  await createStudent({ 
+    await createStudent({ 
       variables:{
         student: { 
           matricule: matricule,
@@ -113,7 +113,7 @@ const AjouterEleve = () => {
     setSex("");
     setAdress("");
     setTransport("");
-    categoryStudentId("");
+    // categoryStudentId("");
     setSalleId("");
     setFatherFirstName("");
     setFatherLastName("");
@@ -198,20 +198,27 @@ const AjouterEleve = () => {
               <Heading size="md" p="2" background="pink.300" color="white">
                 Informations de l'élève
               </Heading>
-              <Box mx={2} mt="5">
-                <Flex gap={5} flexWrap={["wrap", "wrap", "nowrap"]}>
+              <Box 
+                mx={2} 
+                mt="5"
+              >
+                <Flex 
+                  gap={5} 
+                  flexWrap={["wrap", "wrap", "nowrap"]}
+                >
                   <FormControl>
-                      <FormLabel>Nom</FormLabel>
+                      <FormLabel mb="-5px">Nom</FormLabel>
                     <Input
                       // placeholder="Nom de l'élève"
                       value={firstname}
                       onChange={(e) => setFirstname(e.target.value)}
                       name="nom"
                       variant="flushed"
+                      // mt={"-25px"}
                     />
                   </FormControl>
                     <FormControl> 
-                      <FormLabel>Prenom</FormLabel>
+                      <FormLabel mb="-5px">Prenom</FormLabel>
                     <Input
                       // placeholder="Prenom"
                       name="prenom"
@@ -273,7 +280,7 @@ const AjouterEleve = () => {
                 mt="8"
                 >
                 <FormControl>
-                    <FormLabel>Adresse</FormLabel>
+                    <FormLabel mb="-5px">Adresse</FormLabel>
                     <Input
                       type="text"
                       name="adress"
@@ -283,7 +290,7 @@ const AjouterEleve = () => {
                     />
                   </FormControl>
                   <FormControl>
-                      <FormLabel>Matricule</FormLabel>
+                      <FormLabel mb="-5px">Matricule</FormLabel>
                       <Input
                         type="text"
                         name="matricule"
@@ -330,7 +337,7 @@ const AjouterEleve = () => {
                       </Select>
                     </FormControl>
                 </Flex>
-                <Flex>
+                <Flex mt={"20px"}>
                 <FormControl>
                   <FormLabel>Classe</FormLabel>
                   <Select
@@ -381,119 +388,215 @@ const AjouterEleve = () => {
               </Heading>
               <Box mx={2} mt="5">
                 <Flex gap={3} flexWrap={["wrap", "wrap", "nowrap"]}>
-                  <Input
-                    placeholder="Nom du père"
-                    name="fatherFirstName"
-                    value={fatherFirstName}
-                    onChange={(e) => setFatherFirstName(e.target.value)}
-                    variant="flushed"
-                  />
-                  <Input
-                    placeholder="Prenom"
-                    name="fatherLastName"
-                    value={fatherLastName}
-                    onChange={(e) => setFatherLastName(e.target.value)}
-                    variant="flushed"
-                  />
+                    <FormControl >
+                      <FormLabel mb="-6px">Nom</FormLabel>
+                        <Input
+                          // placeholder="Nom du père"
+                          name="fatherFirstName"
+                          value={fatherFirstName}
+                          onChange={(e) => setFatherFirstName(e.target.value)}
+                          variant="flushed"
+                        />
+                    </FormControl>
+                    <FormControl> 
+                      <FormLabel mb="-6px">Prenom</FormLabel>
+                      <Input
+                        // placeholder="Prenom"
+                        name="fatherLastName"
+                        value={fatherLastName}
+                        onChange={(e) => setFatherLastName(e.target.value)}
+                        variant="flushed"
+                      />
+                    </FormControl>
                  
                 </Flex>
                 <Flex gap={3}>
-                  <Input
-                      placeholder="Profession"
+                  <FormControl> 
+                      <FormLabel 
+                        mb="-6px"
+                        mt={"15px"}
+
+                      >
+                        Profession
+                      </FormLabel>
+                    <Input
+                      // placeholder="Profession"
                       name="fatherProfession"
                       value={fatherProfession}
                       onChange={(e) => setFatherProfession(e.target.value)}
                       variant="flushed"
                     />
-                  <Input
-                    type="tel"
-                    placeholder="Numero de téléphone"
-                    name="fatherPhoneNumber"
-                    value={fatherPhoneNumber}
-                    onChange={(e) => setFatherPhoneNumber(e.target.value)}
-                    variant="flushed"
-                  />
-                   
+                  </FormControl>
+                  <FormControl> 
+                      <FormLabel 
+                       mb="-6px"
+                       mt={"15px"}
+                      >
+                        Numero de téléphone
+                      </FormLabel>
+                    <Input
+                      type="tel"
+                      // placeholder="Numero de téléphone"
+                      name="fatherPhoneNumber"
+                      value={fatherPhoneNumber}
+                      onChange={(e) => setFatherPhoneNumber(e.target.value)}
+                      variant="flushed"
+                    />
+                   </FormControl>
                 </Flex>
               </Box>
-              <Box mt={10}>
+              <Box mt={8}>
                 <Heading size="md" p="2" background="green.300" color="white">
                   Informations de la mère
                 </Heading>
-                <Box mx={2} mt="5">
+                <Box mx={2} mt="2">
                   <Flex gap={3} flexWrap={["wrap", "wrap", "nowrap"]}>
-                    <Input
-                      placeholder="Nom de la mère"
-                      name="motherFirstName"
-                      value={motherFirstName}
-                      onChange={(e) => setMotherFirstName(e.target.value)}
-                      variant="flushed"
-                    />
-                    <Input
-                      placeholder="Prenom"
-                      name="motherLastName"
-                      value={motherLastName}
-                      onChange={(e) => setMotherLastName(e.target.value)}
-                      variant="flushed"
-                    />
-                    <Input
-                      placeholder="Profession"
-                      name="motherProfession"
-                      value={motherProfession}
-                      onChange={(e) => setMotherProfession(e.target.value)}
-                      variant="flushed"
-                    />
+                    <FormControl> 
+                        <FormLabel 
+                        mb="-6px"
+                        mt={"15px"}
+                        >
+                          Nom
+                        </FormLabel>
+                      <Input
+                        // placeholder="Nom de la mère"
+                        name="motherFirstName"
+                        value={motherFirstName}
+                        onChange={(e) => setMotherFirstName(e.target.value)}
+                        variant="flushed"
+                      />
+                    </FormControl>
+                    <FormControl> 
+                      <FormLabel 
+                       mb="-6px"
+                       mt={"15px"}
+                      >
+                        Prenom
+                      </FormLabel>
+                      <Input
+                        // placeholder="Prenom"
+                        name="motherLastName"
+                        value={motherLastName}
+                        onChange={(e) => setMotherLastName(e.target.value)}
+                        variant="flushed"
+                      />
+                    </FormControl>
                   </Flex>
                   <Flex gap={3}>
-                    <Input
-                      type="tel"
-                      placeholder="Numero de téléphone"
-                      name="motherPhoneNumber"
-                      value={motherPhoneNumber}
-                      onChange={(e) => setMotherPhoneNumber(e.target.value)}
-                      variant="flushed"
-                    />
+                    <FormControl> 
+                        <FormLabel 
+                        mb="-6px"
+                        mt={"15px"}
+                        >
+                          Numero de téléphone
+                        </FormLabel>
+                      <Input
+                        type="tel"
+                        // placeholder="Numero de téléphone"
+                        name="motherPhoneNumber"
+                        value={motherPhoneNumber}
+                        onChange={(e) => setMotherPhoneNumber(e.target.value)}
+                        variant="flushed"
+                      />
+                    </FormControl>
+                    <FormControl> 
+                      <FormLabel 
+                       mb="-6px"
+                       mt={"15px"}
+                      >
+                        Profession
+                      </FormLabel>
+                      <Input
+                        // placeholder="Profession"
+                        name="motherProfession"
+                        value={motherProfession}
+                        onChange={(e) => setMotherProfession(e.target.value)}
+                        variant="flushed"
+                      />
+                    </FormControl>
                   </Flex>
                 </Box>
               </Box>
             </Box>
           ) : (
             <Box mt={10}>
-              <Heading size="md" p="2" background="orange.300" color="white">
+              <Heading 
+                size="md"
+                p="2" background="orange.300" 
+                color="white"
+              >
                 Informations du tuteur
               </Heading>
-              <Box mx={2} mt="5">
-                <Flex gap={3} flexWrap={["wrap", "wrap", "nowrap"]}>
-                  <Input
-                    placeholder="Nom du tuteur"
-                    name="tutorFirstName"
-                    value={tutorFirstName}
-                    onChange={(e) => setTutorFirstName(e.target.value)}
-                    variant="flushed"
-                  />
-                  <Input
-                    placeholder="Prenom"
-                    name="tutorLastName"
-                    value={tutorLastName}
-                    onChange={(e) => setTutorLastName(e.target.value)}
-                    variant="flushed"
-                  />
-                  <Input
-                    placeholder="Profession"
-                    name="tutorProfession"
-                    value={tutorProfession}
-                    onChange={(e) => setTutorProfession(e.target.value)}
-                    variant="flushed"
-                  />
+              <Box 
+                mx={2} 
+                mt="5"
+              >
+                <Flex 
+                  gap={3} 
+                  flexWrap={["wrap", "wrap", "nowrap"]}
+                >
+                  <FormControl> 
+                    <FormLabel 
+                      mb="-6px"
+                      mt={"15px"}
+                    >
+                      Nom
+                    </FormLabel>
+                    <Input
+                      // placeholder="Nom du tuteur"
+                      name="tutorFirstName"
+                      value={tutorFirstName}
+                      onChange={(e) => setTutorFirstName(e.target.value)}
+                      variant="flushed"
+                    />
+                  </FormControl>
+                  <FormControl> 
+                    <FormLabel 
+                      mb="-6px"
+                      mt={"15px"}
+                    >
+                      Prenom
+                    </FormLabel>
+                    <Input
+                      // placeholder="Prenom"
+                      name="tutorLastName"
+                      value={tutorLastName}
+                      onChange={(e) => setTutorLastName(e.target.value)}
+                      variant="flushed"
+                    />
+                  </FormControl>
                 </Flex>
                 <Flex gap={3}>
-                  <Input
-                    type="tel"
-                    placeholder="Numero de téléphone"
-                    value={tutorPhoneNumber}
-                    onChange={(e) => setTutorPhoneNumber(e.target.value)}
-                    variant="flushed"
-                  />
+                <FormControl> 
+                      <FormLabel 
+                       mb="-6px"
+                       mt={"15px"}
+                      >
+                        Profession
+                      </FormLabel>
+                    <Input
+                      // placeholder="Profession"
+                      name="tutorProfession"
+                      value={tutorProfession}
+                      onChange={(e) => setTutorProfession(e.target.value)}
+                      variant="flushed"
+                    />
+                  </FormControl>
+                  <FormControl> 
+                    <FormLabel 
+                      mb="-6px"
+                      mt={"15px"}
+                    >
+                      Numero de téléphone
+                    </FormLabel>
+                    <Input
+                      type="tel"
+                      // placeholder="Numero de téléphone"
+                      value={tutorPhoneNumber}
+                      onChange={(e) => setTutorPhoneNumber(e.target.value)}
+                      variant="flushed"
+                    />
+                  </FormControl>
                 </Flex>
               </Box>
             </Box>

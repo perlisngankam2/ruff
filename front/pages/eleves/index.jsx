@@ -28,30 +28,35 @@ import {
   PopoverCloseButton,
   PopoverContent,
   PopoverFooter,
-  useDisclosure
+  useDisclosure,
+  AlertDialog,
+  AlertDialogOverlay,
+  AlertDialogContent,
+  AlertDialogHeader,
+  AlertDialogBody,
+  AlertDialogFooter
 } from "@chakra-ui/react";
 // import Link from "../../components/atoms/Link"
+import React from "react";
 import Link from "next/link";
 import Routes from "../../modules/routes";
 import { useState, useEffect } from "react";
 import DefaultLayout from "../../components/layouts/DefaultLayout";
 import { Users } from '../api/data/users';
 import { Classes } from '../api/data/classes';
-import PaiementTable from "../scolarite/paiementTable";
 import { IoIosAdd } from "react-icons/io";
 import{ FiEdit} from 'react-icons/fi';
 import {MdDelete} from 'react-icons/md';
-import { Router, useRouter } from "next/router";
+import {useRouter } from "next/router";
 import { GET_ALL_STUDENT, GET_STUDENT_BY_ID} from "../../graphql/Queries";
 import { DELETE_STUDENT } from "../../graphql/Mutation";
 import { useMutation, useQuery } from "@apollo/client";
-// import { initializeApollo } from "../../graphql/apollo";
-import {get} from 'lodash';
 
 // const VARIABLE = "pearl";
 
 const Eleves = () => {
 
+    const cancelRef = React.useRef()
     const {router} = useRouter();
     const [query , setQuery] = useState("");
     const [data, setData] = useState([]);
@@ -231,50 +236,48 @@ const Eleves = () => {
                                   onClick={onToggle}
                                 />
                                 <Box> 
-                                  <Popover
-                                    returnFocusOnClose={false}
+                                  <AlertDialog
                                     isOpen={isOpen}
+                                    leastDestructiveRef={cancelRef}
                                     onClose={onClose}
-                                    closeOnBlur={false}
-                                    plcement="Center"
+                                    isCentered
                                   >
-                                    <PopoverContent>
-                                      <PopoverArrow />
-                                      <PopoverCloseButton />
-                                      <PopoverBody>
-                                        <Text 
-                                        fontSize={"17px"}
-                                        textAlign={"center"}
-                                        mt={"5px"}
-                                        mb={"15px"}
-                                        fontWeight="bold"
-                                        > 
-                                          Confirmation de supression
-                                        </Text>
-                                          Voulez-vous supprimer cet eleve?
-                                      </PopoverBody>
-                                      <PopoverFooter 
-                                        display='flex' 
-                                        justifyContent='flex-end'
+                                    <AlertDialogOverlay
+                                      // alignSelf={"center"}
+                                    >
+                                      <AlertDialogContent
+                                      width={"380px"}
                                       >
-                                        <ButtonGroup size='sm'>
-                                          <Button
-                                            colorScheme='red' 
-                                            onClick={onClose}
+                                        <AlertDialogHeader 
+                                          fontSize='lg' 
+                                          fontWeight='bold'
+                                          textAlign={"center"}
                                           >
-                                            Non
+                                          Confirmation de suppression
+                                        </AlertDialogHeader>
+                                        <AlertDialogBody textAlign={"center"}>
+                                        Voulez-vous supprimer cet elève?
+                                        </AlertDialogBody>
+
+                                        <AlertDialogFooter>
+                                          <Button 
+                                            ref={cancelRef} 
+                                            onClick={onClose}
+                                            colorScheme="red"
+                                          >
+                                            Annuler 
                                           </Button>
                                           <Button 
-                                            colorScheme="green"
-                                            onClick={() => {removeStudent(student.id)}}
-                                            
+                                            colorScheme='green' 
+                                            onClick={() => removeStudent(student.id)}
+                                            ml={3}
                                           >
-                                            Oui
+                                            Supprimer
                                           </Button>
-                                        </ButtonGroup>
-                                      </PopoverFooter>
-                                    </PopoverContent>
-                                  </Popover>
+                                        </AlertDialogFooter>
+                                      </AlertDialogContent>
+                                    </AlertDialogOverlay>
+                                  </AlertDialog>
                                 </Box>
                               </Box>
                             </Box> 

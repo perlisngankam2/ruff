@@ -46,6 +46,7 @@ function AjouterCategoryEleve  () {
     const router = useRouter();
     const toast = useToast();
     let input
+
     const  addCategoryEleve = async (event, value) => {
         event.preventDefault();
         console.log('cccc');
@@ -63,10 +64,11 @@ function AjouterCategoryEleve  () {
             },
             refetchQueries: [{
                 query: GET_ALL_Category_Eleve
-              }]
+            }]
         })
-        console.log(categorieEleveData)
-         toast({
+        // console.log(categorieEleveData)
+        onClose()
+        toast({
              title: "Creation d'une categorie d'élève.",
              description: "La categorie a ete créée avec succes.",
              status: "success",
@@ -74,6 +76,8 @@ function AjouterCategoryEleve  () {
              isClosable: true,
            });
            router.push("/eleves/categoryeleve");
+        setNom("");
+        setDescription("");
     }
 
     useEffect(() => {

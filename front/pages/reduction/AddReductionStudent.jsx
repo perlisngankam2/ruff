@@ -58,13 +58,16 @@ function addReductionStudent  () {
                 query: GET_ALL_REDUCTION_SCOLARITE
                 }]
             }}) 
-        toast({
-            title: "Creation d'une reduction.",
-            description: "Creation de la reduction réussit.",
-            status: "success",
-            duration: 3000,
-            isClosable: true,
-        });
+            onClose();
+            toast({
+                title: "Creation d'une reduction.",
+                description: "Creation de la reduction réussit.",
+                status: "success",
+                duration: 3000,
+                isClosable: true,
+             });
+             setMontant("");
+             setName("");
     }
 
     let input

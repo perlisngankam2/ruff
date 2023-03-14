@@ -2,6 +2,7 @@ import {
   Avatar,
   Box,
   Button,
+  ButtonGroup,
   Center,
   Flex,
   Heading,
@@ -9,8 +10,15 @@ import {
   Input,
   InputGroup,
   InputRightElement,
+  Popover,
+  PopoverArrow,
+  PopoverBody,
+  PopoverCloseButton,
+  PopoverContent,
+  PopoverFooter,
   Text,
-  VStack
+  VStack,
+  useDisclosure
 } from "@chakra-ui/react";
 
 import Routes from "../../modules/routes";
@@ -33,6 +41,7 @@ const Employee = (props) => {
   const {data:dataPersonnel, loading, error} = useQuery(GET_ALL_PERSONNELS)
   const [deletePersonnel] = useMutation(DELETE_PERSONNEL);
   const [personnel, setPersonnel] = useState([]);
+  const { isOpen, onToggle, onClose, onOpen } = useDisclosure();
   
   useEffect (() => {
     setPersonnel(dataPersonnel)
@@ -49,6 +58,7 @@ const Employee = (props) => {
           query: GET_ALL_PERSONNELS
         }]
     })
+    onClose
   }
   return (
          <Box
@@ -116,7 +126,7 @@ const Employee = (props) => {
                     rounded="full"
                   />
                 </Link>
-                <Link href="#">
+                <Box href="#">
                   <Icon
                     as={MdDelete}
                     boxSize="40px"
@@ -124,9 +134,54 @@ const Employee = (props) => {
                     bg="red.500"
                     rounded="full"
                     color="white"
-                    onClick={() => removePersonnel(props.id)}
+                    onClick={onToggle}
                   />
-                </Link>
+                  <Box> 
+                    <Popover
+                      returnFocusOnClose={false}
+                      isOpen={isOpen}
+                      onClose={onClose}
+                      closeOnBlur={false}
+                      plcement="Center"
+                    >
+                      <PopoverContent>
+                        <PopoverArrow />
+                        <PopoverCloseButton />
+                        <PopoverBody>
+                          <Text 
+                          fontSize={"17px"}
+                          textAlign={"center"}
+                          mt={"5px"}
+                          mb={"15px"}
+                          fontWeight="bold"
+                          > 
+                            Confirmation de supression
+                          </Text>
+                            Voulez-vous supprimer ce personnel?
+                        </PopoverBody>
+                        <PopoverFooter 
+                          display='flex' 
+                          justifyContent='flex-end'
+                        >
+                          <ButtonGroup size='sm'>
+                            <Button
+                              colorScheme='red' 
+                              onClick={onClose}
+                            >
+                              Non
+                            </Button>
+                            <Button 
+                              colorScheme="green"
+                              onClick={() => removePersonnel(props.id)}
+                            >
+                              Oui
+                            </Button>
+                          </ButtonGroup>
+                        </PopoverFooter>
+                      </PopoverContent>
+                    </Popover>
+                  </Box>
+                </Box>
               </Flex>
             </Box>
   );

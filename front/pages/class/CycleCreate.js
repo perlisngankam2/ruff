@@ -24,7 +24,7 @@ import React, {useEffect, useState, useMemo, useContext, use} from "react";
 import { IoIosAdd } from "react-icons/io";
 import {useMutation, useQuery } from '@apollo/client';
 import {CREATE_CYCLE, UPDATE_CYCLE } from "../../graphql/Mutation";
-import { GET_ALL_SECTION, GET_ONE_CYCLE } from "../../graphql/Queries";
+import { GET_ALL_SECTION, GET_ONE_CYCLE, GET_ALL_CYCLE } from "../../graphql/Queries";
 import { useRouter } from "next/router";
 import { GlobalContext } from "../../contexts/cyclesection/AppContext";
 
@@ -68,7 +68,7 @@ const  CycleCreate =  (
     const toast = useToast();
     const [isformOpen, setIsFormOpen] = useState(false)
 
-    const cycleContext = useContext(GlobalContext);
+    // const cycleContext = useContext(GlobalContext);
 
     console.log(sectionId)
 
@@ -160,7 +160,6 @@ const  CycleCreate =  (
     const  addCycle = async (event) => {
         event.preventDefault();
         console.log('cccc');
-  
         console.log(name);
         console.log(sectionId)
    
@@ -170,8 +169,12 @@ const  CycleCreate =  (
                     name: name,
                     sectionId: sectionId
                 }
-            }
+            },
+            refetchQueries:[{
+                query: GET_ALL_CYCLE
+            }]
         })
+        onClose();
         console.log(cycleData)
         toast({
             title: "Creation d'un cycle.",
@@ -179,9 +182,10 @@ const  CycleCreate =  (
             status: "success",
             duration: 3000,
             isClosable: true,
-
-          });
+        });
           router.push("/class/cyclesection")
+          setName("");
+        //   sectionId("");
     }
    
     useEffect(() => {
@@ -248,6 +252,7 @@ const  CycleCreate =  (
                                         placeholder="Section"
                                         onChange = {(event) => setSectionId(event.target.value)}
                                         value={sectionId}
+                                        required
                                     >
                                         {data && (
                                             data.findAllsection.map((section, index) => ( 

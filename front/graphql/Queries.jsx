@@ -293,6 +293,18 @@ query getpersonnelbyaccount ($userid: String!) {
     }
 }
 `;
+export const GET_ALL_MONTANT_PENSION_CLASS = gql`
+    query findAllpension {
+        findAllpension {
+            id
+            name
+            description
+            montant
+            dateLine
+        }
+    }
+;
+`
 
 
 

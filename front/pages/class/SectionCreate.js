@@ -72,11 +72,12 @@ const  SectionCreate =  () => {
                     description: description
                 }
             },
-        refetchQueries:[{
-          query: GET_ALL_SECTION
-        }]
+            refetchQueries:[{
+                query: GET_ALL_SECTION
+            }]
         })
-        console.log(sectionData)
+        onClose();
+        // console.log(sectionData)
         toast({
             title: "Creation d'une section.",
             description: "La classe a été créée avec succes.",

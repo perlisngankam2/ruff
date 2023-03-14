@@ -9,10 +9,10 @@ import { SalleCreateInput } from 'src/modules/salle/dto/salle.input';
 export class PensionCreateInput {
 
   @Field(()=>ID,{nullable:true})
-  salle_id?:string
+  salleId?:string
 
   @Field(()=>ID,{nullable:true})
-  anneeAcademique_id?:string
+  anneeAcademiqueId?:string
 
   @Field({nullable:true})
   name?: string;
@@ -26,9 +26,9 @@ export class PensionCreateInput {
   @Field(()=>ID,{nullable:true})
   dateLine?: Date;
 
-  @Field(()=>SalleCreateInput,{nullable:true})
-  salle?:SalleCreateInput
+  // @Field(()=>SalleCreateInput,{nullable:true})
+  // salle?:SalleCreateInput
 
-  @Field(()=>AnneeAccademiqueCreateInput,{nullable:true})
-  anneeAccademique?:AnneeAccademiqueCreateInput
+  // @Field(()=>AnneeAccademiqueCreateInput,{nullable:true})
+  // anneeAccademique?:AnneeAccademiqueCreateInput
 }

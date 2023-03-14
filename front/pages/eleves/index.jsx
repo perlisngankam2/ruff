@@ -21,7 +21,14 @@ import {
   Thead,
   Tr,
   Avatar,
-  Icon
+  Icon,
+  Popover,
+  PopoverArrow,
+  PopoverBody,
+  PopoverCloseButton,
+  PopoverContent,
+  PopoverFooter,
+  useDisclosure
 } from "@chakra-ui/react";
 // import Link from "../../components/atoms/Link"
 import Link from "next/link";
@@ -51,6 +58,8 @@ const Eleves = () => {
     const keys = ["first_name", "last_name", "email", "classe"];
     const {data:dataStudent, loading, error} = useQuery(GET_ALL_STUDENT);
     const [deletestudent] = useMutation(DELETE_STUDENT);
+    const { isOpen, onToggle, onClose, onOpen } = useDisclosure();
+
     // const student = get(dataStudent)
     
     // const {data:singleStudent} = useQuery(GET_STUDENT_BY_ID,
@@ -86,6 +95,7 @@ const Eleves = () => {
           query: GET_ALL_STUDENT
         }]
       })
+      onClose();
     }
 
 
@@ -210,17 +220,63 @@ const Eleves = () => {
                                   _hover={{background:"red.100"}}
                                   />
                               </Link>
-                              <Link href="#" mt="-3px">
+                              <Box href="#" mt="-3px">
                                 <Icon
                                   as={MdDelete}
                                   boxSize="42px"
                                   p="3"
                                   rounded="full"
                                   color="colors.quaternary"
-                                  onClick={() => {removeStudent(student.id)}}
                                   _hover={{background:"blue.100"}}
+                                  onClick={onToggle}
                                 />
-                              </Link>
+                                <Box> 
+                                  <Popover
+                                    returnFocusOnClose={false}
+                                    isOpen={isOpen}
+                                    onClose={onClose}
+                                    closeOnBlur={false}
+                                    plcement="Center"
+                                  >
+                                    <PopoverContent>
+                                      <PopoverArrow />
+                                      <PopoverCloseButton />
+                                      <PopoverBody>
+                                        <Text 
+                                        fontSize={"17px"}
+                                        textAlign={"center"}
+                                        mt={"5px"}
+                                        mb={"15px"}
+                                        fontWeight="bold"
+                                        > 
+                                          Confirmation de supression
+                                        </Text>
+                                          Voulez-vous supprimer cet eleve?
+                                      </PopoverBody>
+                                      <PopoverFooter 
+                                        display='flex' 
+                                        justifyContent='flex-end'
+                                      >
+                                        <ButtonGroup size='sm'>
+                                          <Button
+                                            colorScheme='red' 
+                                            onClick={onClose}
+                                          >
+                                            Non
+                                          </Button>
+                                          <Button 
+                                            colorScheme="green"
+                                            onClick={() => {removeStudent(student.id)}}
+                                            
+                                          >
+                                            Oui
+                                          </Button>
+                                        </ButtonGroup>
+                                      </PopoverFooter>
+                                    </PopoverContent>
+                                  </Popover>
+                                </Box>
+                              </Box>
                             </Box> 
                         </Tr>
                       // </Link>

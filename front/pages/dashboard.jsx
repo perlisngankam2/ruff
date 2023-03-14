@@ -81,14 +81,13 @@ import {useMutation, useQuery } from '@apollo/client';
       <Box pt="90px" w="full">
         <Box top="-7" overflow="auto" minH="100vh" mx={6}>
           {account?.role === null ?
-          <Heading fontSize="lg" mb={4} color="yellow.500">
-            Bienvenue-GSBAB| {personnelData?.getpersonnelbyaccount.fonction}
-          </Heading>:
+            <Heading fontSize="lg" mb={4} color="yellow.500">
+              Bienvenue-GSBAB| {personnelData?.getpersonnelbyaccount.fonction}
+            </Heading>:
 
-          <Heading fontSize="lg" mb={4} color="yellow.500">
-            Bienvenue-GSBAB| {account?.role}
-          </Heading>
-
+            <Heading fontSize="lg" mb={4} color="yellow.500">
+              Bienvenue-GSBAB| {account?.role}
+            </Heading>
           }
 
           <Flex flexDir="row" gap="8" mb="9" flexWrap="wrap">

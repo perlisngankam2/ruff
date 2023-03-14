@@ -19,7 +19,7 @@ import { useMutation, useQuery } from "@apollo/client";
 import { MdDescription } from "react-icons/md";
 import DefaultLayout from "../../components/layouts/DefaultLayout";
 import { CREATE_SALLE} from "../../graphql/Mutation";
-import { GET_ALL_SECTION , GET_ALL_CYCLE, GET_ALL_STUDY_LEVEL} from "../../graphql/Queries";
+import { GET_ALL_SECTION , GET_ALL_CYCLE, GET_ALL_STUDY_LEVEL, GET_ALL_CLASS} from "../../graphql/Queries";
 
 const AddClass = () => {
 
@@ -67,11 +67,14 @@ const AddClass = () => {
     const cycleData = await createSalle({
         variables: {
             salle: {
-                name: name,
-                niveauEtudeId: niveauEtudeId,
-                montantPensionSalle: parseInt(montantPensionSalle)
+              name: name,
+              niveauEtudeId: niveauEtudeId,
+              montantPensionSalle: parseInt(montantPensionSalle)
             }
-        }
+        },
+        refetchQueries:[{
+          query: GET_ALL_CLASS
+        }]
     })
     console.log(cycleData)
     toast({
@@ -83,7 +86,6 @@ const AddClass = () => {
     });
     router.push("/class")
 }
-
 
   return (
     <DefaultLayout>

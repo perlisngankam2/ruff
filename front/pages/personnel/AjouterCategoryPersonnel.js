@@ -80,6 +80,7 @@ function ajoutercategorypersonnel  () {
                 query: GET_ALL_Category_Personnel
             }]
         })
+        onClose();
         console.log(catPerData)
         // input.value = '';
         toast({
@@ -89,6 +90,8 @@ function ajoutercategorypersonnel  () {
           duration: 3000,
           isClosable: true,
         });
+        setNom("");
+        setDescription("");
     }
 
     // const pearl = () => {

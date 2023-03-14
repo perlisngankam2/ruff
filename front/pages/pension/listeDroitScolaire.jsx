@@ -81,6 +81,8 @@ const Pension = () => {
     const [createdFraisInscription] = useMutation(CREATE_FRAIS_INSCRIPTION);
     const [createTranchePension] = useMutation(CREATE_TRANCHE_PENSION);
     const { isOpen, onOpen, onClose} = useDisclosure();
+    const { isOpen: isOpenns, onOpen:onOpenns, onClose:onClosses} = useDisclosure();
+
     // const { onOpen} = useDisclosure();
 
     const [isformOpen, setIsFormOpen] = useState(false)
@@ -121,9 +123,13 @@ const Pension = () => {
         variables:{
           anneeAccademique: {
             name: name
-        }
+        },
+        refetchQueries:[{
+          query: GET_ALL_ANNEE_ACADEMIQUE
+      }]
       }
       })
+      onClosses();
       toast({
         title: "Creation d'une annee academique.",
         description: "Annee academique créée avec succes.",
@@ -131,6 +137,7 @@ const Pension = () => {
         duration: 3000,
         isClosable: true,
       });
+      setName("")
     }
     
     const addTranchePension = async() => {
@@ -151,6 +158,7 @@ const Pension = () => {
           }]
         }
       })
+      onClose();
       toast({
         title: "Creation frais inscription.",
         description: "Creation d'un montant de frais d'inscription.",
@@ -158,8 +166,12 @@ const Pension = () => {
         duration: 3000,
         isClosable: true,
       });
-    }
+      setAnneeAcademiqueId("");
+      setDateLine("");
+      setMontant("");
+      setDateLine("");
 
+    }
 
     useEffect(() => {
       console.log(dataAnneeAcademique)
@@ -228,15 +240,15 @@ const Pension = () => {
               rounded="full"
               ml={["10px", "10px", "10px" ]}
               _hover={{background:"colors.bluecolor"}}
-              // onClick={onOpen}
+              onClick={onOpenns}
             />
           </Box>
           <Box as="form"> 
             <AlertDialog
               motionPreset='slideInBottom'
               // leastDestructiveRef={cancelRef}
-              // onClose={onClose}
-              // isOpen={isOpen}
+              onClose={onClosses}
+              isOpen={isOpenns}
               isCentered
             >
               <AlertDialogOverlay />
@@ -264,7 +276,7 @@ const Pension = () => {
                 <AlertDialogFooter>
                   <Button
                     ref={cancelRef} 
-                    onClick={onClose}
+                    onClick={onClosses}
                     colorScheme='red'
                   >
                     annuler
@@ -308,7 +320,6 @@ const Pension = () => {
             </Table>
           </TableContainer>
         </Box>
-
 
 {/* FORMULAIRE DE CREATION DES TRANCHES DE LA PENSIONS */}
         <Box mt={"50px"} >
@@ -372,24 +383,24 @@ const Pension = () => {
                         />
                     </FormControl>
                     <FormControl mt={4}>
-                        <FormLabel>Montant</FormLabel>
-                        <Input 
-                            type={"number"} 
-                            name="montant"
-                            value={montant}
-                            placeholder="Valeur"
-                            onChange = {(event)=> setMontant(event.target.value)}
-                        />
+                      <FormLabel>Montant</FormLabel>
+                      <Input 
+                          type={"number"} 
+                          name="montant"
+                          value={montant}
+                          placeholder="Valeur"
+                          onChange = {(event)=> setMontant(event.target.value)}
+                      />
                     </FormControl>
                     <FormControl mt={4}>
-                        <FormLabel>Date limite paiement</FormLabel>
-                        <Input 
-                            type={"date"} 
-                            name="dateLine"
-                            value={dateLine}
-                            placeholder="Date limite de paiement"
-                            onChange = {(event)=> setDateLine(event.target.value)}
-                        />
+                      <FormLabel>Date limite paiement</FormLabel>
+                      <Input 
+                          type={"date"} 
+                          name="dateLine"
+                          value={dateLine}
+                          placeholder="Date limite de paiement"
+                          onChange = {(event)=> setDateLine(event.target.value)}
+                      />
                     </FormControl>
                     <FormControl mt={4}>
                         <FormLabel>Annee academique</FormLabel>

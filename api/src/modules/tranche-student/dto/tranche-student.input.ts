@@ -19,7 +19,7 @@ export class TrancheStudentCreateInput {
   @Field({nullable:true})
   description!: string;
 
-  @Field({nullable:true})
+  @Field({nullable:true, defaultValue: 0.00000})
   montant?: number;
 
   // @Field(()=>RegimePaiement,{nullable:true})

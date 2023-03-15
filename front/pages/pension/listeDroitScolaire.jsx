@@ -40,6 +40,7 @@ import React, { useEffect, useState, useContext, use } from "react";
 import { Router, useRouter } from "next/router";
 import { GlobalContext } from "../../contexts/cyclesection/AppContext";
 import {IoIosAdd} from "react-icons/io"
+import {MdDelete} from 'react-icons/md';
 import {CREATE_ANNEE_ACADEMIQUE, CREATE_FRAIS_INSCRIPTION, CREATE_TRANCHE_PENSION} from "../../graphql/Mutation"
 import { useMutation, useQuery } from "@apollo/client";
 import { GET_ALL_ANNEE_ACADEMIQUE, GET_ALL_FRAIS_INSCRIPTION, GET_ALL_TRANCHE, GET_ALL_TRANCHE_PENSION} from "../../graphql/Queries";
@@ -81,7 +82,8 @@ const Pension = () => {
     const [createdFraisInscription] = useMutation(CREATE_FRAIS_INSCRIPTION);
     const [createTranchePension] = useMutation(CREATE_TRANCHE_PENSION);
     const { isOpen, onOpen, onClose} = useDisclosure();
-    const { isOpen: isOpenns, onOpen:onOpenns, onClose:onClosses} = useDisclosure();
+    const { isOpen: isOpenns, onOpen:onOpenns, onClose:onClosses } = useDisclosure();
+    const { isOpen: Onouvrir, onOpen:OnOuvert, onClose:onFermer, onToggle } = useDisclosure();
 
     // const { onOpen} = useDisclosure();
 
@@ -451,7 +453,7 @@ const Pension = () => {
                         <Th>Nom</Th>
                         <Th >Montant</Th>
                         <Th>Date limite</Th>
-                        <Th>Annee academique</Th>
+                        <Th>Action</Th>
                         {/* <Th >Montant deuxiere tranche</Th> */}
                       </Tr>
                     </Thead>
@@ -460,11 +462,88 @@ const Pension = () => {
                       
                         dataTranchePension.findAlltranche.map((tranche, index) => (
                       <Tr key={index}>
-                        <Td>{tranche.name}</Td>
-                        <Td>{tranche.montant}</Td>
-                        <Td>{tranche.dateLine}</Td>
+                        <Td borderColor={'#C6B062'}>{tranche.name}</Td>
+                        <Td borderColor={'#C6B062'}>{tranche.montant}</Td>
+                        <Td borderColor={'#C6B062'}>{tranche.dateLine}</Td>
                         {/* <Td >Monntant</Td>  */}
-                      </Tr>
+                        <Td borderColor={'#C6B062'}>
+                            <ButtonGroup 
+                              size='sm' 
+                              isAttached 
+                              variant='link' 
+                              colorScheme={'teal'}
+                              >
+                                <Button>
+                                  <Link 
+                                    href='/eleves/details'
+                                  >Details</Link>
+                                </Button>
+                              </ButtonGroup>  
+                            </Td>
+                              <Box 
+                                display="flex"
+                                ml={['-140px', '-140px', '-140px', '-140px']} 
+                                 mt={['8px', '8px', '8px', '8px']}
+                               >
+                                  <Box href="#" mt="-3px">
+                                    <Icon
+                                      as={MdDelete}
+                                      boxSize="44px"
+                                      p="3"
+                                      rounded="full"
+                                      color="colors.quaternary"
+                                      onClick={OnOuvert}
+                                      _hover={{background:"blue.100"}}
+                                    />
+                                    <Box> 
+                                      <AlertDialog
+                                        isOpen={Onouvrir}
+                                        leastDestructiveRef={cancelRef}
+                                        onClose={onFermer}
+                                        isCentered
+                                      >
+                                        <AlertDialogOverlay
+                                          // alignSelf={"center"}
+                                        >
+                                          <AlertDialogContent
+                                          width={"380px"}
+                                          >
+                                            <AlertDialogHeader 
+                                              fontSize='lg' 
+                                              fontWeight='bold'
+                                              textAlign={"center"}
+                                              >
+                                              Confirmation de suppression
+                                            </AlertDialogHeader>
+                                            <AlertDialogBody textAlign={"center"}>
+                                            Voulez-vous supprimer cet cette tranche?
+                                            </AlertDialogBody>
+
+                                            <AlertDialogFooter>
+                                              <Button 
+                                                ref={cancelRef} 
+                                                onClick={onFermer}
+                                                colorScheme="red"
+                                              >
+                                                Annuler 
+                                              </Button>
+                                              <Button 
+                                                colorScheme='green' 
+                                                // onClick={() => removeL(student.id)}
+                                                ml={3}
+                                              >
+                                                Supprimer
+                                              </Button>
+                                            </AlertDialogFooter>
+                                          </AlertDialogContent>
+                                        </AlertDialogOverlay>
+                                      </AlertDialog>
+                                    </Box>
+                                    </Box>
+                              </Box> 
+                            </Tr>
+
+
                        )))}
                     </Tbody>
                   </Table>

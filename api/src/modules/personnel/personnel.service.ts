@@ -24,10 +24,10 @@ export class PersonnelService {
   ): Promise<Personnel> {
 
   
-  //  const user=await this.userService.findById(input.userID)
-  //  if (user || !user) {
-    // throw new NotFoundError('user not found'|| '');
-   
+  //  const user =await this.userService.findById(input.userID)
+  //  if (!user || user) {
+    //  throw new NotFoundError('user not found'|| '');
+    
   const new_personnel = new Personnel()
 
   wrap(new_personnel).assign({
@@ -55,11 +55,9 @@ export class PersonnelService {
 
     await this.personnelRepository.persistAndFlush(new_personnel)
     return new_personnel
-// }
-  }
-
-
-  findById(id:string) {
+  //  }
+}
+    findById(id:string) {
         return this.personnelRepository.findOne(id)
     }
 

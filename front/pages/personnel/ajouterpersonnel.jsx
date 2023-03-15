@@ -333,10 +333,11 @@ const AjouterPersonnel = () => {
                       input = node;
                     }}
                   >
-                    <option>Fondateur</option>
-                    <option>Principal</option>
-                    <option>Econome</option>
-                    <option>Gestionnaire</option>
+                    <option>fondateur</option>
+                    <option>principal</option>
+                    <option>econome</option>
+                    <option>enseignant</option>
+                    <option>gestionnaire</option>
                   </Select>
                 </FormControl>
               </Box>

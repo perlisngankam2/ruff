@@ -50,7 +50,7 @@ export class TrancheStudentService {
 
         wrap(trancheStudent).assign(
             {
-             montant: Number(input.montant) || 0.000000,
+             montant: 0.000000,
              name: input.name,
              description: input.description,
             //  regimePaimemnt: input.regimePaiement,
@@ -121,8 +121,8 @@ export class TrancheStudentService {
         const student = tranchestudent.student.load()
         const montantsalle =(await (await (await student).salle.load()).pension.load()).montantPension
         const tranchemontant = Number((await (await this.em.find(AvanceTranche,{trancheStudent: id})).map(a=>a.tranche.load())[0]).montant)
-        const categorie = (await student).categorie.load()
-        const retenu = (await categorie).reductionScolarite.load()
+        // const categorie = (await student).categorie.load()
+        // const retenu = (await categorie).reductionScolarite.load()
 
         
         // if((await retenu).pourcentage != 0){
@@ -139,19 +139,19 @@ export class TrancheStudentService {
             
         //   }
 
-        if((await retenu).montant != 0 ){
-            const new_amount_tranche =(tranchestudent.montant) - (await retenu).montant 
-            if(tranchemontant > new_amount_tranche ){
-                tranchestudent.complete = false
-                tranchestudent.reste = tranchemontant - new_amount_tranche
+        // if((await retenu).montant != 0 ){
+        //     const new_amount_tranche =(tranchestudent.montant) - (await retenu).montant 
+        //     if(tranchemontant > new_amount_tranche ){
+        //         tranchestudent.complete = false
+        //         tranchestudent.reste = tranchemontant - new_amount_tranche
                
-            }
-            if(tranchestudent.montant < new_amount_tranche){
-                tranchestudent.complete = true
-                // tranche.regimePaimemnt = RegimePaiement.NORMAL
-                tranchestudent.reste = new_amount_tranche - tranchemontant
-            }
-        }
+        //     }
+        //     if(tranchestudent.montant < new_amount_tranche){
+        //         tranchestudent.complete = true
+        //         // tranche.regimePaimemnt = RegimePaiement.NORMAL
+        //         tranchestudent.reste = new_amount_tranche - tranchemontant
+        //     }
+        // }
         
         if(tranchestudent.montant == montantsalle){
             tranchestudent.complete = true

@@ -304,8 +304,18 @@ export const GET_ALL_MONTANT_PENSION_CLASS = gql`
             dateLine
         }
     }
-;
-`
+ `;
+
+ export const GET_ALL_COURSES = gql`
+    query findAllCourse {
+        findAllCourse {
+            id
+            title
+            time
+        }
+    }
+ `;
+
 
 
 export const GET_PRIME= gql `

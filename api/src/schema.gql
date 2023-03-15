@@ -62,7 +62,7 @@ type NiveauEtude {
 type Course {
   id: ID!
   title: String
-  time: String
+  time: Float
 }
 
 type CategoriePrime {
@@ -301,8 +301,8 @@ type LoginResponse {
 type Query {
   findAlluser: [User!]!
   user(id: String!): User!
-  findAllPersonnelSalle: [Course!]!
-  findOnePersonnelSalle(id: String!): Course!
+  findAllPersonnelSalle: [PersonnelSalle!]!
+  findOnePersonnelSalle(id: String!): PersonnelSalle!
   findAllpersonnel: [Personnel!]!
   findOnePersonnel(id: String!): Personnel!
   getpersonnelaccount(id: String!): User!
@@ -369,6 +369,8 @@ type Query {
   findAllparents: [Parent!]!
   parent(id: String!): Parent!
   totalNumberofStudentsinClass(id: String!): Float!
+  findAllCourse: [Course!]!
+  findOneCourse(id: String!): Course!
   me: Personnel!
 }
 
@@ -376,8 +378,8 @@ type Mutation {
   createuser(createUser: UserCreateInput!): User!
   updateuser(id: String!, input: UpdateUserInput!): User!
   deleteuser(id: String!): User!
-  createPersonnelSalle(input: CourseCreateInput!): Course!
-  deletePersonnelSalle(id: String!): Course!
+  createPersonnelSalle(input: PersonnelSalleCreateInput!): PersonnelSalle!
+  deletePersonnelSalle(id: String!): PersonnelSalle!
   createpersonnel(createPersonnelUser: PersonnelCreateInput!): Personnel!
   updatepersonnel(id: String!, input: PersonnelUpdateInput!): Personnel!
   deletepersonnel(id: String!): Personnel!
@@ -465,6 +467,8 @@ type Mutation {
   deleteExpense(id: String!): Expense!
   findoneexpense(id: String!): Expense!
   findallexpenses: [Expense!]!
+  createCourse(input: CourseCreateInput!): Course!
+  deleteCourse(id: String!): Course!
   login(loginInput: LoginInput!): LoginResponse!
 }
 
@@ -488,9 +492,10 @@ input UpdateUserInput {
   role: Role
 }
 
-input CourseCreateInput {
-  title: String
-  time: String
+input PersonnelSalleCreateInput {
+  salleId: ID
+  personnelId: ID
+  courseId: ID
 }
 
 input PersonnelCreateInput {
@@ -849,7 +854,7 @@ input TrancheStudentCreateInput {
   studentId: ID
   name: String
   description: String
-  montant: Float
+  montant: Float = 0
 }
 
 input InscriptionInput {
@@ -947,6 +952,11 @@ input ExpenseUpdateInput {
   title: String
   amount: Float
   description: String
+}
+
+input CourseCreateInput {
+  title: String
+  time: Float
 }
 
 input LoginInput {

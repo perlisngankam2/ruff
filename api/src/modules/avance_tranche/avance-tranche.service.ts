@@ -182,7 +182,7 @@ export class AvanceTrancheService {
      {
       // throw Error("tranchestudent not found")
      const student = (tranchestudent).student.load()
-     const reduction = (await (await student).categorie.load()).reductionScolarite.load()
+    //  const reduction = (await (await student).categorie.load()).reductionScolarite.load()
    
   
    const fraistranche = tranche.montant
@@ -209,60 +209,60 @@ export class AvanceTrancheService {
     }
   }
 
-   if((await reduction).pourcentage != 0){
-     const newValue = (await tranchestudent.tranche.load()).montant - (await tranchestudent.tranche.load()).montant*(await reduction).pourcentage
-      if(input.montant < newValue){
-          // create the avance tranche
-         wrap(avanceTranche).assign({
-         montant: Number(input.montant),
-         name: input.name,
-         description: input.description,
-         trancheStudent: tranchestudent.id,
-         tranche:tranche.id,
-         complete: false
-         },
-         {
-           em:this.em
-         })
-         this.trancheStudentservice.saveTranche(tranchestudent.id)
-         this.avanceTrancheRepository.persistAndFlush(avanceTranche)
-         return avanceTranche
-         // console.log('===========>'+inscript)   
-      }
-      tranchestudent.complete = true
-      avanceTranche.complete=true
-      this.trancheStudentservice.saveTranche(tranche.id)
-      this.avanceTrancheRepository.persistAndFlush(avanceTranche)
-      return avanceTranche
-   }
+  //  if((await reduction).pourcentage != 0){
+  //    const newValue = (await tranchestudent.tranche.load()).montant - (await tranchestudent.tranche.load()).montant*(await reduction).pourcentage
+  //     if(input.montant < newValue){
+  //         // create the avance tranche
+  //        wrap(avanceTranche).assign({
+  //        montant: Number(input.montant),
+  //        name: input.name,
+  //        description: input.description,
+  //        trancheStudent: tranchestudent.id,
+  //        tranche:tranche.id,
+  //        complete: false
+  //        },
+  //        {
+  //          em:this.em
+  //        })
+  //        this.trancheStudentservice.saveTranche(tranchestudent.id)
+  //        this.avanceTrancheRepository.persistAndFlush(avanceTranche)
+  //        return avanceTranche
+  //        // console.log('===========>'+inscript)   
+  //     }
+  //     tranchestudent.complete = true
+  //     avanceTranche.complete=true
+  //     this.trancheStudentservice.saveTranche(tranche.id)
+  //     this.avanceTrancheRepository.persistAndFlush(avanceTranche)
+  //     return avanceTranche
+  //  }
 
-   if((await reduction).montant!= 0){
-     const newValue = tranche.montant - tranche.montant*(await reduction).pourcentage
-      if(input.montant < newValue){
-          // create the avance tranche
-         wrap(avanceTranche).assign({
-         montant: Number(input.montant),
-         name: input.name,
-         description: input.description,
-         trancheStudent: tranchestudent.id,
-         tranche: tranche.id,
-         complete: false
-         },
-         {
-           em:this.em
-         })
-         this.trancheStudentservice.saveTranche(tranchestudent.id)
-         this.avanceTrancheRepository.persistAndFlush(avanceTranche)
-         return avanceTranche
-         // console.log('===========>'+inscript)   
-      }
+  //  if((await reduction).montant!= 0){
+  //    const newValue = tranche.montant - tranche.montant*(await reduction).pourcentage
+  //     if(input.montant < newValue){
+  //         // create the avance tranche
+  //        wrap(avanceTranche).assign({
+  //        montant: Number(input.montant),
+  //        name: input.name,
+  //        description: input.description,
+  //        trancheStudent: tranchestudent.id,
+  //        tranche: tranche.id,
+  //        complete: false
+  //        },
+  //        {
+  //          em:this.em
+  //        })
+  //        this.trancheStudentservice.saveTranche(tranchestudent.id)
+  //        this.avanceTrancheRepository.persistAndFlush(avanceTranche)
+  //        return avanceTranche
+  //        // console.log('===========>'+inscript)   
+  //     }
   
-      tranchestudent.complete = true
-      avanceTranche.complete=true
-      this.trancheStudentservice.saveTranche(tranchestudent.id)
-      this.avanceTrancheRepository.persistAndFlush(avanceTranche)
-      return avanceTranche
-   }
+  //     tranchestudent.complete = true
+  //     avanceTranche.complete=true
+  //     this.trancheStudentservice.saveTranche(tranchestudent.id)
+  //     this.avanceTrancheRepository.persistAndFlush(avanceTranche)
+  //     return avanceTranche
+  //  }
 
    if(input.montant < fraistranche){
     // create avance inscription

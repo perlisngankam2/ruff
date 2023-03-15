@@ -22,21 +22,18 @@ import {
     Avatar,
     Icon,
     Heading,
-    Popover,
-    PopoverTrigger,
-    PopoverContent,
-    PopoverHeader,
-    PopoverBody,
-    PopoverFooter,
-    PopoverArrow,
-    PopoverCloseButton,
-    PopoverAnchor,
+    AlertDialog,
+    AlertDialogBody,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogContent,
+    AlertDialogOverlay,
     useDisclosure
   } from "@chakra-ui/react";
   
   import { useRouter } from "next/router";
   
-  import { useEffect, useState } from "react";
+  import React, { useEffect, useState } from "react";
   import AddNew from "../../components/atoms/AddNew";
   import StudentBox from "../../components/atoms/StudentBox";
   import DefaultLayout from "../../components/layouts/DefaultLayout";
@@ -51,6 +48,7 @@ import {
   
     const {data:dataStudyLevel, loading, error} = useQuery(GET_ALL_STUDY_LEVEL);
     const router = useRouter();
+    const cancelRef = React.useRef()
     const { isOpen, onToggle, onClose } = useDisclosure();
     
     useEffect(() =>{
@@ -178,51 +176,49 @@ import {
                                       _hover={{background:"blue.100"}}
                                     />
                                     <Box> 
-                                        <Popover
-                                          returnFocusOnClose={false}
-                                          isOpen={isOpen}
-                                          onClose={onClose}
-                                          closeOnBlur={false}
-                                          plcement="bottom"
+                                      <AlertDialog
+                                        isOpen={isOpen}
+                                        leastDestructiveRef={cancelRef}
+                                        onClose={onClose}
+                                        isCentered
+                                      >
+                                        <AlertDialogOverlay
+                                          // alignSelf={"center"}
                                         >
-                                          <PopoverContent>
-                                            <PopoverArrow />
-                                            <PopoverCloseButton />
-                                            <PopoverBody>
-                                              <Text 
-                                              fontSize={"17px"}
+                                          <AlertDialogContent
+                                          width={"380px"}
+                                          >
+                                            <AlertDialogHeader 
+                                              fontSize='lg' 
+                                              fontWeight='bold'
                                               textAlign={"center"}
-                                              mt={"5px"}
-                                              mb={"15px"}
-                                              fontWeight="bold"
-                                              > 
-                                                Confirmation de supression
-                                              </Text>
-                                              Voulez-vous supprimer cet element?
-                                            </PopoverBody>
-                                            <PopoverFooter 
-                                              display='flex' 
-                                              justifyContent='flex-end'
-                                            >
-                                              <ButtonGroup size='sm'>
-                                                <Button 
-                                                  colorScheme='red' 
-                                                  onClick={onClose}
-                                                >
-                                                  Non
-                                                </Button>
-                                                <Button 
-                                                  colorScheme="green"
-                                                  // onClick={() => {removeClass(salle.id),
-                                                  // onClose}
-                                                >
-                                                  Oui
-                                                </Button>
-                                              </ButtonGroup>
-                                            </PopoverFooter>
-                                          </PopoverContent>
-                                        </Popover>
-                                        </Box>
+                                              >
+                                              Confirmation de suppression
+                                            </AlertDialogHeader>
+                                            <AlertDialogBody textAlign={"center"}>
+                                            Voulez-vous supprimer cet niveau?
+                                            </AlertDialogBody>
+
+                                            <AlertDialogFooter>
+                                              <Button 
+                                                ref={cancelRef} 
+                                                onClick={onClose}
+                                                colorScheme="red"
+                                              >
+                                                Annuler 
+                                              </Button>
+                                              <Button 
+                                                colorScheme='green' 
+                                                // onClick={() => removeL(student.id)}
+                                                ml={3}
+                                              >
+                                                Supprimer
+                                              </Button>
+                                            </AlertDialogFooter>
+                                          </AlertDialogContent>
+                                        </AlertDialogOverlay>
+                                      </AlertDialog>
+                                    </Box>
                                     </Box>
                               </Box> 
                           </Tr>

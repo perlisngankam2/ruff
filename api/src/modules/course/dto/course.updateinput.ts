@@ -10,5 +10,5 @@ export class CourseUpdateInput {
   title:string
 
   @Field({nullable:true})
-  time:string
+  time:number
 }

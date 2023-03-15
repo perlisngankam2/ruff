@@ -115,12 +115,13 @@ export class Personnel {
 
   //Relation with another table 
   @OneToOne(() => User, (user) => user.personnel, {
+    nullable:true,
     owner: true,
     unique: true,
     onDelete: 'CASCADE',
-    nullable:true
+   
   })
-  user!: IdentifiedReference<User>;
+  user!: IdentifiedReference<User>|null;
 
   @ManyToOne(() => CategoriePersonnel ,{
     nullable:true,

@@ -19,7 +19,7 @@ title: string
 
 @Field({nullable:true})
 @Property({ nullable:true })
-time!:string
+time!:number
 
 @OneToMany(() => PersonnelSalle, (personnelsalle) => personnelsalle.course)
 personnelsalle = new Collection<PersonnelSalle>(this); 

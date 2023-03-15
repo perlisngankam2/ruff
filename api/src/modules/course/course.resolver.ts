@@ -10,7 +10,7 @@ export class CourseResolver {
   constructor(private readonly courseService: CourseService) {}
 
   @Mutation(() => Course)
-  createPersonnelSalle(@Args('input') Input: CourseCreateInput) {
+  createCourse(@Args('input') Input: CourseCreateInput) {
     return this.courseService.create(Input);
   }
 
@@ -20,17 +20,17 @@ export class CourseResolver {
 //   }
 
   @Query(() => [Course])
-  findAllPersonnelSalle() {
+  findAllCourse() {
     return this.courseService.findall()
   }
   
   @Query(() => Course)
-  findOnePersonnelSalle(@Args('id', { type: () => String }) id: string) {
+  findOneCourse(@Args('id', { type: () => String }) id: string) {
     return this.courseService.findByOne(id);
   }
 
   @Mutation(()=> Course)
-  async deletePersonnelSalle(@Args('id') id:string){
+  async deleteCourse(@Args('id') id:string){
  return await this.courseService.delete(id)
   }
 }

@@ -20,7 +20,7 @@ export class CourseService {
         const course = new Course()
         wrap(course).assign({
         title:input.title,
-         time: String(input.time)
+         time: Number(input.time)
         },
         {
             em: this.em

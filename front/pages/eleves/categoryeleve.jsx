@@ -19,7 +19,15 @@ import {
  Thead,
  Tr,
  Link,
- Icon
+ Icon,
+ useDisclosure,
+ AlertDialogHeader,
+ AlertDialog,
+ AlertDialogOverlay,
+ AlertDialogContent,
+ AlertDialogBody,
+ AlertDialogFooter,
+ Button
 } from "@chakra-ui/react";
 
 import DefaultLayout from "../../components/layouts/DefaultLayout";
@@ -30,11 +38,12 @@ import {MdDelete} from 'react-icons/md';
 import { GET_ALL_Category_Eleve } from "../../graphql/queries";
 import { DELETE_CATEGORY_STUDENT } from "../../graphql/Mutation";
 import { useMutation, useQuery } from "@apollo/client"; 
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 
 const CategoryEleve = () => {
 
    // const router = useRouter();
+   const cancelRef = React.useRef()
    const [query , setQuery] = useState("");
    // //const [classeValue , setClasseValue ] = useState("");
    // const [data, setData] = useState([]);
@@ -49,10 +58,11 @@ const CategoryEleve = () => {
    //   console.log("datas :" , datas)
    //   return query ? datas.slice(0,5) : Users.slice(0,5)
    // };
-
+   
    const {data:dataCategoryEleve} = useQuery(GET_ALL_Category_Eleve);
    const [deleteCategoryStudent] = useMutation(DELETE_CATEGORY_STUDENT);
-
+   const { isOpen, onToggle, onClose, onOpen } = useDisclosure();
+  
 
     useEffect (() => {
      console.log(dataCategoryEleve?.findAllcategorieeleve);
@@ -137,7 +147,7 @@ const CategoryEleve = () => {
                                    _hover={{background:"blue.100"}}
                                    />
                                </Link>
-                               <Link href="#" mt="-3px">
+                               <Box href="#" mt="-3px">
                                  <Icon
                                    as={MdDelete}
                                    boxSize="44px"
@@ -145,10 +155,55 @@ const CategoryEleve = () => {
                                    rounded="full"
                                    color="colors.quaternary"
                                    _hover={{background:"blue.100"}}
-                                   onClick = {() =>{removeCategoryStudent(categoryStudent.id)}}
+                                    onClick={onToggle}
                                  />
-                             </Link>
-                             </Box>
+                                  <Box> 
+                                    <AlertDialog
+                                      isOpen={isOpen}
+                                      leastDestructiveRef={cancelRef}
+                                      onClose={onClose}
+                                      isCentered
+                                    >
+                                      <AlertDialogOverlay
+                                        // alignSelf={"center"}
+                                      >
+                                        <AlertDialogContent
+                                        width={"380px"}
+                                        >
+                                          <AlertDialogHeader 
+                                            fontSize='lg' 
+                                            fontWeight='bold'
+                                            textAlign={"center"}
+                                            >
+                                            Confirmation de suppression
+                                          </AlertDialogHeader>
+                                          <AlertDialogBody textAlign={"center"}>
+                                          Voulez-vous supprimer cette categorie?
+                                          </AlertDialogBody>
+
+                                          <AlertDialogFooter
+                                          >
+                                            <Button
+                                              ref={cancelRef} 
+                                              onClick={onClose}
+                                              colorScheme="red"
+                                            >
+                                              Annuler 
+                                            </Button>
+                                            <Button 
+                                              colorScheme='green' 
+                                              ml={3}
+                                              onClick = {() =>{removeCategoryStudent(categoryStudent.id)}}
+                                            >
+                                              Supprimer
+                                            </Button>
+                                          </AlertDialogFooter>
+                                        </AlertDialogContent>
+                                      </AlertDialogOverlay>
+                                    </AlertDialog>
+                                  </Box>
+                                </Box>
+                              </Box>
                              </Td>
                          </Tr>
                        ))}

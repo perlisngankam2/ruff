@@ -53,12 +53,13 @@ import DefaultLayout from "../../components/layouts/DefaultLayout";
 import { 
   GET_ALL_CLASS,
   GET_ALL_PERSONNELS,
-  GET_ALL_ANNEE_ACADEMIQUE 
-} from "../../graphql/queries";
+  GET_ALL_ANNEE_ACADEMIQUE,
+  GET_ALL_COURSES
+} from "../../graphql/Queries";
 import { 
   DELETE_SALLE,
   CREATE_PERSONNEL_SALLE,
-  CREATE_MONTANT_SCOLARITE_CLASS
+  CREATE_MONTANT_SCOLARITE_CLASS,
  } from "../../graphql/Mutation";
 import { useMutation, useQuery } from "@apollo/client";
 import {IoIosAdd} from 'react-icons/io';
@@ -74,16 +75,17 @@ const Class = () => {
   const { isOpen, onToggle, onClose, onOpen } = useDisclosure();
   const { isOpen:isOpenn, onClose:onClosse, onOpen:onOpenn } = useDisclosure();
   const { isOpen:isOpennes, onClose:onClosses, onOpen:onOpennes } = useDisclosure();
-
   const [salleId, setSalleId] = useState("");
   const [personnelId, setPersonnelId] = useState("");
   const [anneeAcademiqueId, setAnneeAcademiqueId] = useState("");
+  const [courseId, setCourseId] = useState("");
   const [montant, setMontant] = useState();
 
   const [deleteClasse] = useMutation(DELETE_SALLE);
   const {data:dataClasse} = useQuery(GET_ALL_CLASS);
   const {data:dataEnseignant} = useQuery(GET_ALL_PERSONNELS);
   const {data:dataAnneeAcademique} = useQuery(GET_ALL_ANNEE_ACADEMIQUE);
+  const {data:dataCourse} = useQuery(GET_ALL_COURSES);
   const [createPersonnelSalle] = useMutation(CREATE_PERSONNEL_SALLE);
   const [createMonantPensionClasse] = useMutation(CREATE_MONTANT_SCOLARITE_CLASS);
 
@@ -109,7 +111,8 @@ const Class = () => {
       variables:{
         input:{ 
         salleId: salleId,
-        personnelId: personnelId
+        personnelId: personnelId,
+        courseId: courseId
         }
       }
     })
@@ -139,7 +142,7 @@ const Class = () => {
       onClosses();
         // console.log(sectionData)
       toast({
-          title: "Qffection du ,ontqnt de scolarite a une classe.",
+          title: "Affection du montqnt de scolarite a une classe.",
           description: "Qffection reussit.",
           status: "success",
           duration: 3000,
@@ -150,6 +153,8 @@ const Class = () => {
     setAnneeAcademiqueId("");
     setMontant("");
   }
+
+  
   return (
     <DefaultLayout>
       <Box p="10px" pt={"70px"} background="colors.tertiary" w="full">
@@ -240,7 +245,7 @@ const Class = () => {
             size='xl'
           >
             <AlertDialogOverlay>
-              <AlertDialogContent  width={"300px"}>
+              <AlertDialogContent  width={"400px"}>
                 <Box mt={"20px"}> 
                     <Heading 
                       textAlign="center"
@@ -283,6 +288,23 @@ const Class = () => {
                               dataEnseignant?.findAllpersonnel.map((personnel, index) =>(
                                 <option value={personnel?.id} key={index}>
                                   {personnel.firstName} 
+                                </option>
+                              ))
+                            }
+                          </Select>
+                        </FormControl>
+                        <FormControl mt={"10px"}>
+                            <FormLabel>Enseigant</FormLabel>
+                          <Select
+                            name="courseId"
+                            value={courseId}
+                            onChange={(event)=> setCourseId(event.target.value)}
+                            placeholder="Matiere"
+                          >
+                            {dataCourse &&
+                              dataCourse?.findAllCourse.map((course, index) =>(
+                                <option value={course?.id} key={index}>
+                                  {course.title} 
                                 </option>
                               ))
                             }
@@ -497,43 +519,49 @@ const Class = () => {
                                     _hover={{background:"blue.100"}}
                                   />
                                   <Box> 
-                                  <AlertDialog
-                                    isOpen={isOpen}
-                                    leastDestructiveRef={cancelRef}
-                                    onClose={onClose}
-                                  >
-                                      <AlertDialogOverlay>
-                                        <AlertDialogContent>
-                                          <AlertDialogHeader 
-                                            fontSize='lg' 
-                                            fontWeight='bold'
-                                            textAlign={"center"}
-                                            >
-                                            Confirmation de suppression
-                                          </AlertDialogHeader>
-                                          <AlertDialogBody textAlign={"center"}>
-                                          Voulez-vous supprimer cette classe?
-                                          </AlertDialogBody>
+                                    <AlertDialog
+                                      isOpen={isOpen}
+                                      leastDestructiveRef={cancelRef}
+                                      onClose={onClose}
+                                      isCentered
+                                    >
+                                        <AlertDialogOverlay
+                                          // alignSelf={"center"}
+                                        >
+                                          <AlertDialogContent
+                                          width={"380px"}
+                                          >
+                                            <AlertDialogHeader 
+                                              fontSize='lg' 
+                                              fontWeight='bold'
+                                              textAlign={"center"}
+                                              >
+                                              Confirmation de suppression
+                                            </AlertDialogHeader>
+                                            <AlertDialogBody textAlign={"center"}>
+                                            Voulez-vous supprimer cette classe?
+                                            </AlertDialogBody>
 
-                                          <AlertDialogFooter>
-                                            <Button 
-                                              ref={cancelRef} 
-                                              onClick={onClose}
-                                            >
-                                              Annuler 
-                                            </Button>
-                                            <Button 
-                                              colorScheme='red' 
-                                              onClick={() => {removeClass(salle.id)}}
-                                              ml={3}
-                                            >
-                                              Supprimer
-                                            </Button>
-                                          </AlertDialogFooter>
-                                        </AlertDialogContent>
-                                      </AlertDialogOverlay>
-                                  </AlertDialog>
-                                    </Box>
+                                            <AlertDialogFooter>
+                                              <Button 
+                                                ref={cancelRef} 
+                                                onClick={onClose}
+                                                colorScheme="red"
+                                              >
+                                                Annuler 
+                                              </Button>
+                                              <Button 
+                                                colorScheme='green' 
+                                                onClick={() => {removeClass(salle.id)}}
+                                                ml={3}
+                                              >
+                                                Supprimer
+                                              </Button>
+                                            </AlertDialogFooter>
+                                          </AlertDialogContent>
+                                        </AlertDialogOverlay>
+                                    </AlertDialog>
+                                  </Box>
                                   </Box>
                             </Box> 
                         </Tr>

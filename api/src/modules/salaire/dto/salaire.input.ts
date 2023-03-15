@@ -19,11 +19,11 @@ export class SalaireCreateInput {
   @Field(()=>ID,{ nullable: true })
   personnelId:string
 
-  // @Field(()=>ID,{ nullable: true })
-  // primeId:string
+  @Field(()=>ID,{ nullable: true })
+  primeId:string
 
-  // @Field(()=>ID,{ nullable: true })
-  // retenuId:string
+  @Field(()=>ID,{ nullable: true })
+  retenuId:string
 
   // @Field({nullable:true})
   // description?: string;

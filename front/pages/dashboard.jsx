@@ -40,14 +40,15 @@ import {
 } from "../graphql/queries";
 import {useMutation, useQuery } from '@apollo/client';
 import { GoBriefcase } from "react-icons/go";
-import { GET_ALL_PERSONNELS } from "../graphql/queries";
 
 
 
 
  const dashboard = () => {
+
+
   const { authToken } = useAuth();
-  const router = useRouter();
+
   const { account } =  useAccount();
 
   //debug
@@ -62,7 +63,7 @@ import { GET_ALL_PERSONNELS } from "../graphql/queries";
   const {data:dataPersonnel} = useQuery(GET_ALL_PERSONNELS)
   //  const { authToken } = useAuth();
 
-
+  const router = useRouter();
   console.log(personnelData?.getpersonnelbyaccount);
 
     useEffect(() => {

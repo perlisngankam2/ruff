@@ -19,8 +19,8 @@ export class PrimePersonnelCreateInput {
   enddate?: string;
 
 
-  // @Field(()=>PrimeCreateInput,{nullable:true})
-  // prime?:PrimeCreateInput;
+  @Field(()=>PrimeCreateInput,{nullable:true})
+  prime?:PrimeCreateInput;
 
   // @Field(()=>PersonnelCreateInput,{nullable:true})
   // personnel?:PersonnelCreateInput

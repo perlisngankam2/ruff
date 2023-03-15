@@ -27,10 +27,17 @@ export class Salaire {
 @PrimaryKeyUuid()
 id!: string;
 
+// @Field({ nullable: true })
+// @Property({ nullable: true })
+// description!: string;
+
 @Field({ nullable: true })
 @Property({ nullable: true })
-description!: string;
+jourPaie!: string;
 
+@Field({ nullable: true })
+@Property({ nullable: true })
+moisPaie!: string;
 
 @Field({ defaultValue: true })
 @Property({ default: true })
@@ -43,7 +50,7 @@ montant!: number ;
 
 // relation with another Entites
 @ManyToOne(() => Periode ,{
-  nullable:false,
+  nullable:true,
   onDelete:'CASCADE'
 })
 periode!:IdentifiedReference<Periode>|null

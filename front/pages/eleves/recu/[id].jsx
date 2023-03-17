@@ -32,7 +32,11 @@ const receipt = () => {
 
     const router = useRouter();
 
-    const {data:dataLastPayment} = useQuery(GET_LAST_PAYMENT);
+   const {data:dataLastPayment} = useQuery(GET_LAST_PAYMENT,
+        {
+            variables: {studentid: router.query.id} 
+        }
+    );
     const {data:dataStudentId, loading, error} = useQuery(GET_STUDENT_BY_ID,
         {
           variables: {id: router.query.id}
@@ -43,7 +47,6 @@ const receipt = () => {
         {
             variables: {studentid: router.query.id} 
         }
-
     );
 
     const {data:dataStudentSalle} = useQuery(GET_STUDENT_SALLE,
@@ -222,8 +225,8 @@ const receipt = () => {
                                                     fontSize='xl' 
                                                     fontWeight='bold'
                                                 >
+                                                    {dataLastPayment?.AmountRecentAvanceTrancheByStudent}
                                                     {/* {dataStudentByTrancheStudent?.getStudentByTrancheStudent.montant} */}
-                                                    {dataLastPayment?.MostRecentAvanceTranche}
                                                 </Text>
                                                 <Text 
                                                     fontWeight='bold' 
@@ -409,26 +412,25 @@ const receipt = () => {
                                                         </Th>
                                                     </Tr> */}
                                                     <Tr gap='1' >
-                                                            <Th 
-                                                                border='1px'
+                                                        <Th 
+                                                            border='1px'
+                                                        >
+                                                            <Box 
+                                                                textAlign='center' 
+                                                                fontWeight='bold' 
+                                                                fontSize='10px'
                                                             >
-                                                                <Box 
-                                                                    textAlign='center' 
-                                                                    fontWeight='bold' 
-                                                                    fontSize='10px'
-                                                                >
-                                                            <Text>Inscription</Text>
-
-                                                        </Box>
-                                                        </Th>
-                                                        <Th border='1px'>
-                                                            <Box fontSize='8px'>
-                                                                <Text></Text>
+                                                                <Text>Inscription</Text>
                                                             </Box>
                                                         </Th>
                                                         <Th border='1px'>
                                                             <Box fontSize='8px'>
-                                                                <Text></Text>
+                                                                <Text>hhh</Text>
+                                                            </Box>
+                                                        </Th>
+                                                        <Th border='1px'>
+                                                            <Box fontSize='8px'>
+                                                                <Text>nnn</Text>
                                                             </Box>
                                                         </Th>
                                                         <Th border='1px'>
@@ -456,7 +458,7 @@ const receipt = () => {
                                                             </Th>
                                                         <Th border='1px'>
                                                             <Box fontSize='8px'>
-                                                                <Text></Text>
+                                                                <Text>jj</Text>
                                                             </Box>
                                                         </Th>
                                                         <Th border='1px'>

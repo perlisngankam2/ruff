@@ -392,4 +392,23 @@ return avanceTranche
    return (await this.getAllavancetranche()).slice(-1)[0].montant
   }
 
+  findBytranchestudent(id: string) {
+    return this.avanceTrancheRepository.find({trancheStudent:id});
+  }
+
+  async AmountRecentAvanceTrancheByStudent(studentid:string){
+    
+    const b  = (await this.trancheStudentservice.findByStudent(studentid))
+    const a  = (await this.findBytranchestudent(b.id)).slice(-1)[0].montant
+    return a
+    
+  }
+
+  async SumAvanceTrancheByStudent(studentid:string,trancheid:string){
+     const a = (await this.trancheStudentservice.findByStudent(studentid))
+//   return (await this.findBytranchestudent(a.id)).filter(async a=>(await a.tranche.load()).id==trancheid).map(a=>a.montant).reduce(function(a,b){return a+b})
+    //  const c = (await this.findBytranchestudent(a.id))
+     return (await this.em.find(AvanceTranche,{tranche:a.id})).filter(async a=>(await a.tranche.load()).id==trancheid).map(a=>a.montant).reduce(function(a,b){return a+b})
+
+ }
 }

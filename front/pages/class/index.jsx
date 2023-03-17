@@ -405,7 +405,7 @@ const Class = () => {
                       />
                     </FormControl>
                     <FormControl mt={"10px"}>
-                        <FormLabel>Enseigant</FormLabel>
+                        <FormLabel>Annee academique</FormLabel>
                       <Select
                         // type="text"
                         name="anneeAcademiqueId"

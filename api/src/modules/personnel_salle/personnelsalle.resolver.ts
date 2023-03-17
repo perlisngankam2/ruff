@@ -28,16 +28,12 @@ export class PersonnelSalleResolver {
     return this.personnelsalleService.findByOne(id);
   }
 
-  @Query(() => PersonnelSalle)
+  @Query(() => [[String],String,[String]])
   async findbyCoursePersonnelSalle(
-    @Args('salleid', { type: () => String }) salleid: string,
       @Args('personnelid', { type: () => String }) personnelid: string,
+      @Args('salleid', { type: () => String }) salleid: string,
       @Args('courseid', { type: () => String }) courseid: string) {
-    const a = (await this.personnelsalleService.findbyCoursePersonnelSalle(salleid,personnelid,courseid)).map(a=>a)[0];
-    if(!a){
-      throw Error("personnel salle not found")
-    }
-    return a
+    return await this.personnelsalleService.findbyCoursePersonnelSalle(personnelid,salleid,courseid)
   }
 
   @Mutation(()=> PersonnelSalle)

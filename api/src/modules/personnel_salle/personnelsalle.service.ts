@@ -57,7 +57,12 @@ async delete(id:string){
     }
 
 async findbyCoursePersonnelSalle(salleId:string, personnelId: string, courseId: string){
-  return await this.em.find(PersonnelSalle,{salle: salleId, personnel:personnelId, course:courseId})
+  const a=(await this.em.find(PersonnelSalle,{salle: salleId, personnel:personnelId, course:courseId})).map(async a=>(await a.personnel.load()).firstName)
+  const b = (await this.em.find(PersonnelSalle,{salle: salleId, personnel:personnelId, course:courseId})).map(async a=>((await a.course.load()).title))
+  const c= (await this.em.find(PersonnelSalle,{salle: salleId, personnel:personnelId, course:courseId})).map(async a=>((await a.salle.load()).name))[0]
+  // const personnelsalle = new PersonnelSalle()
+  return {a, c, b}
+  
 }
 
 }

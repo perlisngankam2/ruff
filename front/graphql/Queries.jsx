@@ -374,8 +374,8 @@ export const GET_STUDENT_SALLE = gql `
 // recuperation du dernier paiement effectue
 
 export const GET_LAST_PAYMENT = gql `
-    query MostRecentAvanceTranche {
-        MostRecentAvanceTranche
+    query AmountRecentAvanceTrancheByStudent ($studentid: String!) {
+        AmountRecentAvanceTrancheByStudent (studentid: $studentid)
     }
 `;
 

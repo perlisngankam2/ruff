@@ -282,7 +282,6 @@ const DetailComponent = (student) => {
           }
         })
         onClose();
-        router.push("payment/receipt")
         toast({
           title: "paiement tranche pension.",
           description: " paye avec succes.",

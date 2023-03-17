@@ -47,7 +47,17 @@ async AmountMostRecentAvanceTranche(@Args('trancheid') trancheid:string){
 }
 
 @Query(()=>Number)
-async MostRecentAvanceTranche(){
-return await this.avancetrancheService.MostRecentAvanceTranche()
+  async MostRecentAvanceTranche(){
+  return await this.avancetrancheService.MostRecentAvanceTranche()
+}
+
+@Query(()=>Number)
+async AmountRecentAvanceTrancheByStudent(@Args('studentid') studentid:string){
+return await this.avancetrancheService.AmountRecentAvanceTrancheByStudent(studentid)
+}
+
+@Query(()=>String)
+async SumAvanceTrancheByStudent(@Args('studentid') studentid:string,@Args('trancheid') trancheid:string){
+return await this.avancetrancheService.SumAvanceTrancheByStudent(studentid,trancheid)
 }
 }

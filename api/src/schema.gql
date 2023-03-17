@@ -304,7 +304,7 @@ type Query {
   user(id: String!): User!
   findAllPersonnelSalle: [PersonnelSalle!]!
   findOnePersonnelSalle(id: String!): PersonnelSalle!
-  findbyCoursePersonnelSalle(salleid: String!, personnelid: String!, courseid: String!): PersonnelSalle!
+  findbyCoursePersonnelSalle(personnelid: String!, salleid: String!, courseid: String!): [[String!]!]!
   findAllpersonnel: [Personnel!]!
   findOnePersonnel(id: String!): Personnel!
   getpersonnelaccount(id: String!): User!
@@ -361,6 +361,8 @@ type Query {
   SumAvanceTrancheByTranche(trancheid: String!): Float!
   AmountMostRecentAvanceTranche(trancheid: String!): Float!
   MostRecentAvanceTranche: Float!
+  AmountRecentAvanceTrancheByStudent(studentid: String!): Float!
+  SumAvanceTrancheByStudent(studentid: String!, trancheid: String!): String!
   findAlltranchestudent: [TrancheStudent!]!
   trancheStudent(id: String!): TrancheStudent!
   getStudentByTrancheStudent(studentid: String!): TrancheStudent!

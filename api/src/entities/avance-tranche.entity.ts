@@ -62,5 +62,5 @@ export class AvanceTranche {
     nullable:false,
     onDelete:'CASCADE'
   })
-  tranche!:IdentifiedReference<TrancheStudent>|null
+  tranche!:IdentifiedReference<Tranche>|null
 }

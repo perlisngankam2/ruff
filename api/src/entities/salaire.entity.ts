@@ -31,11 +31,17 @@ id!: string;
 @Property({ nullable: true })
 description!: string;
 
+@Field({ nullable: true })
+@Property({ nullable: true })
+jourPaie!: string;
+
+@Field({ nullable: true })
+@Property({ nullable: true })
+moisPaie!: string;
 
 @Field({ defaultValue: true })
 @Property({ default: true })
 payer!: boolean;
-
 
 @Field({ defaultValue: 0 })
 @Property({ default: 0 })

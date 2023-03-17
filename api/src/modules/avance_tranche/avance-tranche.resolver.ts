@@ -36,4 +36,18 @@ async deleteavancetranche(@Args('id') id:string){
     return await this.avancetrancheService.deleteavancetranche(id)
 }
 
+@Query(()=>Number)
+async SumAvanceTrancheByTranche(@Args('trancheid') trancheid:string){
+   return await this.avancetrancheService.SumAvanceTrancheByTranche(trancheid)
+}
+
+@Query(()=>Number)
+async AmountMostRecentAvanceTranche(@Args('trancheid') trancheid:string){
+ return await this.avancetrancheService.AmountMostRecentAvanceTranche(trancheid)
+}
+
+@Query(()=>Number)
+async MostRecentAvanceTranche(){
+return await this.avancetrancheService.MostRecentAvanceTranche()
+}
 }

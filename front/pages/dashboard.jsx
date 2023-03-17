@@ -37,10 +37,9 @@ import {
   GET_ALL_STUDENT,
   GET_ALL_CLASS,
   GET_ALL_PERSONNELS
-} from "../graphql/queries";
+} from "../graphql/Queries";
 import {useMutation, useQuery } from '@apollo/client';
 import { GoBriefcase } from "react-icons/go";
-import { GET_ALL_PERSONNELS } from "../graphql/queries";
 
 
 

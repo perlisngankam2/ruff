@@ -56,4 +56,8 @@ async delete(id:string){
     return a
     }
 
+async findbyCoursePersonnelSalle(salleId:string, personnelId: string, courseId: string){
+  return await this.em.find(PersonnelSalle,{salle: salleId, personnel:personnelId, course:courseId})
+}
+
 }

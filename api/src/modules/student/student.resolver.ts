@@ -59,4 +59,6 @@ export class StudentResolver {
     }
     return TrancheStudent
   }
+
+ 
 }

@@ -54,7 +54,7 @@ export class AvanceTranche {
 
   @ManyToOne(() => TrancheStudent ,{
     nullable:false,
-    onDelete:'CASCADE'
+    onDelete:'CASCADE',
   })
   trancheStudent!:IdentifiedReference<TrancheStudent>|null
 

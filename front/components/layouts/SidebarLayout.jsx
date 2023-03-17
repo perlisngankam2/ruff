@@ -6,7 +6,7 @@ import PrincipalLaout from "./PrincipalLayout";
 import EconomeSidebarLayout from "./EconomSidebarLayout";
 import ManagerLayout from "./ManagerLayout";
 import AdminLayout from "./AdminLayout";
-import { GET_PERSONNEL_BY_USERID } from "../../graphql/queries";
+import { GET_PERSONNEL_BY_USERID } from "../../graphql/Queries";
 import { useMutation, useQuery } from '@apollo/client'; 
 import { useAccount } from "../../contexts/account/Account";
 

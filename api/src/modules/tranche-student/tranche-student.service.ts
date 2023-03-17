@@ -83,6 +83,10 @@ export class TrancheStudentService {
         return this.trancheStudentRepository.findOne(filters);
       }
 
+      findByStudent(id: string): Promise<TrancheStudent | null> {
+        return this.trancheStudentRepository.findOne({student:id});
+      }
+
     findById(id:string){
         return this.trancheStudentRepository.findOne(id)
     }
@@ -231,7 +235,10 @@ export class TrancheStudentService {
     }
     return a
     }
-
+    
+    async findStudentByTrancheStudent(studentid:string){
+        return (await this.em.find(TrancheStudent,{student:studentid}))[0].student.load()
+      } 
 }
 
 // const Tranchestudent = await this.findByOne({

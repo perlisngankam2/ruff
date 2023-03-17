@@ -239,36 +239,37 @@ const DetailComponent = (student) => {
           })
         }
 
-      const addTrancheStudent = async (id) => {
-        console.log(id)
-        console.log(montant)
-        await createTrancheStudent({
-          variables:{
-            trancheStudent:{
-              studentId: id,
-              montant: parseInt(montant)
-            }
-          }
-        }),
-        onClosses();
-        toast({
-          title: "Initialisation de la pension.",
-          description: "Initialisation reussit.",
-          status: "success",
-          duration: 3000,
-          isClosable: true,
-        });
-      }
+      // const addTrancheStudent = async (id) => {
+      //   console.log(id)
+      //   console.log(montant)
+      //   await createTrancheStudent({
+      //     variables:{
+      //       trancheStudent:{
+      //         studentId: id,
+      //         montant: parseInt(montant)
+      //       }
+      //     }
+      //   }),
+      //   onClosses();
+      //   toast({
+      //     title: "Initialisation de la pension.",
+      //     description: "Initialisation reussit.",
+      //     status: "success",
+      //     duration: 3000,
+      //     isClosable: true,
+      //   });
+      // }
 
 
-      const addAvanceTranche = async (id) => {
-        console.log(id)
+      const addAvanceTranche = async(id) => {
         console.log(montant)
         console.log(trancheId)
+        console.log(id)
+
         await createAvanceTranche({
           variables: {
             avancetranche:{
-              trancheStudentId: id,
+              trancheStudentId: "",
               montant: parseInt(montant),
               trancheId: trancheId,
               tranchestudentinput: {
@@ -289,9 +290,7 @@ const DetailComponent = (student) => {
           duration: 3000,
           isClosable: true,
         });
-        
-      }
-
+     }
 
         useEffect(() =>{
           loadTranches()
@@ -302,9 +301,9 @@ const DetailComponent = (student) => {
             // console.log(dataStudent?.findAllstudents);
 
           console.log(dataTrancheStudentBySudentId?.getTrancheStudentByStudent)
-     })
+        })
 
-     if (loading) return <Text>Chargement en cour...</Text>
+    if (loading) return <Text>Chargement en cour...</Text>
     if (error) return <Text>Une erreur s'est produite!</Text>
 
   return (
@@ -341,8 +340,8 @@ const DetailComponent = (student) => {
           mt='5' 
           fontSize={'sm'}
         >
- {/* FORMULAIRE DE PAIEMENT DE SCOLARITE */}
 
+ {/* FORMULAIRE DE PAIEMENT DE SCOLARITE */}
           <Center >
             <Button 
               bg='colors.primary' 
@@ -353,7 +352,6 @@ const DetailComponent = (student) => {
             >
               Payer la Scolarite
             </Button>
-
           </Center>
           <Center>
             <Button
@@ -363,7 +361,11 @@ const DetailComponent = (student) => {
              // borderRadius={'md'}
             > 
               <Link 
-               href={""}
+               href={{
+                pathname: Routes.Receipt?.path || '',
+                query: {id: router.query.id}
+              }}
+                // "/eleves/recu/id"}
                 // m='2'
                 // href= {{
                 //   pathname: Routes.Receipt?.path || '',
@@ -482,14 +484,26 @@ const DetailComponent = (student) => {
         <Text><Text as='b'>Section : </Text> 
           {/* {dataStudentId.findOnestudent.section} */}
         </Text>
-        <Text mt={"20px"}>Pere</Text>
+        <Text
+         mt={"20px"} 
+         fontSize={"md"}
+         as="b"
+        >
+          Pere
+        </Text>
         <Text><Text as='b'>Nom : </Text> 
           {dataStudentId.findOnestudent.fatherFirstName}
         </Text>
         <Text><Text as='b'>Contact: </Text>
           {dataStudentId.findOnestudent.fatherPhoneNumber} 
         </Text>
-        <Text mt={"20px"}>mere</Text>
+        <Text 
+          mt={"20px"} 
+          as="b"
+          fontSize={"md"}
+        >
+          Mere
+        </Text>
         <Text><Text as='b'>Nom : </Text>
           {dataStudentId.findOnestudent.motherFirstName}
         </Text>
@@ -526,6 +540,7 @@ const DetailComponent = (student) => {
             <Box>
             <Text 
               color={'#AB9442'}
+              mt={"10px"}
             >
               <Text 
                 as='b' 
@@ -534,8 +549,8 @@ const DetailComponent = (student) => {
               >
                 Derniere scolarite :
               </Text>
-              153000
-              </Text> 
+                {dataTrancheStudentBySudentId?.getTrancheStudentByStudent.montant} FCFA
+            </Text> 
               <Box fontWeight={800}>
               <Text>Frais de la scolarite</Text>
               <Text>Frais tranche 1</Text>
@@ -647,11 +662,11 @@ const DetailComponent = (student) => {
                   >
                     annuler
                   </Button>
-                <Link href={'#'}>
+                  <Link href={'#'}>
                     <Button 
                       colorScheme='green'  
                       ml={3}
-                      onClick={() => addTrancheStudent(dataStudentId.findOnestudent.id)}
+                      // onClick={() => addTrancheStudent(dataStudentId.findOnestudent.id)}
                     >
                       Initialiser
                     </Button>
@@ -729,7 +744,7 @@ const DetailComponent = (student) => {
                                 >
                                   {dataTrancheStudentBySudentId?.getTrancheStudentByStudent.montant} FCFA
                               </Text>
-                          </Flex>
+                            </Flex>
                           <FormControl>
                             <FormLabel>
                               Motif
@@ -774,7 +789,6 @@ const DetailComponent = (student) => {
                                   name="montant"
                                   value={montant}
                                   onChange={(event) => setMontant(event.target.value)}
-
                                 />
                               </FormControl>
                           </Flex>
@@ -783,13 +797,13 @@ const DetailComponent = (student) => {
                           <FormControl>
                             {/* <FormLabel> Eleve</FormLabel> */}
                             <Input 
-                              type={'hidden'} 
-                              name="studentId"
+                              type={'text'} 
+                              // name="studentId"
                               // value={studentId}
                               // onChange={(event) => setStudenId(event.target.value)}
-                              value={dataStudentId.findOnestudent.lastname}
-
+                              value={dataStudentId?.findOnestudent.lastname}
                             />
+                            {console.log(dataStudentId?.findOnestudent.id)}
                           </FormControl>
                         </Box>
                       </AlertDialogBody>
@@ -805,7 +819,9 @@ const DetailComponent = (student) => {
                           <Button 
                             colorScheme='green'  
                             ml={3}
-                            onClick={() => addAvanceTranche(dataTrancheStudentBySudentId?.getTrancheStudentByStudent.id)}
+                            onClick={() => addAvanceTranche(dataStudentId?.findOnestudent.id)
+                              // (dataTrancheStudentBySudentId?.getTrancheStudentByStudent.id)
+                            }
                           >
                             payer
                           </Button>

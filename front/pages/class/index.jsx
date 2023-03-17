@@ -45,7 +45,6 @@ import {
 } from "@chakra-ui/react";
 
 import { useRouter } from "next/router";
-
 import React, { use, useEffect, useState } from "react";
 import AddNew from "../../components/atoms/AddNew";
 import StudentBox from "../../components/atoms/StudentBox";
@@ -54,7 +53,9 @@ import {
   GET_ALL_CLASS,
   GET_ALL_PERSONNELS,
   GET_ALL_ANNEE_ACADEMIQUE,
-  GET_ALL_COURSES
+  GET_ALL_COURSES,
+  GET_ALL_PERSONNEL_SALLE,
+  GET_ALL_COURSE_PERSONNEL_SALLE
 } from "../../graphql/Queries";
 import { 
   DELETE_SALLE,
@@ -86,6 +87,7 @@ const Class = () => {
   const {data:dataEnseignant} = useQuery(GET_ALL_PERSONNELS);
   const {data:dataAnneeAcademique} = useQuery(GET_ALL_ANNEE_ACADEMIQUE);
   const {data:dataCourse} = useQuery(GET_ALL_COURSES);
+  const {data:dataCoursePersonnelSalle} = useQuery(GET_ALL_COURSE_PERSONNEL_SALLE);
   const [createPersonnelSalle] = useMutation(CREATE_PERSONNEL_SALLE);
   const [createMonantPensionClasse] = useMutation(CREATE_MONTANT_SCOLARITE_CLASS);
 
@@ -101,6 +103,7 @@ const Class = () => {
 
   useEffect(() => {
     console.log(dataClasse?.findAllsalle);
+    console.log(dataCoursePersonnelSalle?.findbyCoursePersonnelSalle);
   })
   // const handleClose = () => {
   //   setShow(false)
@@ -160,13 +163,11 @@ const Class = () => {
       <Box p="10px" pt={"70px"} background="colors.tertiary" w="full">
         <Flex gap={5} flexWrap="wrap">
           <AddNew />
-
           <StudentBox class="CM2" studentnumber="40" />
           <StudentBox class="SIL" studentnumber="23" />
           <StudentBox class="CP" studentnumber="16" />
           <StudentBox class="CM1" studentnumber="34" />
         </Flex>
-
       <Box p="3" pt={"80px"} w="full">
         <Flex
           align="center"
@@ -389,7 +390,6 @@ const Class = () => {
                               {salle.name}
                             </option>
                           ))
-
                         }
                       </Select>
                     </FormControl>
@@ -463,21 +463,21 @@ const Class = () => {
                   </Tr>
                   </Thead>
                   <Tbody>
-                  {dataClasse && ( 
-                     dataClasse.findAllsalle.map((salle, index) =>(
+                    {dataCoursePersonnelSalle && ( 
+                      dataCoursePersonnelSalle.findbyCoursePersonnelSalle.map((personnelSalle, index) =>( 
                       <Tr key={index}>
-                        <Td borderColor={'#C6B062'}>{salle.name}</Td>
-                        <Td borderColor={'#C6B062'}>{salle.montantPensionSalle}</Td>
-                        {/* <Td borderColor={'#C6B062'}>{salle.section}</Td> */}
-                        {/* <Td borderColor={'#C6B062'}>{salle.montantPension}</Td> */}
+                         <Td borderColor={'#C6B062'}>{personnelSalle.personnel_id.id}</Td> 
+                         {/* <Td borderColor={'#C6B062'}>{salle.montantPensionSalle}</Td>   */}
+                         {/* <Td borderColor={'#C6B062'}>{salle.section}</Td>  */}
+                         {/* <Td borderColor={'#C6B062'}>{salle.montantPension}</Td>  */}
 
-                        {/* <Td borderColor={'#C6B062'}>
+                         <Td borderColor={'#C6B062'}>
                             <Avatar 
                                 size='xs' 
                                 name='Dan Abrahmov' 
                                 src='https://bit.ly/dan-abramov'
                             /> 
-                        </Td> */}
+                        </Td> 
                         
                         <Td borderColor={'#C6B062'}>
                           <ButtonGroup 
@@ -552,7 +552,7 @@ const Class = () => {
                                               </Button>
                                               <Button 
                                                 colorScheme='green' 
-                                                onClick={() => {removeClass(salle.id)}}
+                                                // onClick={() => {removeClass(salle.id)}}
                                                 ml={3}
                                               >
                                                 Supprimer
@@ -565,8 +565,8 @@ const Class = () => {
                                   </Box>
                             </Box> 
                         </Tr>
-                  ))
-                )}
+                       )) 
+                     )} 
                 </Tbody>
               </Table>
             </TableContainer>

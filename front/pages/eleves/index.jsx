@@ -177,8 +177,8 @@ const Eleves = () => {
                   {dataStudent && ( 
                     dataStudent.findAllstudents.map((student, index) =>(
                       <Tr key={index}>
-                        <Td borderColor={'#C6B062'}>{student.lastname}</Td>
                         <Td borderColor={'#C6B062'}>{student.firstname}</Td>
+                        <Td borderColor={'#C6B062'}>{student.lastname}</Td>
                         {/* <Td borderColor={'#C6B062'}>{student.classe}</Td> */}
                         {/* <Td borderColor={'#C6B062'}>{student.sex}</Td> */}
                         {/* <Td borderColor={'#C6B062'}>

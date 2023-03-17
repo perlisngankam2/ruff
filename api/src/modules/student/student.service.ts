@@ -172,10 +172,12 @@ export class StudentService {
       throw Error("not found")
       }
       return a
-        
-      }   
+    }   
 
       async findTrancheStudentByStudent(studentid:string){
         return (await this.em.find(TrancheStudent,{student:studentid}))[0]
-       }
+      }
+
+   
+      
 }

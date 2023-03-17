@@ -1,6 +1,6 @@
 import { FormControl, FormLabel, Grid, Input, Select, Text } from "@chakra-ui/react";
 import { useAccount } from "../../../contexts/account/Account";
-import { GET_PERSONNEL_BY_USERID } from "../../../graphql/queries";
+import { GET_PERSONNEL_BY_USERID } from "../../../graphql/Queries";
 import { useMutation, useQuery } from '@apollo/client'; 
 
 function AccountSetting(){

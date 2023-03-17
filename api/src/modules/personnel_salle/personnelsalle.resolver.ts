@@ -28,6 +28,18 @@ export class PersonnelSalleResolver {
     return this.personnelsalleService.findByOne(id);
   }
 
+  @Query(() => PersonnelSalle)
+  async findbyCoursePersonnelSalle(
+    @Args('salleid', { type: () => String }) salleid: string,
+      @Args('personnelid', { type: () => String }) personnelid: string,
+      @Args('courseid', { type: () => String }) courseid: string) {
+    const a = (await this.personnelsalleService.findbyCoursePersonnelSalle(salleid,personnelid,courseid)).map(a=>a)[0];
+    if(!a){
+      throw Error("personnel salle not found")
+    }
+    return a
+  }
+
   @Mutation(()=> PersonnelSalle)
   async deletePersonnelSalle(@Args('id') id:string){
  return await this.personnelsalleService.delete(id)

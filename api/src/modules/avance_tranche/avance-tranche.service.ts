@@ -13,12 +13,11 @@ import { forwardRef, Inject, Injectable } from '@nestjs/common';
 import {ObjectType } from '@nestjs/graphql';
 import { TrancheStudent } from 'src/entities/tranche-student.entity';
 import { AvanceTranche } from '../../entities/avance-tranche.entity';
+import { StudentService } from '../student/student.service';
 import { TrancheStudentService } from '../tranche-student/tranche-student.service';
 import { TrancheService } from '../tranche/tranche.service';
 import { AvanceTrancheCreateInput } from './dto/avance-tranche.input';
 import { AvanceTrancheUpdateInput } from './dto/avance-tranche.update';
-
-
 
 @Injectable()
 export class AvanceTrancheService {
@@ -27,16 +26,26 @@ export class AvanceTrancheService {
         private avanceTrancheRepository: EntityRepository<AvanceTranche>,
         @Inject(forwardRef(() => TrancheStudentService))
         private trancheStudentservice: TrancheStudentService,
+        private studentservice: StudentService,
         private trancheservice: TrancheService,
         private  em: EntityManager,
       ) {}
     
     async createavancetranche(
         input: AvanceTrancheCreateInput,
-      ): Promise<AvanceTranche> {  
+      ): Promise<AvanceTranche>|null {  
         const avanceTranche = new AvanceTranche()
 
-        const tranchestudent = await this.trancheStudentservice.findByOne(input.trancheStudentId)        
+        // const studentidlist = (await this.studentservice.getAll()).map(a=>a.id)
+
+       // const inputstudentid = await this.studentservice.findByOne(input.tranchestudentinput.studentId)
+        
+
+        const tranchestudent = await this.trancheStudentservice.findByStudent(input.tranchestudentinput.studentId)
+       
+        console.log('student id ---->', input.tranchestudentinput.studentId )
+        console.log('tranchestudent------->',tranchestudent)
+        // const tranchestudent = (await this.trancheStudentservice.getAll()).filter(async a=> (await a.student.load()).id === inputstudentid.id)[0]    
 
         const tranche = await this.trancheservice.findByOne(input.trancheId)
 
@@ -45,7 +54,8 @@ export class AvanceTrancheService {
         }
 
 
-        if(!tranchestudent)  {
+        if(tranchestudent==null)  {
+           
            
           const tranchestudents= this.trancheStudentservice.create(input.tranchestudentinput) 
           console.log("========>"+tranchestudents)
@@ -58,7 +68,7 @@ export class AvanceTrancheService {
           montant: Number(input.montant),
           name: input.name,
           description: input.description,
-          trancheStudent: input.trancheStudentId,
+          trancheStudent:(await tranchestudents).id,
           tranche: input.trancheId
           
         },
@@ -138,7 +148,7 @@ export class AvanceTrancheService {
            }
 
        
-           tranchestudent.complete = true
+          //  tranchestudent.complete = true
            avanceTranche.complete=true
            this.trancheStudentservice.saveTranche(tranchestudent.id)
            this.avanceTrancheRepository.persistAndFlush(avanceTranche)
@@ -182,6 +192,7 @@ export class AvanceTrancheService {
      {
       // throw Error("tranchestudent not found")
      const student = (tranchestudent).student.load()
+
     //  const reduction = (await (await student).categorie.load()).reductionScolarite.load()
    
   
@@ -192,7 +203,7 @@ export class AvanceTrancheService {
      montant: Number(input.montant),
      name: input.name,
      description: input.description,
-     trancheStudent: input.trancheStudentId,
+     trancheStudent: tranchestudent.id,
      tranche: input.trancheId
      
    },
@@ -291,6 +302,8 @@ export class AvanceTrancheService {
    this.avanceTrancheRepository.persistAndFlush(avanceTranche)
    return avanceTranche
 }
+
+return avanceTranche
       
 }
 
@@ -364,5 +377,19 @@ export class AvanceTrancheService {
       }
       return a
     }
+
+  async SumAvanceTrancheByTranche(trancheid:string){
+    const a = (await this.em.find(AvanceTranche,{tranche:trancheid})).map(a=>a.montant).reduce(function(a,b){return a+b})
+    return a
+  }
+
+  async AmountMostRecentAvanceTranche(trancheid:string){
+    const a = (await this.em.find(AvanceTranche,{tranche:trancheid})).slice(-1)[0].montant
+    return a
+  }
+
+  async MostRecentAvanceTranche(){
+   return (await this.getAllavancetranche()).slice(-1)[0].montant
+  }
 
 }

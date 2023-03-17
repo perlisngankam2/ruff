@@ -22,6 +22,8 @@ mutation createpersonnel ($createPersonnelUser: PersonnelCreateInput!) {
 }
 `;
 
+
+
 //categorie personnel
 export const CREATE_CATEGORY_PERSONNEL = gql`
 mutation createcategoriepersonnnel ($createCategoriePersonnel: CategoriePersonnelCreateInput!) {
@@ -229,6 +231,8 @@ export const CREATE_COURSE = gql`
         }
     }
 `;
+
+
 export const fragmentCycle = gql` fragment CycleClass on cyle {
     id
     name

@@ -201,4 +201,8 @@ export class SalleService {
       }
       return liste
     }
+
+    async findStudentBySalle(studentid:string){
+      return (await this.em.find(Salle,{student:studentid}))[0]
+    }
 }

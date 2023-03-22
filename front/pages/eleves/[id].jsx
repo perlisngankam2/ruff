@@ -260,7 +260,6 @@ const DetailComponent = (student) => {
       //   });
       // }
 
-
       const addAvanceTranche = async(id) => {
         console.log(montant)
         console.log(trancheId)

@@ -24,16 +24,17 @@ import {
   AlertDialogContent,
   AlertDialogOverlay,
   useDisclosure,
-  Button
+  Button,
+  InputRightElement
 } from "@chakra-ui/react";
 
 import React, { useEffect, useState } from "react";
 import DefaultLayout from "../../components/layouts/DefaultLayout";
 import AjouterCategoryPersonnel from './AjouterCategoryPersonnel';
 import { Router, useRouter } from "next/router";
-import {FiEdit} from 'react-icons/fi';
+import {FiEdit, FiSearch} from 'react-icons/fi';
 import {MdDelete} from 'react-icons/md';
-import { GET_ALL_Category_Personnel } from "../../graphql/queries";
+import { GET_ALL_Category_Personnel, loading, error } from "../../graphql/queries";
 import { DELETE_CATEGORY_PERSONNEL } from "../../graphql/Mutation";
 import { useQuery, useMutation } from "@apollo/client"; 
 
@@ -70,6 +71,8 @@ const Category = () => {
       console.log(data?.findAllcategoriepersonnel);
     }, [data]);
 
+    if (loading) return <Text>Chargement en cour...</Text>
+    if (error) return <Text>Une erreur s'est produite!</Text>
 
     const deleteCategoryPersonnel = async (id) => {
      await deletePerssCategory({
@@ -115,13 +118,18 @@ const Category = () => {
         </Flex>
 
         <Flex gap={10} mt={5}>
-          <InputGroup>
+          <InputGroup width="500px">
+            <InputRightElement
+              children={<Icon as={FiSearch} />}
+              cursor="pointer"
+            />
             <Input
               placeholder="Recherchez une categorie..."
               //value={recherche}
               onChange={e => setQuery(e.target.value)}
+              variant="flushed"
             />
-            <InputRightAddon children={<SearchIcon />} />
+            {/* <InputRightAddon children={<SearchIcon />} /> */}
           </InputGroup>
           {/* <Select 
             placeholder="Selectionner la classe"
@@ -131,9 +139,16 @@ const Category = () => {
           <AjouterCategoryPersonnel/>
         </Flex>
         <Box mt={10}>
-            <TableContainer>
-                <Table variant='striped'>
-                    <Thead>
+            <TableContainer
+              border={"1px"} 
+              rounded={"md"}
+            >
+                <Table 
+                  variant='striped'
+                  colorScheme={"white"}
+                  bg={"white"}
+                >
+                    <Thead background="colors.secondary">
                     <Tr>
                         <Th>Nom</Th>
                         <Th>Description</Th>

@@ -30,17 +30,28 @@ import {
   AlertDialogOverlay,
   AlertDialogHeader,
   FormControl,
-  FormLabel
+  FormLabel,
+  InputRightElement
 } from "@chakra-ui/react";
 
 import DefaultLayout from "../../components/layouts/DefaultLayout";
 import React, { useEffect, useState, useContext } from "react";
 import { IoIosAdd } from "react-icons/io";
 import { Router, useRouter } from "next/router";
-import {FiEdit} from 'react-icons/fi';
+import {FiEdit, FiSearch} from 'react-icons/fi';
 import {MdDelete} from 'react-icons/md';
-import { GET_ALL_SECTION, GET_ONE_CYCLE, GET_ALL_CYCLE } from "../../graphql/Queries";
-import { DELETE_SECTION, DELETE_CYCLE, UPDATE_CYCLE, CREATE_CYCLE} from "../../graphql/Mutation";
+import { 
+  GET_ALL_SECTION,
+  GET_ONE_SECTION, 
+  GET_ONE_CYCLE, 
+  GET_ALL_CYCLE 
+} from "../../graphql/Queries";
+import { 
+  DELETE_SECTION, 
+  DELETE_CYCLE, 
+  UPDATE_CYCLE, 
+  CREATE_CYCLE
+} from "../../graphql/Mutation";
 import {UpdateCycle} from './updatecycle';
 import { useMutation, useQuery } from "@apollo/client"; 
 import SectionCreate from "./SectionCreate";
@@ -48,10 +59,6 @@ import CycleCreate from "./CycleCreate";
 import ReactPaginate from "react-paginate";
 import Routes from "../../modules/routes";
 import { GlobalContext } from "../../contexts/cyclesection/AppContext";
-// const cycleFragment  = {
-//   fragment
-// }
-
 
 
 const cyclesection = () => {
@@ -85,16 +92,27 @@ const cyclesection = () => {
     const cancelRef = React.useRef();
     const router = useRouter();
     const [pageNumber, setPageNumber] = useState(0);
-
     const usersPerPage = 10;
     const pagesVisited = pageNumber * usersPerPage;
 
+    const removeSection = async (id) => {
+      await deleteSection({
+        variables: {
+          id
+        },
+        refetchQueries:[{
+          query: GET_ALL_SECTION
+        }]
+      })
+      onClossses();
+    }
+
     const displayUsers = data?.findAllsection.slice(pagesVisited, pagesVisited + usersPerPage)
-    . map((section, index) => ( 
+    .map((section, index) => ( 
       <Tr key={index}>
-          <Td  borderColor={'#C6B062'}>{section.name}</Td>
-          <Td  borderColor={'#C6B062'}>{section.description}</Td>
-          <Td  borderColor={'#C6B062'}>
+          <Td p={0} pl={6}>{section.name}</Td>
+          <Td p={0} pl={6}>{section.description}</Td>
+          <Td p={0} pl={3}>
           <Box display="flex">
             <Link 
               href="/eleves/modifiereleve">
@@ -108,7 +126,6 @@ const cyclesection = () => {
                 />
             </Link>
             <Box href="#" mt="-3px"
-                onClick={() => removeSection(section.id)}
             >
               <Icon
                 as={MdDelete}
@@ -117,8 +134,52 @@ const cyclesection = () => {
                 rounded="full"
                 color="colors.quaternary"
                 _hover={{background:"blue.100"}}
-
+                onClick={onOpennns}
               />
+              <Box> 
+                <AlertDialog
+                  isOpen={isOpennns}
+                  leastDestructiveRef={cancelRef}
+                  onClose={onClossses}
+                  isCentered
+                >
+                    <AlertDialogOverlay
+                      // alignSelf={"center"}
+                    >
+                      <AlertDialogContent
+                      width={"380px"}
+                      >
+                        <AlertDialogHeader 
+                          fontSize='lg' 
+                          fontWeight='bold'
+                          textAlign={"center"}
+                          >
+                          Confirmation de suppression
+                        </AlertDialogHeader>
+                        <AlertDialogBody textAlign={"center"}>
+                        Voulez-vous supprimer cette cette section?
+                        </AlertDialogBody>
+
+                        <AlertDialogFooter>
+                          <Button 
+                            ref={cancelRef} 
+                            onClick={onClossses}
+                            colorScheme="red"
+                          >
+                            Annuler 
+                          </Button>
+                          <Button 
+                            colorScheme='green' 
+                            onClick={() => removeSection(section.id)}
+                            ml={3}
+                          >
+                            Supprimer
+                          </Button>
+                        </AlertDialogFooter>
+                      </AlertDialogContent>
+                    </AlertDialogOverlay>
+                </AlertDialog>
+              </Box>
           </Box>
           </Box>
           </Td>
@@ -144,18 +205,6 @@ const cyclesection = () => {
       console.log(dataCycle?.findAllcycle) 
       console.log("hh")
     });
-
-    const removeSection = async (id) => {
-      await deleteSection({
-        variables: {
-          id
-        },
-        refetchQueries:[{
-          query: GET_ALL_SECTION
-        }]
-      })
-      onClose();
-    }
 
     const removeCycle = async (id) => {
       await deleteCycle({
@@ -208,13 +257,25 @@ const cyclesection = () => {
           </Hide>
         </Flex>
         <Flex gap={10} mt={5}>
-          <InputGroup>
+          <InputGroup  width="500px">
+          {/* <InputRightElement
+              children={<Icon as={FiSearch} />}
+              cursor="pointer"
+            /> */}
+             <InputRightElement
+              children={<Icon as={FiSearch} />}
+              cursor="pointer"
+            />
             <Input
-              placeholder="Recherchez une categorie..."
+              placeholder="Recherchez une section..."
               //value={recherche}
+              variant="flushed"
               onChange={e => setQuery(e.target.value)}
             />
-            <InputRightAddon children={<SearchIcon />} />
+            {/* <InputRightAddon 
+              cursor="pointer"
+              children={<SearchIcon variant="flushed"/>} 
+            /> */}
           </InputGroup>
           {/* <Select 
             placeholder="Selectionner la classe"
@@ -235,21 +296,28 @@ const cyclesection = () => {
             </Heading>
           </Box>
           <Box mb={5}>
-          <TableContainer>
-            <Table variant='striped'>
-                <Thead>
+          <TableContainer
+            border={"1px"} 
+            rounded={"md"}
+          >
+            <Table 
+              variant='striped' 
+              colorScheme={"white"}
+              bg={"white"}
+            >
+                <Thead background="colors.secondary">
                 <Tr>
                     <Th>Nom</Th>
                     <Th>Description</Th>
                     <Th>Actions</Th>
                 </Tr>
                 </Thead>
-                  {data && ( 
+                  {/* {data && (  */}
                 <Tbody>
                   {displayUsers}
                   
-                  {
-                    data.findAllsection.map((section, index) => ( 
+                  {/* { */}
+                    {/* data.findAllsection.map((section, index) => ( 
                       <Tr key={index}>
                           <Td  borderColor={'#C6B062'}>{section.name}</Td>
                           <Td  borderColor={'#C6B062'}>{section.description}</Td>
@@ -279,9 +347,9 @@ const cyclesection = () => {
                               />
                               <Box> 
                                 <AlertDialog
-                                  isOpen={isOpen}
+                                  isOpen={isOpennns}
                                   leastDestructiveRef={cancelRef}
-                                  onClose={onClose}
+                                  onClose={onClossses}
                                   isCentered
                                 >
                                     <AlertDialogOverlay
@@ -304,7 +372,7 @@ const cyclesection = () => {
                                         <AlertDialogFooter>
                                           <Button 
                                             ref={cancelRef} 
-                                            onClick={onClose}
+                                            onClick={onClossses}
                                             colorScheme="red"
                                           >
                                             Annuler 
@@ -320,14 +388,14 @@ const cyclesection = () => {
                                       </AlertDialogContent>
                                     </AlertDialogOverlay>
                                 </AlertDialog>
-                              </Box>
-                          </Box>
+                              </Box> 
+                            </Box>
                           </Box>
                           </Td>
-                      </Tr>
-                    ))}
+                      </Tr> */}
+                    {/* ))} */}
                 </Tbody>
-                  )}
+                  {/* )} */}
             </Table>
         </TableContainer> 
       </Box>
@@ -359,9 +427,16 @@ const cyclesection = () => {
         // {...onSubmit ? updateCycle: addCycle}
         // update={true}
       />
-        <TableContainer>
-            <Table variant='striped'>
-                <Thead>
+        <TableContainer
+          border={"1px"} 
+          rounded={"md"}
+        >
+            <Table 
+              variant='striped' 
+              colorScheme={"white"}
+              bg={"white"}
+            >
+                <Thead background="colors.secondary">
                 <Tr>
                     <Th>Nom</Th>
                     <Th>Setion</Th>
@@ -373,10 +448,10 @@ const cyclesection = () => {
                   {
                     dataCycle.findAllcycle.map((cycle, index) => ( 
                       <Tr key={index}>
-                          <Td  borderColor={'#C6B062'}>{cycle.name}</Td>
+                          <Td p={0} pl={6}>{cycle.name}</Td>
                           {/* <Td  borderColor={'#C6B062'}>{cycle.section_id}</Td> */}
-                          <Td  borderColor={'#C6B062'}>pppp</Td>
-                          <Td  borderColor={'#C6B062'}>
+                          <Td p={0} pl={6}>pppp</Td>
+                          <Td p={0} pl={3}>
                           <Box display="flex">
                             <Icon
                               as={FiEdit}
@@ -431,7 +506,7 @@ const cyclesection = () => {
                                           </Button>
                                           <Button 
                                             colorScheme='green' 
-                                             onClick={() => removeCycle(cycle.id)}
+                                            onClick={() => removeCycle(cycle.id)}
                                             ml={3}
                                           >
                                             Supprimer

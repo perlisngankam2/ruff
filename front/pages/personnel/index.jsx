@@ -76,7 +76,7 @@ const Personnel = () => {
     <DefaultLayout>
       <Box p="3" pt="70px" background="colors.tertiary" w="full" minH="100vh">
         <Flex bg="white" my="5" p="5" rounded="md" justify="space-between">
-          <InputGroup width="300px">
+          <InputGroup width="500px">
             <InputRightElement
               children={<Icon as={FiSearch} />}
               cursor="pointer"

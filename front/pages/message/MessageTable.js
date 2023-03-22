@@ -55,7 +55,7 @@ const MessageTable = () => {
                         width='200px'
                         ml='-280px'
                          borderColor={'#C6B062'}
-                     >
+                    >
                         {message.first_name}
                     </Box>
                     <Flex  gap={20}  >

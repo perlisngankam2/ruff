@@ -225,6 +225,17 @@ export const GET_ONE_CYCLE =  gql `
     }
 `;
 
+//recuperation d'une section
+export const GET_ONE_SECTION = gql `
+    query findOnesection ($id: String!) {
+        findOnesection (id: $id) {
+            id
+            name
+            description
+        }
+    }
+`;
+
 
 export const GET_USER_CONNECTED = gql `
 query user ($id: String!) {

@@ -359,6 +359,19 @@ export const DELETE_COURSE = gql `
     }
 `;
 
+
+//Suppression des montant des tranches de la pension
+export const DELETE_TRANCHE_PENSION = gql `
+    mutation deletepension ($id: String!) {
+        deletepension (id: $id) {
+            id
+            name
+            description
+            montantPension
+            dateLine
+        }
+    }
+`;
 //update class
 export const UPDATE_CLASS = gql `
     mutation UpdateSalle ($id: String!, $input: SalleUpdateInput!) {

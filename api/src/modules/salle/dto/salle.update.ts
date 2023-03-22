@@ -14,9 +14,9 @@ export class SalleUpdateInput {
 
   @Field(()=>ID,{nullable:true})
   sectionId?: string;
-
+  
   @Field({nullable:true})
-  cycle?: string;
+  cycleId?: string;
 
   @Field({nullable:true})
   montantPensionSalle?: number;

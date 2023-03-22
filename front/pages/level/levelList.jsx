@@ -28,7 +28,8 @@ import {
     AlertDialogHeader,
     AlertDialogContent,
     AlertDialogOverlay,
-    useDisclosure
+    useDisclosure,
+    InputRightElement
   } from "@chakra-ui/react";
   
   import { useRouter } from "next/router";
@@ -40,7 +41,7 @@ import {
   import { GET_ALL_STUDY_LEVEL } from "../../graphql/Queries";
   import { useMutation, useQuery } from "@apollo/client";
   import {IoIosAdd} from 'react-icons/io';
-  import{ FiEdit} from 'react-icons/fi';
+  import{ FiEdit, FiSearch} from 'react-icons/fi';
   import {MdDelete} from 'react-icons/md';
   
   
@@ -50,7 +51,9 @@ import {
     const router = useRouter();
     const cancelRef = React.useRef()
     const { isOpen, onToggle, onClose } = useDisclosure();
+    const [searchStudyLevel, setSearchStudyLevel] = useState("");
     
+
     useEffect(() =>{
       console.log(dataStudyLevel?.findAllNiveauEtude)
     })
@@ -58,7 +61,10 @@ import {
     if (loading) return <Text>Chargement en cours...</Text>
     if(error) return <Text>Une erreur s'est produite!</Text>
 
-  
+    const handleChange = (e) => {
+      setSearchStudyLevel(e.target.value);
+    };
+
     return (
       <DefaultLayout>
         <Box p="10px" pt={"70px"} background="colors.tertiary" w="full">
@@ -87,13 +93,20 @@ import {
   
           <Flex gap={10} mt={5}>
             <InputGroup>
+            <InputRightElement
+              children={<Icon as={FiSearch} />}
+              cursor="pointer"
+            />
               <Input
-                placeholder="Rechercher un élève..."
+                placeholder="Recherchez un niveau..."
                 //value={recherche}
                 // onChange={e => setQuery(e.target.value)}
+                onChange={handleChange}
+                variant="flushed"
               />
             </InputGroup>
             <Select 
+              variant="flushed"
               placeholder="Selectionner la classe"
               // onChange={e =>setQuery(e.target.value)}
             >
@@ -113,30 +126,50 @@ import {
             </Box> 
           </Flex>
           <Box mt={10}>
-             <TableContainer>
-                <Table variant='striped'>
-                    <Thead>
-                    <Tr>
+             <TableContainer  
+                border={"1px"} 
+                rounded={"md"}
+                bg={"white"}
+              >
+                <Table 
+                  variant='striped'
+                  bg={"white"}
+                  colorScheme={"white"}
+                >
+                    <Thead background="colors.secondary">
+                      <Tr>
                         <Th>Nom</Th>
-                         <Th>Pension</Th>
+                        <Th>Pension</Th>
                         {/* <Th >section</Th> */}
-                        <Th >Action</Th>
-                    </Tr>
+                        <Th>Action</Th>
+                      </Tr>
                     </Thead>
                     <Tbody>
                     {dataStudyLevel && ( 
-                       dataStudyLevel.findAllNiveauEtude.map((niveauEtude, index) =>(
+                       dataStudyLevel.findAllNiveauEtude
+                       .filter((niveauEtude) =>{
+                          if(searchStudyLevel == ""){
+                            return niveauEtude;
+                          }else if (niveauEtude.name.toLowerCase().includes(searchStudyLevel.toLowerCase())
+                          // niveauEtude.montantPension.includes(searchStudyLevel)
+                          )
+                          return niveauEtude;
+                        })
+                       .map((niveauEtude, index) =>(
                         <Tr key={index}>
-                          <Td borderColor={'#C6B062'}>{niveauEtude.name}</Td>
-                          <Td borderColor={'#C6B062'}>{niveauEtude.montantPension}</Td> 
-                          <Td borderColor={'#C6B062'}>
-                              <Avatar 
-                                  size='xs' 
-                                  name='Dan Abrahmov' 
-                                  src='https://bit.ly/dan-abramov'
-                              /> 
+                          <Td 
+                            p={0} 
+                            pl={6}
+                          >
+                            {niveauEtude.name}
                           </Td>
-                          <Td borderColor={'#C6B062'}>
+                          <Td 
+                            p={0} 
+                            pl={6}
+                          >
+                            {niveauEtude.montantPension}
+                          </Td> 
+                          <Td p={0} >
                             <ButtonGroup 
                               size='sm' 
                               isAttached 

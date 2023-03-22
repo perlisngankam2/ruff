@@ -122,6 +122,7 @@ function AjouterCours () {
                 <Button
                     rightIcon={<Icon as={IoIosAdd} boxSize="20px" />}
                     // borderRadius={'md'} 
+                    ml={["20px","50px","100px","600px"]}
                     onClick={onOpen}
                     // onClick = {() => router.push(personnel/AjouterCategoryPersonnel)} 
                 >

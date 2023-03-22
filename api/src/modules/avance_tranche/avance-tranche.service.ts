@@ -174,7 +174,7 @@ export class AvanceTrancheService {
            this.avanceTrancheRepository.persistAndFlush(avanceTranche)
            return avanceTranche
          
-      }
+        }
           
 
         // tranchestudent.complete = true

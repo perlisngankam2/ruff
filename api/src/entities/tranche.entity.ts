@@ -52,7 +52,6 @@ export class Tranche {
   @OneToMany(()=>AvanceTranche, (avancetranche) => avancetranche.tranche)
   avancetranche = new Collection<AvanceTranche>(this)
 
-
   @ManyToOne(() => AnneeAccademique ,{
     nullable:true,
     onDelete:'CASCADE'

@@ -67,6 +67,9 @@ const receipt = () => {
         console.log(dataStudentSalle?.dataStudentSalle)
     })
 
+    if (loading) return <Text>Chargement en cour...</Text>
+    if (error) return <Text>Une erreur s'est produite!</Text>
+    
     return ( 
         <DefaultLayout>
             <Center 
@@ -138,16 +141,16 @@ const receipt = () => {
                                 <Flex 
                                     mt='3' 
                                     ml='3' 
-                                    gap='1' 
+                                    gap={2} 
                                     mb='1'
                                 >
                                     <Text>Nom / Name:</Text>
-                                    <Text>
-                                        {dataStudentId.findOnestudent.firstname} 
-                                        {dataStudentId.findOnestudent.lastname}
-                                    </Text>
+                                    <Box display={"flex"}gap={3}>
+                                        <Text> {dataStudentId.findOnestudent.firstname}</Text>
+                                        <Text>{dataStudentId.findOnestudent.lastname}  </Text>
+                                    </Box>
                                 </Flex>
-                                <Flex ml='3' gap='1' mb='1'>
+                                <Flex ml='3' gap={3} mb='1'>
                                     <Text>Section:</Text>
                                     <Text></Text>
                                 </Flex>
@@ -168,11 +171,10 @@ const receipt = () => {
                                         <Text>Annee Academique / Academic year:</Text>
                                         <Text></Text>
                                     </Flex>
-                                    <Flex ml='3' gap='1' mr='140px'>
+                                    {/* <Flex ml='3' gap='1' mr='140px'>
                                         <Text>à/at:</Text>
                                         <Text></Text>
-                                    </Flex>
-
+                                    </Flex> */}
                                 </Flex>
                                 <Flex 
                                     ml='3' 
@@ -181,12 +183,22 @@ const receipt = () => {
                                     justify='space-between'
                                 >
                                     <Flex gap='1'>
-                                        <Text>Remettant / Renderer:</Text>
-                                        <Text></Text>
+                                        <Box 
+                                            display={"flex"}
+                                            gap={2}
+                                        > 
+                                            <Text>Remettant / Renderer:</Text>
+                                            <Text> {dataStudentId.findOnestudent.fatherFirstName}</Text>
+                                        </Box>
                                     </Flex>
                                     <Flex gap='1' mr='130px'>
-                                        <Text>Tel:</Text>
-                                        <Text></Text>
+                                        <Box 
+                                            display={"flex"}
+                                            gap={"2"}
+                                        > 
+                                            <Text>Tel:</Text>
+                                            <Text>{dataStudentId.findOnestudent.fatherPhoneNumber}</Text>
+                                        </Box>
                                     </Flex>
 
                                 </Flex>
@@ -236,11 +248,11 @@ const receipt = () => {
                                                 </Text>
                                             </Flex>
                                         </Center>
-                                        <Text 
+                                        {/* <Text 
                                         mt='-15px' 
                                         fontSize="sm">
                                             (Cinq cent mille)
-                                        </Text>
+                                        </Text> */}
                                     </Box>
                                 </Flex>
                                 <Flex 

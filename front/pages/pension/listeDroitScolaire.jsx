@@ -32,7 +32,8 @@ import {
   AlertDialogCloseButton,
   FormControl,
   FormLabel,
-  useToast
+  useToast,
+  InputRightElement
 } from "@chakra-ui/react";
 
 import DefaultLayout from "../../components/layouts/DefaultLayout";
@@ -41,9 +42,20 @@ import { Router, useRouter } from "next/router";
 import { GlobalContext } from "../../contexts/cyclesection/AppContext";
 import {IoIosAdd} from "react-icons/io"
 import {MdDelete} from 'react-icons/md';
-import {CREATE_ANNEE_ACADEMIQUE, CREATE_FRAIS_INSCRIPTION, CREATE_TRANCHE_PENSION} from "../../graphql/Mutation"
+import {
+  CREATE_ANNEE_ACADEMIQUE, 
+  CREATE_FRAIS_INSCRIPTION, 
+  CREATE_TRANCHE_PENSION,
+  DELETE_TRANCHE_PENSION
+} from "../../graphql/Mutation"
 import { useMutation, useQuery } from "@apollo/client";
-import { GET_ALL_ANNEE_ACADEMIQUE, GET_ALL_FRAIS_INSCRIPTION, GET_ALL_TRANCHE, GET_ALL_TRANCHE_PENSION} from "../../graphql/Queries";
+import { 
+  GET_ALL_ANNEE_ACADEMIQUE, 
+  GET_ALL_FRAIS_INSCRIPTION,
+   GET_ALL_TRANCHE, 
+   GET_ALL_TRANCHE_PENSION
+  } from "../../graphql/Queries";
+import { FiSearch } from "react-icons/fi";
 
 const Pension = () => {
 
@@ -81,6 +93,7 @@ const Pension = () => {
     const {data:dataTranchePension} = useQuery(GET_ALL_TRANCHE_PENSION);
     const [createdFraisInscription] = useMutation(CREATE_FRAIS_INSCRIPTION);
     const [createTranchePension] = useMutation(CREATE_TRANCHE_PENSION);
+    const [deleTranchePension] = useMutation(DELETE_TRANCHE_PENSION);
     const { isOpen, onOpen, onClose} = useDisclosure();
     const { isOpen: isOpenns, onOpen:onOpenns, onClose:onClosses } = useDisclosure();
     const { isOpen: Onouvrir, onOpen:OnOuvert, onClose:onFermer, onToggle } = useDisclosure();
@@ -106,17 +119,17 @@ const Pension = () => {
     //   console.log("hh")
     // });
 
-    // const removeSection = async (id) => {
-    //   await deleteSection({
-    //     variables: {
-    //       id
-    //     },
-    //     refetchQueries:[{
-    //       query: GET_ALL_SECTION
-    //     }]
+    const removeTranchePension = async (id) => {
+      await deleTranchePension({
+        variables: {
+          id
+        },
+        refetchQueries:[{
+          query: GET_ALL_TRANCHE_PENSION
+        }]
 
-    //   })
-    // }
+      })
+    }
 
     //creation d'une annee academique
 
@@ -208,13 +221,19 @@ const Pension = () => {
           </Hide>
         </Flex>
         <Flex gap={10} mt={5}>
-          <InputGroup>
+          <InputGroup width="500px">
+            <InputRightElement
+              children={<Icon as={FiSearch} />}
+              cursor="pointer"
+            />
             <Input
-              placeholder="Recherchez une categorie..."
+              placeholder="Recherchez une tranche..."
               //value={recherche}
               onChange={e => setQuery(e.target.value)}
+              color={"white"}
+              variant="flushed"
             />
-            <InputRightAddon children={<SearchIcon />} />
+            {/* <InputRightAddon children={<SearchIcon />} /> */}
           </InputGroup>
           {/* <Select 
             placeholder="Selectionner la classe"
@@ -296,7 +315,6 @@ const Pension = () => {
           </Box>
         </Box>
 
-
         {/* TABLEAU DE LA LISTE DES ANNEES ACADEMIQUES*/}
         <Box 
           width={["400px", "400px","400px"]} 
@@ -304,7 +322,7 @@ const Pension = () => {
           borderColor={"GREEN"}
         >
           <TableContainer>
-            <Table size='sm' variant='striped' >
+            <Table size='sm' variant='striped'>
               <Thead>
                 <Tr>
                   <Th>Nom</Th>
@@ -446,9 +464,17 @@ const Pension = () => {
 
             {/* TABLEAU DE LA LISTE DES TRANCHES DE LA PENSION */}
             <Box>
-              <TableContainer>
-                  <Table size='sm'>
-                    <Thead>
+              <TableContainer
+                border={"1px"} 
+                rounded={"md"}
+              >
+                  <Table 
+                    size='sm'
+                    variant={"striped"} 
+                    colorScheme={"white"}
+                    bg={"white"}
+                  >
+                    <Thead background="colors.secondary">
                       <Tr>
                         <Th>Nom</Th>
                         <Th >Montant</Th>
@@ -462,11 +488,11 @@ const Pension = () => {
                       
                         dataTranchePension.findAlltranche.map((tranche, index) => (
                       <Tr key={index}>
-                        <Td borderColor={'#C6B062'}>{tranche.name}</Td>
-                        <Td borderColor={'#C6B062'}>{tranche.montant}</Td>
-                        <Td borderColor={'#C6B062'}>{tranche.dateLine}</Td>
+                        <Td p={0} pl={4}>{tranche.name}</Td>
+                        <Td p={0} pl={4}>{tranche.montant}</Td>
+                        <Td p={0} pl={4}>{tranche.dateLine}</Td>
                         {/* <Td >Monntant</Td>  */}
-                        <Td borderColor={'#C6B062'}>
+                        <Td p={0}>
                             <ButtonGroup 
                               size='sm' 
                               isAttached 
@@ -529,7 +555,7 @@ const Pension = () => {
                                               </Button>
                                               <Button 
                                                 colorScheme='green' 
-                                                // onClick={() => removeL(student.id)}
+                                                onClick={() => removeTranchePension(tranche.id)}
                                                 ml={3}
                                               >
                                                 Supprimer

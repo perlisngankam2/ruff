@@ -11,16 +11,26 @@ import {
   // Link as Links,
   Grid,
   Text,
+  Table,
+  Thead,
+  Tbody,
+  Tfoot,
+  Tr,
+  Th,
+  Td,
+  TableCaption,
+  TableContainer,
 } from "@chakra-ui/react";
 import Link from "next/link";
 import Routes from "../../modules/routes";
-import { FiSearch } from "react-icons/fi";
+import { FiEdit, FiSearch } from "react-icons/fi";
 import { IoClose } from "react-icons/io";
 import DefaultLayout from "../../components/layouts/DefaultLayout";
 // import PaySlip from "./PaySlip";
 import { useState } from "react";
 import { useMutation, useQuery } from "@apollo/client";
 import { GET_ALL_PERSONNELS } from "../../graphql/queries";
+import { MdDelete } from "react-icons/md";
 
 const Payment = () => {
   // const [searchName, setSearchName] = useState("");
@@ -47,9 +57,19 @@ const Payment = () => {
   };
   return (
     <DefaultLayout>
-      <Box w="full" minH="100vh" bgColor="colors.tertiary">
+      <Box 
+        p={"10px"} 
+        w="full" 
+        minH="100vh" 
+        bgColor="colors.tertiary"
+      >
         <Box pt="70px" w="100%">
-          <Heading p="1em" textAlign="center" bgGradient='linear(to-r, teal.500, green.500)' bgClip='text' fontSize={'30px'}>
+          <Heading 
+            p="1em" 
+            textAlign="center" 
+            bgGradient='linear(to-r, teal.500, green.500)' 
+            bgClip='text' fontSize={'30px'}
+          >
             gestion de la paie de salaire
           </Heading>
         </Box>
@@ -98,11 +118,38 @@ const Payment = () => {
               </Link>
 
               </Grid>
-              
-       
           ))} </Box>)}
           
         {/* <PaySlip />  */}
+          <Box mt={10}>
+            <TableContainer
+              border={"1px"} 
+              rounded={"md"}
+              >
+                <Table 
+                    variant='striped' 
+                    colorScheme={"white"}
+                    bg={"white"}
+                  >
+                    <Thead background="colors.secondary">
+                      <Tr >
+                        <Th>Nom</Th>
+                        <Th>Prenom</Th>
+                        <Th>Fonction</Th>
+                      </Tr>
+                    </Thead>
+                    <Tbody>
+                        <Tr>
+                            <Td p={3} pl={6}>R</Td>
+                            <Td p={3} pl={6}>R</Td>
+                            <Td p={3} pl={6}>r</Td>
+                        </Tr>
+                        
+                    </Tbody>
+                </Table>
+            </TableContainer>
+        </Box>
+
       </Box>
     </DefaultLayout>
   );

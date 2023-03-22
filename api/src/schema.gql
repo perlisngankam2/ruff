@@ -544,7 +544,7 @@ input SalleCreateInput {
   ID: String
   name: String
   sectionId: ID
-  cycle: String
+  cycleId: String
   montantPensionSalle: Float
   effectif: Float = 0
   niveauEtudeId: ID
@@ -593,7 +593,7 @@ input SalleUpdateInput {
   ID: String
   name: String
   sectionId: ID
-  cycle: String
+  cycleId: String
   montantPensionSalle: Float
   niveauEtudeId: ID
   effectif: Float = 0

@@ -27,14 +27,15 @@ import {
   AlertDialogContent,
   AlertDialogOverlay,
   useDisclosure,
-  Button
+  Button,
+  InputRightElement
   } from "@chakra-ui/react";
   
   import DefaultLayout from "../../components/layouts/DefaultLayout";
 //   import AjouterCategoryEleve from './AjouterCategoryEleve';
 import AjouterCours from "./addCours";
   import { Router, useRouter } from "next/router";
-  import {FiEdit} from 'react-icons/fi';
+  import {FiEdit, FiSearch} from 'react-icons/fi';
   import {MdDelete} from 'react-icons/md';
 //   import { GET_ALL_Category_Eleve } from "../../graphql/queries";
 //   import { DELETE_CATEGORY_STUDENT } from "../../graphql/Mutation";
@@ -108,13 +109,19 @@ import AjouterCours from "./addCours";
            </Hide>
          </Flex>
          <Flex gap={10} mt={5}>
-           <InputGroup>
+           <InputGroup width="500px">
+            <InputRightElement
+                children={<Icon as={FiSearch} />}
+                cursor="pointer"
+              />
              <Input
-               placeholder="Recherchez une categorie..."
+               placeholder="Recherchez une matiere..."
+               variant="flushed"
+
                //value={recherche}
                onChange={e => setQuery(e.target.value)}
              />
-             <InputRightAddon children={<SearchIcon />} />
+             {/* <InputRightAddon children={<SearchIcon />} /> */}
            </InputGroup>
            {/* <Select 
              placeholder="Selectionner la classe"
@@ -124,32 +131,49 @@ import AjouterCours from "./addCours";
            <AjouterCours/>
          </Flex>
          <Box mt={10}>
-             <TableContainer>
-                 <Table variant='striped'>
-                     <Thead>
+             <TableContainer  
+                border={"1px"} 
+                rounded={"md"}
+              >
+                 <Table 
+                  variant={"striped"} 
+                  colorScheme={"white"}
+                  bg={"white"}
+                 >
+                     <Thead background="colors.secondary">
                        <Tr>
-                         <Th>Nom</Th>
+                         <Th >Nom</Th>
                          <Th>Taux horaire</Th>
                          <Th>Actions</Th>
                        </Tr>
                      </Thead>
                      {dataCourse && ( 
-                     <Tbody>
+                     <Tbody  p={0}>
                        {
                          dataCourse.findAllCourse.map((course, index) => ( 
                            <Tr 
                             key={index} 
                             borderColor={'#C6B062'}
                            >
-                               <Td borderColor={'#C6B062'}>{course.title} </Td>
-                               <Td borderColor={'#C6B062'}>{course.time}</Td>
-                               <Td borderColor={'#C6B062'}>
+                               <Td 
+                                flex={"1"} 
+                                p={0} 
+                                pl={6}
+                               >{course.title} </Td>
+                               <Td 
+                                p={0} 
+                                pl={6}
+                               >{course.time}</Td>
+                               <Td 
+                                p={0} 
+                                pl={6}
+                               >
                                <Box display="flex">
                                  <Link 
                                    href="#">
                                      <Icon
                                      as={FiEdit}
-                                     boxSize="40px"
+                                     boxSize="37px"
                                      p="3"
                                      rounded={"full"}
                                      _hover={{background:"blue.100"}}
@@ -158,7 +182,7 @@ import AjouterCours from "./addCours";
                                  <Box href="#" mt="-3px">
                                    <Icon
                                      as={MdDelete}
-                                     boxSize="44px"
+                                     boxSize="4px"
                                      p="3"
                                      rounded="full"
                                      color="colors.quaternary"

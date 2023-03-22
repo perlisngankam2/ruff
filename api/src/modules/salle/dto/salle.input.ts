@@ -16,7 +16,7 @@ export class SalleCreateInput {
   sectionId?: string;
 
   @Field({nullable:true})
-  cycle?: string;
+  cycleId?: string;
 
   @Field({nullable:true})
   montantPensionSalle?: number;

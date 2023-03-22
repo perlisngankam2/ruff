@@ -40,12 +40,14 @@ import {
   FormControl,
   FormLabel,
   useToast,
-  AlertDialogHeader
+  AlertDialogHeader,
+  InputRightElement
   
 } from "@chakra-ui/react";
 
 import { useRouter } from "next/router";
 import React, { use, useEffect, useState } from "react";
+import { FiSearch, FiEdit } from "react-icons/fi";
 import AddNew from "../../components/atoms/AddNew";
 import StudentBox from "../../components/atoms/StudentBox";
 import DefaultLayout from "../../components/layouts/DefaultLayout";
@@ -64,7 +66,6 @@ import {
  } from "../../graphql/Mutation";
 import { useMutation, useQuery } from "@apollo/client";
 import {IoIosAdd} from 'react-icons/io';
-import{ FiEdit} from 'react-icons/fi';
 import {MdDelete} from 'react-icons/md';
 
 
@@ -160,14 +161,14 @@ const Class = () => {
   
   return (
     <DefaultLayout>
-      <Box p="10px" pt={"70px"} background="colors.tertiary" w="full">
-        <Flex gap={5} flexWrap="wrap">
+      <Box background="colors.tertiary" w="full">
+        {/* <Flex gap={5} flexWrap="wrap">
           <AddNew />
           <StudentBox class="CM2" studentnumber="40" />
           <StudentBox class="SIL" studentnumber="23" />
           <StudentBox class="CP" studentnumber="16" />
           <StudentBox class="CM1" studentnumber="34" />
-        </Flex>
+        </Flex> */}
       <Box p="3" pt={"80px"} w="full">
         <Flex
           align="center"
@@ -190,15 +191,23 @@ const Class = () => {
           </Hide>
         </Flex>
 
-        <Flex gap={10} mt={5}>
-          <InputGroup>
+        <Flex gap={10} mt={5} maxWidth={"1300px"}>
+          <InputGroup width="500px">
+            <InputRightElement
+              children={<Icon as={FiSearch} />}
+              cursor="pointer"
+            />
             <Input
-              placeholder="Rechercher un élève..."
+              placeholder="Recherchez une classe..."
+              variant="flushed"
+              borderBottom={"1px"}
               //value={recherche}
               // onChange={e => setQuery(e.target.value)}
             />
           </InputGroup>
           <Select 
+           width={"500px"}
+           variant="flushed"
             placeholder="Selectionner la classe"
             // onChange={e =>setQuery(e.target.value)}
           >
@@ -220,25 +229,51 @@ const Class = () => {
 
         {/* FORMULAIRE D'AFFECTATION D'UN PROFESSEUR A UNE CLASSE */}
         <Box> 
-          <Flex gap={1} ml={["200px","300px", "700px"]} mt={["10px"]}> 
-            <Text 
-              mb={5}
-              fontSize="14px"
-              color = "colors.quinzaine"
-              >
-              Affecter un enseignant
-            </Text>
-            <Icon 
-              as={IoIosAdd} 
-              boxSize="30px"
-              color={"colors.greencolor"}
-              rounded="full"
-              // ml={["5px", "5px", "5px" ]}
-              mt={["-3px"]}
-              _hover={{background:"colors.bluecolor"}}
-              onClick={onOpenn}
-              />
-          </Flex>
+            <Flex 
+              direction={["column", "column", "column"]}
+              mt={"15px"}
+              flexWrap={["wrap", "wrap", "wrap"]}
+              pl={["500px", "100px", "200px", "1050px"]}
+            > 
+              <Flex gap={1}> 
+                <Text 
+                  mb={5}
+                  fontSize="14px"
+                  color = "colors.quinzaine"
+                  >
+                  Affecter un enseignant
+                </Text>
+                <Icon 
+                  as={IoIosAdd} 
+                  boxSize="30px"
+                  color={"colors.greencolor"}
+                  rounded="full"
+                  // ml={["5px", "5px", "5px" ]}
+                  mt={["-3px"]}
+                  _hover={{background:"colors.bluecolor"}}
+                  onClick={onOpenn}
+                  />
+              </Flex>
+              <Flex > 
+                <Text 
+                  mb={5}
+                  fontSize="14px"
+                  color = "colors.quinzaine"
+                >
+                  Fixer une pension
+                </Text>
+                <Icon 
+                  as={IoIosAdd} 
+                  boxSize="30px"
+                  color={"colors.greencolor"}
+                  rounded="full"
+                  // ml={["5px", "5px", "5px" ]}
+                  mt={["-3px"]}
+                  _hover={{background:"colors.bluecolor"}}
+                  onClick={onOpennes}
+                  />
+              </Flex>
+            </Flex>
           <AlertDialog
             isOpen={isOpenn}
             leastDestructiveRef={cancelRef}
@@ -340,25 +375,6 @@ const Class = () => {
 {/* FORMULAIRE D'AFFECTATION DE LA PENSION POUR UNE ANNEE ACADEMIQUE */}
 
     <Box>
-      <Flex gap={1} ml={["200px","300px", "700px"]} mt={["10px"]}> 
-        <Text 
-          mb={5}
-          fontSize="14px"
-          color = "colors.quinzaine"
-        >
-          Ajouter la pension de la classe
-        </Text>
-        <Icon 
-          as={IoIosAdd} 
-          boxSize="30px"
-          color={"colors.greencolor"}
-          rounded="full"
-          // ml={["5px", "5px", "5px" ]}
-          mt={["-3px"]}
-          _hover={{background:"colors.bluecolor"}}
-          onClick={onOpennes}
-          />
-      </Flex>
       <AlertDialog
         isOpen={isOpennes}
         leastDestructiveRef={cancelRef}
@@ -452,9 +468,15 @@ const Class = () => {
 
 {/* LISTE DES CLASSES */}
         <Box mt={10}>
-           <TableContainer>
-              <Table variant='striped'>
-                  <Thead>
+           <TableContainer
+            border={"1px"} 
+            rounded={"md"}
+           >
+              <Table 
+                variant='striped'
+                colorScheme={"white"}
+              >
+                  <Thead background="colors.secondary">
                   <Tr>
                       <Th>Nom</Th>
                       <Th>Montant pension</Th>
@@ -466,20 +488,12 @@ const Class = () => {
                     {dataCoursePersonnelSalle && ( 
                       dataCoursePersonnelSalle.findbyCoursePersonnelSalle.map((personnelSalle, index) =>( 
                       <Tr key={index}>
-                         <Td borderColor={'#C6B062'}>{personnelSalle.personnel_id.id}</Td> 
+                         <Td >{personnelSalle.personnel_id.id}</Td> 
                          {/* <Td borderColor={'#C6B062'}>{salle.montantPensionSalle}</Td>   */}
                          {/* <Td borderColor={'#C6B062'}>{salle.section}</Td>  */}
                          {/* <Td borderColor={'#C6B062'}>{salle.montantPension}</Td>  */}
-
-                         <Td borderColor={'#C6B062'}>
-                            <Avatar 
-                                size='xs' 
-                                name='Dan Abrahmov' 
-                                src='https://bit.ly/dan-abramov'
-                            /> 
-                        </Td> 
                         
-                        <Td borderColor={'#C6B062'}>
+                        <Td >
                           <ButtonGroup 
                             size='sm' 
                             isAttached 

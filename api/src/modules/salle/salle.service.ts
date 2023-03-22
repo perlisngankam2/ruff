@@ -44,7 +44,7 @@ export class SalleService {
           montantPensionSalle: input.montantPensionSalle,
           niveau : input.niveauEtudeId,
           section : input.sectionId,
-          cycle : input.cycle
+          cycle : input.cycleId
           },
           {
             em: this.em
@@ -58,7 +58,7 @@ export class SalleService {
         name: input.name,
         montantPensionSalle: input.montantPensionSalle,
         section: input.sectionId,
-        cycle: input.cycle
+        cycle: input.cycleId
         },
         {
           em: this.em
@@ -99,7 +99,7 @@ export class SalleService {
           name: input.name,
           montantPensionSalle: input.montantPensionSalle,
           section: input.sectionId,
-          cycle: input.cycle,
+          cycle: input.cycleId,
           niveau: input.niveauEtudeId
           // montantPension : input.montantPension
         },
@@ -128,7 +128,7 @@ export class SalleService {
             name: input.name || salle.name,
             montantPensionSalle: input.montantPensionSalle || salle.montantPensionSalle,
             section : input.sectionId|| salle.section,
-            cycle : input.cycle || salle.cycle,
+            cycle : input.cycleId || salle.cycle,
             niveau: input.niveauEtudeId || salle.niveau
             // montantPension: input.montantPension || salle.montantPension
         },

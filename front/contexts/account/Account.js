@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useEffect } from 'react';
 import { useMutation, useQuery } from "@apollo/client"; 
 import { useAuth } from './Auth/Auth';
-import { GET_USER_CONNECTED } from "../../graphql/queries";
+import { GET_USER_CONNECTED } from "../../graphql/Queries";
 import { useRouter } from "next/router";
 
 

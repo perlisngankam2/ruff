@@ -127,6 +127,7 @@ type CategoriePersonnel {
   id: ID!
   nom: String
   description: String
+  montant: Float!
 }
 
 type Personnel {
@@ -134,7 +135,6 @@ type Personnel {
   firstName: String
   lastName: String
   phoneNumber: String
-  salary: Float
   situationMatrimonial: String
   sexe: String
   fonction: String
@@ -307,6 +307,7 @@ type Query {
   findOnePersonnel(id: String!): Personnel!
   getpersonnelaccount(id: String!): User!
   getpersonnelbyaccount(userid: String!): Personnel!
+  findCategoriepersonnelbypersonnel(personnelid: String!): String!
   findAllsalle: [Salle!]!
   findOnesalle(id: String!): Salle!
   etatInscriptionSalle(id: String!): Salle!
@@ -501,7 +502,6 @@ input PersonnelSalleCreateInput {
 input PersonnelCreateInput {
   id: ID!
   userID: ID
-  salary: Float
   categoryPersonnelId: ID
   firstName: String
   lastName: String
@@ -516,8 +516,8 @@ input PersonnelCreateInput {
 }
 
 input PersonnelUpdateInput {
+  id: ID!
   userID: ID
-  salary: Float
   categoryPersonnelId: ID
   firstName: String
   lastName: String
@@ -687,6 +687,7 @@ input CategoriePersonnelCreateInput {
   salaireID: ID
   nom: String
   description: String
+  montant: Float
 }
 
 input SalaireBaseUpdateInput {
@@ -702,6 +703,7 @@ input CategoriePersonnelUpdate {
   salaireID: ID
   nom: String
   description: String
+  montant: Float
 }
 
 input PrimeCreateInput {
@@ -909,8 +911,6 @@ input UpdateFraisInscriptionInput {
 
 input SalaireCreateInput {
   personnelId: ID
-  primeId: ID
-  retenuId: ID
   payer: Boolean! = false
   montant: Float! = 0
   jourPaie: String
@@ -919,8 +919,6 @@ input SalaireCreateInput {
 
 input SalaireUpdateInput {
   personnelId: ID
-  primeId: ID
-  retenuId: ID
   payer: Boolean! = false
   montant: Float! = 0
   jourPaie: String

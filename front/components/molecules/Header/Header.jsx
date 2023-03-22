@@ -29,7 +29,7 @@ import { GiTakeMyMoney } from "react-icons/gi";
 import { HamburgerIcon } from "@chakra-ui/icons";
 import { useAuth } from "../../../contexts/account/Auth/Auth";
 import { useAccount } from "../../../contexts/account/Account";
-import { GET_PERSONNEL_BY_USERID } from "../../../graphql/queries";
+import { GET_PERSONNEL_BY_USERID } from "../../../graphql/Queries";
 import { useMutation, useQuery } from '@apollo/client'; 
 
 

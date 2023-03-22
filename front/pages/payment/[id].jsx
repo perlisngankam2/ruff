@@ -9,7 +9,7 @@ import PaySlipLogoBox from "../../components/atoms/PaySlipLogoBox";
 import PaySlipInformationEmployeeBox from "../../components/atoms/PaySlipInformationEmployeeBox";
 import DefaultLayout from "../../components/layouts/DefaultLayout";
 import { useQuery, useMutation } from "@apollo/client";
-import { GET_ALL_PERSONNEL_BY_ID} from "../../graphql/queries";
+import { GET_ALL_PERSONNEL_BY_ID, GET_Category_Personnel_BY_ID, GET_Category_Personnel_ID} from "../../graphql/Queries";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { CREATE_SALAIRE } from "../../graphql/Mutation";
@@ -17,23 +17,42 @@ import { useToast } from "@chakra-ui/react";
 
 const PaySlip = () => {
 
-
-  const moisPayes = [];
   const router = useRouter();
   const toast = useToast();
 
 
-  const {data:dataPersonnelId} = useQuery(GET_ALL_PERSONNEL_BY_ID,
-  {
-    variables:{ id: router.query.id}
-  })
 
-  const [personnelId , setPersonnelId] = useState("");
-  const [montant, setMontant] = useState("");
+  //information du personnel par son ID
+
+    const {data:dataPersonnelId} = useQuery(GET_ALL_PERSONNEL_BY_ID,
+      {
+        variables:{ id: router.query.id}
+      })
+
+
+  // recupere l'ID de la categorie associee a un personnel
+
+    const {data:dataCategorieId} = useQuery(GET_Category_Personnel_ID,
+     {
+        variables:{ personnelid: dataPersonnelId?.findOnePersonnel.id}
+     })
+
+// information de la categorie associee au personnel
+
+    const {data:dataCategorie} = useQuery(GET_Category_Personnel_BY_ID,
+    {
+        variables:{ id: dataCategorieId?.findCategoriepersonnelbypersonnel}
+    })
+
+
+  const moisPayes = [];
+  const personnelId = dataPersonnelId?.findOnePersonnel.id ;
+  const montant = dataCategorie?.findOneCategoriepersonnel.montant;
   const [moisPaie, setMoisPaie] = useState("");
   const [jourPaie , setJourPaie] = useState("");
   const [createSalaire] = useMutation(CREATE_SALAIRE);
   
+
 
   const handleMoisPaieChange = (event) => {
     const selectedMonth = event.target.value;
@@ -56,6 +75,7 @@ const PaySlip = () => {
       }
     })
 
+    console.log(salaireData)
     toast({
       title: "Succès.",
       description: "La prime a été crée .",
@@ -120,6 +140,7 @@ const PaySlip = () => {
                     value={moisPaie}
                     
                   />
+                  {console.log(moisPaie)}
                       <Input
                     placeholder="nom prime"
                     bg='white'
@@ -130,7 +151,10 @@ const PaySlip = () => {
                     onChange={(event) => setJourPaie(event.target.value)}
                     value={jourPaie}
                     
-                  /></Box>
+                  />
+                  
+                   {console.log(jourPaie)}
+                  </Box>
                   <Box>
                     <Text fontWeight={'bold'} fontSize='sm' color='#eb808a'>Montant du salaire *</Text>
 
@@ -142,10 +166,12 @@ const PaySlip = () => {
                     name="dateOfPrime"
                     // placeholder="{formattedDate}"
                     // onChange={(event) => setStartDate(event.target.value)}
-                   value={dataPersonnelId?.findOnePersonnel.salary}
+                   value={montant}
                  
                     
                   />
+ {console.log(montant)}
+                  
                   </Box>
                 
         
@@ -168,18 +194,22 @@ const PaySlip = () => {
      );
 }
  
-export default PaySlip;
+export default PaySlip; 
 
-// je voudrais payer un salarié et mon probleme est a ce niveau 
-//    <Input
-//                     placeholder="nom prime"
-//                     bg='white'
-//                     type="month"
-//                     name="dateOfPrime"
-//                     rounded={2}
-//                     onChange={(event) => setMoisPaie(event.target.value)}
-//                     value={moisPaie}
-                    
-//                   /> 
+//   voici ma parselle de code
 
-// j'aimerais que lorsque je clique sur un mois et je paye le salarie le mois ne sois plus cliquable  
+// const moisPayes = [];
+//   const [personnelId , setPersonnelId] = useState("");
+//   const montant = dataCategorie?.findOneCategoriepersonnel.montant;
+//   const [moisPaie, setMoisPaie] = useState("");
+//   const [jourPaie , setJourPaie] = useState("");
+//   const [createSalaire] = useMutation(CREATE_SALAIRE);
+  
+
+
+//   const handleMoisPaieChange = (event) => {
+//     const selectedMonth = event.target.value;
+//     if (!moisPayes.includes(selectedMonth)) {
+//       setMoisPaie(selectedMonth);
+//     }
+//   };

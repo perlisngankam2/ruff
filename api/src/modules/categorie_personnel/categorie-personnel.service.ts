@@ -40,6 +40,7 @@ export class CategoriePersonnelService {
       {
       nom: input.nom,
       description: input.description,
+      montant: input.montant,
       salaireBase: input.salaireID||null,
       retenu: input.retenuID||null,
       prime: input.primeID||null

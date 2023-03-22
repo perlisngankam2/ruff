@@ -36,6 +36,10 @@ export class CategoriePersonnel {
   @Property({ nullable: true })
   description!: string;
 
+  @Field({nullable:false})
+  @Property({ nullable: false })
+  montant?: number;
+
   // relation with another Entites
   @OneToMany(() => Personnel, personnel => personnel.category)
   personnel = new Collection<Personnel>(this);

@@ -10,7 +10,6 @@ mutation createpersonnel ($createPersonnelUser: PersonnelCreateInput!) {
         firstName
         lastName
         phoneNumber
-        salary
         situationMatrimonial
         sexe
         fonction
@@ -29,6 +28,7 @@ mutation createcategoriepersonnnel ($createCategoriePersonnel: CategoriePersonne
         id
         nom
         description
+        montant
     }
 }
 `;
@@ -463,10 +463,10 @@ export const CREATE_SALAIRE = gql `
 mutation createsalaire ($input: SalaireCreateInput!) {
     createsalaire (input: $input) {
         id
-        payer
-        montant
         jourPaie
         moisPaie
+        payer
+        montant
     }
 }
 `;

@@ -20,7 +20,7 @@ import DefaultLayout from "../../components/layouts/DefaultLayout";
 // import PaySlip from "./PaySlip";
 import { useState } from "react";
 import { useMutation, useQuery } from "@apollo/client";
-import { GET_ALL_PERSONNELS } from "../../graphql/queries";
+import { GET_ALL_PERSONNELS } from "../../graphql/Queries";
 
 const Payment = () => {
   // const [searchName, setSearchName] = useState("");

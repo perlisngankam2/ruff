@@ -20,7 +20,7 @@ import { LOGIN_USER} from "../../../graphql/Mutation";
 import { useMutation, useQuery } from "@apollo/client";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import { GET_USER_CONNECTED} from  "../../../graphql/queries"
+import { GET_USER_CONNECTED} from  "../../../graphql/Queries"
 import dashboard from "../../../pages/dashboard.jsx";
 import { useAuth } from '../../../contexts/account/Auth/Auth'
 

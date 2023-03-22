@@ -37,7 +37,7 @@ import {
   GET_ALL_STUDENT,
   GET_ALL_CLASS,
   GET_ALL_PERSONNELS
-} from "../graphql/queries";
+} from "../graphql/Queries";
 import {useMutation, useQuery } from '@apollo/client';
 import { GoBriefcase } from "react-icons/go";
 
@@ -66,23 +66,21 @@ import { GoBriefcase } from "react-icons/go";
   const router = useRouter();
   console.log(personnelData?.getpersonnelbyaccount);
 
-    useEffect(() => {
+  //   useEffect(() => {
     
-    if (account?.id === undefined ) {
-      router.push("/")
+  //   if (account?.id === undefined ) {
+  //     router.push("/")
 
 
       
-    }
+  //   }
     
-  }, [])
+  // }, [])
 
 
 
   return (
-<>
- 
-{account?.id &&(
+
     <DefaultLayout>
       <Box pt="90px" w="full">
         <Box top="-7" overflow="auto" minH="100vh" mx={6}>
@@ -155,8 +153,7 @@ import { GoBriefcase } from "react-icons/go";
         </Box>
       </Box>
     </DefaultLayout>
-    )}
-    </>
+ 
   );
 }
 

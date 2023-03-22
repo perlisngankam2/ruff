@@ -27,7 +27,7 @@ import { IoIosAdd } from "react-icons/io";
 import Link from "next/link";
 import {useMutation } from '@apollo/client';
 import { CREATE_CATEGORY_PERSONNEL } from "../../graphql/Mutation";
-import { GET_ALL_Category_Personnel } from "../../graphql/queries";
+import { GET_ALL_Category_Personnel } from "../../graphql/Queries";
 import { useState } from "react";
 import { useRouter } from "next/router";
 
@@ -35,6 +35,7 @@ function ajoutercategorypersonnel  () {
 
     const [nom, setNom] = useState("");
     const[description, setDescription] = useState("");
+    const [montant, setMontant] = useState("");
     const { isOpen, onOpen, onClose } = useDisclosure();
     const cancelRef = React.useRef();
     const [createCategoryPersonnel, {error}] = useMutation(CREATE_CATEGORY_PERSONNEL);
@@ -73,7 +74,8 @@ function ajoutercategorypersonnel  () {
             variables: {
                 createCategoriePersonnel: {
                     nom: nom,
-                    description: description
+                    description: description,
+                    montant: parseInt(montant)
                 }
             },
             refetchQueries:[{
@@ -166,6 +168,17 @@ function ajoutercategorypersonnel  () {
                                         placeholder="Description"
                                         onChange={e => setDescription(e.target.value)}
                                         value={description}
+                                    />
+                                </FormControl>
+                                <FormControl mt="15px">
+                                    <FormLabel>Montant</FormLabel>
+                                    <Input 
+                                        id="montant"
+                                        type={'text'} 
+                                        name="montant"
+                                        placeholder="Salaire de base"
+                                        onChange={e => setMontant(e.target.value)}
+                                        value={montant}
                                     />
                                 </FormControl>
                             </Box>

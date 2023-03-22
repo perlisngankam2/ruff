@@ -17,7 +17,7 @@ import { useRouter } from "next/router";
 import DefaultLayout from "../../components/layouts/DefaultLayout";
 import { useMutation, useQuery } from "@apollo/client";
 import { CREATE_STUDENT } from "../../graphql/Mutation";
-import { GET_ALL_SECTION , GET_ALL_CYCLE, GET_ALL_CLASS, GET_ALL_Category_Eleve, GET_ALL_STUDENT } from "../../graphql/queries";
+import { GET_ALL_SECTION , GET_ALL_CYCLE, GET_ALL_CLASS, GET_ALL_Category_Eleve, GET_ALL_STUDENT } from "../../graphql/Queries";
 
 
 const AjouterEleve = () => {

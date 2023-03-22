@@ -6,7 +6,7 @@ import PrincipalLaout from "./PrincipalLayout";
 import EconomeSidebarLayout from "./EconomSidebarLayout";
 import ManagerLayout from "./ManagerLayout";
 import AdminLayout from "./AdminLayout";
-import { GET_PERSONNEL_BY_USERID } from "../../graphql/queries";
+import { GET_PERSONNEL_BY_USERID } from "../../graphql/Queries";
 import { useMutation, useQuery } from '@apollo/client'; 
 import { useAccount } from "../../contexts/account/Account";
 
@@ -58,7 +58,7 @@ const SidebarLayout = ({ children }) => {
       overflowY="auto"
       p="7"
       gap={3}
-      minW={"230px"}
+      minW={"257px"}
       align="left"
       paddingTop={"80px"}
       color="#0e341f"

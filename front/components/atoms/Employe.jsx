@@ -29,7 +29,7 @@ import React, { useEffect, useState } from "react";
 import { IoIosAdd } from "react-icons/io";
 import { Router, useRouter } from "next/router";
 import { useMutation, useQuery } from "@apollo/client";
-import { GET_ALL_PERSONNELS } from "../../graphql/queries";
+import { GET_ALL_PERSONNELS } from "../../graphql/Queries";
 import { DELETE_PERSONNEL } from "../../graphql/Mutation";
 
 const Employee = (props) => {

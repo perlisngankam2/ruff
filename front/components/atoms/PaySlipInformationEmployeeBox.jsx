@@ -4,7 +4,7 @@ import {
     Divider,
 } from "@chakra-ui/react";
 import { useQuery } from "@apollo/client";
-import { GET_ALL_PERSONNEL_BY_ID} from "../../graphql/queries";
+import { GET_ALL_PERSONNEL_BY_ID} from "../../graphql/Queries";
 import { useEffect } from "react";
 import { useRouter } from "next/router";
 

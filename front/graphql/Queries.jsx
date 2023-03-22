@@ -8,7 +8,6 @@ query findAllpersonnel {
         firstName
         lastName
         phoneNumber
-        salary
         situationMatrimonial
         sexe
         fonction
@@ -22,13 +21,32 @@ query findAllpersonnel {
 
 //category personnel
 export const GET_ALL_Category_Personnel = gql ` 
-    query findAllcategoriepersonnel {
-        findAllcategoriepersonnel {
-            id
-            nom
-            description
-        }
+query findAllcategoriepersonnel {
+    findAllcategoriepersonnel {
+        id
+        nom
+        description
+        montant
     }
+}
+`;
+
+
+export const GET_Category_Personnel_BY_ID = gql ` 
+query findOneCategoriepersonnel ($id: String!) {
+    findOneCategoriepersonnel (id: $id) {
+        id
+        nom
+        description
+        montant
+    }
+}
+`;
+
+export const GET_Category_Personnel_ID = gql ` 
+query findCategoriepersonnelbypersonnel ($personnelid: String!) {
+    findCategoriepersonnelbypersonnel (personnelid: $personnelid)
+}
 `;
 
 
@@ -126,7 +144,6 @@ query findOnePersonnel ($id: String!) {
         firstName
         lastName
         phoneNumber
-        salary
         situationMatrimonial
         sexe
         fonction
@@ -283,7 +300,6 @@ query getpersonnelbyaccount ($userid: String!) {
         firstName
         lastName
         phoneNumber
-        salary
         situationMatrimonial
         sexe
         fonction

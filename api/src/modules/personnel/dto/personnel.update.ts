@@ -8,14 +8,17 @@ import { Status } from 'src/entities/pesonnel.entity';
 
 @InputType()
 export class PersonnelUpdateInput {
+  @Field(()=>ID)
+  id!:string 
+
   @Field(()=>ID,{nullable:true})
   userID?: string;
 
   // @Field(()=>ID,{nullable:true})
   // primeId?:string
 
-  @Field(({nullable:true}))
-  salary:number
+  // @Field(({nullable:true}))
+  // salary:number
   
   @Field(()=>ID, {nullable:true})
   categoryPersonnelId?: string;

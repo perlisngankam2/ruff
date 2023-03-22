@@ -93,6 +93,7 @@ function AjouterCategoryEleve  () {
                     rightIcon={<Icon as={IoIosAdd} boxSize="20px" />}
                     // borderRadius={'md'} 
                     onClick={onOpen}
+                    ml={["20px","50px","100px","600px"]}
                     // onClick = {() => router.push(personnel/AjouterCategoryPersonnel)} 
                 >
                     {/* <Link href={'/personnel/ajoutercategorypersonnel'}>                                 */}

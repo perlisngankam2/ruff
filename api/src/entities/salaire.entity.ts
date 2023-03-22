@@ -43,7 +43,6 @@ moisPaie!: string;
 @Property({ default: true })
 payer!: boolean;
 
-
 @Field({ defaultValue: 0 })
 @Property({ default: 0 })
 montant!: number ;

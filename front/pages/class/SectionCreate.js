@@ -12,7 +12,6 @@ import {
     Center,
   Flex,
   Input,
-
   FormControl,
   FormLabel,
   extendTheme,
@@ -85,7 +84,8 @@ const  SectionCreate =  () => {
             duration: 3000,
             isClosable: true,
           });
-          router.push("/class/cyclesection")
+          setName("");
+          setDescription("")
     }
 
    
@@ -94,6 +94,7 @@ const  SectionCreate =  () => {
         <Box> 
             <Box> 
                 <Button
+                    ml={["20px","50px","100px","600px"]}
                     rightIcon={<Icon as={IoIosAdd} boxSize="20px" />}
                     onClick={onOpen}
                 >

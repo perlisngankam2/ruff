@@ -21,6 +21,8 @@ mutation createpersonnel ($createPersonnelUser: PersonnelCreateInput!) {
 }
 `;
 
+
+
 //categorie personnel
 export const CREATE_CATEGORY_PERSONNEL = gql`
 mutation createcategoriepersonnnel ($createCategoriePersonnel: CategoriePersonnelCreateInput!) {
@@ -229,6 +231,8 @@ export const CREATE_COURSE = gql`
         }
     }
 `;
+
+
 export const fragmentCycle = gql` fragment CycleClass on cyle {
     id
     name
@@ -355,6 +359,19 @@ export const DELETE_COURSE = gql `
     }
 `;
 
+
+//Suppression des montant des tranches de la pension
+export const DELETE_TRANCHE_PENSION = gql `
+    mutation deletepension ($id: String!) {
+        deletepension (id: $id) {
+            id
+            name
+            description
+            montantPension
+            dateLine
+        }
+    }
+`;
 //update class
 export const UPDATE_CLASS = gql `
     mutation UpdateSalle ($id: String!, $input: SalleUpdateInput!) {

@@ -34,7 +34,8 @@ import {
   AlertDialogContent,
   AlertDialogHeader,
   AlertDialogBody,
-  AlertDialogFooter
+  AlertDialogFooter,
+  InputRightElement
 } from "@chakra-ui/react";
 // import Link from "../../components/atoms/Link"
 import React from "react";
@@ -45,7 +46,7 @@ import DefaultLayout from "../../components/layouts/DefaultLayout";
 import { Users } from '../api/data/users';
 import { Classes } from '../api/data/classes';
 import { IoIosAdd } from "react-icons/io";
-import{ FiEdit} from 'react-icons/fi';
+import{ FiEdit, FiSearch} from 'react-icons/fi';
 import {MdDelete} from 'react-icons/md';
 import {useRouter } from "next/router";
 import { GET_ALL_STUDENT, GET_STUDENT_BY_ID} from "../../graphql/Queries";
@@ -64,6 +65,7 @@ const Eleves = () => {
     const {data:dataStudent, loading, error} = useQuery(GET_ALL_STUDENT);
     const [deletestudent] = useMutation(DELETE_STUDENT);
     const { isOpen, onToggle, onClose, onOpen } = useDisclosure();
+    const [searchNameStudent, setSearchNameStudent] = useState("");
 
     // const student = get(dataStudent)
     
@@ -103,6 +105,9 @@ const Eleves = () => {
       onClose();
     }
 
+    const handleChange = (e) => {
+      setSearchNameStudent(e.target.value);
+    };
 
   return (
     <DefaultLayout>
@@ -130,15 +135,22 @@ const Eleves = () => {
 
         <Flex gap={10} mt={5}>
           <InputGroup>
-            <Input
-              placeholder="Rechercher un élève..."
-              //value={recherche}
-              onChange={e => setQuery(e.target.value)}
+            <InputRightElement
+              children={<Icon as={FiSearch} />}
+              cursor="pointer"
             />
-            <InputRightAddon children={<SearchIcon />} />
+            <Input
+              placeholder="Recherchez un élève..."
+              //value={recherche}
+              // onChange={e => setQuery(e.target.value)
+              onChange={handleChange}
+              variant="flushed"
+            />
+            {/* <InputRightAddon children={<SearchIcon />} /> */}
           </InputGroup>
           <Select 
             placeholder="Selectionner la classe"
+            variant="flushed"
             onChange={e =>setQuery(e.target.value)}
           >
             {Classes.map((classe) => (
@@ -160,25 +172,41 @@ const Eleves = () => {
           <PaiementTable data={search(Users)}/>
         </Box> */}
         <Box mt={10}>
-           <TableContainer>
-              <Table variant='striped'>
+           <TableContainer 
+              border={"1px"} 
+              rounded={"md"}
+           >
+              <Table 
+                variant='striped' 
+                colorScheme={"white"}
+                bg={"white"}
+              >
                   {/* <TableCaption>Liste des eleves</TableCaption> */}
-                  <Thead>
+                  <Thead background="colors.secondary">
                   <Tr>
-                      <Th>Nom</Th>
-                      <Th>Prenom</Th>
-                      {/* <Th >classe</Th> */}
-                      {/* <Th>sexe</Th> */}
-                      {/* <Th>Photo</Th> */}
-                      <Th>Action</Th>
+                    <Th>Nom</Th>
+                    <Th>Prenom</Th>
+                    {/* <Th >classe</Th> */}
+                    {/* <Th>sexe</Th> */}
+                    {/* <Th>Photo</Th> */}
+                    <Th>Action</Th>
                   </Tr>
                   </Thead>
                   <Tbody>
-                  {dataStudent && ( 
-                    dataStudent.findAllstudents.map((student, index) =>(
+                  {dataStudent && (
+                    dataStudent.findAllstudents
+                    .filter((student) =>{
+                      if(searchNameStudent == ""){
+                        return student;
+                      }else if (student.firstname.toLowerCase().includes (searchNameStudent.toLowerCase()) || 
+                      student.lastname.toLowerCase().includes (searchNameStudent.toLowerCase()) ||
+                       student.fatherFirstName.toLowerCase().includes (searchNameStudent.toLowerCase()))
+                      return student;
+                    })
+                    .map((student, index) =>(
                       <Tr key={index}>
-                        <Td borderColor={'#C6B062'}>{student.lastname}</Td>
-                        <Td borderColor={'#C6B062'}>{student.firstname}</Td>
+                        <Td >{student.firstname}</Td>
+                        <Td >{student.lastname}</Td>
                         {/* <Td borderColor={'#C6B062'}>{student.classe}</Td> */}
                         {/* <Td borderColor={'#C6B062'}>{student.sex}</Td> */}
                         {/* <Td borderColor={'#C6B062'}>
@@ -188,8 +216,7 @@ const Eleves = () => {
                                 src='https://bit.ly/dan-abramov'
                             /> 
                         </Td> */}
-                        
-                        <Td borderColor={'#C6B062'}>
+                        <Td >
                           <ButtonGroup 
                             size='sm' 
                             isAttached 
@@ -215,7 +242,7 @@ const Eleves = () => {
                               mt={['8px', '8px', '8px', '8px']}
                             >
                               <Link 
-                              href="/eleves/modifiereleve">
+                                href="/eleves/modifiereleve">
                                   <Icon
                                   as={FiEdit}
                                   boxSize="40px"
@@ -223,7 +250,7 @@ const Eleves = () => {
                                   // bg="blue.100"
                                   rounded="full"
                                   _hover={{background:"red.100"}}
-                                  />
+                                />
                               </Link>
                               <Box href="#" mt="-3px">
                                 <Icon
@@ -246,7 +273,7 @@ const Eleves = () => {
                                       // alignSelf={"center"}
                                     >
                                       <AlertDialogContent
-                                      width={"380px"}
+                                        width={"380px"}
                                       >
                                         <AlertDialogHeader 
                                           fontSize='lg' 

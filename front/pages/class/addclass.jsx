@@ -19,7 +19,12 @@ import { useMutation, useQuery } from "@apollo/client";
 import { MdDescription } from "react-icons/md";
 import DefaultLayout from "../../components/layouts/DefaultLayout";
 import { CREATE_SALLE} from "../../graphql/Mutation";
-import { GET_ALL_SECTION , GET_ALL_CYCLE, GET_ALL_STUDY_LEVEL, GET_ALL_CLASS} from "../../graphql/Queries";
+import { 
+  GET_ALL_SECTION , 
+  GET_ALL_CYCLE, 
+  GET_ALL_STUDY_LEVEL, 
+  GET_ALL_CLASS,
+}  from "../../graphql/Queries";
 
 const AddClass = () => {
 
@@ -28,11 +33,13 @@ const AddClass = () => {
   const teachers = ["Ryan Jones", "Illary Daenarys ", "Julian Clinton"];
   const [name, setName] = useState();
   const [section, setSection] = useState();
-  const [niveauEtudeId, setNiveauEtudeId] = useState();
+  const [niveauEtudeId, setNiveauEtudeId] = useState("");
+  const [cycleId, setCycleId] = useState("");
   const [montantPensionSalle, setMontantPensionSalle] = useState();
   const [createSalle] = useMutation(CREATE_SALLE);
   const {data:dataSection} = useQuery(GET_ALL_SECTION);
   const {data:dataStudyLevel} = useQuery(GET_ALL_STUDY_LEVEL);
+  const {data:dataCycle} = useQuery(GET_ALL_CYCLE);
 
   // const bb = parseInt(montantPension)
   // // console.log(parseFloat(montantPension))
@@ -60,7 +67,7 @@ const AddClass = () => {
 
     console.log(name);
     console.log(section);
-    console.log(cycle);
+    console.log(cycleId);
     console.log(montantPensionSalle);
     console.log(niveauEtudeId);
 
@@ -69,6 +76,7 @@ const AddClass = () => {
             salle: {
               name: name,
               niveauEtudeId: niveauEtudeId,
+              cycleId: cycleId,
               montantPensionSalle: parseInt(montantPensionSalle)
             }
         },
@@ -130,7 +138,7 @@ const AddClass = () => {
                       onChange = {(event) => setName(event.target.value)}
                     />
                   </FormControl>
-                  <FormControl>
+                  {/* <FormControl>
                     <FormLabel>Montant pension:</FormLabel>
                     <Input 
                       placeholder="Valeur de la pension" 
@@ -140,7 +148,7 @@ const AddClass = () => {
                       value={montantPensionSalle}
                       onChange = {(event) => setMontantPensionSalle(event.target.value)}
                     />
-                  </FormControl>
+                  </FormControl> */}
                   <FormControl mt="15px">
                       <FormLabel>Niveau d'etude</FormLabel>
                       <Select 
@@ -160,16 +168,24 @@ const AddClass = () => {
                           )}
                       </Select>
                   </FormControl> 
-                  {/* <FormControl mt="15px">
-                      <FormLabel>Pension</FormLabel>
-                     <Input
-                       type={"number"}
-                       name="montantPension"
-                       value={montantPension}
-                       placeholder="Montant de la pension"
-                       onChange ={(event) => setMontantPension(event.target.value)}
-                     />
-                 </FormControl>*/}
+                  <FormControl mt="15px">
+                      <FormLabel>Cycle</FormLabel>
+                        <Select 
+                          name="cycleId"
+                          placeholder="Cycle"
+                          minW="300px"
+                          onChange = {(event) => setCycleId(event.target.value)}
+                          value={cycleId}
+                        >
+                         {dataCycle &&(
+                                dataCycle.findAllcycle.map((cycle, index) => ( 
+                                    <option value={cycle.id} key={index}>
+                                        {cycle.name}
+                                    </option>
+                                ))
+                            )} 
+                        </Select>
+                 </FormControl>
                   <Flex gap={5} pt="30px">
                     <Button colorScheme="red" onClick={() => router.back()}>
                       Annuler

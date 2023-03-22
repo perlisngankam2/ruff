@@ -48,7 +48,6 @@ import {
     // if (loading) return "creation en cour..."
     // if(error)  return "erreur! ${error.message}";
     
-   
     useEffect(() => {
       // console.log(dataSection?.findAllsection)
       console.log("j")

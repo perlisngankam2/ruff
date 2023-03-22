@@ -28,6 +28,14 @@ export class PersonnelSalleResolver {
     return this.personnelsalleService.findByOne(id);
   }
 
+  @Query(() => [[String],String,[String]])
+  async findbyCoursePersonnelSalle(
+      @Args('personnelid', { type: () => String }) personnelid: string,
+      @Args('salleid', { type: () => String }) salleid: string,
+      @Args('courseid', { type: () => String }) courseid: string) {
+    return await this.personnelsalleService.findbyCoursePersonnelSalle(personnelid,salleid,courseid)
+  }
+
   @Mutation(()=> PersonnelSalle)
   async deletePersonnelSalle(@Args('id') id:string){
  return await this.personnelsalleService.delete(id)

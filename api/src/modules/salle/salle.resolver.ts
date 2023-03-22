@@ -30,7 +30,7 @@ export class SalleResolver {
     return this.salleService.getAll()
   }
   
-  @Query(() => Salle, { name: 'salle' })
+  @Query(() => Salle)
   findOnesalle(@Args('id', { type: () => String }) id: string) {
     return this.salleService.findByOne(id);
   }
@@ -48,6 +48,26 @@ export class SalleResolver {
   @Mutation(()=> Salle)
   async deleteprimepersonnel(@Args('id') id:string){
  return await this.salleService.delete(id)
+  }
+
+  @Mutation(()=>Salle)
+  async deleteSalle(@Args('id') id:string){
+   return this.salleService.deleteSalle(id)
+  }
+
+  
+  @Mutation(()=>Salle)
+  async UpdateSalle(@Args('id') id:string, @Args('input') input:SalleUpdateInput){
+   return this.salleService.updateSalle(id,input)
+  }
+
+  @Query(() => Salle)
+  async findSalleByStudent(@Args('studentid', { type: () => String }) studentid: string) {
+    const a =await this.salleService.findStudentBySalle(studentid);
+   if(!a){
+  throw Error("Classe not found!!!!!!!")
+   }
+   return a
   }
 
 }

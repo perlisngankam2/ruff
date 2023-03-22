@@ -120,9 +120,6 @@ const SuiviPaiementFraisInscription = () => {
                                             <Td border={'1px'}>millimetres</Td>
                                             <Td border={'1px'}>millim</Td>
                                             <Td border={'1px'}>millim</Td>
-
-                                            
-
                                         </Tr>
                                         <Tr>
                                             <Td border={'1px'}>inches</Td>

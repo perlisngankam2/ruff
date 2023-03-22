@@ -22,6 +22,6 @@ export class PrimePersonnelCreateInput {
   @Field(()=>PrimeCreateInput,{nullable:true})
   prime?:PrimeCreateInput;
 
-  // @Field(()=>PersonnelCreateInput,{nullable:true})
-  // personnel?:PersonnelCreateInput
+  @Field(()=>PersonnelCreateInput,{nullable:true})
+  personnel?:PersonnelCreateInput
 }

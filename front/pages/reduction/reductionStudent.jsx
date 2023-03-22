@@ -19,13 +19,14 @@ import {
    Thead,
    Tr,
    Link,
-   Icon
+   Icon,
+   InputRightElement
   } from "@chakra-ui/react";
   
   import DefaultLayout from "../../components/layouts/DefaultLayout";
   import AddReductionStudent from "./AddReductionStudent";
   import { Router, useRouter } from "next/router";
-  import {FiEdit} from 'react-icons/fi';
+  import {FiEdit, FiSearch} from 'react-icons/fi';
   import {MdDelete} from 'react-icons/md';
   import { useMutation, useQuery } from "@apollo/client"; 
   import { GET_ALL_REDUCTION_SCOLARITE } from "../../graphql/Queries";
@@ -92,13 +93,18 @@ import {
          </Flex>
   
          <Flex gap={10} mt={5}>
-           <InputGroup>
+           <InputGroup width={"600px"}>
+            <InputRightElement
+                children={<Icon as={FiSearch} />}
+                cursor="pointer"
+              />
              <Input
-               placeholder="Recherchez une categorie..."
+               placeholder="Recherchez une reduction..."
                //value={recherche}
                onChange={e => setQuery(e.target.value)}
+               variant="flushed"
              />
-             <InputRightAddon children={<SearchIcon />} />
+             {/* <InputRightAddon children={<SearchIcon />} /> */}
            </InputGroup>
            {/* <Select 
              placeholder="Selectionner la classe"
@@ -110,9 +116,16 @@ import {
            </Box>
          </Flex>
          <Box mt={10}>
-             <TableContainer>
-                 <Table variant='striped'>
-                     <Thead>
+             <TableContainer
+              border={"1px"} 
+              rounded={"md"}
+             >
+                 <Table 
+                  variant='striped' 
+                  colorScheme={"white"}
+                  bg={"white"}
+                 >
+                     <Thead background="colors.secondary">
                        <Tr>
                          <Th>Nom</Th>
                          <Th>Montant</Th>
@@ -125,11 +138,11 @@ import {
                           dataReductionScolarite.findAllreductionscolarite.map((reductionscolarite, index) => ( 
                            <Tr 
                              key={index} 
-                             borderColor={'#C6B062'}
+                             
                              >
-                               <Td borderColor={'#C6B062'}>{reductionscolarite.name}</Td>
-                               <Td borderColor={'#C6B062'}>{reductionscolarite.montant}</Td>
-                               <Td borderColor={'#C6B062'}>
+                               <Td p={0} pl={6}>{reductionscolarite.name}</Td>
+                               <Td p={0} pl={6}>{reductionscolarite.montant}</Td>
+                               <Td p={0} pl={3}>
                                <Box display="flex">
                                  <Link 
                                    href="/eleves/modifiereleve">

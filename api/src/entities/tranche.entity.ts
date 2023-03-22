@@ -18,6 +18,7 @@ import { Pension } from './pension.entity';
 import { Personnel } from './pesonnel.entity';
 import { TrancheStudent } from './tranche-student.entity';
 import { AnneeAccademique } from './annee-accademique.entity';
+import { AvanceTranche } from './avance-tranche.entity';
 
 @Entity()
 @ObjectType()
@@ -47,6 +48,9 @@ export class Tranche {
 
   @OneToMany(()=>TrancheStudent, (trancheStudent) => trancheStudent.tranche)
   trancheStudent = new Collection<TrancheStudent>(this)
+
+  @OneToMany(()=>AvanceTranche, (avancetranche) => avancetranche.tranche)
+  avancetranche = new Collection<AvanceTranche>(this)
 
   @ManyToOne(() => AnneeAccademique ,{
     nullable:true,

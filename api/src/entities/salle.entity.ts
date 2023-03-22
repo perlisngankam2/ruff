@@ -19,6 +19,7 @@ import { Pension } from './pension.entity';
 import { PersonnelSalle } from './personnelsalle.entity';
 import { Personnel } from './pesonnel.entity';
 import { Student } from './student.entity';
+import { Cycle } from './cycle.entity'; 
 
 
 @Entity()
@@ -52,12 +53,17 @@ export class Salle{
     createdAt = new Date();
 
 // elation entities 
-
     @ManyToOne(() => NiveauEtude, {
         nullable: true,
         onDelete: 'CASCADE',
       })
     niveau!: IdentifiedReference<NiveauEtude> | null;
+
+    @ManyToOne(() => Cycle, {
+      nullable: true,
+      onDelete: 'CASCADE',
+    })
+    cyle!: IdentifiedReference<Cycle> | null;
 
     @OneToOne(() => Pension, (pension) => pension.salle, {
         owner: false,

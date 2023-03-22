@@ -19,11 +19,11 @@ export class SalaireCreateInput {
   @Field(()=>ID,{ nullable: true })
   personnelId:string
 
-  // @Field(()=>ID,{ nullable: true })
-  // primeId:string
+  @Field(()=>ID,{ nullable: true })
+  primeId:string
 
-  // @Field(()=>ID,{ nullable: true })
-  // retenuId:string
+  @Field(()=>ID,{ nullable: true })
+  retenuId:string
 
   // @Field({nullable:true})
   // description?: string;
@@ -40,16 +40,18 @@ export class SalaireCreateInput {
   @Field({nullable:true})
   moisPaie?: string;
 
-  // @Field(()=>PeriodeCreateInput,{nullable:true})
-  // periode?: PeriodeCreateInput;
+ 
 
-  // @Field(()=>PersonnelCreateInput,{nullable:true})
-  // personnel?: PersonnelCreateInput;
+  @Field(()=>PeriodeCreateInput,{nullable:true})
+  periode?: PeriodeCreateInput;
 
-  // @Field(()=>PrimePersonnelCreateInput,{nullable:true})
-  // prime?: PrimePersonnelCreateInput;
+  @Field(()=>PersonnelCreateInput,{nullable:true})
+  personnel?: PersonnelCreateInput;
 
-  // @Field(()=>RetenuPersonnelCreateInput,{nullable:true})
-  // retenu?: RetenuPersonnelCreateInput;
+  @Field(()=>PrimePersonnelCreateInput,{nullable:true})
+  prime?: PrimePersonnelCreateInput;
+
+  @Field(()=>RetenuPersonnelCreateInput,{nullable:true})
+  retenu?: RetenuPersonnelCreateInput;
 
 }

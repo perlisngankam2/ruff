@@ -43,4 +43,13 @@ export class TrancheStudentResolver {
   async deletetranchestudent(@Args('id') id:string){
  return await this.trancheService.delete(id)
   }
+
+  @Query(()=>TrancheStudent)
+  async getStudentByTrancheStudent(@Args('studentid') studentid:string){
+    const student=await this.trancheService.findStudentByTrancheStudent(studentid)
+    if(!student){
+      throw Error("not found")
+    }
+    return student
+  }
 }

@@ -98,6 +98,7 @@ type RetenuPersonnel {
 
 type Salaire {
   id: ID!
+  description: String
   jourPaie: String
   moisPaie: String
   payer: Boolean!
@@ -303,6 +304,7 @@ type Query {
   user(id: String!): User!
   findAllPersonnelSalle: [PersonnelSalle!]!
   findOnePersonnelSalle(id: String!): PersonnelSalle!
+  findbyCoursePersonnelSalle(personnelid: String!, salleid: String!, courseid: String!): [[String!]!]!
   findAllpersonnel: [Personnel!]!
   findOnePersonnel(id: String!): Personnel!
   getpersonnelaccount(id: String!): User!
@@ -311,6 +313,7 @@ type Query {
   findAllsalle: [Salle!]!
   findOnesalle(id: String!): Salle!
   etatInscriptionSalle(id: String!): Salle!
+  findSalleByStudent(studentid: String!): Salle!
   findAllNiveauEtude: [NiveauEtude!]!
   niveaEtude(id: String!): NiveauEtude!
   etatInscriptionNiveau(id: String!): NiveauEtude!
@@ -356,8 +359,14 @@ type Query {
   fraisExamen(id: String!): FraisExamen!
   findavancetranchebyid(input: String!): AvanceTranche!
   findallavancetranche: [AvanceTranche!]!
+  SumAvanceTrancheByTranche(trancheid: String!): Float!
+  AmountMostRecentAvanceTranche(trancheid: String!): Float!
+  MostRecentAvanceTranche: Float!
+  AmountRecentAvanceTrancheByStudent(studentid: String!): Float!
+  SumAvanceTrancheByStudent(studentid: String!, trancheid: String!): String!
   findAlltranchestudent: [TrancheStudent!]!
   trancheStudent(id: String!): TrancheStudent!
+  getStudentByTrancheStudent(studentid: String!): TrancheStudent!
   findAll: [Inscription!]!
   findOne(id: String!): Inscription!
   findAllavanceinscription: [AvanceInscription!]!
@@ -535,7 +544,7 @@ input SalleCreateInput {
   ID: String
   name: String
   sectionId: ID
-  cycle: String
+  cycleId: String
   montantPensionSalle: Float
   effectif: Float = 0
   niveauEtudeId: ID
@@ -584,7 +593,7 @@ input SalleUpdateInput {
   ID: String
   name: String
   sectionId: ID
-  cycle: String
+  cycleId: String
   montantPensionSalle: Float
   niveauEtudeId: ID
   effectif: Float = 0
@@ -764,6 +773,7 @@ input PrimePersonnelCreateInput {
   startdate: String
   enddate: String
   prime: PrimeCreateInput
+  personnel: PersonnelCreateInput
 }
 
 input PeriodeCreateInput {
@@ -911,18 +921,37 @@ input UpdateFraisInscriptionInput {
 
 input SalaireCreateInput {
   personnelId: ID
+  primeId: ID
+  retenuId: ID
   payer: Boolean! = false
   montant: Float! = 0
   jourPaie: String
   moisPaie: String
+  periode: PeriodeCreateInput
+  personnel: PersonnelCreateInput
+  prime: PrimePersonnelCreateInput
+  retenu: RetenuPersonnelCreateInput
 }
 
 input SalaireUpdateInput {
   personnelId: ID
+  primeId: ID
+  retenuId: ID
   payer: Boolean! = false
   montant: Float! = 0
   jourPaie: String
   moisPaie: String
+  periode: PeriodeUpdateInput
+  personnel: PersonnelUpdateInput
+  prime: PrimePersonnelUpdateInput
+  retenu: RetenuPersonnelUpdateInput
+}
+
+input PrimePersonnelUpdateInput {
+  primeId: ID
+  personnelId: ID
+  startdate: String
+  enddate: String
 }
 
 input ParentCreateInput {

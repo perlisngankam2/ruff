@@ -242,6 +242,17 @@ export const GET_ONE_CYCLE =  gql `
     }
 `;
 
+//recuperation d'une section
+export const GET_ONE_SECTION = gql `
+    query findOnesection ($id: String!) {
+        findOnesection (id: $id) {
+            id
+            name
+            description
+        }
+    }
+`;
+
 
 export const GET_USER_CONNECTED = gql `
 query user ($id: String!) {
@@ -331,8 +342,13 @@ export const GET_ALL_MONTANT_PENSION_CLASS = gql`
         }
     }
  `;
-
-
+export const GET_ALL_PERSONNEL_SALLE = gql`
+    query findAllPersonnelSalle {
+        findAllPersonnelSalle {
+            id
+        }
+    }
+`;
 
 export const GET_PRIME= gql `
 query findAllprime {
@@ -343,6 +359,51 @@ query findAllprime {
         montant
     }
 }
+`;
+
+export const GET_ALL_COURSE_PERSONNEL_SALLE = gql `
+    query findbyCoursePersonnelSalle ($salleid: String!, $personnelid: String!, $courseid: String!) {
+        findbyCoursePersonnelSalle (salleid: $salleid, personnelid: $personnelid, courseid: $courseid) {
+            id
+        }
+    }
+`;
+
+//recuperation des infos de l'eleve a partir de tranche student
+export const GET_STUDENT_BY_TRANCHE_STUDENT = gql `
+query getTrancheStudentByStudent ($studentid: String!) {
+    getTrancheStudentByStudent (studentid: $studentid) {
+        id
+        name
+        description
+        montant
+        complete
+        reste
+        surplus
+    }
+}
+`; 
+
+//recuperation de la classe deml'eleve\
+export const GET_STUDENT_SALLE = gql `
+    query findSalleByStudent ($studentid: String!) {
+        findSalleByStudent (studentid: $studentid) {
+            id
+            name
+            section
+            cycle
+            montantPensionSalle
+            effectif
+        }
+    }
+`
+
+// recuperation du dernier paiement effectue
+
+export const GET_LAST_PAYMENT = gql `
+    query AmountRecentAvanceTrancheByStudent ($studentid: String!) {
+        AmountRecentAvanceTrancheByStudent (studentid: $studentid)
+    }
 `;
 
 

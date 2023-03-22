@@ -32,7 +32,7 @@ const AjouterPersonnel = () => {
     const [status, setStatus] = useState("");
     const [phoneNumber, setPhoneNumber] = useState("")
     const [childNumber, setChildNumber] = useState("");
-    const [salaire, setSalaire] = useState("");
+    // const [salaire, setSalaire] = useState("");
     const [situationMatrimonial, setSituationMatrimonial] = useState("");
     // const [salaire, setSalaire] = useState("");
     const [categoryPersonnelId, setCategoryPersonnelId] = useState("");
@@ -136,6 +136,7 @@ const AjouterPersonnel = () => {
           firstName: firstName,
           lastName : lastName,
           phoneNumber: phoneNumber,
+          // salary: parseInt(salaire),
           categoryPersonnelId: categoryPersonnelId,
           status: status,
           situationMatrimonial: situationMatrimonial,
@@ -466,30 +467,26 @@ const AjouterPersonnel = () => {
                     <option>Autres</option>
                   </Select>
                 </FormControl>
-                
               </Box>
               <Box display={{md:"flex"}} mt="2%">
-              <FormControl mr="5%" >
-                  <FormLabel fontWeight={"normal"}>Compte Associé</FormLabel>
-                  <Select 
-                      name="userID"
-                      placeholder="Compte"
-                      onChange = {(event) => setUserID(event.target.value)}
-                      value={userID}
-                  >
-                      {data && (
-                          data.findAlluser.map((user, index) => ( 
-                            
-                              <option value={user?.id} key={index}>
-                                  {user.email}
-                                  {/* {console.log(section.id)} */}
-                              </option>
-                          ))
-                      )}
-                  </Select>
-              </FormControl>
-           
-
+                <FormControl>
+                    <FormLabel fontWeight={"normal"}>Compte Associé</FormLabel>
+                    <Select 
+                        name="userID"
+                        placeholder="Compte"
+                        onChange = {(event) => setUserID(event.target.value)}
+                        value={userID}
+                    >
+                        {data && (
+                            data.findAlluser.map((user, index) => ( 
+                                <option value={user?.id} key={index}>
+                                    {user.email}
+                                    {/* {console.log(section.id)} */}
+                                </option>
+                            ))
+                        )}
+                    </Select>
+                  </FormControl>
               </Box>
               <ButtonGroup mt="3%" w="100%">
                 <Flex w="100%" justifyContent="space-between">

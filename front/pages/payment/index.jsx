@@ -29,7 +29,7 @@ import DefaultLayout from "../../components/layouts/DefaultLayout";
 // import PaySlip from "./PaySlip";
 import { useState } from "react";
 import { useMutation, useQuery } from "@apollo/client";
-import { GET_ALL_PERSONNELS } from "../../graphql/queries";
+import { GET_ALL_PERSONNELS } from "../../graphql/Queries";
 import { MdDelete } from "react-icons/md";
 
 const Payment = () => {
@@ -138,14 +138,17 @@ const Payment = () => {
                         <Th>Fonction</Th>
                       </Tr>
                     </Thead>
+                    {dataPersonnel && ( 
                     <Tbody>
-                        <Tr>
-                            <Td p={3} pl={6}>R</Td>
-                            <Td p={3} pl={6}>R</Td>
-                            <Td p={3} pl={6}>r</Td>
+                      { dataPersonnel.findAllpersonnel.map((personnel, index) => ( 
+                        <Tr key={index}>
+                            <Td p={3} pl={6}>{personnel.firstName}</Td>
+                            <Td p={3} pl={6}>{personnel.firstName}</Td>
+                            <Td p={3} pl={6}>{personnel.fonction}</Td>
                         </Tr>
-                        
+                     ))}
                     </Tbody>
+                  )}
                 </Table>
             </TableContainer>
         </Box>

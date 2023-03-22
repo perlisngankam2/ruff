@@ -257,7 +257,7 @@ const cyclesection = () => {
           </Hide>
         </Flex>
         <Flex gap={10} mt={5}>
-          <InputGroup  width="500px">
+          <InputGroup  width="600px">
           {/* <InputRightElement
               children={<Icon as={FiSearch} />}
               cursor="pointer"

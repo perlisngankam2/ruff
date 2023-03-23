@@ -58,7 +58,7 @@ import { useMutation, useQuery } from "@apollo/client";
 const Eleves = () => {
 
     const cancelRef = React.useRef()
-    const {router} = useRouter();
+    const router = useRouter();
     const [query , setQuery] = useState("");
     const [data, setData] = useState([]);
     const keys = ["first_name", "last_name", "email", "classe"];

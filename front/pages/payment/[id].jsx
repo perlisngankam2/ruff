@@ -106,12 +106,12 @@ const PaySlip = () => {
           
         <Flex bg='#5755c1' width='1000px' h='80px' margin="0 auto" pb='20px'> 
         <Flex p="1.5em" textAlign="center" ml='20px' gap={6} margin="0 auto" >
-          <Flex>
+          <Flex gap={2}>
             <Text color='#9490c9' fontWeight={'bold'}>Noms & prénoms de l'employé :</Text>
             <Text color='white'>{dataPersonnelId?.findOnePersonnel.firstName +' '+ dataPersonnelId?.findOnePersonnel.lastName}</Text>
           
           </Flex>
-          <Flex>
+          <Flex gap={2}>
             <Text color='#9490c9' fontWeight={'bold'}>Fonction :</Text>
             <Text color='white'>{dataPersonnelId?.findOnePersonnel.fonction}</Text>
           </Flex>

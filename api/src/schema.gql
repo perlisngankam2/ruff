@@ -98,7 +98,6 @@ type RetenuPersonnel {
 
 type Salaire {
   id: ID!
-  description: String
   jourPaie: String
   moisPaie: String
   payer: Boolean!
@@ -107,8 +106,7 @@ type Salaire {
 
 type PrimePersonnel {
   id: ID!
-  startDate: String
-  endDate: String
+  startMonth: String
 }
 
 type Prime {
@@ -770,10 +768,7 @@ input CategorieRetenuCreateInput {
 input PrimePersonnelCreateInput {
   primeId: ID
   personnelId: ID
-  startdate: String
-  enddate: String
-  prime: PrimeCreateInput
-  personnel: PersonnelCreateInput
+  startMonth: String
 }
 
 input PeriodeCreateInput {
@@ -950,8 +945,7 @@ input SalaireUpdateInput {
 input PrimePersonnelUpdateInput {
   primeId: ID
   personnelId: ID
-  startdate: String
-  enddate: String
+  startMonth: String
 }
 
 input ParentCreateInput {

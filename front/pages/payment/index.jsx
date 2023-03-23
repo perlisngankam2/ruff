@@ -4,6 +4,8 @@ import {
   Center,
   Heading,
   Flex,
+  ButtonGroup,
+  Button,
   Input,
   InputGroup,
   InputRightElement,
@@ -37,22 +39,23 @@ const Payment = () => {
 
   const {data:dataPersonnel, loading, error} = useQuery(GET_ALL_PERSONNELS)
   const [personnel, setPersonnel] = useState([]);
-  const [ filteredData, setFilteredData]=useState([])
+  const [ filteredData, setFilteredData]=useState([]);
+    const [ searchName, setSearchName]=useState("")
 
 
 
   const handleChange = (e) => {
-    const searchName = e.target.value;
-    const newFilter =   dataPersonnel.findAllpersonnel
-              .filter((personnel) =>{
-              return  (personnel.firstName.toLowerCase().includes (searchName.toLowerCase()) || personnel.lastName.toLowerCase().includes (searchName.toLowerCase()) || personnel.fonction.toLowerCase().includes (searchName.toLowerCase()))
+    setSearchName(e.target.value);
+    // const newFilter =   dataPersonnel.findAllpersonnel
+    //           .filter((personnel) =>{
+    //           return  (personnel.firstName.toLowerCase().includes (searchName.toLowerCase()) || personnel.lastName.toLowerCase().includes (searchName.toLowerCase()) || personnel.fonction.toLowerCase().includes (searchName.toLowerCase()))
               
-            } );
-    if (searchName === ""){
-      setFilteredData([]);
-    }else {
-        setFilteredData(newFilter);
-    }
+    //         } );
+    // if (searchName === ""){
+    //   setFilteredData([]);
+    // }else {
+    //     setFilteredData(newFilter);
+    // }
             
   };
   return (
@@ -95,7 +98,7 @@ const Payment = () => {
    
         </Center>
         
-               {filteredData.length !=0 &&(
+               {/* {filteredData.length !=0 &&(
                  <Box py='9px' w='290px' bg={'white'} boxShadow="md" borderRadius="7px" overflow={"hidden"} overflowY='auto' placeItems={'center'} margin="0 auto">
            {filteredData.map((personnel, index) => (
               <Grid key={index} marginLeft='10px' >
@@ -118,7 +121,7 @@ const Payment = () => {
               </Link>
 
               </Grid>
-          ))} </Box>)}
+          ))} </Box>)} */}
           
         {/* <PaySlip />  */}
           <Box mt={10}>
@@ -136,15 +139,45 @@ const Payment = () => {
                         <Th>Nom</Th>
                         <Th>Prenom</Th>
                         <Th>Fonction</Th>
+                        <Th></Th>
                       </Tr>
                     </Thead>
                     {dataPersonnel && ( 
                     <Tbody>
-                      { dataPersonnel.findAllpersonnel.map((personnel, index) => ( 
+                      { dataPersonnel.findAllpersonnel
+                      .filter((personnel) => {
+                         if (searchName === ""){
+                            return personnel;
+                          } else if (personnel.firstName.toLowerCase().includes (searchName.toLowerCase()) || personnel.lastName.toLowerCase().includes (searchName.toLowerCase()) || personnel.fonction.toLowerCase().includes (searchName.toLowerCase()))
+                              return personnel;
+                          
+
+                      })
+                      
+                      .map((personnel, index) => ( 
                         <Tr key={index}>
+                          
                             <Td p={3} pl={6}>{personnel.firstName}</Td>
-                            <Td p={3} pl={6}>{personnel.firstName}</Td>
+                            <Td p={3} pl={6}>{personnel.lastName}</Td>
                             <Td p={3} pl={6}>{personnel.fonction}</Td>
+                             <Td p={0} >
+                            <ButtonGroup 
+                              size='sm' 
+                              isAttached 
+                              variant='link' 
+                              colorScheme={'teal'}
+                              >
+                                <Button>
+                                  
+                                  <Link 
+                                    href= {{
+                      pathname: Routes.PaymentDetails?.path || '',
+                      query: {id: personnel.id}
+                  }}
+                                  >Payer</Link>
+                                </Button>
+                              </ButtonGroup> 
+                            </Td>
                         </Tr>
                      ))}
                     </Tbody>

@@ -13,10 +13,10 @@ export class PrimePersonnelUpdateInput {
   personnelId?: string;
 
   @Field({nullable:true})
-  startdate?: string;
+  startMonth?: string;
 
-  @Field({nullable:true})
-  enddate?: string;
+  // @Field({nullable:true})
+  // enddate?: string;
 
   // @Field(()=>PrimeCreateInput,{nullable:true})
   // prime?:PrimeCreateInput;

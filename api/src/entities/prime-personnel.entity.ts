@@ -31,11 +31,11 @@ export class PrimePersonnel {
 
   @Field({ nullable: true })
   @Property({ nullable: true })
-  startDate!: string; 
+  startMonth!: string; 
 
-  @Field({ nullable: true })
-  @Property({ nullable: true })
-  endDate!: string; 
+  // @Field({ nullable: true })
+  // @Property({ nullable: true })
+  // endDate!: string; 
 
   
 // relation with another Entites

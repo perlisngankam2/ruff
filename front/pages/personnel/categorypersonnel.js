@@ -59,7 +59,7 @@ const Category = () => {
     //   return query ? datas.slice(0,5) : Users.slice(0,5)
     // };
 
-    const {data} = useQuery(GET_ALL_Category_Personnel);
+    const {data ,loading,error} = useQuery(GET_ALL_Category_Personnel);
     const [deletePerssCategory] = useMutation(DELETE_CATEGORY_PERSONNEL, 
       {
         onCompleted: data => {
@@ -151,7 +151,7 @@ const Category = () => {
                     <Thead background="colors.secondary">
                     <Tr>
                         <Th>Nom</Th>
-                        <Th>Description</Th>
+                        <Th>Salaire de base</Th>
                         <Th>Actions</Th>
                     </Tr>
                     </Thead>
@@ -161,7 +161,7 @@ const Category = () => {
                         data.findAllcategoriepersonnel.map((category, index) => ( 
                           <Tr key={index}>
                               <Td borderColor={'#C6B062'}>{category.nom}</Td>
-                              <Td borderColor={'#C6B062'}>{category.description}</Td>
+                              <Td borderColor={'#C6B062'}>{category.montant}</Td>
                               <Td borderColor={'#C6B062'}>
                               <Box display="flex">
                                 <Link 

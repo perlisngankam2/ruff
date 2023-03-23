@@ -13,15 +13,15 @@ export class PrimePersonnelCreateInput {
   personnelId?: string;
 
   @Field({nullable:true})
-  startdate?: string;
+  startMonth?: string;
 
-  @Field({nullable:true})
-  enddate?: string;
+  // @Field({nullable:true})
+  // enddate?: string;
 
 
-  @Field(()=>PrimeCreateInput,{nullable:true})
-  prime?:PrimeCreateInput;
+  // @Field(()=>PrimeCreateInput,{nullable:true})
+  // prime?:PrimeCreateInput;
 
-  @Field(()=>PersonnelCreateInput,{nullable:true})
-  personnel?:PersonnelCreateInput
+  // @Field(()=>PersonnelCreateInput,{nullable:true})
+  // personnel?:PersonnelCreateInput
 }

@@ -85,12 +85,13 @@ const Profil = () => {
         primePersonnel: { 
           primeId: primeId,
           personnelId: dataPersonnelId.findOnePersonnel.id, 
-          startdate: startDate,
-          enddate: endDate,
+          startMonth: startDate,
+          // enddate: endDate,
           // categorieId: categoryPersonnelId,
         }
       }
     })
+     onClose();
     // console.log(userData)
     toast({
       title: "Succès.",
@@ -314,7 +315,7 @@ const Profil = () => {
                   align='end'
                 >
                   <FormControl>
-                    <FormLabel>Date debut prime</FormLabel>
+                    <FormLabel>Mois de la prime</FormLabel>
                        <Input
                     placeholder="nom prime"
                     bg='white'
@@ -331,24 +332,7 @@ const Profil = () => {
                     
                   />
                     </FormControl>
-                    <FormControl>
-                      <FormLabel>Date fin prime</FormLabel>
-                                     <Input
-                    placeholder="nom prime"
-                    bg='white'
-                    type="date"
-                    // id="dateOfPrime"
-                    name="dateOfPrime"
-                    // placeholder="{formattedDate}"
-                    // bg='white'
-              
-                    // borderColor="purple.100"
-                    onChange={(event) => setEndDate(event.target.value)}
-                    value={endDate}
-                    // // ref={dateOfStartWorkRef}
-                    
-                  />
-                    </FormControl>
+                  
                     
                     {/* <FormControl>
                         <FormLabel>Delai</FormLabel>

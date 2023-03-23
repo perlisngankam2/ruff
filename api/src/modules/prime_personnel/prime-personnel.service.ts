@@ -32,10 +32,11 @@ export class PrimePersonnelService {
       async create(
         input: PrimePersonnelCreateInput,
       ): Promise<PrimePersonnel> {
-        const prime = input.prime
-            ? await this.primeService.findByOne(input.primeId)
-            : await this.primeService.create(input.prime)
+        // const prime = input.prime
+        //     ? await this.primeService.findByOne(input.primeId)
+        //     : await this.primeService.create(input.prime)
         
+               const prime = await this.primeService.findByOne(input.primeId)
         const personnel = await this.personnelService.findById(input.personnelId)
         if(!(personnel&&prime)){
             throw Error("not found");
@@ -47,8 +48,8 @@ export class PrimePersonnelService {
           {
            personnel:input.personnelId,
            prime: input.primeId,
-           startDate: input.startdate,
-           endDate: input.enddate
+           startMonth: input.startMonth,
+          //  endDate: input.enddate
           },
           {
             em: this.em
@@ -109,7 +110,7 @@ export class PrimePersonnelService {
     //   }
     
       async delete(id:string){
-       const a = this.findById(id)
+       const a = this.findById(id) 
        await this.primePersonnelRepository.removeAndFlush(a)
        if(!a){
        throw Error("not found")

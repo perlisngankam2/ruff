@@ -468,8 +468,7 @@ export const CREATE_PRIME_PERSONNEL = gql `
 mutation createprimepersonnel ($primePersonnel: PrimePersonnelCreateInput!) {
     createprimepersonnel (primePersonnel: $primePersonnel) {
         id
-        startDate
-        endDate
+        startMonth
     }
 }
 `;

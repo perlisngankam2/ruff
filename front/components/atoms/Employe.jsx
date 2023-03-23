@@ -92,14 +92,14 @@ const Employee = (props) => {
               >
                 {props.fonction}
               </Text>
-              <Text 
+              {/* <Text 
                 textAlign="center" 
                 fontWeight="bold" 
                 fontSize="0.85em"
                 mb={["7px", "7px", "7px"]}
               >
                 {props.situationMatrimonial}
-              </Text>
+              </Text> */}
               <Flex justify="center" gap="4">
                 <Link 
                 href={{

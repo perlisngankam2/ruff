@@ -9,6 +9,9 @@ export class TrancheCreateInput {
   @Field(()=>ID,{nullable:true})
   anneeAcademiqueId?:string
 
+  @Field(()=>ID,{nullable:true})
+  salleId?:string
+
   @Field({nullable:true})
   name?: string;
 

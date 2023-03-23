@@ -783,6 +783,8 @@ const DetailComponent = (student) => {
                               <FormControl>
                                 <FormLabel>Montant percu</FormLabel>
                                 <Input 
+                                  minValue="20000"
+                                  maxValue="80000g"
                                   type={'number'} 
                                   name="montant"
                                   value={montant}

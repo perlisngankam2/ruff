@@ -44,6 +44,7 @@ export class TrancheService {
             description: input.description,
             dateLine: input.dateLine,
             anneeAccademique: input.anneeAcademiqueId,
+            salle: input.salleId
             // pension: pension.id
           },
           {
@@ -94,7 +95,7 @@ export class TrancheService {
       }
       async delete(id:string){
         const a = this.findById(id) 
-        await this.trancheRepository.removeAndFlush(a)
+        await this.trancheRepository.nativeDelete(await a)
         if(!a){
         throw Error("not found")
       }

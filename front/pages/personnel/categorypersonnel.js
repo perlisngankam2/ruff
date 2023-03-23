@@ -44,6 +44,7 @@ const Category = () => {
     const [query , setQuery] = useState("");
     const { isOpen, onToggle, onClose, onOpen } = useDisclosure();
     const cancelRef = React.useRef()
+    const [searchPersonnelCategorie, setSearchPersonnelCategorie] = useState("");
 
     // //const [classeValue , setClasseValue ] = useState("");
     // const [data, setData] = useState([]);
@@ -93,6 +94,10 @@ const Category = () => {
           // },
       })
   }
+  const handleChange = (e) => {
+    setSearchPersonnelCategorie(e.target.value);
+  };
+
   return (
     <DefaultLayout>
       <Box p="3" pt={"80px"} w="full">
@@ -118,7 +123,7 @@ const Category = () => {
         </Flex>
 
         <Flex gap={10} mt={5}>
-          <InputGroup width="500px">
+          <InputGroup width={["400px", "400px", "500px", "500px"]}>
             <InputRightElement
               children={<Icon as={FiSearch} />}
               cursor="pointer"
@@ -126,8 +131,10 @@ const Category = () => {
             <Input
               placeholder="Recherchez une categorie..."
               //value={recherche}
-              onChange={e => setQuery(e.target.value)}
+              // onChange={e => setQuery(e.target.value)}
               variant="flushed"
+              onChange={handleChange}
+              
             />
             {/* <InputRightAddon children={<SearchIcon />} /> */}
           </InputGroup>
@@ -158,14 +165,22 @@ const Category = () => {
                     {data && ( 
                     <Tbody>
                       {
-                        data.findAllcategoriepersonnel.map((category, index) => ( 
+                        data.findAllcategoriepersonnel
+                        .filter((category) =>{
+                          if(searchPersonnelCategorie == ""){
+                            return category;
+                          }else if (category.nom.toLowerCase().includes (searchPersonnelCategorie.toLowerCase()))
+                          return category;
+                        })
+                        .map((category, index) => ( 
                           <Tr key={index}>
                               <Td borderColor={'#C6B062'}>{category.nom}</Td>
                               <Td borderColor={'#C6B062'}>{category.montant}</Td>
                               <Td borderColor={'#C6B062'}>
                               <Box display="flex">
                                 <Link 
-                                  href="/eleves/modifiereleve">
+                                  href="#"
+                                  >
                                     <Icon
                                     as={FiEdit}
                                     boxSize="40px"

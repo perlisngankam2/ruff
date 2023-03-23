@@ -53,7 +53,8 @@ import {
   GET_ALL_ANNEE_ACADEMIQUE, 
   GET_ALL_FRAIS_INSCRIPTION,
    GET_ALL_TRANCHE, 
-   GET_ALL_TRANCHE_PENSION
+   GET_ALL_TRANCHE_PENSION,
+   GET_ALL_CLASS
   } from "../../graphql/Queries";
 import { FiSearch } from "react-icons/fi";
 
@@ -65,6 +66,7 @@ const Pension = () => {
     const [montant, setMontant] = useState();
     const [dateLine, setDateLine] = useState("");
     const [anneeAcademiqueId, setAnneeAcademiqueId] = useState("");
+    const [salleId, setSalleId] = useState("");
     // const [nameFraisInscription, setNameFraisInscription] = useState("");
     // const [name, setName] = useState("");
     // const [section, setSection] = useState("");
@@ -87,16 +89,17 @@ const Pension = () => {
     // const [createCycle, {error}] = useMutation(CREATE_CYCLE);
 
     // HOOk des mutation et des query
+    const { isOpen, onOpen, onClose} = useDisclosure();
+    const { isOpen: isOpenns, onOpen:onOpenns, onClose:onClosses } = useDisclosure();
+    const { isOpen: Onouvrir, onOpen:OnOuvert, onClose:onFermer, onToggle } = useDisclosure();
     const [createAnneeAccademique, {loading, error}] = useMutation(CREATE_ANNEE_ACADEMIQUE);
     const {data:dataAnneeAcademique} = useQuery(GET_ALL_ANNEE_ACADEMIQUE);
     const {data:dataFraisInscription} = useQuery(GET_ALL_FRAIS_INSCRIPTION);
     const {data:dataTranchePension} = useQuery(GET_ALL_TRANCHE_PENSION);
+    const {data:dataClasse} = useQuery(GET_ALL_CLASS);
     const [createdFraisInscription] = useMutation(CREATE_FRAIS_INSCRIPTION);
     const [createTranchePension] = useMutation(CREATE_TRANCHE_PENSION);
     const [deleTranchePension] = useMutation(DELETE_TRANCHE_PENSION);
-    const { isOpen, onOpen, onClose} = useDisclosure();
-    const { isOpen: isOpenns, onOpen:onOpenns, onClose:onClosses } = useDisclosure();
-    const { isOpen: Onouvrir, onOpen:OnOuvert, onClose:onFermer, onToggle } = useDisclosure();
 
     // const { onOpen} = useDisclosure();
 
@@ -127,8 +130,8 @@ const Pension = () => {
         refetchQueries:[{
           query: GET_ALL_TRANCHE_PENSION
         }]
-
       })
+      onFermer();
     }
 
     //creation d'une annee academique
@@ -167,6 +170,7 @@ const Pension = () => {
             montant: parseInt(montant),
             dateLine: new Date(dateLine),
             anneeAcademiqueId: anneeAcademiqueId,
+            salleId: salleId
           }, 
           refetchQueries:[{
             query: GET_ALL_TRANCHE_PENSION
@@ -411,6 +415,24 @@ const Pension = () => {
                           placeholder="Valeur"
                           onChange = {(event)=> setMontant(event.target.value)}
                       />
+                    </FormControl>
+                    <FormControl mt={4}>
+                        <FormLabel>Classe</FormLabel>
+                        <Select 
+                            type={'text'} 
+                            name="salleId"
+                            value={salleId}
+                            placeholder="Classe"
+                            onChange = {(event)=> setSalleId(event.target.value)}
+                        >
+                          {dataClasse &&
+                            dataClasse.findAllsalle.map((salle, index) => (
+                              <option value={salle.id} key={index}>
+                                {salle.name}
+                              </option>
+                            ))
+                          }
+                        </Select>
                     </FormControl>
                     <FormControl mt={4}>
                       <FormLabel>Date limite paiement</FormLabel>

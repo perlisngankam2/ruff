@@ -125,7 +125,7 @@
             <AccordionButton pl={0} my={2}>
               <Flex align="center" gap="1">
                 <Icon as={IoMdSchool} />
-                <Box as="span">Cours</Box>
+                <Box as="span">Matiere</Box>
               </Flex>
             </AccordionButton>
             <AccordionPanel>

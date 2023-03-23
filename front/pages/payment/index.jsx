@@ -143,7 +143,7 @@ const Payment = () => {
                       { dataPersonnel.findAllpersonnel.map((personnel, index) => ( 
                         <Tr key={index}>
                             <Td p={3} pl={6}>{personnel.firstName}</Td>
-                            <Td p={3} pl={6}>{personnel.firstName}</Td>
+                            <Td p={3} pl={6}>{personnel.lastName}</Td>
                             <Td p={3} pl={6}>{personnel.fonction}</Td>
                         </Tr>
                      ))}

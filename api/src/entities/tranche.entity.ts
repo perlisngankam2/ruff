@@ -19,6 +19,7 @@ import { Personnel } from './pesonnel.entity';
 import { TrancheStudent } from './tranche-student.entity';
 import { AnneeAccademique } from './annee-accademique.entity';
 import { AvanceTranche } from './avance-tranche.entity';
+import { Salle } from './salle.entity';
 
 @Entity()
 @ObjectType()
@@ -63,4 +64,10 @@ export class Tranche {
     onDelete:'CASCADE'
   })
   pension!:IdentifiedReference<Pension>|null
+
+   @ManyToOne(() => Salle ,{
+    nullable:true,
+    onDelete:'CASCADE'
+  })
+  salle!:IdentifiedReference<Salle>|null
 }

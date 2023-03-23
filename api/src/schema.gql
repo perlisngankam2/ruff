@@ -816,6 +816,7 @@ input AnneeAccademiqueUpdateInput {
 
 input TrancheCreateInput {
   anneeAcademiqueId: ID
+  salleId: ID
   name: String
   description: String
   montant: Float = 0

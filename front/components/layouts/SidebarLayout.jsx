@@ -58,7 +58,7 @@ const SidebarLayout = ({ children }) => {
       overflowY="auto"
       p="7"
       gap={3}
-      minW={"230px"}
+      minW={"257px"}
       align="left"
       paddingTop={"80px"}
       color="#0e341f"

@@ -32,9 +32,9 @@ import { useRouter } from "next/router";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import DefaultLayout from "../../components/layouts/DefaultLayout";
-import { GET_ALL_PERSONNEL_BY_ID} from "../../graphql/queries";
-import { GET_ALL_PERSONNELS } from "../../graphql/queries";
-import { GET_PRIME } from "../../graphql/queries";
+import { GET_ALL_PERSONNEL_BY_ID} from "../../graphql/Queries";
+import { GET_ALL_PERSONNELS } from "../../graphql/Queries";
+import { GET_PRIME } from "../../graphql/Queries";
 import { CREATE_PRIME_PERSONNEL } from "../../graphql/Mutation";
 
 

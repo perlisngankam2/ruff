@@ -12,7 +12,7 @@ import { useRouter } from "next/router";
 import { useEffect ,useState } from "react";
 import { useMutation, useQuery } from "@apollo/client";
 import { CREATE_PRIME } from "../../graphql/Mutation";
-import { GET_ALL_PERSONNELS, GET_ALL_Category_Personnel } from "../../graphql/queries";
+import { GET_ALL_PERSONNELS, GET_ALL_Category_Personnel } from "../../graphql/Queries";
 
 import { useToast } from "@chakra-ui/react";
 

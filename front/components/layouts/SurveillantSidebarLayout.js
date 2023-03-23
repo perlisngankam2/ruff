@@ -32,6 +32,18 @@ import {
                         align="left"
                         paddingTop={"80px"}
                         color="#0e341f"
+                        css={{
+                            '&::-webkit-scrollbar':{
+                                width:'2px',
+                            },
+                            '&::-webkit-scrollbar-track':{
+                                width:'2px',
+                            },
+                            '&::-webkit-scrollbar-thumb':{
+                                background: scrollbarColor,
+                                borderRadius: '24px',
+                            },
+                        }}
                     >
                         <Accordion allowToggle>
                         <AccordionItem>

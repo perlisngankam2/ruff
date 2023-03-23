@@ -45,8 +45,10 @@ import { GoBriefcase } from "react-icons/go";
 
 
  const dashboard = () => {
+
+
   const { authToken } = useAuth();
-  const router = useRouter();
+
   const { account } =  useAccount();
 
   //debug
@@ -61,26 +63,24 @@ import { GoBriefcase } from "react-icons/go";
   const {data:dataPersonnel} = useQuery(GET_ALL_PERSONNELS)
   //  const { authToken } = useAuth();
 
-
+  const router = useRouter();
   console.log(personnelData?.getpersonnelbyaccount);
 
-    useEffect(() => {
+  //   useEffect(() => {
     
-    if (account?.id === undefined ) {
-      router.push("/")
+  //   if (account?.id === undefined ) {
+  //     router.push("/")
 
 
       
-    }
+  //   }
     
-  }, [])
+  // }, [])
 
 
 
   return (
-<>
- 
-{account?.id &&(
+
     <DefaultLayout>
       <Box pt="90px" w="full">
         <Box top="-7" overflow="auto" minH="100vh" mx={6}>
@@ -153,8 +153,7 @@ import { GoBriefcase } from "react-icons/go";
         </Box>
       </Box>
     </DefaultLayout>
-    )}
-    </>
+ 
   );
 }
 

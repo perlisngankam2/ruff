@@ -55,9 +55,9 @@ export class Personnel {
   @Property({ nullable: true })
   phoneNumber!: string;
   
-  @Field({ nullable: true })
-  @Property({ nullable: true })
-  salary!: number;
+  // @Field({ nullable: true })
+  // @Property({ nullable: true })
+  // salary!: number;
 
   @Field({ nullable: true })
   @Property({ nullable: true })

@@ -60,4 +60,9 @@ export class PersonnelResolver {
     return personnel
   }
 
+  @Query(()=>String)
+async findCategoriepersonnelbypersonnel(@Args('personnelid') personnelid:string){
+     return await this.personnelService.findCategoriepersonnelbypersonnel(personnelid)
+  }
+
 }

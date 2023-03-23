@@ -11,7 +11,7 @@ const config:  MikroOrmModuleSyncOptions = {
     host: 'localhost',
     port: 5432,
     user: 'postgres',
-    password: 'Perlis1234',
+    password: '12345',
     dbName: 'ruffschool',
     debug: true,
     entities: ['dist/**/*.entity.js'],

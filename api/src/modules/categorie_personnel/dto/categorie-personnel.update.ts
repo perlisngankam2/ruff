@@ -21,6 +21,9 @@ export class CategoriePersonnelUpdate {
 
   @Field({nullable:true})
   description?: string;
+
+  @Field({nullable:true})
+  montant?: number;
   
   // @Field(()=>PrimeCreateInput,{nullable:true})
   // prime?: PrimeCreateInput;

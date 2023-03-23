@@ -18,7 +18,7 @@ import {
   import { MdDescription } from "react-icons/md";
   import DefaultLayout from "../../components/layouts/DefaultLayout";
   import { CREATE_SALLE, UPDATE_CLASS} from "../../graphql/Mutation";
-  import { GET_ALL_SECTION , GET_ALL_CYCLE} from "../../graphql/queries";
+  import { GET_ALL_SECTION , GET_ALL_CYCLE} from "../../graphql/Queries";
   
 
   const UpdateClass = () => {

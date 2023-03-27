@@ -232,6 +232,19 @@ export const GET_ALL_TRANCHE_PENSION = gql `
     }
 `;
 
+//recuperation d'une tranche de pension
+export const GET_TRANCHE_PENSION_BY_ID= gql `
+    query tranche ($id: String!) {
+        tranche (id: $id) {
+            id
+            name
+            description
+            dateLine
+            montant
+        }
+    }
+`;
+
 //one cycle
 export const GET_ONE_CYCLE =  gql `
     query findOnecycle ($id: String!) {
@@ -327,7 +340,7 @@ export const GET_ALL_MONTANT_PENSION_CLASS = gql`
             id
             name
             description
-            montant
+            montantPension
             dateLine
         }
     }

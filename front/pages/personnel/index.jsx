@@ -5,6 +5,7 @@ import {
   Center,
   Flex,
   Heading,
+  Hide,
   Icon,
   Input,
   InputGroup,
@@ -28,6 +29,7 @@ import { useMutation, useQuery } from "@apollo/client";
 import { GET_ALL_PERSONNELS } from "../../graphql/Queries";
 import { DELETE_PERSONNEL } from "../../graphql/Mutation";
 import Category from "./categorypersonnel";
+import ReactPaginate from "react-paginate";
 
 const Personnel = () => {
   const router = useRouter();
@@ -36,7 +38,9 @@ const Personnel = () => {
   const {data:dataPersonnel, loading, error} = useQuery(GET_ALL_PERSONNELS)
   const [deletePersonnel] = useMutation(DELETE_PERSONNEL);
   const [personnel, setPersonnel] = useState([]);
-  
+  const [pageNumber, setPageNumber] = useState(0);
+  const itemsPerPage = 15;
+  const pagesVisited = pageNumber * itemsPerPage;
   
   const employees = [
     { id: 1, name: "DON WILFRIED", function: "Directeur" },
@@ -52,8 +56,8 @@ const Personnel = () => {
 
   useEffect (() => {
     setPersonnel(dataPersonnel)
-  console.log(dataPersonnel) 
-}, [dataPersonnel])
+    console.log(dataPersonnel) 
+  }, [dataPersonnel])
  
   if (loading) return <Text>Chargement en cour...</Text>
   if (error) return <Text>Une erreur s'est produite!</Text>
@@ -72,10 +76,48 @@ const Personnel = () => {
     setSearchName(e.target.value);
   };
   
+  
+  const pageCount = Math.ceil(dataPersonnel?.findAllpersonnel.length / itemsPerPage);
+
+  const changePage = ({ page }) => {
+    setPageNumber(page);
+  };
   return (
     <DefaultLayout>
-      <Box p="3" pt="70px" background="colors.tertiary" w="full" minH="100vh">
-        <Flex bg="white" my="5" p="5" rounded="md" justify="space-between">
+      <Box 
+        p="3" 
+        pt="70px" 
+        background="colors.tertiary" 
+        w="full" 
+        minH="100vh"
+      >
+        <Flex
+          align="center"
+          justify="space-between"
+          boxShadow="md"
+          p="5"
+          rounded="lg"
+          background="white"
+        >
+          <Heading
+            textAlign="center"
+            color="WindowText"
+            size="lg"
+            textColor="pink.300"
+          >
+            Liste des classes
+          </Heading>
+          <Hide below="sm">
+            <Text>Dashboad / Classes / Liste classes</Text>
+          </Hide>
+        </Flex>
+        <Flex 
+          // bg="white" 
+          my="5"
+          p="5" 
+          rounded="md" 
+          justify="space-between"
+         >
           <InputGroup width="500px">
             <InputRightElement
               children={<Icon as={FiSearch} />}
@@ -95,15 +137,24 @@ const Personnel = () => {
           </Button>
         </Flex>
         <Flex gap={5} flexWrap="wrap" >
-        <Box w="full" bg="white" rounded="md" p="3" boxShadow="md">
+        <Box 
+          w="full" 
+          bg="white" 
+          rounded="md" 
+          p="3" 
+          boxShadow="md"
+        >
         <Flex gap={12} mt={3} flexWrap="wrap">
          {dataPersonnel && ( 
-          
+           
             dataPersonnel.findAllpersonnel
+            .slice(pagesVisited, pagesVisited + itemsPerPage)
             .filter((personnel) =>{
               if(searchName == ""){
                 return personnel;
-              }else if (personnel.firstName.toLowerCase().includes (searchName.toLowerCase()) || personnel.lastName.toLowerCase().includes (searchName.toLowerCase()) || personnel.fonction.toLowerCase().includes (searchName.toLowerCase()))
+              }else if (personnel.firstName.toLowerCase().includes (searchName.toLowerCase()) || 
+              personnel.lastName.toLowerCase().includes (searchName.toLowerCase()) || 
+              personnel.fonction.toLowerCase().includes (searchName.toLowerCase()))
               return personnel;
             }
               
@@ -123,6 +174,21 @@ const Personnel = () => {
           )) )}
           </Flex>
         </Box>
+        <Center mt="5px" ml="540px"> 
+          <Box> 
+            <ReactPaginate 
+              previousLabel={"<<"}
+              nextLabel={">>"}
+              pageCount={pageCount}
+              onPageChange={changePage}
+              containerClassName={"paginationBttns"}
+              previousLinkClassName={"previousBttn"}
+              nextLinkClassName={"nextBttn"}
+              disabledClassName={"paginationDisabled"}
+              activeClassName={"paginationActive"}
+            />
+          </Box>
+        </Center>
           {/* {dataPersonnel
             .filter((personnel) =>{
               if(searchName == ""){

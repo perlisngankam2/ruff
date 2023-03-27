@@ -10,11 +10,13 @@
   } from "@chakra-ui/react";
   import Link from "next/link";
   import { HiOutlineHome, HiUserGroup } from "react-icons/hi";
-  import { IoMdSchool, IoIosStats, IoIosArrowDown } from "react-icons/io";
-  import { GiTakeMyMoney } from "react-icons/gi";
-  import { MdOutlineClass } from "react-icons/md";
+  import { IoMdSchool, IoIosStats, IoIosArrowDown, IoBookSharp } from "react-icons/io";
+  import { GiTakeMyMoney, GiPayMoney } from "react-icons/gi";
+  import { MdOutlineClass, MdLibraryBooks, MdOutlineLibraryBooks, MdOutlinePayments } from "react-icons/md";
   import {MdOutlineSms} from "react-icons/md";
+  import {FaLevelUpAlt} from "react-icons/fa"
   
+
   const AdminLayout = ({ children }) => {
     return (
      <Box h="100%"> 
@@ -51,7 +53,7 @@
                 <Box as="span">Categorie personnel</Box>
               </Link>
             </AccordionPanel>
-            <AccordionPanel _hover={{background:"rgba(0,0,0,0.16)"}}>
+            <AccordionPanel pb={1} _hover={{background:"rgba(0,0,0,0.16)"}}>
               <Link href="/comptePersonnel">
                 <Box as="span" pb={1}>Compte personnel</Box>
               </Link>
@@ -74,7 +76,7 @@
                 <Box as="span">Ajouter une classe</Box>
               </Link>
             </AccordionPanel>
-            <AccordionPanel _hover={{background:"rgba(0,0,0,0.16)"}}>
+            <AccordionPanel pb={1} _hover={{background:"rgba(0,0,0,0.16)"}}>
               <Link href="/class/cyclesection">
                 <Box as="span">Cycle & section</Box>
               </Link>
@@ -83,7 +85,7 @@
           <AccordionItem>
             <AccordionButton pl={0}>
               <Flex align="center" gap="1">
-                <Icon as={MdOutlineClass} />
+                <Icon as={FaLevelUpAlt} />
                 <Box as="span">Niveaux</Box>
               </Flex>
             </AccordionButton>
@@ -92,7 +94,7 @@
                 <Box as="span">Liste des niveaux</Box>
               </Link>
             </AccordionPanel>
-            <AccordionPanel _hover={{background:"rgba(0,0,0,0.16)"}}>
+            <AccordionPanel pb={1} _hover={{background:"rgba(0,0,0,0.16)"}}>
               <Link href="/level/addLevel">
                 <Box as="span">Ajouter un niveau</Box>
               </Link>
@@ -115,22 +117,27 @@
                 <Box as="span">Ajouter un élève</Box>
               </Link>
             </AccordionPanel>
-            <AccordionPanel _hover={{background:"rgba(0,0,0,0.16)"}}>
+            <AccordionPanel pb={1} _hover={{background:"rgba(0,0,0,0.16)"}}>
               <Link href="/eleves/categoryeleve">
                 <Box as="span">Categorie élèves</Box>
+              </Link>
+            </AccordionPanel>
+            <AccordionPanel pb={1} _hover={{background:"rgba(0,0,0,0.16)"}}>
+              <Link href="/eleves/reduction/reductionStudent">
+                <Box as="span">Reduction scolarite</Box>
               </Link>
             </AccordionPanel>
           </AccordionItem>
           <AccordionItem> 
             <AccordionButton pl={0} >
               <Flex align="center" gap="1">
-                <Icon as={IoMdSchool} />
+                <Icon as={MdLibraryBooks}/>
                 <Box as="span">Matiere</Box>
               </Flex>
             </AccordionButton>
-            <AccordionPanel  _hover={{background:"rgba(0,0,0,0.16)"}}>
+            <AccordionPanel pb={1} _hover={{background:"rgba(0,0,0,0.16)"}}>
               <Link href="/cours/listeDesCours">
-                <Box as="span">Liste des cours</Box>
+                <Box as="span">Liste des matieres</Box>
               </Link>
             </AccordionPanel>
           </AccordionItem>
@@ -141,13 +148,13 @@
                 <Box as="span">Pension</Box>
               </Flex>
             </AccordionButton>
-            <AccordionPanel _hover={{background:"rgba(0,0,0,0.16)"}}>
+            <AccordionPanel pb={1} _hover={{background:"rgba(0,0,0,0.16)"}}>
               <Link href="pension/listeDroitScolaire">
                 <Box as="span">Pension</Box>
               </Link>
             </AccordionPanel>
           </AccordionItem  >
-          <AccordionItem>
+          {/* <AccordionItem>
             <AccordionButton  pl={0}>
               <Flex align="center" gap="1">
                 <Icon as={MdOutlineClass} />
@@ -159,7 +166,7 @@
                 <Box as="span">Reduction scolarite</Box>
               </Link>
             </AccordionPanel>
-          </AccordionItem>
+          </AccordionItem> */}
           <AccordionItem>
             <AccordionButton pl={0} >
               <Flex align="center" gap="1">
@@ -172,7 +179,7 @@
                 <Box as="span">Finance 1</Box>
               </Link>
             </AccordionPanel>
-            <AccordionPanel _hover={{background:"rgba(0,0,0,0.16)"}}>
+            <AccordionPanel pb={1} _hover={{background:"rgba(0,0,0,0.16)"}}>
               <Link href="/finances">
                 <Box as="span">Finance 2</Box>
               </Link>
@@ -181,7 +188,7 @@
           <AccordionItem>
             <AccordionButton pl={0} >
               <Flex align="center" gap="1">
-                <Icon as={GiTakeMyMoney} />
+                <Icon as={GiPayMoney}/>
                 <Box as="span">Salaires</Box>
               </Flex>
             </AccordionButton>
@@ -200,13 +207,12 @@
                 <Box as="span">Ajouter une prime</Box>
               </Link>
             </AccordionPanel>
-            <AccordionPanel _hover={{background:"rgba(0,0,0,0.16)"}}>
+            <AccordionPanel pb={1} _hover={{background:"rgba(0,0,0,0.16)"}}>
               <Link href="/payment/ajouterretenue">
                 <Box as="span">Ajouter une retenue</Box>
               </Link>
             </AccordionPanel>
           </AccordionItem>
-  
           <AccordionItem>
             <AccordionButton pl={0} >
               <Flex align="center" gap="1">
@@ -219,7 +225,7 @@
                 <Box as="span">Statistiques 1</Box>
               </Link>
             </AccordionPanel>
-            <AccordionPanel _hover={{background:"rgba(0,0,0,0.16)"}}>
+            <AccordionPanel pb={1} _hover={{background:"rgba(0,0,0,0.16)"}}>
               <Link href="/statistiques">
                 <Box as="span">Statistiques 2</Box>
               </Link>
@@ -237,7 +243,7 @@
                 <Box as="span"> Liste des message</Box>
               </Link>
             </AccordionPanel>
-            <AccordionPanel _hover={{background:"rgba(0,0,0,0.16)"}}>
+            <AccordionPanel pb={1} _hover={{background:"rgba(0,0,0,0.16)"}}>
               <Link href="/message/creersms">
                 <Box as="span">Créer un message</Box>
               </Link>

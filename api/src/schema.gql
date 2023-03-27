@@ -825,7 +825,7 @@ input PensionCreateInput {
   anneeAcademiqueId: ID
   name: String
   description: String
-  montant: Float! = 0
+  montantPension: Float! = 0
   dateLine: ID
 }
 

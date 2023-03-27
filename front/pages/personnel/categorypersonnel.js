@@ -34,9 +34,10 @@ import AjouterCategoryPersonnel from './AjouterCategoryPersonnel';
 import { Router, useRouter } from "next/router";
 import {FiEdit, FiSearch} from 'react-icons/fi';
 import {MdDelete} from 'react-icons/md';
-import { GET_ALL_Category_Personnel } from "../../graphql/Queries";
+import { GET_ALL_Category_Personnel, loading, error } from "../../graphql/Queries";
 import { DELETE_CATEGORY_PERSONNEL } from "../../graphql/Mutation";
 import { useQuery, useMutation } from "@apollo/client"; 
+import ReactPaginate from "react-paginate";
 
 const Category = () => {
 
@@ -45,6 +46,11 @@ const Category = () => {
     const { isOpen, onToggle, onClose, onOpen } = useDisclosure();
     const cancelRef = React.useRef()
     const [searchPersonnelCategorie, setSearchPersonnelCategorie] = useState("");
+
+    //STATE DE LA PAGINATION
+    const itemsPerPage = 10;
+    const [pageNumber, setPageNumber] = useState(0);
+    const pagesVisited = pageNumber * itemsPerPage;
 
     // //const [classeValue , setClasseValue ] = useState("");
     // const [data, setData] = useState([]);
@@ -98,9 +104,14 @@ const Category = () => {
     setSearchPersonnelCategorie(e.target.value);
   };
 
+  const pageCountCategoryPersonnel = Math.ceil(data?.findAllcategoriepersonnel.length / itemsPerPage);
+
+  const changePage = ({ page }) => {
+    setPageNumber(page);
+  };
   return (
     <DefaultLayout>
-      <Box p="3" pt={"80px"} w="full">
+      <Box p="3" pt={"70px"} w="full">
         <Flex
           align="center"
           justify="space-between"
@@ -122,7 +133,7 @@ const Category = () => {
           </Hide>
         </Flex>
 
-        <Flex gap={10} mt={5}>
+        <Flex gap={10} mt={7}>
           <InputGroup width={["400px", "400px", "500px", "500px"]}>
             <InputRightElement
               children={<Icon as={FiSearch} />}
@@ -158,6 +169,7 @@ const Category = () => {
                     <Thead background="colors.secondary">
                     <Tr>
                         <Th>Nom</Th>
+                        <Th>Description</Th>
                         <Th>Salaire de base</Th>
                         <Th>Actions</Th>
                     </Tr>
@@ -166,6 +178,7 @@ const Category = () => {
                     <Tbody>
                       {
                         data.findAllcategoriepersonnel
+                        .slice(pagesVisited, pagesVisited + itemsPerPage)
                         .filter((category) =>{
                           if(searchPersonnelCategorie == ""){
                             return category;
@@ -174,9 +187,11 @@ const Category = () => {
                         })
                         .map((category, index) => ( 
                           <Tr key={index}>
-                              <Td borderColor={'#C6B062'}>{category.nom}</Td>
-                              <Td borderColor={'#C6B062'}>{category.montant}</Td>
-                              <Td borderColor={'#C6B062'}>
+                              <Td p={0} pl={6}>{category.nom}</Td>
+                              <Td p={0} pl={6}>{category.description}</Td>
+                              <Td p={0} pl={6}>{category.montant} FCFA</Td>
+
+                              <Td p={0} pl={3}>
                               <Box display="flex">
                                 <Link 
                                   href="#"
@@ -253,6 +268,19 @@ const Category = () => {
                 </Table>
             </TableContainer>
         </Box>
+        <Box mt={"15px"}> 
+          <ReactPaginate 
+            previousLabel={"<<"}
+            nextLabel={">>"}
+            pageCount={pageCountCategoryPersonnel}
+            onPageChange={changePage}
+            containerClassName={"paginationBttns"}
+            previousLinkClassName={"previousBttn"}
+            nextLinkClassName={"nextBttn"}
+            disabledClassName={"paginationDisabled"}
+            activeClassName={"paginationActive"}
+          />
+      </Box>
       </Box>
     </DefaultLayout>
   );

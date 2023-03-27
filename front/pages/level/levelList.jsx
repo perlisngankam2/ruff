@@ -43,6 +43,7 @@ import {
   import {IoIosAdd} from 'react-icons/io';
   import{ FiEdit, FiSearch} from 'react-icons/fi';
   import {MdDelete} from 'react-icons/md';
+  import ReactPaginate from "react-paginate";
   
   
   const levelList = () => {
@@ -52,7 +53,9 @@ import {
     const cancelRef = React.useRef()
     const { isOpen, onToggle, onClose } = useDisclosure();
     const [searchStudyLevel, setSearchStudyLevel] = useState("");
-    
+    const itemsPerPage = 15;
+    const [pageNumber, setPageNumber] = useState(0);
+    const pagesVisited = pageNumber * itemsPerPage;
 
     useEffect(() =>{
       console.log(dataStudyLevel?.findAllNiveauEtude)
@@ -65,9 +68,19 @@ import {
       setSearchStudyLevel(e.target.value);
     };
 
+    const pageCountStudyLevel = Math.ceil(dataStudyLevel?.findAllNiveauEtude.length / itemsPerPage);
+
+    const changePage = ({ page }) => {
+      setPageNumber(page);
+    };
     return (
       <DefaultLayout>
-        <Box p="10px" pt={"70px"} background="colors.tertiary" w="full">
+        <Box 
+          p="10px" 
+          pt={"70px"} 
+          background="colors.tertiary" 
+          w="full"
+        >
   
         <Box p="3" pt={"10px"} w="full">
           <Flex
@@ -87,11 +100,10 @@ import {
               Liste des niveaux
             </Heading>
             <Hide below="sm">
-              <Text>Dashboad / Classes / Liste des niveaux</Text>
+              <Text>Dashboad / Niveau / Liste des niveaux</Text>
             </Hide>
           </Flex>
-  
-          <Flex gap={10} mt={5}>
+          <Flex gap={10} mt={6}>
             <InputGroup>
             <InputRightElement
               children={<Icon as={FiSearch} />}
@@ -147,6 +159,7 @@ import {
                     <Tbody>
                     {dataStudyLevel && ( 
                        dataStudyLevel.findAllNiveauEtude
+                       .slice(pagesVisited, pagesVisited + itemsPerPage)
                        .filter((niveauEtude) =>{
                           if(searchStudyLevel == ""){
                             return niveauEtude;
@@ -261,6 +274,19 @@ import {
                 </Table>
               </TableContainer>
           </Box>
+          <Box mt={"15px"}> 
+          <ReactPaginate 
+            previousLabel={"<<"}
+            nextLabel={">>"}
+            pageCount={pageCountStudyLevel}
+            onPageChange={changePage}
+            containerClassName={"paginationBttns"}
+            previousLinkClassName={"previousBttn"}
+            nextLinkClassName={"nextBttn"}
+            disabledClassName={"paginationDisabled"}
+            activeClassName={"paginationActive"}
+          />
+      </Box>
         </Box>
         </Box>
       </DefaultLayout>

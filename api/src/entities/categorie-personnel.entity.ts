@@ -38,7 +38,7 @@ export class CategoriePersonnel {
 
   @Field({nullable:false})
   @Property({ nullable: false })
-  montant?: number;
+  montant!: number;
 
   // relation with another Entites
   @OneToMany(() => Personnel, personnel => personnel.category)

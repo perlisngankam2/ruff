@@ -43,32 +43,25 @@ import {
 import { DELETE_CATEGORY_STUDENT } from "../../graphql/Mutation";
 import { useMutation, useQuery } from "@apollo/client"; 
 import React, { useEffect, useState } from "react";
+import ReactPaginate from "react-paginate";
+
 
 const CategoryEleve = () => {
 
    // const router = useRouter();
    const cancelRef = React.useRef()
    const [query , setQuery] = useState("");
-   // //const [classeValue , setClasseValue ] = useState("");
-   // const [data, setData] = useState([]);
-   // const keys = ["first_name", "last_name", "email", "classe"];
-
-   // const search = (data) => {
-      
-   //   let datas = data.filter((item) => keys.some((key) => (
-   //     item[key].toUpperCase().includes(query) 
-   //     )
-   //   ));
-   //   console.log("datas :" , datas)
-   //   return query ? datas.slice(0,5) : Users.slice(0,5)
-   // };
    
-   const {data:dataCategoryEleve} = useQuery(GET_ALL_Category_Eleve);
+   //STATE DE LA PAGINATION
+   const itemsPerPage = 10;
+   const [pageNumber, setPageNumber] = useState(0);
+   const pagesVisited = pageNumber * itemsPerPage;
+   
+   const {data:dataCategoryEleve, loading, error} = useQuery(GET_ALL_Category_Eleve);
    const [deleteCategoryStudent] = useMutation(DELETE_CATEGORY_STUDENT);
    const { isOpen, onToggle, onClose, onOpen } = useDisclosure();
    const [searchNameStudentCategory, setSearchNameStudentCategory] = useState("");
   
-
     useEffect (() => {
      console.log(dataCategoryEleve?.findAllcategorieeleve);
    });
@@ -90,9 +83,15 @@ const CategoryEleve = () => {
     setSearchNameStudentCategory(e.target.value);
    };
 
+   const pageCountCategoryStudent = Math.ceil(dataCategoryEleve?.findAllcategorieeleve.length / itemsPerPage);
+
+   const changePage = ({ page }) => {
+     setPageNumber(page);
+   };
+
  return (
    <DefaultLayout>
-     <Box p="3" pt={"80px"} w="full">
+     <Box p="3" pt={"70px"} w="full">
        <Flex
          align="center"
          justify="space-between"
@@ -114,7 +113,7 @@ const CategoryEleve = () => {
          </Hide>
        </Flex>
 
-       <Flex gap={10} mt={5}>
+       <Flex gap={10} mt={7}>
          <InputGroup width={"600px"}>
             <InputRightElement
               children={<Icon as={FiSearch} />}
@@ -157,10 +156,11 @@ const CategoryEleve = () => {
                    <Tbody>
                      {
                        dataCategoryEleve.findAllcategorieeleve
+                       .slice(pagesVisited, pagesVisited + itemsPerPage)
                        .filter((categoryStudent) =>{
                           if(searchNameStudentCategory == ""){
                             return categoryStudent;
-                          }else if (categoryStudent.nom.toLowerCase().includes (searchNameStudentCategory.toLowerCase()))
+                          }else if (categoryStudent.nom.toLowerCase().includes(searchNameStudentCategory.toLowerCase()))
                             return categoryStudent;
                         })
                        .map((categoryStudent, index) => ( 
@@ -244,6 +244,19 @@ const CategoryEleve = () => {
                </Table>
            </TableContainer>
        </Box>
+       <Box mt={"15px"}> 
+          <ReactPaginate 
+            previousLabel={"<<"}
+            nextLabel={">>"}
+            pageCount={pageCountCategoryStudent}
+            onPageChange={changePage}
+            containerClassName={"paginationBttns"}
+            previousLinkClassName={"previousBttn"}
+            nextLinkClassName={"nextBttn"}
+            disabledClassName={"paginationDisabled"}
+            activeClassName={"paginationActive"}
+          />
+      </Box>
      </Box>
    </DefaultLayout>
  );

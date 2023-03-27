@@ -62,11 +62,12 @@ import {
 import { 
   DELETE_SALLE,
   CREATE_PERSONNEL_SALLE,
-  CREATE_MONTANT_SCOLARITE_CLASS,
+  CREATE_MONTANT_SCOLARITE_CLASS
  } from "../../graphql/Mutation";
 import { useMutation, useQuery } from "@apollo/client";
 import {IoIosAdd} from 'react-icons/io';
 import {MdDelete} from 'react-icons/md';
+import ReactPaginate from "react-paginate";
 
 
 const Class = () => {
@@ -81,7 +82,10 @@ const Class = () => {
   const [personnelId, setPersonnelId] = useState("");
   const [anneeAcademiqueId, setAnneeAcademiqueId] = useState("");
   const [courseId, setCourseId] = useState("");
-  const [montant, setMontant] = useState();
+  const [montantPension, setMontantPension] = useState();
+  const itemsPerPage = 15;
+  const [pageNumber, setPageNumber] = useState(0);
+  const pagesVisited = pageNumber * itemsPerPage;
 
   const [deleteClasse] = useMutation(DELETE_SALLE);
   const {data:dataClasse} = useQuery(GET_ALL_CLASS);
@@ -138,7 +142,7 @@ const Class = () => {
         pension:{
           salleId: salleId,
           anneeAcademiqueId: anneeAcademiqueId,
-          montant: parseInt(montant)
+          montantPension: parseInt(montantPension)
         }
 
       }
@@ -155,9 +159,14 @@ const Class = () => {
       // router.push("/class/cyclesection")
     setSalleId("");
     setAnneeAcademiqueId("");
-    setMontant("");
+    setMontantPension("");
   }
 
+  const pageCountSalle = Math.ceil(dataClasse?.findAllsalle.length / itemsPerPage);
+
+  const changePage = ({ page }) => {
+    setPageNumber(page);
+  };
   
   return (
     <DefaultLayout>
@@ -169,7 +178,7 @@ const Class = () => {
           <StudentBox class="CP" studentnumber="16" />
           <StudentBox class="CM1" studentnumber="34" />
         </Flex> */}
-      <Box p="3" pt={"80px"} w="full">
+      <Box p="3" pt={"70px"} w="full">
         <Flex
           align="center"
           justify="space-between"
@@ -191,7 +200,11 @@ const Class = () => {
           </Hide>
         </Flex>
 
-        <Flex gap={10} mt={5} maxWidth={"1300px"}>
+        <Flex 
+          gap={10} 
+          mt={7} 
+          maxWidth={"1300px"}
+        >
           <InputGroup width="500px">
             <InputRightElement
               children={<Icon as={FiSearch} />}
@@ -413,9 +426,9 @@ const Class = () => {
                         <FormLabel>Montant scolarite</FormLabel>
                       <Input
                         // type="text"
-                        name="montant"
-                        value={montant}
-                        onChange={(event)=> setMontant(event.target.value)}
+                        name="montantPension"
+                        value={montantPension}
+                        onChange={(event)=> setMontantPension(event.target.value)}
                         // isDisabled
                         placeholder="Montant de la scolarite"
                       />
@@ -486,7 +499,9 @@ const Class = () => {
                   </Thead>
                   <Tbody>
                     {dataCoursePersonnelSalle && ( 
-                      dataCoursePersonnelSalle.findbyCoursePersonnelSalle.map((personnelSalle, index) =>( 
+                      dataCoursePersonnelSalle.findbyCoursePersonnelSalle
+                      .slice(pagesVisited, pagesVisited + itemsPerPage)
+                      .map((personnelSalle, index) =>( 
                       <Tr key={index}>
                          <Td >{personnelSalle.personnel_id.id}</Td> 
                          {/* <Td borderColor={'#C6B062'}>{salle.montantPensionSalle}</Td>   */}
@@ -585,6 +600,19 @@ const Class = () => {
               </Table>
             </TableContainer>
         </Box>
+        <Box mt={"15px"}> 
+          <ReactPaginate 
+            previousLabel={"<<"}
+            nextLabel={">>"}
+            pageCount={pageCountSalle}
+            onPageChange={changePage}
+            containerClassName={"paginationBttns"}
+            previousLinkClassName={"previousBttn"}
+            nextLinkClassName={"nextBttn"}
+            disabledClassName={"paginationDisabled"}
+            activeClassName={"paginationActive"}
+          />
+      </Box>
       </Box>
       </Box>
     </DefaultLayout>

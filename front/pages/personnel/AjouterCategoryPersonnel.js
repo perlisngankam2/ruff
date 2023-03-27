@@ -94,7 +94,7 @@ function ajoutercategorypersonnel  () {
         });
         setNom("");
         setDescription("");
-        setMontant("");
+        setMontant("")
     }
 
     // const pearl = () => {
@@ -157,7 +157,7 @@ function ajoutercategorypersonnel  () {
                                         type={'text'} 
                                         name="nom"
                                         placeholder="nom"
-                                        onChange = {e => setNom(event.target.value)}
+                                        onChange = {(event) => setNom(event.target.value)}
                                         value={nom}
                                      />
                                 </FormControl>
@@ -173,6 +173,7 @@ function ajoutercategorypersonnel  () {
                                     />
                                 </FormControl>
                                 <FormControl mt="15px">
+                                    <FormLabel>Salaire de base</FormLabel>
                                     <FormLabel>Salaire de base</FormLabel>
                                     <Input 
                                         id="montant"

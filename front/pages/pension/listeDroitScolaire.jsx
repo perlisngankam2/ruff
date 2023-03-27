@@ -57,6 +57,7 @@ import {
    GET_ALL_CLASS
   } from "../../graphql/Queries";
 import { FiSearch } from "react-icons/fi";
+import ReactPaginate from "react-paginate";
 
 const Pension = () => {
 
@@ -67,6 +68,11 @@ const Pension = () => {
     const [dateLine, setDateLine] = useState("");
     const [anneeAcademiqueId, setAnneeAcademiqueId] = useState("");
     const [salleId, setSalleId] = useState("");
+    
+    //STATE DE LA PAGINATION
+    const itemsPerPage = 15;
+    const [pageNumber, setPageNumber] = useState(0);
+    const pagesVisited = pageNumber * itemsPerPage;
     // const [nameFraisInscription, setNameFraisInscription] = useState("");
     // const [name, setName] = useState("");
     // const [section, setSection] = useState("");
@@ -200,7 +206,12 @@ const Pension = () => {
     
     if (loading) return <Text>Chargement en cour...</Text>
     if (error) return <Text>Une erreur s'est produite!</Text>
-  
+    
+    const pageCountTranchePension = Math.ceil(dataTranchePension?.findAlltranche.length / itemsPerPage);
+
+    const changePage = ({ page }) => {
+      setPageNumber(page);
+    };
   return (
     <DefaultLayout>
       <Box p="3" pt={"80px"} w="full">
@@ -508,7 +519,9 @@ const Pension = () => {
                     <Tbody>
                       { dataTranchePension && (
                       
-                        dataTranchePension.findAlltranche.map((tranche, index) => (
+                        dataTranchePension.findAlltranche
+                        .slice(pagesVisited, pagesVisited + itemsPerPage)
+                        .map((tranche, index) => (
                       <Tr key={index}>
                         <Td p={0} pl={4}>{tranche.name}</Td>
                         <Td p={0} pl={4}>{tranche.montant}</Td>
@@ -596,6 +609,19 @@ const Pension = () => {
                     </Tbody>
                   </Table>
                 </TableContainer>
+              </Box>
+              <Box mt={"15px"}> 
+                <ReactPaginate 
+                  previousLabel={"<<"}
+                  nextLabel={">>"}
+                  pageCount={pageCountTranchePension}
+                  onPageChange={changePage}
+                  containerClassName={"paginationBttns"}
+                  previousLinkClassName={"previousBttn"}
+                  nextLinkClassName={"nextBttn"}
+                  disabledClassName={"paginationDisabled"}
+                  activeClassName={"paginationActive"}
+                />
               </Box>
           </Box>
             

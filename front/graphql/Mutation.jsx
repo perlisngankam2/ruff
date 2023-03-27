@@ -208,7 +208,7 @@ export const CREATE_MONTANT_SCOLARITE_CLASS = gql `
             id
             name
             description
-            montant
+            montantPension
             dateLine
         }
     }

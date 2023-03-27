@@ -49,9 +49,14 @@ import { IoIosAdd } from "react-icons/io";
 import{ FiEdit, FiSearch} from 'react-icons/fi';
 import {MdDelete} from 'react-icons/md';
 import {useRouter } from "next/router";
-import { GET_ALL_STUDENT, GET_STUDENT_BY_ID} from "../../graphql/Queries";
+import { 
+  GET_ALL_STUDENT, 
+  GET_STUDENT_BY_ID,
+  GET_ALL_CLASS
+} from "../../graphql/Queries";
 import { DELETE_STUDENT } from "../../graphql/Mutation";
 import { useMutation, useQuery } from "@apollo/client";
+import ReactPaginate from "react-paginate";
 
 // const VARIABLE = "pearl";
 
@@ -62,22 +67,26 @@ const Eleves = () => {
     const [query , setQuery] = useState("");
     const [data, setData] = useState([]);
     const keys = ["first_name", "last_name", "email", "classe"];
-    const {data:dataStudent, loading, error} = useQuery(GET_ALL_STUDENT);
-    const [deletestudent] = useMutation(DELETE_STUDENT);
     const { isOpen, onToggle, onClose, onOpen } = useDisclosure();
     const [searchNameStudent, setSearchNameStudent] = useState("");
+    const [searchClasseStudent, setSearchClasseStudent] = useState("");
 
-    // const student = get(dataStudent)
+    const [deletestudent] = useMutation(DELETE_STUDENT);
+    // const [currentPage, setCurrentPage] = useState(1);
     
-    // const {data:singleStudent} = useQuery(GET_STUDENT_BY_ID,
-    //   {
-    //     variable:{id: VARIABLE}
-    //   });
+    //STATE DE LA PAGINATION
+    const itemsPerPage = 15;
+    const [pageNumber, setPageNumber] = useState(0);
+    const pagesVisited = pageNumber * itemsPerPage;
+    const {data:dataStudent, loading, error} = useQuery(GET_ALL_STUDENT,
+      // {variables: {
+      //   limit: itemsPerPage,
+      //   offset: (currentPage - 1) * itemsPerPage,
+      // },}
+    );
 
-      // if (singleStudent){
-      //   console.log(singleStudent)
-      // }
-
+    const {data:dataClasse} = useQuery(GET_ALL_CLASS);
+  
     const search = (data) => {
        
       let datas = data.filter((item) => keys.some((key) => (
@@ -87,6 +96,7 @@ const Eleves = () => {
       console.log("datas :" , datas)
       return query ? datas.slice(0,5) : Users.slice(0,5)
     }; 
+
 
     useEffect(() => {
       console.log(dataStudent?.findAllstudents);
@@ -109,9 +119,27 @@ const Eleves = () => {
       setSearchNameStudent(e.target.value);
     };
 
+    const handleChangeClasseStudent = (e) => {
+      setSearchClasseStudent(e.target.value);
+    };
+
+    // const handlePageChange = (page) => {
+    //   setCurrentPage(page);
+    // };
+    
+    // const getPageCount = () => {
+    //   // return Math.ceil(dataStudent && dataStudent.dataStudentCount / itemsPerPage);
+    //   return Math.ceil(dataStudent?.findAllstudents.length / itemsPerPage);
+    // };
+    const pageCountStudent = Math.ceil(dataStudent?.findAllstudents.length / itemsPerPage);
+
+    const changePage = ({ page }) => {
+      setPageNumber(page);
+    };
+
   return (
     <DefaultLayout>
-      <Box p="3" pt={"80px"} w="full">
+      <Box p="3" pt={"70px"} w="full">
         <Flex
           align="center"
           justify="space-between"
@@ -133,7 +161,7 @@ const Eleves = () => {
           </Hide>
         </Flex>
 
-        <Flex gap={10} mt={5}>
+        <Flex gap={10} mt={7}>
           <InputGroup>
             <InputRightElement
               children={<Icon as={FiSearch} />}
@@ -151,13 +179,22 @@ const Eleves = () => {
           <Select 
             placeholder="Selectionner la classe"
             variant="flushed"
-            onChange={e =>setQuery(e.target.value)}
-          >
-            {Classes.map((classe) => (
-              <option 
-                key={classe.id}
-              >{classe.classe}</option>
-            ))}
+            onChange={handleChangeClasseStudent}
+          > 
+          { dataClasse &&  
+            dataClasse.findAllsalle
+            .filter((classe) =>{
+              if(searchClasseStudent==""){
+                return classe
+              }else if(classe.name.toLowerCase().includes (searchClasseStudent.toLowerCase()))
+              return classe
+            })
+            .map((classe) => (
+            <option 
+              key={classe.id}>
+                {classe.name}
+            </option>
+          ))}
           </Select>
           <Box> 
             <Button
@@ -195,6 +232,7 @@ const Eleves = () => {
                   <Tbody>
                   {dataStudent && (
                     dataStudent.findAllstudents
+                    .slice(pagesVisited, pagesVisited + itemsPerPage)
                     .filter((student) =>{
                       if(searchNameStudent == ""){
                         return student;
@@ -322,7 +360,31 @@ const Eleves = () => {
                   </Tfoot> */}
               </Table>
             </TableContainer>
+            {/* <Box as="nav">
+              <Box as="ul" className="pagination">
+                {[...Array(getPageCount()).keys()].map((page) => (
+                  <Box as="li" className="page-item" key={page}>
+                    <Button className="page-link" onClick={() => handlePageChange(page + 1)}>
+                      {page + 1}
+                    </Button>
+                  </Box>
+              ))}
+              </Box>
+           </Box> */}
         </Box>
+        <Box mt={"15px"}> 
+          <ReactPaginate 
+            previousLabel={"<<"}
+            nextLabel={">>"}
+            pageCount={pageCountStudent}
+            onPageChange={changePage}
+            containerClassName={"paginationBttns"}
+            previousLinkClassName={"previousBttn"}
+            nextLinkClassName={"nextBttn"}
+            disabledClassName={"paginationDisabled"}
+            activeClassName={"paginationActive"}
+          />
+      </Box>
       </Box>
     </DefaultLayout>
   );

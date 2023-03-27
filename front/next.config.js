@@ -1,10 +1,8 @@
-
 /** @type {import('next').NextConfig} */
-const nextConfig = {
-  reactStrictMode: true,
-} 
-
-module.exports = nextConfig
+// const nextConfig = {
+//   reactStrictMode: true,
+// } 
+// module.exports = nextConfig
 
 const { I18NextHMRPlugin } = require('i18next-hmr/plugin');
 const { resolve } = require('path');

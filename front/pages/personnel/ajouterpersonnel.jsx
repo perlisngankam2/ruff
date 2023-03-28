@@ -198,7 +198,7 @@ const AjouterPersonnel = () => {
               <Box></Box>
               <Box>
                 <Heading textAlign={"center"} mb="30px">
-                  {/* {t('pages.personnel.ajouterpersonnel.heading')} */}
+                  {t('pages.personnel.ajouterpersonnel.heading')}
                 </Heading>
               </Box>
               <Box display={{md:"flex"}} >

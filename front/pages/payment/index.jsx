@@ -50,13 +50,11 @@ const Payment = () => {
 
 
   const handleChange = (e) => {
-    const searchName = e.target.value;
-    const newFilter =   dataPersonnel.findAllpersonnel
-        .filter((personnel) =>{
-        return  (personnel.firstName.toLowerCase().includes (searchName.toLowerCase()) || 
-        personnel.lastName.toLowerCase().includes (searchName.toLowerCase()) || 
-        personnel.fonction.toLowerCase().includes (searchName.toLowerCase())
-        )
+    setSearchName(e.target.value);
+    // const newFilter =   dataPersonnel.findAllpersonnel
+    //           .filter((personnel) =>{
+    //           return  (personnel.firstName.toLowerCase().includes (searchName.toLowerCase()) || personnel.lastName.toLowerCase().includes (searchName.toLowerCase()) || personnel.fonction.toLowerCase().includes (searchName.toLowerCase()))
+              
     //         } );
     // if (searchName === ""){
     //   setFilteredData([]);
@@ -64,7 +62,7 @@ const Payment = () => {
     //     setFilteredData(newFilter);
     // }
             
-   });
+  };
 
   const pageCountPersonnel = Math.ceil(dataPersonnel?.findAllpersonnel.length / itemsPerPage);
 
@@ -168,12 +166,16 @@ const Payment = () => {
                     {dataPersonnel && ( 
                     <Tbody>
                       { dataPersonnel.findAllpersonnel
+                      .slice(pagesVisited, pagesVisited + itemsPerPage)
                       .filter((personnel) => {
                          if (searchName === ""){
                             return personnel;
-                          } else if (personnel.firstName.toLowerCase().includes (searchName.toLowerCase()) || personnel.lastName.toLowerCase().includes (searchName.toLowerCase()) || personnel.fonction.toLowerCase().includes (searchName.toLowerCase()))
+                          } else if (personnel.firstName.toLowerCase().includes (searchName.toLowerCase()) || 
+                          personnel.lastName.toLowerCase().includes (searchName.toLowerCase()) ||
+                           personnel.fonction.toLowerCase().includes (searchName.toLowerCase()))
                               return personnel;
                       })
+                      
                       .map((personnel, index) => ( 
                         <Tr key={index}>
                           
@@ -193,11 +195,11 @@ const Payment = () => {
                                     href= {{
                       pathname: Routes.PaymentDetails?.path || '',
                       query: {id: personnel.id}
-                      }}
-                          >Payer</Link>
-                        </Button>
-                      </ButtonGroup> 
-                    </Td>
+                  }}
+                                  >Payer</Link>
+                                </Button>
+                              </ButtonGroup> 
+                            </Td>
                         </Tr>
                      ))}
                     </Tbody>
@@ -221,7 +223,6 @@ const Payment = () => {
       </Box>
     </DefaultLayout>
   );
-}
 };
 
 export default Payment;

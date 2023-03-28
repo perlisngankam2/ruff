@@ -45,22 +45,42 @@ export class TrancheStudentService {
         //     : await this.trancheService.create(input.tranche)
         
         // const student = input.student
-             await this.studentService.findByOne({id:input.studentId})
+        const student = await this.studentService.findByOne({id:input.studentId})
             // : await this.studentService.create(input.student)
+        const tranchestd = await this.findByStudent(student.id)
 
+        if(tranchestd != null)
+        {
+            wrap(tranchestd).assign(
+                {
+                //  montant: 0.000000,
+                 montant: input.montant+tranchestd.montant,
+                 student: tranchestd.student
+                },
+                {
+                    em:this.em
+                }
+            )              
+             await this.trancheStudentRepository.persistAndFlush(tranchestd)
+        }
+
+        if(tranchestd == null)
+        {
         wrap(trancheStudent).assign(
             {
-             montant: 0.000000,
+            //  montant: 0.000000,
+             montant: input.montant,
              name: input.name,
              description: input.description,
             //  regimePaimemnt: input.regimePaiement,
             //  tranche: tranche.id,
-             student: input.studentId
+             student: student.id
             },
             {
                 em:this.em
             }
         )
+        }
 
         // if(input.montant<tranche.montant){
         //     trancheStudent.complete=false
@@ -74,6 +94,7 @@ export class TrancheStudentService {
         //    return trancheStudent  
         // }
 
+
         trancheStudent.complete = true
         await this.trancheStudentRepository.persistAndFlush(trancheStudent)  
         return trancheStudent
@@ -83,7 +104,7 @@ export class TrancheStudentService {
         return this.trancheStudentRepository.findOne(filters);
       }
 
-      findByStudent(id: string): Promise<TrancheStudent | null> {
+    findByStudent(id: string): Promise<TrancheStudent | null> {
         return this.trancheStudentRepository.findOne({student:id});
       }
 
@@ -212,6 +233,15 @@ export class TrancheStudentService {
         );
         await this.trancheStudentRepository.persistAndFlush(trancheStudent);
         return trancheStudent;
+    }
+
+    
+    async AmountRecentTranchestudentByStudent(studentid:string){
+        
+        const b  = (await this.findByStudent(studentid))
+        const a  = b.montant
+        return a
+        
     }
 
     //  tous les etudiants etant à jour

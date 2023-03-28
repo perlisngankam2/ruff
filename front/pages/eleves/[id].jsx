@@ -75,7 +75,8 @@ import {
 } from "../../graphql/Queries";
 import {
   CREATE_TRANCHE_STUDENT, 
-  CREATE_AVANCE_TRANCHE
+  CREATE_AVANCE_TRANCHE,
+  CREATE_SCOLARITE_TRANCHE_STUDENT
 } from "../../graphql/Mutation"
 
 
@@ -240,7 +241,7 @@ const DetailComponent = (student) => {
     const {data:dataTranchePension} = useQuery(GET_ALL_TRANCHE_PENSION);
     const [createTrancheStudent] = useMutation(CREATE_TRANCHE_STUDENT);
     const [createAvanceTranche] = useMutation(CREATE_AVANCE_TRANCHE);
-
+    const [paySchoolFees] = useMutation(CREATE_SCOLARITE_TRANCHE_STUDENT);
         const tranches = []
         const loadTranches = () => {
           dataTranchePension?.findAlltranche?.map((item , index) => { 
@@ -253,57 +254,57 @@ const DetailComponent = (student) => {
           })
         }
 
-      // const addTrancheStudent = async (id) => {
-      //   console.log(id)
-      //   console.log(montant)
-      //   await createTrancheStudent({
-      //     variables:{
-      //       trancheStudent:{
-      //         studentId: id,
-      //         montant: parseInt(montant)
-      //       }
-      //     }
-      //   }),
-      //   onClosses();
-      //   toast({
-      //     title: "Initialisation de la pension.",
-      //     description: "Initialisation reussit.",
-      //     status: "success",
-      //     duration: 3000,
-      //     isClosable: true,
-      //   });
-      // }
-
-      const addAvanceTranche = async(id) => {
-        console.log(montant)
-        console.log(trancheId)
+      const payChoolFeesTrancheStudent = async (id) => {
         console.log(id)
-
-        await createAvanceTranche({
-          variables: {
-            avancetranche:{
-              trancheStudentId: "",
-              montant: parseInt(montant),
-              trancheId: trancheId,
-              tranchestudentinput: {
-                studentId: id,
-                name: "",
-                description: "",
-                montant : 0
-              }
+        console.log(montant)
+        await createTrancheStudent({
+          variables:{
+            trancheStudent:{
+              studentId: id,
+              montant: parseInt(montant)
             }
           }
-        })
+        }),
         onClose();
         toast({
-          title: "paiement tranche pension.",
-          description: " paye avec succes.",
+          title: "Initialisation de la pension.",
+          description: "Initialisation reussit.",
           status: "success",
           duration: 3000,
           isClosable: true,
         });
-        setMontant("");
       }
+
+      // const addAvanceTranche = async(id) => {
+      //   console.log(montant)
+      //   console.log(trancheId)
+      //   console.log(id)
+
+      //   await paySchoolFees({
+      //     variables: {
+      //       avancetranche:{
+      //         trancheStudentId: "",
+      //         montant: parseInt(montant),
+      //         trancheId: trancheId,
+      //         tranchestudentinput: {
+      //           studentId: id,
+      //           name: "",
+      //           description: "",
+      //           montant : 0
+      //         }
+      //       }
+      //     }
+      //   })
+      //   onClose();
+      //   toast({
+      //     title: "paiement tranche pension.",
+      //     description: " paye avec succes.",
+      //     status: "success",
+      //     duration: 3000,
+      //     isClosable: true,
+      //   });
+      //   setMontant("");
+      // }
 
         useEffect(() =>{
         
@@ -764,7 +765,7 @@ const DetailComponent = (student) => {
                                   {dataTrancheStudentBySudentId?.getTrancheStudentByStudent.montant} FCFA
                               </Text>
                             </Flex>
-                          <FormControl>
+                          {/* <FormControl>
                             <FormLabel>
                               Motif
                             </FormLabel>
@@ -784,7 +785,7 @@ const DetailComponent = (student) => {
                                   )
                                 }
                               </Select>
-                          </FormControl>
+                          </FormControl> */}
                         </Box>
                         <Box mt='4'>
                           <Flex 
@@ -858,7 +859,7 @@ const DetailComponent = (student) => {
                           <Button 
                             colorScheme='green'  
                             ml={3}
-                            onClick={() => addAvanceTranche(dataStudentId?.findOnestudent.id)
+                            onClick={() => payChoolFeesTrancheStudent(dataStudentId?.findOnestudent.id)
                               // (dataTrancheStudentBySudentId?.getTrancheStudentByStudent.id)
                             }
                           >

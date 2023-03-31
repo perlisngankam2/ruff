@@ -348,6 +348,7 @@ type Query {
   periode(id: String!): Periode!
   findAllretenupersonnel: [RetenuPersonnel!]!
   retenuPersonnel(id: String!): RetenuPersonnel!
+  findretenupersonnelbypersonnel(personnelid: String!): [RetenuPersonnel!]!
   findAllAnnerAccademique: [AnneeAccademique!]!
   anneeAccademique(id: String!): AnneeAccademique!
   findAlltranche: [Tranche!]!
@@ -362,7 +363,7 @@ type Query {
   AmountMostRecentAvanceTranche(trancheid: String!): Float!
   MostRecentAvanceTranche: Float!
   AmountRecentAvanceTrancheByStudent(studentid: String!): Float!
-  SumAvanceTrancheByStudent(studentid: String!, trancheid: String!): String!
+  SumAvanceTrancheByStudent(studentid: String!, trancheid: String!): Float!
   findAlltranchestudent: [TrancheStudent!]!
   trancheStudent(id: String!): TrancheStudent!
   findRecentTrancheStudentAmount(id: String!): Float!
@@ -865,6 +866,7 @@ input TrancheStudentCreateInput {
   name: String
   description: String
   montant: Float = 0
+  tranche: TrancheCreateInput
 }
 
 input InscriptionInput {

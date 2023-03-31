@@ -56,7 +56,7 @@ async AmountRecentAvanceTrancheByStudent(@Args('studentid') studentid:string){
 return await this.avancetrancheService.AmountRecentAvanceTrancheByStudent(studentid)
 }
 
-@Query(()=>String)
+@Query(()=>Number)
 async SumAvanceTrancheByStudent(@Args('studentid') studentid:string,@Args('trancheid') trancheid:string){
 return await this.avancetrancheService.SumAvanceTrancheByStudent(studentid,trancheid)
 }

@@ -7,10 +7,10 @@ import {
     NotFoundError,
     wrap
   } from '@mikro-orm/core';
+
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { EntityRepository } from '@mikro-orm/postgresql';
 import { forwardRef, Inject, Injectable } from '@nestjs/common';
-import {ObjectType } from '@nestjs/graphql';
 import { TrancheStudent } from 'src/entities/tranche-student.entity';
 import { AvanceTranche } from '../../entities/avance-tranche.entity';
 import { StudentService } from '../student/student.service';
@@ -39,7 +39,7 @@ export class AvanceTrancheService {
         // const studentidlist = (await this.studentservice.getAll()).map(a=>a.id)
 
        // const inputstudentid = await this.studentservice.findByOne(input.tranchestudentinput.studentId)
-        
+        //somme de toutes les avance faites pour une tranche 
 
         const tranchestudent = await this.trancheStudentservice.findByStudent(input.tranchestudentinput.studentId)
        
@@ -100,7 +100,7 @@ export class AvanceTrancheService {
         }
 
         if((await reduction).pourcentage != 0){
-          const newValue = (await tranchestudent[0].tranche.load()).montant - (await tranchestudent[0].tranche.load()).montant*(await reduction).pourcentage
+          const newValue = (await tranchestudent.tranche.load()).montant - (await tranchestudent.tranche.load()).montant*(await reduction).pourcentage
            if(input.montant < newValue){
                // create the avance tranche
               wrap(avanceTranche).assign({
@@ -114,14 +114,14 @@ export class AvanceTrancheService {
               {
                 em:this.em
               })
-              this.trancheStudentservice.saveTranche(tranchestudent[0].id)
+              this.trancheStudentservice.saveTranche((await tranchestudents).id)
               this.avanceTrancheRepository.persistAndFlush(avanceTranche)
               return avanceTranche
               // console.log('===========>'+inscript)   
            }
           //  tranchestudent.complete = true
            avanceTranche.complete=true
-           this.trancheStudentservice.saveTranche(tranche.id)
+           this.trancheStudentservice.saveTranche((await tranchestudents).id)
            this.avanceTrancheRepository.persistAndFlush(avanceTranche)
            return avanceTranche
         }
@@ -141,7 +141,7 @@ export class AvanceTrancheService {
               {
                 em:this.em
               })
-              this.trancheStudentservice.saveTranche(tranchestudent[0].id)
+              this.trancheStudentservice.saveTranche((await tranchestudents).id)
               this.avanceTrancheRepository.persistAndFlush(avanceTranche)
               return avanceTranche
               // console.log('===========>'+inscript)   
@@ -150,7 +150,7 @@ export class AvanceTrancheService {
        
           //  tranchestudent.complete = true
            avanceTranche.complete=true
-           this.trancheStudentservice.saveTranche(tranchestudent[0].id)
+           this.trancheStudentservice.saveTranche((await tranchestudents).id)
            this.avanceTrancheRepository.persistAndFlush(avanceTranche)
            return avanceTranche
         }
@@ -179,19 +179,19 @@ export class AvanceTrancheService {
 
         // tranchestudent.complete = true
         avanceTranche.complete = true
-        this.trancheStudentservice.saveTranche(tranchestudent[0].id)
+        this.trancheStudentservice.saveTranche((await tranchestudents).id)
         this.avanceTrancheRepository.persistAndFlush(avanceTranche)
         return avanceTranche
      }
 
 
 
-     ///!!!!!!!!!!!!!!!  SI L'INSCRIPTION EXISTE EST CORRECT !!!!!!!
+     ///!!!!!!!!!!!!!!!  SI L'INSCRIPTION EXISTANT EST CORRECT !!!!!!!
 
-     if(tranchestudent)  
+     if(tranchestudent!=null)  
      {
       // throw Error("tranchestudent not found")
-     const student = (tranchestudent)[0].student.load()
+     const student = (tranchestudent).student.load()
 
     //  const reduction = (await (await student).categorie.load()).reductionScolarite.load()
    
@@ -203,7 +203,7 @@ export class AvanceTrancheService {
      montant: Number(input.montant),
      name: input.name,
      description: input.description,
-     trancheStudent: tranchestudent[0].id,
+     trancheStudent: tranchestudent.id,
      tranche: input.trancheId
      
    },
@@ -212,8 +212,8 @@ export class AvanceTrancheService {
    })
 
  
-   if ((await this.em.find(AvanceTranche,{trancheStudent: tranchestudent[0].id})).map(a=>a.montant).length>=1) {
-    const totalamount= Number((await this.em.find(AvanceTranche,{trancheStudent: tranchestudent[0].id})).map(a=>a.montant).reduce(function(a,b){return a+b}))
+   if ((await this.em.find(AvanceTranche,{trancheStudent: tranchestudent.id})).map(a=>a.montant).length>=1) {
+    const totalamount= Number((await this.em.find(AvanceTranche,{trancheStudent: tranchestudent.id})).map(a=>a.montant).reduce(function(a,b){return a+b}))
   
     if(totalamount == tranche.montant){
       throw Error("!!!!!!VOUS NE POUVEZ PLUS FAIRE DES AVANCES CAR LA SOMME DE LA PENSION A ETE ATTEINTE!!!!!!!!!!!!")
@@ -281,7 +281,7 @@ export class AvanceTrancheService {
      montant: Number(input.montant)||0.0,
      name: input.name,
      description: input.description,
-     trancheStudent: tranchestudent[0].id,
+     trancheStudent: tranchestudent.id,
      tranche: tranche.id,
      complete: false
      },
@@ -290,15 +290,15 @@ export class AvanceTrancheService {
      })
 
      // ici je dois verifier si l'accumulation de toutes les montants des avances d'une inscription
-     this.trancheStudentservice.saveTranche(tranchestudent[0].id)
+     this.trancheStudentservice.saveTranche(tranchestudent.id)
      this.avanceTrancheRepository.persistAndFlush(avanceTranche)
      return avanceTranche
    
 }
      
 
-   tranchestudent[0].complete = true
-   this.trancheStudentservice.saveTranche(tranchestudent[0].id)
+   tranchestudent.complete = true
+   this.trancheStudentservice.saveTranche(tranchestudent.id)
    this.avanceTrancheRepository.persistAndFlush(avanceTranche)
    return avanceTranche
 }
@@ -392,8 +392,12 @@ return avanceTranche
    return (await this.getAllavancetranche()).slice(-1)[0].montant
   }
 
-  findBytranchestudent(id: string) {
-    return this.avanceTrancheRepository.find({trancheStudent:id});
+ async  findBytranchestudent(id: string):Promise<AvanceTranche[]> {
+    return await this.avanceTrancheRepository.find({trancheStudent:id})
+  }
+
+  async  findBytranche(id: string):Promise<AvanceTranche[]> {
+    return await this.avanceTrancheRepository.find({tranche:id})
   }
 
   async AmountRecentAvanceTrancheByStudent(studentid:string){
@@ -405,10 +409,52 @@ return avanceTranche
   }
 
   async SumAvanceTrancheByStudent(studentid:string,trancheid:string){
-     const a = (await this.trancheStudentservice.findByStudent(studentid))
-//   return (await this.findBytranchestudent(a.id)).filter(async a=>(await a.tranche.load()).id==trancheid).map(a=>a.montant).reduce(function(a,b){return a+b})
-    //  const c = (await this.findBytranchestudent(a.id))
-     return (await this.em.find(AvanceTranche,{tranche:a[0].id})).filter(async a=>(await a.tranche.load()).id==trancheid).map(a=>a.montant).reduce(function(a,b){return a+b})
+     const z = (await this.trancheStudentservice.findByStudent(studentid))
+     console.log('==============================>'+z)
+     const b = await this.findBytranchestudent(z.id)
+     console.log('==============================>'+b)
+     
+
+
+     const where = {};
+
+     if (trancheid) {
+       where['tranche'] = trancheid;
+     }
+ 
+     if (z.id) {
+       where['trancheStudent'] = z.id;
+     }
+ 
+     const avancetranche = await this.em.find(AvanceTranche, where, {
+       populate: true,
+       orderBy: { id: 'ASC' },
+     });
+
+     console.log(avancetranche)
+ 
+     return avancetranche.map(a=>a.montant).reduce(function(a,b){return a+b});
+   }
+    //  const filteredAsyncObjects = b.filter(async (a) => {
+    //   const tranche = await a.tranche.load();
+    //   tranche.id==trancheid
+    // });
+    
+    // const montantSum = filteredAsyncObjects.map((a) => a.montant).reduce((a, b) => a + b, 0);
+    // return montantSum
+    //  const c = b.filter(async a=>(await a.tranche.load()).id===trancheid)
+    //  console.log('==============================>'+c)
+    //  return c.map(a=>a.montant).reduce(function(a,b){return a+b})
+    //  const c=  
+    // const c= await this.findBytranche(trancheid)
+    // console.log("**********************"+c)
+    // const d = c.filter(async a=>(await a.trancheStudent.load()).id===z.id)
+    // // const d = c.forEach(a=>a.trancheStudent.load()===a.)
+    // console.log('++++++++++++++++++++++++++++++>'+d)
+    // return d.map(a=>a.montant).reduce(function(a,b){return a+b}) 
 
  }
-}
+
+
+
+

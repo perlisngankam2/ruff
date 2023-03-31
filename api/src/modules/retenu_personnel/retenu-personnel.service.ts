@@ -116,4 +116,9 @@ export class RetenuPersonnelService {
       return a
     
 }
+
+async findbypersonnel(personnelid:string){
+  return await this.retenuPersonnelRepository.find({personnel:personnelid})
+}
+
 }

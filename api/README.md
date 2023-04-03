@@ -39,11 +39,9 @@ $ pnpm install
 $ pnpm run start
 
 # watch mode
-$ pnpm run start:dev
+$ pnpm start:dev
 
-# production mode
-$ pnpm run start:prod
-```
+
 
 ## Test
 
@@ -64,7 +62,7 @@ Nest is an MIT-licensed open source project. It can grow thanks to the sponsors 
 
 ## Stay in touch
 
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
+- Author - [cheujeu chaldou](https://www.linkedin.com/in/chaldou-fouefack-07aa931bb/)
 - Website - [https://nestjs.com](https://nestjs.com/)
 - Twitter - [@nestframework](https://twitter.com/nestframework)
 

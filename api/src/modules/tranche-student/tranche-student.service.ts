@@ -151,7 +151,7 @@ export class TrancheStudentService {
         tranchestudent.montant=Number(montant.reduce(function(a,b){return a+b}))
         const student = tranchestudent.student.load()
         console.log("===================================>"+student)
-        const montantsalle =(await (await (await student).salle.load()).pension.load()).montantPension
+        const montantsalle = (await (await student).salle.load()).montantPensionSalle
         console.log("===================================>"+montantsalle)
         const tranchemontant = Number((await (await this.em.find(AvanceTranche,{trancheStudent: id})).map(a=>a.tranche.load())[0]).montant)
         // const categorie = (await student).categorie.load()

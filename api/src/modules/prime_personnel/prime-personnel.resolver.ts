@@ -46,5 +46,10 @@ export class PrimePersonnelResolver {
  return await this.primePersonnelService.delete(id)
   }
 
+  @Query(()=> Number)
+  async findallretenupersonnel(@Args('personnelid') personnelid:string){
+ return await this.primePersonnelService.getallpersonnelprime(personnelid)
+  }
+
 
 }

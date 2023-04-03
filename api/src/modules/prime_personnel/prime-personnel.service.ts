@@ -72,8 +72,11 @@ export class PrimePersonnelService {
       }
 
      async getallpersonnelprime(id:string){
-       const a = (await this.em.find(PrimePersonnel,{prime: id})).map(async a=>(await a.prime.load()).montant).reduce(async function(a,b){return await a+await b})
-       return a
+       const a = (await this.em.find(PrimePersonnel,{personnel: id})).map(async a=>(await a.prime.load()).montant)
+       if(a==null){
+        return null
+      }
+      return a.reduce(async function(a,b){return await a+ await b})
       }
       
     //   async update(id:string, input: PrimePersonnelUpdateInput): Promise<PrimePersonnel> {

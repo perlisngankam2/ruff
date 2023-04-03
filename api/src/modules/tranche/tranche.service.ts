@@ -59,6 +59,11 @@ export class TrancheService {
       findByOne(filters: FilterQuery<Tranche>): Promise<Tranche | null> {
         return this.trancheRepository.findOne(filters);
       }
+
+      findBysalle(salleid:string) {
+        return this.trancheRepository.find({salle:salleid});
+      }
+
       findById(id:string){
         return this.trancheRepository.findOne(id)
       }

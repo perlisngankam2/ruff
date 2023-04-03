@@ -51,4 +51,9 @@ export class RetenuPersonnelResolver {
  return await this.retenuPersonnelService.findbypersonnel(personnelid)
   }
 
+  @Query(()=> Number)
+  async findallretenupersonnel(@Args('personnelid') personnelid:string){
+ return await this.retenuPersonnelService.getallretenupersonnel(personnelid)
+  }
+
 }

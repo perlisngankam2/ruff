@@ -41,12 +41,14 @@ export class AvanceTrancheService {
        // const inputstudentid = await this.studentservice.findByOne(input.tranchestudentinput.studentId)
         //somme de toutes les avance faites pour une tranche 
 
+        //ici on met input.map(a=>a.tranchestudentinput.studentId)[0]
         const tranchestudent = await this.trancheStudentservice.findByStudent(input.tranchestudentinput.studentId)
        
         console.log('student id ---->', input.tranchestudentinput.studentId )
         console.log('tranchestudent------->',tranchestudent)
         // const tranchestudent = (await this.trancheStudentservice.getAll()).filter(async a=> (await a.student.load()).id === inputstudentid.id)[0]    
 
+        // ici un tableau de tracheId donc input.map(a=>a.trancheId)
         const tranche = await this.trancheservice.findByOne(input.trancheId)
 
         if(!tranche){
@@ -56,7 +58,7 @@ export class AvanceTrancheService {
 
         if(tranchestudent==null)  {
            
-           
+          //ici create(input.map(a=>a.tranchestudentinput)[0]) 
           const tranchestudents= this.trancheStudentservice.create(input.tranchestudentinput) 
           console.log("========>"+tranchestudents)
           const student = (await tranchestudents).student.load()
@@ -116,13 +118,19 @@ export class AvanceTrancheService {
               })
               this.trancheStudentservice.saveTranche((await tranchestudents).id)
               this.avanceTrancheRepository.persistAndFlush(avanceTranche)
-              return avanceTranche
+              if(avanceTranche==null){
+                throw Error("")
+              }
+               return avanceTranche
               // console.log('===========>'+inscript)   
            }
           //  tranchestudent.complete = true
            avanceTranche.complete=true
            this.trancheStudentservice.saveTranche((await tranchestudents).id)
            this.avanceTrancheRepository.persistAndFlush(avanceTranche)
+           if(avanceTranche==null){
+            throw Error("")
+          }
            return avanceTranche
         }
 
@@ -143,7 +151,10 @@ export class AvanceTrancheService {
               })
               this.trancheStudentservice.saveTranche((await tranchestudents).id)
               this.avanceTrancheRepository.persistAndFlush(avanceTranche)
-              return avanceTranche
+              if(avanceTranche==null){
+                throw Error("")
+              }
+               return avanceTranche
               // console.log('===========>'+inscript)   
            }
 
@@ -152,6 +163,9 @@ export class AvanceTrancheService {
            avanceTranche.complete=true
            this.trancheStudentservice.saveTranche((await tranchestudents).id)
            this.avanceTrancheRepository.persistAndFlush(avanceTranche)
+           if(avanceTranche==null){
+            throw Error("")
+          }
            return avanceTranche
         }
 
@@ -172,6 +186,9 @@ export class AvanceTrancheService {
            // ici je dois verifier si l'accumulation de toutes les montants des avances d'une inscription
            this.trancheStudentservice.saveTranche((await tranchestudents).id)
            this.avanceTrancheRepository.persistAndFlush(avanceTranche)
+           if(avanceTranche==null){
+            throw Error("")
+          }
            return avanceTranche
          
         }
@@ -181,14 +198,17 @@ export class AvanceTrancheService {
         avanceTranche.complete = true
         this.trancheStudentservice.saveTranche((await tranchestudents).id)
         this.avanceTrancheRepository.persistAndFlush(avanceTranche)
-        return avanceTranche
+        if(avanceTranche==null){
+          throw Error("")
+        }
+         return avanceTranche
      }
 
 
 
      ///!!!!!!!!!!!!!!!  SI L'INSCRIPTION EXISTANT EST CORRECT !!!!!!!
 
-     if(tranchestudent!=null)  
+     if(tranchestudent!= null)  
      {
       // throw Error("tranchestudent not found")
      const student = (tranchestudent).student.load()
@@ -292,6 +312,9 @@ export class AvanceTrancheService {
      // ici je dois verifier si l'accumulation de toutes les montants des avances d'une inscription
      this.trancheStudentservice.saveTranche(tranchestudent.id)
      this.avanceTrancheRepository.persistAndFlush(avanceTranche)
+     if(avanceTranche==null){
+      throw Error("")
+    }
      return avanceTranche
    
 }
@@ -300,10 +323,16 @@ export class AvanceTrancheService {
    tranchestudent.complete = true
    this.trancheStudentservice.saveTranche(tranchestudent.id)
    this.avanceTrancheRepository.persistAndFlush(avanceTranche)
+   if(avanceTranche==null){
+    throw Error("")
+  }
    return avanceTranche
 }
 
-return avanceTranche
+if(avanceTranche==null){
+  throw Error("")
+}
+ return avanceTranche
       
 }
 
@@ -403,8 +432,15 @@ return avanceTranche
   async AmountRecentAvanceTrancheByStudent(studentid:string){
     
     const b  = (await this.trancheStudentservice.findByStudent(studentid))
-    const a  = (await this.findBytranchestudent(b[0].id)).slice(-1)[0].montant
+    if(b){
+    const c = (await this.findBytranchestudent(b.id))
+    if(c==null){
+      throw Error("avancestranches for this tranchestudent does not exist!!!!!!!!!!!!!")
+    }
+    const a= c[c.length-1].montant
     return a
+    }
+    throw Error("Tranchestudent doest not existe for this student please try another!!!!!!")
     
   }
 
@@ -432,8 +468,84 @@ return avanceTranche
      });
 
      console.log(avancetranche)
+
+     if(avancetranche==null){
+      throw Error("Aucune avance a ete fait pour cette tranche")
+     }
  
      return avancetranche.map(a=>a.montant).reduce(function(a,b){return a+b});
+   }
+
+   async feesalreadypayed(studentid:string){
+    const z = (await this.trancheStudentservice.findByStudent(studentid))
+    console.log('==============================>'+z)
+    const b = await this.findBytranchestudent(z.id)
+    console.log('==============================>'+b)
+
+    const where = {};
+
+    if (z.id) {
+      where['trancheStudent'] = z.id;
+    }
+
+    const avancetranche = await this.em.find(AvanceTranche, where, {
+      populate: true,
+      orderBy: { id: 'ASC' },
+    });
+
+    console.log(avancetranche)
+
+    return avancetranche.map(a=>a.tranche.load())
+
+   }
+
+
+    async RestAvanceTrancheByStudent(studentid:string,trancheid:string){
+     const z = (await this.trancheStudentservice.findByStudent(studentid))
+     if(!z){
+      throw Error("student not found in tranchestudent!!!!!!!!!!")
+     }
+     console.log('==============================>'+z)
+     const b = await this.findBytranchestudent(z.id)
+     console.log('==============================>'+b)
+    
+     const where = {};
+
+     if (trancheid) {
+       where['tranche'] = trancheid;
+     }
+ 
+     if (z.id) {
+       where['trancheStudent'] = z.id;
+     }
+ 
+     const avancetranche = await this.em.find(AvanceTranche, where, {
+       populate: true,
+       orderBy: { id: 'ASC' },
+     });
+
+     console.log(avancetranche)
+
+     if(avancetranche==null){
+      throw Error("Aucune avance a ete fait pour cette tranche")
+     }
+ 
+    const e= avancetranche.map(a=>a.montant).reduce(function(a,b){return a+b});
+
+    //pour m'assurer qu'il a deja commencer a payer une tranche
+    const t = await this.feesalreadypayed(studentid)
+    
+    const tranche= this.trancheservice.findByOne(trancheid)
+    const y= t.filter(async a=>(await a).id==(await tranche).id)
+
+    if(y!=null){
+      if((await tranche).montant>e)
+        return ((await tranche).montant-e)
+      throw Error("la tranche est inferieur aux avances de cette tranche!!!!!!!!!!!!")
+    }
+    throw Error("the student has not yet started paying a fee!!!!!!!!!!!!!!!!!!!!!")
+    
+   
    }
     //  const filteredAsyncObjects = b.filter(async (a) => {
     //   const tranche = await a.tranche.load();

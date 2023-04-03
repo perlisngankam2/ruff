@@ -10,6 +10,7 @@ import { SalleModule } from '../salle/salle.module';
 import { UserModule } from '../user/user.module';
 import { StudentResolver } from './student.resolver';
 import { StudentService } from './student.service';
+import { TrancheModule } from '../tranche/tranche.module';
 
 @Module({
     imports:[
@@ -17,7 +18,8 @@ import { StudentService } from './student.service';
         // InscriptionModule,
         LocalisationModule,
         CategorieEleveModule,
-        UserModule
+        UserModule,
+        TrancheModule
     ],
     providers:[StudentService,StudentResolver],
     exports:[StudentService]

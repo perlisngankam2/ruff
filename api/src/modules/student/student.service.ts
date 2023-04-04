@@ -188,6 +188,14 @@ export class StudentService {
 
       }
 
+      async findlistfees(studentid:string){
+        const a =await this.findByOne(studentid)
+        const b=(await a.salle.load()).id  
+        const c= (await this.trancheservice.findBysalle(b))
+        return c
+
+      }
+
 
    
       

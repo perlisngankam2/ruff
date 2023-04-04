@@ -93,13 +93,13 @@ export class AvanceTrancheService {
         //     avanceTranche.complete = true
         //   }
         // }
-      if ((await this.em.find(AvanceTranche,{trancheStudent: (await tranchestudents).id})).map(a=>a.montant).length>=1) 
+      if ((await this.findBytranchestudent((await tranchestudents).id)).map(a=>a.montant).length>=1) 
         {
-          const totalamount= Number((await this.em.find(AvanceTranche,{trancheStudent: (await tranchestudents).id})).map(a=>a.montant).reduce(function(a,b){return a+b}))
+          const totalamount= Number((await this.findBytranchestudent((await tranchestudents).id)).map(a=>a.montant).reduce(function(a,b){return a+b}))
         
           if(totalamount == tranche.montant){
 
-           
+            throw Error("!!!!!!ALORS VOUS NE POUVEZ PLUS FAIRE DES AVANCES CAR LA SOMME DE LA PENSION A ETE ATTEINTE!!!!!!!!!!!!")  
             //get all the fees to be paied by the student
             const fees= await this.studentservice.findlistfees((await student).id)
 
@@ -108,63 +108,64 @@ export class AvanceTrancheService {
             //check wether or not the tranche belongs to the list of tranches the student has to
             // const 
             // get surplus of a tranche student and add in another as an avance
-          if(t.length>=1){
-            if((await t[0]).id==tranche.id)
-              if(await this.SumAvanceTrancheByStudent((await student).id, (await t[0]).id)>tranche.montant){
-                const first_surplus = await this.SumAvanceTrancheByStudent((await student).id, (await t[0]).id) - (await t[0]).montant
+          // if(t.length>=1){
+          //   if((await t[0]).id==tranche.id)
+          //     if(await this.SumAvanceTrancheByStudent((await student).id, (await t[0]).id)>tranche.montant){
+          //       const first_surplus = await this.SumAvanceTrancheByStudent((await student).id, (await t[0]).id) - (await t[0]).montant
 
-                if(fees!=null)  {
-                      wrap(avanceTranche).assign({
-                        montant: Number(first_surplus),
-                        name: input.name,
-                        description: input.description,
-                        trancheStudent: (await tranchestudents).id,
-                        tranche:fees[1].id,
-                        complete: false
-                        },
-                        {
-                          em:this.em
-                        })
-                        this.trancheStudentservice.saveTranche((await tranchestudents).id)
-                        this.avanceTrancheRepository.persistAndFlush(avanceTranche)
-                        if(avanceTranche==null){
-                          throw Error("")
-                        }
-                         return avanceTranche
-                }
+          //       if(fees!=null)  {
+          //             wrap(avanceTranche).assign({
+          //               montant: Number(first_surplus),
+          //               name: input.name,
+          //               description: input.description,
+          //               trancheStudent: (await tranchestudents).id,
+          //               tranche:fees[1].id,
+          //               complete: false
+          //               },
+          //               {
+          //                 em:this.em
+          //               })
+          //               this.trancheStudentservice.saveTranche((await tranchestudents).id)
+          //               this.avanceTrancheRepository.persistAndFlush(avanceTranche)
+          //               if(avanceTranche==null){
+          //                 throw Error("")
+          //               }
+          //                return avanceTranche
+          //       }
                 
-              }  
+          //     }  
               
-            if((await t[1]).id==tranche.id)
-              if(await this.SumAvanceTrancheByStudent((await student).id, (await t[1]).id)>tranche.montant){
-                const second_surplus = await this.SumAvanceTrancheByStudent((await student).id, (await t[1]).id) - (await t[1]).montant
+          //   if((await t[1]).id==tranche.id)
+          //     if(await this.SumAvanceTrancheByStudent((await student).id, (await t[1]).id)>tranche.montant){
+          //       const second_surplus = await this.SumAvanceTrancheByStudent((await student).id, (await t[1]).id) - (await t[1]).montant
 
-                if(fees!=null)  {
-                      wrap(avanceTranche).assign({
-                        montant: Number(second_surplus),
-                        name: input.name,
-                        description: input.description,
-                        trancheStudent: (await tranchestudents).id,
-                        tranche:fees[2].id,
-                        complete: false
-                        },
-                        {
-                          em:this.em
-                        })
-                        this.trancheStudentservice.saveTranche((await tranchestudents).id)
-                        this.avanceTrancheRepository.persistAndFlush(avanceTranche)
-                        if(avanceTranche==null){
-                          throw Error("")
-                        }
-                         return avanceTranche
-                }
+          //       if(fees!=null)  {
+          //             wrap(avanceTranche).assign({
+          //               montant: Number(second_surplus),
+          //               name: input.name,
+          //               description: input.description,
+          //               trancheStudent: (await tranchestudents).id,
+          //               tranche:fees[2].id,
+          //               complete: false
+          //               },
+          //               {
+          //                 em:this.em
+          //               })
+          //               this.trancheStudentservice.saveTranche((await tranchestudents).id)
+          //               this.avanceTrancheRepository.persistAndFlush(avanceTranche)
+          //               if(avanceTranche==null){
+          //                 throw Error("")
+          //               }
+          //                return avanceTranche
+          //       }
                 
-              }   
-            }
+          //     }   
+          //   }
 
-            throw Error("!!!!!!ALORS VOUS NE POUVEZ PLUS FAIRE DES AVANCES CAR LA SOMME DE LA PENSION A ETE ATTEINTE!!!!!!!!!!!!")  
+            
            
           }
+
         }
 
 
@@ -279,15 +280,15 @@ export class AvanceTrancheService {
      if(tranchestudent!= null)  
      {
       // throw Error("tranchestudent not found")
-     const student = (tranchestudent).student.load()
+    //  const student = (tranchestudent).student.load()
 
     //  const reduction = (await (await student).categorie.load()).reductionScolarite.load()
    
   
-   const fraistranche = tranche.montant
+  const fraistranche = tranche.montant
 
 
-   wrap(avanceTranche).assign({
+  wrap(avanceTranche).assign({
      montant: Number(input.montant),
      name: input.name,
      description: input.description,
@@ -300,78 +301,16 @@ export class AvanceTrancheService {
    })
 
  
-   if ((await this.em.find(AvanceTranche,{trancheStudent: tranchestudent.id})).map(a=>a.montant).length>=1) {
-    const totalamount= Number((await this.em.find(AvanceTranche,{trancheStudent: tranchestudent.id})).map(a=>a.montant).reduce(function(a,b){return a+b}))
+  if ((await this.findBytranchestudent(tranchestudent.id)).map(a=>a.montant).length>=1) {
+    const totalamount= Number((await this.findBytranchestudent(tranchestudent.id)).map(a=>a.montant).reduce(function(a,b){return a+b}))
   
     if(totalamount == tranche.montant){
-
-           
-      //get all the fees to be paied by the student
-      const fees= await this.studentservice.findlistfees((await student).id)
-
-      //get all the fees already paied by the student
-      const t = await this.feesalreadypayed((await student).id)
-      //check wether or not the tranche belongs to the list of tranches the student has to
-      // const 
-      // get surplus of a tranche student and add in another as an avance
-    if(t.length>=1){
-      if((await t[0]).id==tranche.id)
-        if(await this.SumAvanceTrancheByStudent((await student).id, (await t[0]).id)>tranche.montant){
-          const first_surplus = await this.SumAvanceTrancheByStudent((await student).id, (await t[0]).id) - (await t[0]).montant
-
-          if(fees!=null)  {
-                wrap(avanceTranche).assign({
-                  montant: Number(first_surplus),
-                  name: input.name,
-                  description: input.description,
-                  trancheStudent: tranchestudent.id,
-                  tranche:fees[1].id,
-                  complete: false
-                  },
-                  {
-                    em:this.em
-                  })
-                  this.trancheStudentservice.saveTranche(tranchestudent.id)
-                  this.avanceTrancheRepository.persistAndFlush(avanceTranche)
-                  if(avanceTranche==null){
-                    throw Error("")
-                  }
-                   return avanceTranche
-          }
-          
-        }  
-        
-      if((await t[1]).id==tranche.id)
-        if(await this.SumAvanceTrancheByStudent((await student).id, (await t[1]).id)>tranche.montant){
-          const second_surplus = await this.SumAvanceTrancheByStudent((await student).id, (await t[1]).id) - (await t[1]).montant
-
-          if(fees!=null)  {
-                wrap(avanceTranche).assign({
-                  montant: Number(second_surplus),
-                  name: input.name,
-                  description: input.description,
-                  trancheStudent: tranchestudent.id,
-                  tranche:fees[2].id,
-                  complete: false
-                  },
-                  {
-                    em:this.em
-                  })
-                  this.trancheStudentservice.saveTranche(tranchestudent.id)
-                  this.avanceTrancheRepository.persistAndFlush(avanceTranche)
-                  if(avanceTranche==null){
-                    throw Error("")
-                  }
-                   return avanceTranche
-          }
-          
-        }   
+      throw Error("!!!!!!ALORS VOUS NE POUVEZ PLUS FAIRE DES AVANCES CAR LA SOMME DE LA PENSION A ETE ATTEINTE!!!!!!!!!!!!")  
       }
 
-      throw Error("!!!!!!ALORS VOUS NE POUVEZ PLUS FAIRE DES AVANCES CAR LA SOMME DE LA PENSION A ETE ATTEINTE!!!!!!!!!!!!")  
-     
+      
     }
-  }
+  
 
   //  if((await reduction).pourcentage != 0){
   //    const newValue = (await tranchestudent.tranche.load()).montant - (await tranchestudent.tranche.load()).montant*(await reduction).pourcentage
@@ -451,6 +390,7 @@ export class AvanceTrancheService {
      return avanceTranche
    
 }
+
      
 
    tranchestudent.complete = true

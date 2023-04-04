@@ -35,6 +35,24 @@ export class PersonnelSalleService {
 
 }
 
+async update(
+  id:string,input: PersonnelSalleCreateInput,
+): Promise<PersonnelSalle> {  
+  const personnelsalle = this.findByOne(id)
+  wrap(personnelsalle).assign({
+    salle: input.salleId,
+    personnel: input.personnelId,
+    course: input.courseId
+  },
+  {
+      em: this.em
+  })
+
+  await this.personnelsalleRepository.persistAndFlush(personnelsalle)
+  return personnelsalle
+
+}
+
 async findall(){
     return await this.personnelsalleRepository.findAll()
 }

@@ -79,7 +79,7 @@ export class CategorieEleveService {
 
   async deletecategorie(id:string){
   const a= this.findById(id)
-  await this.categorieEleveRepository.nativeDelete(await a)
+  await this.categorieEleveRepository.removeAndFlush(await a)
   if(!a){
   throw ("not found")
   }

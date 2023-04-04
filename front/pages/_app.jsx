@@ -4,7 +4,7 @@ import { appWithTranslation } from 'next-i18next';
 import i18n from "../plugins/i18n";
 import { ApolloClient, ApolloProvider, InMemoryCache } from "@apollo/client";
 import client from "../graphql/apollo-client";
-import "../styles/globals.css";
+// import "../styles/globals.css";
 import "@fontsource/open-sans";
 import { AuthProvider } from "../contexts/account/Auth/Auth"
 import { AccountProvider } from "../contexts/account/Account";

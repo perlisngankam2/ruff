@@ -59,6 +59,37 @@ export class PrimePersonnelService {
         await this.primePersonnelRepository.persistAndFlush(primePersonnel)
         return primePersonnel
       }
+
+      async update(
+        id:string,input: PrimePersonnelUpdateInput,
+      ): Promise<PrimePersonnel> {
+        // const prime = input.prime
+        //     ? await this.primeService.findByOne(input.primeId)
+        //     : await this.primeService.create(input.prime)
+        
+        const prime = await this.primeService.findByOne(input.primeId)
+        const personnel = await this.personnelService.findById(input.personnelId)
+        if(!(personnel&&prime)){
+            throw Error("not found");
+        }
+        
+        const primePersonnel = this.findByOne(id)
+
+        wrap(primePersonnel).assign(
+          {
+           personnel:input.personnelId,
+           prime: input.primeId,
+           startMonth: input.startMonth,
+          //  endDate: input.enddate
+          },
+          {
+            em: this.em
+          }
+        )
+
+        await this.primePersonnelRepository.persistAndFlush(primePersonnel)
+        return primePersonnel
+      }
     
       findByOne(filters: FilterQuery<PrimePersonnel>): Promise<PrimePersonnel | null> {
         return this.primePersonnelRepository.findOne(filters);

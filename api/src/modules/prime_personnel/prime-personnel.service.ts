@@ -71,10 +71,13 @@ export class PrimePersonnelService {
         return this.primePersonnelRepository.findAll()
       }
 
-     async getallpersonnelprime(id:string){
-       const a = (await this.em.find(PrimePersonnel,{prime: id})).map(async a=>(await a.prime.load()).montant).reduce(async function(a,b){return await a+await b})
-       return a
+  async getallpersonnelprime(id:string){
+       const a = (await this.em.find(PrimePersonnel,{personnel: id})).map(async a=>(await a.prime.load()).montant)
+       if(a==null){
+        return null
       }
+      return a.reduce(async function(a,b){return await a+ await b})
+      }
       
     //   async update(id:string, input: PrimePersonnelUpdateInput): Promise<PrimePersonnel> {
     //     const  primePersonnel= await this.findById(id)
@@ -117,5 +120,9 @@ export class PrimePersonnelService {
        }
        return a
       }
+
+    async findbypersonnel(personnelid:string){
+  return await this.primePersonnelRepository.find({personnel:personnelid})
+}
     
 }

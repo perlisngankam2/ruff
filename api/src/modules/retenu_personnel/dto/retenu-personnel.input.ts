@@ -9,11 +9,15 @@ export class RetenuPersonnelCreateInput {
   retenuId?: string;
 
   @Field(()=>ID,{nullable:true})
-  personnelId?:string
+  personnelId?:string;
 
-  @Field()
-  retenu?:RetenuCreateInput;
+  @Field({nullable:true})
+  startMonth?: string;
 
-  @Field()
-  personnnel?:PersonnelCreateInput
+
+  // @Field()
+  // retenu?:RetenuCreateInput;
+
+  // @Field()
+  // personnnel?:PersonnelCreateInput
 }

@@ -44,7 +44,8 @@ export class RetenuPersonnelService {
         wrap(retenuPersonnel).assign(
           {
           personnel: input.personnelId,
-          retenue: input.retenuId
+          retenue: input.retenuId,
+          startMonth: input.startMonth,
           },
           {
             em: this.em
@@ -68,45 +69,47 @@ export class RetenuPersonnelService {
         return this.retenuPersonnelRepository.findAll()
       }
       
-      async update(id:string, input: RetenuPersonnelUpdateInput): Promise<RetenuPersonnel> {
-        const retenuPersonnel = await this.findById(id)
-        if (input.retenu) {
-            const retenu =
-            input.retenuId &&
-              (await this.retenuService.findByOne({ id: input.retenuId }));
+    //   async update(id:string, input: RetenuPersonnelUpdateInput): Promise<RetenuPersonnel> {
+    //     const retenuPersonnel = await this.findById(id)
+    //     if (input.retenu) {
+    //         const retenu =
+    //         input.retenuId &&
+    //           (await this.retenuService.findByOne({ id: input.retenuId }));
       
-            if (!retenu) {
-              throw new NotFoundError('prime no exist' || '');
-            }
-            this.retenuService.update(retenu.id, input.retenu);
-          }  
+    //         if (!retenu) {
+    //           throw new NotFoundError('prime no exist' || '');
+    //         }
+    //         this.retenuService.update(retenu.id, input.retenu);
+    //       }  
           
           
-        if (input.personnnel) {
-            const personnel =
-            input.personnelId &&
-              (await this.personnelService.findOne({ id: input.personnelId}));
+    //     if (input.personnnel) {
+    //         const personnel =
+    //         input.personnelId &&
+    //           (await this.personnelService.findOne({ id: input.personnelId}));
       
-            if (!personnel) {
-              throw new NotFoundError('personnel no exist' || '');
-            }
-            this.personnelService.update(personnel.id, input.personnnel);
-          }  
-        wrap(retenuPersonnel).assign({
-            retenue: input.retenu || retenuPersonnel.retenue,
-            personnel: input.personnnel || retenuPersonnel.personnel
-        },
-        { em: this.em },
-    );
-        await this.retenuPersonnelRepository.persistAndFlush(retenuPersonnel);
-        return retenuPersonnel;
-      }
+    //         if (!personnel) {
+    //           throw new NotFoundError('personnel no exist' || '');
+    //         }
+    //         this.personnelService.update(personnel.id, input.personnnel);
+    //       }  
+    //     wrap(retenuPersonnel).assign({
+    //         retenue: input.retenu || retenuPersonnel.retenue,
+    //         personnel: input.personnnel || retenuPersonnel.personnel
+    //     },
+    //     { em: this.em },
+    // );
+    //     await this.retenuPersonnelRepository.persistAndFlush(retenuPersonnel);
+    //     return retenuPersonnel;
+    //   }
     
-      async getallretenupersonnel(id:string){
-      const a = (await this.em.find(RetenuPersonnel,{retenue: id})).map(async a=>(await a.retenue.load()).montant).reduce(async function(a,b){return await a+ await b})
-      return a
+     async getallretenupersonnel(id:string){
+      const a = (await this.em.find(RetenuPersonnel,{personnel: id})).map(async a=>(await a.retenue.load()).montant)
+      if(a==null){
+        return null
       }
-
+      return a.reduce(async function(a,b){return await a+ await b})
+      }
       async delete(id:string){
       const a = this.findById(id)
       await this.retenuPersonnelRepository.removeAndFlush(a)
@@ -115,5 +118,9 @@ export class RetenuPersonnelService {
       }
       return a
     
+}
+
+async findbypersonnel(personnelid:string){
+  return await this.retenuPersonnelRepository.find({personnel:personnelid})
 }
 }

@@ -27,6 +27,10 @@ export class RetenuPersonnel {
   @PrimaryKeyUuid()
   id!: string;
 
+  @Field({ nullable: true })
+  @Property({ nullable: true })
+  startMonth!: string; 
+
   @Property({ onCreate: () => new Date() })
   createdAt = new Date();
   

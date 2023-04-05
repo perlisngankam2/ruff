@@ -10,7 +10,8 @@ import {
   InputGroup,
   InputRightElement,
   Text,
-  VStack
+  VStack,
+  Spinner
 } from "@chakra-ui/react";
 
 import Routes from "../../modules/routes";
@@ -28,6 +29,8 @@ import { useMutation, useQuery } from "@apollo/client";
 import { GET_ALL_PERSONNELS } from "../../graphql/Queries";
 import { DELETE_PERSONNEL } from "../../graphql/Mutation";
 import Category from "./categorypersonnel";
+import BoxLoading from "../../components/molecules/boxLoading";
+// import Loader from "../../components/atoms/Loader";
 
 const Personnel = () => {
   const router = useRouter();
@@ -55,8 +58,14 @@ const Personnel = () => {
   console.log(dataPersonnel) 
 }, [dataPersonnel])
  
-  if (loading) return <Text>Chargement en cour...</Text>
-  if (error) return <Text>Une erreur s'est produite!</Text>
+  // if (loading) return <Text>Chargement en cour...</Text>
+  // if (error) return <Text>Une erreur s'est produite!</Text>
+
+      if (loading)
+    return (
+      <BoxLoading />
+    );
+  // if (error) return <BoxLoading />
 
   // const removePersonnel = async(id) => {
   //   await deletePersonnel({

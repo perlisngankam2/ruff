@@ -36,14 +36,24 @@ export class RetenuPersonnelResolver {
     return await this.retenuPersonnelService.findByOne(id);
   }
 
-  @Mutation(()=>RetenuPersonnel)
-  async updateretenupersonnel(@Args('id') id:string,@Args('input') input:RetenuPersonnelUpdateInput){
-    return await this.retenuPersonnelService.update(id,input)
-  }
+  // @Mutation(()=>RetenuPersonnel)
+  // async updateretenupersonnel(@Args('id') id:string,@Args('input') input:RetenuPersonnelUpdateInput){
+  //   return await this.retenuPersonnelService.update(id,input)
+  // }
 
   @Mutation(()=> RetenuPersonnel)
   async deleteretenupersonnel(@Args('id') id:string){
  return await this.retenuPersonnelService.delete(id)
+  }
+
+  @Query(()=> [RetenuPersonnel])
+  async findretenupersonnelbypersonnel(@Args('personnelid') personnelid:string){
+ return await this.retenuPersonnelService.findbypersonnel(personnelid)
+  }
+
+  @Query(()=> Number)
+  async findallretenupersonnel(@Args('personnelid') personnelid:string){
+ return await this.retenuPersonnelService.getallretenupersonnel(personnelid)
   }
 
 }

@@ -29,4 +29,9 @@ async getonesalaire(@Args('id') id:string){
     return await this.salaireService.findByOne(id)
 }
 
+@Query(()=>[Salaire])
+async getsalairebypersonnel(@Args('personnelid') personnelid:string){
+    return await this.salaireService.salairepersonnel(personnelid)
+}
+
 }

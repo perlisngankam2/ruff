@@ -14,6 +14,8 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { CREATE_SALAIRE } from "../../graphql/Mutation";
 import { useToast } from "@chakra-ui/react";
+import Routes from "../../modules/routes";
+import Link from "next/link";
 
 const PaySlip = () => {
 
@@ -24,7 +26,7 @@ const PaySlip = () => {
 
   //information du personnel par son ID
 
-    const {data:dataPersonnelId} = useQuery(GET_ALL_PERSONNEL_BY_ID,
+    const {data:dataPersonnelId, loading, error} = useQuery(GET_ALL_PERSONNEL_BY_ID,
       {
         variables:{ id: router.query.id}
       })
@@ -45,7 +47,7 @@ const PaySlip = () => {
     })
 
 
-  const moisPayes = [];
+  const moisPayes = []
   const personnelId = dataPersonnelId?.findOnePersonnel.id ;
   const montant = dataCategorie?.findOneCategoriepersonnel.montant;
   const [moisPaie, setMoisPaie] = useState("");
@@ -74,6 +76,7 @@ const PaySlip = () => {
         }
       }
     })
+    moisPayes.push(moisPaie);
 
     console.log(salaireData)
     toast({
@@ -84,14 +87,20 @@ const PaySlip = () => {
       isClosable: true,
     });
 
-    moisPayes.push(moisPaie);
+    
+    
         setMoisPaie("");
   }
 
-  useEffect(() =>{
-    console.log(dataPersonnelId?.findOnePersonnel)
-  })
+  console.log(moisPayes)
 
+  useEffect(() =>{
+    
+    
+    console.log(dataPersonnelId?.findOnePersonnel)
+
+  })
+// if (loading) return <Text>Chargement en cour...</Text>
 
     return ( 
 
@@ -164,8 +173,7 @@ const PaySlip = () => {
                     type="text"
                     rounded={2}
                     name="dateOfPrime"
-                    // placeholder="{formattedDate}"
-                    // onChange={(event) => setStartDate(event.target.value)}
+                
                    value={montant}
                  
                     
@@ -185,7 +193,25 @@ const PaySlip = () => {
 
              <Center>
           <Button disabled={!moisPaie} type="submit" color='white' bg='#eb808a' variant='solid' mx='auto' my='auto' onClick={HandleClick}>
+              
+               <Link 
+               onClick={HandleClick}
+             
+
+               href={{
+                pathname: Routes.Bulletin?.path || '',
+                query: {id: router.query.id}
+              }}
+                // "/eleves/recu/id"}
+                // m='2'
+                // href= {{
+                //   pathname: Routes.Receipt?.path || '',
+                //   query: {id: student.id}
+                // }}
+              >
                 Soumettre
+              </Link>
+               
            </Button>
         </Center>
       </Box>

@@ -45,36 +45,57 @@ export class TrancheStudentService {
         //     : await this.trancheService.create(input.tranche)
         
         // const student = input.student
-             await this.studentService.findByOne({id:input.studentId})
+        const student = await this.studentService.findByOne({id:input.studentId})
             // : await this.studentService.create(input.student)
+        // const tranchestd = await this.findByStudent(student.id)
 
+        // if(tranchestd != null)
+        // {
+        //     wrap(tranchestd).assign(
+        //         {
+        //         montant: 0.000000,
+        //         //  montant: input.montant+tranchestd.montant,
+        //          student: tranchestd.student
+        //         },
+        //         {
+        //             em:this.em
+        //         }
+        //     )              
+        //      await this.trancheStudentRepository.persistAndFlush(tranchestd)
+        // }
+
+        // if(tranchestd == null)
+        // {
         wrap(trancheStudent).assign(
             {
-             montant: 0.000000,
+            montant: 0.000000,
+            //  montant: input.montant,
              name: input.name,
              description: input.description,
             //  regimePaimemnt: input.regimePaiement,
             //  tranche: tranche.id,
-             student: input.studentId
+             student: student.id
             },
             {
                 em:this.em
             }
         )
+        // }
 
-        // if(input.montant<tranche.montant){
+        // if(trancheStudent.montant<tranche.montant){
         //     trancheStudent.complete=false
         //     await this.trancheStudentRepository.persistAndFlush(trancheStudent)  
         //     return trancheStudent       
         // }
-        // if(input.montant > tranche.montant){
+        // if(trancheStudent.montant > tranche.montant){
         //    trancheStudent.complete = true
         //    trancheStudent.reste = input.montant - tranche.montant
         //    await this.trancheStudentRepository.persistAndFlush(trancheStudent)  
         //    return trancheStudent  
         // }
 
-        trancheStudent.complete = true
+
+        // trancheStudent.complete = true
         await this.trancheStudentRepository.persistAndFlush(trancheStudent)  
         return trancheStudent
       }
@@ -83,7 +104,7 @@ export class TrancheStudentService {
         return this.trancheStudentRepository.findOne(filters);
       }
 
-      findByStudent(id: string): Promise<TrancheStudent | null> {
+    findByStudent(id: string): Promise<TrancheStudent | null> {
         return this.trancheStudentRepository.findOne({student:id});
       }
 
@@ -120,10 +141,18 @@ export class TrancheStudentService {
     }
 
     async saveTranche(id:string){
-        const tranchestudent = await this.trancheStudentRepository.findOneOrFail(id)
-        tranchestudent.montant = Number((await this.em.find(AvanceTranche,{trancheStudent: id})).map(a=>a.montant).reduce(function(a,b){return a+b}))
+        const tranchestudent = await this.findByOne(id)
+        console.log("====================>"+tranchestudent)
+        console.log("+++++++++++++++++++++++>"+tranchestudent.montant)
+        const montant = (await this.avance.findBytranchestudent(tranchestudent.id)).map(a=>a.montant)
+        console.log("===================================>"+montant)
+        const sum = Number(montant.reduce(function(a,b){return a+b}))
+        console.log("+++++++++++++++++++++++++++>"+sum)
+        tranchestudent.montant=Number(montant.reduce(function(a,b){return a+b}))
         const student = tranchestudent.student.load()
-        const montantsalle =(await (await (await student).salle.load()).pension.load()).montantPension
+        console.log("===================================>"+student)
+        const montantsalle = (await (await student).salle.load()).montantPensionSalle
+        console.log("===================================>"+montantsalle)
         const tranchemontant = Number((await (await this.em.find(AvanceTranche,{trancheStudent: id})).map(a=>a.tranche.load())[0]).montant)
         // const categorie = (await student).categorie.load()
         // const retenu = (await categorie).reductionScolarite.load()
@@ -212,6 +241,15 @@ export class TrancheStudentService {
         );
         await this.trancheStudentRepository.persistAndFlush(trancheStudent);
         return trancheStudent;
+    }
+
+    
+    async AmountRecentTranchestudentByStudent(studentid:string){
+        
+        const b  = (await this.findByStudent(studentid))
+        const a  = b.montant
+        return a
+        
     }
 
     //  tous les etudiants etant à jour

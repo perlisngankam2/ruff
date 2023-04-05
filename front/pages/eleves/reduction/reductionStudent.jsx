@@ -23,13 +23,13 @@ import {
    InputRightElement
   } from "@chakra-ui/react";
   
-  import DefaultLayout from "../../components/layouts/DefaultLayout";
+  import DefaultLayout from "../../../components/layouts/DefaultLayout";
   import AddReductionStudent from "./AddReductionStudent";
   import { Router, useRouter } from "next/router";
   import {FiEdit, FiSearch} from 'react-icons/fi';
   import {MdDelete} from 'react-icons/md';
   import { useMutation, useQuery } from "@apollo/client"; 
-  import { GET_ALL_REDUCTION_SCOLARITE } from "../../graphql/Queries";
+  import { GET_ALL_REDUCTION_SCOLARITE } from "../../../graphql/Queries";
   import { useEffect, useState } from "react";
   
   const reductionStudent = () => {
@@ -70,7 +70,7 @@ import {
   
    return (
      <DefaultLayout>
-       <Box p="3" pt={"80px"} w="full">
+       <Box p="3" pt={"70px"} w="full">
          <Flex
            align="center"
            justify="space-between"
@@ -115,7 +115,7 @@ import {
             <AddReductionStudent/>
            </Box>
          </Flex>
-         <Box mt={10}>
+         <Box mt={7}>
              <TableContainer
               border={"1px"} 
               rounded={"md"}

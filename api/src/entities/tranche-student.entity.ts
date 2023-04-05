@@ -68,6 +68,10 @@ export class TrancheStudent {
   @Property({ default:0.000 })
   surplus!: number;
 
+  @Field({ nullable:true })
+  @Property({ nullable:true})
+  avance!: number;
+
   @ManyToOne(() => Student ,{
     nullable:false,
     onDelete:'CASCADE',

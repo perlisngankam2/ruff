@@ -195,17 +195,19 @@ const  CycleCreate =  (
    
   return (
     <Center>
-             <Box> 
-                <Button
-                    rightIcon={<Icon as={IoIosAdd} boxSize="20px" />}
-                    onClick={onOpen}
-                    ml={["245px", "490px","909px"]}
-                    width ={"200px"}
-                    // onClick = {() => router.push(personnel/AjouterCategoryPersonnel)} 
-                >
-                        Ajouter un Cycle                              
-                </Button>
-            </Box> 
+            <Box> 
+            <Button
+                rightIcon={<Icon as={IoIosAdd} boxSize="20px" />}
+                onClick={onOpen}
+                ml={["245px", "490px","909px"]}
+                width ={"200px"}
+                mb={"20px"}
+                mt={"10px"}
+                // onClick = {() => router.push(personnel/AjouterCategoryPersonnel)} 
+            >
+                    Ajouter un Cycle                              
+            </Button>
+        </Box> 
           {/* {isformOpen?   } */}
         <Box> 
             <Box as={"form"} 

@@ -3,7 +3,7 @@ import Head from "next/head";
 import Image from "next/image";
 import styles from "../styles/Home.module.css";
 import LoginPage from "../components/pages/LoginPage/LoginPage";
-import { getStaticPropsTranslations } from '../type/staticProps';
+import { getStaticPropsTranslations } from '../types/staticProps';
 
 export default function Home() {
 

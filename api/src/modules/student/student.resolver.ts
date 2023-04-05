@@ -60,5 +60,12 @@ export class StudentResolver {
     return TrancheStudent
   }
 
+  @Query(()=>[Number])
+  async AmountrExpectedByTranche(@Args('studentid') studentid:string){
+    return await this.studentService.findlisttranche(studentid)
+  }
+
+
+
  
 }

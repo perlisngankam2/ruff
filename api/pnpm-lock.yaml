@@ -14,9 +14,10 @@ specifiers:
   '@mikro-orm/postgresql': ^5.6.7
   '@mikro-orm/reflection': ^5.6.7
   '@mikro-orm/seeder': ^5.6.7
+  '@nestjs-query/core': ^0.30.0
   '@nestjs/apollo': ^10.1.7
   '@nestjs/cli': ^9.0.0
-  '@nestjs/common': ^9.0.0
+  '@nestjs/common': ^9.2.1
   '@nestjs/config': ^2.2.0
   '@nestjs/core': ^9.0.0
   '@nestjs/graphql': ^10.1.7
@@ -66,6 +67,7 @@ dependencies:
   '@mikro-orm/postgresql': 5.6.7_6hangkkl6jzwloay4cuhu7ht2q
   '@mikro-orm/reflection': 5.6.7_@mikro-orm+core@5.6.7
   '@mikro-orm/seeder': 5.6.7_@mikro-orm+core@5.6.7
+  '@nestjs-query/core': 0.30.0_@nestjs+common@9.2.1
   '@nestjs/apollo': 10.1.7_abtkaagqsgvel2ybqxmuekbriy
   '@nestjs/common': 9.2.1_mnr6j2del53muneqly5h4y27ai
   '@nestjs/config': 2.2.0_b4pxbpa7chblgbyake5iz5rdmu
@@ -1436,6 +1438,18 @@ packages:
       '@mikro-orm/core': 5.6.7_qesicegyh7ajq236366ab3xs2i
       fs-extra: 11.1.0
       globby: 11.1.0
+    dev: false
+
+  /@nestjs-query/core/0.30.0_@nestjs+common@9.2.1:
+    resolution: {integrity: sha512-q2ykkGmC220LYkud6AGy8udyXspPSTVKHxAMwXMO/AsKEZkyT/kTEJdRoBPJqIs20Tdx8azDbEk4UCpb0l4Buw==}
+    peerDependencies:
+      '@nestjs/common': ^8.0.4
+      class-transformer: ^0.2.3 || 0.3.1 || 0.4
+    dependencies:
+      '@nestjs/common': 9.2.1_mnr6j2del53muneqly5h4y27ai
+      lodash.merge: 4.6.2
+      reflect-metadata: 0.1.13
+      tslib: 2.4.1
     dev: false
 
   /@nestjs/apollo/10.1.7_abtkaagqsgvel2ybqxmuekbriy:
@@ -5131,7 +5145,6 @@ packages:
 
   /lodash.merge/4.6.2:
     resolution: {integrity: sha512-0KpjqXRVvrYyCsX1swR/XTK0va6VQkQM6MNo7PqW77ByjAhoARA8EfrP1N4+KlKj8YS0ZUCtRT/YUuhyYDujIQ==}
-    dev: true
 
   /lodash.omit/4.5.0:
     resolution: {integrity: sha512-XeqSp49hNGmlkj2EJlfrQFIzQ6lXdNro9sddtQzcJY8QaoC2GO0DT7xaIokHeyM+mIT0mPMlPvkYzg2xCuHdZg==}

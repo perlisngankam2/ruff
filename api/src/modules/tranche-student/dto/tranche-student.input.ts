@@ -28,6 +28,6 @@ export class TrancheStudentCreateInput {
   // @Field(()=>StudentCreateInput,{nullable:true})
   // student?:StudentCreateInput
   
-  // @Field(()=>TrancheCreateInput,{nullable:true})
-  // tranche?:TrancheCreateInput
+  @Field(()=>TrancheCreateInput,{nullable:true})
+  tranche?:TrancheCreateInput
 }

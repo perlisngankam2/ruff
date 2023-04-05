@@ -108,7 +108,9 @@ import {
                 as="form"
                 width="500px"
               > 
-                <Heading color={"colors.primary"}>Creation d'un niveau d'etude</Heading>
+                <Heading color={"colors.primary"}>
+                  Creation d'un niveau d'etude
+                </Heading>
                 <Stack
                   gap={2}
                   align="start"

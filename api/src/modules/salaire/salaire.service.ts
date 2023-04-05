@@ -98,6 +98,7 @@ export class SalaireService {
       }
 
     }
+  }
       
  
   }
@@ -150,6 +151,12 @@ export class SalaireService {
     }
     return a
  }
+
+ async salairepersonnel(personnelid:string){
+  const a = this.salaireRepository.find({personnel:personnelid})
+  return a
+  
+}
 
  async salairepersonnel(personnelid:string){
   const a = this.salaireRepository.find({personnel:personnelid})

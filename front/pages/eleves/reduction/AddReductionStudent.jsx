@@ -1,5 +1,5 @@
 import { Box, Heading } from "@chakra-ui/react";
-import SearchBar from "../../components/atoms/searchbar";
+import SearchBar from "../../../components/atoms/searchbar";
 import {
   AlertDialog,
   AlertDialogBody,
@@ -26,10 +26,10 @@ import React from "react";
 import { IoIosAdd } from "react-icons/io";
 import Link from "next/link";
 import {useMutation } from '@apollo/client';
-import { CREATE_REDUCTION_SCOLARITE } from "../../graphql/Mutation";
+import { CREATE_REDUCTION_SCOLARITE } from "../../../graphql/Mutation";
 import { useState } from "react";
 import { useRouter } from "next/router";
-import { GET_ALL_REDUCTION_SCOLARITE } from "../../graphql/Queries";
+import { GET_ALL_REDUCTION_SCOLARITE } from "../../../graphql/Queries";
 
 function addReductionStudent  () {
 

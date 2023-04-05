@@ -4,6 +4,7 @@ import { TrancheStudent } from "../../entities/tranche-student.entity";
 import { AvanceTranche } from "../../entities/avance-tranche.entity";
 import { AvanceTrancheService } from "./avance-tranche.service";
 import { AvanceTrancheCreateInput } from "./dto/avance-tranche.input";
+import { Tranche } from "src/entities/tranche.entity";
 
 
 
@@ -12,7 +13,7 @@ export class AvanceTrancheResolver {
   constructor(private readonly avancetrancheService: AvanceTrancheService) {}
 
 @Mutation(() => AvanceTranche)
-async createavancetranche(@Args('avancetranche') input: AvanceTrancheCreateInput) {
+async createavancetranche(@Args('avancetranche') input: AvanceTrancheCreateInput):Promise<AvanceTranche|null> {
   return await this.avancetrancheService.createavancetranche(input);
 }
 
@@ -56,8 +57,18 @@ async AmountRecentAvanceTrancheByStudent(@Args('studentid') studentid:string){
 return await this.avancetrancheService.AmountRecentAvanceTrancheByStudent(studentid)
 }
 
-@Query(()=>String)
+@Query(()=>Number)
 async SumAvanceTrancheByStudent(@Args('studentid') studentid:string,@Args('trancheid') trancheid:string){
 return await this.avancetrancheService.SumAvanceTrancheByStudent(studentid,trancheid)
+}
+
+@Query(()=>[Tranche])
+async getallfessalreadypayed(@Args('studentid') studentid:string){
+return await this.avancetrancheService.feesalreadypayed(studentid)
+}
+
+@Query(()=>Number)
+async RestTrancheByStudent(@Args('studentid') studentid:string,@Args('trancheid') trancheid:string){
+return await this.avancetrancheService.RestAvanceTrancheByStudent(studentid,trancheid)
 }
 }

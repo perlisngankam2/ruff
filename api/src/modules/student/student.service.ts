@@ -22,6 +22,7 @@ import { TrancheStudentService } from '../tranche-student/tranche-student.servic
 import { UserService } from '../user/user.service';
 import { StudentCreateInput } from './dto/student.input';
 import { StudentUpdateInput } from './dto/student.update';
+import { TrancheService } from '../tranche/tranche.service';
 
 @Injectable()
 export class StudentService {
@@ -29,6 +30,7 @@ export class StudentService {
         @InjectRepository(Student)
         private studentRepository: EntityRepository<Student>,
         // private salleService: SalleService,
+        private trancheservice: TrancheService,
         private localisationService: LocalisationService,
         private categorieService: CategorieEleveService,
         // private inscriptionService: InscriptionService,
@@ -177,6 +179,23 @@ export class StudentService {
       async findTrancheStudentByStudent(studentid:string){
         return (await this.em.find(TrancheStudent,{student:studentid}))[0]
       }
+
+      async findlisttranche(studentid:string){
+        const a =await this.findByOne(studentid)
+        const b=(await a.salle.load()).id  
+        const c= (await this.trancheservice.findBysalle(b)).map(a=>a.montant) 
+        return c
+
+      }
+
+      async findlistfees(studentid:string){
+        const a =await this.findByOne(studentid)
+        const b=(await a.salle.load()).id  
+        const c= (await this.trancheservice.findBysalle(b))
+        return c
+
+      }
+
 
    
       

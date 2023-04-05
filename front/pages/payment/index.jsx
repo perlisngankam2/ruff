@@ -33,10 +33,14 @@ import { useState } from "react";
 import { useMutation, useQuery } from "@apollo/client";
 import { GET_ALL_PERSONNELS } from "../../graphql/Queries";
 import ReactPaginate from "react-paginate";
-import { MdDelete } from "react-icons/md";
 
 const Payment = () => {
   // const [searchName, setSearchName] = useState("");
+
+  //STATE DE LA PAGINATION
+  const itemsPerPage = 15;
+  const [pageNumber, setPageNumber] = useState(0);
+  const pagesVisited = pageNumber * itemsPerPage;
 
   const {data:dataPersonnel, loading, error} = useQuery(GET_ALL_PERSONNELS)
   const [personnel, setPersonnel] = useState([]);
@@ -65,6 +69,12 @@ const Payment = () => {
     // }
             
   };
+
+  const pageCountPersonnel = Math.ceil(dataPersonnel?.findAllpersonnel.length / itemsPerPage);
+
+    const changePage = ({ page }) => {
+      setPageNumber(page);
+    }
   return (
     <DefaultLayout>
       <Box 
@@ -105,30 +115,40 @@ const Payment = () => {
    
         </Center>
         
-               {/* {filteredData.length !=0 &&(
-                 <Box py='9px' w='290px' bg={'white'} boxShadow="md" borderRadius="7px" overflow={"hidden"} overflowY='auto' placeItems={'center'} margin="0 auto">
-           {filteredData.map((personnel, index) => (
+               {filteredData.length !=0 &&(
+            <Box 
+              py='9px' 
+              w='290px' 
+              bg={'white'} 
+              boxShadow="md" 
+              borderRadius="7px" 
+              overflow={"hidden"} 
+              overflowY='auto' 
+              placeItems={'center'} 
+              margin="0 auto"
+            >
+              {filteredData.map((personnel, index) => (
               <Grid key={index} marginLeft='10px' >
-              <Link  
-                  href= {{
-                      pathname: Routes.PaymentDetails?.path || '',
-                      query: {id: personnel.id}
-                  }}
-              >
-                  <Text 
-                    width={'200px'}  
-                    display={'flex'} 
-                    alignItems='center' 
-                    color='black' 
-                    textDecoration="none"
-                    _hover={{background:"lightgrey", color:'white'}}
+                <Link  
+                    href= {{
+                        pathname: Routes.PaymentDetails?.path || '',
+                        query: {id: personnel.id}
+                    }}
                 >
-                  {personnel.firstName} {personnel.lastName} - {personnel.fonction.toLowerCase()}
-                </Text>
-              </Link>
-
+                    <Text 
+                      width={'200px'}  
+                      display={'flex'} 
+                      alignItems='center' 
+                      color='black' 
+                      textDecoration="none"
+                      _hover={{background:"lightgrey", color:'white'}}
+                  >
+                    {personnel.firstName} {personnel.lastName} - {personnel.fonction.toLowerCase()}
+                  </Text>
+                </Link>
               </Grid>
-          ))} </Box>)} */}
+              ))} 
+            </Box>)}
           
         {/* <PaySlip />  */}
           <Box mt={10} pb='5px'>
@@ -152,13 +172,14 @@ const Payment = () => {
                     {dataPersonnel && ( 
                     <Tbody>
                       { dataPersonnel.findAllpersonnel
+                      .slice(pagesVisited, pagesVisited + itemsPerPage)
                       .filter((personnel) => {
                          if (searchName === ""){
                             return personnel;
-                          } else if (personnel.firstName.toLowerCase().includes (searchName.toLowerCase()) || personnel.lastName.toLowerCase().includes (searchName.toLowerCase()) || personnel.fonction.toLowerCase().includes (searchName.toLowerCase()))
-                              return personnel; 
-                          
-
+                          } else if (personnel.firstName.toLowerCase().includes (searchName.toLowerCase()) || 
+                          personnel.lastName.toLowerCase().includes (searchName.toLowerCase()) ||
+                           personnel.fonction.toLowerCase().includes (searchName.toLowerCase()))
+                              return personnel;
                       })
                       .slice(pagesVisited, pagesVisited + usersPerPage)
                       
@@ -193,17 +214,19 @@ const Payment = () => {
                 </Table>
             </TableContainer>
         </Box>
- <ReactPaginate 
-      previousLabel={"<<"}
-      nextLabel={">>"}
-      pageCount={pageCount}
-      onPageChange={changePage}
-      containerClassName={"paginationBttns"}
-      previousLinkClassName={"previousBttn"}
-      nextLinkClassName={"nextBttn"}
-      disabledClassName={"paginationDisabled"}
-      activeClassName={"paginationActive"}
-    />
+        <Box mt={"15px"}> 
+          <ReactPaginate 
+            previousLabel={"<<"}
+            nextLabel={">>"}
+            pageCount={pageCountPersonnel}
+            onPageChange={changePage}
+            containerClassName={"paginationBttns"}
+            previousLinkClassName={"previousBttn"}
+            nextLinkClassName={"nextBttn"}
+            disabledClassName={"paginationDisabled"}
+            activeClassName={"paginationActive"}
+          />
+        </Box>
       </Box>
     </DefaultLayout>
   );

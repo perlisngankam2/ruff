@@ -161,7 +161,7 @@ const receipt = () => {
                                 >
                                     <Text>Nom / Name:</Text>
                                     <Box display={"flex"}gap={3}>
-                                        <Text> {dataStudentId.findOnestudent.firstname}</Text>
+                                        <Text> {dataStudentId.findOnestudent.firstname.toUpperCase()}</Text>
                                         <Text>{dataStudentId.findOnestudent.lastname}  </Text>
                                     </Box>
                                 </Flex>
@@ -227,7 +227,11 @@ const receipt = () => {
                                 mx='4' 
                                 mt='-3'
                             >
-                                <Flex gap='1' mt='4' ml='60px'>
+                                <Flex 
+                                    gap='1' 
+                                    mt='4' 
+                                    ml='60px'
+                                >
                                     <Text fontWeight='bold'>No Recu</Text>
                                     <Text>____________</Text>
                                 </Flex>
@@ -237,7 +241,9 @@ const receipt = () => {
                                     w='300px'
                                 >
                                     <Box textAlign='center' >
-                                        <Text fontWeight='bold'>Versement / Amount</Text>
+                                        <Text fontWeight='bold'>
+                                            Versement / Amount
+                                        </Text>
                                     </Box>
                                     <Divider />
                                     <Box 
@@ -289,7 +295,10 @@ const receipt = () => {
                                                     borderCollapse='collapse'
                                                 >
                                             <Thead>
-                                                <Tr gap='1' bg="blackAlpha.300">
+                                                <Tr 
+                                                    gap='1' 
+                                                    bg="blackAlpha.300"
+                                                >
                                                     <Th border='1px'>
                                                         <Box fontSize='8px' textAlign='center'>
                                                             <Text>Net Attendu</Text>
@@ -376,7 +385,10 @@ const receipt = () => {
                                                         <Tr gap='1' bg="blackAlpha.300">
                                                         
                                                         <Th border='1px'>
-                                                            <Box fontSize='10px' textAlign='center'>
+                                                            <Box 
+                                                                fontSize='10px'
+                                                                textAlign='center'
+                                                             >
                                                                 <Text>Eléments</Text>
                                                                 <Text>Elements</Text>
                                                             </Box>

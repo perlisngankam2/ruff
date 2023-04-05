@@ -4,8 +4,6 @@ import { useState } from 'react';
 import PaiementTable from "./paiementTable";
 import { Users } from "../api/data/users";
 
-
-
 const AjouterPersonnel = () => {
 
     const [query , setQuery] = useState("");
@@ -22,7 +20,6 @@ const AjouterPersonnel = () => {
       };
 
 
-
   return (
     <DefaultLayout>
       <Box p={3} pt="70px">
@@ -36,9 +33,7 @@ const AjouterPersonnel = () => {
                 />
             </Stack>
         </Flex>
-        
-             <PaiementTable data={search(Users)} />
-        
+          <PaiementTable data={search(Users)} />
       </Box>
     </DefaultLayout>
   );

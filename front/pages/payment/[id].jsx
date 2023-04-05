@@ -107,22 +107,56 @@ const PaySlip = () => {
 
 
             <DefaultLayout>
-      <Box pt="70px" w="100%" bg={"#f6f7fb"}>
+      <Box 
+        pt="70px" 
+        w="100%" 
+        bg={"#f6f7fb"}
+      >
 
-        <Heading p="1em" textAlign="center" bg='#eb808a' bgClip='text' fontSize={'30px'}>
+        <Heading 
+          p="1em" 
+          textAlign="center" 
+          bg='#eb808a' 
+          bgClip='text'
+          fontSize={'30px'}
+         >
             Formulaire de paie de salaire
           </Heading>
           
-        <Flex bg='#5755c1' width='1000px' h='80px' margin="0 auto" pb='20px'> 
-        <Flex p="1.5em" textAlign="center" ml='20px' gap={6} margin="0 auto" >
-          <Flex gap={2}>
-            <Text color='#9490c9' fontWeight={'bold'}>Noms & prénoms de l'employé :</Text>
-            <Text color='white'>{dataPersonnelId?.findOnePersonnel.firstName +' '+ dataPersonnelId?.findOnePersonnel.lastName}</Text>
-          
+        <Flex 
+          bg='#5755c1' 
+          width='1000px' 
+          h='80px' 
+          margin="0 auto" 
+          pb='20px'
+        > 
+        <Flex 
+          p="1.5em" 
+          textAlign="center" 
+          ml='20px' 
+          gap={6} 
+          margin="0 auto" 
+        >
+          <Flex>
+            <Text 
+              color='#9490c9' 
+              fontWeight={'bold'}
+            >
+              Noms & prénoms de l'employé :
+            </Text>
+            <Text color='white'>
+              {dataPersonnelId?.findOnePersonnel.firstName +' '+ dataPersonnelId?.findOnePersonnel.lastName}
+            </Text>
           </Flex>
-          <Flex gap={2}>
-            <Text color='#9490c9' fontWeight={'bold'}>Fonction :</Text>
-            <Text color='white'>{dataPersonnelId?.findOnePersonnel.fonction}</Text>
+          <Flex>
+            <Text 
+              color='#9490c9' 
+              fontWeight={'bold'}
+            >Fonction :
+            </Text>
+            <Text color='white'>
+              {dataPersonnelId?.findOnePersonnel.fonction}
+            </Text>
           </Flex>
           
         </Flex>
@@ -136,7 +170,7 @@ const PaySlip = () => {
           mt="20px"
           gap={7}
         > 
-        <Box width={'340px'} gap={7} >
+         <Box width={'340px'} gap={7} >
           <Text fontSize='sm'> Salaire Mois</Text>
               <Input
                     placeholder="nom prime"
@@ -186,8 +220,11 @@ const PaySlip = () => {
 
         </Flex>
       </Center>
-
-       <Box mx='100px' pb={'20px'} mt='20px'>
+       <Box 
+        mx='100px' 
+        pb={'20px'} 
+        mt='20px'
+       >
           <Divider />
         </Box>
 

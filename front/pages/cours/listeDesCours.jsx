@@ -43,14 +43,19 @@ import AjouterCours from "./addCours";
   import React, { use, useEffect, useState } from "react";
   import { GET_ALL_COURSES, loading, error } from "../../graphql/Queries";
   import { DELETE_COURSE } from "../../graphql/Mutation";
+import ReactPaginate from "react-paginate";
 
 
   const ListeDesCours = () => {
   
      // const router = useRouter();
      const [query , setQuery] = useState("");
-     const cancelRef = React.useRef()
-     const { isOpen, onOpen, onClose } = useDisclosure()
+     const cancelRef = React.useRef();
+     const { isOpen, onOpen, onClose } = useDisclosure();
+     const [searchCourse, setSearchCourse] = useState("");
+     const itemsPerPage = 15;
+    const [pageNumber, setPageNumber] = useState(0);
+    const pagesVisited = pageNumber * itemsPerPage;
      // //const [classeValue , setClasseValue ] = useState("");
      // const [data, setData] = useState([]);
      // const keys = ["first_name", "last_name", "email", "classe"];
@@ -84,7 +89,16 @@ import AjouterCours from "./addCours";
        onClose();
      }
   
+     const handlechangeSearchCourse = (e) => {
+      setSearchCourse(e.target.value);
+    };
   
+    const pageCountCourse = Math.ceil(dataCourse?.findAllCourse.length / itemsPerPage);
+    
+    const changePage = ({ page }) => {
+      setPageNumber(page);
+    };
+
    return (
      <DefaultLayout>
        <Box p="3" pt={"80px"} w="full">
@@ -119,7 +133,7 @@ import AjouterCours from "./addCours";
                variant="flushed"
 
                //value={recherche}
-               onChange={e => setQuery(e.target.value)}
+               onChange={handlechangeSearchCourse}
              />
              {/* <InputRightAddon children={<SearchIcon />} /> */}
            </InputGroup>
@@ -150,7 +164,15 @@ import AjouterCours from "./addCours";
                      {dataCourse && ( 
                      <Tbody  p={0}>
                        {
-                         dataCourse.findAllCourse.map((course, index) => ( 
+                         dataCourse.findAllCourse
+                         .slice(pagesVisited, pagesVisited + itemsPerPage)
+                         .filter((course) =>{
+                          if(searchCourse==""){
+                            return course;
+                          }else if(course.title.toLowerCase().includes(searchCourse.toLowerCase()))
+                            return course
+                         })
+                         .map((course, index) => ( 
                            <Tr 
                             key={index} 
                             borderColor={'#C6B062'}
@@ -243,6 +265,19 @@ import AjouterCours from "./addCours";
                  </Table>
              </TableContainer>
          </Box>
+         <Box mt={"15px"}> 
+          <ReactPaginate 
+            previousLabel={"<<"}
+            nextLabel={">>"}
+            pageCount={pageCountCourse}
+            onPageChange={changePage}
+            containerClassName={"paginationBttns"}
+            previousLinkClassName={"previousBttn"}
+            nextLinkClassName={"nextBttn"}
+            disabledClassName={"paginationDisabled"}
+            activeClassName={"paginationActive"}
+          />
+      </Box>
        </Box>
      </DefaultLayout>
    );

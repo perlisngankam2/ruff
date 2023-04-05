@@ -130,6 +130,8 @@ async findpersonnelbyaccount(userid:string){
     return (await (await this.findOne(personnnelid)).category.load()).id
    }
 
+
+
 }
 
 

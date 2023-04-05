@@ -1,13 +1,13 @@
 import { ChakraProvider, extendTheme } from "@chakra-ui/react";
 import { appWithTranslation } from 'next-i18next';
-import i18nextConfig from  '../plugins/next-i18next.config';
+// import i18nextConfig from  '../plugins/next-i18next.config';
+import i18n from "../plugins/i18n";
 import { ApolloClient, ApolloProvider, InMemoryCache } from "@apollo/client";
 import client from "../graphql/apollo-client";
 import "../styles/globals.css";
 import "@fontsource/open-sans";
 import { AuthProvider } from "../contexts/account/Auth/Auth"
 import { AccountProvider } from "../contexts/account/Account";
-
 
 
 function MyApp({ Component, pageProps}) {
@@ -45,5 +45,5 @@ function MyApp({ Component, pageProps}) {
   );
 }
 
-export default appWithTranslation(MyApp, i18nextConfig)
-// export default MyApp;
+// export default appWithTranslation(MyApp, {i18n})
+export default MyApp;

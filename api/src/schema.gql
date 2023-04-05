@@ -175,6 +175,7 @@ type TrancheStudent {
   complete: Boolean!
   reste: Float!
   surplus: Float!
+  avance: Float
 }
 
 type Tranche {
@@ -326,12 +327,19 @@ type Query {
   findAllstudents: [Student!]!
   findOnestudent(id: String!): Student!
   getTrancheStudentByStudent(studentid: String!): TrancheStudent!
+  AmountrExpectedByTranche(studentid: String!): [Float!]!
   findAlllocalistaion: [Localisation!]!
   localisation(id: String!): Localisation!
   findAllcategorieeleve: [CategorieEleve!]!
   findOneCategorieeleve(id: String!): CategorieEleve!
   findAllreductionscolarite: [ReductionScolarite!]!
   primePersonnel(id: String!): PrimePersonnel!
+  findAlltranche: [Tranche!]!
+  tranche(id: String!): Tranche!
+  findAllpension: [Pension!]!
+  pension(id: String!): Pension!
+  findAllAnnerAccademique: [AnneeAccademique!]!
+  anneeAccademique(id: String!): AnneeAccademique!
   findAllsalaire: [SalaireBase!]!
   salaireBase(id: String!): SalaireBase!
   findAllprime: [Prime!]!
@@ -366,9 +374,12 @@ type Query {
   AmountMostRecentAvanceTranche(trancheid: String!): Float!
   MostRecentAvanceTranche: Float!
   AmountRecentAvanceTrancheByStudent(studentid: String!): Float!
-  SumAvanceTrancheByStudent(studentid: String!, trancheid: String!): String!
+  SumAvanceTrancheByStudent(studentid: String!, trancheid: String!): Float!
+  getallfessalreadypayed(studentid: String!): [Tranche!]!
+  RestTrancheByStudent(studentid: String!, trancheid: String!): Float!
   findAlltranchestudent: [TrancheStudent!]!
   trancheStudent(id: String!): TrancheStudent!
+  findRecentTrancheStudentAmount(id: String!): Float!
   getStudentByTrancheStudent(studentid: String!): TrancheStudent!
   findAll: [Inscription!]!
   findOne(id: String!): Inscription!
@@ -379,6 +390,7 @@ type Query {
   findOnefraisincription(id: String!): FraisInscription!
   findallsalaire: [Salaire!]!
   getonesalaire(id: String!): Salaire!
+  getsalairebypersonnel(personnelid: String!): [Salaire!]!
   getsalairebypersonnel(personnelid: String!): [Salaire!]!
   findAllparents: [Parent!]!
   parent(id: String!): Parent!
@@ -399,7 +411,7 @@ type Mutation {
   deletepersonnel(id: String!): Personnel!
   createSalle(salle: SalleCreateInput!): Salle!
   updateprimepersonnel(id: String!, input: RedutionScolariteInput!): ReductionScolarite!
-  deleteprimepersonnel(id: String!): Tranche!
+  deleteprimepersonnel(id: String!): PrimePersonnel!
   deleteSalle(id: String!): Salle!
   UpdateSalle(id: String!, input: SalleUpdateInput!): Salle!
   createNiveauEtude(niveauEtude: NiveauEtudeCreateInput!): NiveauEtude!
@@ -424,6 +436,13 @@ type Mutation {
   deletecategorieeleve(id: String!): CategorieEleve!
   updatecategorieeleve(id: String!, input: CategorieEleveUpdateInput!): CategorieEleve!
   createreductionscolarite(reductionscolarite: RedutionScolariteInput!): ReductionScolarite!
+  createTranche(tranche: TrancheCreateInput!): Tranche!
+  updatetranche(id: String!): Tranche!
+  createPension(pension: PensionCreateInput!): Pension!
+  deletepension(id: String!): Pension!
+  createAnnerAccademique(anneeAccademique: AnneeAccademiqueCreateInput!): AnneeAccademique!
+  updateanneeacademique(id: String!, input: AnneeAccademiqueUpdateInput!): AnneeAccademique!
+  deleteanneeacademique(id: String!): AnneeAccademique!
   createsalairebase(salaireBase: SalaireBaseCreateInput!): SalaireBase!
   updatesalairebase(id: String!, input: SalaireBaseUpdateInput!): SalaireBase!
   deletesalairebase(id: String!): SalaireBase!
@@ -447,13 +466,6 @@ type Mutation {
   deleteperiod(id: String!): Periode!
   createretnupersonnel(retenuPersonnel: RetenuPersonnelCreateInput!): RetenuPersonnel!
   deleteretenupersonnel(id: String!): RetenuPersonnel!
-  createAnnerAccademique(anneeAccademique: AnneeAccademiqueCreateInput!): AnneeAccademique!
-  updateanneeacademique(id: String!, input: AnneeAccademiqueUpdateInput!): AnneeAccademique!
-  deleteanneeacademique(id: String!): AnneeAccademique!
-  createTranche(tranche: TrancheCreateInput!): Tranche!
-  updatetranche(id: String!): Tranche!
-  createPension(pension: PensionCreateInput!): Pension!
-  deletepension(id: String!): Pension!
   createFraisExamen(fraisExamen: FraisExamentInput!): FraisExamen!
   updatefraisexam(id: String!, input: UpdateFraisExamentInput!): FraisExamen!
   deletefraisfraisexam(id: String!): FraisExamen!
@@ -686,6 +698,36 @@ input CategorieEleveUpdateInput {
   reductionScolariteId: String
 }
 
+input TrancheCreateInput {
+  anneeAcademiqueId: ID
+  salleId: ID
+  name: String
+  description: String
+  montant: Float = 0
+  dateLine: DateTime
+}
+
+input PensionCreateInput {
+  salleId: ID
+  anneeAcademiqueId: ID
+  name: String
+  description: String
+  montantPension: Float! = 0
+  dateLine: ID
+}
+
+input AnneeAccademiqueCreateInput {
+  ID: String
+  name: String
+  description: String
+}
+
+input AnneeAccademiqueUpdateInput {
+  ID: String
+  name: String
+  description: String
+}
+
 input SalaireBaseCreateInput {
   categoriepersonnelId: ID
   description: String
@@ -860,6 +902,7 @@ input TrancheStudentCreateInput {
   name: String
   description: String
   montant: Float = 0
+  tranche: TrancheCreateInput
 }
 
 input InscriptionInput {

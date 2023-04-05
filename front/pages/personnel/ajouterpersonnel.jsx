@@ -102,14 +102,13 @@ const AjouterPersonnel = () => {
   let input;
   const handleChange = (e) => {
     const newFilter =   dataPersonnel.findAllpersonnel
-              .filter((personnel) =>{
-              return  (personnel.firstName.toLowerCase().includes (searchName.toLowerCase()) || personnel.lastName.toLowerCase().includes (searchName.toLowerCase()) || personnel.fonction.toLowerCase().includes (searchName.toLowerCase()))
-              
-            } );
-  
+        .filter((personnel) =>{
+        return  (personnel.firstName.toLowerCase().includes (searchName.toLowerCase()) 
+        || personnel.lastName.toLowerCase().includes (searchName.toLowerCase()) 
+        || personnel.fonction.toLowerCase().includes (searchName.toLowerCase()))
+        
+    });
         setFilteredData(newFilter);
-    
-            
   };
 
   const  handleSubmit = async (event, value) => {
@@ -173,7 +172,6 @@ const AjouterPersonnel = () => {
       setChildNumber("");
       setCategoryPersonnelId("");
       setUserID("");
-
   }
 
   useEffect(() =>{
@@ -197,16 +195,16 @@ const AjouterPersonnel = () => {
             <Box as={"form"} 
              onSubmit={handleSubmit}
             >
+              <Box></Box>
               <Box>
                 <Heading textAlign={"center"} mb="30px">
-                  {/* {t('pages.personnel.ajouterpersonnel.heading')} */}
-                  kmkmk
+                  {t('pages.personnel.ajouterpersonnel.heading')}
                 </Heading>
               </Box>
               <Box display={{md:"flex"}} >
                 <FormControl mr="5%">
                   <FormLabel fontWeight={"normal"}>
-                    {t('pages.personnel.firstName')}
+                    {t('pages.personnel.ajouterpersonnel.firstName')}
                   </FormLabel>
                   <Input 
                     type="text"
@@ -220,7 +218,7 @@ const AjouterPersonnel = () => {
                 </FormControl>
                  <FormControl>
                   <FormLabel fontWeight={"normal"}>
-                    {t('pages.personnel.lastName')}
+                    {t('pages.personnel.ajouterpersonnel.lastName')}
                   </FormLabel>
                   <Input
                     type="text"
@@ -308,13 +306,13 @@ const AjouterPersonnel = () => {
                     }}
                   >
                     { 
-                          dataCategoryPersonnel && (
-                            dataCategoryPersonnel.findAllcategoriepersonnel.map((categoryPersonnel, index) => (
-                                <option value={categoryPersonnel.id} key={index}>
-                                  {categoryPersonnel.nom}
-                                </option>
-                            ))
-                        )}
+                      dataCategoryPersonnel && (
+                        dataCategoryPersonnel.findAllcategoriepersonnel.map((categoryPersonnel, index) => (
+                            <option value={categoryPersonnel.id} key={index}>
+                              {categoryPersonnel.nom}
+                            </option>
+                        ))
+                      )}
 
                   </Select>
                 </FormControl>

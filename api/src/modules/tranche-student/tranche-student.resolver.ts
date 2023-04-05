@@ -44,6 +44,11 @@ export class TrancheStudentResolver {
  return await this.trancheService.delete(id)
   }
 
+  @Query(()=>Number)
+  async findRecentTrancheStudentAmount(@Args('id') id:string){
+ return await this.trancheService.AmountRecentTranchestudentByStudent(id)
+  }
+
   @Query(()=>TrancheStudent)
   async getStudentByTrancheStudent(@Args('studentid') studentid:string){
     const student=await this.trancheService.findStudentByTrancheStudent(studentid)

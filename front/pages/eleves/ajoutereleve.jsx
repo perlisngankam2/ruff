@@ -185,6 +185,7 @@ const AjouterEleve = () => {
           p={6}
           m="10px auto"
           as="form"
+          bg={"white"}
         >
           <Progress
             hasStripe
@@ -194,8 +195,13 @@ const AjouterEleve = () => {
             isAnimated
           ></Progress>
           {step === 1 ? (
-            <Box mt={5}>
-              <Heading size="md" p="2" background="pink.300" color="white">
+            <Box mt={5} >
+              <Heading 
+                size="md" 
+                p="2" 
+                background="pink.300" 
+                color="white"
+              >
                 Informations de l'élève
               </Heading>
               <Box 
@@ -307,11 +313,11 @@ const AjouterEleve = () => {
                   <FormControl>
                         <FormLabel>Transport</FormLabel>
                         <Select
-                      placeholder="Transport"
-                      name="transport"
-                      value={transport}
-                      onChange={(e) => setTransport(e.target.value)}
-                      variant="flushed"
+                          placeholder="Transport"
+                          name="transport"
+                          value={transport}
+                          onChange={(e) => setTransport(e.target.value)}
+                          variant="flushed"
                     >
                       <option>Oui</option>
                       <option>Non</option>
@@ -383,11 +389,19 @@ const AjouterEleve = () => {
             </Box>
           ) : step === 2 ? (
             <Box mt={10}>
-              <Heading size="md" p="2" background="purple.300" color="white">
+              <Heading 
+                size="md" 
+                p="2" 
+                background="purple.300" 
+                color="white"
+              >
                 Informations du père
               </Heading>
               <Box mx={2} mt="5">
-                <Flex gap={3} flexWrap={["wrap", "wrap", "nowrap"]}>
+                <Flex 
+                  gap={3} 
+                  flexWrap={["wrap", "wrap", "nowrap"]}
+                >
                     <FormControl >
                       <FormLabel mb="-6px">Nom</FormLabel>
                         <Input
@@ -446,11 +460,19 @@ const AjouterEleve = () => {
                 </Flex>
               </Box>
               <Box mt={8}>
-                <Heading size="md" p="2" background="green.300" color="white">
+                <Heading 
+                  size="md" 
+                  p="2" 
+                  background="green.300" 
+                  color="white"
+                >
                   Informations de la mère
                 </Heading>
                 <Box mx={2} mt="2">
-                  <Flex gap={3} flexWrap={["wrap", "wrap", "nowrap"]}>
+                  <Flex 
+                    gap={3} 
+                    flexWrap={["wrap", "wrap", "nowrap"]}
+                  >
                     <FormControl> 
                         <FormLabel 
                         mb="-6px"
@@ -485,8 +507,8 @@ const AjouterEleve = () => {
                   <Flex gap={3}>
                     <FormControl> 
                         <FormLabel 
-                        mb="-6px"
-                        mt={"15px"}
+                          mb="-6px"
+                          mt={"15px"}
                         >
                           Numero de téléphone
                         </FormLabel>

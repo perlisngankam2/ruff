@@ -201,6 +201,21 @@ export const CREATE_AVANCE_TRANCHE = gql `
     }
 `;
 
+export const CREATE_SCOLARITE_TRANCHE_STUDENT  = gql`
+    mutation createTrancheStudent ($trancheStudent: TrancheStudentCreateInput!) {
+        createTrancheStudent (trancheStudent: $trancheStudent) {
+            id
+            name
+            description
+            montant
+            complete
+            reste
+            surplus
+            avance
+        }
+    }
+`;
+
 //mutation d'affection de la pension a une classe 
 export const CREATE_MONTANT_SCOLARITE_CLASS = gql `
     mutation createPension ($pension: PensionCreateInput!) {
@@ -208,7 +223,7 @@ export const CREATE_MONTANT_SCOLARITE_CLASS = gql `
             id
             name
             description
-            montant
+            montantPension
             dateLine
         }
     }

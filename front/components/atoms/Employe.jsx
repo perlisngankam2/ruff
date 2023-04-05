@@ -89,6 +89,7 @@ const Employee = (props) => {
                 textAlign="center"
                 fontWeight="bold" 
                 fontSize="0.85em"
+                mb={"3px"}
               >
                 {props.fonction}
               </Text>

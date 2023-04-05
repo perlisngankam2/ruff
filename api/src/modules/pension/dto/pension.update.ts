@@ -20,7 +20,7 @@ export class PensionUpdateInput {
   description?: string;
 
   @Field({defaultValue:0})
-  montant?: number;
+  montantPension?: number;
 
   @Field(()=>ID,{nullable:true})
   dateLine?: Date;

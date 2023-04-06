@@ -44,7 +44,7 @@ export class SalaireService {
    
     const retenus = Number(this.retenuPersonnel.getallretenupersonnel(personnel.id))||null
     const primes = Number(this.primepersonnelservice.getallpersonnelprime(personnel.id))||null
-
+    const salaire = new Salaire()
   if(retenus!=null && primes!=null){
 
     if(personnel){
@@ -53,7 +53,7 @@ export class SalaireService {
       }
      const salaireBase = (await personnel.category.load()).montant
 
-      const salaire = new Salaire()
+      
 
       if(personnel.status == Status.PERMANENT){
 
@@ -63,7 +63,7 @@ export class SalaireService {
       wrap(salaire).assign(
         {
          montant: Number(salaireNette),
-         payer: input.payer,
+        //  payer: input.payer,
          personnel: input.personnelId,
          jourPaie: input.jourPaie,
          moisPaie: input.moisPaie
@@ -84,7 +84,7 @@ export class SalaireService {
       wrap(salaire).assign(
         {
         montant: Number(salaireBase),
-        payer: input.payer,
+        // payer: input.payer,
         personnel: personnel.id,
         jourPaie: input.jourPaie,
         moisPaie: input.moisPaie
@@ -119,7 +119,7 @@ export class SalaireService {
       wrap(salaire).assign(
         {
          montant: Number(salaireNette),
-         payer: input.payer,
+        //  payer: input.payer,
          personnel: input.personnelId,
          jourPaie: input.jourPaie,
          moisPaie: input.moisPaie
@@ -140,7 +140,7 @@ export class SalaireService {
       wrap(salaire).assign(
         {
         montant: Number(salaireBase),
-        payer: input.payer,
+        // payer: input.payer,
         personnel: personnel.id,
         jourPaie: input.jourPaie,
         moisPaie: input.moisPaie
@@ -175,7 +175,7 @@ export class SalaireService {
       wrap(salaire).assign(
         {
          montant: Number(salaireNette),
-         payer: input.payer,
+        //  payer: input.payer,
          personnel: input.personnelId,
          jourPaie: input.jourPaie,
          moisPaie: input.moisPaie
@@ -196,7 +196,7 @@ export class SalaireService {
       wrap(salaire).assign(
         {
         montant: Number(salaireBase),
-        payer: input.payer,
+        // payer: input.payer,
         personnel: personnel.id,
         jourPaie: input.jourPaie,
         moisPaie: input.moisPaie
@@ -231,7 +231,7 @@ export class SalaireService {
       wrap(salaire).assign(
         {
          montant: Number(salaireNette),
-         payer: input.payer,
+        //  payer: input.payer,
          personnel: input.personnelId,
          jourPaie: input.jourPaie,
          moisPaie: input.moisPaie
@@ -252,7 +252,7 @@ export class SalaireService {
       wrap(salaire).assign(
         {
         montant: Number(salaireBase),
-        payer: input.payer,
+        // payer: input.payer,
         personnel: personnel.id,
         jourPaie: input.jourPaie,
         moisPaie: input.moisPaie
@@ -269,8 +269,8 @@ export class SalaireService {
     }
   }
       
- 
-  }
+return salaire
+}
 
   findByOne(filters: FilterQuery<Salaire>): Promise<Salaire | null> {
     return this.salaireRepository.findOne(filters);
@@ -297,7 +297,7 @@ export class SalaireService {
   wrap(salaire).assign(
     {
       montant: input.montant,
-      payer: input.payer,
+      // payer: input.payer,
       personnel: personnel.id,
     //   periode: periode.id
     },
@@ -308,7 +308,7 @@ export class SalaireService {
     
   await this.salaireRepository.persistAndFlush(salaire);
 
-  return salaire;
+return salaire;
    }
 
    

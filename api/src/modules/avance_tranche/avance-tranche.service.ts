@@ -200,7 +200,7 @@ export class AvanceTrancheService {
            if(avanceTranche==null){
             throw Error("")
           }
-           return avanceTranche
+        return avanceTranche
         }
 
         if((await reduction).montant!= 0){
@@ -270,7 +270,7 @@ export class AvanceTrancheService {
         if(avanceTranche==null){
           throw Error("")
         }
-         return avanceTranche
+      return avanceTranche
      }
 
 
@@ -389,7 +389,7 @@ export class AvanceTrancheService {
     }
      return avanceTranche
    
-}
+  }
 
      
 
@@ -400,12 +400,10 @@ export class AvanceTrancheService {
     throw Error("")
   }
    return avanceTranche
-}
+  }
 
-if(avanceTranche==null){
-  throw Error("")
-}
- return avanceTranche
+
+return avanceTranche
       
 }
 
@@ -515,6 +513,110 @@ async saveAvanceTranche(id:string,new_tranche_amount:number){
     }
     throw Error("Tranchestudent doest not existe for this student please try another!!!!!!")
     
+  }
+
+async TranchecompletedByStudent(studentid:string){
+    const z = (await this.trancheStudentservice.findByStudent(studentid))
+    console.log('==============================>'+z)
+    const b = await this.findBytranchestudent(z.id)
+    console.log('==============================>'+b)
+
+    const where = {};
+
+    if (z.id) {
+      where['trancheStudent'] = z.id;
+    }
+
+    const avancetranche = await this.em.find(AvanceTranche, where, {
+      populate: true,
+      orderBy: { id: 'ASC' },
+    });
+
+    console.log(avancetranche)
+
+   
+   const a=avancetranche.map(a=>a.tranche.load())
+  
+   const tranches = await this.trancheservice.getAll()
+   
+
+   if(a.length==1){
+    if ((await a[0]).id) {
+      where['tranche'] = (await a[0]).id;
+    }
+    const avancetranche = await this.em.find(AvanceTranche, where, {
+      populate: true,
+      orderBy: { id: 'ASC' },
+    });
+    const total= avancetranche.map(a=>a.montant).reduce(function(a,b){return a+b})
+  
+    if(total == tranches[0].montant){
+     return a[0]
+    }
+    console.log("cette tranche n'est pas encore complete")
+   }
+
+   if(a.length==2){
+    if ((await a[0]).id) {
+      where['tranche'] = (await a[0]).id;
+    }
+    const avancetranche = await this.em.find(AvanceTranche, where, {
+      populate: true,
+      orderBy: { id: 'ASC' },
+    });
+    const total= avancetranche.map(a=>a.montant).reduce(function(a,b){return a+b})
+
+    if ((await a[1]).id) {
+      where['tranche'] = (await a[1]).id;
+    }
+    const avancetranche1 = await this.em.find(AvanceTranche, where, {
+      populate: true,
+      orderBy: { id: 'ASC' },
+    });
+    const total1= avancetranche1.map(a=>a.montant).reduce(function(a,b){return a+b})
+
+    if(total == tranches[0].montant && total1 == tranches[1].montant){
+     return [a[0],a[1]]
+    }
+    console.log("la deuxieme tranche n'est pas complete")
+    return [a[0]]
+   }
+
+   if(a.length==3){
+    if ((await a[0]).id) {
+      where['tranche'] = (await a[0]).id;
+    }
+    const avancetranche = await this.em.find(AvanceTranche, where, {
+      populate: true,
+      orderBy: { id: 'ASC' },
+    });
+    const total= avancetranche.map(a=>a.montant).reduce(function(a,b){return a+b})
+    if ((await a[1]).id) {
+      where['tranche'] = (await a[1]).id;
+    }
+    const avancetranche1 = await this.em.find(AvanceTranche, where, {
+      populate: true,
+      orderBy: { id: 'ASC' },
+    });
+    const total1= avancetranche1.map(a=>a.montant).reduce(function(a,b){return a+b})
+
+    if ((await a[2]).id) {
+      where['tranche'] = (await a[2]).id;
+    }
+    const avancetranche2 = await this.em.find(AvanceTranche, where, {
+      populate: true,
+      orderBy: { id: 'ASC' },
+    });
+    const total2= avancetranche2.map(a=>a.montant).reduce(function(a,b){return a+b})
+  
+    if(total == tranches[0].montant && total1 == tranches[1].montant && total2 == tranches[2].montant){
+     return [a[0],a[1],a[2]]
+    }
+    console.log("la troisieme tranche n'est pas complete")
+    return [a[0],a[1]]
+   }
+
+ 
   }
 
   async SumAvanceTrancheByStudent(studentid:string,trancheid:string){

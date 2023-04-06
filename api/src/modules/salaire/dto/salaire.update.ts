@@ -25,8 +25,8 @@ export class SalaireUpdateInput {
   // @Field({nullable:true})
   // description?: string;
 
-  @Field({defaultValue:false})
-  payer?: boolean;
+  // @Field({defaultValue:false})
+  // payer?: boolean;
 
   @Field({defaultValue:0})
   montant?: number;

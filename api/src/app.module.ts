@@ -49,6 +49,7 @@ import { ExpenseModule } from './modules/expenses/expense.module';
 import { StatisticModule } from './modules/statistics/statistics.module';
 import { PersonnelSalleModule } from './modules/personnel_salle/personnelsalle.module';
 import { CourseModule } from './modules/course/course.module';
+import { PaySalaireModule } from './modules/paysalary/paysalary.module';
 
 @Module({
   imports: [
@@ -68,6 +69,7 @@ import { CourseModule } from './modules/course/course.module';
     EtablissementModule, 
     SectionModule, 
     CycleModule, 
+    PaySalaireModule,
     NiveauEtudeModule, 
     SalleModule, 
     AnneAccademiqueModule, 

@@ -101,14 +101,31 @@ export class RetenuPersonnelService {
         await this.retenuPersonnelRepository.persistAndFlush(retenuPersonnel);
         return retenuPersonnel;
       }
+
+      async getallretenupersonnelbypersonnel(id:string){
+       return this.retenuPersonnelRepository.find({personnel:id})
+      } 
     
       async getallretenupersonnel(id:string){
-      const a = (await this.em.find(RetenuPersonnel,{personnel: id})).map(async a=>(await a.retenue.load()).montant)
-      if(a==null){
-        return null
+        const where = {};
+      if (id) {
+        where['personnel'] = id;
       }
-      return a.reduce(async function(a,b){return await a+ await b})
+  
+      const a = await this.em.find(RetenuPersonnel, where, {
+        populate: true,
+        orderBy: { id: 'ASC' },
+      });
+  
+      console.log(a)
+     
+      if(a.length==0){
+        return 0
       }
+      if(a.length!=0){
+      return await a.map(async a=>(await a.retenue.load()).montant).reduce(async function(a,b){return await a+ await b})
+      }
+    }
 
       async delete(id:string){
       const a = this.findById(id)

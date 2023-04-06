@@ -12,24 +12,24 @@ import { RetenuPersonnelCreateInput } from 'src/modules/retenu_personnel/dto/ret
 import { RetenuCreateInput } from 'src/modules/retenu_salarial/dto/retenu.input';
 
 @InputType()
-export class SalaireCreateInput {
+export class PaySalaireUpdateInput {
   // @Field(()=>ID,{ nullable: true })
   // periodeId:string
 
   @Field(()=>ID,{ nullable: true })
   personnelId:string
 
-  @Field(()=>ID,{ nullable: true })
-  primeId:string
+//   @Field(()=>ID,{ nullable: true })
+//   primeId:string
 
-  @Field(()=>ID,{ nullable: true })
-  retenuId:string
+//   @Field(()=>ID,{ nullable: true })
+//   retenuId:string
 
   // @Field({nullable:true})
   // description?: string;
 
-  // @Field({defaultValue:false})
-  // payer?: boolean;
+  @Field({defaultValue:false})
+  payer?: boolean;
 
   @Field({defaultValue:0})
   montant?: number;
@@ -42,16 +42,16 @@ export class SalaireCreateInput {
 
  
 
-  @Field(()=>PeriodeCreateInput,{nullable:true})
-  periode?: PeriodeCreateInput;
+//   @Field(()=>PeriodeCreateInput,{nullable:true})
+//   periode?: PeriodeCreateInput;
 
-  @Field(()=>PersonnelCreateInput,{nullable:true})
-  personnel?: PersonnelCreateInput;
+//   @Field(()=>PersonnelCreateInput,{nullable:true})
+//   personnel?: PersonnelCreateInput;
 
-  @Field(()=>PrimePersonnelCreateInput,{nullable:true})
-  prime?: PrimePersonnelCreateInput;
+//   @Field(()=>PrimePersonnelCreateInput,{nullable:true})
+//   prime?: PrimePersonnelCreateInput;
 
-  @Field(()=>RetenuPersonnelCreateInput,{nullable:true})
-  retenu?: RetenuPersonnelCreateInput;
+//   @Field(()=>RetenuPersonnelCreateInput,{nullable:true})
+//   retenu?: RetenuPersonnelCreateInput;
 
 }

@@ -115,7 +115,7 @@ export class PersonnelService {
 
   async delete(id:string){
   const a = this.findById(id)
-  await this.personnelRepository.nativeDelete(await a)
+  await this.personnelRepository.removeAndFlush(await a)
   if(!a){
  throw Error("not found")
   }

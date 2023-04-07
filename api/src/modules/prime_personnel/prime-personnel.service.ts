@@ -59,6 +59,37 @@ export class PrimePersonnelService {
         await this.primePersonnelRepository.persistAndFlush(primePersonnel)
         return primePersonnel
       }
+
+      async update(
+        id:string,input: PrimePersonnelUpdateInput,
+      ): Promise<PrimePersonnel> {
+        // const prime = input.prime
+        //     ? await this.primeService.findByOne(input.primeId)
+        //     : await this.primeService.create(input.prime)
+        
+        const prime = await this.primeService.findByOne(input.primeId)
+        const personnel = await this.personnelService.findById(input.personnelId)
+        if(!(personnel&&prime)){
+            throw Error("not found");
+        }
+        
+        const primePersonnel = this.findByOne(id)
+
+        wrap(primePersonnel).assign(
+          {
+           personnel:input.personnelId,
+           prime: input.primeId,
+           startMonth: input.startMonth,
+          //  endDate: input.enddate
+          },
+          {
+            em: this.em
+          }
+        )
+
+        await this.primePersonnelRepository.persistAndFlush(primePersonnel)
+        return primePersonnel
+      }
     
       findByOne(filters: FilterQuery<PrimePersonnel>): Promise<PrimePersonnel | null> {
         return this.primePersonnelRepository.findOne(filters);
@@ -71,20 +102,29 @@ export class PrimePersonnelService {
         return this.primePersonnelRepository.findAll()
       }
 
-async getallprimepersonnelbypersonnel(id:string){
-        return this.primePersonnelRepository.find({personnel:id})
-       }
-
      async getallpersonnelprime(id:string){
-      const a = await this.getallprimepersonnelbypersonnel(id)
-      console.log('========>'+a)
+      const where = {};
+      if (id) {
+        where['personnel'] = id;
+      }
+  
+      const a = await this.em.find(PrimePersonnel, where, {
+        populate: true,
+        orderBy: { id: 'ASC' },
+      });
+  
+      console.log('============>list of primes personnel::'+a)
+     
       if(a.length==0){
         return 0
       }
       if(a.length!=0){
-        console.log('====>'+ await a.map(async a=>(await a.prime.load()).montant).reduce(async function(a,b){return await a+ await b})
-     )
-      return Number(await a.map(async a=>(await a.prime.load()).montant).reduce(async function(a,b){return await a+ await b}))
+      console.log('==============>montant prime::'+await a.map(async a=>(await a.prime.load()).montant).reduce(async function(a,b){return await a+ await b}))
+      const b = a.map(async a=>(await a.prime.load()).montant)
+      console.log(b)
+      const c=await b.reduce(async function(a,b){return await a+ await b})
+      console.log(c)
+      return c 
       }
       }
       

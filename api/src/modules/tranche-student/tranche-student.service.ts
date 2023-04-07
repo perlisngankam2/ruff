@@ -267,7 +267,7 @@ export class TrancheStudentService {
 
     async delete(id:string){
     const a = this.findById(id)
-    await this.trancheStudentRepository.nativeDelete(await a)
+    await this.trancheStudentRepository.removeAndFlush(await a)
     if(!a){
     throw Error("not found")
     }

@@ -103,7 +103,8 @@ export class CategoriePersonnelService {
 
     wrap(categorie).assign({
       nom: input.nom || categorie.nom,
-      description: input.description || categorie.description
+      description: input.description || categorie.description,
+      montant: input.montant || categorie.montant
     });
 
     await this.categoriePersonelRepository.persistAndFlush(categorie);
@@ -113,7 +114,7 @@ export class CategoriePersonnelService {
 
   async delete(id : string){
     const a = this.findById(id)
-    await this.categoriePersonelRepository.nativeDelete(await a)
+    await this.categoriePersonelRepository.removeAndFlush(await a)
       if(!a){
           throw Error("not found")
         }

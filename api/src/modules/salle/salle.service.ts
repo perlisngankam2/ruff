@@ -114,16 +114,16 @@ export class SalleService {
       
       async update(id:string, input: SalleUpdateInput): Promise<Salle> {
         const salle=await this.findById(id)
-        if (input.niveau) {
-            const niveau =
-            input.niveau &&
-              (await this.niveauEtude.findByOne({ id: input.niveau.ID }));
+        // if (input.niveau) {
+        //     const niveau =
+        //     input.niveau &&
+        //       (await this.niveauEtude.findByOne({ id: input.niveau.ID }));
        
-            if (!niveau) {
-              throw new NotFoundError('niveau no exist' || '');
-            }
-            this.niveauEtude.update(niveau.id, input.niveau);
-          } 
+        //     if (!niveau) {
+        //       throw new NotFoundError('niveau no exist' || '');
+        //     }
+        //     this.niveauEtude.update(niveau.id, input.niveau);
+        //   } 
         wrap(salle).assign({
             name: input.name || salle.name,
             montantPensionSalle: input.montantPensionSalle || salle.montantPensionSalle,

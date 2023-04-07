@@ -61,7 +61,7 @@ export class SectionService {
       }
       async delete(id:string){
        const a= this.findById(id)
-       await this.sectionRepository.nativeDelete(await a)
+       await this.sectionRepository.removeAndFlush(await a)
        if(!a){
       throw Error("not found")
        }

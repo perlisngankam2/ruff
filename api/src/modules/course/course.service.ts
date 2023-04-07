@@ -4,6 +4,7 @@ import { InjectRepository } from "@mikro-orm/nestjs"
 import { Injectable } from "@nestjs/common"
 import { Course } from "src/entities/course.entity"
 import { CourseCreateInput } from "./dto/course.createinput"
+import { CourseUpdateInput } from "./dto/course.updateinput"
 
 
 @Injectable()
@@ -31,6 +32,24 @@ export class CourseService {
 
 }
 
+async update(
+  id:string,input: CourseUpdateInput,
+): Promise<Course> {  
+
+  const course = this.findById(id)
+  wrap(course).assign({
+  title:input.title,
+   time: Number(input.time)
+  },
+  {
+      em: this.em
+  })
+
+  await this.courseRepository.persistAndFlush(course)
+  return course
+
+}
+
 async findall(){
     return await this.courseRepository.findAll()
 }
@@ -45,7 +64,7 @@ findById(id:string){
 
 async delete(id:string){
     const a = this.findById(id)
-    await this.courseRepository.nativeDelete(await a)
+    await this.courseRepository.removeAndFlush(await a)
     if(!a){
     throw Error("not found")
     }

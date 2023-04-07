@@ -169,7 +169,7 @@ export class StudentService {
       
     async delete(id:string){
       const a = this.findById(id)
-      await this.studentRepository.nativeDelete(await a)
+      await this.studentRepository.removeAndFlush(await a)
       if(!a){
       throw Error("not found")
       }

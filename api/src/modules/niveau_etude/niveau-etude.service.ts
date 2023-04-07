@@ -67,16 +67,16 @@ export class NiveauEtudeService {
       
       async update(id:string, input: NiveauEtudeUpdateInput): Promise<NiveauEtude> {
         const niveau = await this.findById(id)
-        if (input.sectionCycle) {
-            const section =
-            input.sectionCycle?.ID &&
-              (await this.sectionCycle.findByOne({ id: input.sectionCycle?.ID }));
+        // if (input.sectionCycle) {
+        //     const section =
+        //     input.sectionCycle?.ID &&
+        //       (await this.sectionCycle.findByOne({ id: input.sectionCycle?.ID }));
       
-            if (!section) {
-              throw new NotFoundError('section no exist' || '');
-            }
-            this.sectionCycle.update(section.id, input.sectionCycle);
-          }
+        //     if (!section) {
+        //       throw new NotFoundError('section no exist' || '');
+        //     }
+        //     this.sectionCycle.update(section.id, input.sectionCycle);
+        //   }
         
         wrap(niveau).assign({
             name: input.name || niveau.name,
@@ -91,6 +91,7 @@ export class NiveauEtudeService {
         await this.niveauEtudeRepository.persistAndFlush(niveau);
         return niveau;
       }
+
       async delete(id:string){
         const a = await this.findById(id)
         await this.niveauEtudeRepository.removeAndFlush(a)

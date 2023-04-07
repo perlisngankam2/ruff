@@ -56,5 +56,10 @@ export class PrimePersonnelResolver {
  return await this.primePersonnelService.getallpersonnelprime(personnelid)
   }
 
+  @Query(()=> Number)
+  async getallprimepersonnel(@Args('personnelid') personnelid:string){
+ return await this.primePersonnelService.getallpersonnelprime(personnelid)
+  }
+
 
 }

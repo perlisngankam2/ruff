@@ -39,9 +39,9 @@ jourPaie!: string;
 @Property({ nullable: true })
 moisPaie!: string;
 
-@Field({ defaultValue: true })
-@Property({ default: true })
-payer!: boolean;
+// @Field({ defaultValue: true })
+// @Property({ default: true })
+// payer!: boolean;
 
 @Field({ defaultValue: 0 })
 @Property({ default: 0 })

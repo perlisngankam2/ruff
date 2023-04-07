@@ -55,8 +55,8 @@ export class SalaireService {
 
       if(personnel.status == Status.PERMANENT){
 
-      // const salaireNette = salaireBase + primes - retenus
-      const salaireNette = salaireBase
+      const salaireNette = salaireBase + primes - retenus
+      // const salaireNette = salaireBase
             
 
       wrap(salaire).assign(
@@ -99,9 +99,131 @@ export class SalaireService {
 
     }
   }
+
+  // if(retenus!=null && primes==null){
+
+  //   if(personnel){
+  //     if((await this.getAll()).map(a=>a.personnel).filter(async a=>(await a.load()).id === personnel.id).length > 1){
+  //       throw Error("!!!!!!!!!!! CE PERSONNEL A DEJA ETE PAYER !!!!!!!!!!!!")
+  //     }
+  //    const salaireBase = (await personnel.category.load()).montant
+
+  //     const salaire = new Salaire()
+
+  //     if(personnel.status == Status.PERMANENT){
+
+  //     const salaireNette = salaireBase - retenus
+  //           // const salaireNette = salaireBase 
+
+  //     wrap(salaire).assign(
+  //       {
+  //        montant: Number(salaireNette),
+  //        payer: input.payer,
+  //        personnel: input.personnelId,
+  //        jourPaie: input.jourPaie,
+  //        moisPaie: input.moisPaie
+
+  //       //  periode: input.periodeId
+  //       },
+  //       {
+  //       em: this.em
+  //       }
+  //     )
+
+  //     this.salaireRepository.persistAndFlush(salaire)
+  //     return salaire
+
+  //     }
+
+  //     if(personnel.status == Status.VACATAIRE){
+  //     wrap(salaire).assign(
+  //       {
+  //       montant: Number(salaireBase),
+  //       payer: input.payer,
+  //       personnel: personnel.id,
+  //       jourPaie: input.jourPaie,
+  //       moisPaie: input.moisPaie
+  //       // periode: periode.id
+  //       },
+  //       {
+  //         em: this.em
+  //       }
+  //     )
+  //     this.salaireRepository.persistAndFlush(salaire)
+  //     return salaire
+  //     }
+
+  //   }
+  // }
+
+  // if(retenus==null && primes!=null){
+
+  //   if(personnel){
+  //     if((await this.getAll()).map(a=>a.personnel).filter(async a=>(await a.load()).id === personnel.id).length > 1){
+  //       throw Error("!!!!!!!!!!! CE PERSONNEL A DEJA ETE PAYER !!!!!!!!!!!!")
+  //     }
+  //    const salaireBase = (await personnel.category.load()).montant
+
+  //     const salaire = new Salaire()
+
+  //     if(personnel.status == Status.PERMANENT){
+
+  //     const salaireNette = salaireBase + primes 
+  //           // const salaireNette = salaireBase 
+
+  //     wrap(salaire).assign(
+  //       {
+  //        montant: Number(salaireNette),
+  //        payer: input.payer,
+  //        personnel: input.personnelId,
+  //        jourPaie: input.jourPaie,
+  //        moisPaie: input.moisPaie
+
+  //       //  periode: input.periodeId
+  //       },
+  //       {
+  //       em: this.em
+  //       }
+  //     )
+
+  //     this.salaireRepository.persistAndFlush(salaire)
+  //     return salaire
+
+  //     }
+
+  //     if(personnel.status == Status.VACATAIRE){
+  //     wrap(salaire).assign(
+  //       {
+  //       montant: Number(salaireBase),
+  //       payer: input.payer,
+  //       personnel: personnel.id,
+  //       jourPaie: input.jourPaie,
+  //       moisPaie: input.moisPaie
+  //       // periode: periode.id
+  //       },
+  //       {
+  //         em: this.em
+  //       }
+  //     )
+  //     this.salaireRepository.persistAndFlush(salaire)
+  //     return salaire
+  //     }
+
+  //   }
+  // }
+
+  // if(retenus==null && primes==null){
+
+  //   if(personnel){
+  //     if((await this.getAll()).map(a=>a.personnel).filter(async a=>(await a.load()).id === personnel.id).length > 1){
+  //       throw Error("!!!!!!!!!!! CE PERSONNEL A DEJA ETE PAYER !!!!!!!!!!!!")
+  //     }
+  //    const salaireBase = (await personnel.category.load()).montant
+
+  //     const salaire = new Salaire()
       
  
-  }
+  // }
 
   findByOne(filters: FilterQuery<Salaire>): Promise<Salaire | null> {
     return this.salaireRepository.findOne(filters);
@@ -117,30 +239,30 @@ export class SalaireService {
 
 
   
- async update(id:string, input: SalaireUpdateInput): Promise<Salaire> {
+//  async update(id:string, input: SalaireUpdateInput): Promise<Salaire> {
      
-  const personnel = await this.personnel.findOne(input.personnelId)
+//   const personnel = await this.personnel.findOne(input.personnelId)
 
-//   const periode = await this.periodeService.findByOne(input.periodeId) 
+// //   const periode = await this.periodeService.findByOne(input.periodeId) 
   
-  const salaire = await this.findByOne(id)
+//   const salaire = await this.findByOne(id)
 
-  wrap(salaire).assign(
-    {
-      montant: input.montant,
-      payer: input.payer,
-      personnel: personnel.id,
-    //   periode: periode.id
-    },
-    {
-      em: this.em
-    }
-  )
+//   wrap(salaire).assign(
+//     {
+//       montant: input.montant,
+//       payer: input.payer,
+//       personnel: personnel.id,
+//     //   periode: periode.id
+//     },
+//     {
+//       em: this.em
+//     }
+//   )
     
-  await this.salaireRepository.persistAndFlush(salaire);
+//   await this.salaireRepository.persistAndFlush(salaire);
 
-  return salaire;
-   }
+//   return salaire;
+//    }
 
    
   async delete(id:string){
@@ -151,12 +273,6 @@ export class SalaireService {
     }
     return a
  }
-
- async salairepersonnel(personnelid:string){
-  const a = this.salaireRepository.find({personnel:personnelid})
-  return a
-  
-}
 
  async salairepersonnel(personnelid:string){
   const a = this.salaireRepository.find({personnel:personnelid})

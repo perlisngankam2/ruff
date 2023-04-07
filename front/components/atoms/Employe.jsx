@@ -156,7 +156,7 @@ const Employee = (props) => {
                                 Confirmation de suppression
                               </AlertDialogHeader>
                               <AlertDialogBody textAlign={"center"}>
-                              Voulez-vous supprimer cet Personnel?
+                              Voulez-vous supprimer ce Personnel?
                               </AlertDialogBody>
 
                               <AlertDialogFooter>

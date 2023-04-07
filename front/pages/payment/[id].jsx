@@ -9,7 +9,7 @@ import PaySlipLogoBox from "../../components/atoms/PaySlipLogoBox";
 import PaySlipInformationEmployeeBox from "../../components/atoms/PaySlipInformationEmployeeBox";
 import DefaultLayout from "../../components/layouts/DefaultLayout";
 import { useQuery, useMutation } from "@apollo/client";
-import { GET_ALL_PERSONNEL_BY_ID, GET_Category_Personnel_BY_ID, GET_Category_Personnel_ID} from "../../graphql/Queries";
+import { GET_ALL_PERSONNEL_BY_ID, GET_Category_Personnel_BY_ID, GET_Category_Personnel_ID, GET_ALL_SALAIRE_BY_ID} from "../../graphql/Queries";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { CREATE_SALAIRE } from "../../graphql/Mutation";
@@ -46,8 +46,33 @@ const PaySlip = () => {
         variables:{ id: dataCategorieId?.findCategoriepersonnelbypersonnel}
     })
 
+    //recupere tout les salaires d'un personnel
 
-  const moisPayes = []
+      const {data:dataSalaireId} = useQuery(GET_ALL_SALAIRE_BY_ID,
+  {
+    variables:{ personnelid: dataPersonnelId?.findOnePersonnel.id}
+  });
+
+
+    const moisPayes = []
+  const loadMoisPayes = () => {
+    dataSalaireId?.getsalairebypersonnel.map((item) => { 
+            moisPayes.push(
+              {
+                value: item?.id,
+                isDisabled: moisPayes.includes(moisPaie)
+
+              }
+            )
+          })
+
+  }
+
+  console.log(dataSalaireId)
+  console.log(moisPayes)
+
+
+
   const personnelId = dataPersonnelId?.findOnePersonnel.id ;
   const montant = dataCategorie?.findOneCategoriepersonnel.montant;
   const [moisPaie, setMoisPaie] = useState("");
@@ -76,7 +101,7 @@ const PaySlip = () => {
         }
       }
     })
-    moisPayes.push(moisPaie);
+   
 
     console.log(salaireData)
     toast({
@@ -95,6 +120,7 @@ const PaySlip = () => {
   console.log(moisPayes)
 
   useEffect(() =>{
+   loadMoisPayes()
     
     
     console.log(dataPersonnelId?.findOnePersonnel)
@@ -179,8 +205,9 @@ const PaySlip = () => {
                     name="dateOfPrime"
                     rounded={2}
                     onChange={handleMoisPaieChange}
-                    disabled={moisPayes.includes(moisPaie)}
+                    isDisabled={moisPayes.includes(moisPaie)}
                     value={moisPaie}
+
                     
                   />
                   {console.log(moisPaie)}

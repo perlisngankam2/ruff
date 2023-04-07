@@ -14,10 +14,10 @@ async createsalaire(@Args('input') input:SalaireCreateInput){
  return await this.salaireService.create(input)
 }
 
-@Mutation(()=>Salaire)
-async updatesalire(@Args('id') id:string,@Args('input') input: SalaireUpdateInput){
-    return await this.salaireService.update(id,input)
-}
+// @Mutation(()=>Salaire)
+// async updatesalire(@Args('id') id:string,@Args('input') input: SalaireUpdateInput){
+//     return await this.salaireService.update(id,input)
+// }
 
 @Query(()=>[Salaire])
 async findallsalaire(){

@@ -3,7 +3,7 @@ import Head from "next/head";
 import Image from "next/image";
 import styles from "../styles/Home.module.css";
 import LoginPage from "../components/pages/LoginPage/LoginPage";
-import { getStaticPropsTranslations } from '../types/staticProps';
+// import { getStaticPropsTranslations } from '../types/staticProps';
 
 export default function Home() {
 
@@ -11,8 +11,8 @@ export default function Home() {
   
 }
 
-export const getStaticProps = async ({ locale }) => ({
-  props: {
-    ...(await getStaticPropsTranslations(locale))
-}
-});
+// export const getStaticProps = async ({ locale }) => ({
+//   props: {
+//     ...(await getStaticPropsTranslations(locale))
+// }
+// });

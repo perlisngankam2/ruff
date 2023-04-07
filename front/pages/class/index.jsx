@@ -164,8 +164,8 @@ const Class = () => {
 
   const pageCountSalle = Math.ceil(dataClasse?.findAllsalle.length / itemsPerPage);
 
-  const changePage = ({ page }) => {
-    setPageNumber(page);
+  const changePage = ({ selected }) => {
+    setPageNumber(selected);
   };
   
   return (

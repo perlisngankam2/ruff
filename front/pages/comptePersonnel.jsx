@@ -65,7 +65,7 @@ function comptePersonnel() {
     setEmail("");
     setPassword("");
     setConfirmPassword("")
-    router.push("/personnel")
+    router.push("/personnel/ajouterpersonnel")
 
   }
 

@@ -360,12 +360,6 @@ type Query {
   retenuPersonnel(id: String!): RetenuPersonnel!
   findretenupersonnelbypersonnel(personnelid: String!): [RetenuPersonnel!]!
   findallretenupersonnel(personnelid: String!): Float!
-  findAllAnnerAccademique: [AnneeAccademique!]!
-  anneeAccademique(id: String!): AnneeAccademique!
-  findAlltranche: [Tranche!]!
-  tranche(id: String!): Tranche!
-  findAllpension: [Pension!]!
-  pension(id: String!): Pension!
   findAllfraisexam: [FraisExamen!]!
   fraisExamen(id: String!): FraisExamen!
   findavancetranchebyid(input: String!): AvanceTranche!
@@ -390,7 +384,6 @@ type Query {
   findOnefraisincription(id: String!): FraisInscription!
   findallsalaire: [Salaire!]!
   getonesalaire(id: String!): Salaire!
-  getsalairebypersonnel(personnelid: String!): [Salaire!]!
   getsalairebypersonnel(personnelid: String!): [Salaire!]!
   findAllparents: [Parent!]!
   parent(id: String!): Parent!
@@ -483,7 +476,6 @@ type Mutation {
   deletefraisincription(id: String!): FraisInscription!
   upodatefraisinscription(id: String!, input: UpdateFraisInscriptionInput!): FraisInscription!
   createsalaire(input: SalaireCreateInput!): Salaire!
-  updatesalire(id: String!, input: SalaireUpdateInput!): Salaire!
   createParent(parent: ParentCreateInput!): Parent!
   updateParent(id: String!): Parent!
   deleteparent(id: String!): Parent!
@@ -838,36 +830,6 @@ input RetenuPersonnelCreateInput {
   startMonth: String
 }
 
-input AnneeAccademiqueCreateInput {
-  ID: String
-  name: String
-  description: String
-}
-
-input AnneeAccademiqueUpdateInput {
-  ID: String
-  name: String
-  description: String
-}
-
-input TrancheCreateInput {
-  anneeAcademiqueId: ID
-  salleId: ID
-  name: String
-  description: String
-  montant: Float = 0
-  dateLine: DateTime
-}
-
-input PensionCreateInput {
-  salleId: ID
-  anneeAcademiqueId: ID
-  name: String
-  description: String
-  montant: Float! = 0
-  dateLine: ID
-}
-
 input FraisExamentInput {
   ID: String
   description: String
@@ -963,36 +925,6 @@ input SalaireCreateInput {
   montant: Float! = 0
   jourPaie: String
   moisPaie: String
-  periode: PeriodeCreateInput
-  personnel: PersonnelCreateInput
-  prime: PrimePersonnelCreateInput
-  retenu: RetenuPersonnelCreateInput
-}
-
-input SalaireUpdateInput {
-  personnelId: ID
-  primeId: ID
-  retenuId: ID
-  payer: Boolean! = false
-  montant: Float! = 0
-  jourPaie: String
-  moisPaie: String
-  periode: PeriodeUpdateInput
-  personnel: PersonnelUpdateInput
-  prime: PrimePersonnelUpdateInput
-  retenu: RetenuPersonnelUpdateInput
-}
-
-input PrimePersonnelUpdateInput {
-  primeId: ID
-  personnelId: ID
-  startMonth: String
-}
-
-input RetenuPersonnelUpdateInput {
-  retenuId: ID
-  personnelId: ID
-  startMonth: String
 }
 
 input ParentCreateInput {

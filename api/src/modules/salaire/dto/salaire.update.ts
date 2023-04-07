@@ -37,16 +37,16 @@ export class SalaireUpdateInput {
   @Field({nullable:true})
   moisPaie?: string;
 
-  @Field(()=>PeriodeUpdateInput,{nullable:true})
-  periode?: PeriodeUpdateInput;
+  // @Field(()=>PeriodeUpdateInput,{nullable:true})
+  // periode?: PeriodeUpdateInput;
 
-  @Field(()=>PersonnelUpdateInput,{nullable:true})
-  personnel?: PersonnelUpdateInput;
+  // @Field(()=>PersonnelUpdateInput,{nullable:true})
+  // personnel?: PersonnelUpdateInput;
 
-  @Field(()=>PrimePersonnelUpdateInput,{nullable:true})
-  prime?: PrimePersonnelUpdateInput;
+  // @Field(()=>PrimePersonnelUpdateInput,{nullable:true})
+  // prime?: PrimePersonnelUpdateInput;
 
-  @Field(()=>RetenuPersonnelUpdateInput,{nullable:true})
-  retenu?:RetenuPersonnelUpdateInput;
+  // @Field(()=>RetenuPersonnelUpdateInput,{nullable:true})
+  // retenu?:RetenuPersonnelUpdateInput;
 
 }

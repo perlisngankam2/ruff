@@ -103,13 +103,23 @@ export class RetenuPersonnelService {
     //     return retenuPersonnel;
     //   }
     
-     async getallretenupersonnel(id:string){
-      const a = (await this.em.find(RetenuPersonnel,{personnel: id})).map(async a=>(await a.retenue.load()).montant)
-      if(a==null){
-        return null
+    async getallretenupersonnelbypersonnel(id:string){
+       return this.retenuPersonnelRepository.find({personnel:id})
+      } 
+    
+      async getallretenupersonnel(id:string){
+      const a = await this.getallretenupersonnelbypersonnel(id)
+      console.log("==============>"+a)
+      if(a.length==0){
+        return 0
       }
-      return a.reduce(async function(a,b){return await a+ await b})
-      }
+      if(a.length!=0){
+      console.log('======>le montant retenu'+await a.map(async a=>(await a.retenue.load()).montant).reduce(async function(a,b){return await a+ await b}))
+      return Number(await a.map(async a=>(await a.retenue.load()).montant).reduce(async function(a,b){return await a+ await b}))
+      }
+    }
+
+
       async delete(id:string){
       const a = this.findById(id)
       await this.retenuPersonnelRepository.removeAndFlush(a)

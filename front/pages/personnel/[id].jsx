@@ -59,7 +59,7 @@ const Profil = () => {
     const toast = useToast();
 
     const { isOpen,  onOpen, onClose } = useDisclosure();
-    const { isOpen:isOpenns, onToggle, onOpen:onOpenns, onClose:onClosses } = useDisclosure();
+    const { isOpen:isOpenns, onOpen:onOpenns, onClose:onClosses } = useDisclosure();
     const { isOpen:isOpenns1, onOpen:onOpenns1, onClose:onClosses1 } = useDisclosure();
     const { isOpen:isOpenns2, onToggle:onToggle1, onOpen:onOpenns2, onClose:onClosses2 } = useDisclosure();
     const cancelRef = React.useRef()
@@ -413,12 +413,12 @@ const Profil = () => {
               </Button>
              <Link href={'#'}>
               <Box>
-                <Button colorScheme='green'  ml={3} type='submit' onClick={onToggle}>
+                <Button colorScheme='green'  ml={3} type='submit' onClick={onOpenns}>
                   ajouter
                 </Button>
                 
 
-                    <Box> 
+                    
                                     <AlertDialog
                                       isOpen={isOpenns}
                                       leastDestructiveRef={cancelRef}
@@ -461,7 +461,7 @@ const Profil = () => {
                                           </AlertDialogContent>
                                         </AlertDialogOverlay>
                                     </AlertDialog>
-                                  </Box>
+                                 
 
                 </Box>
               </Link> 
@@ -564,11 +564,21 @@ const Profil = () => {
                   >
                     { 
                       dataRetenue && (
-                        dataRetenue.findAllretenusalarial.map((retenu, index) => (
+                        dataRetenue.findAllretenusalarial
+                        
+              //           .filter((retenu) =>{
+              //               if(retenu.id !== retenuId){
+              //   return retenu;
+              // }
+
+                        // })
+                        
+                        .map((retenu, index) => (
                             <option value={retenu?.id} key={index}>
                               {retenu.nom}
                             </option>
                         ))
+                        
                     )}
 
                   </Select>

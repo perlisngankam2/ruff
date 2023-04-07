@@ -42,16 +42,16 @@ export class SalaireCreateInput {
 
  
 
-  @Field(()=>PeriodeCreateInput,{nullable:true})
-  periode?: PeriodeCreateInput;
+  // @Field(()=>PeriodeCreateInput,{nullable:true})
+  // periode?: PeriodeCreateInput;
 
-  @Field(()=>PersonnelCreateInput,{nullable:true})
-  personnel?: PersonnelCreateInput;
+  // @Field(()=>PersonnelCreateInput,{nullable:true})
+  // personnel?: PersonnelCreateInput;
 
-  @Field(()=>PrimePersonnelCreateInput,{nullable:true})
-  prime?: PrimePersonnelCreateInput;
+  // @Field(()=>PrimePersonnelCreateInput,{nullable:true})
+  // prime?: PrimePersonnelCreateInput;
 
-  @Field(()=>RetenuPersonnelCreateInput,{nullable:true})
-  retenu?: RetenuPersonnelCreateInput;
+  // @Field(()=>RetenuPersonnelCreateInput,{nullable:true})
+  // retenu?: RetenuPersonnelCreateInput;
 
 }

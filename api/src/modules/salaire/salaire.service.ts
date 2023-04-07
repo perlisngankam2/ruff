@@ -282,13 +282,13 @@ return salaire
 
 
   
- async update(id:string, input: SalaireUpdateInput): Promise<Salaire> {
+//  async update(id:string, input: SalaireUpdateInput): Promise<Salaire> {
      
-  const personnel = await this.personnel.findOne(input.personnelId)
+//   const personnel = await this.personnel.findOne(input.personnelId)
 
-//   const periode = await this.periodeService.findByOne(input.periodeId) 
+// //   const periode = await this.periodeService.findByOne(input.periodeId) 
   
-  const salaire = await this.findByOne(id)
+//   const salaire = await this.findByOne(id)
 
   wrap(salaire).assign(
     {
@@ -302,7 +302,7 @@ return salaire
     }
   )
     
-  await this.salaireRepository.persistAndFlush(salaire);
+//   await this.salaireRepository.persistAndFlush(salaire);
 
 return salaire;
    }

@@ -492,7 +492,6 @@ type Mutation {
   deletefraisincription(id: String!): FraisInscription!
   upodatefraisinscription(id: String!, input: UpdateFraisInscriptionInput!): FraisInscription!
   createsalaire(input: SalaireCreateInput!): Salaire!
-  updatesalire(id: String!, input: SalaireUpdateInput!): Salaire!
   createParent(parent: ParentCreateInput!): Parent!
   updateParent(id: String!): Parent!
   deleteparent(id: String!): Parent!
@@ -957,10 +956,6 @@ input SalaireCreateInput {
   montant: Float! = 0
   jourPaie: String
   moisPaie: String
-  periode: PeriodeCreateInput
-  personnel: PersonnelCreateInput
-  prime: PrimePersonnelCreateInput
-  retenu: RetenuPersonnelCreateInput
 }
 
 input SalaireUpdateInput {

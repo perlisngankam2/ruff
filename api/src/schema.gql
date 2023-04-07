@@ -503,6 +503,7 @@ type Mutation {
   createCourse(input: CourseCreateInput!): Course!
   deleteCourse(id: String!): Course!
   login(loginInput: LoginInput!): LoginResponse!
+  loginUpdate(loginInput: LoginUpdate!): User!
 }
 
 input UserCreateInput {
@@ -958,31 +959,6 @@ input SalaireCreateInput {
   moisPaie: String
 }
 
-input SalaireUpdateInput {
-  personnelId: ID
-  primeId: ID
-  retenuId: ID
-  montant: Float! = 0
-  jourPaie: String
-  moisPaie: String
-  periode: PeriodeUpdateInput
-  personnel: PersonnelUpdateInput
-  prime: PrimePersonnelUpdateInput
-  retenu: RetenuPersonnelUpdateInput
-}
-
-input PrimePersonnelUpdateInput {
-  primeId: ID
-  personnelId: ID
-  startMonth: String
-}
-
-input RetenuPersonnelUpdateInput {
-  retenuId: ID
-  personnelId: ID
-  startMonth: String
-}
-
 input ParentCreateInput {
   ID: String
   firstname: String
@@ -1018,4 +994,10 @@ input CourseCreateInput {
 input LoginInput {
   username: String!
   password: String!
+}
+
+input LoginUpdate {
+  email: String!
+  oldpassword: String!
+  newpassword: String!
 }

@@ -45,7 +45,7 @@ async updateLogin(input:LoginUpdate) {
         user.password = hashedPassword;
     
       await this.userrepository.persistAndFlush(user);
-      return { message: 'Password updated successfully' };
+      return user;
       }
 
 

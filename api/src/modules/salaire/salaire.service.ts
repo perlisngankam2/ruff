@@ -36,8 +36,10 @@ export class SalaireService {
     //const categorie = personnel.category.load()
 
     const salaire= new Salaire()
-    const retenus = Number(this.retenuPersonnel.getallretenupersonnel(personnel.id))||null
-    const primes = Number(this.primepersonnelservice.getallpersonnelprime(personnel.id))||null
+    const retenus =await this.retenuPersonnel.getallretenupersonnel(personnel.id)
+    console.log(retenus)
+    const primes = await this.primepersonnelservice.getallpersonnelprime(personnel.id)
+    console.log(primes)
 
   if(retenus!=null && primes!=null){
 

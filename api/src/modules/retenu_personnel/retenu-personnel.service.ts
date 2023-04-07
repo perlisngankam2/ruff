@@ -126,7 +126,11 @@ export class RetenuPersonnelService {
       }
       if(a.length!=0){
       console.log('==============>montant retenu::'+await a.map(async a=>(await a.retenue.load()).montant).reduce(async function(a,b){return await a+ await b}))
-      return await a.map(async a=>(await a.retenue.load()).montant).reduce(async function(a,b){return await a+ await b})
+      const b = a.map(async a=>(await a.retenue.load()).montant)
+      console.log(b)
+      const c=await b.reduce(async function(a,b){return await a+ await b})
+      console.log(c)
+      return c 
       }
     }
 

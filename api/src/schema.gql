@@ -335,6 +335,7 @@ type Query {
   findOnestudent(id: String!): Student!
   getTrancheStudentByStudent(studentid: String!): TrancheStudent!
   AmountrExpectedByTranche(studentid: String!): [Float!]!
+  getClassfeebyStudent(studentid: String!): Float!
   findAlllocalistaion: [Localisation!]!
   localisation(id: String!): Localisation!
   findAllcategorieeleve: [CategorieEleve!]!
@@ -383,6 +384,7 @@ type Query {
   getallfessalreadypayed(studentid: String!): [Tranche!]!
   RestTrancheByStudent(studentid: String!, trancheid: String!): Float!
   getalltranchecompletedbystudent(studentid: String!): [Tranche!]!
+  RestTuitionFeebystudent(studentid: String!): [Tranche!]!
   findAlltranchestudent: [TrancheStudent!]!
   trancheStudent(id: String!): TrancheStudent!
   findRecentTrancheStudentAmount(id: String!): Float!

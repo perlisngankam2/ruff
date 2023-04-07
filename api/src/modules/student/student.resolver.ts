@@ -65,7 +65,9 @@ export class StudentResolver {
     return await this.studentService.findlisttranche(studentid)
   }
 
-
-
+  @Query(()=>Number)
+  async getClassfeebyStudent(@Args('studentid') studentid:string){
+    return await this.studentService.getclassfeebystudent(studentid)
+  }
  
 }

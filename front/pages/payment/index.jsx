@@ -45,9 +45,15 @@ const Payment = () => {
   const {data:dataPersonnel, loading, error} = useQuery(GET_ALL_PERSONNELS)
   const [personnel, setPersonnel] = useState([]);
   const [ filteredData, setFilteredData]=useState([]);
-    const [ searchName, setSearchName]=useState("")
+  const [ searchName, setSearchName]=useState("")
+  const [pageNumber, setPageNumber] = useState(0);
+  const usersPerPage = 7;
+  const pagesVisited = pageNumber * usersPerPage;
+ const pageCount = Math.ceil(dataPersonnel?.findAllpersonnel.length / usersPerPage);
 
-
+    const changePage = ({ selected }) => {
+      setPageNumber(selected);
+    };
 
   const handleChange = (e) => {
     setSearchName(e.target.value);
@@ -145,7 +151,7 @@ const Payment = () => {
             </Box>)}
           
         {/* <PaySlip />  */}
-          <Box mt={10}>
+          <Box mt={10} pb='5px'>
             <TableContainer
               border={"1px"} 
               rounded={"md"}
@@ -175,6 +181,7 @@ const Payment = () => {
                            personnel.fonction.toLowerCase().includes (searchName.toLowerCase()))
                               return personnel;
                       })
+                      .slice(pagesVisited, pagesVisited + usersPerPage)
                       
                       .map((personnel, index) => ( 
                         <Tr key={index}>

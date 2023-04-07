@@ -23,13 +23,9 @@ import { PaySalaireUpdateInput } from './dto/paysalary.update';
 @Injectable()
 export class PaySalaireService {
   constructor(
-    @InjectRepository(Salaire)
+    @InjectRepository(PaySalaire)
     private paysalaireRepository: EntityRepository<PaySalaire>,
     // private salaireBaseeService: SalaireBaseService,
-    private retenuPersonnel : RetenuPersonnelService,
-    private   Primeservice: PrimeService,
-    private periodeService: PeriodeService,
-    private primepersonnelservice: PrimePersonnelService,
     private personnel : PersonnelService,
     private readonly em: EntityManager,
   ) {}

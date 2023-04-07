@@ -56,7 +56,8 @@ periode!:IdentifiedReference<Periode>|null
 
 @ManyToOne(() => Personnel ,{
   nullable:false,
-  onDelete:'CASCADE'
+  onDelete:'CASCADE',
+  unique:true
 })
 personnel!:IdentifiedReference<Personnel>|null
 

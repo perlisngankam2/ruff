@@ -15,13 +15,15 @@ import { PaySalaireService } from './paysalary.service';
 
 
 
+
 @Module({
 imports:[MikroOrmModule.forFeature({ entities: [PaySalaire] }),
  RetenuPersonnelModule,
  PrimePersonnelModule,
  PeriodeModule,
  PersonnelModule,
- PrimeModule
+ PrimeModule,
+
 ],
 providers:[PaySalaireService,PaySalaireResolver],
 exports:[PaySalaireService]

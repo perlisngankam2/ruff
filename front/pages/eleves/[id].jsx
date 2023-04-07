@@ -57,6 +57,7 @@ import {
 
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
+import { BsArrowReturnLeft } from "react-icons/bs";
 import Link from "next/link";
 import DefaultLayout from "../../components/layouts/DefaultLayout";
 import { GiBoxUnpacking } from "react-icons/gi";
@@ -78,6 +79,7 @@ import {
   CREATE_AVANCE_TRANCHE,
   CREATE_SCOLARITE_TRANCHE_STUDENT
 } from "../../graphql/Mutation"
+import BoxLoading from "../../components/molecules/BoxLoading";
 
 
 
@@ -321,8 +323,9 @@ const DetailComponent = (student) => {
           console.log(dataTrancheStudentBySudentId?.getTrancheStudentByStudent)
         })
 
-    if (loading) return <Text>Chargement en cour...</Text>
-    if (error) return <Text>Une erreur s'est produite!</Text>
+    // if (loading) return <Text>Chargement en cour...</Text>
+        if (loading) return <BoxLoading />
+    if (error) return <BoxLoading />
 
     // const minNumberInput = if dataTrancheById.tranche.name = 
     
@@ -873,6 +876,15 @@ const DetailComponent = (student) => {
               </Box>
 </SimpleGrid>
 )} 
+  <Box ml={5} w="100px">   
+          <Button 
+              leftIcon={<BsArrowReturnLeft boxSize="20px" />} 
+              colorScheme={'green'}
+              onClick={() => router.push("/eleves")}
+             
+            >
+              Retour a la liste
+            </Button></Box>
       </Box>
     </DefaultLayout>
   );

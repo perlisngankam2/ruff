@@ -40,6 +40,7 @@ import {
 } from "../graphql/Queries";
 import {useMutation, useQuery } from '@apollo/client';
 import { GoBriefcase } from "react-icons/go";
+import BoxLoading, { boxLoading } from "../components/molecules/boxLoading";
 
 
 
@@ -49,12 +50,12 @@ import { GoBriefcase } from "react-icons/go";
 
   const { authToken } = useAuth();
 
-  const { account } =  useAccount();
+  const { account, loading } =  useAccount();
 
   //debug
       console.log(  account?.id );
 
-  const { data: personnelData, called, loading } = useQuery(GET_PERSONNEL_BY_USERID,
+  const { data: personnelData, called, loading1 } = useQuery(GET_PERSONNEL_BY_USERID,
     {
     variables:{ userid: account?.id }
   })
@@ -66,16 +67,19 @@ import { GoBriefcase } from "react-icons/go";
   const router = useRouter();
   console.log(personnelData?.getpersonnelbyaccount);
 
-  //   useEffect(() => {
+    useEffect(() => {
     
-  //   if (account?.id === undefined ) {
-  //     router.push("/")
+    // if (account?.id === undefined ) {
+    //   router.push("/")}
 
+if(loading){
+  return <BoxLoading />
 
+}
       
-  //   }
     
-  // }, [])
+    
+  }, [])
 
 
 

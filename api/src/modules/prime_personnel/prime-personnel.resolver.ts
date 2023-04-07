@@ -46,8 +46,13 @@ export class PrimePersonnelResolver {
  return await this.primePersonnelService.delete(id)
   }
 
+  @Query(()=> [PrimePersonnel])
+  async findprimepersonnelbypersonnel(@Args('personnelid') personnelid:string){
+ return await this.primePersonnelService.findbypersonnel(personnelid)
+  }
+
   @Query(()=> Number)
-  async findallretenupersonnel(@Args('personnelid') personnelid:string){
+  async findallprimepersonnel(@Args('personnelid') personnelid:string){
  return await this.primePersonnelService.getallpersonnelprime(personnelid)
   }
 

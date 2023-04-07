@@ -60,10 +60,10 @@ import {
   })
   personnel!:IdentifiedReference<Personnel>|null
   
-  @OneToMany(() => PrimePersonnel, primePersonel => primePersonel.salaire)
+  @OneToMany(() => PrimePersonnel, primePersonel => primePersonel.paysalaire)
   primePersonnel = new Collection<PrimePersonnel>(this);
   
-  @OneToMany(() => RetenuPersonnel, retenuPernole => retenuPernole.salaire)
+  @OneToMany(() => RetenuPersonnel, retenuPernole => retenuPernole.paysalaire)
   retenuPersonnel = new Collection<RetenuPersonnel>(this);
   
   // @ManyToOne(() => RetenuPersonnel ,{

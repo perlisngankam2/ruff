@@ -12,6 +12,7 @@ import {
     Thead, 
     Tbody, 
     Tr,
+    Button,
     Th,
     Td, 
 } from "@chakra-ui/react";
@@ -19,6 +20,7 @@ import DefaultLayout from "../../../components/layouts/DefaultLayout";
 import { GiDivergence } from "react-icons/gi";
 // import Router from "next/router";
 import { useRouter } from "next/router";
+import { BsArrowReturnLeft } from "react-icons/bs";
 import { 
     GET_STUDENT_BY_TRANCHE_STUDENT,
     GET_STUDENT_BY_ID,
@@ -72,17 +74,30 @@ const receipt = () => {
     
     return ( 
         <DefaultLayout>
+                  <Box p="3" pt="70px" w="100%" background="colors.tertiary">
+         
+          <Box w="100px">   
+          <Button 
+              leftIcon={<BsArrowReturnLeft boxSize="20px" />} 
+              colorScheme={'green'}
+              onClick={() => router.push("/eleves/[id]")}
+             
+            >
+              Retour
+            </Button></Box>
             <Center 
                 pt='70px' 
                 ml='60px' 
                 pb="10px"
             >
+              
             {dataStudentId && (    
                 <Box 
                     borderWidth='1px' 
                     borderRadius='25px' 
                     borderColor='black'  w='1000px'  
                 >
+                   
                     <Center 
                         borderBottomWidth='3px' 
                         h="120px" 
@@ -584,6 +599,7 @@ const receipt = () => {
                 </Box>
             )}
             </Center>
+            </Box>
         </DefaultLayout>
     );
 }

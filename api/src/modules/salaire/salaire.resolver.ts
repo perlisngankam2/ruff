@@ -33,4 +33,5 @@ async getonesalaire(@Args('id') id:string){
 async getsalairebypersonnel(@Args('personnelid') personnelid:string){
     return await this.salaireService.salairepersonnel(personnelid)
 }
+
 }

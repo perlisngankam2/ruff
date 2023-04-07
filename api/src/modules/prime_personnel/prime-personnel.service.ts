@@ -102,9 +102,6 @@ export class PrimePersonnelService {
         return this.primePersonnelRepository.findAll()
       }
 
-      async getallprimepersonnelbypersonnel(id:string){
-        return this.primePersonnelRepository.find({personnel:id})
-       }
      async getallpersonnelprime(id:string){
       const where = {};
       if (id) {
@@ -116,12 +113,13 @@ export class PrimePersonnelService {
         orderBy: { id: 'ASC' },
       });
   
-      console.log(a)
+      console.log('============>list of primes personnel::'+a)
      
       if(a.length==0){
         return 0
       }
       if(a.length!=0){
+      console.log('==============>montant prime::'+await a.map(async a=>(await a.prime.load()).montant).reduce(async function(a,b){return await a+ await b}))
       return await a.map(async a=>(await a.prime.load()).montant).reduce(async function(a,b){return await a+ await b})
       }
       }
@@ -167,5 +165,9 @@ export class PrimePersonnelService {
        }
        return a
       }
+
+    async findbypersonnel(personnelid:string){
+  return await this.primePersonnelRepository.find({personnel:personnelid})
+}
     
 }

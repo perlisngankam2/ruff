@@ -49,7 +49,10 @@ const RouteName = {
       // type: AuthRoute.Public,
       // platforms: [Platform.Main]
     },
-    
+    Bulletin: {
+      path: '/payment/bulletin/[id]'
+    }
+    ,
     Payment: {
       path: '/payment',
     },

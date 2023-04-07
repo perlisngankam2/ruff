@@ -18,6 +18,7 @@ import { Personnel } from './pesonnel.entity';
 import { Prime } from './prime.entity';
 import { Retenue } from './retenu-salaire.entity';
 import { Salaire } from './salaire.entity';
+import { PaySalaire } from './pay_salary.entity';
 
 
 @Entity()
@@ -26,6 +27,10 @@ export class RetenuPersonnel {
   @Field(() => ID)
   @PrimaryKeyUuid()
   id!: string;
+
+  @Field({ nullable: true })
+  @Property({ nullable: true })
+  startMonth!: string; 
 
   @Property({ onCreate: () => new Date() })
   createdAt = new Date();
@@ -47,4 +52,10 @@ export class RetenuPersonnel {
     onDelete:'CASCADE'
   })
   salaire!:IdentifiedReference<Salaire>|null
+
+  @ManyToOne(() => PaySalaire ,{
+    nullable:true,
+    onDelete:'CASCADE'
+  })
+  paysalaire!:IdentifiedReference<Salaire>|null
 }

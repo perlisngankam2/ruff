@@ -70,34 +70,36 @@ export class RetenuPersonnelService {
       
       async update(id:string, input: RetenuPersonnelUpdateInput): Promise<RetenuPersonnel> {
         const retenuPersonnel = await this.findById(id)
-        if (input.retenu) {
-            const retenu =
-            input.retenuId &&
-              (await this.retenuService.findByOne({ id: input.retenuId }));
+        // if (input.retenuId) {
+        //     const retenu =
+        //     input.retenuId &&
+        //       (await this.retenuService.findByOne({ id: input.retenuId }));
       
-            if (!retenu) {
-              throw new NotFoundError('prime no exist' || '');
-            }
-            this.retenuService.update(retenu.id, input.retenu);
-          }  
+        //     if (!retenu) {
+        //       throw new NotFoundError('prime no exist' || '');
+        //     }
+        //     this.retenuService.update(retenu.id, input.retenuId);
+         
           
           
-        if (input.personnnel) {
-            const personnel =
-            input.personnelId &&
-              (await this.personnelService.findOne({ id: input.personnelId}));
+        // if (input.personnnel) {
+        //     const personnel =
+        //     input.personnelId &&
+        //       (await this.personnelService.findOne({ id: input.personnelId}));
       
-            if (!personnel) {
-              throw new NotFoundError('personnel no exist' || '');
-            }
-            this.personnelService.update(personnel.id, input.personnnel);
-          }  
-        wrap(retenuPersonnel).assign({
-            retenue: input.retenu || retenuPersonnel.retenue,
-            personnel: input.personnnel || retenuPersonnel.personnel
-        },
-        { em: this.em },
-    );
+        //     if (!personnel) {
+        //       throw new NotFoundError('personnel no exist' || '');
+        //     }
+        //     this.personnelService.update(personnel.id, input.personnnel);
+        //   }  
+        wrap(retenuPersonnel).assign(
+          {
+            retenue: input.retenuId || retenuPersonnel.retenue,
+            personnel: input.personnelId || retenuPersonnel.personnel
+          },
+        { 
+          em: this.em 
+        });
         await this.retenuPersonnelRepository.persistAndFlush(retenuPersonnel);
         return retenuPersonnel;
       }
@@ -106,7 +108,7 @@ export class RetenuPersonnelService {
        return this.retenuPersonnelRepository.find({personnel:id})
       } 
     
-      async getallretenupersonnel(id:string){
+ async getallretenupersonnel(id:string){
         const where = {};
       if (id) {
         where['personnel'] = id;
@@ -117,12 +119,13 @@ export class RetenuPersonnelService {
         orderBy: { id: 'ASC' },
       });
   
-      console.log(a)
+      console.log('============>list of retenu personnel::'+a)
      
       if(a.length==0){
         return 0
       }
       if(a.length!=0){
+      console.log('==============>montant retenu::'+await a.map(async a=>(await a.retenue.load()).montant).reduce(async function(a,b){return await a+ await b}))
       return await a.map(async a=>(await a.retenue.load()).montant).reduce(async function(a,b){return await a+ await b})
       }
     }

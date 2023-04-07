@@ -419,6 +419,52 @@ export const GET_LAST_PAYMENT = gql `
     }
 `;
 
+// toute les retenues 
 
+export const GET_ALL_RETENUE = gql `
+    query findAllretenusalarial {
+    findAllretenusalarial {
+        id
+        nom
+        description
+        montant
+    }
+}
+`;
 
+// toute les retenues d'un personnel
 
+export const GET_ALL_RETENUE_BY_PERSONNEL = gql `
+query findretenupersonnelbypersonnel ($personnelid: String!) {
+    findretenupersonnelbypersonnel (personnelid: $personnelid) {
+        id
+        startMonth
+    }
+}
+`;
+export const GET_ALL_SALAIRE_BY_ID = gql `
+query getsalairebypersonnel ($personnelid: String!) {
+    getsalairebypersonnel (personnelid: $personnelid) {
+        id
+        jourPaie
+        moisPaie
+        payer
+        montant
+    }
+}
+`;
+
+export const GET_ALL_RETENUE_BY_ID = gql `
+query findretenupersonnelbypersonnel ($personnelid: String!) {
+    findretenupersonnelbypersonnel (personnelid: $personnelid) {
+        id
+        startMonth
+    }
+}
+`;
+
+export const GET_ALL_PRIME_BY_ID = gql `
+query findallprimepersonnel ($personnelid: String!) {
+    findallprimepersonnel (personnelid: $personnelid)
+}
+`;

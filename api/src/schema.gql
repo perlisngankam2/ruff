@@ -92,15 +92,23 @@ type Retenue {
   montant: Float!
 }
 
+type PaySalaire {
+  id: ID!
+  jourPaie: String
+  moisPaie: String
+  payer: Boolean!
+  montant: Float!
+}
+
 type RetenuPersonnel {
   id: ID!
+  startMonth: String
 }
 
 type Salaire {
   id: ID!
   jourPaie: String
   moisPaie: String
-  payer: Boolean!
   montant: Float!
 }
 
@@ -351,13 +359,18 @@ type Query {
   findAllcategorieretenu: [CategorieRetenu!]!
   categorieRetenu(id: String!): CategorieRetenu!
   findAllprimepersonnel: [PrimePersonnel!]!
-  findallretenupersonnel(personnelid: String!): Float!
+  findprimepersonnelbypersonnel(personnelid: String!): [PrimePersonnel!]!
+  findallprimepersonnel(personnelid: String!): Float!
   getallprimepersonnel(personnelid: String!): Float!
   findAllperiod: [Periode!]!
   periode(id: String!): Periode!
   findAllretenupersonnel: [RetenuPersonnel!]!
   retenuPersonnel(id: String!): RetenuPersonnel!
   findretenupersonnelbypersonnel(personnelid: String!): [RetenuPersonnel!]!
+  findallretenupersonnel(personnelid: String!): Float!
+  findallpaysalaire: [PaySalaire!]!
+  getonepaysalaire(id: String!): PaySalaire!
+  getpaysalairebypersonnel(personnelid: String!): [Salaire!]!
   findAllfraisexam: [FraisExamen!]!
   fraisExamen(id: String!): FraisExamen!
   findavancetranchebyid(input: String!): AvanceTranche!
@@ -457,8 +470,9 @@ type Mutation {
   updateperiod(id: String!, input: PeriodeUpdateInput!): Periode!
   deleteperiod(id: String!): Periode!
   createretnupersonnel(retenuPersonnel: RetenuPersonnelCreateInput!): RetenuPersonnel!
-  updateretenupersonnel(id: String!, input: RetenuPersonnelUpdateInput!): RetenuPersonnel!
   deleteretenupersonnel(id: String!): RetenuPersonnel!
+  createpaysalaire(input: PaySalaireCreateInput!): PaySalaire!
+  updatepaysalire(id: String!, input: PaySalaireUpdateInput!): PaySalaire!
   createFraisExamen(fraisExamen: FraisExamentInput!): FraisExamen!
   updatefraisexam(id: String!, input: UpdateFraisExamentInput!): FraisExamen!
   deletefraisfraisexam(id: String!): FraisExamen!
@@ -828,15 +842,23 @@ input PeriodeUpdateInput {
 input RetenuPersonnelCreateInput {
   retenuId: ID
   personnelId: ID
-  retenu: RetenuCreateInput!
-  personnnel: PersonnelCreateInput!
+  startMonth: String
 }
 
-input RetenuPersonnelUpdateInput {
-  retenuId: ID
+input PaySalaireCreateInput {
   personnelId: ID
-  retenu: RetenuCreateInput!
-  personnnel: PersonnelCreateInput!
+  payer: Boolean! = false
+  montant: Float! = 0
+  jourPaie: String
+  moisPaie: String
+}
+
+input PaySalaireUpdateInput {
+  personnelId: ID
+  payer: Boolean! = false
+  montant: Float! = 0
+  jourPaie: String
+  moisPaie: String
 }
 
 input FraisExamentInput {
@@ -930,7 +952,6 @@ input SalaireCreateInput {
   personnelId: ID
   primeId: ID
   retenuId: ID
-  payer: Boolean! = false
   montant: Float! = 0
   jourPaie: String
   moisPaie: String
@@ -944,7 +965,6 @@ input SalaireUpdateInput {
   personnelId: ID
   primeId: ID
   retenuId: ID
-  payer: Boolean! = false
   montant: Float! = 0
   jourPaie: String
   moisPaie: String
@@ -956,6 +976,12 @@ input SalaireUpdateInput {
 
 input PrimePersonnelUpdateInput {
   primeId: ID
+  personnelId: ID
+  startMonth: String
+}
+
+input RetenuPersonnelUpdateInput {
+  retenuId: ID
   personnelId: ID
   startMonth: String
 }

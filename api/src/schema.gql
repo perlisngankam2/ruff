@@ -956,31 +956,6 @@ input SalaireCreateInput {
   moisPaie: String
 }
 
-input SalaireUpdateInput {
-  personnelId: ID
-  primeId: ID
-  retenuId: ID
-  montant: Float! = 0
-  jourPaie: String
-  moisPaie: String
-  periode: PeriodeUpdateInput
-  personnel: PersonnelUpdateInput
-  prime: PrimePersonnelUpdateInput
-  retenu: RetenuPersonnelUpdateInput
-}
-
-input PrimePersonnelUpdateInput {
-  primeId: ID
-  personnelId: ID
-  startMonth: String
-}
-
-input RetenuPersonnelUpdateInput {
-  retenuId: ID
-  personnelId: ID
-  startMonth: String
-}
-
 input ParentCreateInput {
   ID: String
   firstname: String

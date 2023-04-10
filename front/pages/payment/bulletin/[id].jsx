@@ -37,8 +37,11 @@ const Bulletin = () => {
     return ( 
         <DefaultLayout>
             <Box p="3" pt="70px" w="100%" background="colors.tertiary">
-        <Center>
-            <Box>
+        <Center >
+            <Box  borderWidth='1px' 
+                    bg={'white'}
+                    borderColor='black' 
+                    px='20px' >
 
                 <Box textAlign={'center'} mt={'4%'}>
                     <Heading>BULLETIN DE PAIE</Heading>

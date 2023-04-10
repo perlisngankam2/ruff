@@ -8,19 +8,46 @@ import { User } from "src/entities/user.entity";
 import { JwtService } from "@nestjs/jwt";
 import { Personnel } from "src/entities/pesonnel.entity";
 import { PersonnelService } from "../personnel/personnel.service";
+import { LoginUpdate } from "./login.update";
+import { InjectRepository } from "@mikro-orm/nestjs";
+import { EntityRepository } from "@mikro-orm/postgresql";
+
+
 
 
 
 
 @Injectable()
 export class AuthService{
-    constructor(private readonly userservice: UserService,
+    constructor(
+                @InjectRepository(User)
+                private userrepository: EntityRepository<User>,
+                private readonly userservice: UserService,
                 private readonly personnelservice: PersonnelService,
                 private readonly jwtservice:JwtService){}
   
 async compareHash(rawPassword: string, hashedPassword: string) {
         return bcrypt.compare(rawPassword, hashedPassword);
       }
+
+async updateLogin(input:LoginUpdate) {
+        const user = await this.userservice.findOne(input.email);
+        if (!user) {
+          throw new Error('User not found');
+        }
+    
+        const isMatch = await this.compareHash(input.oldpassword, user.password);
+        if (!isMatch) {
+          throw new Error('Old password is incorrect');
+        }
+    
+        const hashedPassword = this.userservice.hashpass(input.newpassword);
+        user.password = hashedPassword;
+    
+      await this.userrepository.persistAndFlush(user);
+      return user;
+      }
+
 
 async validateUser(email:string,passwd:string) {
         const user = await this.userservice.findOne(

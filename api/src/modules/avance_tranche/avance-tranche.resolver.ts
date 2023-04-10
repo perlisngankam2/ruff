@@ -77,5 +77,10 @@ async getalltranchecompletedbystudent(@Args('studentid') studentid:string){
 return await this.avancetrancheService.TranchecompletedByStudent(studentid)
 }
 
+@Query(()=>[Tranche])
+async RestTuitionFeebystudent(@Args('studentid') studentid:string){
+return await this.avancetrancheService.ResttuitionfeeByStudent(studentid)
+}
+
 
 }

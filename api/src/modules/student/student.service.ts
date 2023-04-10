@@ -196,7 +196,14 @@ export class StudentService {
 
       }
 
-
+      
+    async getclassfeebystudent(studentid:string){
+      const a= await this.findByOne(studentid)
+      if(!a){
+        throw Error("student not found")
+      }
+      return (await a.salle.load()).montantPensionSalle
+    }
    
       
 }

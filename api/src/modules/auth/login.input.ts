@@ -10,3 +10,4 @@ export class LoginInput{
     password: string
 
 }
+

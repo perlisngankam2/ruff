@@ -9,9 +9,11 @@ import { AuthResolver } from "./auth.resolver";
 import { AuthService } from "./auth.service";
 import { JwtStrategy } from "./jwt.strategy";
 import { LocalStrategy } from "./local.strategy";
+import { User } from "src/entities/user.entity";
+import { MikroOrmModule } from "@mikro-orm/nestjs";
 
 @Module({
-    imports: [PassportModule, UserModule, PersonnelModule,
+    imports: [MikroOrmModule.forFeature({ entities: [User] }),PassportModule, UserModule, PersonnelModule,
     JwtModule.register({
         signOptions: {expiresIn: '1d'},
         secret: 'hide-me'

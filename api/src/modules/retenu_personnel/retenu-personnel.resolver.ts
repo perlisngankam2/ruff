@@ -10,10 +10,8 @@ import {
   ResolveField,
   Resolver,
 } from '@nestjs/graphql';
-import { PrimePersonnel } from 'src/entities/prime-personnel.entity';
 import { RetenuPersonnel } from 'src/entities/retenu-personnel.entity';
 import { RetenuPersonnelCreateInput } from './dto/retenu-personnel.input';
-import { RetenuPersonnelUpdateInput } from './dto/retenu-personnel.update';
 import { RetenuPersonnelService } from './retenu-personnel.service';
 
 

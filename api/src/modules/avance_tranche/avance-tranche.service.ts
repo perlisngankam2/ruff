@@ -619,6 +619,7 @@ async TranchecompletedByStudent(studentid:string){
  
   }
 
+
   async SumAvanceTrancheByStudent(studentid:string,trancheid:string){
      const z = (await this.trancheStudentservice.findByStudent(studentid))
      console.log('==============================>'+z)
@@ -674,6 +675,13 @@ async TranchecompletedByStudent(studentid:string){
 
    }
 
+      async ResttuitionfeeByStudent(studentid:string){
+        const z = (await this.trancheStudentservice.findByStudent(studentid))
+        if(!z){
+         throw Error("student not found in tranchestudent!!!!!!!!!!")
+        }
+        return  z.reste     
+    }
 
     async RestAvanceTrancheByStudent(studentid:string,trancheid:string){
      const z = (await this.trancheStudentservice.findByStudent(studentid))

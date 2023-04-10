@@ -8,6 +8,7 @@ import { Host } from "./decorators/host.decorator";
 import { GqlAuthGuard } from "./guards/gql-auth.guards";
 import { LoginInput } from "./login.input";
 import { LoginResponse, LoginResponsePersonnel } from "./loginresponse";
+import { LoginUpdate } from "./login.update";
 
 
 @Resolver()
@@ -18,6 +19,11 @@ export class AuthResolver{
     @UseGuards(GqlAuthGuard)
     login(@Args('loginInput') loginInput: LoginInput, @Context() context ){
         return this.authservice.login(context.user);
+    }
+    
+    @Mutation(() => User)
+    loginUpdate(@Args('loginInput') loginUpdate: LoginUpdate){
+        return this.authservice.updateLogin(loginUpdate);
     }
 
 

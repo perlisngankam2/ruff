@@ -22,6 +22,14 @@ export class UserService {
 
   }
 
+  async setPassword(account: User, password: string): Promise<User> {
+    account.password = this.hashpass(password);
+
+    await this.userRepository.persistAndFlush(account);
+
+    return account;
+  }
+
   async create(
     input: UserCreateInput,
   ): Promise<User> {
@@ -58,6 +66,10 @@ export class UserService {
 
   findById(id:string){
     return this.userRepository.findOne(id)
+  }
+
+  findByemail(mail:string){
+    return this.userRepository.findOne({email:mail})
   }
 
   getAll(): Promise<User[]> {

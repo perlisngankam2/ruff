@@ -89,6 +89,7 @@ export class SalleService {
               throw Error("not found")
             }
             return a
+
       
       }
 
@@ -205,4 +206,5 @@ export class SalleService {
     async findStudentBySalle(studentid:string){
       return (await this.em.find(Salle,{student:studentid}))[0]
     }
+
 }

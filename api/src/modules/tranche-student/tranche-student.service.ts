@@ -87,6 +87,9 @@ export class TrancheStudentService {
 
 async saveTranche(studentid:string,trancheid:string){
         const tranchestudent = await this.findByTrancheandStudent(studentid,trancheid)
+
+        if(tranchestudent!=null)
+        {
         const tranche = await this.trancheService.findByOne(trancheid)
         console.log("====================>"+tranchestudent)
         console.log("+++++++++++++++++++++++>"+tranchestudent.montant)
@@ -117,6 +120,52 @@ async saveTranche(studentid:string,trancheid:string){
         
         await this.trancheStudentRepository.persistAndFlush(tranchestudent)
         return tranchestudent
+    }
+
+    if(tranchestudent==null)
+        {
+        const tranchestudent = new TrancheStudent()
+
+        wrap(tranchestudent).assign({
+            montant:0.00000,
+            student:studentid,
+            tranche:trancheid        
+        },
+        {
+            em:this.em
+        })
+        await this.trancheStudentRepository.persistAndFlush(tranchestudent)
+        const tranche = await this.trancheService.findByOne(trancheid)
+        console.log("====================>"+tranchestudent)
+        console.log("+++++++++++++++++++++++>"+tranchestudent.montant)
+        const montant =(await this.avance.SumAvanceTrancheByStudent(studentid,trancheid))
+        console.log("===================================>"+montant)
+        tranchestudent.montant=montant
+        const student = tranchestudent.student.load()
+        console.log("===================================>"+student)
+       
+        
+        
+        if(tranchestudent.montant == tranche.montant){
+            tranchestudent.complete = true
+            // tranche.regimePaimemnt = RegimePaiement.NORMAL
+            tranchestudent.reste = 0.0
+        }
+
+        if(tranchestudent.montant > tranche.montant){
+            tranchestudent.complete = true
+            // tranche.regimePaimemnt = RegimePaiement.NORMAL
+            tranchestudent.surplus = tranchestudent.montant -tranche.montant
+        }   
+
+        if(tranchestudent.montant < tranche.montant){
+            tranchestudent.complete = false
+            tranchestudent.reste = tranche.montant - tranchestudent.montant
+        }
+        
+        await this.trancheStudentRepository.persistAndFlush(tranchestudent)
+        return tranchestudent
+    }
         
     }
       

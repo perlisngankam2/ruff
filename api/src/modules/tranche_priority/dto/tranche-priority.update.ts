@@ -5,4 +5,5 @@ import { Field, ID, InputType } from '@nestjs/graphql';
 export class TranchePriorityUpdateInput {
   @Field(()=>ID,{nullable:true})
   name?:string
+
 }

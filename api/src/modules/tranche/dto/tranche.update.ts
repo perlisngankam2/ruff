@@ -15,6 +15,9 @@ export class TrancheUpdateInput {
 
   @Field(()=>ID,{nullable:true})
   salleId?:string
+  
+  @Field(()=>ID,{nullable:true})
+  tranchePriorityId?:string
 
   @Field({nullable:true})
   name?: string;

@@ -11,8 +11,7 @@ import {
   InputGroup,
   InputRightElement,
   Text,
-  VStack,
-  Spinner
+  VStack
 } from "@chakra-ui/react";
 
 import Routes from "../../modules/routes";
@@ -31,8 +30,6 @@ import { GET_ALL_PERSONNELS } from "../../graphql/Queries";
 import { DELETE_PERSONNEL } from "../../graphql/Mutation";
 import Category from "./categorypersonnel";
 import ReactPaginate from "react-paginate";
-import BoxLoading from "../../components/molecules/boxLoading";
-// import Loader from "../../components/atoms/Loader";
 
 const Personnel = () => {
   const router = useRouter();
@@ -42,7 +39,7 @@ const Personnel = () => {
   const [deletePersonnel] = useMutation(DELETE_PERSONNEL);
   const [personnel, setPersonnel] = useState([]);
   const [pageNumber, setPageNumber] = useState(0);
-  const itemsPerPage = 8;
+  const itemsPerPage = 15;
   const pagesVisited = pageNumber * itemsPerPage;
   
   const employees = [
@@ -62,14 +59,8 @@ const Personnel = () => {
     console.log(dataPersonnel) 
   }, [dataPersonnel])
  
-  // if (loading) return <Text>Chargement en cour...</Text>
-  // if (error) return <Text>Une erreur s'est produite!</Text>
-
-      if (loading)
-    return (
-      <BoxLoading />
-    );
-  // if (error) return <BoxLoading />
+  if (loading) return <Text>Chargement en cour...</Text>
+  if (error) return <Text>Une erreur s'est produite!</Text>
 
   // const removePersonnel = async(id) => {
   //   await deletePersonnel({
@@ -88,8 +79,8 @@ const Personnel = () => {
   
   const pageCount = Math.ceil(dataPersonnel?.findAllpersonnel.length / itemsPerPage);
 
-  const changePage = ({ selected }) => {
-    setPageNumber(selected);
+  const changePage = ({ page }) => {
+    setPageNumber(page);
   };
   return (
     <DefaultLayout>
@@ -157,7 +148,7 @@ const Personnel = () => {
          {dataPersonnel && ( 
            
             dataPersonnel.findAllpersonnel
-            
+            .slice(pagesVisited, pagesVisited + itemsPerPage)
             .filter((personnel) =>{
               if(searchName == ""){
                 return personnel;
@@ -168,8 +159,6 @@ const Personnel = () => {
             }
               
             )
-            .slice(pagesVisited, pagesVisited + itemsPerPage)
-            
             .map((personnel, index) => (
               <Box key={index}>
                 <Employee
@@ -180,8 +169,7 @@ const Personnel = () => {
                   id={personnel.id}
                 />
               </Box>
-       
-          )) )}
+            )) )}
           </Flex>
         </Box>
         <Center mt="5px" ml="540px"> 

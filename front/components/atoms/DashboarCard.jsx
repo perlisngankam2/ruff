@@ -1,7 +1,11 @@
 import { Box, Flex, Icon, Text } from "@chakra-ui/react";
 import { GiGraduateCap, GiReceiveMoney } from "react-icons/gi";
+import { UseTranslation, useTranslation } from "next-i18next";
+
 
 const DashboardCard = (props) => {
+  const {t} = useTranslation();
+
   return (
     <Box 
       borderRadius="20px" 
@@ -47,7 +51,7 @@ const DashboardCard = (props) => {
             <Box as="span" fontWeight="bold" mr='4px'>
               105
             </Box>
-             Garcons inscrits
+             {/* {t('atoms.DashboardCard.nombreGarconInscrit')} */}
           </Text>
           <Text
             position="relative"

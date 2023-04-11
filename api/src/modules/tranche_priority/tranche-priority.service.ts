@@ -34,13 +34,12 @@ export class TranchePriorityService {
         wrap(tranchePriority).assign(
           {
           name : input.name,
-        
-         
           },
           {
             em: this.em
           }
         )
+        await this.tranchePriorityRepository.persistAndFlush(tranchePriority)
         return tranchePriority;
       } 
 

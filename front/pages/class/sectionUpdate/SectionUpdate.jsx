@@ -20,12 +20,12 @@ import {
 } from '@chakra-ui/react';
 import React from "react";
 import { IoIosAdd } from "react-icons/io";
-import {useMutation } from '@apollo/client';
+import {useMutation, useQuery } from '@apollo/client';
 import { CREATE_SECTION, UPDATA_SECTION} from "../../graphql/Mutation";
-import { GET_ALL_SECTION } from "../../graphql/Queries";
+import { GET_ALL_SECTION, GET_ONE_SECTION } from "../../graphql/Queries";
 import { useState } from "react";
 import { useRouter } from "next/router";
-
+import { useParams } from 'react-router-dom';
 
 const  SectionCreate =  () => {
 
@@ -35,8 +35,14 @@ const  SectionCreate =  () => {
     const cancelRef = React.useRef();
     const [createSection, {error}] = useMutation(CREATE_SECTION);
     const [updateSection] = useMutation(UPDATA_SECTION);
+    const {data:dataSectionId} = useQuery(GET_ONE_SECTION,
+        {
+            variables: {id}
+        }
+     );
     const router = useRouter()
     const toast = useToast();
+    const { id } = useParams();
     // const addCategoryPersonnel = async (event, value) => {
     //     console.log("value")
     //     event.preventDefault();
@@ -55,41 +61,27 @@ const  SectionCreate =  () => {
     //     // })
     //     // console.log(categoryData)
     // }
-
+   const section = dataSectionId?.findOnesection
     let input
-    const  addSection = async (event, value) => {
+    const  SectionUpdate = async (event, value) => {
         event.preventDefault();
         console.log('cccc');
    
         console.log(name);
         console.log(description);
-        // if(id){
-        //     updateSection({
-        //         variables:{
-        //             section:{
-        //                 name: name,
-        //                 section: description
-        //             }
-        //         }
-        //     })
-        // }else{
-         await createSection({
-            variables: {
-                section: {
-                    name: name,
-                    description: description
+            updateSection({
+                variables:{
+                    section:{
+                        name: name,
+                        section: description
+                    }
                 }
-            },
-            refetchQueries:[{
-                query: GET_ALL_SECTION
-            }]
-        })
-    // }
+            })
         onClose();
         // console.log(sectionData)
         toast({
-            title: "Creation d'une section.",
-            description: "La classe a été créée avec succes.",
+            title: "Mise a jour d'une section.",
+            description: "Mise a jour de la section reussit.",
             status: "success",
             duration: 3000,
             isClosable: true,
@@ -98,7 +90,6 @@ const  SectionCreate =  () => {
           setDescription("")
     }
 
-   
   return (
     <Center>
         <Box> 
@@ -175,9 +166,9 @@ const  SectionCreate =  () => {
                                     <Button 
                                     colorScheme='green'  
                                     ml={3}
-                                    onClick={addSection}
+                                    onClick={SectionUpdate}
                                     >
-                                    Creer
+                                    Mettre a jour
                                     </Button>
                                 {/* </Link>  */}
                             </AlertDialogFooter>

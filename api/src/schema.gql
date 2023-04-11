@@ -185,6 +185,12 @@ type TrancheStudent {
   avance: Float
 }
 
+type TranchePriority {
+  id: ID!
+  name: String
+  description: String
+}
+
 type Tranche {
   id: ID!
   name: String
@@ -404,6 +410,8 @@ type Query {
   totalNumberofStudentsinClass(id: String!): Float!
   findAllCourse: [Course!]!
   findOneCourse(id: String!): Course!
+  findAlltranchepriority: [TranchePriority!]!
+  findOnetranchepriority(id: String!): TranchePriority!
   me: Personnel!
 }
 
@@ -422,7 +430,7 @@ type Mutation {
   deleteSalle(id: String!): Salle!
   UpdateSalle(id: String!, input: SalleUpdateInput!): Salle!
   createNiveauEtude(niveauEtude: NiveauEtudeCreateInput!): NiveauEtude!
-  updateNiveauEtude(id: String!): NiveauEtude!
+  updateNiveauEtude(id: String!, input: NiveauEtudeUpdateInput!): NiveauEtude!
   deleteNiveauEtude(id: String!): NiveauEtude!
   createSectionCycle(sectionCycle: SectionCycleCreateInput!): SectionCycle!
   updatesectioncycle(id: String!, input: SectionCycleUpdateInput!): SectionCycle!
@@ -502,6 +510,7 @@ type Mutation {
   findallexpenses: [Expense!]!
   createCourse(input: CourseCreateInput!): Course!
   deleteCourse(id: String!): Course!
+  createtranchepriority(input: TranchePriorityInput!): TranchePriority!
   login(loginInput: LoginInput!): LoginResponse!
 }
 
@@ -623,6 +632,14 @@ input SalleUpdateInput {
   niveau: NiveauEtudeCreateInput
 }
 
+input NiveauEtudeUpdateInput {
+  ID: String
+  name: String
+  description: String
+  cycleId: ID
+  montantPension: Float
+}
+
 input SectionCycleUpdateInput {
   ID: String
   description: String
@@ -709,6 +726,7 @@ input CategorieEleveUpdateInput {
 input TrancheCreateInput {
   anneeAcademiqueId: ID
   salleId: ID
+  tranchePriorityId: ID
   name: String
   description: String
   montant: Float = 0
@@ -958,31 +976,6 @@ input SalaireCreateInput {
   moisPaie: String
 }
 
-input SalaireUpdateInput {
-  personnelId: ID
-  primeId: ID
-  retenuId: ID
-  montant: Float! = 0
-  jourPaie: String
-  moisPaie: String
-  periode: PeriodeUpdateInput
-  personnel: PersonnelUpdateInput
-  prime: PrimePersonnelUpdateInput
-  retenu: RetenuPersonnelUpdateInput
-}
-
-input PrimePersonnelUpdateInput {
-  primeId: ID
-  personnelId: ID
-  startMonth: String
-}
-
-input RetenuPersonnelUpdateInput {
-  retenuId: ID
-  personnelId: ID
-  startMonth: String
-}
-
 input ParentCreateInput {
   ID: String
   firstname: String
@@ -1013,6 +1006,10 @@ input ExpenseUpdateInput {
 input CourseCreateInput {
   title: String
   time: Float
+}
+
+input TranchePriorityInput {
+  name: ID
 }
 
 input LoginInput {

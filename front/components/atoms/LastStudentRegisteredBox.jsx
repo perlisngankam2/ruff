@@ -1,9 +1,14 @@
 import { Avatar, Box, Flex, Icon, Text } from "@chakra-ui/react";
 import { RiUserAddFill } from "react-icons/ri";
 
-const LastStudentRegisteredBox = () => {
+const  LastStudentRegisteredBox = () => {
   return (
-    <Flex rounded="md" bg="rgba(0,0,0,0.24)" p="1" justify="space-between">
+    <Flex 
+      rounded="md" 
+      bg="rgba(0,0,0,0.24)" 
+      p="1" 
+      justify="space-between"
+    >
       <Box direction="column">
         <Text
           letterSpacing="tight"
@@ -13,13 +18,22 @@ const LastStudentRegisteredBox = () => {
         >
           Dernier élève inscrit:
         </Text>
-        <Flex direction="row" p="1" justifyContent="center" gap="3" mt="1">
+        <Flex 
+          direction="row" 
+          p="1" 
+          justifyContent="center" 
+          gap="3" 
+          mt="1"
+        >
           <Avatar
             size="sm"
             name="Dan Abrahmov"
             src="https://bit.ly/dan-abramov"
           />
-          <Box direction="column" textAlign="center">
+          <Box 
+            direction="column" 
+            textAlign="center"
+          >
             <Text
               letterSpacing="tight"
               fontSize={{ base: "md", sm: "md", md: "md" }}
@@ -39,8 +53,16 @@ const LastStudentRegisteredBox = () => {
           </Box>
         </Flex>
       </Box>
-      <Box direction="column" mr="5" mt="3">
-        <Icon as={RiUserAddFill} color="yellow.600" boxSize={14} />
+      <Box 
+        direction="column"
+        mr="5" 
+        mt="3"
+       >
+        <Icon 
+          as={RiUserAddFill} 
+          color="yellow.600" 
+          boxSize={14} 
+        />
         <Text
           position="relative"
           fontSize={{ base: "md", sm: "md", md: "md" }}

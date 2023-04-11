@@ -12,7 +12,7 @@ import {
     TableContainer,
 } from '@chakra-ui/react';
 
-const PaySlipBottom = (props) => {
+const PaySlipBottom = () => {
 
 
     return (
@@ -149,7 +149,7 @@ const PaySlipBottom = (props) => {
                             NET A PAYER
                         </Text>
                         <Divider color={'black'}/>
-                        <Text textAlign={'center'} minH={'58px'}>{props.montant}</Text>
+                        <Text textAlign={'center'} minH={'58px'}>..........</Text>
                     </Box>
                     <Box 
                         border={'1px'} 

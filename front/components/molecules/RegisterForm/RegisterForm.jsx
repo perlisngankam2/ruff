@@ -20,6 +20,7 @@ import { useMutation, useQuery } from "@apollo/client";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { useToast } from "@chakra-ui/react";
+import { useTranslation, UseTranslation } from "next-i18next";
 
 const RegisterForm = () => {
 
@@ -29,9 +30,9 @@ const RegisterForm = () => {
   const [Email , setEmail] = useState("");
   const [Password, setPassword] = useState("");
   const [createUser, error] = useMutation(CREATE_USER);
-  const toast = useToast()
-  const router = useRouter()
- 
+  const toast = useToast();
+  const router = useRouter();
+  const {t} = useTranslation();
 
   const HandleClick = async (event) => {
   event.preventDefault();
@@ -59,7 +60,6 @@ const RegisterForm = () => {
     router.push('/')
   }
 
-
   return (
     <Flex w="full">
       <Hide below="md">
@@ -69,10 +69,16 @@ const RegisterForm = () => {
           </Center>
         </Box>
       </Hide>
-      <Box flex="4" pt="19" background="gray.100" height="100vh">
+      <Box
+        flex="4" 
+        pt="19" 
+        background="gray.100" 
+        height="100vh"
+       >
         <Center pt="19">
           <Box
-            maxW={{ base: "md", sm: "lg", lg: "xl" }}
+            // maxW={{ base: "md", sm: "lg", lg: "xl" }}
+            width={"400px"}
             boxShadow="xl"
             rounded={13}
             background="white"
@@ -85,12 +91,15 @@ const RegisterForm = () => {
                 background="#0E341F"
                 roundedTop={13}
                 p="5"
+                fontSize={"2xl"}
               >
-                Creer votre compte
+                {t('molecules.RegisterForm.heading')}
               </Heading>
               <Box as="form" onSubmit={HandleClick} px="7">
                 <FormControl mb={3} isRequired>
-                  <FormLabel>Noms</FormLabel>
+                  <FormLabel>
+                    {t('molecules.RegisterForm.firstName')}
+                  </FormLabel>
                   <Input
                     type="text"
                     value={Nom}
@@ -102,7 +111,9 @@ const RegisterForm = () => {
                   />
                 </FormControl>
                 <FormControl mb={3} isRequired>
-                  <FormLabel>Prenoms</FormLabel>
+                  <FormLabel>
+                    {t('molecules.RegisterForm.lastName')}
+                  </FormLabel>
                   <Input
                     type="text"
                     value={Prenom}
@@ -111,11 +122,12 @@ const RegisterForm = () => {
                     placeholder="votre prenom ...."
                     errorMessage ="Prenom doit avoir 3-16 caracteres et sans inclure les caracteres speciaux"
                     pattern = "^[A-Za-z0-9]{3-16}$"
-
                   />
                 </FormControl>
-                <FormControl mb={3}>
-                  <FormLabel>Email</FormLabel>
+                <FormControl mb={3} isRequired>
+                  <FormLabel>
+                    {t('molecules.RegisterForm.email')}
+                  </FormLabel>
                   <Input
                     type="email"
                     value={Email}
@@ -125,7 +137,9 @@ const RegisterForm = () => {
                   />
                 </FormControl>
                 <FormControl mb={3} isRequired>
-                  <FormLabel>Telephone</FormLabel>
+                  <FormLabel>
+                    {t('molecules.RegisterForm.phoneNumber')}
+                  </FormLabel>
                   <Input
                     type="text"
                     value={PhoneNumber}
@@ -135,7 +149,9 @@ const RegisterForm = () => {
                   />
                 </FormControl>
                 <FormControl mb={4} isRequired>
-                  <FormLabel>Mot de Passe</FormLabel>
+                  <FormLabel>
+                    {t('molecules.RegisterForm.passWord')}
+                  </FormLabel>
                   <Input
                     type="password"
                     value={Password}
@@ -145,7 +161,7 @@ const RegisterForm = () => {
                   />
                 </FormControl>
                 <Button w="100%" colorScheme="green" type="submit" mb={5}>
-                  S'inscrire
+                  {t('molecules.RegisterForm.registerAccount')}
                 </Button>
               </Box>
             </Container>

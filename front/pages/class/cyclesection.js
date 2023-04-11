@@ -322,6 +322,7 @@ export default cyclesection;
 
 const CycleElement = ({cycle, index}) =>{
   const { isOpen, onOpen, onClose, onToggle} = useDisclosure();
+  const { isOpen:isOpenEditSeection, onOpen:OnOpenEditSection, onClose:OnCloseEditSection} = useDisclosure();
   const cancelRef = React.useRef();
 
   const [deleteCycle] = useMutation(DELETE_CYCLE);
@@ -329,6 +330,7 @@ const CycleElement = ({cycle, index}) =>{
   const [editCycle] = useMutation(UPDATE_CYCLE);
   const [createCycle, {error}] = useMutation(CREATE_CYCLE);
 
+ 
   const removeCycle = async (id) => {
     await deleteCycle({
       variables: {id},
@@ -499,6 +501,9 @@ const SectionElement = ({section, index}) =>{
   const { isOpen:isOpennns, onOpen:onOpennns, onClose:onClossses, onToggle:onToggles} = useDisclosure();
     const [deleteSection ]= useMutation(DELETE_SECTION);
     const cancelRef = React.useRef();
+    const updateSection = (id) => {
+
+    }
   
   const removeSection = async (id) => {
       await deleteSection({
@@ -517,17 +522,19 @@ const SectionElement = ({section, index}) =>{
       <Td p={0} pl={6}>{section.description}</Td>
       <Td p={0} pl={3}>
       <Box display="flex">
-        <Link 
-          href="/eleves/modifiereleve">
+        {/* <Link 
+          href="/eleves/modifiereleve"
+        > */}
             <Icon
             as={FiEdit}
+            onClick={() => updateSection(section.id)}
             boxSize="40px"
             p="3"
             // bg="blue.100"
             rounded="full"
           _hover={{background:"red.100"}}
             />
-        </Link>
+        {/* </Link> */}
         <Box href="#" mt="-3px"
         >
           <Icon
@@ -540,7 +547,7 @@ const SectionElement = ({section, index}) =>{
             onClick={onOpennns}
           />
           <Box> 
-            <AlertDialog
+            <AlertDialog 
               isOpen={isOpennns}
               leastDestructiveRef={cancelRef}
               onClose={onClossses}

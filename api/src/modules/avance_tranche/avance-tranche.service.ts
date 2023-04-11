@@ -55,9 +55,9 @@ export class AvanceTrancheService {
           throw Error("tranche not found")
         }
 
+        
 
         if(tranchestudent==null)  {
-           
           //ici create(input.map(a=>a.tranchestudentinput)[0]) 
           const tranchestudents= this.trancheStudentservice.create(input.tranchestudentinput) 
           console.log("========>"+tranchestudents)
@@ -72,7 +72,6 @@ export class AvanceTrancheService {
           description: input.description,
           trancheStudent:(await tranchestudents).id,
           tranche: input.trancheId
-          
         },
         {
           em:this.em
@@ -271,136 +270,165 @@ export class AvanceTrancheService {
           throw Error("")
         }
       return avanceTranche
+     } else {
+       //ici create(input.map(a=>a.tranchestudentinput)[0]) 
+          const trancheStudentTemp = { ...input.tranchestudentinput}
+          delete trancheStudentTemp.studentId
+          delete trancheStudentTemp.description
+          delete trancheStudentTemp.tranche
+          delete trancheStudentTemp.name
+
+          const tranchestudents= this.trancheStudentservice.update( input.tranchestudentinput.studentId ,trancheStudentTemp) 
+          console.log("========>"+tranchestudents)
+          const student = (await tranchestudents).student.load()
+          const reduction = (await (await student).categorie.load()).reductionScolarite.load()
+          const fraistranche = tranche.montant
+
+
+        wrap(avanceTranche).assign({
+          montant: Number(input.montant),
+          name: input.name,
+          description: input.description,
+          trancheStudent:(await tranchestudents).id,
+          tranche: input.trancheId
+          
+        },
+        {
+          em:this.em
+        })
+
+        this.trancheStudentservice.saveTranche((await tranchestudents).id)
+        this.avanceTrancheRepository.persistAndFlush(avanceTranche)
      }
 
 
 
      ///!!!!!!!!!!!!!!!  SI L'INSCRIPTION EXISTANT EST CORRECT !!!!!!!
 
-     if(tranchestudent!= null)  
-     {
-      // throw Error("tranchestudent not found")
-    //  const student = (tranchestudent).student.load()
+  //    if(tranchestudent!= null)  
+  //    {
+  //     // throw Error("tranchestudent not found")
+  //   //  const student = (tranchestudent).student.load()
 
-    //  const reduction = (await (await student).categorie.load()).reductionScolarite.load()
+  //   //  const reduction = (await (await student).categorie.load()).reductionScolarite.load()
    
   
-  const fraistranche = tranche.montant
+  // const fraistranche = tranche.montant
 
 
-  wrap(avanceTranche).assign({
-     montant: Number(input.montant),
-     name: input.name,
-     description: input.description,
-     trancheStudent: tranchestudent.id,
-     tranche: input.trancheId
+  // wrap(avanceTranche).assign({
+  //    montant: Number(input.montant),
+  //    name: input.name,
+  //    description: input.description,
+  //    trancheStudent: tranchestudent.id,
+  //    tranche: input.trancheId
      
-   },
-   {
-     em:this.em
-   })
+  //  },
+  //  {
+  //    em:this.em
+  //  })
 
  
-  if ((await this.findBytranchestudent(tranchestudent.id)).map(a=>a.montant).length>=1) {
-    const totalamount= Number((await this.findBytranchestudent(tranchestudent.id)).map(a=>a.montant).reduce(function(a,b){return a+b}))
+  // if ((await this.findBytranchestudent(tranchestudent.id)).map(a=>a.montant).length>=1) {
+  //   const totalamount= Number((await this.findBytranchestudent(tranchestudent.id)).map(a=>a.montant).reduce(function(a,b){return a+b}))
   
-    if(totalamount == tranche.montant){
-      throw Error("!!!!!!ALORS VOUS NE POUVEZ PLUS FAIRE DES AVANCES CAR LA SOMME DE LA PENSION A ETE ATTEINTE!!!!!!!!!!!!")  
-      }
+  //   if(totalamount == tranche.montant){
+  //     throw Error("!!!!!!ALORS VOUS NE POUVEZ PLUS FAIRE DES AVANCES CAR LA SOMME DE LA PENSION A ETE ATTEINTE!!!!!!!!!!!!")  
+  //     }
 
       
-    }
+  //   }
   
 
-  //  if((await reduction).pourcentage != 0){
-  //    const newValue = (await tranchestudent.tranche.load()).montant - (await tranchestudent.tranche.load()).montant*(await reduction).pourcentage
-  //     if(input.montant < newValue){
-  //         // create the avance tranche
-  //        wrap(avanceTranche).assign({
-  //        montant: Number(input.montant),
-  //        name: input.name,
-  //        description: input.description,
-  //        trancheStudent: tranchestudent.id,
-  //        tranche:tranche.id,
-  //        complete: false
-  //        },
-  //        {
-  //          em:this.em
-  //        })
-  //        this.trancheStudentservice.saveTranche(tranchestudent.id)
-  //        this.avanceTrancheRepository.persistAndFlush(avanceTranche)
-  //        return avanceTranche
-  //        // console.log('===========>'+inscript)   
-  //     }
-  //     tranchestudent.complete = true
-  //     avanceTranche.complete=true
-  //     this.trancheStudentservice.saveTranche(tranche.id)
-  //     this.avanceTrancheRepository.persistAndFlush(avanceTranche)
-  //     return avanceTranche
-  //  }
+  // //  if((await reduction).pourcentage != 0){
+  // //    const newValue = (await tranchestudent.tranche.load()).montant - (await tranchestudent.tranche.load()).montant*(await reduction).pourcentage
+  // //     if(input.montant < newValue){
+  // //         // create the avance tranche
+  // //        wrap(avanceTranche).assign({
+  // //        montant: Number(input.montant),
+  // //        name: input.name,
+  // //        description: input.description,
+  // //        trancheStudent: tranchestudent.id,
+  // //        tranche:tranche.id,
+  // //        complete: false
+  // //        },
+  // //        {
+  // //          em:this.em
+  // //        })
+  // //        this.trancheStudentservice.saveTranche(tranchestudent.id)
+  // //        this.avanceTrancheRepository.persistAndFlush(avanceTranche)
+  // //        return avanceTranche
+  // //        // console.log('===========>'+inscript)   
+  // //     }
+  // //     tranchestudent.complete = true
+  // //     avanceTranche.complete=true
+  // //     this.trancheStudentservice.saveTranche(tranche.id)
+  // //     this.avanceTrancheRepository.persistAndFlush(avanceTranche)
+  // //     return avanceTranche
+  // //  }
 
-  //  if((await reduction).montant!= 0){
-  //    const newValue = tranche.montant - tranche.montant*(await reduction).pourcentage
-  //     if(input.montant < newValue){
-  //         // create the avance tranche
-  //        wrap(avanceTranche).assign({
-  //        montant: Number(input.montant),
-  //        name: input.name,
-  //        description: input.description,
-  //        trancheStudent: tranchestudent.id,
-  //        tranche: tranche.id,
-  //        complete: false
-  //        },
-  //        {
-  //          em:this.em
-  //        })
-  //        this.trancheStudentservice.saveTranche(tranchestudent.id)
-  //        this.avanceTrancheRepository.persistAndFlush(avanceTranche)
-  //        return avanceTranche
-  //        // console.log('===========>'+inscript)   
-  //     }
+  // //  if((await reduction).montant!= 0){
+  // //    const newValue = tranche.montant - tranche.montant*(await reduction).pourcentage
+  // //     if(input.montant < newValue){
+  // //         // create the avance tranche
+  // //        wrap(avanceTranche).assign({
+  // //        montant: Number(input.montant),
+  // //        name: input.name,
+  // //        description: input.description,
+  // //        trancheStudent: tranchestudent.id,
+  // //        tranche: tranche.id,
+  // //        complete: false
+  // //        },
+  // //        {
+  // //          em:this.em
+  // //        })
+  // //        this.trancheStudentservice.saveTranche(tranchestudent.id)
+  // //        this.avanceTrancheRepository.persistAndFlush(avanceTranche)
+  // //        return avanceTranche
+  // //        // console.log('===========>'+inscript)   
+  // //     }
   
-  //     tranchestudent.complete = true
-  //     avanceTranche.complete=true
-  //     this.trancheStudentservice.saveTranche(tranchestudent.id)
-  //     this.avanceTrancheRepository.persistAndFlush(avanceTranche)
-  //     return avanceTranche
-  //  }
+  // //     tranchestudent.complete = true
+  // //     avanceTranche.complete=true
+  // //     this.trancheStudentservice.saveTranche(tranchestudent.id)
+  // //     this.avanceTrancheRepository.persistAndFlush(avanceTranche)
+  // //     return avanceTranche
+  // //  }
 
-   if(input.montant < fraistranche){
-    // create avance inscription
-    wrap(avanceTranche).assign({
-     montant: Number(input.montant)||0.0,
-     name: input.name,
-     description: input.description,
-     trancheStudent: tranchestudent.id,
-     tranche: tranche.id,
-     complete: false
-     },
-     {
-       em:this.em
-     })
+  //  if(input.montant < fraistranche){
+  //   // create avance inscription
+  //   wrap(avanceTranche).assign({
+  //    montant: Number(input.montant)||0.0,
+  //    name: input.name,
+  //    description: input.description,
+  //    trancheStudent: tranchestudent.id,
+  //    tranche: tranche.id,
+  //    complete: false
+  //    },
+  //    {
+  //      em:this.em
+  //    })
 
-     // ici je dois verifier si l'accumulation de toutes les montants des avances d'une inscription
-     this.trancheStudentservice.saveTranche(tranchestudent.id)
-     this.avanceTrancheRepository.persistAndFlush(avanceTranche)
-     if(avanceTranche==null){
-      throw Error("")
-    }
-     return avanceTranche
+  //    // ici je dois verifier si l'accumulation de toutes les montants des avances d'une inscription
+  //    this.trancheStudentservice.saveTranche(tranchestudent.id)
+  //    this.avanceTrancheRepository.persistAndFlush(avanceTranche)
+  //    if(avanceTranche==null){
+  //     throw Error("")
+  //   }
+  //    return avanceTranche
    
-  }
+  // }
 
      
 
-   tranchestudent.complete = true
-   this.trancheStudentservice.saveTranche(tranchestudent.id)
-   this.avanceTrancheRepository.persistAndFlush(avanceTranche)
-   if(avanceTranche==null){
-    throw Error("")
-  }
-   return avanceTranche
-  }
+  //  tranchestudent.complete = true
+  //  this.trancheStudentservice.saveTranche(tranchestudent.id)
+  //  this.avanceTrancheRepository.persistAndFlush(avanceTranche)
+  //  if(avanceTranche==null){
+  //   throw Error("")
+  // }
+  //  return avanceTranche
+  // }
 
 
 return avanceTranche

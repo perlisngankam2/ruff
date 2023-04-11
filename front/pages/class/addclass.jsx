@@ -138,7 +138,7 @@ const AddClass = () => {
                       onChange = {(event) => setName(event.target.value)}
                     />
                   </FormControl>
-                  {/* <FormControl>
+                  <FormControl>
                     <FormLabel>Montant pension:</FormLabel>
                     <Input 
                       placeholder="Valeur de la pension" 
@@ -148,7 +148,7 @@ const AddClass = () => {
                       value={montantPensionSalle}
                       onChange = {(event) => setMontantPensionSalle(event.target.value)}
                     />
-                  </FormControl> */}
+                  </FormControl>
                   <FormControl mt="15px">
                       <FormLabel>Niveau d'etude</FormLabel>
                       <Select 

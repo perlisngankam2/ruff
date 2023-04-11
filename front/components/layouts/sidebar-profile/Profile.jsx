@@ -3,7 +3,6 @@ import {
     Avatar, 
     AvatarBadge,
     Badge,
-    Box,
     Button,
     Heading,
     HStack,
@@ -17,18 +16,9 @@ import {
     Text,
     useDisclosure,
     VStack,
-} from '@chakra-ui/react';
-import { useMutation, useQuery } from '@apollo/client'; 
-import { useAccount } from "../../../contexts/account/Account";
-import { GET_PERSONNEL_BY_USERID } from "../../../graphql/Queries";
+} from '@chakra-ui/react'
 
 function Profile(){
-
-    const { account ,loaded } = useAccount();
-    const { data: personnelData, called, loading } = useQuery(GET_PERSONNEL_BY_USERID,
-     {
-    variables:{ userid: account?.id }
-  })
     const [userProfile, setUserProfile]= useState(null)
 
     const {isOpen, onOpen, onClose}= useDisclosure ()
@@ -102,34 +92,18 @@ function Profile(){
                 </ModalContent>
 
             </Modal>
-
-            <Box>
-                {account?.firstName === null?
             <VStack spacing={1}>
                 <Heading as="h3" fontSize="xl" color="brand.dark">
-                   {personnelData?.getpersonnelbyaccount.firstName+' '+personnelData?.getpersonnelbyaccount.lastName}
+                    Don WILLFRIED
 
                 </Heading>
                 <Text color="brand.gray" fontSize="sm">
-                    personnelData?.getpersonnelbyaccount.fonction
+                    Econome
 
                 </Text>
 
             </VStack>
-            :
 
-               <VStack spacing={1}>
-                <Heading as="h3" fontSize="xl" color="brand.dark">
-                   {account?.firstName.toUpperCase()+' '+account?.lastName.toUpperCase()}
-
-                </Heading>
-                <Text color="brand.gray" fontSize="sm">
-                    {account?.role}
-
-                </Text>
-
-            </VStack>}
-</Box>
         </VStack>
     )
 }

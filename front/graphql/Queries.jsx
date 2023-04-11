@@ -232,6 +232,31 @@ export const GET_ALL_TRANCHE_PENSION = gql `
     }
 `;
 
+export const GET_ALL_TRANCHE_STUDENT = gql `
+    query findAlltranchestudent {
+        findAlltranchestudent {
+            id
+            name
+            description
+            montant
+            complete
+            reste
+            surplus
+            avance
+        }
+    }
+`;
+
+export const GET_ALL_TRANCHE_PRIORITY = gql `
+query findAlltranchepriority {
+    findAlltranchepriority {
+        id
+        name
+        description
+    }
+}
+`;
+
 //recuperation d'une tranche de pension
 export const GET_TRANCHE_PENSION_BY_ID= gql `
     query tranche ($id: String!) {
@@ -244,6 +269,18 @@ export const GET_TRANCHE_PENSION_BY_ID= gql `
         }
     }
 `;
+
+export const GET_ALL_MONTANT_TRANCHE_BY_SALLE = gql `
+    query findAmountsBySalle ($salleid: String!) {
+        findAmountsBySalle (salleid: $salleid)
+    }
+`
+
+export const GET_MONTANT_PENSION_SALLE_BY_STUDENT = gql `
+    query findMontantPensionstudent ($studentid: String!) {
+        findMontantPensionstudent (studentid: $studentid)
+    }
+`
 
 //one cycle
 export const GET_ONE_CYCLE =  gql `
@@ -266,6 +303,16 @@ export const GET_ONE_SECTION = gql `
     }
 `;
 
+export const GET_LEVEL_BY_ID = gql`
+query niveaEtude ($id: String!) {
+    niveaEtude (id: $id) {
+        id
+        name
+        description
+        montantPension
+    }
+}
+`
 
 export const GET_USER_CONNECTED = gql `
 query user ($id: String!) {
@@ -419,52 +466,38 @@ export const GET_LAST_PAYMENT = gql `
     }
 `;
 
-// toute les retenues 
-
-export const GET_ALL_RETENUE = gql `
-    query findAllretenusalarial {
-    findAllretenusalarial {
-        id
-        nom
-        description
-        montant
+export const GET_AVANCE_MONTANT_TRANCHE_BY_STUDENT = gql  `
+    query SumAvanceTrancheByStudent ($studentid: String!, $trancheid: String!) {
+        SumAvanceTrancheByStudent (studentid: $studentid, trancheid: $trancheid)
     }
-}
+`
+
+export const GET_RESTE_TRANCHE_BY_STUDENT = gql `
+    query RestTrancheByStudent ($studentid: String!, $trancheid: String!) {
+        RestTrancheByStudent (studentid: $studentid, trancheid: $trancheid)
+    }
 `;
 
-// toute les retenues d'un personnel
-
-export const GET_ALL_RETENUE_BY_PERSONNEL = gql `
-query findretenupersonnelbypersonnel ($personnelid: String!) {
-    findretenupersonnelbypersonnel (personnelid: $personnelid) {
-        id
-        startMonth
+export const GET_ALL_MONTANT_TRANCHE_BY_STUDENT = gql `
+    query AmountrExpectedByTranche ($studentid: String!) {
+        AmountrExpectedByTranche (studentid: $studentid)
     }
-}
-`;
-export const GET_ALL_SALAIRE_BY_ID = gql `
-query getsalairebypersonnel ($personnelid: String!) {
-    getsalairebypersonnel (personnelid: $personnelid) {
-        id
-        jourPaie
-        moisPaie
-        payer
-        montant
-    }
-}
-`;
+`
 
-export const GET_ALL_RETENUE_BY_ID = gql `
-query findretenupersonnelbypersonnel ($personnelid: String!) {
-    findretenupersonnelbypersonnel (personnelid: $personnelid) {
-        id
-        startMonth
+export const GET_ALL_TRANCHE_DATE_LINE_BY_STUDENT = gql `
+    query TrancheDateLine ($studentid: String!) {
+        TrancheDateLine (studentid: $studentid)
     }
-}
-`;
+`
 
-export const GET_ALL_PRIME_BY_ID = gql `
-query findallprimepersonnel ($personnelid: String!) {
-    findallprimepersonnel (personnelid: $personnelid)
-}
+export const GET_ALL_TRANCHE_COMPLETE_BY_STUDENT = gql `
+    query getalltranchecompletedbystudent ($studentid: String!) {
+        getalltranchecompletedbystudent (studentid: $studentid) {
+            id
+            name
+            description
+            dateLine
+            montant
+        }
+    }
 `;

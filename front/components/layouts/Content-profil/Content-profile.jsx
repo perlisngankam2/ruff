@@ -7,7 +7,7 @@ import CompanySettings from './CompanySettings';
 import Notifications from './Notifications';
 
 const ContentProfile =() =>{
-    const tabs = ['Compte', 'Compagnie', 'Notification']
+    const tabs = ['Paramètre Compte', 'Paramètre Compagnie', 'Notification']
     return(
         <Box
           as='main'
@@ -24,7 +24,7 @@ const ContentProfile =() =>{
         
         >
             <Tabs>
-                <TabList px={5} gap={20}>
+                <TabList px={5}>
                     {tabs.map(tab =>(
                         <Tab
                         key={tab} 
@@ -35,7 +35,7 @@ const ContentProfile =() =>{
                         color="brand.cadet"
                         borderBottomWidth={1}
                         _active={{bg:'transparent'}}
-                        _selected={{color: 'brand.dark', borderColor:'blue'}}
+                        _selected={{color: 'brand.dark', borderColor:'brand.blue'}}
                         >
                             {tab}
 

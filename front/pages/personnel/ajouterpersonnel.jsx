@@ -14,6 +14,7 @@ import {
 } from "@chakra-ui/react";
 
 import DefaultLayout from "../../components/layouts/DefaultLayout";
+// import useTranslation from 'next-translate/useTranslation';
 import {useTranslation } from "next-i18next";
 import { useState, useRef, use, useEffect } from "react";
 import { useRouter } from "next/router";
@@ -21,7 +22,7 @@ import {  useMutation, useQuery } from "@apollo/client";
 import {  CREATE_PERSONNEL} from "../../graphql/Mutation"; 
 import { GET_ALL_PERSONNELS, GET_ALL_Category_Personnel } from "../../graphql/Queries";
 import { GET_ALL_USER } from "../../graphql/Queries";
- 
+
 const AjouterPersonnel = () => {
 
    const [firstName, setFirstName] = useState("");
@@ -49,7 +50,7 @@ const AjouterPersonnel = () => {
     // const situationMatrimonialRef = useRef()
     // const childNumberRef = useRef()
   const toast = useToast();
-  const { t } = useTranslation();
+  const { t } = useTranslation('common');
   const router = useRouter();
   const {data} = useQuery(GET_ALL_USER);
 

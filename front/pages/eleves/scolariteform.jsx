@@ -141,3 +141,170 @@ function Finances  () {
     );
   }
 export default Finances
+
+
+
+// const tranches = []
+//         const loadTranches = () => {
+//           dataTranchePension?.findAlltranche?.map((item , index) => { 
+//             tranches.push(
+//               {
+//                 label: item?.name,
+//                 value: item?.id
+//               }
+//             )
+//           })
+//         }
+
+//         useEffect(() =>{
+//           loadTranches();
+//         })
+
+    //     </FormLabel>
+    //     <Selects
+    //       name="trancheId"
+    //       isMulti
+    //       value={selectedTranches}
+    //       // onChange={(event) => setTrancheId(event.target.value)}
+    //       // options={tranches}
+    //       placeholder={"Motif"}
+    //       // value={trancheId} 
+    //       // onChange={handleTrancheSelect}
+    //     >
+    //        {tranches.map((tranche) => (
+    //           <option key={tranche?.value} value={option.value}>
+    //             {tranche?.label}
+    //           </option>
+    //         ))}
+    //     </Selects>
+    // </FormControl>
+
+
+
+
+
+  //   const tranches = dataTranchePension?.findAlltranche?.map((tranche) =>
+  //   ( {
+  //        label: tranche?.name,
+  //        value: tranche?.id
+  //    })
+  //  )
+
+   // const handleTrancheSelect = (selectedTranches) => {
+   //   setSelectedTranches(selectedTranches?.map((tranche) => tranche.value));
+   // };
+
+  // const [selectedTranches, setSelectedTranches] = useState([]); 
+
+//   <FormControl>
+//   <FormLabel>
+//     Motif
+//   </FormLabel>
+//     <Select
+//       name="trancheId"
+//       ismulti
+//       value={selectedTranches}
+//       // onChange={(event) => setTrancheId(event.target.value)}
+//       // options={tranches}
+//       placeholder={"Motif"}
+//       // value={trancheId} 
+//       onChange={(value) => handleTrancheSelect(value)}
+//     >
+//        {tranches.map((tranche) => (
+//           <option key={tranche.value} value={tranche.value}>
+//             {tranche.label}
+//           </option>
+//         ))}
+//     </Select>
+// </FormControl>
+
+
+
+// const addAvanceTranche = async() => {
+//   console.log(montant)
+//   console.log(selectedTranches)
+//   console.log(dataStudentId?.findOnestudent.id)
+//   // if(montant <= dataTranchePension.findAlltranche.montant[0])
+//   selectedTranches.map(tranche=> {
+//   // const datas = dataTranchePension?.findAlltranche.map((tranche)=> tranche.montant)
+//   let montantResant 
+//   for(let i =0; i<selectedTranches.length[i]; i++)
+//   const trancheSelected = selectedTranches[i];
+//     if(montant <= datas){
+//       //je dois comparer sa au reste
+//       // console.log(`Le montant payé (${montant}) est supérieur au montant de la tranche (${tranche.montant})`);
+//       alert('le montant:' + montant + 'est superieure au montant de:' + tranche.label )
+//       // Afficher un message d'erreur
+//     }if (montant > datas)
+//     //si c'est inferieur ou egale et qu'on a fait deux select, on envoir a la premiere tranche.
+//     //si le montant est superieur au reste de la premiere tranche et qu'on a fait deux select,
+//     //on envoi le montant que doit avoir la premier tranche a lui meme, 
+//     //on recuperer le surplu et on envoi a la tranche suivante ainsi de suite re 
+//     //sa recupere le montant entre sa compar
+//     {  
+//       createFeesAvanceTranche({
+//         variables: {
+//           avancetranche:{
+//             // trancheStudentId: "",
+//             montant: parseInt(montant),
+//             trancheId: tranche.value,
+//             tranchestudentinput: {
+//               studentId: dataStudentId?.findOnestudent.id,
+//               name: "",
+//               description: "",
+//               montant : 0
+//             }
+//           }
+//         }
+//       })}
+
+
+
+// const addAvanceTranche = async() => {
+//   console.log(montant)
+//   console.log(selectedTranches)
+//   console.log(dataStudentId?.findOnestudent.id)
+//   // if(montant <= dataTranchePension.findAlltranche.montant[0])
+//   const pension = dataClasse?.findAllsalle[0]?.montantPensionSalle
+//   let totalTrancheSelectionner = 0
+//   selectedTranches.forEach((tranche, index) => {
+//     // console.log(getTrancheById(tranche.value));
+//       totalTrancheSelectionner += getTrancheById(tranche.value)?.montant
+//   })
+//   console.log("pension",pension);
+//   console.log("pension sel",totalTrancheSelectionner);
+//   if(totalTrancheSelectionner >= pension) {
+//     let temp = montant
+//     selectedTranches.map(tranche=> {
+//       const mont = getTrancheById(tranche.value)?.montant
+//       temp = temp - mont
+//       console.log(temp)
+//       setMontant(temp)
+//       createFeesAvanceTranche({
+//         variables: {
+//           avancetranche:{
+//             // trancheStudentId: "",
+//             montant: mont,
+//             trancheId: tranche.value,
+//             tranchestudentinput: {
+//               studentId: dataStudentId?.findOnestudent.id,
+//               name: "",
+//               description: "",
+//               montant : 0
+//             }
+//           }
+//         }
+//       })
+//     })
+//     toast({
+//       title: "paiement tranche pension.",
+//       description: " paye avec succes.",
+//       status: "success",
+//       duration: 3000,
+//       isClosable: true,
+//     });
+//     setMontant(0);
+
+//   } else if(totalTrancheSelectionner < pension) {
+
+//   }

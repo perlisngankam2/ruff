@@ -18,6 +18,7 @@ import { PensionService } from '../pension/pension.service';
 import { SalleService } from '../salle/salle.service';
 import { TrancheCreateInput } from './dto/tranche.input';
 import { TrancheUpdateInput } from './dto/tranche.update';
+import { TranchePriority } from 'src/entities/tranche-priority.entity';
 
 @Injectable()
 export class TrancheService {
@@ -44,7 +45,8 @@ export class TrancheService {
             description: input.description,
             dateLine: input.dateLine,
             anneeAccademique: input.anneeAcademiqueId,
-            salle: input.salleId
+            salle: input.salleId,
+            tranchePriority: input.tranchePriorityId
             // pension: pension.id
           },
           {

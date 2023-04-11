@@ -46,7 +46,9 @@ import {
   CREATE_ANNEE_ACADEMIQUE, 
   CREATE_FRAIS_INSCRIPTION, 
   CREATE_TRANCHE_PENSION,
-  DELETE_TRANCHE_PENSION
+  CREATE_TRANCHE_PRIORITY,
+  DELETE_TRANCHE_PENSION,
+
 } from "../../graphql/Mutation"
 import { useMutation, useQuery } from "@apollo/client";
 import { 
@@ -54,7 +56,8 @@ import {
   GET_ALL_FRAIS_INSCRIPTION,
    GET_ALL_TRANCHE, 
    GET_ALL_TRANCHE_PENSION,
-   GET_ALL_CLASS
+   GET_ALL_CLASS,
+   GET_ALL_TRANCHE_PRIORITY
   } from "../../graphql/Queries";
 import { FiSearch } from "react-icons/fi";
 import ReactPaginate from "react-paginate";
@@ -68,7 +71,7 @@ const Pension = () => {
     const [dateLine, setDateLine] = useState("");
     const [anneeAcademiqueId, setAnneeAcademiqueId] = useState("");
     const [salleId, setSalleId] = useState("");
-    
+    const [tranchePriorityId, setTranchePriorityId] = useState("");
     //STATE DE LA PAGINATION
     const itemsPerPage = 15;
     const [pageNumber, setPageNumber] = useState(0);
@@ -98,13 +101,16 @@ const Pension = () => {
     const { isOpen, onOpen, onClose} = useDisclosure();
     const { isOpen: isOpenns, onOpen:onOpenns, onClose:onClosses } = useDisclosure();
     const { isOpen: Onouvrir, onOpen:OnOuvert, onClose:onFermer, onToggle } = useDisclosure();
+    const { isOpen: ouvrir, onOpen:ouvert, onClose:fermer, onToggles } = useDisclosure();
     const [createAnneeAccademique, {loading, error}] = useMutation(CREATE_ANNEE_ACADEMIQUE);
     const {data:dataAnneeAcademique} = useQuery(GET_ALL_ANNEE_ACADEMIQUE);
     const {data:dataFraisInscription} = useQuery(GET_ALL_FRAIS_INSCRIPTION);
     const {data:dataTranchePension} = useQuery(GET_ALL_TRANCHE_PENSION);
     const {data:dataClasse} = useQuery(GET_ALL_CLASS);
+    const {data:dataTranchePriority} = useQuery(GET_ALL_TRANCHE_PRIORITY)
     const [createdFraisInscription] = useMutation(CREATE_FRAIS_INSCRIPTION);
     const [createTranchePension] = useMutation(CREATE_TRANCHE_PENSION);
+    const [createTranchePriority] = useMutation(CREATE_TRANCHE_PRIORITY);
     const [deleTranchePension] = useMutation(DELETE_TRANCHE_PENSION);
 
     // const { onOpen} = useDisclosure();
@@ -163,6 +169,28 @@ const Pension = () => {
       });
       setName("")
     }
+
+    const addTranchePriority = async () =>{
+      await createTranchePriority({
+        variables:{
+          input: {
+            name: name
+        },
+        refetchQueries:[{
+          query: GET_ALL_TRANCHE_PRIORITY
+      }]
+      }
+      })
+      fermer();
+      toast({
+        title: "Creation d'une priorite.",
+        description: "Priorite créée avec succes.",
+        status: "success",
+        duration: 3000,
+        isClosable: true,
+      });
+      setName("")
+    }
     
     const addTranchePension = async() => {
       console.log(name);
@@ -176,7 +204,8 @@ const Pension = () => {
             montant: parseInt(montant),
             dateLine: new Date(dateLine),
             anneeAcademiqueId: anneeAcademiqueId,
-            salleId: salleId
+            salleId: salleId,
+            tranchePriorityId: tranchePriorityId
           }, 
           refetchQueries:[{
             query: GET_ALL_TRANCHE_PENSION
@@ -330,6 +359,7 @@ const Pension = () => {
           </Box>
         </Box>
 
+
         {/* TABLEAU DE LA LISTE DES ANNEES ACADEMIQUES*/}
         <Box 
           width={["400px", "400px","400px"]} 
@@ -356,10 +386,113 @@ const Pension = () => {
           </TableContainer>
         </Box>
 
+
+          {/* CREATION D'NE PRIORITE POUR LA TRANCHE */}
+      <Box mt={8} mb={5}>
+          <Box 
+          display={{md:"flex"}}
+          > 
+            <Heading 
+              mb={5}
+              size="md"
+              color = "colors.quinzaine"
+            >
+                Priorite
+            </Heading>
+            <Icon 
+              as={IoIosAdd} 
+              boxSize="30px"
+              color={"colors.greencolor"}
+              // _hover={bg:}
+              rounded="full"
+              ml={["10px", "10px", "10px" ]}
+              _hover={{background:"colors.bluecolor"}}
+              onClick={ouvert}
+            />
+          </Box>
+          <Box><Text>Elle definit l'ordre dans lequel les tranches de la scolarite vont etre creés et payeés</Text></Box>
+
+          <Box as="form"> 
+            <AlertDialog
+              motionPreset='slideInBottom'
+              // leastDestructiveRef={cancelRef}
+              onClose={fermer}
+              isOpen={ouvrir}
+              isCentered
+            >
+              <AlertDialogOverlay />
+              <AlertDialogContent>
+                <AlertDialogHeader
+                  textAlign={"center"}
+                >
+                  Ajoutez une priorite
+                </AlertDialogHeader>
+                <AlertDialogCloseButton />
+                <AlertDialogBody>
+                <Box>
+                  <FormControl>
+                      <FormLabel>Nom</FormLabel>
+                      <Input 
+                        type={'text'} 
+                        name="name"
+                        placeholder="Valeur de la priorite"
+                        onChange = {(event) => setName(event.target.value)}
+                        value={name}
+                      />
+                  </FormControl>
+                  </Box>
+                </AlertDialogBody>
+                <AlertDialogFooter>
+                  <Button
+                    ref={cancelRef} 
+                    onClick={fermer}
+                    colorScheme='red'
+                  >
+                    annuler
+                  </Button>
+                  <Button 
+                    colorScheme='green' 
+                    ml={3}
+                    onClick = {addTranchePriority}
+                  >
+                    Creer
+                  </Button>
+                </AlertDialogFooter>
+              </AlertDialogContent>
+            </AlertDialog>
+          </Box>
+        </Box>
+
+        {/* TABLEAU DES LA PRIORITES*/}
+        <Box 
+          width={["400px", "400px","400px"]} 
+          border="1px" 
+          borderColor={"GREEN"}
+        >
+          <TableContainer>
+            <Table size='sm' variant='striped'>
+              <Thead>
+                <Tr>
+                  <Th>Nom</Th>
+                </Tr>
+              </Thead>
+              <Tbody>
+                {dataTranchePriority && 
+                (dataTranchePriority?.findAlltranchepriority.map((tranchePriority, index) =>( 
+                <Tr key={index}>
+                  <Td>{tranchePriority.name}</Td>
+                </Tr>
+                ))
+                )}
+              </Tbody>
+            </Table>
+          </TableContainer>
+        </Box>
+
 {/* FORMULAIRE DE CREATION DES TRANCHES DE LA PENSIONS */}
         <Box mt={"50px"} >
           <Box> 
-            <Box>
+            <Box display={{md:"flex"}}>
               <Heading 
                 mt={2}
                 size="lg"
@@ -370,10 +503,11 @@ const Pension = () => {
               </Heading>
                 <Icon 
                 as={IoIosAdd} 
-                boxSize="30px"
+                boxSize="40px"
                 color={"colors.greencolor"}
                 // _hover={bg:}
                 rounded="full"
+                mt={"8px"}
                 ml={["10px", "10px", "10px" ]}
                 _hover={{background:"colors.bluecolor"}}
                 onClick={onOpen}
@@ -426,6 +560,24 @@ const Pension = () => {
                           placeholder="Valeur"
                           onChange = {(event)=> setMontant(event.target.value)}
                       />
+                    </FormControl>
+                    <FormControl mt={4}>
+                        <FormLabel>Priorite</FormLabel>
+                        <Select 
+                            type={'text'} 
+                            name="tranchePriorityId"
+                            value={tranchePriorityId}
+                            placeholder="Priorite"
+                            onChange = {(event)=> setTranchePriorityId(event.target.value)}
+                        >
+                          {dataTranchePriority &&
+                            dataTranchePriority.findAlltranchepriority.map((tranchePriority, index) => (
+                              <option value={tranchePriority.id} key={index}>
+                                {tranchePriority.name}
+                              </option>
+                            ))
+                          }
+                        </Select>
                     </FormControl>
                     <FormControl mt={4}>
                         <FormLabel>Classe</FormLabel>

@@ -50,6 +50,7 @@ import { StatisticModule } from './modules/statistics/statistics.module';
 import { PersonnelSalleModule } from './modules/personnel_salle/personnelsalle.module';
 import { CourseModule } from './modules/course/course.module';
 import { PaySalaireModule } from './modules/paysalary/paysalary.module';
+import { TranchePriorityModule } from './modules/tranche_priority/tranche-priority.module';
 
 @Module({
   imports: [
@@ -90,6 +91,7 @@ import { PaySalaireModule } from './modules/paysalary/paysalary.module';
     ExpenseModule,
     StatisticModule,
     CourseModule,
+    TranchePriorityModule,
 
   
     ConfigModule.forRoot({

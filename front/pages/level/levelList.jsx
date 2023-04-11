@@ -18,7 +18,7 @@ import {
     Th,
     Thead,
     Tr,
-    Link,
+    Link as Links,
     Avatar,
     Icon,
     Heading,
@@ -33,18 +33,19 @@ import {
   } from "@chakra-ui/react";
   
   import { useRouter } from "next/router";
-  
+  import Link  from "next/link";
   import React, { useEffect, useState } from "react";
   import AddNew from "../../components/atoms/AddNew";
   import StudentBox from "../../components/atoms/StudentBox";
   import DefaultLayout from "../../components/layouts/DefaultLayout";
   import { GET_ALL_STUDY_LEVEL } from "../../graphql/Queries";
+  import  {DELETE_STUDY_LEVEL} from '../../graphql/Mutation'
   import { useMutation, useQuery } from "@apollo/client";
   import {IoIosAdd} from 'react-icons/io';
   import{ FiEdit, FiSearch} from 'react-icons/fi';
   import {MdDelete} from 'react-icons/md';
   import ReactPaginate from "react-paginate";
-  
+  import Routes from "../../modules/routes";
   
   const levelList = () => {
   
@@ -53,9 +54,21 @@ import {
     const cancelRef = React.useRef()
     const { isOpen, onToggle, onClose } = useDisclosure();
     const [searchStudyLevel, setSearchStudyLevel] = useState("");
-    const itemsPerPage = 15;
+    const itemsPerPage = 15
     const [pageNumber, setPageNumber] = useState(0);
     const pagesVisited = pageNumber * itemsPerPage;
+
+    const [deleteStudyLevel] = useMutation(DELETE_STUDY_LEVEL)
+
+    const removeStudyLevel = async(id) =>{
+        deleteStudyLevel({
+          variables:{id},
+          refetchQueries: [{
+            query: GET_ALL_STUDY_LEVEL
+          }]
+       })
+       onClose()
+    }
 
     useEffect(() =>{
       console.log(dataStudyLevel?.findAllNiveauEtude)
@@ -183,18 +196,18 @@ import {
                             {niveauEtude.montantPension}
                           </Td> 
                           <Td p={0} >
-                            <ButtonGroup 
+                            {/* <ButtonGroup 
                               size='sm' 
                               isAttached 
                               variant='link' 
                               colorScheme={'teal'}
                               >
                                 <Button>
-                                  <Link 
+                                  <Links 
                                     href='/eleves/details'
-                                  >Details</Link>
+                                  >Details</Links>
                                 </Button>
-                              </ButtonGroup> 
+                              </ButtonGroup>  */}
                             </Td>
                               <Box 
                                 display="flex"
@@ -202,7 +215,10 @@ import {
                                  mt={['8px', '8px', '8px', '8px']}
                                >
                                   <Link 
-                                  href="/class/updateclass">
+                                  href= {{
+                                    pathname: Routes.levelEdit?.path || '',
+                                    query: {id: niveauEtude.id}
+                                  }}>
                                     <Icon
                                       as={FiEdit}
                                       boxSize="40px"
@@ -255,7 +271,7 @@ import {
                                               </Button>
                                               <Button 
                                                 colorScheme='green' 
-                                                // onClick={() => removeL(student.id)}
+                                                onClick={() => removeStudyLevel(niveauEtude.id)}
                                                 ml={3}
                                               >
                                                 Supprimer

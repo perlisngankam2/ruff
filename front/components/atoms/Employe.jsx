@@ -58,12 +58,12 @@ const Employee = (props) => {
     })
     onClose();
   }
-  return (
-         <Box
-              bg={"gray.200"}
-              width={"200px"}
-              rounded="md"
-            > 
+  return(
+          <Box
+            bg={"gray.200"}
+            width={"200px"}
+            rounded="md"
+          > 
               <Center>
                 <Avatar
                   boxSize="70px"
@@ -156,7 +156,7 @@ const Employee = (props) => {
                                 Confirmation de suppression
                               </AlertDialogHeader>
                               <AlertDialogBody textAlign={"center"}>
-                              Voulez-vous supprimer ce Personnel?
+                              Voulez-vous supprimer cet Personnel?
                               </AlertDialogBody>
 
                               <AlertDialogFooter>

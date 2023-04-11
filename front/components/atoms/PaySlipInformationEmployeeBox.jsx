@@ -2,7 +2,6 @@ import {
     Box,
     Text,
     Divider,
-    Flex,
 } from "@chakra-ui/react";
 import { useQuery } from "@apollo/client";
 import { GET_ALL_PERSONNEL_BY_ID} from "../../graphql/Queries";
@@ -39,19 +38,10 @@ const PaySlipInformationEmployeeBox = (props) => {
             </Box>
             <Divider borderColor={'black'} />
             <Box >
-                <Flex>
-                    <Text ml={['10px', '10px', '10px']}>Noms & Prenoms:</Text>
-                    <Text ml={['10px', '10px', '10px']} fontWeight='bold'> {props.firstName.toUpperCase() } {props.lastName.toUpperCase() }</Text>
-                </Flex>
-        
-                <Flex>
-                    <Text ml={['10px', '10px', '10px']}>Fonction:</Text>
-                    <Text ml={['10px', '10px', '10px']} fontWeight='bold'>{props.fonction.toUpperCase() } </Text>
-                </Flex>
-                <Flex>
-                    <Text ml={['10px', '10px', '10px']}>Status:</Text>
-                    <Text ml={['10px', '10px', '10px']} fontWeight='bold'>{props.status.toUpperCase() } </Text>
-                </Flex>
+                <Text ml={['10px', '10px', '10px']}>Noms: {props.firstName} </Text>
+                <Text ml={['10px', '10px', '10px']}>Prenom: {props.lastName} </Text>
+                <Text ml={['10px', '10px', '10px']}>fonction: {props.fonction} </Text>
+                <Text ml={['10px', '10px', '10px']}>xxxxxxxxxxx </Text>
             </Box>
         </Box>
      );

@@ -14,6 +14,46 @@
                 "maritalStatus": "Situation matrimoniale"
             }
         }
-    }   
+    } , 
+    "molecules":{
+        "LoginForm":{
+            "email": "Email",
+            "motDePasse": "Mot de Passe",
+            "seSouvenirDeMoi": "Se souvenir de moi",
+            "motDePasseOublie": "Mot de passe oublié?",
+            "seConnecter": "Se connecter",
+            "vousNavezPasDeCompte": "Vous n'avez pas encore de compte ?",
+            "creezLeCompte": "creez le"
+        },
+        "RegisterForm":{
+            "heading": "Créez votre compte",
+            "firstName": "Nom",
+            "placeHolderFirstname": "votre nom ....",
+            "lastName": "Prénom",
+            "email": "Email",
+            "phoneNumber": "Téléphone",
+            "passWord": "Mot de Passe",
+            "registerAccount": "S'inscrire"
+        },
+        "DashboardMain":{
+            "headingFonctionAndUserRole": "Bienvenue-GSBAB"
+        }
+    },
+    "atoms":{
+        "DashboardCard":{
+            "nombreGarconInscrit":"Garcons inscrits"
+        },
+        "PaymentNumberAlert":{
+            "SalaireAPayerParMois": "paiements de salaire a faire ce mois"
+        },
+        "TreasuryBox":{
+            "titreTresorerie":"Trésorerie"
+        },
+        "LatePayment":{
+            "titleLatePayment":"Retard de paiement"
+        }
+    }
+
+
    
 }

@@ -162,8 +162,6 @@ export class TrancheStudentService {
         
     }
 
-   
-
     async delete(id:string){
     const a = this.findById(id)
     await this.trancheStudentRepository.removeAndFlush(await a)

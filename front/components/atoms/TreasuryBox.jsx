@@ -10,8 +10,12 @@ import {
   Tr,
 } from "@chakra-ui/react";
 import { BsFillCreditCardFill } from "react-icons/bs";
+import { useTranslation } from "next-i18next";
 
 const TreasuryBox = () => {
+
+const {t} = useTranslation();
+
   return (
     <Box
       borderColor="yellow.500"
@@ -23,18 +27,18 @@ const TreasuryBox = () => {
       <Flex position="relative" justify="space-between" p="1em" top={-3} mr={3}>
         <Text
           letterSpacing="tight"
-          fontSize="2xl"
+          fontSize="xl"
           color="red"
           align="flex-start"
           fontWeight="bold"
         >
-          Trésorerie
+          {t('atoms.TreasuryBox.titreTresorerie')}  
         </Text>
         <Icon
           alignContent="right"
           as={BsFillCreditCardFill}
           color="green.500"
-          boxSize={14}
+          boxSize={8}
         />
       </Flex>
       <TableContainer position="relative" top="-5">

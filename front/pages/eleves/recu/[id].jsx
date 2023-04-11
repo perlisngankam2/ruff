@@ -12,7 +12,6 @@ import {
     Thead, 
     Tbody, 
     Tr,
-    Button,
     Th,
     Td, 
 } from "@chakra-ui/react";
@@ -20,12 +19,16 @@ import DefaultLayout from "../../../components/layouts/DefaultLayout";
 import { GiDivergence } from "react-icons/gi";
 // import Router from "next/router";
 import { useRouter } from "next/router";
-import { BsArrowReturnLeft } from "react-icons/bs";
 import { 
     GET_STUDENT_BY_TRANCHE_STUDENT,
     GET_STUDENT_BY_ID,
     GET_STUDENT_SALLE,
-    GET_LAST_PAYMENT
+    GET_LAST_PAYMENT,
+    GET_AVANCE_MONTANT_TRANCHE_BY_STUDENT,
+    GET_ALL_TRANCHE_PENSION,
+    GET_RESTE_TRANCHE_BY_STUDENT,
+    GET_ALL_MONTANT_TRANCHE_BY_STUDENT,
+    GET_ALL_TRANCHE_DATE_LINE_BY_STUDENT
  } from "../../../graphql/Queries";
 import { use, useEffect } from "react";
 import { useQuery } from "@apollo/client";
@@ -34,11 +37,14 @@ const receipt = () => {
 
     const router = useRouter();
 
+   const {data:dataTranchePension} = useQuery(GET_ALL_TRANCHE_PENSION);
+
    const {data:dataLastPayment} = useQuery(GET_LAST_PAYMENT,
         {
             variables: {studentid: router.query.id} 
         }
     );
+    console.log(dataLastPayment)
     const {data:dataStudentId, loading, error} = useQuery(GET_STUDENT_BY_ID,
         {
           variables: {id: router.query.id}
@@ -57,7 +63,97 @@ const receipt = () => {
         }
     )
 
+    //MONTANT DES TRANCHES PAYE EN FONCTION DE CHAQUE ELEVE
+    const {data:dataAvanceMontantInscriptionByStudent} = useQuery(GET_AVANCE_MONTANT_TRANCHE_BY_STUDENT,
+        {
+            variables:{
+                studentid: router.query.id,
+                trancheid: dataTranchePension?.findAlltranche[0].id
+            }   
+     
+        } 
+    )
 
+    const {data:dataAvanceMontantTranche1ByStudent} = useQuery(GET_AVANCE_MONTANT_TRANCHE_BY_STUDENT,
+        {
+            variables:{
+                studentid: router.query.id,
+                trancheid: dataTranchePension?.findAlltranche[1].id
+            }   
+     
+        } 
+    )
+
+    const {data:dataAvanceMontantTranche2ByStudent} = useQuery(GET_AVANCE_MONTANT_TRANCHE_BY_STUDENT,
+        {
+            variables:{
+                studentid: router.query.id,
+                trancheid: dataTranchePension?.findAlltranche[2].id
+            }   
+     
+        } 
+    )
+
+    // const {data:dataAvanceTranche2ByStudent} = useQuery(GET_AVANCE_MONTANT_TRANCHE_BY_STUDENT,
+    //     {
+    //         variables:{
+    //             studentid: router.query.id,
+    //             trancheid: dataTranchePension?.findAlltranche[1].id
+    //         }   
+     
+    //     } 
+    // )
+    
+    //RESTE DES PAIEMENT POUR CHAQUE TRANCHE
+    const {data:dataResteTrancheInscriptionByStudent} = useQuery(GET_RESTE_TRANCHE_BY_STUDENT,
+        {
+            variables:{
+                studentid: router.query.id,
+                trancheid: dataTranchePension?.findAlltranche[0].id
+            }   
+     
+        } 
+    
+    )
+        //pour la tranche1
+    const {data:dataResteTrancheForTranche1ByStudent} = useQuery(GET_RESTE_TRANCHE_BY_STUDENT,
+        {
+            variables:{
+                studentid: router.query.id,
+                trancheid: dataTranchePension?.findAlltranche[1].id
+            }   
+     
+        } 
+    
+    )
+
+    
+
+    const {data:dataResteTrancheForTranche2ByStudent} = useQuery(GET_RESTE_TRANCHE_BY_STUDENT,
+        {
+            variables:{
+                studentid: router.query.id,
+                trancheid: dataTranchePension?.findAlltranche[2].id
+            }   
+     
+        } 
+    
+    )
+
+    const {data:dataMontantTrancheByStudent } = useQuery(GET_ALL_MONTANT_TRANCHE_BY_STUDENT,
+        {
+            variables:{
+                studentid: router.query.id,
+            }   
+        } 
+    )
+
+    const {data:dataDateLineTrancheStudent } = useQuery(GET_ALL_TRANCHE_DATE_LINE_BY_STUDENT,
+        {
+            variables:{
+                studentid: router.query.id,
+        }   }   
+    )
     // const {data:dataStudentByTrancheStudent} = useQuery(GET_STUDENT_BY_TRANCHE_STUDENT,
     //     {
     //         variables: {studentid: router.query.id} 
@@ -67,6 +163,8 @@ const receipt = () => {
     useEffect(() =>{
         console.log(dataStudentByTrancheStudent?.getTrancheStudentByStudent)
         console.log(dataStudentSalle?.dataStudentSalle)
+        console.log(dataAvanceMontantInscriptionByStudent?.SumAvanceTrancheByStudent)
+
     })
 
     if (loading) return <Text>Chargement en cour...</Text>
@@ -74,30 +172,17 @@ const receipt = () => {
     
     return ( 
         <DefaultLayout>
-                  <Box p="3" pt="70px" w="100%" background="colors.tertiary">
-         
-          <Box w="100px">   
-          <Button 
-              leftIcon={<BsArrowReturnLeft boxSize="20px" />} 
-              colorScheme={'green'}
-              onClick={() => router.push("/eleves/[id]")}
-             
-            >
-              Retour
-            </Button></Box>
             <Center 
                 pt='70px' 
                 ml='60px' 
                 pb="10px"
             >
-              
             {dataStudentId && (    
                 <Box 
                     borderWidth='1px' 
                     borderRadius='25px' 
                     borderColor='black'  w='1000px'  
                 >
-                   
                     <Center 
                         borderBottomWidth='3px' 
                         h="120px" 
@@ -138,6 +223,7 @@ const receipt = () => {
                                     fontWeight='bold'
                                 >
                                     RECU DE PAIEMENT
+                                    {/* {dataAvanceMontantInscriptionByStudent?.SumAvanceTrancheByStudent} */}
                                 </Heading>
                             </Box>
                         </Center>
@@ -332,22 +418,22 @@ const receipt = () => {
                                                 <Tr gap='1'>
                                                     <Th border='1px'>
                                                         <Box h='13px' fontSize='8px'>
-                                                            <Text></Text>
+                                                            <Text textAlign={"center"}></Text>
                                                         </Box>
                                                     </Th>
                                                     <Th border='1px'>
                                                         <Box fontSize='8px'>
-                                                            <Text></Text>
+                                                            <Text textAlign={"center"}> {dataStudentByTrancheStudent?.getTrancheStudentByStudent.montant}</Text>
                                                         </Box>
                                                     </Th>
                                                     <Th border='1px'>
                                                         <Box fontSize='8px'>
-                                                            <Text></Text>
+                                                            <Text textAlign={"center"} ></Text>
                                                         </Box>
                                                     </Th>
                                                     <Th border='1px'>
                                                         <Box fontSize='8px'>
-                                                        <Text></Text>
+                                                        <Text textAlign={"center"}></Text>
                                                         </Box>
                                                     </Th>
                                                 </Tr>
@@ -464,22 +550,30 @@ const receipt = () => {
                                                         </Th>
                                                         <Th border='1px'>
                                                             <Box fontSize='8px'>
-                                                                <Text>hhh</Text>
+                                                                <Text textAlign={"center"}>
+                                                                    {dataMontantTrancheByStudent?.AmountrExpectedByTranche[0]}
+                                                                </Text>
                                                             </Box>
                                                         </Th>
                                                         <Th border='1px'>
                                                             <Box fontSize='8px'>
-                                                                <Text>nnn</Text>
+                                                                <Text textAlign={"center"}>
+                                                                    {dataAvanceMontantInscriptionByStudent?.SumAvanceTrancheByStudent}
+                                                                </Text>
                                                             </Box>
                                                         </Th>
                                                         <Th border='1px'>
                                                             <Box fontSize='8px'>
-                                                                <Text></Text>
+                                                                <Text textAlign={"center"}>
+                                                                    {dataResteTrancheInscriptionByStudent?.RestTrancheByStudent}
+                                                                </Text>
                                                             </Box>
                                                         </Th>
                                                         <Th border='1px'>
                                                             <Box fontSize='8px'>
-                                                                <Text></Text>
+                                                                <Text textAlign={"center"}>
+                                                                    rrr
+                                                                </Text>
                                                             </Box>
                                                         </Th>
                                                     </Tr>
@@ -497,22 +591,30 @@ const receipt = () => {
                                                             </Th>
                                                         <Th border='1px'>
                                                             <Box fontSize='8px'>
-                                                                <Text>jj</Text>
+                                                                <Text textAlign={"center"}>
+                                                                    {dataMontantTrancheByStudent?.AmountrExpectedByTranche[1]}
+                                                                </Text>
                                                             </Box>
                                                         </Th>
                                                         <Th border='1px'>
                                                             <Box fontSize='8px'>
-                                                            <Text></Text>
+                                                            <Text textAlign={"center"}>
+                                                                {dataAvanceMontantTranche1ByStudent?.SumAvanceTrancheByStudent}
+                                                            </Text>
                                                             </Box>
                                                         </Th>
                                                         <Th border='1px'>
                                                             <Box fontSize='8px'>
-                                                                <Text></Text>
+                                                                <Text textAlign={"center"}>
+                                                                    {dataResteTrancheForTranche1ByStudent?.SumAvanceTrancheByStudent}
+                                                                </Text>
                                                             </Box>
                                                         </Th>
                                                         <Th border='1px'>
                                                             <Box fontSize='8px'>
-                                                                <Text></Text>
+                                                                <Text textAlign={"center"}>
+
+                                                                </Text>
                                                             </Box>
                                                         </Th>
                                                     </Tr>
@@ -523,27 +625,35 @@ const receipt = () => {
                                                                     fontSize='10px' 
                                                                     fontWeight='bold'
                                                                 >
-                                                                    <Text>Tranche 3</Text>
+                                                                    <Text textAlign={"center"}>Tranche 2</Text>
                                                                 </Box>
                                                         </Th>
                                                         <Th border='1px'>
                                                             <Box fontSize='8px'>
-                                                                <Text></Text>
+                                                                <Text textAlign={"center"}>
+                                                                    {dataMontantTrancheByStudent?.AmountrExpectedByTranche[2]}
+                                                                </Text>
                                                             </Box>
                                                         </Th>
                                                         <Th border='1px'>
                                                             <Box fontSize='8px'>
-                                                                <Text></Text>
+                                                                <Text textAlign={"center"}>
+                                                                    {dataAvanceMontantTranche2ByStudent?.SumAvanceTrancheByStudent}
+                                                                </Text>
                                                             </Box>
                                                         </Th>
                                                         <Th border='1px'>
                                                             <Box fontSize='8px'>
-                                                                <Text></Text>
+                                                                <Text textAlign={"center"}>
+                                                                    {dataResteTrancheForTranche2ByStudent?.SumAvanceTrancheByStudent}
+                                                                </Text>
                                                             </Box>
                                                         </Th>
                                                         <Th border='1px'>
                                                             <Box fontSize='8px'>
-                                                                <Text></Text>
+                                                                <Text textAlign={"center"}>
+
+                                                                </Text>
                                                             </Box>
                                                         </Th>
                                                     </Tr>
@@ -599,7 +709,6 @@ const receipt = () => {
                 </Box>
             )}
             </Center>
-            </Box>
         </DefaultLayout>
     );
 }

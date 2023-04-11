@@ -9,13 +9,11 @@ import PaySlipLogoBox from "../../components/atoms/PaySlipLogoBox";
 import PaySlipInformationEmployeeBox from "../../components/atoms/PaySlipInformationEmployeeBox";
 import DefaultLayout from "../../components/layouts/DefaultLayout";
 import { useQuery, useMutation } from "@apollo/client";
-import { GET_ALL_PERSONNEL_BY_ID, GET_Category_Personnel_BY_ID, GET_Category_Personnel_ID, GET_ALL_SALAIRE_BY_ID} from "../../graphql/Queries";
+import { GET_ALL_PERSONNEL_BY_ID, GET_Category_Personnel_BY_ID, GET_Category_Personnel_ID} from "../../graphql/Queries";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { CREATE_SALAIRE } from "../../graphql/Mutation";
 import { useToast } from "@chakra-ui/react";
-import Routes from "../../modules/routes";
-import Link from "next/link";
 
 const PaySlip = () => {
 
@@ -26,7 +24,7 @@ const PaySlip = () => {
 
   //information du personnel par son ID
 
-    const {data:dataPersonnelId, loading, error} = useQuery(GET_ALL_PERSONNEL_BY_ID,
+    const {data:dataPersonnelId} = useQuery(GET_ALL_PERSONNEL_BY_ID,
       {
         variables:{ id: router.query.id}
       })
@@ -46,33 +44,8 @@ const PaySlip = () => {
         variables:{ id: dataCategorieId?.findCategoriepersonnelbypersonnel}
     })
 
-    //recupere tout les salaires d'un personnel
 
-      const {data:dataSalaireId} = useQuery(GET_ALL_SALAIRE_BY_ID,
-  {
-    variables:{ personnelid: dataPersonnelId?.findOnePersonnel.id}
-  });
-
-
-    const moisPayes = []
-  const loadMoisPayes = () => {
-    dataSalaireId?.getsalairebypersonnel.map((item) => { 
-            moisPayes.push(
-              {
-                value: item?.id,
-                isDisabled: moisPayes.includes(moisPaie)
-
-              }
-            )
-          })
-
-  }
-
-  console.log(dataSalaireId)
-  console.log(moisPayes)
-
-
-
+  const moisPayes = [];
   const personnelId = dataPersonnelId?.findOnePersonnel.id ;
   const montant = dataCategorie?.findOneCategoriepersonnel.montant;
   const [moisPaie, setMoisPaie] = useState("");
@@ -101,7 +74,6 @@ const PaySlip = () => {
         }
       }
     })
-   
 
     console.log(salaireData)
     toast({
@@ -112,21 +84,14 @@ const PaySlip = () => {
       isClosable: true,
     });
 
-    
-    
+    moisPayes.push(moisPaie);
         setMoisPaie("");
   }
 
-  console.log(moisPayes)
-
   useEffect(() =>{
-   loadMoisPayes()
-    
-    
     console.log(dataPersonnelId?.findOnePersonnel)
-
   })
-// if (loading) return <Text>Chargement en cour...</Text>
+
 
     return ( 
 
@@ -184,11 +149,8 @@ const PaySlip = () => {
               {dataPersonnelId?.findOnePersonnel.fonction}
             </Text>
           </Flex>
-          
         </Flex>
-
         </Flex>
-
 
 {/* //informaton salaire et mois */}
       <Center>
@@ -198,53 +160,49 @@ const PaySlip = () => {
         > 
          <Box width={'340px'} gap={7} >
           <Text fontSize='sm'> Salaire Mois</Text>
+            <Input
+              placeholder="nom prime"
+              bg='white'
+              type="month"
+              name="dateOfPrime"
+              rounded={2}
+              onChange={handleMoisPaieChange}
+              disabled={moisPayes.includes(moisPaie)}
+              value={moisPaie}
+            />
+              {console.log(moisPaie)}
+            <Input
+              placeholder="nom prime"
+              bg='white'
+              type="date"
+              rounded={2}
+              name="dateOfPrime"
+              mt={'8px'}
+              onChange={(event) => setJourPaie(event.target.value)}
+              value={jourPaie}
+            />
+            {console.log(jourPaie)}
+          </Box>
+          <Box>
+            <Text 
+              fontWeight={'bold'} 
+              fontSize='sm' 
+              color='#eb808a'
+            >
+              Montant du salaire *
+            </Text>
               <Input
-                    placeholder="nom prime"
-                    bg='white'
-                    type="month"
-                    name="dateOfPrime"
-                    rounded={2}
-                    onChange={handleMoisPaieChange}
-                    isDisabled={moisPayes.includes(moisPaie)}
-                    value={moisPaie}
-
-                    
-                  />
-                  {console.log(moisPaie)}
-                      <Input
-                    placeholder="nom prime"
-                    bg='white'
-                    type="date"
-                    rounded={2}
-                    name="dateOfPrime"
-                    mt={'8px'}
-                    onChange={(event) => setJourPaie(event.target.value)}
-                    value={jourPaie}
-                    
-                  />
-                  
-                   {console.log(jourPaie)}
-                  </Box>
-                  <Box>
-                    <Text fontWeight={'bold'} fontSize='sm' color='#eb808a'>Montant du salaire *</Text>
-
-                           <Input
-                    placeholder="nom prime"
-                    bg='white'
-                    type="text"
-                    rounded={2}
-                    name="dateOfPrime"
-                
-                   value={montant}
-                 
-                    
-                  />
- {console.log(montant)}
-                  
-                  </Box>
-                
-        
-
+                placeholder="nom prime"
+                bg='white'
+                type="text"
+                rounded={2}
+                name="dateOfPrime"
+                // placeholder="{formattedDate}"
+                // onChange={(event) => setStartDate(event.target.value)}
+                value={montant}
+              />
+                {console.log(montant)}
+          </Box>
         </Flex>
       </Center>
        <Box 
@@ -254,31 +212,20 @@ const PaySlip = () => {
        >
           <Divider />
         </Box>
-
-             <Center>
-          <Button disabled={!moisPaie} type="submit" color='white' bg='#eb808a' variant='solid' mx='auto' my='auto' onClick={HandleClick}>
-              
-               <Link 
-               onClick={HandleClick}
-             
-
-               href={{
-                pathname: Routes.Bulletin?.path || '',
-                query: {id: router.query.id}
-              }}
-                // "/eleves/recu/id"}
-                // m='2'
-                // href= {{
-                //   pathname: Routes.Receipt?.path || '',
-                //   query: {id: student.id}
-                // }}
+          <Center>
+              <Button disabled={!moisPaie} 
+                type="submit" 
+                color='white' 
+                bg='#eb808a' 
+                variant='solid' 
+                mx='auto' 
+                my='auto' 
+                onClick={HandleClick}
               >
                 Soumettre
-              </Link>
-               
-           </Button>
-        </Center>
-      </Box>
+              </Button>
+          </Center>
+        </Box>
 
     </DefaultLayout>
      );

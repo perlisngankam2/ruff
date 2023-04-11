@@ -24,7 +24,7 @@ export class StudentUpdateInput {
   lastname!: string;
 
   @Field({ nullable:true })
-  dateOfBirth!: string;
+  dateOfBirth!: Date;
 
   @Field({ nullable: true })
   sex!: string;

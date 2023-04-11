@@ -20,6 +20,7 @@ import { TrancheStudent } from './tranche-student.entity';
 import { AnneeAccademique } from './annee-accademique.entity';
 import { AvanceTranche } from './avance-tranche.entity';
 import { Salle } from './salle.entity';
+import { TranchePriority } from './tranche-priority.entity';
 
 @Entity()
 @ObjectType()
@@ -70,4 +71,11 @@ export class Tranche {
     onDelete:'CASCADE'
   })
   salle!:IdentifiedReference<Salle>|null
+
+  @ManyToOne(() => TranchePriority ,{
+    nullable:false,
+    onDelete:'CASCADE',
+    unique: true
+  })
+  tranchepriority!:IdentifiedReference<TranchePriority>|null
 }

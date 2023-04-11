@@ -44,8 +44,8 @@ export class SalaireService {
   if(retenus!=null && primes!=null){
 
     if(personnel){
-      if((await this.getAll()).map(a=>a.personnel).filter(async a=>(await a.load()).id === personnel.id).length > 1){
-        throw Error("!!!!!!!!!!! CE PERSONNEL A DEJA ETE PAYER !!!!!!!!!!!!")
+      if((await this.getAll()).filter(async a=>a.personnel.id === personnel.id).map(a=>a.moisPaie).length > 1){
+        throw Error("!!!!!!!!!!! CE PERSONNEL A DEJA ETE PAYER POUR CE MOIS !!!!!!!!!!!!")
       }
       const salaireBase = (await personnel.category.load()).montant
 
@@ -59,7 +59,7 @@ export class SalaireService {
       wrap(salaire).assign(
         {
          montant: Number(salaireNette),
-        //  payer: input.payer,
+         payer: input.payer,
          personnel: input.personnelId,
          jourPaie: input.jourPaie,
          moisPaie: input.moisPaie
@@ -71,8 +71,9 @@ export class SalaireService {
         }
       )
 
-      this.salaireRepository.persistAndFlush(salaire)
+      await this.salaireRepository.persistAndFlush(salaire)
       return salaire
+    
 
       }
 
@@ -80,7 +81,7 @@ export class SalaireService {
       wrap(salaire).assign(
         {
         montant: Number(salaireBase),
-        // payer: input.payer,
+        payer: input.payer,
         personnel: personnel.id,
         jourPaie: input.jourPaie,
         moisPaie: input.moisPaie
@@ -90,8 +91,9 @@ export class SalaireService {
           em: this.em
         }
       )
-      this.salaireRepository.persistAndFlush(salaire)
+      await this.salaireRepository.persistAndFlush(salaire)
       return salaire
+     
       }
 
     }
@@ -100,8 +102,8 @@ export class SalaireService {
   if(retenus!=null && primes==null){
 
     if(personnel){
-      if((await this.getAll()).map(a=>a.personnel).filter(async a=>(await a.load()).id === personnel.id).length > 1){
-        throw Error("!!!!!!!!!!! CE PERSONNEL A DEJA ETE PAYER !!!!!!!!!!!!")
+      if((await this.getAll()).filter(async a=>a.personnel.id === personnel.id).map(a=>a.moisPaie).length > 1){
+        throw Error("!!!!!!!!!!! CE PERSONNEL A DEJA ETE PAYER POUR CE MOIS !!!!!!!!!!!!")
       }
      const salaireBase = (await personnel.category.load()).montant
 
@@ -127,8 +129,9 @@ export class SalaireService {
         }
       )
 
-      this.salaireRepository.persistAndFlush(salaire)
+      await this.salaireRepository.persistAndFlush(salaire)
       return salaire
+ 
 
       }
 
@@ -136,7 +139,7 @@ export class SalaireService {
       wrap(salaire).assign(
         {
         montant: Number(salaireBase),
-        // payer: input.payer,
+        payer: input.payer,
         personnel: personnel.id,
         jourPaie: input.jourPaie,
         moisPaie: input.moisPaie
@@ -146,8 +149,9 @@ export class SalaireService {
           em: this.em
         }
       )
-      this.salaireRepository.persistAndFlush(salaire)
+      await this.salaireRepository.persistAndFlush(salaire)
       return salaire
+   
       }
 
     }
@@ -156,8 +160,8 @@ export class SalaireService {
   if(retenus==null && primes!=null){
 
     if(personnel){
-      if((await this.getAll()).map(a=>a.personnel).filter(async a=>(await a.load()).id === personnel.id).length > 1){
-        throw Error("!!!!!!!!!!! CE PERSONNEL A DEJA ETE PAYER !!!!!!!!!!!!")
+      if((await this.getAll()).filter(async a=>a.personnel.id === personnel.id).map(a=>a.moisPaie).length > 1){
+        throw Error("!!!!!!!!!!! CE PERSONNEL A DEJA ETE PAYER POUR CE MOIS !!!!!!!!!!!!")
       }
      const salaireBase = (await personnel.category.load()).montant
 
@@ -171,7 +175,7 @@ export class SalaireService {
       wrap(salaire).assign(
         {
          montant: Number(salaireNette),
-        //  payer: input.payer,
+         payer: input.payer,
          personnel: input.personnelId,
          jourPaie: input.jourPaie,
          moisPaie: input.moisPaie
@@ -183,8 +187,9 @@ export class SalaireService {
         }
       )
 
-      this.salaireRepository.persistAndFlush(salaire)
+      await this.salaireRepository.persistAndFlush(salaire)
       return salaire
+    
 
       }
 
@@ -192,7 +197,7 @@ export class SalaireService {
       wrap(salaire).assign(
         {
         montant: Number(salaireBase),
-        // payer: input.payer,
+        payer: input.payer,
         personnel: personnel.id,
         jourPaie: input.jourPaie,
         moisPaie: input.moisPaie
@@ -202,8 +207,9 @@ export class SalaireService {
           em: this.em
         }
       )
-      this.salaireRepository.persistAndFlush(salaire)
+      await this.salaireRepository.persistAndFlush(salaire)
       return salaire
+    
       }
 
     }
@@ -212,8 +218,8 @@ export class SalaireService {
   if(retenus==null && primes==null){
 
     if(personnel){
-      if((await this.getAll()).map(a=>a.personnel).filter(async a=>(await a.load()).id === personnel.id).length > 1){
-        throw Error("!!!!!!!!!!! CE PERSONNEL A DEJA ETE PAYER !!!!!!!!!!!!")
+      if((await this.getAll()).filter(async a=>a.personnel.id === personnel.id).map(a=>a.moisPaie).length > 1){
+        throw Error("!!!!!!!!!!! CE PERSONNEL A DEJA ETE PAYER POUR CE MOIS!!!!!!!!!!!!")
       }
      const salaireBase = (await personnel.category.load()).montant
 
@@ -227,7 +233,7 @@ export class SalaireService {
       wrap(salaire).assign(
         {
          montant: Number(salaireNette),
-        //  payer: input.payer,
+         payer: input.payer,
          personnel: input.personnelId,
          jourPaie: input.jourPaie,
          moisPaie: input.moisPaie
@@ -239,8 +245,9 @@ export class SalaireService {
         }
       )
 
-      this.salaireRepository.persistAndFlush(salaire)
+      await this.salaireRepository.persistAndFlush(salaire)
       return salaire
+      
 
       }
 
@@ -248,7 +255,7 @@ export class SalaireService {
       wrap(salaire).assign(
         {
         montant: Number(salaireBase),
-        // payer: input.payer,
+        payer: input.payer,
         personnel: personnel.id,
         jourPaie: input.jourPaie,
         moisPaie: input.moisPaie
@@ -258,14 +265,13 @@ export class SalaireService {
           em: this.em
         }
       )
-      this.salaireRepository.persistAndFlush(salaire)
+      await this.salaireRepository.persistAndFlush(salaire)
       return salaire
       }
 
     }
   }
-      
-return salaire
+
 }
 
   findByOne(filters: FilterQuery<Salaire>): Promise<Salaire | null> {
@@ -294,7 +300,7 @@ return salaire
   wrap(salaire).assign(
     {
       montant: input.montant,
-      // payer: input.payer,
+      payer: input.payer,
       personnel: personnel.id,
     //   periode: periode.id
     },
@@ -303,8 +309,7 @@ return salaire
     }
   )
     
-//   await this.salaireRepository.persistAndFlush(salaire);
-
+await this.salaireRepository.persistAndFlush(salaire);
 return salaire;
    }
 
@@ -320,10 +325,30 @@ return salaire;
 
  async salairepersonnel(personnelid:string){
   const a = this.salaireRepository.find({personnel:personnelid})
+  if((await a).length==0){
+    throw Error("THIS PERSONNEL HAS NOT YET BEING PAIED PLEASE ENTER A VALID PERSONNEL")
+  }
   return a
   
 }
 
+async personnelMonthSalary(personnelId:string){
+  const a= await this.findByOne(personnelId)
+  if(!a){
+    throw Error("PERSONNEL NOT FOUND")
+  }
+  const b = (await this.salairepersonnel(a.id)).map(a=>a.moisPaie)
+  return b
+}
+
+async personnelNetSalary(personnelId:string){
+  const a= await this.findByOne(personnelId)
+  if(!a){
+    throw Error("PERSONNEL NOT FOUND")
+  }
+  const b = (await this.salairepersonnel(a.id)).map(a=>a.montant)
+  return b
+}
 
 
 }

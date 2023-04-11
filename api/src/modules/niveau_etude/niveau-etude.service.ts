@@ -17,13 +17,14 @@ import { Salle } from 'src/entities/salle.entity';
 import { SectionCycleService } from '../section-cycle/section-cycle.service';
 import { NiveauEtudeCreateInput } from './dto/niveau-etude.input';
 import { NiveauEtudeUpdateInput } from './dto/niveau-etude.update';
+import { CycleService } from '../cycle/cycle.service';
 
 @Injectable()
 export class NiveauEtudeService {
     constructor(
         @InjectRepository(NiveauEtude)
         private niveauEtudeRepository: EntityRepository<NiveauEtude>,
-        private sectionCycle : SectionCycleService,
+        private cycleservice: CycleService,
         private  em: EntityManager,
       ) {}
     
@@ -61,12 +62,21 @@ export class NiveauEtudeService {
         return this.niveauEtudeRepository.findOne(id)
       }
     
-      getAll(): Promise<NiveauEtude[]> {
-        return this.niveauEtudeRepository.findAll()
+      async getAll(): Promise<NiveauEtude[]> {
+       return  await this.niveauEtudeRepository.findAll({
+           populate:true,
+          orderBy: { id: 'ASC' },
+         })
       }
+
+      // async getallcycle():
       
       async update(id:string, input: NiveauEtudeUpdateInput): Promise<NiveauEtude> {
         const niveau = await this.findById(id)
+        const cycle = await this.cycleservice.findById(input.cycleId)
+        if(!cycle){
+          throw   Error("!!!!!!!CYCLE DOES NOT EXISTS!!!!!!!!!!!!!!!!!!")
+        }
         // if (input.sectionCycle) {
         //     const section =
         //     input.sectionCycle?.ID &&
@@ -77,12 +87,11 @@ export class NiveauEtudeService {
         //     }
         //     this.sectionCycle.update(section.id, input.sectionCycle);
         //   }
-        
         wrap(niveau).assign({
             name: input.name || niveau.name,
             description: input.description || niveau.description,
             // salle : input.salle  || niveau.salle,
-            cycle : input.cycleId  || niveau.cycle,
+            cycle : input.cycleId||niveau.cycle,
             montantPension : input.montantPension  || niveau.montantPension
             
         },

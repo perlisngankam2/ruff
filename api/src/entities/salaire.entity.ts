@@ -23,8 +23,8 @@ import { RetenuPersonnel } from './retenu-personnel.entity';
 @Entity()
 @ObjectType()
 export class Salaire {
-@Field(() => ID)
 @PrimaryKeyUuid()
+@Field(() => ID)
 id!: string;
 
 // @Field({ nullable: true })
@@ -39,9 +39,9 @@ jourPaie!: string;
 @Property({ nullable: true })
 moisPaie!: string;
 
-// @Field({ defaultValue: true })
-// @Property({ default: true })
-// payer!: boolean;
+@Field({ defaultValue: true })
+@Property({ default: true })
+payer!: boolean;
 
 @Field({ defaultValue: 0 })
 @Property({ default: 0 })
@@ -57,7 +57,6 @@ periode!:IdentifiedReference<Periode>|null
 @ManyToOne(() => Personnel ,{
   nullable:false,
   onDelete:'CASCADE',
-  unique:true
 })
 personnel!:IdentifiedReference<Personnel>|null
 

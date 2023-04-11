@@ -19,6 +19,7 @@ import { NiveauEtude } from './niveau-etude.entity';
 import { Salaire } from './salaire.entity';
 import { Salle } from './salle.entity';
 import { Tranche } from './tranche.entity';
+import { Student } from './student.entity';
 
 
 @Entity()
@@ -46,12 +47,12 @@ export class Pension {
   dateLine!: Date | null;
 
 // relation with another Entites
-  @OneToOne(() => Salle, (salle) => salle.pension, {
-    owner: true,
-    unique: true,
-    onDelete: 'CASCADE',
-  })
-  salle!: IdentifiedReference<Salle> | null;
+  // @OneToOne(() => Salle, (salle) => salle.pension, {
+  //   owner: true,
+  //   unique: true,
+  //   onDelete: 'CASCADE',
+  // })
+  // salle!: IdentifiedReference<Salle> | null;
 
   // @OneToOne(() => NiveauEtude, (niveauEtude) => niveauEtude.pension, {
   //   owner: true,
@@ -60,12 +61,19 @@ export class Pension {
   // })
   // niveauEtude!: IdentifiedReference<NiveauEtude>;
 
-  @OneToMany(() => Tranche, tranche => tranche.pension)
-  tranche = new Collection<Tranche>(this);
+  // @OneToMany(() => Tranche, tranche => tranche.pension)
+  // tranche = new Collection<Tranche>(this);
 
   @ManyToOne(() => AnneeAccademique ,{
     nullable:true,
     onDelete:'CASCADE'
   })
   anneeAccademique!:IdentifiedReference<AnneeAccademique>|null
+
+  
+  @ManyToOne(() => Student ,{
+    nullable:true,
+    onDelete:'CASCADE',
+  })
+  student!:IdentifiedReference<Student>|null
 }

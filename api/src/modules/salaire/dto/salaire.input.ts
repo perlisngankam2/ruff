@@ -13,8 +13,8 @@ import { RetenuCreateInput } from 'src/modules/retenu_salarial/dto/retenu.input'
 
 @InputType()
 export class SalaireCreateInput {
-  // @Field(()=>ID,{ nullable: true })
-  // periodeId:string
+  @Field({nullable:true})
+  ID!: string;
 
   @Field(()=>ID,{ nullable: true })
   personnelId:string
@@ -28,8 +28,8 @@ export class SalaireCreateInput {
   // @Field({nullable:true})
   // description?: string;
 
-  // @Field({defaultValue:false})
-  // payer?: boolean;
+  @Field({defaultValue:false})
+  payer?: boolean;
 
   @Field({defaultValue:0})
   montant?: number;

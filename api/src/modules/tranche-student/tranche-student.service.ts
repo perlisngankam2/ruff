@@ -29,7 +29,9 @@ export class TrancheStudentService {
         private trancheStudentRepository: EntityRepository<TrancheStudent>,
         @Inject(forwardRef(() => AvanceTrancheService))
         private avance: AvanceTrancheService,
+        @Inject(forwardRef(() => TrancheService))
         private trancheService: TrancheService,
+        @Inject(forwardRef(() => StudentService))
         private studentService: StudentService,
         private twilioService: TwilioService,
         private  em: EntityManager,
@@ -40,6 +42,7 @@ export class TrancheStudentService {
       ): Promise<TrancheStudent> {  
         const trancheStudent = new TrancheStudent()
         const student = await this.studentService.findByOne({id:input.studentId})
+        const tranche = await this.studentService.findByOne({id:input.trancheid})
  
         wrap(trancheStudent).assign(
             {
@@ -48,7 +51,7 @@ export class TrancheStudentService {
              name: input.name,
              description: input.description,
             //  regimePaimemnt: input.regimePaiement,
-            //  tranche: tranche.id,
+             tranche: tranche.id,
              student: student.id
             },
             {
@@ -64,9 +67,14 @@ export class TrancheStudentService {
         return this.trancheStudentRepository.findOne(filters);
       }
 
-    findByStudent(id: string): Promise<TrancheStudent | null> {
-        return this.trancheStudentRepository.findOne({student:id});
+    findByStudent(id: string): Promise<TrancheStudent[] | null> {
+        return this.trancheStudentRepository.find({student:id});
       }
+
+    findByTrancheandStudent(studentid: string,trancheid:string): Promise<TrancheStudent | null> {
+        return this.trancheStudentRepository.findOne({student:studentid,tranche:trancheid});
+      }
+   
 
     findById(id:string){
         return this.trancheStudentRepository.findOne(id)
@@ -76,61 +84,35 @@ export class TrancheStudentService {
         return this.trancheStudentRepository.findAll()
     }
 
-    async createAlerteTranche(tranche:TrancheStudent){
-        const avanceTranche = tranche.avancheTranche.matching({})
-        const reste = avanceTranche[-1].reste
-        if(tranche.complete == false){
-            const dateLine = (await tranche.tranche.load()).dateLine
-            const alertDate = dateLine.setDate(dateLine.getDate()-2)
 
-            const toDay = new Date().getTime()
-
-            const student = tranche.student.load()
-            const parent = (await student).user.load()
-
-            if(toDay === alertDate ){
-                // create alert to parent 
-                this.twilioService.client.messages.create({
-                    body: "vous êtes prier de passer solder"+ tranche.name +"de votre enfant nome" + (await parent).name + "donc le reste est de"+reste,
-                    from: "+237647476798" ,
-                    to: (await parent).phoneNumber,
-                  });
-            }
-
-        }
-    }
-
-    async saveTranche(id:string){
-        const tranchestudent = await this.findByOne(id)
+async saveTranche(studentid:string,trancheid:string){
+        const tranchestudent = await this.findByTrancheandStudent(studentid,trancheid)
+        const tranche = await this.trancheService.findByOne(trancheid)
         console.log("====================>"+tranchestudent)
         console.log("+++++++++++++++++++++++>"+tranchestudent.montant)
-        const montant = (await this.avance.findBytranchestudent(tranchestudent.id)).map(a=>a.montant)
+        const montant =(await this.avance.SumAvanceTrancheByStudent(studentid,trancheid))
         console.log("===================================>"+montant)
-        const sum = Number(montant.reduce(function(a,b){return a+b}))
-        console.log("+++++++++++++++++++++++++++>"+sum)
-        tranchestudent.montant=Number(montant.reduce(function(a,b){return a+b}))
+        tranchestudent.montant=montant
         const student = tranchestudent.student.load()
         console.log("===================================>"+student)
-        const montantsalle = (await (await student).salle.load()).montantPensionSalle
-        console.log("===================================>"+montantsalle)
-        const tranchemontant = Number((await (await this.em.find(AvanceTranche,{trancheStudent: id})).map(a=>a.tranche.load())[0]).montant)
- 
+       
         
-        if(tranchestudent.montant == montantsalle){
+        
+        if(tranchestudent.montant == tranche.montant){
             tranchestudent.complete = true
             // tranche.regimePaimemnt = RegimePaiement.NORMAL
             tranchestudent.reste = 0.0
         }
 
-        if(tranchestudent.montant > montantsalle){
+        if(tranchestudent.montant > tranche.montant){
             tranchestudent.complete = true
             // tranche.regimePaimemnt = RegimePaiement.NORMAL
-            tranchestudent.surplus = tranchestudent.montant - montantsalle
+            tranchestudent.surplus = tranchestudent.montant -tranche.montant
         }   
 
-        if(tranchestudent.montant < montantsalle){
+        if(tranchestudent.montant < tranche.montant){
             tranchestudent.complete = false
-            tranchestudent.reste = montantsalle - tranchestudent.montant
+            tranchestudent.reste = tranche.montant - tranchestudent.montant
         }
         
         await this.trancheStudentRepository.persistAndFlush(tranchestudent)
@@ -154,13 +136,13 @@ export class TrancheStudentService {
     }
 
     
-    async AmountRecentTranchestudentByStudent(studentid:string){
+    // async AmountRecentTranchestudentByStudent(studentid:string){
         
-        const b  = (await this.findByStudent(studentid))
-        const a  = b.montant
-        return a
+    //     const b  = (await this.findByStudent(studentid))
+    //     const a  = b[b-1]
+    //     return a
         
-    }
+    // }
 
    
 
@@ -224,4 +206,27 @@ export class TrancheStudentService {
 //         await this.trancheStudentRepository.persistAndFlush(trancheStudent)
 
 //         //create the alert
+// }
+// async createAlerteTranche(tranche:TrancheStudent){
+//     const avanceTranche = tranche.avancheTranche.matching({})
+//     const reste = avanceTranche[-1].reste
+//     if(tranche.complete == false){
+//         const dateLine = (await tranche.tranche.load()).dateLine
+//         const alertDate = dateLine.setDate(dateLine.getDate()-2)
+
+//         const toDay = new Date().getTime()
+
+//         const student = tranche.student.load()
+//         const parent = (await student).user.load()
+
+//         if(toDay === alertDate ){
+//             // create alert to parent 
+//             this.twilioService.client.messages.create({
+//                 body: "vous êtes prier de passer solder"+ tranche.name +"de votre enfant nome" + (await parent).name + "donc le reste est de"+reste,
+//                 from: "+237647476798" ,
+//                 to: (await parent).phoneNumber,
+//               });
+//         }
+
+//     }
 // }

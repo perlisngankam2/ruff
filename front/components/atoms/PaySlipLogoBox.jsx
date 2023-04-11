@@ -42,9 +42,9 @@ const PaySlipLogoBox = () => {
                     <Stack>
                         <Center>
                             <Image
-                                w={['240px', '230px', '240px']}
-                                src='logo.png'
-                                alt={'logo'}
+                                w={'230px'}
+                                src="logo.png"
+                               
                             />
                         </Center>
                     </Stack>

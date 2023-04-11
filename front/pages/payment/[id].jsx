@@ -54,78 +54,89 @@ const PaySlip = () => {
   });
 
 
+
+
+
+
+  const personnelId = dataPersonnelId?.findOnePersonnel.id ;
+  const montant = dataCategorie?.findOneCategoriepersonnel.montant;
+
+  const [moisPaie, setMoisPaie] = useState("");
+  const [jourPaie , setJourPaie] = useState("");
+  const [createSalaire] = useMutation(CREATE_SALAIRE);
+
+  
     const moisPayes = []
   const loadMoisPayes = () => {
     dataSalaireId?.getsalairebypersonnel.map((item) => { 
             moisPayes.push(
               {
-                value: item?.id,
-                isDisabled: moisPayes.includes(moisPaie)
+                value: item?.moisPaie.toLowerCase()
 
               }
             )
           })
 
   }
-
   console.log(dataSalaireId)
   console.log(moisPayes)
-
-
-
-  const personnelId = dataPersonnelId?.findOnePersonnel.id ;
-  const montant = dataCategorie?.findOneCategoriepersonnel.montant;
-  const [moisPaie, setMoisPaie] = useState("");
-  const [jourPaie , setJourPaie] = useState("");
-  const [createSalaire] = useMutation(CREATE_SALAIRE);
-  
+  console.log(moisPayes.includes(moisPaie.toLowerCase()))
+ console.log(montant)
 
 
   const handleMoisPaieChange = (event) => {
+
     const selectedMonth = event.target.value;
+
+      console.log(!moisPayes.includes(selectedMonth))
+
     if (!moisPayes.includes(selectedMonth)) {
       setMoisPaie(selectedMonth);
     }
   };
 
-    const HandleClick = async (event) => {
-  event.preventDefault();
 
-  const salaireData = await createSalaire({
-        variables:{
-        input: { 
-          personnelId: personnelId,
-          montant: parseInt(montant),
-          moisPaie: moisPaie, 
-          jourPaie: jourPaie
+
+  const HandleClick = async (event) => {
+    event.preventDefault();
+
+    router.push({
+                  pathname: Routes.Bulletin?.path || '',
+                  query: {id: router.query.id}
+                })
+
+    const salaireData = await createSalaire({
+          variables:{
+          input: { 
+            personnelId: personnelId,
+            montant: parseInt(montant),
+            moisPaie: moisPaie, 
+            jourPaie: jourPaie
+          }
         }
-      }
-    })
-   
+      })
 
     console.log(salaireData)
+
     toast({
       title: "Succès.",
-      description: "La prime a été crée .",
+      description: "Ce personnel a été payé .",
       status: "success",
       duration: 3000,
       isClosable: true,
     });
 
-    
-    
+
         setMoisPaie("");
   }
 
   console.log(moisPayes)
 
-  useEffect(() =>{
-   loadMoisPayes()
-    
-    
-    console.log(dataPersonnelId?.findOnePersonnel)
+    useEffect(() =>{
+      loadMoisPayes()
+      console.log(dataPersonnelId?.findOnePersonnel)
 
-  })
+    })
 // if (loading) return <Text>Chargement en cour...</Text>
 
     return ( 
@@ -211,6 +222,7 @@ const PaySlip = () => {
                     
                   />
                   {console.log(moisPaie)}
+                  
                       <Input
                     placeholder="nom prime"
                     bg='white'
@@ -225,23 +237,7 @@ const PaySlip = () => {
                   
                    {console.log(jourPaie)}
                   </Box>
-                  <Box>
-                    <Text fontWeight={'bold'} fontSize='sm' color='#eb808a'>Montant du salaire *</Text>
-
-                           <Input
-                    placeholder="nom prime"
-                    bg='white'
-                    type="text"
-                    rounded={2}
-                    name="dateOfPrime"
-                
-                   value={montant}
-                 
-                    
-                  />
- {console.log(montant)}
                   
-                  </Box>
                 
         
 
@@ -258,23 +254,7 @@ const PaySlip = () => {
              <Center>
           <Button disabled={!moisPaie} type="submit" color='white' bg='#eb808a' variant='solid' mx='auto' my='auto' onClick={HandleClick}>
               
-               <Link 
-               onClick={HandleClick}
-             
-
-               href={{
-                pathname: Routes.Bulletin?.path || '',
-                query: {id: router.query.id}
-              }}
-                // "/eleves/recu/id"}
-                // m='2'
-                // href= {{
-                //   pathname: Routes.Receipt?.path || '',
-                //   query: {id: student.id}
-                // }}
-              >
-                Soumettre
-              </Link>
+            Soumettre
                
            </Button>
         </Center>

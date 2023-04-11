@@ -99,7 +99,7 @@ export class SalaireService {
     }
   }
 
-  if(retenus!=null && primes==null){
+  // if(retenus!=null && primes==null){
 
     if(personnel){
       if((await this.getAll()).filter(async a=>a.personnel.id === personnel.id).map(a=>a.moisPaie).length > 1){
@@ -107,12 +107,68 @@ export class SalaireService {
       }
      const salaireBase = (await personnel.category.load()).montant
 
-      const salaire = new Salaire()
+  //     const salaire = new Salaire()
 
-      if(personnel.status == Status.PERMANENT){
+  //     if(personnel.status == Status.PERMANENT){
 
-      const salaireNette = salaireBase - retenus
-            // const salaireNette = salaireBase 
+  //     const salaireNette = salaireBase - retenus
+  //           // const salaireNette = salaireBase 
+
+  //     wrap(salaire).assign(
+  //       {
+  //        montant: Number(salaireNette),
+  //       //  payer: input.payer,
+  //        personnel: input.personnelId,
+  //        jourPaie: input.jourPaie,
+  //        moisPaie: input.moisPaie
+
+  //       //  periode: input.periodeId
+  //       },
+  //       {
+  //       em: this.em
+  //       }
+  //     )
+
+      this.salaireRepository.persistAndFlush(salaire)
+      return salaire
+
+      }
+
+      if(personnel.status == Status.VACATAIRE){
+      wrap(salaire).assign(
+        {
+        montant: Number(salaireBase),
+        // payer: input.payer,
+        personnel: personnel.id,
+        jourPaie: input.jourPaie,
+        moisPaie: input.moisPaie
+        // periode: periode.id
+        },
+        {
+          em: this.em
+        }
+      )
+      this.salaireRepository.persistAndFlush(salaire)
+      return salaire
+      }
+
+  //   }
+  // }
+
+  // if(retenus==null && primes!=null){
+
+    if(personnel){
+      if((await this.getAll()).map(a=>a.personnel).filter(async a=>(await a.load()).id === personnel.id).length > 1){
+        throw Error("!!!!!!!!!!! CE PERSONNEL A DEJA ETE PAYER !!!!!!!!!!!!")
+      }
+     const salaireBase = (await personnel.category.load()).montant
+
+  //     const salaire = new Salaire()
+
+  //     if(personnel.status == Status.PERMANENT){
+
+  //     const salaireNette = salaireBase + primes 
+  //           // const salaireNette = salaireBase 
 
       wrap(salaire).assign(
         {
@@ -122,16 +178,15 @@ export class SalaireService {
          jourPaie: input.jourPaie,
          moisPaie: input.moisPaie
 
-        //  periode: input.periodeId
-        },
-        {
-        em: this.em
-        }
-      )
+  //       //  periode: input.periodeId
+  //       },
+  //       {
+  //       em: this.em
+  //       }
+  //     )
 
-      await this.salaireRepository.persistAndFlush(salaire)
+      this.salaireRepository.persistAndFlush(salaire)
       return salaire
- 
 
       }
 
@@ -139,7 +194,7 @@ export class SalaireService {
       wrap(salaire).assign(
         {
         montant: Number(salaireBase),
-        payer: input.payer,
+        // payer: input.payer,
         personnel: personnel.id,
         jourPaie: input.jourPaie,
         moisPaie: input.moisPaie
@@ -149,47 +204,45 @@ export class SalaireService {
           em: this.em
         }
       )
-      await this.salaireRepository.persistAndFlush(salaire)
+      this.salaireRepository.persistAndFlush(salaire)
       return salaire
-   
       }
 
-    }
-  }
+  //   }
+  // }
 
-  if(retenus==null && primes!=null){
+  // if(retenus==null && primes==null){
 
     if(personnel){
-      if((await this.getAll()).filter(async a=>a.personnel.id === personnel.id).map(a=>a.moisPaie).length > 1){
-        throw Error("!!!!!!!!!!! CE PERSONNEL A DEJA ETE PAYER POUR CE MOIS !!!!!!!!!!!!")
+      if((await this.getAll()).map(a=>a.personnel).filter(async a=>(await a.load()).id === personnel.id).length > 1){
+        throw Error("!!!!!!!!!!! CE PERSONNEL A DEJA ETE PAYER !!!!!!!!!!!!")
       }
      const salaireBase = (await personnel.category.load()).montant
 
-      const salaire = new Salaire()
+  //     const salaire = new Salaire()
 
-      if(personnel.status == Status.PERMANENT){
+  //     if(personnel.status == Status.PERMANENT){
 
-      const salaireNette = salaireBase + primes 
-            // const salaireNette = salaireBase 
+  //     const salaireNette = salaireBase 
+  //           // const salaireNette = salaireBase 
 
       wrap(salaire).assign(
         {
          montant: Number(salaireNette),
-         payer: input.payer,
+        //  payer: input.payer,
          personnel: input.personnelId,
          jourPaie: input.jourPaie,
          moisPaie: input.moisPaie
 
-        //  periode: input.periodeId
-        },
-        {
-        em: this.em
-        }
-      )
+  //       //  periode: input.periodeId
+  //       },
+  //       {
+  //       em: this.em
+  //       }
+  //     )
 
-      await this.salaireRepository.persistAndFlush(salaire)
+      this.salaireRepository.persistAndFlush(salaire)
       return salaire
-    
 
       }
 
@@ -197,7 +250,7 @@ export class SalaireService {
       wrap(salaire).assign(
         {
         montant: Number(salaireBase),
-        payer: input.payer,
+        // payer: input.payer,
         personnel: personnel.id,
         jourPaie: input.jourPaie,
         moisPaie: input.moisPaie
@@ -207,71 +260,14 @@ export class SalaireService {
           em: this.em
         }
       )
-      await this.salaireRepository.persistAndFlush(salaire)
+      this.salaireRepository.persistAndFlush(salaire)
       return salaire
-    
       }
 
     }
   }
-
-  if(retenus==null && primes==null){
-
-    if(personnel){
-      if((await this.getAll()).filter(async a=>a.personnel.id === personnel.id).map(a=>a.moisPaie).length > 1){
-        throw Error("!!!!!!!!!!! CE PERSONNEL A DEJA ETE PAYER POUR CE MOIS!!!!!!!!!!!!")
-      }
-     const salaireBase = (await personnel.category.load()).montant
-
-      const salaire = new Salaire()
-
-      if(personnel.status == Status.PERMANENT){
-
-      const salaireNette = salaireBase 
-            // const salaireNette = salaireBase 
-
-      wrap(salaire).assign(
-        {
-         montant: Number(salaireNette),
-         payer: input.payer,
-         personnel: input.personnelId,
-         jourPaie: input.jourPaie,
-         moisPaie: input.moisPaie
-
-        //  periode: input.periodeId
-        },
-        {
-        em: this.em
-        }
-      )
-
-      await this.salaireRepository.persistAndFlush(salaire)
-      return salaire
       
-
-      }
-
-      if(personnel.status == Status.VACATAIRE){
-      wrap(salaire).assign(
-        {
-        montant: Number(salaireBase),
-        payer: input.payer,
-        personnel: personnel.id,
-        jourPaie: input.jourPaie,
-        moisPaie: input.moisPaie
-        // periode: periode.id
-        },
-        {
-          em: this.em
-        }
-      )
-      await this.salaireRepository.persistAndFlush(salaire)
-      return salaire
-      }
-
-    }
-  }
-
+return salaire
 }
 
   findByOne(filters: FilterQuery<Salaire>): Promise<Salaire | null> {
@@ -300,7 +296,7 @@ export class SalaireService {
   wrap(salaire).assign(
     {
       montant: input.montant,
-      payer: input.payer,
+      // payer: input.payer,
       personnel: personnel.id,
     //   periode: periode.id
     },
@@ -309,7 +305,8 @@ export class SalaireService {
     }
   )
     
-await this.salaireRepository.persistAndFlush(salaire);
+//   await this.salaireRepository.persistAndFlush(salaire);
+
 return salaire;
    }
 

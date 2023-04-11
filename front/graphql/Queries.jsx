@@ -448,7 +448,6 @@ query getsalairebypersonnel ($personnelid: String!) {
         id
         jourPaie
         moisPaie
-        payer
         montant
     }
 }

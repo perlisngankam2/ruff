@@ -155,6 +155,7 @@ import {
                 as="form"
                 width="500px"
               > 
+              <Text>ccccc</Text>
                 <Heading color={"colors.primary"}>
                   Creation d'un niveau d'etude
                 </Heading>

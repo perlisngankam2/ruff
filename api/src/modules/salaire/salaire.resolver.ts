@@ -34,4 +34,14 @@ async getsalairebypersonnel(@Args('personnelid') personnelid:string){
     return await this.salaireService.salairepersonnel(personnelid)
 }
 
+@Query(()=>[String])
+async PersonnelMonthSalary(@Args('personnelid') personnelid:string){
+    return await this.salaireService.personnelMonthSalary(personnelid)
+}
+
+@Query(()=>[Number])
+async PersonnelNetSalary(@Args('personnelid') personnelid:string){
+    return await this.salaireService.personnelNetSalary(personnelid)
+}
+
 }

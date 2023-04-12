@@ -9,12 +9,14 @@ import { TrancheCreateInput } from 'src/modules/tranche/dto/tranche.input';
 export class AvanceTrancheCreateInput {
   // @Field(()=>ID,{nullable:true})
   // studentId?: string;
+  @Field({nullable:true})
+  ID!: string;
 
   @Field(()=>ID,{nullable:true})
   trancheId?: string;
 
   @Field(()=>ID,{nullable:true})
-  trancheStudentId?:string
+  StudentId?:string
 
   // @Field(()=>ID,{nullable:true})
   // StudentId?:string

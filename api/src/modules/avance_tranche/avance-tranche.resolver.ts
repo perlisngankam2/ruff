@@ -17,10 +17,10 @@ async createavancetranche(@Args('avancetranche') input: AvanceTrancheCreateInput
   return await this.avancetrancheService.createavancetranche(input);
 }
 
-@Mutation(() => AvanceTranche)
-async saveavancetranche(@Args('tranchestudent') input:string,@Args('number') number: number) {
-  return await this.avancetrancheService.saveAvanceTranche(input,number);
-}
+// @Mutation(() => AvanceTranche)
+// async saveavancetranche(@Args('tranchestudent') input:string,@Args('number') number: number) {
+//   return await this.avancetrancheService.saveAvanceTranche(input,number);
+// }
 
 @Query(() => AvanceTranche)
 async findavancetranchebyid(@Args('input') input: string){
@@ -67,10 +67,10 @@ async getallfessalreadypayed(@Args('studentid') studentid:string){
 return await this.avancetrancheService.feesalreadypayed(studentid)
 }
 
-@Query(()=>Number)
-async RestTrancheByStudent(@Args('studentid') studentid:string,@Args('trancheid') trancheid:string){
-return await this.avancetrancheService.RestAvanceTrancheByStudent(studentid,trancheid)
-}
+// @Query(()=>Number)
+// async RestTrancheByStudent(@Args('studentid') studentid:string,@Args('trancheid') trancheid:string){
+// return await this.avancetrancheService.RestAvanceTrancheByStudent(studentid,trancheid)
+// }
 
 @Query(()=>[Tranche])
 async getalltranchecompletedbystudent(@Args('studentid') studentid:string){

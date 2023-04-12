@@ -65,11 +65,11 @@ export class Salle{
     })
     cyle!: IdentifiedReference<Cycle> | null;
 
-    @OneToOne(() => Pension, (pension) => pension.salle, {
-        owner: false,
-        nullable: true,
-      })
-    pension!: IdentifiedReference<Pension> | null;
+    // @OneToOne(() => Pension, (pension) => pension.salle, {
+    //     owner: false,
+    //     nullable: true,
+    //   })
+    // pension!: IdentifiedReference<Pension> | null;
 
     @OneToOne(() => FraisExamen, (fraisExamen) => fraisExamen.salle, {
         owner: false,

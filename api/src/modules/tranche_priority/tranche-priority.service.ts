@@ -41,6 +41,7 @@ export class TranchePriorityService {
             em: this.em
           }
         )
+        await this.tranchePriorityRepository.persistAndFlush(tranchePriority)
         return tranchePriority;
       } 
 

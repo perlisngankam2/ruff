@@ -5,11 +5,13 @@ import { NiveauEtude } from 'src/entities/niveau-etude.entity';
 import { SectionCycleModule } from '../section-cycle/section-cycle.module';
 import { NiveauEtudeResolver } from './niveau-etude.resolver';
 import { NiveauEtudeService } from './niveau-etude.service';
+import { CycleModule } from '../cycle/cycle.module';
 
 @Module({
     imports:[
         MikroOrmModule.forFeature({ entities: [NiveauEtude] }),
-        SectionCycleModule
+        SectionCycleModule,
+        CycleModule
     ],
     providers:[NiveauEtudeService,NiveauEtudeResolver],
     exports:[NiveauEtudeService]

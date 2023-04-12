@@ -13,8 +13,8 @@ import { StudentModule } from '../student/student.module';
     imports:[
         MikroOrmModule.forFeature({ entities: [AvanceTranche] }),
         forwardRef(() => TrancheStudentModule),
-        TrancheModule,
-        StudentModule
+        forwardRef(() =>TrancheModule),
+        forwardRef(() =>StudentModule)
     ],
     providers:[AvanceTrancheService,AvanceTrancheResolver],
     exports:[AvanceTrancheService]

@@ -10,8 +10,8 @@ import { RetenuPersonnelUpdateInput } from 'src/modules/retenu_personnel/dto/ret
 
 @InputType()
 export class SalaireUpdateInput {
-  // @Field(()=>ID,{ nullable: true })
-  // periodeId:string
+  @Field({nullable:true})
+  ID!: string;
 
   @Field(()=>ID,{ nullable: true })
   personnelId:string
@@ -25,8 +25,8 @@ export class SalaireUpdateInput {
   // @Field({nullable:true})
   // description?: string;
 
-  // @Field({defaultValue:false})
-  // payer?: boolean;
+  @Field({defaultValue:false})
+  payer?: boolean;
 
   @Field({defaultValue:0})
   montant?: number;

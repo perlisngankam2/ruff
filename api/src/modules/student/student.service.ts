@@ -23,6 +23,7 @@ import { UserService } from '../user/user.service';
 import { StudentCreateInput } from './dto/student.input';
 import { StudentUpdateInput } from './dto/student.update';
 import { TrancheService } from '../tranche/tranche.service';
+import { addDays, format } from 'date-fns';
 
 @Injectable()
 export class StudentService {
@@ -65,7 +66,7 @@ export class StudentService {
             lastname: input.lastname,
             // classe : input.classe,
             sex: input.sex,
-            dateOfBirth:input.dateOfBirth,
+            dateOfBirth:format(input.dateOfBirth, 'dd/MM/yyyy'),
             adress:input.adress,
             transport:input.transport,
             categorie : input.categoryStudentId,

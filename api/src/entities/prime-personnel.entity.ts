@@ -17,7 +17,7 @@ import { PrimaryKeyUuid } from '../decorators/PrimaryKeyUuid.decorator';
 import { Personnel } from './pesonnel.entity';
 import { Prime } from './prime.entity';
 import { Salaire } from './salaire.entity';
-import { PaySalaire } from './pay_salary.entity';
+
 
 
 @Entity()
@@ -59,10 +59,6 @@ export class PrimePersonnel {
   })
   salaire!:IdentifiedReference<Salaire>|null
 
-  @ManyToOne(() => PaySalaire ,{
-    nullable:true,
-    onDelete:'CASCADE'
-  })
-  paysalaire!:IdentifiedReference<Salaire>|null
+
 
 }

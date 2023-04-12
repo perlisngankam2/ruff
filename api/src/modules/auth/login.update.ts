@@ -14,4 +14,6 @@ export class LoginUpdate{
     @Field()
     newpassword: string
 
+    
+
 }

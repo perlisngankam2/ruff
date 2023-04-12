@@ -57,9 +57,9 @@ export class User {
   @Property({ nullable: true })
   active: boolean = true;
 
-//   @Property({ nullable: true })
-//   @Field(() => Date, { nullable: true })
-//   lastConnection!: Date | null;
+  @Property({ nullable: true })
+  @Field(() => Date, { nullable: true })
+  lastConnection!: Date | null;
 
   @Property({ onCreate: () => new Date() })
   createdAt = new Date();

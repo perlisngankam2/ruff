@@ -7,7 +7,6 @@ import DefaultLayout from '../components/layouts/DefaultLayout';
 
 export default function profil(){
 
-    
         return(
             <DefaultLayout>
             <Container maxW='100%' mt={"30px"}>

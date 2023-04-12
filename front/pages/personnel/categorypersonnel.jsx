@@ -38,6 +38,9 @@ import { GET_ALL_Category_Personnel, loading, error } from "../../graphql/Querie
 import { DELETE_CATEGORY_PERSONNEL } from "../../graphql/Mutation";
 import { useQuery, useMutation } from "@apollo/client"; 
 import ReactPaginate from "react-paginate";
+import { useTranslation } from "next-i18next";
+import { getStaticPropsTranslations } from "../../types/staticProps";
+
 
 const Category = () => {
 
@@ -51,7 +54,7 @@ const Category = () => {
     const itemsPerPage = 10;
     const [pageNumber, setPageNumber] = useState(0);
     const pagesVisited = pageNumber * itemsPerPage;
-
+    const {t} = useTranslation();
     // //const [classeValue , setClasseValue ] = useState("");
     // const [data, setData] = useState([]);
     // const keys = ["first_name", "last_name", "email", "classe"];
@@ -67,12 +70,12 @@ const Category = () => {
     // };
 
     const {data ,loading,error} = useQuery(GET_ALL_Category_Personnel);
-    const [deletePerssCategory] = useMutation(DELETE_CATEGORY_PERSONNEL, 
-      {
-        onCompleted: data => {
-          window.location.reload();
-        }
-      });
+    const [deletePerssCategory] = useMutation(DELETE_CATEGORY_PERSONNEL);
+      // {
+      //   onCompleted: data => {
+      //     window.location.reload();
+      //   }
+      // }
 
      useEffect (() => {
       console.log(data?.findAllcategoriepersonnel);
@@ -83,10 +86,10 @@ const Category = () => {
 
     const deleteCategoryPersonnel = async (id) => {
      await deletePerssCategory({
-          variables:{id},
-          refetchQueries:[{
-            query: GET_ALL_Category_Personnel
-          }]
+        variables:{id},
+        refetchQueries:[{
+        query: GET_ALL_Category_Personnel
+    }]
           //   update(cache) {
           //     cache.modify({
           //         fields: {
@@ -99,7 +102,8 @@ const Category = () => {
           //     });
           // },
       })
-  }
+    }
+
   const handleChange = (e) => {
     setSearchPersonnelCategorie(e.target.value);
   };
@@ -109,6 +113,7 @@ const Category = () => {
   const changePage = ({ page }) => {
     setPageNumber(page);
   };
+
   return (
     <DefaultLayout>
       <Box p="3" pt={"70px"} w="full">
@@ -126,13 +131,12 @@ const Category = () => {
             size="lg"
             textColor="pink.300"
           >
-           Categories de personnels
+           {t('pages.personnel.categorypersonnel.heading')}
           </Heading>
           <Hide below="sm">
-            <Text>Dashboad / personnel/Categories de personnels </Text>
+            <Text>Dashboad / personnel/ Categories de personnels </Text>
           </Hide>
         </Flex>
-
         <Flex gap={10} mt={7}>
           <InputGroup width={["400px", "400px", "500px", "500px"]}>
             <InputRightElement
@@ -145,7 +149,6 @@ const Category = () => {
               // onChange={e => setQuery(e.target.value)}
               variant="flushed"
               onChange={handleChange}
-              
             />
             {/* <InputRightAddon children={<SearchIcon />} /> */}
           </InputGroup>
@@ -190,7 +193,6 @@ const Category = () => {
                               <Td p={0} pl={6}>{category.nom}</Td>
                               <Td p={0} pl={6}>{category.description}</Td>
                               <Td p={0} pl={6}>{category.montant} FCFA</Td>
-
                               <Td p={0} pl={3}>
                               <Box display="flex">
                                 <Link 
@@ -225,33 +227,33 @@ const Category = () => {
                                           // alignSelf={"center"}
                                         >
                                           <AlertDialogContent
-                                          width={"380px"}
+                                            width={"380px"}
                                           >
                                             <AlertDialogHeader 
                                               fontSize='lg' 
                                               fontWeight='bold'
                                               textAlign={"center"}
-                                              >
-                                              Confirmation de suppression
+                                            >
+                                                {t('pages.personnel.categorypersonnel.confirmDeletingAlertDialogHeader')}
                                             </AlertDialogHeader>
                                             <AlertDialogBody textAlign={"center"}>
-                                            Voulez-vous supprimer cette categorie?
+                                              {t('pages.personnel.categorypersonnel.confirmDeletingAlertDialogBody')}
                                             </AlertDialogBody>
-
                                             <AlertDialogFooter>
                                               <Button 
                                                 ref={cancelRef} 
                                                 onClick={onClose}
                                                 colorScheme="red"
                                               >
-                                                Annuler 
+                                               {t('pages.personnel.categorypersonnel.cancelAlertDialogButtonForDeleting')}
+                                                 
                                               </Button>
                                               <Button 
                                                 colorScheme='green' 
                                                 onClick={() => deleteCategoryPersonnel(category.id)}  
                                                 ml={3}
                                               >
-                                                Supprimer
+                                                {t('pages.personnel.categorypersonnel.submitAlertDialogButtonForDeleting')}
                                               </Button>
                                             </AlertDialogFooter>
                                           </AlertDialogContent>
@@ -286,4 +288,12 @@ const Category = () => {
   );
 };
 
+export async function getStaticProps({ locale }) {
+  return {
+    props: {
+      ...(await getStaticPropsTranslations(locale))
+      // Will be passed to the page component as props
+    }
+  };
+}
 export default Category;

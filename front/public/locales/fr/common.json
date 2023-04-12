@@ -6,12 +6,50 @@
                 "firstName": "Nom",
                 "lastName": "Prénom",
                 "birthDate": "Date de naissance",
+                "startDateWork": "Date de prise de fonction",
                 "gender": "Sexe",
                 "salary": "Salaire",
+                "status":"Status",
+                "childNumber":"Nombre d'enfant",
+                "vaccataireStatusOption":"PERMANENT",
+                "permanentStatusOption":"PERMANENT",
                 "fonction": "Fonction",
-                "phoneNumber": "Numero de téléphone",
+                "fondatorFonctionOption": "Fondateur",
+                "economeFonctionOption":"Econome",
+                "teacherFonctionOption": "Enseignant",
+                "gestionnaireFonctionOption":"Gestionnaire",
+                "principalFonctionOption":"Principal",
+                "phoneNumber": "Numéro de téléphone",
                 "matricule": "Matricule",
-                "maritalStatus": "Situation matrimoniale"
+                "maritalStatus": "Situation matrimoniale",
+                "singleMaritalStatusOption": "Celibataire",
+                "mariedMaritalStatusOption": "Marié",
+                "mariedMaritalWomanStatusOption": "Marié(e)",
+                "genderMenSelectOption": "Masculin",
+                "genderWomanSelectOption": "Feminin",
+                "associateAccount": "Compte Associé",
+                "submitButton": "Submit"
+            },
+            "index": {
+                "personnelList": "Liste du personnel",
+                "addPersonnelButton":"Ajouter Personnel"
+            },
+            "categorypersonnel": {
+                "heading": "Categories de personnels",
+                "confirmDeletingAlertDialogHeader":"Confirmation de suppression",
+                "confirmDeletingAlertDialogBody":"Voulez-vous supprimer cette categorie?",
+                "cancelAlertDialogButtonForDeleting": "Annuler",
+                "submitAlertDialogButtonForDeleting": "Supprimer"
+
+            },
+            "PersonnelAccountForm":{
+                "heading":"Créer un compte pour le personnel",
+                "email":"Email",
+                "passWord":"Mot de Passe",
+                "confirmPassWord": "confirmer le mot de passe",
+                "passWordsDoNotCorresponding":"Les mots de passe ne correspondent pas.",
+                "annuler": "Annuler",
+                "createBotton":"Créez"
             }
         }
     } , 

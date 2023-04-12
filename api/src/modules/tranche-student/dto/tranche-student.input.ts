@@ -10,8 +10,8 @@ export class TrancheStudentCreateInput {
   @Field(()=>ID,{nullable:true})
   studentId?:string
 
-  // @Field(()=>ID,{nullable:true})
-  // tranche_id?:string
+  @Field(()=>ID,{nullable:true})
+  trancheid?:string
 
   @Field({nullable:true})
   name?: string;

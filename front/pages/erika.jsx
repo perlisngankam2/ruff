@@ -57,7 +57,6 @@ const index = () => {
               </Hide>
             </Heading>
           </Flex>
-
           <Box justifyContent={"end"} display="flex">
             <Flex mt={"5"}>
               <Button bg={"blue.400"} textColor="white">

@@ -61,7 +61,6 @@ function ajoutercategorypersonnel  () {
     //     // })
     //     // console.log(categoryData)
     // }
-
     let input
     const  addCategoryPersonnel = async (event, value) => {
         event.preventDefault();

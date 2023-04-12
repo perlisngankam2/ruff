@@ -138,21 +138,21 @@ export const GET_ALL_FRAIS_INSCRIPTION =  gql `
 
 // one Personnel
 export const GET_ALL_PERSONNEL_BY_ID = gql `
-query findOnePersonnel ($id: String!) {
-    findOnePersonnel (id: $id) {
-        id
-        firstName
-        lastName
-        phoneNumber
-        situationMatrimonial
-        sexe
-        fonction
-        status
-        dateOfStartWork
-        dateOfBirth
-        childNumber
+    query findOnePersonnel ($id: String!) {
+        findOnePersonnel (id: $id) {
+            id
+            firstName
+            lastName
+            phoneNumber
+            situationMatrimonial
+            sexe
+            fonction
+            status
+            dateOfStartWork
+            dateOfBirth
+            childNumber
+        }
     }
-}
 `;
 
 //one student
@@ -228,6 +228,7 @@ export const GET_ALL_TRANCHE_PENSION = gql `
             description
             dateLine
             montant
+            priority
         }
     }
 `;
@@ -248,13 +249,13 @@ export const GET_ALL_TRANCHE_STUDENT = gql `
 `;
 
 export const GET_ALL_TRANCHE_PRIORITY = gql `
-query findAlltranchepriority {
-    findAlltranchepriority {
-        id
-        name
-        description
+    query findAlltranchepriority {
+        findAlltranchepriority {
+            id
+            name
+            description
+        }
     }
-}
 `;
 
 //recuperation d'une tranche de pension
@@ -266,6 +267,7 @@ export const GET_TRANCHE_PENSION_BY_ID= gql `
             description
             dateLine
             montant
+            priority
         }
     }
 `;
@@ -304,49 +306,49 @@ export const GET_ONE_SECTION = gql `
 `;
 
 export const GET_LEVEL_BY_ID = gql`
-query niveaEtude ($id: String!) {
-    niveaEtude (id: $id) {
-        id
-        name
-        description
-        montantPension
+    query niveaEtude ($id: String!) {
+        niveaEtude (id: $id) {
+            id
+            name
+            description
+            montantPension
+        }
     }
-}
 `
 
 export const GET_USER_CONNECTED = gql `
 query user ($id: String!) {
-    user (id: $id) {
-        id
-        email
-        password
-        firstName
-        lastName
-        name
-        role
-        phoneNumber
-        active
-        deactivatedAt
+        user (id: $id) {
+            id
+            email
+            password
+            firstName
+            lastName
+            name
+            role
+            phoneNumber
+            active
+            deactivatedAt
+        }
     }
-}
 `;
 
 
 export const GET_ALL_USER = gql `
-query findAlluser {
-    findAlluser {
-        id
-        email
-        password
-        firstName
-        lastName
-        name
-        role
-        phoneNumber
-        active
-        deactivatedAt
+    query findAlluser {
+        findAlluser {
+            id
+            email
+            password
+            firstName
+            lastName
+            name
+            role
+            phoneNumber
+            active
+            deactivatedAt
+        }
     }
-}
 `;
 
 //Tranche student by studentIf
@@ -365,23 +367,29 @@ export const GET_TRANCHE_STUDENT_BY_STUDENT_ID = gql `
 
 //personnel by userid
 export const GET_PERSONNEL_BY_USERID= gql `
-query getpersonnelbyaccount ($userid: String!) {
-    getpersonnelbyaccount (userid: $userid) {
-        id
-        firstName
-        lastName
-        phoneNumber
-        situationMatrimonial
-        sexe
-        fonction
-        status
-        dateOfStartWork
-        dateOfBirth
-        childNumber
+    query getpersonnelbyaccount ($userid: String!) {
+        getpersonnelbyaccount (userid: $userid) {
+            id
+            firstName
+            lastName
+            phoneNumber
+            situationMatrimonial
+            sexe
+            fonction
+            status
+            dateOfStartWork
+            dateOfBirth
+            childNumber
+        }
     }
-}
 `;
-export const GET_ALL_MONTANT_PENSION_CLASS = gql`
+
+export const GET_CLASS_FEES_BY_STUDENT_ID = gql `
+    query getClassfeebyStudent ($studentid: String!) {
+        getClassfeebyStudent (studentid: $studentid)
+    }
+`
+ export const GET_ALL_MONTANT_PENSION_CLASS = gql`
     query findAllpension {
         findAllpension {
             id
@@ -411,14 +419,14 @@ export const GET_ALL_PERSONNEL_SALLE = gql`
 `;
 
 export const GET_PRIME= gql `
-query findAllprime {
-    findAllprime {
-        id
-        nom
-        description
-        montant
+    query findAllprime {
+        findAllprime {
+            id
+            nom
+            description
+            montant
+        }
     }
-}
 `;
 
 export const GET_ALL_COURSE_PERSONNEL_SALLE = gql `
@@ -480,8 +488,18 @@ export const GET_RESTE_TRANCHE_BY_STUDENT = gql `
 
 export const GET_ALL_MONTANT_TRANCHE_BY_STUDENT = gql `
     query AmountrExpectedByTranche ($studentid: String!) {
-        AmountrExpectedByTranche (studentid: $studentid)
+        AmountrExpectedByTranche (studentid: $studentid)    
     }
+`;
+export const GET_ALL_SALAIRE_BY_ID = gql `
+query getsalairebypersonnel ($personnelid: String!) {
+    getsalairebypersonnel (personnelid: $personnelid) {
+        id
+        jourPaie
+        moisPaie
+        montant
+    }
+}
 `
 
 export const GET_ALL_TRANCHE_DATE_LINE_BY_STUDENT = gql `

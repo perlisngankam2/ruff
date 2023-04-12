@@ -45,53 +45,90 @@ const PaySlip = () => {
     })
 
 
-  const moisPayes = [];
+      const {data:dataSalaireId} = useQuery(GET_ALL_SALAIRE_BY_ID,
+  {
+    variables:{ personnelid: dataPersonnelId?.findOnePersonnel.id}
+  });
+
+
   const personnelId = dataPersonnelId?.findOnePersonnel.id ;
   const montant = dataCategorie?.findOneCategoriepersonnel.montant;
+
   const [moisPaie, setMoisPaie] = useState("");
   const [jourPaie , setJourPaie] = useState("");
   const [createSalaire] = useMutation(CREATE_SALAIRE);
+
   
+    const moisPayes = []
+  const loadMoisPayes = () => {
+    dataSalaireId?.getsalairebypersonnel.map((item) => { 
+            moisPayes.push(
+              {
+                value: item?.moisPaie.toLowerCase()
+
+              }
+            )
+          })
+
+  }
+  console.log(dataSalaireId)
+  console.log(moisPayes)
+  console.log(moisPayes.includes(moisPaie.toLowerCase()))
+ console.log(montant)
 
 
   const handleMoisPaieChange = (event) => {
+
     const selectedMonth = event.target.value;
+
+      console.log(!moisPayes.includes(selectedMonth))
+
     if (!moisPayes.includes(selectedMonth)) {
       setMoisPaie(selectedMonth);
     }
   };
 
-    const HandleClick = async (event) => {
-  event.preventDefault();
 
-  const salaireData = await createSalaire({
-        variables:{
-        input: { 
-          personnelId: personnelId,
-          montant: parseInt(montant),
-          moisPaie: moisPaie, 
-          jourPaie: jourPaie
+
+  const HandleClick = async (event) => {
+    event.preventDefault();
+
+    router.push({
+                  pathname: Routes.Bulletin?.path || '',
+                  query: {id: router.query.id}
+                })
+
+    const salaireData = await createSalaire({
+          variables:{
+          input: { 
+            personnelId: personnelId,
+            montant: parseInt(montant),
+            moisPaie: moisPaie, 
+            jourPaie: jourPaie
+          }
         }
-      }
-    })
+      })
 
     console.log(salaireData)
+
     toast({
       title: "Succès.",
-      description: "La prime a été crée .",
+      description: "Ce personnel a été payé .",
       status: "success",
       duration: 3000,
       isClosable: true,
     });
 
-    moisPayes.push(moisPaie);
+
         setMoisPaie("");
   }
 
-  useEffect(() =>{
-    console.log(dataPersonnelId?.findOnePersonnel)
-  })
+    useEffect(() =>{
+      loadMoisPayes()
+      console.log(dataPersonnelId?.findOnePersonnel)
 
+    })
+// if (loading) return <Text>Chargement en cour...</Text>
 
     return ( 
 
@@ -160,49 +197,38 @@ const PaySlip = () => {
         > 
          <Box width={'340px'} gap={7} >
           <Text fontSize='sm'> Salaire Mois</Text>
-            <Input
-              placeholder="nom prime"
-              bg='white'
-              type="month"
-              name="dateOfPrime"
-              rounded={2}
-              onChange={handleMoisPaieChange}
-              disabled={moisPayes.includes(moisPaie)}
-              value={moisPaie}
-            />
-              {console.log(moisPaie)}
-            <Input
-              placeholder="nom prime"
-              bg='white'
-              type="date"
-              rounded={2}
-              name="dateOfPrime"
-              mt={'8px'}
-              onChange={(event) => setJourPaie(event.target.value)}
-              value={jourPaie}
-            />
-            {console.log(jourPaie)}
-          </Box>
-          <Box>
-            <Text 
-              fontWeight={'bold'} 
-              fontSize='sm' 
-              color='#eb808a'
-            >
-              Montant du salaire *
-            </Text>
               <Input
-                placeholder="nom prime"
-                bg='white'
-                type="text"
-                rounded={2}
-                name="dateOfPrime"
-                // placeholder="{formattedDate}"
-                // onChange={(event) => setStartDate(event.target.value)}
-                value={montant}
-              />
-                {console.log(montant)}
-          </Box>
+                    placeholder="nom prime"
+                    bg='white'
+                    type="month"
+                    name="dateOfPrime"
+                    rounded={2}
+                    onChange={handleMoisPaieChange}
+                    isDisabled={moisPayes.includes(moisPaie)}
+                    value={moisPaie}
+
+                    
+                  />
+                  {console.log(moisPaie)}
+                  
+                      <Input
+                    placeholder="nom prime"
+                    bg='white'
+                    type="date"
+                    rounded={2}
+                    name="dateOfPrime"
+                    mt={'8px'}
+                    onChange={(event) => setJourPaie(event.target.value)}
+                    value={jourPaie}
+                    
+                  />
+                  
+                   {console.log(jourPaie)}
+                  </Box>
+                  
+                
+        
+
         </Flex>
       </Center>
        <Box 
@@ -212,20 +238,15 @@ const PaySlip = () => {
        >
           <Divider />
         </Box>
-          <Center>
-              <Button disabled={!moisPaie} 
-                type="submit" 
-                color='white' 
-                bg='#eb808a' 
-                variant='solid' 
-                mx='auto' 
-                my='auto' 
-                onClick={HandleClick}
-              >
-                Soumettre
-              </Button>
-          </Center>
-        </Box>
+
+             <Center>
+          <Button disabled={!moisPaie} type="submit" color='white' bg='#eb808a' variant='solid' mx='auto' my='auto' onClick={HandleClick}>
+              
+            Soumettre
+               
+           </Button>
+        </Center>
+      </Box>
 
     </DefaultLayout>
      );

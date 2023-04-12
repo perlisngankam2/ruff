@@ -19,13 +19,13 @@ import { SalleService } from '../salle/salle.service';
 import { TrancheCreateInput } from './dto/tranche.input';
 import { TrancheUpdateInput } from './dto/tranche.update';
 import { TranchePriority } from 'src/entities/tranche-priority.entity';
+import { format } from 'date-fns';
 
 @Injectable()
 export class TrancheService {
     constructor(
         @InjectRepository(Tranche)
         private trancheRepository: EntityRepository<Tranche>,
-        private pensionService: PensionService,
         private  em: EntityManager,
       ) {}
     
@@ -43,10 +43,14 @@ export class TrancheService {
             montant: input.montant,
             name: input.name,
             description: input.description,
-            dateLine: input.dateLine,
+            // dateLine:format(input.dateLine, 'dd/MM/yyyy'),
+            dateLine:input.dateLine,
             anneeAccademique: input.anneeAcademiqueId,
             salle: input.salleId,
-            tranchePriority: input.tranchePriorityId
+            priority: input.priority
+
+            // tranchepriority: input.tranchePriorityId
+            
             // pension: pension.id
           },
           {
@@ -71,7 +75,9 @@ export class TrancheService {
       }
     
       getAll(): Promise<Tranche[]> {
-        return this.trancheRepository.findAll()
+        return this.trancheRepository.findAll({
+          populate:true
+        })
       }
       
       async update(id:string, input: TrancheUpdateInput): Promise<Tranche> {
@@ -93,7 +99,9 @@ export class TrancheService {
             montant: input.montant || tranche.montant,
             anneeAccademique:input.anneeAcademiqueId,
             description: input.description || tranche.description,
-            dateLine: input.dateLine || tranche.dateLine
+            dateLine:format(input.dateLine,'dd/MM/yyyy'),
+            priority: input.priority || tranche.priority,
+            // tranchepriority:input.tranchePriorityId
         },
         { em: this.em },
     );

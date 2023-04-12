@@ -30,6 +30,7 @@ import { GET_ALL_PERSONNELS } from "../../graphql/Queries";
 import { DELETE_PERSONNEL } from "../../graphql/Mutation";
 import Category from "./categorypersonnel";
 import ReactPaginate from "react-paginate";
+import { UseTranslation, useTranslation } from "next-i18next";
 
 const Personnel = () => {
   const router = useRouter();
@@ -41,7 +42,9 @@ const Personnel = () => {
   const [pageNumber, setPageNumber] = useState(0);
   const itemsPerPage = 15;
   const pagesVisited = pageNumber * itemsPerPage;
-  
+  const {t} = useTranslation()
+
+
   const employees = [
     { id: 1, name: "DON WILFRIED", function: "Directeur" },
     { id: 2, name: "ALAIN KANA", function: "Enseignant" },
@@ -105,10 +108,10 @@ const Personnel = () => {
             size="lg"
             textColor="pink.300"
           >
-            Liste des classes
+            {t('pages.personnel.index.personnelList')}
           </Heading>
           <Hide below="sm">
-            <Text>Dashboad / Classes / Liste classes</Text>
+            <Text>Dashboad / personnel /Liste du personnel</Text>
           </Hide>
         </Flex>
         <Flex 
@@ -133,7 +136,7 @@ const Personnel = () => {
             rightIcon={<Icon as={IoIosAdd} boxSize="20px" />}
             onClick={() => router.push("/personnel/ajouterpersonnel")}
           >
-            Ajouter Personnel
+            {t('pages.personnel.index.addPersonnelButton')}
           </Button>
         </Flex>
         <Flex gap={5} flexWrap="wrap" >

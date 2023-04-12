@@ -56,7 +56,7 @@ import {
 import { Select as Selects} from 'chakra-react-select';
 import { z } from 'zod';
 import { useRouter } from "next/router";
-import React, { useEffect, useState } from "react";
+import React, { use, useEffect, useState } from "react";
 import Link from "next/link";
 import DefaultLayout from "../../components/layouts/DefaultLayout";
 import { GiBoxUnpacking } from "react-icons/gi";
@@ -81,6 +81,7 @@ import {
   GET_MONTANT_PENSION_SALLE_BY_STUDENT,
   GET_ALL_TRANCHE_COMPLETE_BY_STUDENT,
   GET_STUDENT_SALLE,
+  GET_CLASS_FEES_BY_STUDENT_ID
 
 } from "../../graphql/Queries";
 import {
@@ -183,19 +184,22 @@ const DetailComponent = () => {
     }
 )
 
+//PENSION PAR CLASSE DE CHQUE ELEVE
+const {data:dataClassFeesByStudentId} = useQuery(GET_CLASS_FEES_BY_STUDENT_ID,
+  {
+    variables: {studentid: router.query.id}
+  }
+)
   // const {data:dataTrancheById} = useQuery(GET_STUDENT_BY_ID,
   //       {
   //         variables: {trancheid: router.query.id}
   //       }
   // );
   const {data:dataTrancheCompleteByStudent} = useQuery(GET_ALL_TRANCHE_COMPLETE_BY_STUDENT,
-    
     {
       variables: {studentid: router.query.id} 
     }
   );
-
- 
 
   const {data:dataPensionSalleByStudent} = useQuery(GET_MONTANT_PENSION_SALLE_BY_STUDENT,
     {
@@ -410,12 +414,7 @@ const DetailComponent = () => {
                     // trancheStudentId: dataTrancheStudentBySudentId?.getTrancheStudentByStudent.id,
                     montant: mont,
                     trancheId: tranche.value,
-                    tranchestudentinput: {
-                      studentId: dataStudentId?.findOnestudent.id,
-                      name: "",
-                      description: "",
-                      montant : 0
-                    }
+                    studentId: dataStudentId?.findOnestudent.id
                   }
                 }
               })

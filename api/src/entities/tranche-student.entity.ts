@@ -68,25 +68,21 @@ export class TrancheStudent {
   @Property({ default:0.000 })
   surplus!: number;
 
-  @Field({ nullable:true })
-  @Property({ nullable:true})
-  avance!: number;
+  // @Field({ nullable:true })
+  // @Property({ nullable:true})
+  // avance!: number;
 
   @ManyToOne(() => Student ,{
     nullable:false,
     onDelete:'CASCADE',
-    unique: true
   })
   student!:IdentifiedReference<Student>|null
 
   @ManyToOne(() => Tranche ,{
-    nullable:true,
+    nullable:false,
     onDelete:'CASCADE',
-    unique:true
   })
   tranche!:IdentifiedReference<Tranche>|null
 
-  @OneToMany(()=>AvanceTranche, (avance) => avance.trancheStudent)
-  avancheTranche = new Collection<AvanceTranche>(this)
 
 }

@@ -1,6 +1,6 @@
-import {Box, Tab, TabList, Tablist, TabPanel, TabPanels,Tabs} from '@chakra-ui/react';
-
-
+import {Box, Tab, TabList, Tablist, TabPanel, TabPanels,Tabs,Button} from '@chakra-ui/react';
+import { CloseIcon } from '@chakra-ui/icons'
+import Link from "next/link";
 import AccountSetting from './AccountSetting';
 import Actions from './Actions';
 import CompanySettings from './CompanySettings';
@@ -15,14 +15,14 @@ const ContentProfile =() =>{
           d="flex"
           flexDir={"column"}
           justifyContent="space-between"
-          pt={5}
+          pt={0}
           bg="white"
           rounded={"md"}
           borderWidth={1}
           borderColor="gray.200"
           style={{transform: 'translateY(-100px)'}}
-        
-        >
+         w='100%'
+        ><Button pt='-6' bg='red' color='white' size={'sm'}  ml={755} _hover={{background:"red.300"}} ><Link href='/dashboard'><CloseIcon /></Link></Button>
             <Tabs>
                 <TabList px={5}>
                     {tabs.map(tab =>(
@@ -54,7 +54,7 @@ const ContentProfile =() =>{
                     </TabPanel>
                 </TabPanels>
             </Tabs>
-            <Actions/>
+            {/* <Actions/> */}
 
         </Box>
 

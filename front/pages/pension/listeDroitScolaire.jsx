@@ -61,6 +61,7 @@ import {
   } from "../../graphql/Queries";
 import { FiSearch } from "react-icons/fi";
 import ReactPaginate from "react-paginate";
+import { setPriority } from "os";
 
 const Pension = () => {
 
@@ -68,10 +69,11 @@ const Pension = () => {
     const [query , setQuery] = useState("");
     const [name, setName] = useState("");
     const [montant, setMontant] = useState();
-    const [dateLine, setDateLine] = useState("");
+    const [dateLine, setDateLine] = useState();
     const [anneeAcademiqueId, setAnneeAcademiqueId] = useState("");
     const [salleId, setSalleId] = useState("");
     const [tranchePriorityId, setTranchePriorityId] = useState("");
+    const [priority, setPriority] = useState();
     //STATE DE LA PAGINATION
     const itemsPerPage = 15;
     const [pageNumber, setPageNumber] = useState(0);
@@ -194,9 +196,10 @@ const Pension = () => {
     
     const addTranchePension = async() => {
       console.log(name);
-      console.log(anneeAcademiqueId);
+      console.log("annee academiqueId", anneeAcademiqueId);
       console.log(montant);
       console.log(dateLine);
+      console.log("saleId",salleId )
       await createTranchePension({
         variables:{
           tranche:{
@@ -205,7 +208,8 @@ const Pension = () => {
             dateLine: new Date(dateLine),
             anneeAcademiqueId: anneeAcademiqueId,
             salleId: salleId,
-            tranchePriorityId: tranchePriorityId
+            priority: parseInt(priority)
+            // tranchePriorityId: tranchePriorityId
           }, 
           refetchQueries:[{
             query: GET_ALL_TRANCHE_PENSION
@@ -241,6 +245,7 @@ const Pension = () => {
     const changePage = ({ page }) => {
       setPageNumber(page);
     };
+
   return (
     <DefaultLayout>
       <Box p="3" pt={"80px"} w="full">
@@ -388,7 +393,7 @@ const Pension = () => {
 
 
           {/* CREATION D'NE PRIORITE POUR LA TRANCHE */}
-      <Box mt={8} mb={5}>
+      {/* <Box mt={8} mb={5}>
           <Box 
           display={{md:"flex"}}
           > 
@@ -461,10 +466,10 @@ const Pension = () => {
               </AlertDialogContent>
             </AlertDialog>
           </Box>
-        </Box>
+        </Box> */}
 
         {/* TABLEAU DES LA PRIORITES*/}
-        <Box 
+        {/* <Box 
           width={["400px", "400px","400px"]} 
           border="1px" 
           borderColor={"GREEN"}
@@ -487,7 +492,7 @@ const Pension = () => {
               </Tbody>
             </Table>
           </TableContainer>
-        </Box>
+        </Box> */}
 
 {/* FORMULAIRE DE CREATION DES TRANCHES DE LA PENSIONS */}
         <Box mt={"50px"} >
@@ -563,7 +568,14 @@ const Pension = () => {
                     </FormControl>
                     <FormControl mt={4}>
                         <FormLabel>Priorite</FormLabel>
-                        <Select 
+                        <Input 
+                          type={"number"} 
+                          name="priority"
+                          value={priority}
+                          placeholder="Valeur"
+                          onChange = {(event)=> setPriority(event.target.value)}
+                      />
+                        {/* <Select 
                             type={'text'} 
                             name="tranchePriorityId"
                             value={tranchePriorityId}
@@ -577,7 +589,7 @@ const Pension = () => {
                               </option>
                             ))
                           }
-                        </Select>
+                        </Select> */}
                     </FormControl>
                     <FormControl mt={4}>
                         <FormLabel>Classe</FormLabel>
@@ -610,7 +622,7 @@ const Pension = () => {
                     <FormControl mt={4}>
                         <FormLabel>Annee academique</FormLabel>
                         <Select 
-                            type={'text'} 
+                            type={'date'} 
                             name="anneeAcademiqueId"
                             value={anneeAcademiqueId}
                             placeholder="Annee academique"

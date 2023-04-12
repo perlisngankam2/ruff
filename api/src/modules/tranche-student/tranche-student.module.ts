@@ -13,8 +13,8 @@ import { TwilioModule } from 'nestjs-twilio';
 @Module({
     imports:[
         MikroOrmModule.forFeature({ entities: [TrancheStudent] }),
-        StudentModule,
-        TrancheModule,
+        forwardRef(() =>StudentModule),
+        forwardRef(() =>TrancheModule),
         forwardRef(() => AvanceTrancheModule),
         TwilioModule.forRoot({
             accountSid: "AC0a6add445c06ee381b4ab8ee989d8220",

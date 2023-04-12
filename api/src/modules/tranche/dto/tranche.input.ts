@@ -12,17 +12,20 @@ export class TrancheCreateInput {
   @Field(()=>ID,{nullable:true})
   salleId?:string
 
-  @Field(()=>ID,{nullable:true})
-  tranchePriorityId?:string
+  // @Field(()=>ID,{nullable:true})
+  // tranchePriorityId?:string
 
   @Field({nullable:true})
   name?: string;
-
+  
   @Field({nullable:true})
   description?: string;
 
   @Field({nullable:true,defaultValue:0})
   montant?: number;
+  
+  @Field({nullable:true,defaultValue:0})
+  priority?: number;
 
   @Field(()=>Date,{nullable:true})
   dateLine?: Date;

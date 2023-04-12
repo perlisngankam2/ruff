@@ -168,6 +168,7 @@ export const CREATE_TRANCHE_PENSION = gql `
             description
             dateLine
             montant
+            priority
         }
     }
 `
@@ -521,11 +522,24 @@ mutation createprimepersonnel ($primePersonnel: PrimePersonnelCreateInput!) {
 }
 `;
 
-//Salaire personnel
+//generer le Salaire personnel
 
 export const CREATE_SALAIRE = gql `
 mutation createsalaire ($input: SalaireCreateInput!) {
     createsalaire (input: $input) {
+        id
+        jourPaie
+        moisPaie
+        montant
+    }
+}
+`;
+
+//payer salaire
+
+export const PAY_SALAIRE = gql `
+mutation createpaysalaire ($input: PaySalaireCreateInput!) {
+    createpaysalaire (input: $input) {
         id
         jourPaie
         moisPaie

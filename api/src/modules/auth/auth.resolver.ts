@@ -20,7 +20,8 @@ export class AuthResolver{
     login(@Args('loginInput') loginInput: LoginInput, @Context() context ){
         return this.authservice.login(context.user);
     }
-
+    
+    @Mutation(() => User)
     loginUpdate(@Args('loginInput') loginUpdate: LoginUpdate){
         return this.authservice.updateLogin(loginUpdate);
     }

@@ -5,7 +5,6 @@ import { CREATE_SALAIRE } from "../graphql/Mutation";
 
 function initialisationPaiement() {
 
-
   return (
     <DefaultLayout>
       <Box pt="70px" w="100%" bg={"#f6f7fb"}>

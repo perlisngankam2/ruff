@@ -9,7 +9,7 @@ import {
   } from '@mikro-orm/core';
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { EntityRepository } from '@mikro-orm/postgresql';
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable, forwardRef } from '@nestjs/common';
 import { Field, ID, ObjectType } from '@nestjs/graphql';
 import { Pension } from 'src/entities/pension.entity';
 import { AnneeAccademiqueService } from '../anne_accademique/anne-accademique.service';
@@ -17,14 +17,18 @@ import { NiveauEtudeService } from '../niveau_etude/niveau-etude.service';
 import { SalleService } from '../salle/salle.service';
 import { PensionCreateInput } from './dto/pension.input';
 import { PensionUpdateInput } from './dto/pension.update';
+import { format } from 'date-fns';
+import { StudentService } from '../student/student.service';
+import { TrancheStudentService } from '../tranche-student/tranche-student.service';
 
 @Injectable()
 export class PensionService {
     constructor(
         @InjectRepository(Pension)
         private pensionRepository: EntityRepository<Pension>,
-        private salleService: SalleService,
-        private anneAccademique: AnneeAccademiqueService,
+        @Inject(forwardRef(() => StudentService))
+        private studentservice: StudentService,
+        private trancheStudentservice: TrancheStudentService,
         private  em: EntityManager,
       ) {}
     
@@ -34,21 +38,21 @@ export class PensionService {
 
         const pension = new Pension()
 
-        await this.anneAccademique.findByOne({id:input.anneeAcademiqueId})
-            
-            // : await this.anneAccademique.create(input.anneeAccademique)
-
-        await this.salleService.findByOne({id:input.salleId})
-             
-            // : await this.salleService.create(input.salle)
+        const student = await this.studentservice.findByOne(input.studentId)
+        if(!student){
+          throw Error('!!!!!!!!!!!!!!!!!STUDENT DOES NOT EXISTS!!!!!!!!!!!!!!!!!!')
+        }
+        const montant = (await this.trancheStudentservice.findByStudent(student.id)).map(a=>a.montant).reduce(function(a,b){return a+b})
 
         wrap(pension).assign(
           {
-            montantPension:input.montantPension,
+            montantPension:montant,
             name: input.name,
             description: input.description,
-            salle: input.salleId,
-            anneeAccademique: input.anneeAcademiqueId
+            // anneeAccademique: input.anneeAcademiqueId,
+            dateLine: format(input.dateLine, 'dd/MM/yyyy'),
+            student: student.id
+            
           },
           {
             em:this.em
@@ -70,41 +74,26 @@ export class PensionService {
         return this.pensionRepository.findAll()
       }
       
-    //   async update(id:string, input: PensionUpdateInput): Promise<Pension> {
-    //     const pension = await this.findById(id)
-    //     if (input.salle) {
-    //         const salle =
-    //         input.salle_id &&
-    //           (await this.salleService.findByOne({ id: input.salle_id }));
-      
-    //         if (!salle) {
-    //           throw new NotFoundError('salle no exist' || '');
-    //         }
-    //         this.salleService.update(salle.id, input.salle);
-    //       }
+      async update(id:string, input: PensionUpdateInput): Promise<Pension> {
+        const pension = await this.findById(id)
+        const student = await this.studentservice.findByOne(input.studentId)
+        if(!student){
+          throw Error('!!!!!!!!!!!!!!!!!STUDENT DOES NOT EXISTS!!!!!!!!!!!!!!!!!!')
+        }
+        const montant = (await this.trancheStudentservice.findByStudent(student.id)).map(a=>a.montant).reduce(function(a,b){return a+b})
 
-    //       if (input.anneeAccademique) {
-    //         const annee =
-    //         input.anneeAcademique_id &&
-    //           (await this.anneAccademique.findbyOne({ id: input.anneeAcademique_id }));
-      
-    //         if (!annee) {
-    //           throw new NotFoundError('annee no exist' || '');
-    //         }
-    //         this.anneAccademique.update(annee.id, input.anneeAccademique);
-    //       }
-        
-    //     wrap(pension).assign({
-    //         name:input.name || pension.name,
-    //         montant: Number(input.montant) || Number(pension.montant) || 0.0,
-    //         description: input.description || pension.description,
-    //         dateLine: input.dateLine || pension.dateLine
-    //     },
-    //     { em: this.em },
-    // );
-      //   await this.pensionRepository.persistAndFlush(pension);
-      //   return pension;
-      // }
+        wrap(pension).assign({
+            name:input.name || pension.name,
+            dateLine: format(input.dateLine, 'dd/MM/yyyy'),
+            description: input.description || pension.description,
+            montantPension:montant,
+            student:input.studentId||pension.student
+        },
+        { em: this.em },
+    );
+        await this.pensionRepository.persistAndFlush(pension);
+        return pension;
+      }
       async delete(id:string){
         const a = this.findById(id)
         await this.pensionRepository.removeAndFlush(a)

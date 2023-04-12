@@ -14,9 +14,8 @@ import {
   } from '@mikro-orm/core';
   import { Field, ID, ObjectType } from '@nestjs/graphql';
 import { PrimaryKeyUuid } from '../decorators/PrimaryKeyUuid.decorator';
-import { Personnel } from './pesonnel.entity';
-import { TrancheStudent } from './tranche-student.entity';
 import { Tranche } from './tranche.entity';
+import { Student } from './student.entity';
 
 @Entity()
 @ObjectType()
@@ -52,11 +51,11 @@ export class AvanceTranche {
   @Property({default:false})
   complete!: boolean;
 
-  @ManyToOne(() => TrancheStudent ,{
+  @ManyToOne(() => Student ,{
     nullable:false,
     onDelete:'CASCADE',
   })
-  trancheStudent!:IdentifiedReference<TrancheStudent>|null
+  student!:IdentifiedReference<Student>|null
 
   @ManyToOne(() => Tranche ,{
     nullable:false,

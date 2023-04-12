@@ -19,9 +19,9 @@ export default function Home() {
 export async function getStaticProps({ locale }) {
   return {
     props: {
-      ...(await getStaticPropsTranslations(locale)),
+      ...(await getStaticPropsTranslations(locale))
       // Will be passed to the page component as props
-    },
+    }
   };
 }
 // export const getStaticProps = async ({ locales }) => ({

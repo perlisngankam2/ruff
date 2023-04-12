@@ -28,7 +28,8 @@ import {
     GET_ALL_TRANCHE_PENSION,
     GET_RESTE_TRANCHE_BY_STUDENT,
     GET_ALL_MONTANT_TRANCHE_BY_STUDENT,
-    GET_ALL_TRANCHE_DATE_LINE_BY_STUDENT
+    GET_ALL_TRANCHE_DATE_LINE_BY_STUDENT,
+    GET_CLASS_FEES_BY_STUDENT_ID
  } from "../../../graphql/Queries";
 import { use, useEffect } from "react";
 import { useQuery } from "@apollo/client";
@@ -60,6 +61,13 @@ const receipt = () => {
     const {data:dataStudentSalle} = useQuery(GET_STUDENT_SALLE,
         {
             variables: {studentid: router.query.id} 
+        }
+    )
+
+    //PENSION PAR CLASSE DE CHQUE ELEVE
+    const {data:dataClassFeesByStudentId} = useQuery(GET_CLASS_FEES_BY_STUDENT_ID,
+        {
+        variables: {studentid: router.query.id}
         }
     )
 
@@ -418,7 +426,7 @@ const receipt = () => {
                                                 <Tr gap='1'>
                                                     <Th border='1px'>
                                                         <Box h='13px' fontSize='8px'>
-                                                            <Text textAlign={"center"}></Text>
+                                                            <Text textAlign={"center"}>{dataClassFeesByStudentId?.getClassfeebyStudent}</Text>
                                                         </Box>
                                                     </Th>
                                                     <Th border='1px'>

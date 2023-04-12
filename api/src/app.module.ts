@@ -49,7 +49,7 @@ import { ExpenseModule } from './modules/expenses/expense.module';
 import { StatisticModule } from './modules/statistics/statistics.module';
 import { PersonnelSalleModule } from './modules/personnel_salle/personnelsalle.module';
 import { CourseModule } from './modules/course/course.module';
-import { PaySalaireModule } from './modules/paysalary/paysalary.module';
+// import { PaySalaireModule } from './modules/paysalary/paysalary.module';
 import { TranchePriorityModule } from './modules/tranche_priority/tranche-priority.module';
 
 @Module({
@@ -70,7 +70,6 @@ import { TranchePriorityModule } from './modules/tranche_priority/tranche-priori
     EtablissementModule, 
     SectionModule, 
     CycleModule, 
-    PaySalaireModule,
     NiveauEtudeModule, 
     SalleModule, 
     AnneAccademiqueModule, 
@@ -91,6 +90,7 @@ import { TranchePriorityModule } from './modules/tranche_priority/tranche-priori
     ExpenseModule,
     StatisticModule,
     CourseModule,
+    TranchePriorityModule,
     TranchePriorityModule,
 
   

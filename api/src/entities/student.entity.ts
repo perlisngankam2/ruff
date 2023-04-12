@@ -21,6 +21,8 @@ import { ParentStudent } from './parentStudent.entity';
 import { Salle } from './salle.entity';
 import { TrancheStudent } from './tranche-student.entity';
 import { User } from './user.entity';
+import { AvanceTranche } from './avance-tranche.entity';
+import { Pension } from './pension.entity';
 
 @Entity()
 @ObjectType()
@@ -41,9 +43,9 @@ export class Student {
   @Property({ nullable: true })
   lastname!: string;
 
-  @Field({ defaultValue: false })
-  @Property({ default: false })
-  dateOfBirth!: string;
+  @Field(()=>Date)
+  @Property({nullable:true})
+  dateOfBirth!:Date;
 
   @Field({ nullable: true })
   @Property({ nullable: true })
@@ -167,6 +169,12 @@ export class Student {
   
   @OneToMany(()=>TrancheStudent, (tranche) => tranche.student)
   trancheStudent = new Collection<TrancheStudent>(this)
+
+  @OneToMany(()=> Pension, (pension) => pension.student)
+  pension = new Collection<Pension>(this)
+
+  @OneToMany(()=>AvanceTranche, (tranche) => tranche.student)
+  avancheTranche = new Collection<AvanceTranche>(this)
 
   @OneToMany(()=>ParentStudent, (parentStudent) => parentStudent.student)
   parentStudent = new Collection<ParentStudent>(this)

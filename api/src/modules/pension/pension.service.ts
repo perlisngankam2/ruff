@@ -154,7 +154,7 @@ export class PensionService {
 
         wrap(pension).assign({
             name:input.name || pension.name,
-            dateLine: format(input.dateLine, 'dd/MM/yyyy'),
+            dateLine: input.dateLine,
             description: input.description || pension.description,
             montantPension:montant,
             student:input.studentId||pension.student

@@ -42,6 +42,18 @@ export class Pension {
   @Property({ default:0 })
   montantPension!: number;
 
+  @Field({defaultValue:false})
+  @Property({default:false})
+  complete!: boolean;
+
+  @Field({ defaultValue:0.000 })
+  @Property({ default:0.000 })
+  reste!: number;
+
+  @Field({ defaultValue:0.000 })
+  @Property({ default:0.000 })
+  surplus!: number;
+
   @Field(() => Date, { nullable: true })
   @Property({ nullable: true })
   dateLine!: Date | null;

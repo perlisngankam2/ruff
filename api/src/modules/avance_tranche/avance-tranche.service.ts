@@ -18,6 +18,7 @@ import { TrancheStudentService } from '../tranche-student/tranche-student.servic
 import { TrancheService } from '../tranche/tranche.service';
 import { AvanceTrancheCreateInput } from './dto/avance-tranche.input';
 import { AvanceTrancheUpdateInput } from './dto/avance-tranche.update';
+import { PensionService } from '../pension/pension.service';
 
 @Injectable()
 export class AvanceTrancheService {
@@ -30,6 +31,7 @@ export class AvanceTrancheService {
         private studentservice: StudentService,
         @Inject(forwardRef(() => TrancheService))
         private trancheservice: TrancheService,
+        private pensionservice:PensionService,
         private  em: EntityManager,
       ) {}
     
@@ -120,8 +122,9 @@ async createavancetranche(
         //       {
         //         em:this.em
         //       })
-        //       this.avanceTrancheRepository.persistAndFlush(avanceTranche)
-        //       this.trancheStudentservice.saveTranche(student.id,tranche.id)
+        //       await this.avanceTrancheRepository.persistAndFlush(avanceTranche)
+        //       await this.trancheStudentservice.saveTranche(student.id,tranche.id)
+        //       await this.pensionservice.savePension(student.id)
         //       return avanceTranche
         //       // console.log('===========>'+inscript)   
         //     }
@@ -148,16 +151,18 @@ async createavancetranche(
               })
 
               // ici je dois verifier si l'accumulation de toutes les montants des avances d'une inscription
-              this.avanceTrancheRepository.persistAndFlush(avanceTranche)
-              this.trancheStudentservice.saveTranche(student.id,tranche.id)
+              await this.avanceTrancheRepository.persistAndFlush(avanceTranche)
+              await this.trancheStudentservice.saveTranche(student.id,tranche.id)
+              await this.pensionservice.savePension(student.id)
               
               return avanceTranche   
         }
 
 
 
-          this.avanceTrancheRepository.persistAndFlush(avanceTranche)
-          this.trancheStudentservice.saveTranche(student.id,tranche.id)
+          await this.avanceTrancheRepository.persistAndFlush(avanceTranche)
+          await this.trancheStudentservice.saveTranche(student.id,tranche.id)
+          await this.pensionservice.savePension(student.id)
          
           return avanceTranche
 }

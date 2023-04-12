@@ -18,6 +18,7 @@ import { Periode } from './periode.entity';
 import { Personnel } from './pesonnel.entity';
 import { PrimePersonnel } from './prime-personnel.entity';
 import { RetenuPersonnel } from './retenu-personnel.entity';
+import { format } from 'date-fns';
 
 
 @Entity()
@@ -38,6 +39,9 @@ jourPaie!: string;
 @Field({ nullable: true })
 @Property({ nullable: true })
 moisPaie!: string;
+
+@Property({ onCreate: () => new Date() })
+createdAt = format(new Date(),'HH:mm:ss');
 
 @Field({ defaultValue: true })
 @Property({ default: true })

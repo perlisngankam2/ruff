@@ -28,6 +28,9 @@ type Pension {
   name: String
   description: String
   montantPension: Float!
+  complete: Boolean!
+  reste: Float!
+  surplus: Float!
   dateLine: DateTime
 }
 
@@ -382,6 +385,10 @@ type Query {
   findAlltranchestudent: [TrancheStudent!]!
   trancheStudent(id: String!): TrancheStudent!
   getStudentByTrancheStudent(studentid: String!): TrancheStudent!
+  findAllpension: [Pension!]!
+  pension(id: String!): Pension!
+  findAlltranchepriority: [TranchePriority!]!
+  findOnetranchepriority(id: String!): TranchePriority!
   findAll: [Inscription!]!
   findOne(id: String!): Inscription!
   findAllavanceinscription: [AvanceInscription!]!
@@ -394,15 +401,11 @@ type Query {
   getsalairebypersonnel(personnelid: String!): [Salaire!]!
   PersonnelMonthSalary(personnelid: String!): [String!]!
   PersonnelNetSalary(personnelid: String!): [Float!]!
-  findAllpension: [Pension!]!
-  pension(id: String!): Pension!
   findAllparents: [Parent!]!
   parent(id: String!): Parent!
   totalNumberofStudentsinClass(id: String!): Float!
   findAllCourse: [Course!]!
   findOneCourse(id: String!): Course!
-  findAlltranchepriority: [TranchePriority!]!
-  findOnetranchepriority(id: String!): TranchePriority!
   me: Personnel!
 }
 
@@ -478,6 +481,10 @@ type Mutation {
   createTrancheStudent(trancheStudent: TrancheStudentCreateInput!): TrancheStudent!
   updateTrancheStudent(id: String!): TrancheStudent!
   deletetranchestudent(id: String!): TrancheStudent!
+  createPension(pension: PensionCreateInput!): Pension!
+  updatePension(id: String!): Pension!
+  deletepension(id: String!): Pension!
+  createtranchepriority(input: TranchePriorityInput!): TranchePriority!
   createInscription(inscription: InscriptionInput!): Inscription!
   update(inscription: InscriptionInput!, id: String!): Inscription!
   createAvanceInscription(avanceInscription: AvanceInscriptionCreateInput!): AvanceInscription!
@@ -486,9 +493,6 @@ type Mutation {
   deletefraisincription(id: String!): FraisInscription!
   upodatefraisinscription(id: String!, input: UpdateFraisInscriptionInput!): FraisInscription!
   createsalaire(input: SalaireCreateInput!): Salaire!
-  createPension(pension: PensionCreateInput!): Pension!
-  updatePension(id: String!): Pension!
-  deletepension(id: String!): Pension!
   createParent(parent: ParentCreateInput!): Parent!
   updateParent(id: String!): Parent!
   deleteparent(id: String!): Parent!
@@ -499,7 +503,6 @@ type Mutation {
   findallexpenses: [Expense!]!
   createCourse(input: CourseCreateInput!): Course!
   deleteCourse(id: String!): Course!
-  createtranchepriority(input: TranchePriorityInput!): TranchePriority!
   login(loginInput: LoginInput!): LoginResponse!
   loginUpdate(loginInput: LoginUpdate!): User!
 }
@@ -884,6 +887,19 @@ input TrancheStudentCreateInput {
   tranche: TrancheCreateInput
 }
 
+input PensionCreateInput {
+  studentId: ID
+  anneeAcademiqueId: ID
+  name: String
+  description: String
+  dateLine: DateTime
+}
+
+input TranchePriorityInput {
+  ID: ID
+  name: String
+}
+
 input InscriptionInput {
   fraisincription_id: ID
   anneacademiqueId: ID
@@ -945,14 +961,6 @@ input SalaireCreateInput {
   moisPaie: String
 }
 
-input PensionCreateInput {
-  studentId: ID
-  anneeAcademiqueId: ID
-  name: String
-  description: String
-  dateLine: DateTime
-}
-
 input ParentCreateInput {
   ID: String
   firstname: String
@@ -983,11 +991,6 @@ input ExpenseUpdateInput {
 input CourseCreateInput {
   title: String
   time: Float
-}
-
-input TranchePriorityInput {
-  ID: ID
-  name: String
 }
 
 input LoginInput {

@@ -67,7 +67,7 @@ const receipt = () => {
     //PENSION PAR CLASSE DE CHQUE ELEVE
     const {data:dataClassFeesByStudentId} = useQuery(GET_CLASS_FEES_BY_STUDENT_ID,
         {
-        variables: {studentid: router.query.id}
+            variables: {studentid: router.query.id}
         }
     )
 

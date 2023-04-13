@@ -31,6 +31,9 @@ import { DELETE_PERSONNEL } from "../../graphql/Mutation";
 import Category from "./categorypersonnel";
 import ReactPaginate from "react-paginate";
 import { UseTranslation, useTranslation } from "next-i18next";
+import { getStaticPropsTranslations } from "../../types/staticProps";
+
+
 
 const Personnel = () => {
   const router = useRouter();
@@ -232,4 +235,12 @@ const Personnel = () => {
   );
 };
 
+export async function getStaticProps({ locale }) {
+  return {
+    props: {
+      ...(await getStaticPropsTranslations(locale)),
+      // Will be passed to the page component as props
+    },
+  };
+}
 export default Personnel;

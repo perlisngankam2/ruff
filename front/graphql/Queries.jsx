@@ -278,11 +278,11 @@ export const GET_ALL_MONTANT_TRANCHE_BY_SALLE = gql `
     }
 `
 
-export const GET_MONTANT_PENSION_SALLE_BY_STUDENT = gql `
-    query findMontantPensionstudent ($studentid: String!) {
-        findMontantPensionstudent (studentid: $studentid)
-    }
-`
+// export const GET_MONTANT_PENSION_SALLE_BY_STUDENT = gql `
+//     query findMontantPensionstudent ($studentid: String!) {
+//         findMontantPensionstudent (studentid: $studentid)
+//     }
+// `
 
 //one cycle
 export const GET_ONE_CYCLE =  gql `
@@ -519,3 +519,32 @@ export const GET_ALL_TRANCHE_COMPLETE_BY_STUDENT = gql `
         }
     }
 `;
+
+export const GET_ALL_TRANCHE_BY_STUDENT_ID = gql `
+    query getClassfeeofStudent ($studentid: String!) {
+        getClassfeeofStudent (studentid: $studentid) {
+            id
+            name
+            description
+            dateLine
+            montant
+            priority
+        }
+    }
+`;
+
+export const GET_PENSION_ALREADY_PAY_BY_STUDENT_ID = gql `
+    query findpensionbystudent ($studentid: String!) {
+        findpensionbystudent (studentid: $studentid) {
+            id
+            name
+            description
+            montantPension
+            complete
+            reste
+            surplus
+            dateLine
+        }
+    }
+`;
+    

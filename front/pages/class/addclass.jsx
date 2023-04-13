@@ -46,15 +46,13 @@ const AddClass = () => {
   // console.log(typeof bb)
   
   let input;
-  
   // const addSalle = (event) => {
   // console.log('vdw')
   // }
-    
+
   // if (loading) return "creation en cour..."
   // if(error)  return "erreur! ${error.message}";
   
- 
   useEffect(() => {
     // console.log(dataSection?.findAllsection)
     console.log("j")
@@ -183,7 +181,7 @@ const AddClass = () => {
                                         {cycle.name}
                                     </option>
                                 ))
-                            )} 
+                          )} 
                         </Select>
                  </FormControl>
                   <Flex gap={5} pt="30px">

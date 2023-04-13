@@ -9,7 +9,7 @@ import {
   AlertDialogOverlay,
   useDisclosure,
   Button,
-    Center,
+  Center,
   Flex,
   Input,
   FormControl,
@@ -25,7 +25,6 @@ import { CREATE_SECTION, UPDATA_SECTION} from "../../graphql/Mutation";
 import { GET_ALL_SECTION } from "../../graphql/Queries";
 import { useState } from "react";
 import { useRouter } from "next/router";
-
 
 const  SectionCreate =  () => {
 

@@ -36,6 +36,9 @@ import { GET_ALL_PERSONNEL_BY_ID} from "../../graphql/Queries";
 import { GET_ALL_PERSONNELS } from "../../graphql/Queries";
 import { GET_PRIME, GET_ALL_RETENUE, GET_Category_Personnel_BY_ID, GET_Category_Personnel_ID } from "../../graphql/Queries";
 import { CREATE_PRIME_PERSONNEL, CREATE_RETENUE_PERSONNEL, CREATE_SALAIRE } from "../../graphql/Mutation";
+import { getStaticPropsTranslations } from "../../types/staticProps";
+import {useTranslation } from "next-i18next";
+
 
 export const colorOptions = [ 
   { value: "blue", label: "Blue", color: "#0052CC" },
@@ -62,10 +65,10 @@ const Profil = () => {
     const { isOpen:isOpenns, onOpen:onOpenns, onClose:onClosses } = useDisclosure();
     const { isOpen:isOpenns1, onOpen:onOpenns1, onClose:onClosses1 } = useDisclosure();
     const { isOpen:isOpenns2, onToggle:onToggle1, onOpen:onOpenns2, onClose:onClosses2 } = useDisclosure();
-        const { isOpen:isOpenns3, onOpen:onOpenns3, onClose:onClosses3 } = useDisclosure();
+     const { isOpen:isOpenns3, onOpen:onOpenns3, onClose:onClosses3 } = useDisclosure();
     const cancelRef = React.useRef()
-
-  const router = useRouter();
+    const router = useRouter();
+    const { t } = useTranslation();
 
    const {data:dataPersonnelId} = useQuery(GET_ALL_PERSONNEL_BY_ID,
   {
@@ -234,11 +237,23 @@ const montant = dataCategorie?.findOneCategoriepersonnel.montant;
               {dataPersonnelId.findOnePersonnel.fonction}
             </Text>
             <Box background="blue.500" p="3" rounded="md" color="white">
-              <Text>Nom : {dataPersonnelId.findOnePersonnel.firstName}</Text>
-              <Text>Prenom : {dataPersonnelId.findOnePersonnel.lastName}</Text>
-              <Text>Situation matrimoniale :{dataPersonnelId.findOnePersonnel.situationMatrimonial} </Text>
-              <Text>Telephone: {dataPersonnelId.findOnePersonnel.phoneNumber}</Text>
-              <Text>Sexe : {dataPersonnelId.findOnePersonnel.sexe}</Text>
+              <Text>
+                {t('pages.personnel.ajouterpersonnel.firstName')}
+                : {dataPersonnelId.findOnePersonnel.firstName}
+              </Text>
+              <Text>   
+                {t('pages.personnel.ajouterpersonnel.lastName')}
+                : {dataPersonnelId.findOnePersonnel.lastName}
+              </Text>
+              <Text>
+              {t('pages.personnel.ajouterpersonnel.maritalStatus')}
+                :{dataPersonnelId.findOnePersonnel.situationMatrimonial} </Text>
+              <Text>
+                {t('pages.personnel.ajouterpersonnel.phoneNumber')}
+                : {dataPersonnelId.findOnePersonnel.phoneNumber}</Text>
+              <Text>
+                {t('pages.personnel.ajouterpersonnel.gender')}
+                : {dataPersonnelId.findOnePersonnel.sexe}</Text>
             </Box>
             <Box background="white" p="3" rounded="md">
             <Text>Date de naissance :{dataPersonnelId.findOnePersonnel.dateOfBirth}</Text>
@@ -930,5 +945,12 @@ const montant = dataCategorie?.findOneCategoriepersonnel.montant;
     </DefaultLayout>
   );
 };
-
+export async function getStaticProps({ locale }) {
+  return {
+    props: {
+      ...(await getStaticPropsTranslations(locale)),
+      // Will be passed to the page component as props
+    },
+  };
+}
 export default Profil;

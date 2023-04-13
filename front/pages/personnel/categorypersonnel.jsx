@@ -171,10 +171,10 @@ const Category = () => {
                 >
                     <Thead background="colors.secondary">
                     <Tr>
-                        <Th>Nom</Th>
-                        <Th>Description</Th>
-                        <Th>Salaire de base</Th>
-                        <Th>Actions</Th>
+                        <Th>{t('pages.personnel.categorypersonnel.name')}</Th>
+                        <Th>{t('pages.personnel.categorypersonnel.description')}</Th>
+                        <Th>{t('pages.personnel.categorypersonnel.salaireDebase')}</Th>
+                        <Th>{t('pages.personnel.categorypersonnel.action')}</Th>
                     </Tr>
                     </Thead>
                     {data && ( 

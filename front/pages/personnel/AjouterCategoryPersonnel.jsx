@@ -30,6 +30,9 @@ import { CREATE_CATEGORY_PERSONNEL } from "../../graphql/Mutation";
 import { GET_ALL_Category_Personnel } from "../../graphql/Queries";
 import { useState } from "react";
 import { useRouter } from "next/router";
+// import {getSt}
+import { useTranslation } from "next-i18next";
+
 
 function ajoutercategorypersonnel  () {
 
@@ -42,7 +45,7 @@ function ajoutercategorypersonnel  () {
     
     const toast = useToast();
     const router = useRouter()
-
+    const {t} = useTranslation();
     // const addCategoryPersonnel = async (event, value) => {
     //     console.log("value")
     //     event.preventDefault();
@@ -112,7 +115,7 @@ function ajoutercategorypersonnel  () {
                     // onClick = {() => router.push(personnel/AjouterCategoryPersonnel)} 
                 >
                     {/* <Link href={'/personnel/ajoutercategorypersonnel'}>                                 */}
-                        Ajouter une categorie                                 
+                 {t('pages.personnel.AjouterCategoriePersonnel.addButton')}                         
                     {/* </Link>               */}
                 </Button>
           </Box>
@@ -127,7 +130,6 @@ function ajoutercategorypersonnel  () {
                     onClose={onClose}
                 >
                     <AlertDialogOverlay
-                     
                     >
                         <AlertDialogContent 
                         >
@@ -143,42 +145,48 @@ function ajoutercategorypersonnel  () {
                                         fontSize={['15px','20px','26px']} 
                                         p='2' 
                                     >
-                                    Ajouter une categorie de personnel
+                                         {t('pages.personnel.AjouterCategoriePersonnel.heading')}                         
                                     </Heading>
                                 </Box>
                             </AlertDialogHeader>
                             <AlertDialogBody>
                             <Box>
                                 <FormControl>
-                                    <FormLabel>Nom</FormLabel>
+                                    <FormLabel>
+                                        {t('pages.personnel.AjouterCategoriePersonnel.name')}                         
+                                    </FormLabel>
                                     <Input 
                                         id="nom"
                                         type={'text'} 
                                         name="nom"
-                                        placeholder="nom"
+                                        placeholder={t('pages.personnel.AjouterCategoriePersonnel.name')}                         
                                         onChange = {(event) => setNom(event.target.value)}
                                         value={nom}
                                      />
                                 </FormControl>
                                 <FormControl mt="15px">
-                                    <FormLabel>Description</FormLabel>
+                                    <FormLabel>
+                                        {t('pages.personnel.AjouterCategoriePersonnel.description')}                         
+                                    </FormLabel>
                                     <Input 
                                         id="description"
                                         type={'text'} 
                                         name="description"
-                                        placeholder="Description"
+                                        placeholder=  {t('pages.personnel.AjouterCategoriePersonnel.description')}                         
                                         onChange={e => setDescription(e.target.value)}
                                         value={description}
                                     />
                                 </FormControl>
                                 <FormControl mt="15px">
-                                    <FormLabel>Salaire de base</FormLabel>
-                                    <FormLabel>Salaire de base</FormLabel>
+                                    <FormLabel>
+                                        {t('pages.personnel.AjouterCategoriePersonnel.salaireDebase')}                         
+                                    </FormLabel>
                                     <Input 
                                         id="montant"
                                         type={'text'} 
                                         name="montant"
-                                        placeholder="Salaire de base"
+                                        placeholder= {t('pages.personnel.AjouterCategoriePersonnel.valueSalaireDebase')}                         
+                                        
                                         onChange={e => setMontant(e.target.value)}
                                         value={montant}
                                     />
@@ -191,7 +199,7 @@ function ajoutercategorypersonnel  () {
                                     onClick={onClose} 
                                     colorScheme='red' 
                                 >
-                                    annuler 
+                                    {t('pages.personnel.AjouterCategoriePersonnel.cancelButton')}                         
                                 </Button>
                                 {/* <Link href={'/personnel/ajoutercategorypersonnel'}> */}
                                     <Button 
@@ -200,7 +208,7 @@ function ajoutercategorypersonnel  () {
                                     // onClick={onClose}
                                     onClick={addCategoryPersonnel}
                                     >
-                                    Creer
+                                    {t('pages.personnel.AjouterCategoriePersonnel.submitButton')}                         
                                     </Button>
                                 {/* </Link>  */}
                             </AlertDialogFooter>
@@ -213,4 +221,13 @@ function ajoutercategorypersonnel  () {
     
     );
   }
+
+//   export async function getStaticProps({ locale }) {
+//     return {
+//       props: {
+//         ...(await getStaticPropsTranslations(locale)),
+//         // Will be passed to the page component as props
+//       },
+//     };
+//   }
 export default ajoutercategorypersonnel;

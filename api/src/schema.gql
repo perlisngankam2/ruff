@@ -339,6 +339,7 @@ type Query {
   getTrancheStudentByStudent(studentid: String!): TrancheStudent!
   AmountrExpectedByTranche(studentid: String!): [Float!]!
   getClassfeebyStudent(studentid: String!): Float!
+  getClassfeeofStudent(studentid: String!): [Tranche!]!
   findAlllocalistaion: [Localisation!]!
   localisation(id: String!): Localisation!
   findAllcategorieeleve: [CategorieEleve!]!
@@ -387,6 +388,7 @@ type Query {
   getStudentByTrancheStudent(studentid: String!): TrancheStudent!
   findAllpension: [Pension!]!
   pension(id: String!): Pension!
+  findpensionbystudent(studentid: String!): Pension!
   findAlltranchepriority: [TranchePriority!]!
   findOnetranchepriority(id: String!): TranchePriority!
   findAll: [Inscription!]!

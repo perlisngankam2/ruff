@@ -28,7 +28,7 @@ export class PensionService {
         private pensionRepository: EntityRepository<Pension>,
         @Inject(forwardRef(() => StudentService))
         private studentservice: StudentService,
-        @Inject(forwardRef(() => StudentService))
+        @Inject(forwardRef(() => TrancheStudentService))
         private trancheStudentservice: TrancheStudentService,
         private  em: EntityManager,
       ) {}
@@ -69,14 +69,17 @@ export class PensionService {
         }
       findById(id:string){
         return this.pensionRepository.findOne(id)
-        }
+      }
     
       getAll(): Promise<Pension[]> {
         return this.pensionRepository.findAll()
       }
 
       async savePension(studentid:string){
-        const montantpension = (await this.trancheStudentservice.findByStudent(studentid)).map(a=>a.montant).reduce(function(a,b){return a+b})
+        // const montantpension = (await this.trancheStudentservice.findByStudent(studentid)).map(a=>a.montant).reduce(function(a,b){return a+b})
+        const trancheStudent = await this.trancheStudentservice.findByStudents(studentid)
+        console.log(">>>>>>>>>"+ " " +trancheStudent )
+        const montantpension = trancheStudent.map(a=>a.montant).reduce(function(a,b){return a+b})
         const pension = await this.findpensionbystudent(studentid)
         const fees_to_be_paied = await this.studentservice.getclassfeebystudent(studentid)
 
@@ -112,7 +115,6 @@ export class PensionService {
         
           await this.pensionRepository.persistAndFlush(pension)
           return pension
-    
         }
 
         if(pension!=null){
@@ -150,7 +152,7 @@ export class PensionService {
         if(!student){
           throw Error('!!!!!!!!!!!!!!!!!STUDENT DOES NOT EXISTS!!!!!!!!!!!!!!!!!!')
         }
-        const montant = (await this.trancheStudentservice.findByStudent(student.id)).map(a=>a.montant).reduce(function(a,b){return a+b})
+        const montant = (await this.trancheStudentservice.findByStudents(student.id)).map(a=>a.montant).reduce(function(a,b){return a+b})
 
         wrap(pension).assign({
             name:input.name || pension.name,

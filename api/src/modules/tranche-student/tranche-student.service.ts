@@ -67,15 +67,29 @@ export class TrancheStudentService {
         return this.trancheStudentRepository.findOne(filters);
       }
 
-    findByStudent(id: string): Promise<TrancheStudent[] | null> {
-        return this.trancheStudentRepository.find({student:id});
+    // async findBystudent(id: string): Promise<TrancheStudent[] | null> {
+    //     return await this.trancheStudentRepository.find({student:id});
+    //   }
+
+    async findByStudents(studentid: string): Promise<TrancheStudent[] | null> {
+        // return this.trancheStudentRepository.find({student:id});
+        const where = {};
+      if (studentid) {
+        where['student'] = studentid;
       }
+      
+      const a = await this.em.find(TrancheStudent, where, {
+        populate: true,
+        orderBy: { id: 'ASC' },
+      });
+      
+      return a
+            }
 
     findByTrancheandStudent(studentid: string,trancheid:string): Promise<TrancheStudent | null> {
         return this.trancheStudentRepository.findOne({student:studentid,tranche:trancheid});
       }
    
-
     findById(id:string){
         return this.trancheStudentRepository.findOne(id)
     }

@@ -15,7 +15,7 @@ import { TrancheStudentService } from '../tranche-student/tranche-student.servic
 import { StudentCreateInput } from './dto/student.input';
 import { StudentUpdateInput } from './dto/student.update';
 import { StudentService } from './student.service';
-
+import { Tranche } from 'src/entities/tranche.entity';
 
 @Resolver(() => Student)
 export class StudentResolver {
@@ -68,4 +68,9 @@ export class StudentResolver {
   async getClassfeebyStudent(@Args('studentid') studentid:string){
     return await this.studentService.getclassfeebystudent(studentid)
   }
+
+  @Query(()=>[Tranche])
+  async getClassfeeofStudent(@Args('studentid') studentid:string){
+    return await this.studentService.findlistfees(studentid)
+  }
 }

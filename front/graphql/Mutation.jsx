@@ -447,6 +447,36 @@ export const UPDATE_CYCLE = gql `
     }
 `;
 
+
+//update eleve
+
+export const UPDATE_STUDENT = gql `
+mutation updateStudent ($id: String!, $input: StudentCreateInput!) {
+    updateStudent (id: $id, input: $input) {
+        id
+        matricule
+        firstname
+        lastname
+        dateOfBirth
+        sex
+        adress
+        transport
+        fatherFirstName
+        fatherLastName
+        fatherPhoneNumber
+        fatherProfession
+        motherFirstName
+        motherLastName
+        motherPhoneNumber
+        motherProfession
+        tutorFirstName
+        tutorLastName
+        tutorPhoneNumber
+        tutorProfession
+    }
+}
+`
+
 //create user
 export const CREATE_USER = gql `
     mutation createuser ($createUser: UserCreateInput!) {

@@ -16,8 +16,19 @@ import {
 import { useRouter } from "next/router";
 import DefaultLayout from "../../components/layouts/DefaultLayout";
 import { useMutation, useQuery } from "@apollo/client";
-import { CREATE_STUDENT } from "../../graphql/Mutation";
-import { GET_ALL_SECTION , GET_ALL_CYCLE, GET_ALL_CLASS, GET_ALL_Category_Eleve, GET_ALL_STUDENT } from "../../graphql/Queries";
+import { 
+  CREATE_STUDENT,
+  UPDATE_STUDENT,
+ } from "../../graphql/Mutation";
+import { 
+  GET_ALL_SECTION , 
+  GET_ALL_CYCLE, 
+  GET_ALL_CLASS, 
+  GET_ALL_Category_Eleve, 
+  GET_ALL_STUDENT ,
+  GET_STUDENT_BY_ID
+} 
+  from "../../graphql/Queries";
 
 
 const AjouterEleve = () => {
@@ -58,38 +69,104 @@ const AjouterEleve = () => {
   const{data: dataClass} = useQuery(GET_ALL_CLASS);
   const {data:dataCategoryStudent} = useQuery(GET_ALL_Category_Eleve);
   const [ createStudent, error] = useMutation(CREATE_STUDENT)
+  const [updateStudent] = useMutation(UPDATE_STUDENT);
   const {data:dataSection} = useQuery(GET_ALL_SECTION);
-  const {data:dataCycle} = useQuery(GET_ALL_CYCLE);
+  const {data:dataStudentById} = useQuery(GET_STUDENT_BY_ID,
+    {
+      variables:{id: router.query.id}
+    }
+  );
+  
   // findAllstudents
+const [student, setStudent] = useState({
+  salleId: "",
+  matricule: "",
+  firstname: "",
+  lastname: "",
+  dateOfBirth: "",
+  sex: "",
+  adress: "",
+  transport: "",
+  categoryStudentId: "",
+  fatherFirstName: "",
+  fatherLastName: "",
+  fatherPhoneNumber: "",
+  fatherProfession: "",
+  motherFirstName: "",
+  motherLastName: "",
+  motherPhoneNumber: "",
+  motherProfession: "",
+  tutorFirstName: "",
+  tutorLastName: "",
+  tutorPhoneNumber: "",
+  tutorProfession: ""
+})
+
+
+useEffect(() => {
+  console.log(dataClass?.findAllsalle);
+  console.log(dataCategoryStudent?.findAllcategorieeleve)
+  if(router.query.id){
+    const dataStudentEdit = dataStudentById?.findOnestudent
+    if(dataStudentEdit){
+      setStudent ({
+      salleId: dataStudentEdit.salleId,
+      matricule: dataStudentEdit.matricule,
+      firstname: dataStudentEdit.firstname,
+      lastname: dataStudentEdit.lastname,
+      dateOfBirth: dataStudentEdit.dateOfBirth,
+      sex: dataStudentEdit.sex,
+      adress: dataStudentEdit.adress,
+      transport: dataStudentEdit.transport,
+      categoryStudentId: dataStudentEdit.categoryStudentId,
+      fatherFirstName: dataStudentEdit.fatherFirstName,
+      fatherLastName: dataStudentEdit.fatherLastName,
+      fatherPhoneNumber: dataStudentEdit.fatherPhoneNumber,
+      fatherProfession: dataStudentEdit.fatherProfession,
+      motherFirstName: dataStudentEdit.motherFirstName,
+      motherLastName: dataStudentEdit.motherLastName,
+      motherPhoneNumber: dataStudentEdit.motherPhoneNumber,
+      motherProfession: dataStudentEdit.motherProfession,
+      tutorFirstName: dataStudentEdit.tutorFirstName,
+      tutorLastName: dataStudentEdit.tutorLastName,
+      tutorPhoneNumber: dataStudentEdit.tutorPhoneNumber,
+      tutorProfession: dataStudentEdit.tutorProfession
+    })
+    }
+  }
+  // console.log(dataSection?.findAllsection)
+  // console.log(dataCycle?.findAllcycle)
+}, [dataStudentById])
+
 
   const HandleClick = async (event) => {
     event.preventDefault();
-    
+    if(!router.query.id){
     await createStudent({ 
       variables:{
         student: { 
-          matricule: matricule,
-          firstname: firstname,
-          lastname: lastname,
+          matricule: student.matricule,
+          firstname: student.firstname,
+          lastname: student.lastname,
           // classe: classe,
-          dateOfBirth: dateOfBirth,
-          sex: sex,
-          adress: adress,
-          transport: transport,
-          categoryStudentId: categoryStudentId,
-          salleId: salleId,
-          fatherFirstName: fatherFirstName,
-          fatherLastName: fatherLastName,
-          fatherPhoneNumber: fatherPhoneNumber,
-          fatherProfession: fatherProfession,
-          motherFirstName: motherFirstName,
-          motherLastName: motherLastName,
-          motherPhoneNumber: motherPhoneNumber,
-          motherProfession: motherProfession,
-          tutorFirstName: tutorFirstName,
-          tutorLastName: tutorLastName,
-          tutorPhoneNumber: tutorPhoneNumber,
-          tutorProfession: tutorProfession
+          dateOfBirth: student.dateOfBirth,
+          sex: student.sex,
+          adress: student.adress,
+          transport: student.transport,
+          categoryStudentId: student.categoryStudentId,
+          salleId: student.salleId,
+          fatherFirstName: student.fatherFirstName,
+          fatherLastName:student.fatherLastName,
+          fatherPhoneNumber: student.fatherPhoneNumber,
+          fatherProfession: student.fatherProfession,
+          motherFirstName: student.motherFirstName,
+          motherLastName: student.motherLastName,
+          motherPhoneNumber: student.motherPhoneNumber,
+          motherProfession: student.motherProfession,
+          tutorFirstName: student.tutorFirstName,
+          tutorLastName: student.tutorLastName,
+          tutorPhoneNumber: student.tutorPhoneNumber,
+          tutorProfession: student.tutorProfession
         }
       },
       refetchQueries: [{
@@ -102,7 +179,48 @@ const AjouterEleve = () => {
       status: "success",
       duration: 3000,
       isClosable: true,
-    });
+    })
+  }else{
+    await updateStudent({
+      variables:{
+        id: router.query.id,
+        input: { 
+          matricule: student.matricule,
+          firstname: student.firstname,
+          lastname: student.lastname,
+          // classe: classe,
+          dateOfBirth: student.dateOfBirth,
+          sex: student.sex,
+          adress: student.adress,
+          transport: student.transport,
+          categoryStudentId: student.categoryStudentId,
+          salleId: student.salleId,
+          fatherFirstName: student.fatherFirstName,
+          fatherLastName:student.fatherLastName,
+          fatherPhoneNumber: student.fatherPhoneNumber,
+          fatherProfession: student.fatherProfession,
+          motherFirstName: student.motherFirstName,
+          motherLastName: student.motherLastName,
+          motherPhoneNumber: student.motherPhoneNumber,
+          motherProfession: student.motherProfession,
+          tutorFirstName: student.tutorFirstName,
+          tutorLastName: student.tutorLastName,
+          tutorPhoneNumber: student.tutorPhoneNumber,
+          tutorProfession: student.tutorProfession
+        }
+      },
+      refetchQueries: [{
+        query: GET_ALL_STUDENT
+      }]
+    })
+    toast({
+      title: "Mise a jour d'un élève.",
+      description: "Mise a jour de l'eleve reussi.",
+      status: "success",
+      duration: 3000,
+      isClosable: true,
+    })
+  }
     router.push("/eleves")
     
     setMatricule("");
@@ -134,12 +252,6 @@ const AjouterEleve = () => {
   //strinf de l'element
   //newData(numberIn)
 
-  useEffect(() => {
-    console.log(dataClass?.findAllsalle);
-    console.log(dataCategoryStudent?.findAllcategorieeleve)
-    // console.log(dataSection?.findAllsection)
-    // console.log(dataCycle?.findAllcycle)
-  })
 
   // const handleSubmit = (e) => {
   //   e.preventDefault();
@@ -216,9 +328,9 @@ const AjouterEleve = () => {
                       <FormLabel mb="-5px">Nom</FormLabel>
                     <Input
                       // placeholder="Nom de l'élève"
-                      value={firstname}
-                      onChange={(e) => setFirstname(e.target.value)}
-                      name="nom"
+                      value={student.firstname}
+                      onChange={(e) => setStudent({...student, firstname:e.target.value})}
+                      name="firstname"
                       variant="flushed"
                       // mt={"-25px"}
                     />
@@ -227,9 +339,9 @@ const AjouterEleve = () => {
                       <FormLabel mb="-5px">Prenom</FormLabel>
                     <Input
                       // placeholder="Prenom"
-                      name="prenom"
-                      value={lastname}
-                      onChange={(e) => setLastname(e.target.value)}
+                      name="firstname"
+                      value={student.lastname}
+                      onChange={(e) => setStudent({...student, lastname:e.target.value})}
                       variant="flushed"
                     />
                   </FormControl>
@@ -262,8 +374,8 @@ const AjouterEleve = () => {
                     <Input
                       type="date"
                       name="dateOfBirth"
-                      value={dateOfBirth}
-                      onChange={(e) => setDateOfBirth(e.target.value)}
+                      value={student.dateOfBirth}
+                      onChange={(e) => setStudent({...student, dateOfBirth:e.target.value})}
                       variant="flushed"
                     />
                   </FormControl>
@@ -271,8 +383,8 @@ const AjouterEleve = () => {
                     <FormLabel>Sexe</FormLabel>
                     <Select
                       name="sex"
-                      value={sex}
-                      onChange={(e) => setSex(e.target.value)}
+                      value={student.sex}
+                      onChange={(e) => setStudent({...student, sex:e.target.value})}
                       variant="flushed"
                     >
                       <option>Masculin</option>
@@ -290,8 +402,8 @@ const AjouterEleve = () => {
                     <Input
                       type="text"
                       name="adress"
-                      value={adress}
-                      onChange={(e) => setAdress(e.target.value)}
+                      value={student.adress}
+                      onChange={(e) => setStudent({...student, adress:e.target.value})}
                       variant="flushed"
                     />
                   </FormControl>
@@ -300,8 +412,8 @@ const AjouterEleve = () => {
                       <Input
                         type="text"
                         name="matricule"
-                        value={matricule}
-                        onChange={(e) => setMatricule(e.target.value)}
+                        value={student.matricule}
+                        onChange={(e) => setStudent({...student, matricule:e.target.value})}
                         variant="flushed"
                       />
                     </FormControl>
@@ -315,8 +427,8 @@ const AjouterEleve = () => {
                         <Select
                           placeholder="Transport"
                           name="transport"
-                          value={transport}
-                          onChange={(e) => setTransport(e.target.value)}
+                          value={student.transport}
+                          onChange={(e) => setStudent({...student, transport:e.target.value})}
                           variant="flushed"
                     >
                       <option>Oui</option>
@@ -328,14 +440,17 @@ const AjouterEleve = () => {
                       <Select
                         placeholder="Categorie"
                         name="categoryStudentId"
-                        value={categoryStudentId}
-                        onChange={(e) => setCategoryStudentId(e.target.value)}
+                        value={student.categoryStudentId}
+                        onChange={(e) => setStudent({...student, categoryStudentId:e.target.value})}
                         variant="flushed"
                       >
                         { 
                           dataCategoryStudent && (
                             dataCategoryStudent.findAllcategorieeleve.map((categoryStudent, index) => (
-                                <option value={categoryStudent.id }key={index}>
+                                <option 
+                                selected={student.categoryStudentId == categoryStudent.id? "selected": ""}
+                                  value={categoryStudent.id }key={index}
+                                >
                                   {categoryStudent.nom}
                                 </option>
                             ))
@@ -349,14 +464,17 @@ const AjouterEleve = () => {
                   <Select
                     placeholder="Classe"
                     name="salleId"
-                    value={salleId}
-                    onChange={(e) => setSalleId(e.target.value)}
+                    value={student.salleId}
+                    onChange={(e) => setStudent({...student, salleId:e.target.value})}
                     variant="flushed"
                   >
                     { 
                       dataClass && (
                         dataClass.findAllsalle.map((classe, index) => (
-                            <option value={classe.id} key={index}>
+                            <option 
+                              selected={student.salleId == classe.id? "selected": ""}
+                             value={classe.id} key={index}
+                            >
                               {classe.name}
                             </option>
                         ))
@@ -407,8 +525,8 @@ const AjouterEleve = () => {
                         <Input
                           // placeholder="Nom du père"
                           name="fatherFirstName"
-                          value={fatherFirstName}
-                          onChange={(e) => setFatherFirstName(e.target.value)}
+                          value={student.fatherFirstName}
+                          onChange={(e) => setStudent({...student, fatherFirstName:e.target.value})}
                           variant="flushed"
                         />
                     </FormControl>
@@ -417,8 +535,8 @@ const AjouterEleve = () => {
                       <Input
                         // placeholder="Prenom"
                         name="fatherLastName"
-                        value={fatherLastName}
-                        onChange={(e) => setFatherLastName(e.target.value)}
+                        value={student.fatherLastName}
+                        onChange={(e) => setStudent({...student, fatherLastName:e.target.value})}
                         variant="flushed"
                       />
                     </FormControl>
@@ -436,8 +554,8 @@ const AjouterEleve = () => {
                     <Input
                       // placeholder="Profession"
                       name="fatherProfession"
-                      value={fatherProfession}
-                      onChange={(e) => setFatherProfession(e.target.value)}
+                      value={student.fatherProfession}
+                      onChange={(e) => setStudent({...student, fatherProfession:e.target.value})}
                       variant="flushed"
                     />
                   </FormControl>
@@ -452,8 +570,8 @@ const AjouterEleve = () => {
                       type="tel"
                       // placeholder="Numero de téléphone"
                       name="fatherPhoneNumber"
-                      value={fatherPhoneNumber}
-                      onChange={(e) => setFatherPhoneNumber(e.target.value)}
+                      value={student.fatherPhoneNumber}
+                      onChange={(e) => setStudent({...student, fatherPhoneNumber:e.target.value})}
                       variant="flushed"
                     />
                    </FormControl>
@@ -483,8 +601,8 @@ const AjouterEleve = () => {
                       <Input
                         // placeholder="Nom de la mère"
                         name="motherFirstName"
-                        value={motherFirstName}
-                        onChange={(e) => setMotherFirstName(e.target.value)}
+                        value={student.motherFirstName}
+                        onChange={(e) => setStudent({...student, motherFirstName:e.target.value})}
                         variant="flushed"
                       />
                     </FormControl>
@@ -498,8 +616,8 @@ const AjouterEleve = () => {
                       <Input
                         // placeholder="Prenom"
                         name="motherLastName"
-                        value={motherLastName}
-                        onChange={(e) => setMotherLastName(e.target.value)}
+                        value={student.motherLastName}
+                        onChange={(e) => setStudent({...student, motherLastName:e.target.value})}
                         variant="flushed"
                       />
                     </FormControl>
@@ -516,8 +634,8 @@ const AjouterEleve = () => {
                         type="tel"
                         // placeholder="Numero de téléphone"
                         name="motherPhoneNumber"
-                        value={motherPhoneNumber}
-                        onChange={(e) => setMotherPhoneNumber(e.target.value)}
+                        value={student.motherPhoneNumber}
+                        onChange={(e) => setStudent({...student, motherPhoneNumber:e.target.value})}
                         variant="flushed"
                       />
                     </FormControl>
@@ -531,8 +649,8 @@ const AjouterEleve = () => {
                       <Input
                         // placeholder="Profession"
                         name="motherProfession"
-                        value={motherProfession}
-                        onChange={(e) => setMotherProfession(e.target.value)}
+                        value={student.motherProfession}
+                        onChange={(e) => setStudent({...student, motherProfession:e.target.value})}
                         variant="flushed"
                       />
                     </FormControl>
@@ -567,8 +685,8 @@ const AjouterEleve = () => {
                     <Input
                       // placeholder="Nom du tuteur"
                       name="tutorFirstName"
-                      value={tutorFirstName}
-                      onChange={(e) => setTutorFirstName(e.target.value)}
+                      value={student.tutorFirstName}
+                      onChange={(e) => setStudent({...student, tutorFirstName:e.target.value})}
                       variant="flushed"
                     />
                   </FormControl>
@@ -582,8 +700,8 @@ const AjouterEleve = () => {
                     <Input
                       // placeholder="Prenom"
                       name="tutorLastName"
-                      value={tutorLastName}
-                      onChange={(e) => setTutorLastName(e.target.value)}
+                      value={student.tutorLastName}
+                      onChange={(e) => setStudent({...student, tutorLastName:e.target.value})}
                       variant="flushed"
                     />
                   </FormControl>
@@ -599,8 +717,8 @@ const AjouterEleve = () => {
                     <Input
                       // placeholder="Profession"
                       name="tutorProfession"
-                      value={tutorProfession}
-                      onChange={(e) => setTutorProfession(e.target.value)}
+                      value={student.tutorProfession}
+                      onChange={(e) => setStudent({...student, tutorProfession:e.target.value})}
                       variant="flushed"
                     />
                   </FormControl>
@@ -614,8 +732,8 @@ const AjouterEleve = () => {
                     <Input
                       type="tel"
                       // placeholder="Numero de téléphone"
-                      value={tutorPhoneNumber}
-                      onChange={(e) => setTutorPhoneNumber(e.target.value)}
+                      value={student.tutorPhoneNumber}
+                      onChange={(e) => setStudent({...student, tutorPhoneNumber:e.target.value})}
                       variant="flushed"
                     />
                   </FormControl>

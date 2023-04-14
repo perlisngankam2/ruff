@@ -280,7 +280,11 @@ const Eleves = () => {
                               mt={['8px', '8px', '8px', '8px']}
                             >
                               <Link 
-                                href="/eleves/modifiereleve">
+                                href={{
+                                  pathname: Routes.EleveEdit?.path || '',
+                                  query:{id: student.id}
+                                }}
+                                >
                                   <Icon
                                   as={FiEdit}
                                   boxSize="40px"

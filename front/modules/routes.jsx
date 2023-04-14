@@ -46,6 +46,9 @@ const RouteName = {
         // type: AuthRoute.Public,
         // platforms: [Platform.Main]
     },
+    EleveEdit:{ 
+      path:'/eleves/ajoutereleve'
+    },
     Personnel: {
       path: '/personnel',
       // type: AuthRoute.Public,

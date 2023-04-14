@@ -18,12 +18,16 @@ import { useEffect ,useState } from "react";
 import { useMutation, useQuery } from "@apollo/client";
 import { MdDescription } from "react-icons/md";
 import DefaultLayout from "../../components/layouts/DefaultLayout";
-import { CREATE_SALLE} from "../../graphql/Mutation";
+import { 
+  CREATE_SALLE,
+  UPDATE_SALLE
+} from "../../graphql/Mutation";
 import { 
   GET_ALL_SECTION , 
   GET_ALL_CYCLE, 
   GET_ALL_STUDY_LEVEL, 
   GET_ALL_CLASS,
+  GET_SALLE_BY_ID,
 }  from "../../graphql/Queries";
 
 const AddClass = () => {
@@ -37,9 +41,24 @@ const AddClass = () => {
   const [cycleId, setCycleId] = useState("");
   const [montantPensionSalle, setMontantPensionSalle] = useState();
   const [createSalle] = useMutation(CREATE_SALLE);
+  const [updateSalle] = useMutation(UPDATE_SALLE);
   const {data:dataSection} = useQuery(GET_ALL_SECTION);
   const {data:dataStudyLevel} = useQuery(GET_ALL_STUDY_LEVEL);
   const {data:dataCycle} = useQuery(GET_ALL_CYCLE);
+
+  const [salle, setSalle] = useState({
+    name:"",
+    montantPensionSalle: "",
+    cycleId: "",
+    niveauEtudeId: ""
+  })
+
+  //RECUPERATION D'UNE CLASSE A PARTIR DE SON ID
+  const {data:dataSalleById} = useQuery(GET_SALLE_BY_ID, 
+    {
+      variables:{id: router.query.id}
+    }
+    )
 
   // const bb = parseInt(montantPension)
   // // console.log(parseFloat(montantPension))
@@ -57,7 +76,18 @@ const AddClass = () => {
     // console.log(dataSection?.findAllsection)
     console.log("j")
     console.log(dataStudyLevel?.findAllNiveauEtude)
-  }, [dataSection])
+    if(router.query.id) {
+      const dataSalleEdit = dataSalleById?.findOnesalle
+      if(dataSalleEdit){
+        setSalle({
+          name: dataSalleEdit.name,
+          montantPensionSalle: dataSalleEdit.montantPensionSalle,
+          cycleId: dataSalleEdit.cycleId,
+          niveauEtudeId: dataSalleEdit.niveauEtudeId
+        })
+      }
+    }
+  }, [dataSection], [dataSalleById])
   
   const  addClasse = async (event, value) => {
     event.preventDefault();
@@ -69,14 +99,16 @@ const AddClass = () => {
     console.log(montantPensionSalle);
     console.log(niveauEtudeId);
 
-    const cycleData = await createSalle({
+    // const cycleData =
+    if(!router.query.id){
+     await createSalle({
         variables: {
-            salle: {
-              name: name,
-              niveauEtudeId: niveauEtudeId,
-              cycleId: cycleId,
-              montantPensionSalle: parseInt(montantPensionSalle)
-            }
+          salle: {
+            name: salle.name,
+            niveauEtudeId: salle.niveauEtudeId,
+            cycleId: salle.cycleId,
+            montantPensionSalle: parseInt(salle.montantPensionSalle)
+          }
         },
         refetchQueries:[{
           query: GET_ALL_CLASS
@@ -90,6 +122,23 @@ const AddClass = () => {
       duration: 3000,
       isClosable: true,
     });
+  }else{
+    await updateSalle({
+      variables:{
+        id:router.query.id,
+        input: {
+          name: salle.name,
+          montantPensionSalle: parseInt(salle.montantPensionSalle),
+          niveauEtudeId: salle.niveauEtudeId,
+          cycleId: salle.cycleId
+        }
+      },
+      refetchQueries:[{
+        query: GET_ALL_CLASS
+      }]
+    })
+    
+  }
     router.push("/class")
 }
 
@@ -132,8 +181,8 @@ const AddClass = () => {
                       type="text"
                       // maxW="300px"
                       name="name"
-                      value={name}
-                      onChange = {(event) => setName(event.target.value)}
+                      value={salle.name}
+                      onChange = {(event) => setSalle( ...salle,{name:event.target.value})}
                     />
                   </FormControl>
                   <FormControl>
@@ -143,8 +192,8 @@ const AddClass = () => {
                       type="number"
                       // maxW="300px"
                       name="montantPensionSalle"
-                      value={montantPensionSalle}
-                      onChange = {(event) => setMontantPensionSalle(event.target.value)}
+                      value={salle.montantPensionSalle}
+                      onChange = {(event) => setSalle({...salle, montantPensionSalle:event.target.value})}
                     />
                   </FormControl>
                   <FormControl mt="15px">
@@ -154,12 +203,15 @@ const AddClass = () => {
                         name="niveauEtudeId"
                         placeholder="Nom"
                         minW="300px"
-                        onChange = {(event) => setNiveauEtudeId(event.target.value)}
-                        value={niveauEtudeId}
+                        onChange = {(event) => setSalle({...salle,niveauEtudeId:event.target.value})}
+                        value={salle.niveauEtudeId}
                       >
                           {dataStudyLevel &&(
                               dataStudyLevel.findAllNiveauEtude.map((niveauEtude, index) => ( 
-                                  <option value={niveauEtude.id} key={index}>
+                                  <option 
+                                    selected={salle.niveauEtudeId == niveauEtude.id? "selected": ''}
+                                    value={niveauEtude.id} key={index}
+                                  >
                                     {niveauEtude.name}
                                   </option>
                               ))
@@ -172,8 +224,8 @@ const AddClass = () => {
                           name="cycleId"
                           placeholder="Cycle"
                           minW="300px"
-                          onChange = {(event) => setCycleId(event.target.value)}
-                          value={cycleId}
+                          onChange = {(event) => setSalle({...salle,cycleId:event.target.value})}
+                          value={salle.cycleId}
                         >
                          {dataCycle &&(
                                 dataCycle.findAllcycle.map((cycle, index) => ( 

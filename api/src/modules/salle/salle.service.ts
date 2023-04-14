@@ -50,19 +50,15 @@ export class SalleService {
             em: this.em
           }
         )
-
-
-
-
-        wrap(salle).assign({
-        name: input.name,
-        montantPensionSalle: input.montantPensionSalle,
-        section: input.sectionId,
-        cycle: input.cycleId
-        },
-        {
-          em: this.em
-        })
+        // wrap(salle).assign({
+        // name: input.name,
+        // montantPensionSalle: input.montantPensionSalle,
+        // section: input.sectionId,
+        // cycle: input.cycleId
+        // },
+        // {
+        //   em: this.em
+        // })
         // salle.montantPension = input.montantPension
         // salle.effectif = input.effectif
         // salle.niveau.id = niveau.id
@@ -93,25 +89,25 @@ export class SalleService {
       
       }
 
-      async updateSalle(id:string,input:SalleUpdateInput):Promise<Salle>{
-        const salle = await this.findById(id)
+      // async updateSalle(id:string,input:SalleUpdateInput):Promise<Salle>{
+      //   const salle = await this.findById(id)
 
-        wrap(salle).assign({
-          name: input.name,
-          montantPensionSalle: input.montantPensionSalle,
-          section: input.sectionId,
-          cycle: input.cycleId,
-          niveau: input.niveauEtudeId
-          // montantPension : input.montantPension
-        },
-        {
-          em: this.em
-        });
+      //   wrap(salle).assign({
+      //     name: input.name,
+      //     montantPensionSalle: input.montantPensionSalle,
+      //     section: input.sectionId,
+      //     cycle: input.cycleId,
+      //     niveau: input.niveauEtudeId
+      //     // montantPension : input.montantPension
+      //   },
+      //   {
+      //     em: this.em
+      //   });
 
-        await this.salleRepository.persistAndFlush(salle);
-        return salle
+      //   await this.salleRepository.persistAndFlush(salle);
+      //   return salle
         
-      }
+      // }
       
       async update(id:string, input: SalleUpdateInput): Promise<Salle> {
         const salle=await this.findById(id)

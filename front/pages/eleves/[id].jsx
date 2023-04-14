@@ -166,9 +166,11 @@ const DetailComponent = () => {
   // const [selectedTranches, setSelectedTranches] = useState([]); 
   // const {data:singleStudent} = useQuery(GET_STUDENT_BY_ID);
 
+  //RECUPERATION DE TOUT LES ELEVES
   const {data: dataStudent} = useQuery (GET_ALL_STUDENT);
   const {data:dataClasse} = useQuery(GET_ALL_CLASS);
   
+  //RECUPERATION DES INFOS DE CHAQUE ELEVE
   const {data:dataStudentId, loading, error} = useQuery(GET_STUDENT_BY_ID,
       {
         variables: {id: router.query.id}
@@ -181,6 +183,7 @@ const DetailComponent = () => {
     }
   ); 
 
+  //CLASSE DE CHAQUE ELEVE
   const {data:dataStudentSalle} = useQuery(GET_STUDENT_SALLE,
     {
       variables: {studentid: router.query.id} 
@@ -198,12 +201,15 @@ const {data:dataClassFeesByStudentId} = useQuery(GET_CLASS_FEES_BY_STUDENT_ID,
   //         variables: {trancheid: router.query.id}
   //       }
   // );
+
+  //LISTE DES TRANCHES QUI ONT DEJA ETE SOLDE PAR CHAQUE ELEVE
   const {data:dataTrancheCompleteByStudent} = useQuery(GET_ALL_TRANCHE_COMPLETE_BY_STUDENT,
     {
       variables: {studentid: router.query.id} 
     }
   );
 
+  
   const {data:dataTrancheByStudentId} = useQuery(GET_ALL_TRANCHE_BY_STUDENT_ID,
     {
           variables: {studentid: router.query.id} 
@@ -400,8 +406,7 @@ const {data:dataClassFeesByStudentId} = useQuery(GET_CLASS_FEES_BY_STUDENT_ID,
           console.log(dataTrancheCompleteByStudent?.getalltranchecompletedbystudent)
           console.log(dataTrancheStudentBySudentId?.getTrancheStudentByStudent)
         })
-        // console.log(dataTranchePension?.findAlltranche)
-
+    // console.log(dataTranchePension?.findAlltranche)
     // const AllTranche = dataTranchePension?.findAlltranche.map((tranche) => {
     //   const totalPension = dataTrancheStudentBySudentId?.getTrancheStudentByStudent.montant;
     //   if (totalPension >= tranche.montant) {
@@ -411,7 +416,9 @@ const {data:dataClassFeesByStudentId} = useQuery(GET_CLASS_FEES_BY_STUDENT_ID,
 
         const [resteMontantTranche, setResteMontantTranche] = useState([])
         // const montantTranche = getTrancheById(tranche.value)?.montant
-
+// const alertMontantMaxAPayer = () => {
+//   if(montant>)
+// }
         const addAvanceTranche = async() => {
           console.log(montant)
           console.log(selectedTranches)
@@ -448,7 +455,7 @@ const {data:dataClassFeesByStudentId} = useQuery(GET_CLASS_FEES_BY_STUDENT_ID,
             })
             toast({
               title: "paiement tranche pension.",
-              description: " paye avec succes.",
+              description: "Vous avez solde votre scolarite.",
               status: "success",
               duration: 3000,
               isClosable: true,
@@ -609,6 +616,7 @@ const {data:dataClassFeesByStudentId} = useQuery(GET_CLASS_FEES_BY_STUDENT_ID,
     // if (error) return <Text>Une erreur s'est produite!</Text>
     // const minNumberInput = if dataTrancheById.tranche.name = 
     
+  
   return (
     <DefaultLayout >
       <Box 
@@ -758,7 +766,6 @@ const {data:dataClassFeesByStudentId} = useQuery(GET_CLASS_FEES_BY_STUDENT_ID,
       </CardHeader>
       
       <CardBody fontSize={'sm'}>
-        
         <Flex 
           flexDirection={'column'} 
           spacing='5'
@@ -1157,9 +1164,9 @@ const {data:dataClassFeesByStudentId} = useQuery(GET_CLASS_FEES_BY_STUDENT_ID,
                                    type="number"
                                     name="montant"
                                     isRequired
-                                    min={500} 
+                                    // min={500} 
                                     // value={montant}
-                                    defaultValue={2000}
+                                    defaultValue={500}
                                     // onChange={(e)=>setMontant(e.target.value)}
                                     max={150000}
                                     // error={error}

@@ -215,10 +215,10 @@ import {
                                  mt={['8px', '8px', '8px', '8px']}
                                >
                                   <Link 
-                                  href= {{
-                                    pathname: Routes.levelEdit?.path || '',
-                                    query: {id: niveauEtude.id}
-                                  }}>
+                                    href= {{
+                                      pathname: Routes.levelEdit?.path || '',
+                                      query: {id: niveauEtude.id}
+                                    }}>
                                     <Icon
                                       as={FiEdit}
                                       boxSize="40px"

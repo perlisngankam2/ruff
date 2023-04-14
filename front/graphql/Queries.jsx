@@ -49,6 +49,18 @@ query findCategoriepersonnelbypersonnel ($personnelid: String!) {
 }
 `;
 
+export const GET_SALLE_BY_ID = gql ` 
+    query findOnesalle ($id: String!) {
+        findOnesalle (id: $id) {
+            id
+            name
+            section
+            cycle
+            montantPensionSalle
+            effectif
+        }
+    }
+` 
 
 //student
 export const GET_ALL_STUDENT =  gql `
@@ -547,4 +559,14 @@ export const GET_PENSION_ALREADY_PAY_BY_STUDENT_ID = gql `
         }
     }
 `;
+
+export const GET_ALL_RETENUE = gql `
+    query findAllretenusalarial {
+        findAllretenusalarial {
+            id
+            nom
+            description
+            montant
+        }
+    }`
     

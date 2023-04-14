@@ -9,11 +9,15 @@ import PaySlipLogoBox from "../../components/atoms/PaySlipLogoBox";
 import PaySlipInformationEmployeeBox from "../../components/atoms/PaySlipInformationEmployeeBox";
 import DefaultLayout from "../../components/layouts/DefaultLayout";
 import { useQuery, useMutation } from "@apollo/client";
-import { GET_ALL_PERSONNEL_BY_ID, GET_Category_Personnel_BY_ID, GET_Category_Personnel_ID} from "../../graphql/Queries";
+import { GET_ALL_PERSONNEL_BY_ID,
+  GET_ALL_SALAIRE_BY_ID,
+   GET_Category_Personnel_BY_ID, GET_Category_Personnel_ID} from "../../graphql/Queries";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { CREATE_SALAIRE } from "../../graphql/Mutation";
 import { useToast } from "@chakra-ui/react";
+import Routes from "../../modules/routes";
+import Link from "next/link";
 
 const PaySlip = () => {
 
@@ -88,16 +92,11 @@ const PaySlip = () => {
     }
   };
 
-
-
+// const linkPersonnelPaySlip = () =>{
+//   return (<Link></Link>)
+// }
   const HandleClick = async (event) => {
     event.preventDefault();
-
-    router.push({
-                  pathname: Routes.Bulletin?.path || '',
-                  query: {id: router.query.id}
-                })
-
     const salaireData = await createSalaire({
           variables:{
           input: { 
@@ -108,6 +107,10 @@ const PaySlip = () => {
           }
         }
       })
+      // router.push({
+      //   pathname: Routes.Bulletin?.path || '',
+      //   query: {id: router.query.id}
+      // })
 
     console.log(salaireData)
 
@@ -131,8 +134,6 @@ const PaySlip = () => {
 // if (loading) return <Text>Chargement en cour...</Text>
 
     return ( 
-
-
 
             <DefaultLayout>
       <Box 
@@ -195,7 +196,9 @@ const PaySlip = () => {
           mt="20px"
           gap={7}
         > 
-         <Box width={'340px'} gap={7} >
+         <Box width={'340px'} gap={7} as={"form"}
+            onSubmit={HandleClick}
+         >
           <Text fontSize='sm'> Salaire Mois</Text>
               <Input
                     placeholder="nom prime"
@@ -206,7 +209,6 @@ const PaySlip = () => {
                     onChange={handleMoisPaieChange}
                     isDisabled={moisPayes.includes(moisPaie)}
                     value={moisPaie}
-
                     
                   />
                   {console.log(moisPaie)}
@@ -225,10 +227,6 @@ const PaySlip = () => {
                   
                    {console.log(jourPaie)}
                   </Box>
-                  
-                
-        
-
         </Flex>
       </Center>
        <Box 
@@ -238,12 +236,17 @@ const PaySlip = () => {
        >
           <Divider />
         </Box>
-
              <Center>
-          <Button disabled={!moisPaie} type="submit" color='white' bg='#eb808a' variant='solid' mx='auto' my='auto' onClick={HandleClick}>
-              
-            Soumettre
-               
+          <Button 
+            disabled={!moisPaie} 
+            type="submit" 
+            color='white' 
+            bg='#eb808a' 
+            variant='solid'
+            mx='auto' 
+            my='auto'
+          >
+            Soumettre  
            </Button>
         </Center>
       </Box>

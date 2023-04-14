@@ -410,12 +410,12 @@ export const DELETE_TRANCHE_PENSION = gql `
     }
 `;
 //update class
-export const UPDATE_CLASS = gql `
+export const UPDATE_SALLE = gql `
     mutation UpdateSalle ($id: String!, $input: SalleUpdateInput!) {
         UpdateSalle (id: $id, input: $input) {
             id
             name
-            section
+            section 
             cycle
             montantPensionSalle
             effectif

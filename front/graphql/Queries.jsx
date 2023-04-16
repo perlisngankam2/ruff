@@ -271,7 +271,7 @@ export const GET_ALL_TRANCHE_PRIORITY = gql `
 `;
 
 //recuperation d'une tranche de pension
-export const GET_TRANCHE_PENSION_BY_ID= gql `
+export const GET_TRANCHE_PENSION_BY_ID = gql `
     query tranche ($id: String!) {
         tranche (id: $id) {
             id

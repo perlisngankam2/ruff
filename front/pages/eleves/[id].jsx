@@ -52,6 +52,7 @@ import {
   NumberInputStepper,
   NumberIncrementStepper,
   NumberDecrementStepper,
+  AlertDialogCloseButton,
 } from "@chakra-ui/react";
 import { Select as Selects} from 'chakra-react-select';
 import { z } from 'zod';
@@ -429,9 +430,9 @@ const {data:dataResteFeesToPayByStudent} = useQuery(GET_RESTE_PENSION_A_PAYER_BY
 
         const [resteMontantTranche, setResteMontantTranche] = useState([])
         // const montantTranche = getTrancheById(tranche.value)?.montant
-// const alertMontantMaxAPayer = () => {
-//   if(montant>)
-// }
+        // const alertMontantMaxAPayer = () => {
+        //   if(montant>)
+        // }
         const addAvanceTranche = async() => { 
         let studentId = dataStudentId?.findOnestudent.id
         console.log(montant)
@@ -507,43 +508,43 @@ const {data:dataResteFeesToPayByStudent} = useQuery(GET_RESTE_PENSION_A_PAYER_BY
           });
         }
 
-          const pension = dataStudentSalle?.findSalleByStudent?.montantPensionSalle
-          // const trancheStudentByStudent = dataTrancheStudentBySudentId?.getTrancheStudentByStudent
-          let totalTrancheSelectionner = 0
-          selectedTranches.forEach((tranche, index) => {
-            // console.log(getTrancheById(tranche.value));
-              totalTrancheSelectionner += getTrancheById(tranche.value)?.montant
-          })
-          console.log("pension",pension);
-          console.log("pension sel",totalTrancheSelectionner);
-          if(totalTrancheSelectionner >= pension) {
-            let temp = montant
-            console.log(temp)
-            selectedTranches.map(tranche=>{
-              const mont = getTrancheById(tranche.value)?.montant
-              temp = temp - mont
-              console.log(temp)
-              setMontant(temp)
-              createFeesAvanceTranche({
-                variables: {
-                  avancetranche:{
-                    // trancheStudentId: dataTrancheStudentBySudentId?.getTrancheStudentByStudent.id,
-                    montant: mont,
-                    trancheId: tranche.value,
-                    studentId: dataStudentId?.findOnestudent.id
-                  }
-                }
-              })
-            })
-            toast({
-              title: "paiement tranche pension.",
-              description: "Vous avez solde votre scolarite.",
-              status: "success",
-              duration: 3000,
-              isClosable: true,
-            });
-            setMontant(0);
-          }
+          // const pension = dataStudentSalle?.findSalleByStudent?.montantPensionSalle
+          // // const trancheStudentByStudent = dataTrancheStudentBySudentId?.getTrancheStudentByStudent
+          // let totalTrancheSelectionner = 0
+          // selectedTranches.forEach((tranche, index) => {
+          //   // console.log(getTrancheById(tranche.value));
+          //     totalTrancheSelectionner += getTrancheById(tranche.value)?.montant
+          // })
+          // console.log("pension",pension);
+          // console.log("pension sel",totalTrancheSelectionner);
+          // if(totalTrancheSelectionner >= pension) {
+          //   let temp = montant
+          //   console.log(temp)
+          //   selectedTranches.map(tranche=>{
+          //     const mont = getTrancheById(tranche.value)?.montant
+          //     temp = temp - mont
+          //     console.log(temp)
+          //     setMontant(temp)
+          //     createFeesAvanceTranche({
+          //       variables: {
+          //         avancetranche:{
+          //           // trancheStudentId: dataTrancheStudentBySudentId?.getTrancheStudentByStudent.id,
+          //           montant: mont,
+          //           trancheId: tranche.value,
+          //           studentId: dataStudentId?.findOnestudent.id
+          //         }
+          //       }
+          //     })
+          //   })
+          //   toast({
+          //     title: "paiement tranche pension.",
+          //     description: "Vous avez solde votre scolarite.",
+          //     status: "success",
+          //     duration: 3000,
+          //     isClosable: true,
+          //   });
+          //   setMontant(0);
+          // }
         }  
         //   onClose();
         //   toast({
@@ -951,7 +952,13 @@ const {data:dataResteFeesToPayByStudent} = useQuery(GET_RESTE_PENSION_A_PAYER_BY
                     size='xl'
                   >
                   <AlertDialogOverlay>
+
                     <AlertDialogContent  >
+                      <AlertDialogCloseButton
+                        pl="20px"
+                        pb="20px"
+                      />
+
                         <AlertDialogHeader 
                           fontSize='sm' 
                           fontWeight='base' 
@@ -965,14 +972,17 @@ const {data:dataResteFeesToPayByStudent} = useQuery(GET_RESTE_PENSION_A_PAYER_BY
                           <Heading 
                             as='h4' 
                             textAlign={'center'} 
-                            fontSize={['15px','20px','26px']} 
+                            fontSize={['15px','20px','20px']} 
                             p='2' 
+                            mt="10px"
                           >
                               Groupe Scolaire Bilingue Awono Bilongue
                           </Heading>
                         </Box>
                         </AlertDialogHeader>
+                        
                       <AlertDialogBody>
+
                         <Box mt='4'>
                           {/* BOUTON D'INITIALISATION DE LA PENSION */}
                             {/* <Box display="flex"> 

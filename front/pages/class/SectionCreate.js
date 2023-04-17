@@ -1,4 +1,4 @@
-import { Box, Heading } from "@chakra-ui/react";
+import { AlertDialogCloseButton, Box, Heading } from "@chakra-ui/react";
 import SearchBar from "../../components/atoms/searchbar";
 import {
   AlertDialog,
@@ -118,7 +118,7 @@ const  SectionCreate =  () => {
                     size='xl'
                 >
                     <AlertDialogOverlay>
-                        <AlertDialogContent  >
+                        <AlertDialogContent width={"400px"} >
                             <AlertDialogHeader 
                                 fontSize='sm' 
                                 fontWeight='base' 
@@ -127,13 +127,15 @@ const  SectionCreate =  () => {
                                 <Box>
                                     <Heading 
                                         textAlign={'center'} 
-                                        fontSize={['15px','20px','26px']} 
+                                        fontSize={['15px','20px','24px']} 
                                         p='2' 
                                     >
                                     Ajouter une section
                                     </Heading>
                                 </Box>
                             </AlertDialogHeader>
+                            <AlertDialogCloseButton/>
+
                             <AlertDialogBody>
                             <Box>
                                 <FormControl>

@@ -1,4 +1,4 @@
-import { Box, Heading } from "@chakra-ui/react";
+import { AlertDialogCloseButton, Box, Heading } from "@chakra-ui/react";
 import SearchBar from "../../components/atoms/searchbar";
 import {
   AlertDialog,
@@ -142,13 +142,15 @@ function ajoutercategorypersonnel  () {
                                     <Heading 
                                         // as='H4' 
                                         textAlign={'center'} 
-                                        fontSize={['15px','20px','26px']} 
+                                        fontSize={['15px','20px','24px']} 
                                         p='2' 
                                     >
                                          {t('pages.personnel.AjouterCategoriePersonnel.heading')}                         
                                     </Heading>
                                 </Box>
                             </AlertDialogHeader>
+                            <AlertDialogCloseButton/>   
+
                             <AlertDialogBody>
                             <Box>
                                 <FormControl>

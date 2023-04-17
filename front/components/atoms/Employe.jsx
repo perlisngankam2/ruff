@@ -15,7 +15,8 @@ import {
   AlertDialogOverlay,
   Text,
   VStack,
-  useDisclosure
+  useDisclosure,
+  AlertDialogCloseButton
 } from "@chakra-ui/react";
 
 import Routes from "../../modules/routes";
@@ -147,9 +148,12 @@ const Employee = (props) => {
                                 fontSize='lg' 
                                 fontWeight='bold'
                                 textAlign={"center"}
+                                mt="5px"
                                 >
                                 Confirmation de suppression
                               </AlertDialogHeader>
+                              <AlertDialogCloseButton/>
+
                               <AlertDialogBody textAlign={"center"}>
                               Voulez-vous supprimer cet Personnel?
                               </AlertDialogBody>

@@ -35,7 +35,8 @@ import {
   AlertDialogHeader,
   AlertDialogBody,
   AlertDialogFooter,
-  InputRightElement
+  InputRightElement,
+  AlertDialogCloseButton
 } from "@chakra-ui/react";
 // import Link from "../../components/atoms/Link"
 import React from "react";
@@ -324,6 +325,7 @@ const Eleves = () => {
                                           >
                                           Confirmation de suppression
                                         </AlertDialogHeader>
+                                        <AlertDialogCloseButton/>
                                         <AlertDialogBody textAlign={"center"}>
                                         Voulez-vous supprimer cet elève?
                                         </AlertDialogBody>

@@ -31,7 +31,8 @@ import {
   AlertDialogHeader,
   FormControl,
   FormLabel,
-  InputRightElement
+  InputRightElement,
+  AlertDialogCloseButton
 } from "@chakra-ui/react";
 
 import DefaultLayout from "../../components/layouts/DefaultLayout";
@@ -383,9 +384,12 @@ const CycleElement = ({cycle, index}) =>{
                         fontSize='lg' 
                         fontWeight='bold'
                         textAlign={"center"}
+                        mt="5px"
                         >
                         Confirmation de suppression
                       </AlertDialogHeader>
+                    <AlertDialogCloseButton/>
+
                       <AlertDialogBody textAlign={"center"}>
                       Voulez-vous supprimer cette ce cycle?
                       </AlertDialogBody>
@@ -563,9 +567,11 @@ const SectionElement = ({section, index}) =>{
                       fontSize='lg' 
                       fontWeight='bold'
                       textAlign={"center"}
+                      mt="5px"
                       >
                       Confirmation de suppression
                     </AlertDialogHeader>
+                    <AlertDialogCloseButton/>
                     <AlertDialogBody textAlign={"center"}>
                     Voulez-vous supprimer cette cette section?
                     </AlertDialogBody>

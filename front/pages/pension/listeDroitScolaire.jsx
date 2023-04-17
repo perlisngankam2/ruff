@@ -529,8 +529,10 @@ const Pension = () => {
               <AlertDialogContent>
                 <AlertDialogHeader
                   textAlign={"center"}
+                  fontSize={['15px','20px','24px']} 
+                  mt={"5px"}
                 >
-                  Ajoutez frais scolarite
+                  Ajoutez frais de scolarite
                 </AlertDialogHeader>
                 <AlertDialogCloseButton />
                 <AlertDialogBody >

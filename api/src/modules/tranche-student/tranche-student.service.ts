@@ -193,8 +193,6 @@ async saveTranche(studentid:string,trancheid:string){
         
     // }
 
-   
-
     async delete(id:string){
     const a = this.findById(id)
     await this.trancheStudentRepository.removeAndFlush(await a)

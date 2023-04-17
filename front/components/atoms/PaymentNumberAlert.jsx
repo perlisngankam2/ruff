@@ -1,7 +1,10 @@
 import { Box, Icon, Text } from "@chakra-ui/react";
 import { AiOutlineAlert } from "react-icons/ai";
+import { UseTranslation, useTranslation } from "next-i18next";
+
 
 const PaymentNumberAlert = () => {
+  const {t} = useTranslation()
   return (
     <Box
       display="flex"
@@ -17,7 +20,7 @@ const PaymentNumberAlert = () => {
     >
       <Icon as={AiOutlineAlert} color="red.500" boxSize="14" />
       <Text fontSize="xl" align="flex-start" color="red.500">
-        7 paiements de salaire a faire ce mois
+         7 {t('atoms.PaymentNumberAlert.SalaireAPayerParMois')}
       </Text>
     </Box>
   );

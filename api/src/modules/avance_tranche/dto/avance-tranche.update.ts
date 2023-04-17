@@ -16,7 +16,7 @@ export class AvanceTrancheUpdateInput {
   trancheId?: string;
 
   @Field(()=>ID,{nullable:true})
-  StudentId?:string
+  studentId?:string
 
   @Field({nullable:true})
   name?: string;

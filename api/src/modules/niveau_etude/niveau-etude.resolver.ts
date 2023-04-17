@@ -1,5 +1,5 @@
 /* eslint-disable prettier/prettier */
-import { UseGuards } from '@nestjs/common';
+import { UseGuards } from '@nestjs/common'; 
 import {
   Args,
   ID,
@@ -7,13 +7,13 @@ import {
   Mutation,
   Query,
   ResolveField,
-  Resolver,
-} from '@nestjs/graphql';
+  Resolver, 
+}from '@nestjs/graphql';
 import { NiveauEtude } from 'src/entities/niveau-etude.entity';
 import { PrimePersonnel } from 'src/entities/prime-personnel.entity';
-import { NiveauEtudeCreateInput } from './dto/niveau-etude.input';
-import { NiveauEtudeUpdateInput } from './dto/niveau-etude.update';
-import { NiveauEtudeService } from './niveau-etude.service';
+import { NiveauEtudeCreateInput} from './dto/niveau-etude.input';
+import { NiveauEtudeUpdateInput} from './dto/niveau-etude.update';
+import { NiveauEtudeService} from './niveau-etude.service';
 
 
 @Resolver(() => NiveauEtude)
@@ -26,7 +26,7 @@ export class NiveauEtudeResolver {
   }
 
    @Mutation(() => NiveauEtude)
-  async updateNiveauEtude(@Args('id', { type: () => String }) id: string, Input: NiveauEtudeUpdateInput) {
+  async updateNiveauEtude(@Args('id', { type: () => String }) id: string, @Args('input')Input: NiveauEtudeUpdateInput) {
     return await this.niveauEtudeService.update(id,Input);
   }
 

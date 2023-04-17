@@ -8,4 +8,5 @@ export class TranchePriorityUpdateInput {
 
   @Field({nullable:true})
   name?:string
+
 }

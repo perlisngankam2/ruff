@@ -18,23 +18,23 @@ function AccountSetting(){
             gap={6}
         >
             <FormControl id='nom'>
-                <FormLabel fontWeight={'bold'}>Noms</FormLabel>
+                <FormLabel>Noms</FormLabel>
                 {account?.firstName === null?
-                <Text>{personnelData?.getpersonnelbyaccount.firstName.toUpperCase()} </Text>
+                <Text>{personnelData?.getpersonnelbyaccount.firstName} </Text>
                 :
-                <Text>{account?.firstName.toUpperCase()} </Text>
+                <Text>{account?.firstName} </Text>
                 }
             </FormControl>
             <FormControl id='prenom'>
-                <FormLabel fontWeight={'bold'}>Prenoms</FormLabel>
+                <FormLabel>Prenoms</FormLabel>
                 {account?.lastName === null?
-                <Text>{personnelData?.getpersonnelbyaccount.lastName.toUpperCase()} </Text>
+                <Text>{personnelData?.getpersonnelbyaccount.lastName} </Text>
                 :
-                <Text>{account?.lastName.toUpperCase()} </Text>
+                <Text>{account?.lastName} </Text>
                 }
             </FormControl>
             <FormControl id='telephone'>
-                <FormLabel fontWeight={'bold'}>Telephone</FormLabel>
+                <FormLabel>Telephone</FormLabel>
                   {account?.phoneNumber === null?
                 <Text>{personnelData?.getpersonnelbyaccount.phoneNumber} </Text>
                 :
@@ -42,11 +42,11 @@ function AccountSetting(){
                 }
             </FormControl>
             <FormControl id='adressemail'>
-                <FormLabel fontWeight={'bold'}>Adresse Mail</FormLabel>
+                <FormLabel>Adresse Mail</FormLabel>
                 <Text>{account?.email} </Text>
             </FormControl>
             <FormControl id='pays'>
-                <FormLabel fontWeight={'bold'}>Pays</FormLabel>
+                <FormLabel>Pays</FormLabel>
                 <Select focusBorderColor="brand.blue" placeholder="choissisez votre pays">
                     <option value='senegal'>Senegal</option>
                     <option value='Benin'>Benin</option>
@@ -58,7 +58,7 @@ function AccountSetting(){
                 </Select>
             </FormControl>
             <FormControl id='ville'>
-                <FormLabel fontWeight={'bold'}>Ville</FormLabel>
+                <FormLabel>Ville</FormLabel>
                 <Select focusBorderColor="brand.blue" placeholder="choissisez votre ville">
                     <option value='Yaounde'>Yaounde</option>
                     <option value='Douala' selected>Douala</option>

@@ -18,8 +18,11 @@ import {
   import { useMutation, useQuery } from "@apollo/client";
   import { MdDescription } from "react-icons/md";
   import DefaultLayout from "../../components/layouts/DefaultLayout";
-  import { CREATE_STUDY_LEVEL} from "../../graphql/Mutation";
-  import {GET_ALL_CYCLE, GET_ALL_STUDY_LEVEL} from "../../graphql/Queries";
+  import {
+     CREATE_STUDY_LEVEL,
+     UPDATE_LEVEL 
+    } from "../../graphql/Mutation";
+  import {GET_ALL_CYCLE, GET_ALL_STUDY_LEVEL, GET_LEVEL_BY_ID} from "../../graphql/Queries";
 //   import { GET_ALL_SECTION , GET_ALL_CYCLE} from "../../graphql/Queries";
   
   const AddLevel = () => {
@@ -27,13 +30,25 @@ import {
     const toast = useToast();
     const router = useRouter();
     const teachers = ["Ryan Jones", "Illary Daenarys ", "Julian Clinton"];
-    const [name, setName] = useState();
-    const [montantPension, setMontantPension] = useState();
-    const [cycleId, setCycleId] = useState("");
+    // const [name, setName] = useState();
+    // const [montantPension, setMontantPension] = useState();
+    // const [cycleId, setCycleId] = useState("");
+    const [level , setLevel] = useState({
+      name: "",
+      montantPension: "",
+      cycleId: ""
+    })
     const [createStudyLevel] = useMutation(CREATE_STUDY_LEVEL)
     // const [createSalle] = useMutation(CREATE_SALLE);
     // const {data:dataSection} = useQuery(GET_ALL_SECTION);
     const {data:dataCycle} = useQuery(GET_ALL_CYCLE);
+    const [updateStudyLevel] = useMutation(UPDATE_LEVEL)
+
+    const {data:dataLevelById} = useQuery(GET_LEVEL_BY_ID, {
+      variables: {
+        id: router.query.id
+      }
+    });
   
     // const bb = parseInt(montantPension)
     // // console.log(parseFloat(montantPension))
@@ -52,38 +67,70 @@ import {
       // console.log(dataSection?.findAllsection)
       console.log("j")
       console.log(dataCycle?.findAllcycle)
-    }, [dataCycle])
+      if(router.query.id) {
+        const data = dataLevelById?.niveaEtude
+        if(data) {
+          setLevel({
+            name: data.name,
+            montantPension: data.montantPension,
+            cycleId: data.cycleId,
+          })
+        }
+      }
+    }, [dataCycle, dataLevelById])
     
     const  addStudyLevel = async (event, value) => {
       event.preventDefault();
-  
-      console.log(name);
-      console.log(montantPension)
-      console.log(cycleId)
-  
-       await createStudyLevel({
+
+      if(!router.query.id) {
+        await createStudyLevel({
+           variables: {
+             niveauEtude: {
+                   name: level.name,
+                   montantPension: parseInt(level.montantPension),
+                   cycleId: level.cycleId
+               }
+           },
+           refetchQueries:[{
+             query: GET_ALL_STUDY_LEVEL
+           }]
+       })
+       toast({
+         title: "Creation d'un niveau d'etude.",
+         description: "Le niveau a ete créée avec succes.",
+         status: "success",
+         duration: 3000,
+         isClosable: true,
+       });
+      } else {
+        console.log('Update error : ' , level);
+        await updateStudyLevel({
           variables: {
-            niveauEtude: {
-                  name: name,
-                  montantPension: parseInt(montantPension),
-                  cycleId: cycleId
-              }
+            id: router.query.id,
+            input: {
+              name: level.name,
+              montantPension: parseInt(level.montantPension),
+              cycleId: level.cycleId
+            }
           },
           refetchQueries:[{
             query: GET_ALL_STUDY_LEVEL
           }]
       })
       toast({
-        title: "Creation d'un niveau d'etude.",
+        title: "Modification d'un niveau d'etude.",
         description: "Le niveau a ete créée avec succes.",
         status: "success",
         duration: 3000,
         isClosable: true,
       });
+      }
+      setLevel({
+        name: "",
+        montantPension: 0,
+        cycleId: ""
+      })
       router.push("/level/levelList")
-      setCycleId("");
-      setMontantPension("");
-      setName("");
       
   }
   
@@ -108,6 +155,7 @@ import {
                 as="form"
                 width="500px"
               > 
+              <Text>jj</Text>
                 <Heading color={"colors.primary"}>
                   Creation d'un niveau d'etude
                 </Heading>
@@ -124,8 +172,8 @@ import {
                         type="text"
                         // maxW="300px"
                         name="name"
-                        value={name}
-                        onChange = {(event) => setName(event.target.value)}
+                        value={level.name}
+                        onChange = {(event) => setLevel({...level, name:event.target.value})}
                       />
                     </FormControl>
                     <FormControl mt="15px">
@@ -133,9 +181,9 @@ import {
                        <Input
                          type={"number"}
                          name="montantPension"
-                         value={montantPension}
+                         value={level.montantPension}
                          placeholder="Montant de la pension"
-                         onChange ={(event) => setMontantPension(event.target.value)}
+                         onChange ={(event) => setLevel({...level,montantPension:event.target.value})}
                        />
                     </FormControl>
                     <FormControl mt="15px">
@@ -144,13 +192,13 @@ import {
                           name="cycleId"
                           placeholder="Cycle"
                           minW="300px"
-                          onChange = {(event) => setCycleId(event.target.value)}
-                          value={cycleId}
+                          onChange = {(event) => setLevel({...level,cycleId:event.target.value})}
+                          value={level.cycleId}
                         >
                          {dataCycle &&(
                                 dataCycle.findAllcycle.map((cycle, index) => ( 
-                                    <option value={cycle.id} key={index}>
-                                        {cycle.name}
+                                    <option selected={level.cycleId == cycle.id ? "selected": ''} value={cycle.id}  key={index}>
+                                        {cycle.name} { console.log(level.cycleId + " -- " +cycle.id) }
                                     </option>
                                 ))
                             )} 

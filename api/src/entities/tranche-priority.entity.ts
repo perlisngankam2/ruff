@@ -24,6 +24,6 @@ export class TranchePriority{
     @Property({nullable:true})
     description!: string;
 
-    @OneToMany(()=>Tranche, (tranche) => tranche.tranchepriority)
-    tranche = new Collection<Tranche>(this)
+    // @OneToMany(()=>Tranche, (tranche) => tranche.tranchepriority)
+    // tranche = new Collection<Tranche>(this)
 }

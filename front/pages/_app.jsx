@@ -1,14 +1,17 @@
 import { ChakraProvider, extendTheme } from "@chakra-ui/react";
-import { appWithTranslation } from 'next-i18next';
-// import i18nextConfig from  '../plugins/next-i18next.config';
-import i18n from "../plugins/i18n";
+// import { appWithTranslation } from 'next-i18next';
+import { appWithTranslation } from "next-i18next";
+// import { i18n } from "../plugins/next-i18next.config";
+// import {i18n} from "../i18n";
+import i18nextConfig from  '../plugins/next-i18next.config';
 import { ApolloClient, ApolloProvider, InMemoryCache } from "@apollo/client";
 import client from "../graphql/apollo-client";
-// import "../styles/globals.css";
+import "../styles/globals.css";
 import "@fontsource/open-sans";
 import { AuthProvider } from "../contexts/account/Auth/Auth"
 import { AccountProvider } from "../contexts/account/Account";
-
+// import { I18nextProvider } from 'react-i18next';
+// import { AppProps } from 'next/app';
 
 function MyApp({ Component, pageProps}) {
   const theme = extendTheme({
@@ -34,16 +37,18 @@ function MyApp({ Component, pageProps}) {
 
   return (
     <ApolloProvider client={client}>
-        <AuthProvider>
-          <AccountProvider>
-          <ChakraProvider theme={theme}>
-            <Component {...pageProps} />
-          </ChakraProvider>
-          </AccountProvider>
-        </AuthProvider>
+        {/* <I18nextProvider i18n={i18n}>  */}
+          <AuthProvider>
+            <AccountProvider>
+            <ChakraProvider theme={theme}>
+              <Component {...pageProps} />
+            </ChakraProvider>
+            </AccountProvider>
+          </AuthProvider>
+        {/* </I18nextProvider> */}
     </ApolloProvider>
   );
 }
-
-// export default appWithTranslation(MyApp, {i18n})
-export default MyApp;
+// export default appWithTranslation(MyApp)
+export default appWithTranslation(MyApp, i18nextConfig)
+// export default MyApp;

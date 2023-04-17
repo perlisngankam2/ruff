@@ -67,8 +67,13 @@ const RouteName = {
     Receipt:{
       path: '/eleves/recu/[id]'
     },
-    PersonnelDetails: {
-      path: '/personnel/[id]',
+    // PersonnelDetails: {
+    //   path: '/personnel/[id]',
+    //   // type: AuthRoute.Public,
+    //   // platforms: [Platform.Main]
+    // },
+    levelEdit: {
+      path: '/level/addLevel',
       // type: AuthRoute.Public,
       // platforms: [Platform.Main]
     },

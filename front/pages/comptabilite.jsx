@@ -15,9 +15,6 @@ import {
     TableCaption,
     TableContainer,
     Text
-    
-
-   
 } from "@chakra-ui/react"
 import Link from "next/link";
 import DefaultLayout from "../components/layouts/DefaultLayout";

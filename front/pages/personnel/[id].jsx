@@ -27,17 +27,15 @@ import {
   Select,
   useToast
 } from "@chakra-ui/react";
-import { AddIcon, MinusIcon } from '@chakra-ui/icons';
+import { AddIcon } from '@chakra-ui/icons';
 import { useRouter } from "next/router";
 import Link from "next/link";
-import { BsArrowReturnLeft } from "react-icons/bs";
 import React, { useEffect, useState } from "react";
 import DefaultLayout from "../../components/layouts/DefaultLayout";
 import { GET_ALL_PERSONNEL_BY_ID} from "../../graphql/Queries";
 import { GET_ALL_PERSONNELS } from "../../graphql/Queries";
 import { GET_PRIME, GET_ALL_RETENUE, GET_Category_Personnel_BY_ID, GET_Category_Personnel_ID } from "../../graphql/Queries";
 import { CREATE_PRIME_PERSONNEL, CREATE_RETENUE_PERSONNEL, CREATE_SALAIRE } from "../../graphql/Mutation";
-
 
 export const colorOptions = [ 
   { value: "blue", label: "Blue", color: "#0052CC" },
@@ -105,20 +103,14 @@ const Profil = () => {
 
   const {data:dataPersonnel} = useQuery(GET_ALL_PERSONNELS)
   const {data:dataPrime} = useQuery(GET_PRIME)
-  const {data:dataRetenue} = useQuery(GET_ALL_RETENUE)
 
   const [createPrimePersonnel, error] = useMutation(CREATE_PRIME_PERSONNEL);
   const [createRetenuePersonnel] = useMutation(CREATE_RETENUE_PERSONNEL);
-
-  //prime vrariable
   const[personnelId, setPersonnelId] = useState("");
   const[primeId, setPrimeId] = useState("");
-  const[startDate, setStartDate] = useState("");
-  const[endDate, setEndDate] = useState("");
+    const[startDate, setStartDate] = useState("");
+      const[endDate, setEndDate] = useState("");
 
-// retenue variable
-  const[retenuId, setRetenuId] = useState("");
-  const[startDate1, setStartDate1] = useState("");
 
   //generer salaire
 
@@ -132,7 +124,8 @@ const montant = dataCategorie?.findOneCategoriepersonnel.montant;
     const HandleClick = async (event) => {
   event.preventDefault();
 
-  const primeDataPersonnel = await createPrimePersonnel({
+  const primeDataPersonnel = async() => {
+    await createPrimePersonnel({
         variables:{
         primePersonnel: { 
           primeId: primeId,
@@ -143,7 +136,6 @@ const montant = dataCategorie?.findOneCategoriepersonnel.montant;
         }
       }
     })
-    moisPayes.push(startDate);
      onClose();
     // console.log(userData)
     toast({
@@ -157,7 +149,7 @@ const montant = dataCategorie?.findOneCategoriepersonnel.montant;
     setPrimeId("");
     setStartDate("");
     // dataPrime?.findAllprime.filter(prime => prime?.id !== primeId)
-  }
+  }}
 
   //fonction retenue
 
@@ -165,7 +157,8 @@ const montant = dataCategorie?.findOneCategoriepersonnel.montant;
   const HandleClick1 = async (event) => {
   event.preventDefault();
 
-  const retenueDataPersonnel = await createRetenuePersonnel({
+  const retenueDataPersonnel = async() => {
+     await createRetenuePersonnel({
         variables:{
         retenuPersonnel: { 
           retenuId: retenuId,
@@ -188,11 +181,8 @@ const montant = dataCategorie?.findOneCategoriepersonnel.montant;
     setRetenuId("");
     setStartDate1("");
   }
-
-
-
+}
 //GENERER LE SALAIRE
-
   const HandleClick3 = async (event) => {
   event.preventDefault();
 
@@ -206,7 +196,6 @@ const montant = dataCategorie?.findOneCategoriepersonnel.montant;
         }
       }
     })
-   
 
     console.log(salaireData)
     toast({
@@ -217,16 +206,12 @@ const montant = dataCategorie?.findOneCategoriepersonnel.montant;
       isClosable: true,
     });
 
-    
-    
         setMoisPaie("");
         onClosses3();
   }
 
   console.log(moisPayes)
 
-
-  
   useEffect(() =>{
     console.log(dataPersonnelId)
     console.log(dataPersonnel)
@@ -235,19 +220,8 @@ const montant = dataCategorie?.findOneCategoriepersonnel.montant;
   return (
     <DefaultLayout>
       <Box p="3" pt="70px" w="100%" background="colors.tertiary">
-        
       {dataPersonnelId && (
-        
         <Box>
-          <Box pb={10} ml={5} w="100px">   
-          <Button 
-              leftIcon={<BsArrowReturnLeft boxSize="20px" />} 
-              colorScheme={'green'}
-              onClick={() => router.push("/personnel")}
-             
-            >
-              Retour a la liste
-            </Button></Box>
         <Flex gap="5" pb={'7px'}>
           <Box rounded="md" p="5" boxShadow="md" w="40%" background="white">
             <Center>
@@ -323,10 +297,7 @@ const montant = dataCategorie?.findOneCategoriepersonnel.montant;
                 </Tbody>
               </Table>
             </TableContainer>
-
-             
           </Box>
-       
         </Flex>
     <Flex gap={3} >
       <Box>
@@ -341,13 +312,11 @@ const montant = dataCategorie?.findOneCategoriepersonnel.montant;
             >
               prime
             </Button>
-
               <AlertDialog
                 isOpen={isOpen}
                 leastDestructiveRef={cancelRef}
                 onClose={onClose}
                 size='xl'
-                
             >
               <AlertDialogOverlay>
                   <AlertDialogContent  >
@@ -680,7 +649,6 @@ const montant = dataCategorie?.findOneCategoriepersonnel.montant;
                     placeholder="nom prime"
                     bg='white'
                     type="month"
-                    // id="dateOfPrime"
                     name="dateOfPrime"
                     // placeholder="{formattedDate}"
                     // bg='white'
@@ -691,21 +659,25 @@ const montant = dataCategorie?.findOneCategoriepersonnel.montant;
                     // // ref={dateOfStartWorkRef}
                     
                   />
+                
                     </FormControl>
                   
                     
-                    {/* <FormControl>
-                        <FormLabel>Delai</FormLabel>
-                        <Input type={'date'} ></Input>
-                    </FormControl>
+    
                     <FormControl>
-                        <FormLabel>reste a payer</FormLabel>
-                      <Input 
-                        type={'number'} 
-                        disabled='disabled' 
-                        textColor={'red.300'}
-                      />
-                    </FormControl> */}
+                        <FormLabel>Salaire de base</FormLabel>
+                                <Input
+                    placeholder="nom prime"
+                    bg='white'
+                    type="text"
+                    rounded={2}
+                    name="dateOfPrime"
+                
+                   value={montant}
+                 
+                    
+                  />
+                    </FormControl>
                 </Flex>
             </Box>
             </AlertDialogBody>

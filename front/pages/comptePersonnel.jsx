@@ -22,57 +22,14 @@ import { useMutation, useQuery } from "@apollo/client";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import DefaultLayout from "../components/layouts/DefaultLayout";
+import { getStaticPropsTranslations } from '../types/staticProps';
+import PersonnelAccountForm from './personnel/PersonnelAccountForm';
+
 
 function comptePersonnel() {
 
-  const [Nom , setNom] = useState("");
-  const [Prenom , setPrenom] = useState("");
-  const [PhoneNumber, setPhoneNumber] = useState("");
-  const [Email , setEmail] = useState("");
-  const [Password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState('');
-  const [passwordsMatch, setPasswordsMatch] = useState(true);
-  const [createUser, error] = useMutation(CREATE_USER);
-  const toast = useToast()
-  const router = useRouter()
-
-
-  const handleConfirmPasswordChange = (event) => {
-  setConfirmPassword(event.target.value);
-  setPasswordsMatch(event.target.value === Password);
-  };
- 
-
-  const HandleClick = async (event) => {
-  event.preventDefault();
-  const userData = await createUser({
-        variables:{
-        createUser: { 
-          email: Email,
-          password : Password,
-        }
-      }
-    })
-    console.log(userData)
-    toast({
-      title: "Compte crée avec succès",
-      description: "Vous avez maintenant un compte utilisateur.",
-      status: "success",
-      duration: 3000,
-      isClosable: true,
-    });
-
-    setEmail("");
-    setPassword("");
-    setConfirmPassword("")
-    router.push("/personnel/ajouterpersonnel")
-
-  }
-
 
   return (
-
-    
     // <DefaultLayout>
     //   <Box flex="4"  background="gray.100" height="100vh">
     //     <Center >
@@ -116,87 +73,15 @@ function comptePersonnel() {
     //     </Center>
     //   </Box>
     // </DefaultLayout>
-
-        <DefaultLayout>
-      <Box 
-        pt="70px" 
-        width="full" 
-        background="colors.tertiary"
-      >
-        <Center>
-          <VStack
-            gap={5}
-            boxShadow="md"
-            rounded="md"
-            p="10"
-            background="white"
-            mt={10}
-          >
-            <Box 
-              as="form"
-              width="500px"
-            > 
-              <Heading color={"colors.primary"}>Creation d'un compte</Heading>
-              <Stack
-                gap={2}
-                align="start"
-                direction={["column", "column", "column"]}
-                mt="25px"
-              >
-                  <FormControl>
-                    <FormLabel>Email</FormLabel>
-                    <Input 
-                      placeholder="Email" 
-                      type="email"
-                      // maxW="300px"
-                      name="email"
-                      value={Email}
-                      onChange = {(event) => setEmail(event.target.value)}
-                    />
-                  </FormControl>
-                  <FormControl>
-                    <FormLabel>Mot de Passe</FormLabel>
-                    <Input 
-                      placeholder="********"
-                      type="password"
-                      // maxW="300px"
-                      name="Password"
-                      value={Password}
-                      onChange = {(event) => setPassword(event.target.value)}
-                    />
-                  </FormControl>
-                     <FormControl>
-                    <FormLabel>confirmation mot de passe </FormLabel>
-                    <Input 
-                      placeholder="********"
-                      type="password"
-                      // maxW="300px"
-                      name="Password"
-                      value={confirmPassword}
-                      onChange={handleConfirmPasswordChange}
-                    />
-                  </FormControl>
-                  {!passwordsMatch && <Text color='red'>Les mots de passe ne correspondent pas.</Text>}
-                  
-                  <Flex gap={5} pt="30px">
-                    <Button colorScheme="red" onClick={() => router.back()}>
-                      Annuler
-                    </Button>
-                    <Button
-                      colorScheme="green"
-                      onClick={HandleClick}
-                    >
-                      Creer
-                    </Button>
-                  </Flex>
-              </Stack>
-            </Box>
-          </VStack>
-        </Center>
-      </Box>
-    </DefaultLayout>
-
+      <PersonnelAccountForm/>
   );
 }
-
+export async function getStaticProps({ locale }) {
+  return {
+    props: {
+      ...(await getStaticPropsTranslations(locale)),
+      // Will be passed to the page component as props
+    },
+  };
+}
 export default comptePersonnel

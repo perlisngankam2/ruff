@@ -16,7 +16,7 @@ export class AvanceTrancheCreateInput {
   trancheId?: string;
 
   @Field(()=>ID,{nullable:true})
-  StudentId?:string
+  studentId?:string
 
   // @Field(()=>ID,{nullable:true})
   // StudentId?:string

@@ -47,7 +47,6 @@ const PaySlip = () => {
         variables:{ id: dataCategorieId?.findCategoriepersonnelbypersonnel}
     })
 
-    //recupere tout les salaires d'un personnel
 
       const {data:dataSalaireId} = useQuery(GET_ALL_SALAIRE_BY_ID,
   {
@@ -148,8 +147,6 @@ const unavailableMonths = useMemo(
 
         setMoisPaie("");
   }
-
-  console.log(moisPayes)
 
     useEffect(() =>{
       loadMoisPayes()
@@ -302,11 +299,8 @@ const monthOptions = useMemo(() => {
               {dataPersonnelId?.findOnePersonnel.fonction}
             </Text>
           </Flex>
-          
         </Flex>
-
         </Flex>
-
 
 {/* //informaton salaire et mois */}
       <Center>

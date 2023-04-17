@@ -18,7 +18,8 @@ import { PensionService } from '../pension/pension.service';
 import { SalleService } from '../salle/salle.service';
 import { TrancheCreateInput } from './dto/tranche.input';
 import { TrancheUpdateInput } from './dto/tranche.update';
-// import { format } from 'date-fns';
+import { TranchePriority } from 'src/entities/tranche-priority.entity';
+import { format } from 'date-fns';
 
 @Injectable()
 export class TrancheService {
@@ -43,9 +44,12 @@ export class TrancheService {
             name: input.name,
             description: input.description,
             // dateLine:format(input.dateLine, 'dd/MM/yyyy'),
+            dateLine:input.dateLine,
             anneeAccademique: input.anneeAcademiqueId,
             salle: input.salleId,
-            tranchepriority:input.tranchepriorityId
+            priority: input.priority
+
+            // tranchepriority: input.tranchePriorityId
             
             // pension: pension.id
           },
@@ -95,8 +99,9 @@ export class TrancheService {
             montant: input.montant || tranche.montant,
             anneeAccademique:input.anneeAcademiqueId,
             description: input.description || tranche.description,
-            // dateLine:format(input.dateLine,'dd/MM/yyyy'),
-            tranchepriority:input.tranchepriorityId
+            dateLine:format(input.dateLine,'dd/MM/yyyy'),
+            priority: input.priority || tranche.priority,
+            // tranchepriority:input.tranchePriorityId
         },
         { em: this.em },
     );

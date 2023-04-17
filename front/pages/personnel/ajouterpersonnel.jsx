@@ -14,6 +14,7 @@ import {
 } from "@chakra-ui/react";
 
 import DefaultLayout from "../../components/layouts/DefaultLayout";
+// import useTranslation from 'next-translate/useTranslation';
 import {useTranslation } from "next-i18next";
 import { useState, useRef, use, useEffect } from "react";
 import { useRouter } from "next/router";
@@ -21,7 +22,9 @@ import {  useMutation, useQuery } from "@apollo/client";
 import {  CREATE_PERSONNEL} from "../../graphql/Mutation"; 
 import { GET_ALL_PERSONNELS, GET_ALL_Category_Personnel } from "../../graphql/Queries";
 import { GET_ALL_USER } from "../../graphql/Queries";
- 
+import { getStaticPropsTranslations } from "../../types/staticProps";
+
+
 const AjouterPersonnel = () => {
 
    const [firstName, setFirstName] = useState("");
@@ -172,7 +175,7 @@ const AjouterPersonnel = () => {
       setChildNumber("");
       setCategoryPersonnelId("");
       setUserID("");
-  }
+   }
 
   useEffect(() =>{
     console.log(dataCategoryPersonnel?.findAllcategoriepersonnel);
@@ -233,7 +236,7 @@ const AjouterPersonnel = () => {
               </Box>
               <FormControl mt="2%">
                 <FormLabel fontWeight={"normal"}>
-                {t('pages.personnel.gender')}
+                {t('pages.personnel.ajouterpersonnel.gender')}
                 </FormLabel>
                 <Select
                   id="sexe"
@@ -245,16 +248,19 @@ const AjouterPersonnel = () => {
                   // ref={sexeRef}
                   ref={node => {input = node;}}
                 >
-                  <option>Homme</option>
-                  <option>Femme</option>
-                  <option>Autres</option>
+                  <option> 
+                    {t('pages.personnel.ajouterpersonnel.genderMenSelectOption')}
+                  </option>
+                  <option>
+                    {t('pages.personnel.ajouterpersonnel.genderWomanSelectOption')}
+                  </option>
+                  {/* <option>Autres</option> */}
                 </Select>
               </FormControl>
               <Box display={{md:"flex"}} mt="2%">
                 <FormControl mr="5%">
                   <FormLabel fontWeight={"normal"}>
-                    {/* {t('components.school.Register.birthDate')} */}
-                    Date de naissance
+                    {t('pages.personnel.ajouterpersonnel.birthDate')}
                   </FormLabel>
                   <Input
                     type="date"
@@ -266,13 +272,13 @@ const AjouterPersonnel = () => {
                     value={dateOfBirth}
                     // ref={dateOfBirthRef}
                     ref={node => {input = node;
-                    }}
+                  }}
                   />
                 </FormControl>
                 <FormControl>
                   <FormLabel fontWeight={"normal"}>
                     {/* {t('components.school.Register.institute')} */}
-                    Date de prise de fonction
+                    {t('pages.personnel.ajouterpersonnel.startDateWork')}
                   </FormLabel>
                   <Input
                     type="date"
@@ -319,7 +325,7 @@ const AjouterPersonnel = () => {
                 <FormControl>
                   <FormLabel fontWeight={"normal"}>
                     {/* {t('components.school.Register.institute')} */}
-                   Fonction
+                   {t('pages.personnel.ajouterpersonnel.fonction')}
                   </FormLabel>
                   <Select
                     name="fonction"
@@ -332,11 +338,22 @@ const AjouterPersonnel = () => {
                       input = node;
                     }}
                   >
-                    <option>fondateur</option>
-                    <option>principal</option>
-                    <option>econome</option>
-                    <option>enseignant</option>
-                    <option>gestionnaire</option>
+                    <option>
+                      {t('pages.personnel.ajouterpersonnel.fondatorFonctionOption')}
+                    </option>
+                    <option>     
+                      {t('pages.personnel.ajouterpersonnel.principalFonctionOption')}
+                    </option>
+                    <option>
+                     {t('pages.personnel.ajouterpersonnel.economeFonctionOption')}
+
+                    </option>
+                    <option>
+                      {t('pages.personnel.ajouterpersonnel.teacherFonctionOption')}
+                    </option>
+                    <option>
+                      {t('pages.personnel.ajouterpersonnel.gestionnaireFonctionOption')}
+                    </option>
                   </Select>
                 </FormControl>
               </Box>
@@ -366,30 +383,35 @@ const AjouterPersonnel = () => {
                 <FormControl mr="5%">
                   <FormLabel fontWeight={"normal"}> 
                      {/* {t('components.school.Register.maritalStatus')} */}
-                     Status
+                     {t('pages.personnel.ajouterpersonnel.status')}
                   </FormLabel>
-                  <Select
-                    id="status"
-                    name="status"
-                    placeholder="Status "
-                    borderColor="purple.100"
-                    onChange={e => setStatus(e.target.value)}
-                    value={status}
-                    width={["649px", "649px", "403px"]}
-                    // ref={statusRef}
-                    ref={node => {
-                      input = node;
-                    }}
-                 > 
-                    {/* {/* {statuses.map((status, index) => (
-                      <option key={index}>{status}</option> */}
-                    <option>PERMANENT</option>
-                    <option>VACATAIRE</option>
-                  </Select>
+                    <Select
+                      id="status"
+                      name="status"
+                      placeholder="Status "
+                      borderColor="purple.100"
+                      onChange={e => setStatus(e.target.value)}
+                      value={status}
+                      width={["649px", "649px", "403px"]}
+                      // ref={statusRef}
+                      ref={node => {
+                        input = node;
+                      }}
+                    > 
+                      {/* {/* {statuses.map((status, index) => (
+                        <option key={index}>{status}</option> */}
+                      <option>
+                      {t('pages.personnel.ajouterpersonnel.permanentStatusOption')}
+                      </option>
+                      <option>
+                      {t('pages.personnel.ajouterpersonnel.vaccataireStatusOption')}
+                      </option>
+                    </Select>
                  </FormControl> 
                 <FormControl>
                   <FormLabel fontWeight={"normal"}> 
                     {/* {t('components.school.Register.phoneNumber')} */}
+                    {t('pages.personnel.ajouterpersonnel.phoneNumber')}
                      Telephone
                   </FormLabel>
                   <Input
@@ -428,7 +450,7 @@ const AjouterPersonnel = () => {
                 <FormControl mr="5%">
                   <FormLabel fontWeight={"normal"}>
                     {/* {t('components.school.Register.birthDate')} */}
-                    Nombre d'enfant
+                    {t('pages.personnel.ajouterpersonnel.childNumber')}
                   </FormLabel>
                   <Input
                     type="text"
@@ -446,7 +468,7 @@ const AjouterPersonnel = () => {
                 <FormControl>
                   <FormLabel fontWeight={"normal"}>
                     {/* {t('components.school.Register.maritalStatus')} */}
-                    Status matrimonial
+                    {t('pages.personnel.ajouterpersonnel.maritalStatus')}
                   </FormLabel>
                   <Select
                     id="situationMatrimonial"
@@ -459,16 +481,23 @@ const AjouterPersonnel = () => {
                     // ref={situationMatrimonialRef}
                     ref={node => {input = node;}}
                   >
-                    <option>Celibataire</option>
-                    <option>Marie</option>
-                    <option>Marie(e)</option>
-                    <option>Autres</option>
+                    <option>
+                      {t('pages.personnel.ajouterpersonnel.singleMaritalStatusOption')}
+                    </option>
+                    <option>
+                      {t('pages.personnel.ajouterpersonnel.mariedMaritalStatusOption')}
+                    </option>
+                    <option>
+                      {t('pages.personnel.ajouterpersonnel.mariedMaritalWomanStatusOption')}
+                    </option>
                   </Select>
                 </FormControl>
               </Box>
               <Box display={{md:"flex"}} mt="2%">
                 <FormControl>
-                    <FormLabel fontWeight={"normal"}>Compte Associé</FormLabel>
+                    <FormLabel fontWeight={"normal"}>
+                    {t('pages.personnel.ajouterpersonnel.associateAccount')}
+                    </FormLabel>
                     <Select 
                         name="userID"
                         placeholder="Compte"
@@ -496,7 +525,8 @@ const AjouterPersonnel = () => {
                     variant="solid"
                     color="white"
                   >
-                    Submit
+                    {t('pages.personnel.ajouterpersonnel.submitButton')}
+                    
                   </Button>
                 </Flex>
               </ButtonGroup>
@@ -507,5 +537,12 @@ const AjouterPersonnel = () => {
     </DefaultLayout>
   );
 };
-
+export async function getStaticProps({ locale }) {
+  return {
+    props: {
+      ...(await getStaticPropsTranslations(locale)),
+      // Will be passed to the page component as props
+    },
+  };
+}
 export default AjouterPersonnel;

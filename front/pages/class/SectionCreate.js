@@ -21,7 +21,7 @@ import {
 import React from "react";
 import { IoIosAdd } from "react-icons/io";
 import {useMutation } from '@apollo/client';
-import { CREATE_SECTION } from "../../graphql/Mutation";
+import { CREATE_SECTION, UPDATA_SECTION} from "../../graphql/Mutation";
 import { GET_ALL_SECTION } from "../../graphql/Queries";
 import { useState } from "react";
 import { useRouter } from "next/router";
@@ -34,7 +34,7 @@ const  SectionCreate =  () => {
     const { isOpen, onOpen, onClose } = useDisclosure();
     const cancelRef = React.useRef();
     const [createSection, {error}] = useMutation(CREATE_SECTION);
-
+    const [updateSection] = useMutation(UPDATA_SECTION);
     const router = useRouter()
     const toast = useToast();
     // const addCategoryPersonnel = async (event, value) => {
@@ -63,8 +63,17 @@ const  SectionCreate =  () => {
    
         console.log(name);
         console.log(description);
-   
-        const sectionData = await createSection({
+        // if(id){
+        //     updateSection({
+        //         variables:{
+        //             section:{
+        //                 name: name,
+        //                 section: description
+        //             }
+        //         }
+        //     })
+        // }else{
+         await createSection({
             variables: {
                 section: {
                     name: name,
@@ -75,6 +84,7 @@ const  SectionCreate =  () => {
                 query: GET_ALL_SECTION
             }]
         })
+    // }
         onClose();
         // console.log(sectionData)
         toast({

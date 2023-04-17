@@ -168,6 +168,7 @@ export const CREATE_TRANCHE_PENSION = gql `
             description
             dateLine
             montant
+            priority
         }
     }
 `
@@ -237,6 +238,7 @@ export const CREATE_PERSONNEL_SALLE = gql `
     }
 `;
 
+
 export const CREATE_COURSE = gql`
     mutation createCourse ($input: CourseCreateInput!) {
         createCourse (input: $input) {
@@ -246,6 +248,16 @@ export const CREATE_COURSE = gql`
         }
     }
 `;
+
+export const CREATE_TRANCHE_PRIORITY = gql`
+    mutation createtranchepriority ($input: TranchePriorityInput!) {
+        createtranchepriority (input: $input) {
+            id
+            name
+            description
+        }
+    }
+`
 
 
 export const fragmentCycle = gql` fragment CycleClass on cyle {
@@ -320,6 +332,16 @@ export const DELETE_SALLE = gql `
         }
     }
 `;
+
+export const DELETE_STUDY_LEVEL = gql `
+mutation deleteNiveauEtude ($id: String!) {
+    deleteNiveauEtude (id: $id) {
+        id
+        name
+        description
+        montantPension
+    }
+}`
 
 
 export const DELETE_STUDENT = gql `
@@ -402,6 +424,18 @@ export const UPDATE_CLASS = gql `
 `;
 
 
+
+//mise a jour de la section
+
+export const UPDATA_SECTION = gql `
+    mutation updatesection ($id: String!, $input: SectionUpdateInput!) {
+        updatesection (id: $id, input: $input) {
+            id
+            name
+            description
+        }
+}
+`
 //update cycle
 export const UPDATE_CYCLE = gql `
     mutation updatecycle ($id: String!, $input: CycleUpdateInput!) {
@@ -488,17 +522,6 @@ mutation createprimepersonnel ($primePersonnel: PrimePersonnelCreateInput!) {
 }
 `;
 
-// retenue personnel
-
-export const CREATE_RETENUE_PERSONNEL = gql `
-mutation createretnupersonnel ($retenuPersonnel: RetenuPersonnelCreateInput!) {
-    createretnupersonnel (retenuPersonnel: $retenuPersonnel) {
-        id
-        startMonth
-    }
-}
-`;
-
 //generer le Salaire personnel
 
 export const CREATE_SALAIRE = gql `
@@ -527,7 +550,16 @@ mutation createpaysalaire ($input: PaySalaireCreateInput!) {
 }
 `;
 
-
+export const UPDATE_LEVEL = gql `
+mutation updateNiveauEtude ($id: String!, $input: NiveauEtudeUpdateInput!) {
+    updateNiveauEtude (id: $id, input: $input) {
+        id
+        name
+        description
+        montantPension
+    }
+}
+`
 
 
 

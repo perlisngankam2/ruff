@@ -31,10 +31,9 @@ export class StudentResolver {
   async updateStudent(
     @Args('id') id:string,
     @Args('input') input: StudentCreateInput,
-
     ) {
     return this.studentService.update(id,input);
-  }
+   }
 
   @Query(() => [Student])
   findAllstudents() {
@@ -48,7 +47,7 @@ export class StudentResolver {
 
   @Mutation(()=> Student)
   async deletestudent(@Args('id') id:string){
- return await this.studentService.delete(id)
+    return await this.studentService.delete(id)
   }
   
   @Query(()=>TrancheStudent)
@@ -69,5 +68,4 @@ export class StudentResolver {
   async getClassfeebyStudent(@Args('studentid') studentid:string){
     return await this.studentService.getclassfeebystudent(studentid)
   }
- 
 }

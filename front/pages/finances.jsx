@@ -35,13 +35,10 @@ function Finances  () {
       <Box p="3" pt="70px">
         <Heading>Finances</Heading>
         <SearchBar/>
-        
-
         <>
       <Button colorScheme='red' onClick={onOpen} >
         valider
       </Button>
-
       <AlertDialog
         isOpen={isOpen}
         leastDestructiveRef={cancelRef}

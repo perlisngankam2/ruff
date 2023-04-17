@@ -164,6 +164,7 @@ const  CycleCreate =  (
         console.log(sectionId)
    
         const cycleData = await createCycle({
+            
             variables: {
                 cycle: {
                     name: name,

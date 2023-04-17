@@ -35,7 +35,6 @@ import mikroOrmConfig from './mikro-orm.config';
 import { ConfigModule } from '@nestjs/config';
 import { SalaireModule } from './modules/salaire/salaire.module';
 import { PensionModule } from './modules/pension/pension.module';
-import { TrancheStudentModule } from './modules/tranche-student/tranche-student.module';
 import { FraisInscriptionModule } from './modules/frais-inscription/frais-inscription.module';
 import { ParentModule } from './modules/parent/parent.module';
 import { SectionCycleModule } from './modules/section-cycle/section-cycle.module';
@@ -49,7 +48,9 @@ import { ExpenseModule } from './modules/expenses/expense.module';
 import { StatisticModule } from './modules/statistics/statistics.module';
 import { PersonnelSalleModule } from './modules/personnel_salle/personnelsalle.module';
 import { CourseModule } from './modules/course/course.module';
+// import { PaySalaireModule } from './modules/paysalary/paysalary.module';
 import { TranchePriorityModule } from './modules/tranche_priority/tranche-priority.module';
+import { TrancheStudentModule } from './modules/tranche-student/tranche-student.module';
 
 @Module({
   imports: [
@@ -76,6 +77,7 @@ import { TranchePriorityModule } from './modules/tranche_priority/tranche-priori
     TrancheModule, 
     FraiExamenModule, 
     AvanceTrancheModule, 
+    TranchePriorityModule,
     ReductionPensionModule, 
     InscriptionModule,
     SalaireModule,
@@ -89,6 +91,7 @@ import { TranchePriorityModule } from './modules/tranche_priority/tranche-priori
     ExpenseModule,
     StatisticModule,
     CourseModule,
+    TranchePriorityModule,
     TranchePriorityModule,
 
   

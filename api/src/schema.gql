@@ -386,9 +386,11 @@ type Query {
   findAlltranchestudent: [TrancheStudent!]!
   trancheStudent(id: String!): TrancheStudent!
   getStudentByTrancheStudent(studentid: String!): TrancheStudent!
+  getrestTranchebystudent(studentid: String!): [[String!]!]!
   findAllpension: [Pension!]!
   pension(id: String!): Pension!
   findpensionbystudent(studentid: String!): Pension!
+  findrestpensionbystudent(studentid: String!): Float!
   findAlltranchepriority: [TranchePriority!]!
   findOnetranchepriority(id: String!): TranchePriority!
   findAll: [Inscription!]!

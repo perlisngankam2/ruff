@@ -401,6 +401,13 @@ export const GET_CLASS_FEES_BY_STUDENT_ID = gql `
         getClassfeebyStudent (studentid: $studentid)
     }
 `
+
+export const GET_RESTE_PENSION_A_PAYER_BY_STUDENT_ID = gql `
+    query findrestpensionbystudent ($studentid: String!) {
+        findrestpensionbystudent (studentid: $studentid)
+    }
+`
+
  export const GET_ALL_MONTANT_PENSION_CLASS = gql`
     query findAllpension {
         findAllpension {

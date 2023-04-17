@@ -178,4 +178,8 @@ export class PensionService {
       async findpensionbystudent(studentid:string){
         return await this.pensionRepository.findOne({student:studentid})
       }
+
+      async findrestpensionbyatudent(studentid: string){
+        return (await this.findpensionbystudent(studentid)).reste
+      }
 }

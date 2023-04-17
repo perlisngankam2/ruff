@@ -220,6 +220,12 @@ async saveTranche(studentid:string,trancheid:string){
         return (await this.em.find(TrancheStudent,{student:studentid}))[0].student.load()
       } 
 
+      async findbystudentresttranche(studentid:string){
+        const a= (await this.findByStudents(studentid)).map(async a=>(await a.tranche.load()).name)
+        const b= (await this.findByStudents(studentid)).map(async a=> (await a.tranche.load()).priority)
+        const c= (await this.findByStudents(studentid)).map(a=>a.reste)
+        return [a,b,c]
+      }
  
 }
 

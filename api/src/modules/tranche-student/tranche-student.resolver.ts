@@ -57,4 +57,9 @@ export class TrancheStudentResolver {
     }
     return student
   }
+
+  @Query(()=> [[String],[Number],[Number]])
+  async getrestTranchebystudent(@Args('studentid') studentid:string){
+   return await this.trancheService.findbystudentresttranche(studentid)
+  }
 }

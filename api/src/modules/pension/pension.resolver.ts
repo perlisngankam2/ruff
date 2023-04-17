@@ -48,4 +48,9 @@ export class PensionResolver {
     async findpensionbystudent(@Args('studentid') studentid:string){
     return await this.pensionService.findpensionbystudent(studentid)
   }
+
+@Query(()=>Number)
+  async findrestpensionbystudent(@Args('studentid') studentid:string){
+  return await this.pensionService.findrestpensionbyatudent(studentid)
+  }
 }

@@ -81,22 +81,7 @@ router.push('/dashboard')
                     
                   }
        };
-    event.preventDefault();
-    
-    const login = await loginInput({
-            variables:{
-              loginInput: { 
-                username: email,
-                password : password
-              }
-          }
-      });
-      console.log(login.data.login)
-        if (login.data.login) {
-          setAuthToken?.(login.data.login.access_token , login.data.login.user.id);
-          router.push('/dashboard');
-        }
-    };
+
 
 
   return (
@@ -192,6 +177,7 @@ router.push('/dashboard')
                     </Box>
                   </Link>
                 </HStack>
+                <>
                 <Button 
                   w="100%" 
                   colorScheme="green" 
@@ -200,6 +186,32 @@ router.push('/dashboard')
                 >
                  {t('molecules.LoginForm.seConnecter')}
                 </Button>
+<AlertDialog>
+
+                   <AlertDialogOverlay>
+          <AlertDialogContent>
+            <AlertDialogHeader fontSize='lg' fontWeight='bold'>
+              Reinitialisation de mot de passe
+            </AlertDialogHeader>
+
+            <AlertDialogBody>
+              Souhaitez vous modifier le de passe qui vous a ete donnee?
+            </AlertDialogBody>
+
+            <AlertDialogFooter>
+              <Button ref={cancelRef} onClick={onClose}>
+                Non
+              </Button>
+              <Link href={'#'}>
+                <Button colorScheme='green'  ml={3}>
+                  Oui
+                </Button>
+              </Link>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialogOverlay>
+      </AlertDialog>
+                </>
               </Box>
             </Container>
           </Box>

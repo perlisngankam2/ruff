@@ -10,6 +10,7 @@ import {
   InputGroup,
   InputRightElement,
   Icon,
+  Hide,
   // Link as Links,
   Grid,
   Text,
@@ -73,19 +74,31 @@ const Payment = () => {
         w="full" 
         minH="100vh" 
         bgColor="colors.tertiary"
+         pt="70px" 
       >
-        <Box pt="70px" w="100%">
-          <Heading 
-            p="1em" 
-            textAlign="center" 
-            bgGradient='linear(to-r, teal.500, green.500)' 
-            bgClip='text' fontSize={'30px'}
+        <Flex
+          align="center"
+          justify="space-between"
+          boxShadow="md"
+          p="5"
+          rounded="lg"
+          background="white"
+          mb='10px'
+        >
+          <Heading
+            textAlign="center"
+            color="WindowText"
+            size="lg"
+            textColor="pink.300"
           >
-            gestion de la paie de salaire
+            Paiement
           </Heading>
-        </Box>
+          <Hide below="sm">
+            <Text>Dashboad / Salaires / Paiement</Text>
+          </Hide>
+        </Flex>
         <Center>
-          <Box pb='5px'>
+          <Box pb='5px' mt='20px'>
              <InputGroup width="300px">
               {filteredData.length === 0 ?
             <InputRightElement

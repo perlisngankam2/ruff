@@ -17,7 +17,7 @@ import { NiveauEtudeService } from '../niveau_etude/niveau-etude.service';
 import { SalleService } from '../salle/salle.service';
 import { PensionCreateInput } from './dto/pension.input';
 import { PensionUpdateInput } from './dto/pension.update';
-import { format } from 'date-fns';
+// import { format } from 'date-fns';
 import { StudentService } from '../student/student.service';
 import { TrancheStudentService } from '../tranche-student/tranche-student.service';
 
@@ -50,7 +50,7 @@ export class PensionService {
             name: input.name,
             description: input.description,
             // anneeAccademique: input.anneeAcademiqueId,
-            dateLine: format(input.dateLine, 'dd/MM/yyyy'),
+            // dateLine: format(input.dateLine, 'dd/MM/yyyy'),
             student: student.id
             
           },
@@ -84,7 +84,7 @@ export class PensionService {
 
         wrap(pension).assign({
             name:input.name || pension.name,
-            dateLine: format(input.dateLine, 'dd/MM/yyyy'),
+            // dateLine: format(input.dateLine, 'dd/MM/yyyy'),
             description: input.description || pension.description,
             montantPension:montant,
             student:input.studentId||pension.student

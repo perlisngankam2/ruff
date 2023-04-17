@@ -11,8 +11,18 @@ import {
   Hide,
   HStack,
   Image,
+  Select,
   Input,
+  AlertDialog,
+  AlertDialogBody,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogContent,
+  AlertDialogOverlay,
+  useDisclosure,
+  Text,
 } from "@chakra-ui/react";
+import React from "react";
 import { useFormik } from "formik";
 import { NextLink } from "next/link";
 import { Link } from "@chakra-ui/react";
@@ -26,6 +36,9 @@ import { useAuth } from '../../../contexts/account/Auth/Auth'
 
 
 const LoginForm = () => {
+
+  const { isOpen, onOpen, onClose } = useDisclosure()
+  const cancelRef = React.useRef()
   const[email , setEmail] = useState("");
   const[password , setPassword] = useState("");
   const [loginInput , error] = useMutation(LOGIN_USER);
@@ -37,6 +50,11 @@ const LoginForm = () => {
 //  console.log(setAuthToken.isLogged)
 
 console.log(dataUser)
+
+const Handle =()=>{
+
+
+}
 
    const HandleClick = async (event) => {
         event.preventDefault();
@@ -50,13 +68,20 @@ console.log(dataUser)
                   }
               });
 
-                console.log(login.data.login)
+                console.log(login.data.login.user)
                   if (login.data.login) {
                     setAuthToken?.(login.data.login.access_token , login.data.login.user.id);
-                    router.push('/dashboard');
+                    if(login.data.login.user.deactivatedAt === null && login.data.login.user.role !== 'ADMIN'){
+                      // router.push('/resetPassword')
+                      onOpen()
+
+                    } else {
+router.push('/dashboard')
+                    }
+                    
                   }
        };
-fc
+
 
   return (
     <Flex w="full">
@@ -74,6 +99,8 @@ fc
             boxShadow="xl"
             rounded={13}
             background="white"
+            as="form"
+            
           >
             <Container maxW={{ base: "sm", sm: "md" }} px="0">
               <Heading
@@ -122,9 +149,36 @@ fc
                     </Box>
                   </Link>
                 </HStack>
-                <Button w="100%" colorScheme="green" type="submit" mb={5}>
+                <>
+                <Button w="100%" colorScheme="green" type="submit" mb={5} onClick={HandleClick}>
                   Se connecter
                 </Button>
+<AlertDialog>
+
+                   <AlertDialogOverlay>
+          <AlertDialogContent>
+            <AlertDialogHeader fontSize='lg' fontWeight='bold'>
+              Reinitialisation de mot de passe
+            </AlertDialogHeader>
+
+            <AlertDialogBody>
+              Souhaitez vous modifier le de passe qui vous a ete donnee?
+            </AlertDialogBody>
+
+            <AlertDialogFooter>
+              <Button ref={cancelRef} onClick={onClose}>
+                Non
+              </Button>
+              <Link href={'#'}>
+                <Button colorScheme='green'  ml={3}>
+                  Oui
+                </Button>
+              </Link>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialogOverlay>
+      </AlertDialog>
+                </>
               </Box>
             </Container>
           </Box>

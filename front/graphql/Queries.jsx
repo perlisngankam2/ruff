@@ -467,3 +467,15 @@ query findallprimepersonnel ($personnelid: String!) {
     findallprimepersonnel (personnelid: $personnelid)
 }
 `;
+
+export const GET_ALL_MONTH_SALARY = gql `
+query PersonnelMonthSalary ($personnelid: String!) {
+    PersonnelMonthSalary (personnelid: $personnelid)
+}
+`;
+
+export const GET_SALARY_NET = gql `
+query PersonnelNetSalary ($personnelid: String!) {
+    PersonnelNetSalary (personnelid: $personnelid)
+}
+`;

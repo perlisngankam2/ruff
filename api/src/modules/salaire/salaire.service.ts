@@ -44,7 +44,7 @@ export class SalaireService {
 
 
     if(personnel){
-      if((await this.getAll()).filter(async a=>a.personnel.id === personnel.id).map(a=>a.moisPaie).length > 1){
+      if((await this.getAll()).filter(async a=>a.personnel.id === personnel.id).filter(a=>a.moisPaie==input.moisPaie).length>1){
         throw Error("!!!!!!!!!!! CE PERSONNEL A DEJA ETE PAYER POUR CE MOIS !!!!!!!!!!!!")
       }
       const salaireBase = (await personnel.category.load()).montant
@@ -160,20 +160,12 @@ return salaire;
 }
 
 async personnelMonthSalary(personnelId:string){
-  const a= await this.findByOne(personnelId)
-  if(!a){
-    throw Error("PERSONNEL NOT FOUND")
-  }
-  const b = (await this.salairepersonnel(a.id)).map(a=>a.moisPaie)
+  const b = (await this.salairepersonnel(personnelId)).map(a=>a.moisPaie)
   return b
 }
 
 async personnelNetSalary(personnelId:string){
-  const a= await this.findByOne(personnelId)
-  if(!a){
-    throw Error("PERSONNEL NOT FOUND")
-  }
-  const b = (await this.salairepersonnel(a.id)).map(a=>a.montant)
+  const b = (await this.salairepersonnel(personnelId)).map(a=>a.montant)
   return b
 }
 

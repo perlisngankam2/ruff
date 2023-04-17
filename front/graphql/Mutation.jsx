@@ -507,6 +507,7 @@ mutation createsalaire ($input: SalaireCreateInput!) {
         id
         jourPaie
         moisPaie
+        payer
         montant
     }
 }

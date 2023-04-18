@@ -456,6 +456,22 @@ export const GET_ALL_COURSE_PERSONNEL_SALLE = gql `
     }
 `;
 
+export const GET_ALL_PARENT = gql `
+query findAllparents {
+    findAllparents {
+        id
+        firstname
+        lastname
+        profession
+        email
+        phonenumber
+        gender
+        parentStatus
+        childNumber
+    }
+}
+`
+
 //recuperation des infos de l'eleve a partir de tranche student
 export const GET_STUDENT_BY_TRANCHE_STUDENT = gql `
 query getTrancheStudentByStudent ($studentid: String!) {

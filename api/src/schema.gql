@@ -2,91 +2,6 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
-type ReductionScolarite {
-  id: ID!
-  name: String
-  description: String
-  montant: Float!
-  pourcentage: Float!
-}
-
-type CategorieEleve {
-  id: ID!
-  nom: String
-  description: String
-}
-
-type Expense {
-  id: ID!
-  title: String
-  amount: Float
-  description: String
-}
-
-type Pension {
-  id: ID!
-  name: String
-  description: String
-  montantPension: Float!
-  complete: Boolean!
-  reste: Float!
-  surplus: Float!
-  dateLine: DateTime
-}
-
-"""
-A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
-"""
-scalar DateTime
-
-type AnneeAccademique {
-  id: ID!
-  name: String
-  description: String
-}
-
-type AvanceInscription {
-  id: ID!
-  name: String
-  description: String
-  paiementDate: DateTime!
-  dateLine: DateTime
-  montant: Float!
-  complete: Boolean!
-  reste: Float!
-}
-
-type FraisExamen {
-  id: ID!
-  description: String
-  montant: Float!
-  dateLine: DateTime
-}
-
-type Section {
-  id: ID!
-  name: String
-  description: String
-}
-
-type Cycle {
-  id: ID!
-  name: String
-}
-
-type NiveauEtude {
-  id: ID!
-  name: String
-  description: String
-  montantPension: Float
-}
-
-type Course {
-  id: ID!
-  title: String
-  time: Float
-}
-
 type CategoriePrime {
   id: ID!
   nom: String
@@ -99,6 +14,11 @@ type Periode {
   description: String
   datePeriode: DateTime
 }
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
 
 type CategorieRetenu {
   id: ID!
@@ -152,31 +72,22 @@ type CategoriePersonnel {
   montant: Float!
 }
 
-type Personnel {
+type Expense {
   id: ID!
-  firstName: String
-  lastName: String
-  phoneNumber: String
-  situationMatrimonial: String
-  sexe: String
-  fonction: String
-  status: String
-  dateOfStartWork: String!
-  dateOfBirth: String!
-  childNumber: Float
+  title: String
+  amount: Float
+  description: String
 }
 
-type PersonnelSalle {
-  id: ID!
-}
-
-type Salle {
+type AvanceInscription {
   id: ID!
   name: String
-  section: String
-  cycle: String
-  montantPensionSalle: Float
-  effectif: Float
+  description: String
+  paiementDate: DateTime!
+  dateLine: DateTime
+  montant: Float!
+  complete: Boolean!
+  reste: Float!
 }
 
 type FraisInscription {
@@ -185,14 +96,18 @@ type FraisInscription {
   montant: Float!
 }
 
-type Inscription {
+type ReductionScolarite {
   id: ID!
   name: String
   description: String
-  dateLine: String
-  complete: Boolean!
   montant: Float!
-  reste: Float!
+  pourcentage: Float!
+}
+
+type CategorieEleve {
+  id: ID!
+  nom: String
+  description: String
 }
 
 type Localisation {
@@ -204,6 +119,29 @@ type Localisation {
   longitude: Float!
   latitude: Float!
   bp: String
+}
+
+type Parent {
+  id: ID!
+  firstname: String
+  lastname: String
+  profession: String
+  email: String
+  phonenumber: String
+  gender: String
+  parentStatus: String
+  childNumber: Float!
+}
+
+type Pension {
+  id: ID!
+  name: String
+  description: String
+  montantPension: Float!
+  complete: Boolean!
+  reste: Float!
+  surplus: Float!
+  dateLine: DateTime
 }
 
 type AvanceTranche {
@@ -258,16 +196,78 @@ type Student {
   tutorProfession: String
 }
 
-type Parent {
+type Inscription {
   id: ID!
-  firstname: String
-  lastname: String
-  profession: String
-  email: String
-  phonenumber: String
-  parent: Boolean!
-  tuteur: Boolean!
-  childNumber: Float!
+  name: String
+  description: String
+  dateLine: String
+  complete: Boolean!
+  montant: Float!
+  reste: Float!
+}
+
+type AnneeAccademique {
+  id: ID!
+  name: String
+  description: String
+}
+
+type FraisExamen {
+  id: ID!
+  description: String
+  montant: Float!
+  dateLine: DateTime
+}
+
+type Section {
+  id: ID!
+  name: String
+  description: String
+}
+
+type Cycle {
+  id: ID!
+  name: String
+}
+
+type NiveauEtude {
+  id: ID!
+  name: String
+  description: String
+  montantPension: Float
+}
+
+type Course {
+  id: ID!
+  title: String
+  time: Float
+}
+
+type PersonnelSalle {
+  id: ID!
+}
+
+type Salle {
+  id: ID!
+  name: String
+  section: String
+  cycle: String
+  montantPensionSalle: Float
+  effectif: Float
+}
+
+type Personnel {
+  id: ID!
+  firstName: String
+  lastName: String
+  phoneNumber: String
+  situationMatrimonial: String
+  sexe: String
+  fonction: String
+  status: String
+  dateOfStartWork: String!
+  dateOfBirth: String!
+  childNumber: Float
 }
 
 type User {
@@ -971,11 +971,10 @@ input ParentCreateInput {
   lastname: String
   profession: String
   phonenumber: String
+  parentStatus: String
+  gender: String
   email: String
-  tuteur: Boolean! = false
-  parent: Boolean! = false
   childNumber: Float! = 0
-  user: UserCreateInput
 }
 
 input ExpenseCreateInput {

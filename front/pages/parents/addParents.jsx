@@ -1,4 +1,4 @@
-import { AlertDialogCloseButton, Box, Heading } from "@chakra-ui/react";
+import { AlertDialogCloseButton, Box, Heading, Select } from "@chakra-ui/react";
 import SearchBar from "../../components/atoms/searchbar";
 import {
   AlertDialog,
@@ -21,8 +21,8 @@ import {
 import React from "react";
 import { IoIosAdd } from "react-icons/io";
 import {useMutation } from '@apollo/client';
-import { CREATE_SECTION, UPDATA_SECTION} from "../../graphql/Mutation";
-import { GET_ALL_SECTION } from "../../graphql/Queries";
+import { CREATE_SECTION, UPDATA_SECTION, CREATE_PARENT} from "../../graphql/Mutation";
+import { GET_ALL_PARENT, GET_ALL_SECTION } from "../../graphql/Queries";
 import { useState } from "react";
 import { useRouter } from "next/router";
 
@@ -32,10 +32,20 @@ const  addParents =  () => {
     const[description, setDescription] = useState("");
     const { isOpen, onOpen, onClose } = useDisclosure();
     const cancelRef = React.useRef();
-    const [createSection, {error}] = useMutation(CREATE_SECTION);
+    const [createParent, {error}] = useMutation(CREATE_PARENT);
     const [updateSection] = useMutation(UPDATA_SECTION);
     const router = useRouter()
     const toast = useToast();
+
+    const [parent, setParent] = useState({
+        firstname: "",
+        lastname: "",
+        profession: "",
+        phonenumber:"",
+        gender:"",
+        parentStatus:"",
+        childNumber: 0
+    })
     // const addCategoryPersonnel = async (event, value) => {
     //     console.log("value")
     //     event.preventDefault();
@@ -56,48 +66,51 @@ const  addParents =  () => {
     // }
 
     let input
-    // const  addSection = async (event, value) => {
-    //     event.preventDefault();
-    //     console.log('cccc');
+    const  addParent = async (event, value) => {
+        event.preventDefault();
+        console.log('cccc');
    
-    //     console.log(name);
-    //     console.log(description);
-    //     // if(id){
-    //     //     updateSection({
-    //     //         variables:{
-    //     //             section:{
-    //     //                 name: name,
-    //     //                 section: description
-    //     //             }
-    //     //         }
-    //     //     })
-    //     // }else{
-    //      await createSection({
-    //         variables: {
-    //             section: {
-    //                 name: name,
-    //                 description: description
-    //             }
-    //         },
-    //         refetchQueries:[{
-    //             query: GET_ALL_SECTION
-    //         }]
-    //     })
-    // // }
-    //     onClose();
-    //     // console.log(sectionData)
-    //     toast({
-    //         title: "Creation d'une section.",
-    //         description: "La classe a été créée avec succes.",
-    //         status: "success",
-    //         duration: 3000,
-    //         isClosable: true,
-    //       });
-    //       setName("");
-    //       setDescription("")
+    
+        // if(id){
+        //     updateSection({
+        //         variables:{
+        //             section:{
+        //                 name: name,
+        //                 section: description
+        //             }
+        //         }
+        //     })
+        // }else{
+         await createParent({
+            variables: {
+                parent: {
+                    firstname: parent.firstname,
+                    lastname: parent.lastname,
+                    profession: parent.profession,
+                    phonenumber: parent.phonenumber,
+                    gender: parent.gender,
+                    parentStatus: parent.parentStatus,
+                    childNumber: parseInt(parent.childNumber)
+                }
+            },
+            refetchQueries:[{
+                query: GET_ALL_PARENT
+            }]
+        })
     // }
+        onClose();
+        // console.log(sectionData)
+        toast({
+            title: "Creation d'une section.",
+            description: "La classe a été créée avec succes.",
+            status: "success",
+            duration: 3000,
+            isClosable: true,
+          });
+          setName("");
+          setDescription("")
+    }
 
-   
   return (
     <Center>
         <Box> 
@@ -107,10 +120,10 @@ const  addParents =  () => {
                     rightIcon={<Icon as={IoIosAdd} boxSize="20px" />}
                     onClick={onOpen}
                 >
-                        Ajouter un parent                               
+                    Ajouter un parent                               
                 </Button> 
-          </Box>
-            <Box as={"form"}  onSubmit={() => router.push("/class/cyclesection")}> 
+            </Box>
+            <Box as={"form"}  onSubmit={() => router.push("/parents/lisOfParents")}> 
                 <AlertDialog
                     isOpen={isOpen}
                     leastDestructiveRef={cancelRef}
@@ -118,7 +131,7 @@ const  addParents =  () => {
                     size='xl'
                 >
                     <AlertDialogOverlay>
-                        <AlertDialogContent width={"400px"} >
+                        <AlertDialogContent width={"500px"} >
                             <AlertDialogHeader 
                                 fontSize='sm' 
                                 fontWeight='base' 
@@ -130,39 +143,104 @@ const  addParents =  () => {
                                         fontSize={['15px','20px','24px']} 
                                         p='2' 
                                     >
-                                    Ajouter une section
+                                      Ajouter un parent
                                     </Heading>
                                 </Box>
                             </AlertDialogHeader>
                             <AlertDialogCloseButton/>
-
                             <AlertDialogBody>
-                            <Box>
-                                <FormControl>
-                                    <FormLabel>Nom</FormLabel>
-                                    <Input 
-                                        id="name"
-                                        type={'text'} 
-                                        name="name"
-                                        placeholder="nom"
-                                        onChange = {(event) => setName(event.target.value)}
-                                        ref={node => {input = node;}}
-                                        value={name}
-                                     />
-                                </FormControl>
-                                <FormControl mt="15px">
-                                    <FormLabel>Description</FormLabel>
-                                    <Input 
-                                        id="description"
-                                        type={'text'} 
-                                        name="description"
-                                        placeholder="Description"
-                                        onChange = {(event) => setDescription(event.target.value)}
-                                        ref={node => {input = node;}}
-                                        value={description}
-                                    />
-                                </FormControl>
-                            </Box>
+                                <Box>
+                                    <FormControl>
+                                        <FormLabel>Nom</FormLabel>
+                                        <Input 
+                                            id="name"
+                                            type={'text'} 
+                                            name="firstname"
+                                            placeholder="nom"
+                                            onChange = {(event) => setParent({...parent, firstname:event.target.value})}
+                                            ref={node => {input = node;}}
+                                            value={parent.firstname}
+                                        />
+                                    </FormControl>
+                                    <FormControl mt="15px">
+                                        <FormLabel>Prenom</FormLabel>
+                                        <Input 
+                                            id="description"
+                                            type={'text'} 
+                                            name="lastname"
+                                            placeholder="Description"
+                                            onChange = {(event) => setParent({...parent, lastname: event.target.value})}
+                                            ref={node => {input = node;}}
+                                            value={parent.lastname}
+                                        />
+                                    </FormControl>
+                                    <FormControl mt="15px">
+                                        <FormLabel>Sexe</FormLabel>
+                                        <Select 
+                                            id="description"
+                                            type={'text'} 
+                                            name="gender"
+                                            placeholder="profession"
+                                            onChange = {(event) => setParent({...parent, gender:event.target.value})}
+                                            ref={node => {input = node;}}
+                                            value={parent.gender}
+                                        >
+                                            <option>Masculin</option>
+                                            <option>Feminin</option>
+                                        </Select>
+                                    </FormControl>
+                                    <FormControl mt="15px">
+                                        <FormLabel>Enfant</FormLabel>
+                                        <Input 
+                                            id="description"
+                                            type={'number'} 
+                                            name="childNumber"
+                                            placeholder="Description"
+                                            onChange = {(event) => setParent({...parent, childNumber:event.target.value})}
+                                            ref={node => {input = node;}}
+                                            value={parent.childNumber}
+                                        />
+                                    </FormControl>
+                                    <FormControl mt="15px">
+                                        <FormLabel>Profession</FormLabel>
+                                        <Input 
+                                            id="description"
+                                            type={'text'} 
+                                            name="profession"
+                                            placeholder=""
+                                            onChange = {(event) => setParent({...parent, profession:event.target.value})}
+                                            ref={node => {input = node;}}
+                                            value={parent.profession}
+                                        />
+                                    </FormControl>
+                                    <FormControl mt="15px">
+                                        <FormLabel>Telephone</FormLabel>
+                                        <Input 
+                                            id="description"
+                                            type={'text'} 
+                                            name="phonenumber"
+                                            placeholder=""
+                                            onChange = {(event) => setParent({...parent, phonenumber:event.target.value})}
+                                            ref={node => {input = node;}}
+                                            value={parent.phonenumber}
+                                        />
+                                    </FormControl>
+                                    <FormControl mt="15px">
+                                        <FormLabel>Statut</FormLabel>
+                                        <Select 
+                                            id="description"
+                                            type={'text'} 
+                                            name="parentStatus"
+                                            placeholder="Description"
+                                            onChange = {(event) => setParent({...parent, parentStatus:event.target.value})}
+                                            ref={node => {input = node;}}
+                                            value={parent.parentStatus}
+                                        >
+                                        <option>Parent</option>
+                                        <option>Tuteur</option>
+                                        </Select>
+                                    </FormControl>
+                                </Box>
                             </AlertDialogBody>
                             <AlertDialogFooter>
                                 <Button 
@@ -176,10 +254,10 @@ const  addParents =  () => {
                                     <Button 
                                     colorScheme='green'  
                                     ml={3}
-                                    // onClick={addSection}
+                                    onClick={addParent}
                                     >
                                     Creer
-                                    </Button>
+                                </Button>
                                 {/* </Link>  */}
                             </AlertDialogFooter>
                         </AlertDialogContent>
@@ -188,7 +266,6 @@ const  addParents =  () => {
             </Box>
         </Box>
     </Center>
-    
     );
 }
 export default addParents;

@@ -39,9 +39,10 @@ import {
   import {MdDelete} from 'react-icons/md';
   import { 
     GET_ALL_Category_Eleve,
-    GET_ALL_PERSONNELS
+    GET_ALL_PERSONNELS,
+    GET_ALL_PARENT
     } from "../../graphql/Queries";
-  import { DELETE_CATEGORY_STUDENT } from "../../graphql/Mutation";
+  import { DELETE_CATEGORY_STUDENT, DELETE_PARENT } from "../../graphql/Mutation";
   import { useMutation, useQuery } from "@apollo/client"; 
   import React, { useEffect, useState } from "react";
   import ReactPaginate from "react-paginate";
@@ -59,36 +60,41 @@ import {
      const pagesVisited = pageNumber * itemsPerPage;
      
      const {data:dataCategoryEleve, loading, error} = useQuery(GET_ALL_Category_Eleve);
+     const {data:dataParents} = useQuery(GET_ALL_PARENT);
     //  const [deleteCategoryStudent] = useMutation(DELETE_CATEGORY_STUDENT);
+    const [deleteParent] = useMutation(DELETE_PARENT);
      const { isOpen, onToggle, onClose, onOpen } = useDisclosure();
-     const [searchNameStudentCategory, setSearchNameStudentCategory] = useState("");
+     const [searchNameStudentParent, setSearchNameStudentParent] = useState("");
     
       useEffect (() => {
        console.log(dataCategoryEleve?.findAllcategorieeleve);
+       console.log(dataParents?.findAllparents);
+
+       
      });
   
      if (loading) return <Text>Chargement en cour...</Text>
      if (error) return <Text>Une erreur s'est produite!</Text>
   
-    //  const removeCategoryStudent= async (id) => {
-    //    await deleteCategoryStudent({
-    //      variables:{id},
-    //      refetchQueries: [{
-    //        query: GET_ALL_Category_Eleve
-    //      }]
-    //    })
-    //    onClose();
-    //  }
+     const removeParent = async (id) => {
+       await deleteParent({
+         variables:{id},
+         refetchQueries: [{
+           query: GET_ALL_PARENT
+         }]
+       }) 
+       onClose();
+     }
   
      const handleChange = (e) => {
-      setSearchNameStudentCategory(e.target.value);
+      setSearchNameStudentParent(e.target.value);
      };
   
-    //  const pageCountCategoryStudent = Math.ceil(dataCategoryEleve?.findAllcategorieeleve.length / itemsPerPage);
+     const pageCountStudentParents = Math.ceil(dataParents?.findAllparents.length / itemsPerPage);
   
-    //  const changePage = ({ page }) => {
-    //    setPageNumber(page);
-    //  };
+     const changePage = ({ page }) => {
+       setPageNumber(page);
+     };
   
    return (
      <DefaultLayout>
@@ -120,7 +126,7 @@ import {
                 cursor="pointer"
               />
              <Input
-               placeholder="Rechercher un parents..."
+               placeholder="Rechercher un parent..."
                //value={recherche}
               //  onChange={e => setQuery(e.target.value)
                 onChange={handleChange}
@@ -148,31 +154,36 @@ import {
                      <Thead background="colors.secondary">
                        <Tr >
                          <Th>Nom</Th>
-                         <Th>Description</Th>
+                         <Th>Prenom</Th>
+                         <Th>Telephone</Th>
+                         <Th>Status</Th>
                          <Th>Actions</Th>
                        </Tr>
                      </Thead>
-                     {/* {dataCategoryEleve && (  */}
+                     {dataParents && ( 
                      <Tbody>
-                       {/* {
-                         dataCategoryEleve.findAllcategorieeleve
+                       {
+                         dataParents.findAllparents
                          .slice(pagesVisited, pagesVisited + itemsPerPage)
-                         .filter((categoryStudent) =>{
-                            if(searchNameStudentCategory == ""){
-                              return categoryStudent;
-                            }else if (categoryStudent.nom.toLowerCase().includes(searchNameStudentCategory.toLowerCase()))
-                              return categoryStudent;
-                          }) */}
-                          {/* .map((categoryStudent, index) => (  */}
+                         .filter((parent) =>{
+                            if(searchNameStudentParent== ""){
+                              return parent;
+                            }else if (parent.firstname.toLowerCase().includes(searchNameStudentParent.toLowerCase()))
+                              return parent;
+                          })
+                           .map((parent, index) => ( 
                            <Tr 
-                        //    key={index}
+                            key={index}
                            >
-                               <Td p={0} pl={6}>jjjjj</Td>
-                               {/* <Td p={0} pl={6}>{categoryStudent.description}</Td> */}
+                               <Td p={0} pl={6}>{parent.firstname}</Td>
+                               <Td p={0} pl={6}>{parent.lastname}</Td>
+                               <Td p={0} pl={6}>{parent.phonenumber}</Td>
+                               <Td p={0} pl={6}>{parent.status}</Td>
+                               
                                <Td p={0} pl={3}>
                                <Box display="flex">
                                  <Link 
-                                   href="/eleves/modifiereleve">
+                                   href="#">
                                      <Icon
                                      as={FiEdit}
                                      boxSize="40px"
@@ -227,7 +238,7 @@ import {
                                               <Button 
                                                 colorScheme='green' 
                                                 ml={3}
-                                                // onClick = {() =>{removeCategoryStudent(categoryStudent.id)}}
+                                                onClick = {() =>{removeParent(parent.id)}}
                                               >
                                                 Supprimer
                                               </Button>
@@ -240,9 +251,9 @@ import {
                                 </Box>
                                </Td>
                            </Tr>
-                         {/* ))} */}
+                         ))}
                      </Tbody>
-                       {/* )} */}
+                       )}
                  </Table>
              </TableContainer>
          </Box>
@@ -250,8 +261,8 @@ import {
             <ReactPaginate 
               previousLabel={"<<"}
               nextLabel={">>"}
-              // pageCount={pageCountCategoryStudent}
-              // onPageChange={changePage}
+              pageCount={pageCountStudentParents}
+              onPageChange={changePage}
               containerClassName={"paginationBttns"}
               previousLinkClassName={"previousBttn"}
               nextLinkClassName={"nextBttn"}

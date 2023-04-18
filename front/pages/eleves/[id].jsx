@@ -85,7 +85,8 @@ import {
   GET_CLASS_FEES_BY_STUDENT_ID,
   GET_ALL_TRANCHE_BY_STUDENT_ID,
   GET_PENSION_ALREADY_PAY_BY_STUDENT_ID,
-  GET_RESTE_PENSION_A_PAYER_BY_STUDENT_ID
+  GET_RESTE_PENSION_A_PAYER_BY_STUDENT_ID,
+  GET_ALL_PARENT
 
 } from "../../graphql/Queries";
 
@@ -144,6 +145,8 @@ const DetailComponent = () => {
   const toast = useToast();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { isOpen:isOpenns, onOpen:onOpenns, onClose:onClosses } = useDisclosure();
+  const { isOpen:isOpenParent, onOpen:onOpenParent, onClose:onClosseParent } = useDisclosure();
+
 
   const cancelRef = React.useRef()
   const [classId, setClassId] = useState("");
@@ -153,6 +156,7 @@ const DetailComponent = () => {
   const [trancheId, setTrancheId] = useState([]);
   const [errorss, setErrorss] = useState(null);
   const [selectedTranches, setSelectedTranches] = useState([])
+  const [selectedParents, setSlectedParent] = useState([]);
   const [salleStudent, setSalleStudent] = useState(null);
   // const isDisabled = true
   // const {register, handleSubmit, control,  formState: { isSubmitting, errors }, setValue} = useForm({
@@ -233,7 +237,6 @@ const {data:dataResteFeesToPayByStudent} = useQuery(GET_RESTE_PENSION_A_PAYER_BY
   )
 
   
-
   // const {data:dataPensionSalleByStudent} = useQuery(GET_MONTANT_PENSION_SALLE_BY_STUDENT,
   //   {
   //     variables: {studentid: router.query.id} 
@@ -245,6 +248,7 @@ const {data:dataResteFeesToPayByStudent} = useQuery(GET_RESTE_PENSION_A_PAYER_BY
     // const {data:dataTranchePension} = useQuery(GET_ALL_TRANCHE_PENSION);
     const {data:dataTranchePension} = useQuery(GET_ALL_TRANCHE_PENSION);
     const {data: dataTrancheStudent} = useQuery(GET_ALL_TRANCHE_STUDENT)
+    const {data: dataParents} = useQuery(GET_ALL_PARENT);
     const {data:dataTrancheById} = useQuery(GET_TRANCHE_PENSION_BY_ID);
     const [createTrancheStudent] = useMutation(CREATE_TRANCHE_STUDENT);
     const [createFeesAvanceTranche] = useMutation(CREATE_AVANCE_TRANCHE
@@ -352,9 +356,6 @@ const {data:dataResteFeesToPayByStudent} = useQuery(GET_RESTE_PENSION_A_PAYER_BY
    //CODE POUR LE SELECT MULTIPLE
       
 
-
-   
-
   // const loadTranches = () => {
   //   // const trancheDisable = newDisabledOptions
   //   // console.log(newDisabledOptions)
@@ -375,14 +376,16 @@ const {data:dataResteFeesToPayByStudent} = useQuery(GET_RESTE_PENSION_A_PAYER_BY
   //       )
   //     })
   // }
-
-  const tranches = []
+//
   const getTrancheById = (id) => {
     return (dataTranchePension?.findAlltranche)?.find((t, i) => t.id === id)
   }
   const getTrancheStudentById = (id) => {
     return (dataTrancheStudent?.findAlltranchestudent)?.find((t, i) => t.id === id)
   }
+
+  // RECUPERATION DE LA LISTE DES TRANCHES LIES A UN ELEVE
+  const tranches = []
   const loadTranches = () => {
     // const trancheDisable = newDisabledOptions
     // console.log(newDisabledOptions)
@@ -405,13 +408,28 @@ const {data:dataResteFeesToPayByStudent} = useQuery(GET_RESTE_PENSION_A_PAYER_BY
       })
   }
 
+  //RECUPERATION DE LA LISTE DES PARENTS POUR L'AFFECTER A UN ELELE
+  const parents = []
+  const loadParents = () =>{
+    dataParents?.findAllparents.map((parent, index) =>{
+      parents.push(
+        {
+          label: parent?.firstname && parent.lastname,
+          value: parent?.id
+        }
+      )
+    })
+  }
+
         useEffect(() =>{
           loadTranches();
+          loadParents();
           // console.log(dataTranchePension?.findAlltranche.tranche.montant[0])
           // dataStudentId && console.log(dataStudentId.findOnestudent)
           // console.log(dataClass);
           //  console.log(dataFraisInscription);
           // console.log(dataClasse?.findAllsalle);
+          console.log(dataParents?.findAllparents)
           console.log(dataTranchePension?.findAlltranche);
           console.log(dataTrancheStudent?.findAlltranchestudent)
           // console.log(dataPensionSalleByStudent?.findMontantPensionstudent)
@@ -420,6 +438,7 @@ const {data:dataResteFeesToPayByStudent} = useQuery(GET_RESTE_PENSION_A_PAYER_BY
           console.log(dataTrancheCompleteByStudent?.getalltranchecompletedbystudent)
           console.log(dataTrancheStudentBySudentId?.getTrancheStudentByStudent)
         })
+
     // console.log(dataTranchePension?.findAlltranche)
     // const AllTranche = dataTranchePension?.findAlltranche.map((tranche) => {
     //   const totalPension = dataTrancheStudentBySudentId?.getTrancheStudentByStudent.montant;
@@ -653,11 +672,17 @@ const {data:dataResteFeesToPayByStudent} = useQuery(GET_RESTE_PENSION_A_PAYER_BY
           <Center 
             g='#FA6060' 
             height='40px' 
-            color='white' 
+            // color='white' 
             borderRadius={'md'}
-            bg="#e2d39c"
+            // bg="#e2d39c"
           >
-            <Text m='2'>Bulletin</Text>
+            <Button 
+              m='2'
+              bg={"colors.secondary"}
+              onClick={onOpenParent}
+            >
+              Affecter un parent
+            </Button>
           </Center>
           <Center 
             g='#60736A'  
@@ -982,7 +1007,6 @@ const {data:dataResteFeesToPayByStudent} = useQuery(GET_RESTE_PENSION_A_PAYER_BY
                         </AlertDialogHeader>
                         
                       <AlertDialogBody>
-
                         <Box mt='4'>
                           {/* BOUTON D'INITIALISATION DE LA PENSION */}
                             {/* <Box display="flex"> 
@@ -1205,7 +1229,106 @@ const {data:dataResteFeesToPayByStudent} = useQuery(GET_RESTE_PENSION_A_PAYER_BY
                   </AlertDialogOverlay>
                 </AlertDialog>
               </Box>
-</SimpleGrid>
+
+
+{/* FORMULAIRE D'ATTRIBUTION D'UN PARENT A UN ELEVE */}
+              <Box
+                as="form"
+                // onSubmit={PayTrancheSchoolFees}
+                // onSubmit={PayTrancheSchoolFees(handleSubmit)}
+              > 
+                <AlertDialog
+                    isOpen={isOpenParent}
+                    leastDestructiveRef={cancelRef}
+                    onClose={onClosseParent}
+                    size='xl'
+                  >
+                  <AlertDialogOverlay>
+                    <AlertDialogContent  >
+                      <AlertDialogCloseButton/>
+
+                        <AlertDialogHeader 
+                          fontSize='sm' 
+                          fontWeight='base' 
+                          mt='0'
+                        >
+                        <Box  
+                          // bg={"colors.secondary"} 
+                          borderBottomRightRadius={10} 
+                          borderBottomLeftRadius={10}
+                        >
+                          <Heading 
+                            as='h4' 
+                            textAlign={'center'} 
+                            fontSize={['15px','20px','20px']} 
+                            mt={"10px"}
+                          >
+                              Attribuer un parent a cet eleve
+                          </Heading>
+                        </Box>
+                        </AlertDialogHeader>
+                      <AlertDialogBody>
+                        <Box mt='4'>
+                          <Box> 
+                            <FormControl>
+                              <FormLabel>
+                                Parent
+                              </FormLabel>
+                                <Selects
+                                  isMulti
+                                  name={"selectedParents"}
+                                  value={selectedParents}
+                                  onChange={setSlectedParent}
+                                  options={parents}
+                                  placeholder={"Motif"}
+                                  trancheMiseAJour
+                                >
+                                  {console.log(selectedParents)}
+                                {/* {console.log(trancheId)} */}
+                                </Selects>
+                                {/* {errors.trancheId && <Text>{errors.trancheId.message}</Text>} */}
+                            </FormControl>
+                                
+                          </Box>
+                        </Box>
+                        <Box mt="10px"> 
+                            <FormControl>
+                              <FormLabel> Eleve</FormLabel>
+                              <Input 
+                                type={'text'} 
+                              
+                                value={dataStudentId?.findOnestudent.firstname}
+                              />
+                              {/* {console.log(dataStudentId?.findOnestudent.id)} */}
+                            </FormControl>
+                          {/* )}}
+                          /> */}
+                        </Box>
+                      </AlertDialogBody>
+                      <AlertDialogFooter>
+                        <Button 
+                          ref={cancelRef} 
+                          // onClick={onClosseParent} 
+                          colorScheme='red' 
+                        >
+                          annuler
+                        </Button>
+                        <Link href={'#'}>
+                          <Button 
+                            colorScheme='green'  
+                            ml={3}
+                            onClick={addAvanceTranche}
+                              // (dataTrancheStudentBySudentId?.getTrancheStudentByStudent.id)
+                          >
+                            payer
+                          </Button>
+                        </Link> 
+                      </AlertDialogFooter>
+                    </AlertDialogContent>
+                  </AlertDialogOverlay>
+                </AlertDialog>
+              </Box>
+      </SimpleGrid>
 )} 
       </Box>
     </DefaultLayout>

@@ -46,25 +46,29 @@ export class Parent {
     @Property({ nullable: true })
     phonenumber!: string;
 
-    @Field({ defaultValue: false })
-    @Property({ default: false })
-    parent!: boolean;
+    @Field({ nullable: true })
+    @Property({ nullable: true })
+    gender!: string;
 
-    @Field({ defaultValue: false })
-    @Property({ default: false })
-    tuteur!: boolean;
+    @Field({ nullable: true })
+    @Property({ nullable: true })
+    parentStatus!: string;
+
+    // @Field({ defaultValue: false })
+    // @Property({ default: false })
+    // tuteur!: boolean;
 
     @Field({ defaultValue: 0 })
     @Property({ default: 0 })
     childNumber!: number;
 
     //Relation with another table 
-    @OneToOne(() => User, (user) => user.parent, {
-        owner: true,
-        unique: true,
-        onDelete: 'CASCADE',
-    })
-    user!: IdentifiedReference<User>;
+    // @OneToOne(() => User, (user) => user.parent, {
+    //     owner: true,
+    //     unique: true,
+    //     onDelete: 'CASCADE',
+    // })
+    // user!: IdentifiedReference<User>;
 
     @OneToMany(() => ParentStudent, parentStudent => parentStudent.parent)
     parentStudent = new Collection<ParentStudent>(this);

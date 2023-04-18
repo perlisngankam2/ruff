@@ -258,7 +258,20 @@ export const CREATE_TRANCHE_PRIORITY = gql`
         }
     }
 `
-
+export const CREATE_PARENT = gql`
+mutation createParent ($parent: ParentCreateInput!) {
+    createParent (parent: $parent) {
+        id
+        firstname
+        lastname
+        profession
+        email
+        phonenumber
+        gender
+        parentStatus
+        childNumber
+    }
+}`
 
 export const fragmentCycle = gql` fragment CycleClass on cyle {
     id
@@ -423,7 +436,22 @@ export const UPDATE_SALLE = gql `
     }
 `;
 
-
+//Suppression d'un parent
+export const DELETE_PARENT = gql `
+    mutation deleteparent ($id: String!) {
+        deleteparent (id: $id) {
+            id
+            firstname
+            lastname
+            profession
+            email
+            phonenumber
+            gender
+            parentStatus
+            childNumber
+        }
+    }
+`
 
 //mise a jour de la section
 

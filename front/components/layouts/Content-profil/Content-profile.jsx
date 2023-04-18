@@ -1,4 +1,4 @@
-import {Box, Tab, TabList, Tablist, TabPanel, TabPanels,Tabs,Button} from '@chakra-ui/react';
+import {Box, Tab, TabList, Tablist, TabPanel, TabPanels,Tabs,Button, useDisclosure} from '@chakra-ui/react';
 import { CloseIcon } from '@chakra-ui/icons'
 import Link from "next/link";
 import AccountSetting from './AccountSetting';
@@ -6,7 +6,11 @@ import Actions from './Actions';
 import CompanySettings from './CompanySettings';
 import Notifications from './Notifications';
 
+
 const ContentProfile =() =>{
+
+    const { isOpen, onOpen, onClose } = useDisclosure();
+
     const tabs = ['Paramètre Compte', 'Paramètre Compagnie', 'Notification']
     return(
         <Box
@@ -22,7 +26,13 @@ const ContentProfile =() =>{
           borderColor="gray.200"
           style={{transform: 'translateY(-100px)'}}
          w='100%'
-        ><Button pt='-6' bg='red' color='white' size={'sm'}  ml={755} _hover={{background:"red.300"}} ><Link href='/dashboard'><CloseIcon /></Link></Button>
+        >
+            <Button pt='-6' bg='red' color='white' size={'sm'}  ml={755} _hover={{background:"red.300"}}
+             >
+                <Link href='/dashboard'>
+                    <CloseIcon />
+                </Link>
+            </Button>
             <Tabs>
                 <TabList px={5}>
                     {tabs.map(tab =>(

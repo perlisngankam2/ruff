@@ -178,7 +178,7 @@ import {
                                <Td p={0} pl={6}>{parent.firstname}</Td>
                                <Td p={0} pl={6}>{parent.lastname}</Td>
                                <Td p={0} pl={6}>{parent.phonenumber}</Td>
-                               <Td p={0} pl={6}>{parent.status}</Td>
+                               <Td p={0} pl={6}>{parent.parentStatus}</Td>
                                
                                <Td p={0} pl={3}>
                                <Box display="flex">

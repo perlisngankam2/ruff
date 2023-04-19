@@ -24,13 +24,13 @@ const ContentProfile =() =>{
           rounded={"md"}
           borderWidth={1}
           borderColor="gray.200"
-          style={{transform: 'translateY(-100px)'}}
+          style={{transform: 'translateY(-100px)'}} 
          w='100%'
         >
             <Button pt='-6' bg='red' color='white' size={'sm'}  ml={755} _hover={{background:"red.300"}}
              >
                 <Link href='/dashboard'>
-                    <CloseIcon />
+                  <CloseIcon />
                 </Link>
             </Button>
             <Tabs>

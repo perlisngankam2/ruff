@@ -189,8 +189,8 @@
               </Flex>
             </AccordionButton>
             <AccordionPanel pb={1} _hover={{background:"rgba(0,0,0,0.16)"}}>
-              <Link href="/finances">
-                <Box as="span">Finance 1</Box>
+              <Link href="/finances/AccountStatement">
+                <Box as="span">Etat du compte</Box>
               </Link>
             </AccordionPanel>
             <AccordionPanel pb={1} _hover={{background:"rgba(0,0,0,0.16)"}}>

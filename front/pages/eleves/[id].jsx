@@ -398,7 +398,7 @@ const {data:dataResteFeesToPayByStudent} = useQuery(GET_RESTE_PENSION_A_PAYER_BY
         console.log(trancheCompleteByStudent)
         tranches.push(
           {
-            label: tranche?.name,
+            label: tranche?.name + " ," + tranche?.montant +"Fcfa",
             value: tranche?.id,
             isDisabled: totalPension >= tranche?.montant && trancheCompleteByStudent?.includes(tranche?.id)
            //  (il faut aussi que l'id de cette tranche soit inclu dans la liste des tranches qui sont dans avancetranche) 
@@ -414,7 +414,7 @@ const {data:dataResteFeesToPayByStudent} = useQuery(GET_RESTE_PENSION_A_PAYER_BY
     dataParents?.findAllparents.map((parent, index) =>{
       parents.push(
         {
-          label: parent?.firstname && parent.lastname,
+          label: parent?.firstname + " " + parent?.lastname + " " + parent?.parentStatus +" "+ parent?.gender,
           value: parent?.id
         }
       )
@@ -1308,7 +1308,7 @@ const {data:dataResteFeesToPayByStudent} = useQuery(GET_RESTE_PENSION_A_PAYER_BY
                       <AlertDialogFooter>
                         <Button 
                           ref={cancelRef} 
-                          // onClick={onClosseParent} 
+                          onClick={onClosseParent} 
                           colorScheme='red' 
                         >
                           annuler
@@ -1317,7 +1317,7 @@ const {data:dataResteFeesToPayByStudent} = useQuery(GET_RESTE_PENSION_A_PAYER_BY
                           <Button 
                             colorScheme='green'  
                             ml={3}
-                            onClick={addAvanceTranche}
+                            // onClick={addAvanceTranche}
                               // (dataTrancheStudentBySudentId?.getTrancheStudentByStudent.id)
                           >
                             payer

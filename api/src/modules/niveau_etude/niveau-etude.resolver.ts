@@ -7,13 +7,15 @@ import {
   Mutation,
   Query,
   ResolveField,
-  Resolver, 
+  Resolver,
+  Parent
 }from '@nestjs/graphql';
 import { NiveauEtude } from 'src/entities/niveau-etude.entity';
 import { PrimePersonnel } from 'src/entities/prime-personnel.entity';
 import { NiveauEtudeCreateInput} from './dto/niveau-etude.input';
 import { NiveauEtudeUpdateInput} from './dto/niveau-etude.update';
 import { NiveauEtudeService} from './niveau-etude.service';
+import { Cycle } from 'src/entities/cycle.entity';
 
 
 @Resolver(() => NiveauEtude)
@@ -49,4 +51,9 @@ export class NiveauEtudeResolver {
   async etatInscriptionNiveau(@Args('id', { type: () => String }) id: string) {
     return await this.niveauEtudeService.etatInscriptionNiveau(id);
   }
+
+  @ResolveField(()=>Cycle)
+  async cycle(@Parent() niveauetude: NiveauEtude): Promise<Cycle>{
+    return await niveauetude.cycle.load()
+  }
 }

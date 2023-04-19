@@ -42,7 +42,7 @@ async SumAvanceTrancheByStudent(studentid:string,trancheid:string){
         console.log(avancetranche)
    
         if(avancetranche.length==0){
-         throw Error("Aucune avance a ete fait pour cette tranche")
+         return 0
         }
     
         return avancetranche.map(a=>a.montant).reduce(function(a,b){return a+b});
@@ -231,10 +231,26 @@ async  findBystudent(id: string):Promise<AvanceTranche[]> {
     return await this.avanceTrancheRepository.find({student:id})
   }
 async  findBystudentandtranche(studentid: string,trancheid:string):Promise<AvanceTranche[]> {
-    return await this.avanceTrancheRepository.find({student:studentid,tranche:trancheid,})
+    // return await this.avanceTrancheRepository.find({student:studentid,tranche:trancheid,})
+    const where = {};
+    if (studentid) {
+      where['student'] = studentid;
+    }
+
+    if (trancheid) {
+      where['tranche'] = trancheid;
+    }
+
+    const a = await this.em.find(AvanceTranche, where, {
+      populate: true,
+      orderBy: { id: 'ASC' },
+    });
+
+    return a
   }
 
 async  findBytranche(id: string):Promise<AvanceTranche[]> {
+
     return await this.avanceTrancheRepository.find({tranche:id})
   }
 
@@ -250,105 +266,15 @@ async AmountRecentAvanceTrancheByStudent(studentid:string){
   }
 
 async TranchecompletedByStudent(studentid:string){
-    const tranchestudent = await this.trancheStudentservice.findByStudent(studentid)
-    console.log('==============================>'+tranchestudent)
+    const tranchestudent = await this.trancheStudentservice.findByStudents(studentid)
 
-    const where = {};
-
-    // if (studentid) {
-    //   where['student'] = studentid;
-    // }
-
-    // const avancetranche = await this.em.find(AvanceTranche, where, {
-    //   populate: true,
-    //   orderBy: { id: 'ASC' },
-    // });
-
-    console.log(tranchestudent)
-
-   
-   const a=tranchestudent.map(a=>a.tranche.load())
-   const tranches = await this.trancheservice.getAll()
-   
-
-   if(a.length==1){
-    if ((await a[0]).id) {
-      where['tranche'] = (await a[0]).id;
+    if (tranchestudent.length!=0){
+     const a = tranchestudent.filter(a=>a.complete==true)
+     if(a.length==0){
+      throw Error("!!!!!!!!!!No tranche completed!!!!!!!!!!!!!!!!!!!")
+     }
+    return a.map(a=>a.tranche.load())
     }
-    // const avancetranche = await this.em.find(AvanceTranche, where, {
-    //   populate: true,
-    //   orderBy: { id: 'ASC' },
-    // });
-    // const total= avancetranche.map(a=>a.montant).reduce(function(a,b){return a+b})
-    const total = Number(this.SumAvanceTrancheByStudent(studentid,(await a[0]).id))
-  
-    if(total == tranches[0].montant){
-     return a[0]
-    }
-    console.log("cette tranche n'est pas encore complete")
-   }
-
-   if(a.length==2){
-    if ((await a[0]).id) {
-      where['tranche'] = (await a[0]).id;
-    }
-    // const avancetranche = await this.em.find(AvanceTranche, where, {
-    //   populate: true,
-    //   orderBy: { id: 'ASC' },
-    // });
-    const total = Number(this.SumAvanceTrancheByStudent(studentid,(await a[0]).id))
-
-    if ((await a[1]).id) {
-      where['tranche'] = (await a[1]).id;
-    }
-    // const avancetranche1 = await this.em.find(AvanceTranche, where, {
-    //   populate: true,
-    //   orderBy: { id: 'ASC' },
-    // });
-    const total1 = Number(this.SumAvanceTrancheByStudent(studentid,(await a[1]).id))
-
-    if(total == tranches[0].montant && total1 == tranches[1].montant){
-     return [a[0],a[1]]
-    }
-    console.log("la deuxieme tranche n'est pas complete")
-    return [a[0]]
-   }
-
-   if(a.length==3){
-    if ((await a[0]).id) {
-      where['tranche'] = (await a[0]).id;
-    }
-    // const avancetranche = await this.em.find(AvanceTranche, where, {
-    //   populate: true,
-    //   orderBy: { id: 'ASC' },
-    // });
-    const total = Number(this.SumAvanceTrancheByStudent(studentid,(await a[0]).id))
-    if ((await a[1]).id) {
-      where['tranche'] = (await a[1]).id;
-    }
-    // const avancetranche1 = await this.em.find(AvanceTranche, where, {
-    //   populate: true,
-    //   orderBy: { id: 'ASC' },
-    // });
-    const total1 = Number(this.SumAvanceTrancheByStudent(studentid,(await a[1]).id))
-
-    if ((await a[2]).id) {
-      where['tranche'] = (await a[2]).id;
-    }
-    // const avancetranche2 = await this.em.find(AvanceTranche, where, {
-    //   populate: true,
-    //   orderBy: { id: 'ASC' },
-    // });
-    const total2 = Number(this.SumAvanceTrancheByStudent(studentid,(await a[2]).id))
-  
-    if(total == tranches[0].montant && total1 == tranches[1].montant && total2 == tranches[2].montant){
-     return [a[0],a[1],a[2]]
-    }
-    console.log("la troisieme tranche n'est pas complete")
-    return [a[0],a[1]]
-   }
-
- 
   }
 
 async feesalreadypayed(studentid:string){
@@ -362,7 +288,7 @@ async feesalreadypayed(studentid:string){
    }
 
 async ResttuitionfeeByStudent(studentid:string){
-        const z = (await this.trancheStudentservice.findByStudent(studentid))
+        const z = (await this.trancheStudentservice.findByStudents(studentid))
         if(z.length==0){
          throw Error("student not found in tranchestudent!!!!!!!!!!")
         }

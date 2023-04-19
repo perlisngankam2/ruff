@@ -6,7 +6,7 @@ import { NiveauEtudeCreateInput } from 'src/modules/niveau_etude/dto/niveau-etud
 
 @InputType()
 export class SalleUpdateInput {
-  @Field({nullable:true})
+  @Field(()=>ID,{nullable:true})
   ID?: string;
 
   @Field({nullable:true})

@@ -45,7 +45,7 @@ export class TrancheService {
             dateLine:format(input.dateLine, 'dd/MM/yyyy'),
             anneeAccademique: input.anneeAcademiqueId,
             salle: input.salleId,
-            tranchepriority:input.tranchepriorityId
+            priority:input.priority
             
             // pension: pension.id
           },
@@ -96,7 +96,7 @@ export class TrancheService {
             anneeAccademique:input.anneeAcademiqueId,
             description: input.description || tranche.description,
             dateLine:format(input.dateLine,'dd/MM/yyyy'),
-            tranchepriority:input.tranchepriorityId
+            priority:input.priority
         },
         { em: this.em },
     );

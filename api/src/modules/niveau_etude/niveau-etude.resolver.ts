@@ -5,20 +5,27 @@ import {
   ID,
   Int,
   Mutation,
+  Parent,
   Query,
   ResolveField,
   Resolver,
+  Root,
 } from '@nestjs/graphql';
 import { NiveauEtude } from 'src/entities/niveau-etude.entity';
 import { PrimePersonnel } from 'src/entities/prime-personnel.entity';
 import { NiveauEtudeCreateInput } from './dto/niveau-etude.input';
 import { NiveauEtudeUpdateInput } from './dto/niveau-etude.update';
 import { NiveauEtudeService } from './niveau-etude.service';
+import { Cycle } from 'src/entities/cycle.entity';
+import { CycleService } from '../cycle/cycle.service';
+import { Salle } from 'src/entities/salle.entity';
+import { Loaded } from '@mikro-orm/core';
 
 
 @Resolver(() => NiveauEtude)
 export class NiveauEtudeResolver {
-  constructor(private readonly niveauEtudeService: NiveauEtudeService) {}
+  constructor(private readonly niveauEtudeService: NiveauEtudeService,
+              private readonly cycleService: CycleService,) {}
 
   @Mutation(() => NiveauEtude)
   async createNiveauEtude(@Args('niveauEtude') Input: NiveauEtudeCreateInput) {
@@ -35,12 +42,13 @@ export class NiveauEtudeResolver {
    return await this.niveauEtudeService.delete(id)
   }
 
-  @Query(() => [NiveauEtude])
-  async findAllNiveauEtude() {
-    return await this.niveauEtudeService.getAll()
+  @Query(()=>[[String],[String]])
+  async findallniveauetude() {
+    return await this.niveauEtudeService.getAll();
   }
   
-  @Query(() => NiveauEtude, { name: 'niveaEtude' })
+
+  @Query(() => NiveauEtude)
   async findOneNiveauEtude(@Args('id', { type: () => String }) id: string) {
     return await this.niveauEtudeService.findByOne(id);
   }

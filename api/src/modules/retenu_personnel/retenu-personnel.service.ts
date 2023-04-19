@@ -134,6 +134,33 @@ export class RetenuPersonnelService {
       }
     }
 
+    async getallretenupersonnelbymonth(personnelid:string,month:string){
+      const where = {};
+      if (personnelid) {
+      where['personnel'] = personnelid;
+    }
+
+    const a = await this.em.find(RetenuPersonnel, where, {
+      populate: true,
+      orderBy: { id: 'ASC' },
+    });
+
+    const t = a.filter(a=>a.startMonth==month) 
+    console.log('============>list of retenu personnel::'+t)
+   
+    if(t.length==0){
+      return 0
+    }
+    if(t.length!=0){
+    console.log('==============>montant retenu::'+ await t.map(async a=>(await a.retenue.load()).montant).reduce(async function(a,b){return await a+ await b}))
+    const b = t.map(async a=>(await a.retenue.load()).montant)
+    console.log(b)
+    const c=await b.reduce(async function(a,b){return await a+ await b})
+    console.log(c)
+    return c 
+    }
+  }
+
       async delete(id:string){
       const a = this.findById(id)
       await this.retenuPersonnelRepository.removeAndFlush(a)
@@ -144,8 +171,19 @@ export class RetenuPersonnelService {
     
 }
 
-async findbypersonnel(personnelid:string){
-  return await this.retenuPersonnelRepository.find({personnel:personnelid})
+async findnamesretenuebypersonnel(personnelid:string){
+  return (await this.retenuPersonnelRepository.find({personnel:personnelid})).map(async a=>(await a.retenue.load()).nom)
+}
+
+async findmontantretenuebypersonnel(personnelid:string){
+  return (await this.retenuPersonnelRepository.find({personnel:personnelid})).map(async a=>(await a.retenue.load()).montant)
+}
+
+async NomRetenuEtMontant(personnelid:string){
+  const a =  (await this.retenuPersonnelRepository.find({personnel:personnelid})).map(async a=>(await a.retenue.load()).nom)
+  const b = (await this.retenuPersonnelRepository.find({personnel:personnelid})).map(async a=>(await a.retenue.load()).montant)
+  return [a,b]
+
 }
 
 }

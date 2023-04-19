@@ -48,7 +48,6 @@ import { ExpenseModule } from './modules/expenses/expense.module';
 import { StatisticModule } from './modules/statistics/statistics.module';
 import { PersonnelSalleModule } from './modules/personnel_salle/personnelsalle.module';
 import { CourseModule } from './modules/course/course.module';
-import { TranchePriorityModule } from './modules/tranche_priority/tranche-priority.module';
 import { TrancheStudentModule } from './modules/tranche-student/tranche-student.module';
 
 @Module({
@@ -76,7 +75,6 @@ import { TrancheStudentModule } from './modules/tranche-student/tranche-student.
     TrancheModule, 
     FraiExamenModule, 
     AvanceTrancheModule, 
-    TranchePriorityModule,
     ReductionPensionModule, 
     InscriptionModule,
     SalaireModule,
@@ -90,7 +88,7 @@ import { TrancheStudentModule } from './modules/tranche-student/tranche-student.
     ExpenseModule,
     StatisticModule,
     CourseModule,
-    TranchePriorityModule,
+   
 
   
     ConfigModule.forRoot({
@@ -114,6 +112,7 @@ import { TrancheStudentModule } from './modules/tranche-student/tranche-student.
   Authmodule,
   ParentStudentModule,
   LocalisationModule,
+  ParentStudentModule
   ],
   controllers: [AppController],
   providers: [AppService],

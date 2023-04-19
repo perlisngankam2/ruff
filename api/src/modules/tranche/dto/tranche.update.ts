@@ -13,8 +13,8 @@ export class TrancheUpdateInput {
   @Field(()=>ID,{nullable:true})
   anneeAcademiqueId?:string
 
-  @Field(()=>ID,{nullable:true})
-  tranchepriorityId?:string
+  @Field({nullable:true})
+  priority?:number
 
   @Field(()=>ID,{nullable:true})
   salleId?:string

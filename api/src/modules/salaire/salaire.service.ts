@@ -36,21 +36,23 @@ export class SalaireService {
     //const categorie = personnel.category.load()
 
     const salaire= new Salaire()
-    const retenus =await this.retenuPersonnel.getallretenupersonnel(personnel.id)
+    const retenus =await this.retenuPersonnel.getallretenupersonnelbymonth(personnel.id,input.moisPaie)
     console.log(retenus)
-    const primes = await this.primepersonnelservice.getallpersonnelprime(personnel.id)
+    const primes = await this.primepersonnelservice.getallpersonnelprimebymonth(personnel.id,input.moisPaie)
     console.log(primes)
+    //ici j'ai tous les mois auquels les primes ont ete attribuer au personnel
+    const moisprimespersonnel = (await this.primepersonnelservice.getallprimespersonnel(personnel.id)).filter(a=>a.startMonth==input.moisPaie)
 
 
 
     if(personnel){
-      if((await this.getAll()).filter(async a=>a.personnel.id === personnel.id).map(a=>a.moisPaie).length > 1){
+      if((await this.getAll()).filter(async a=>a.personnel.id === personnel.id).filter(a=>a.moisPaie==input.moisPaie).length>1){
         throw Error("!!!!!!!!!!! CE PERSONNEL A DEJA ETE PAYER POUR CE MOIS !!!!!!!!!!!!")
       }
       const salaireBase = (await personnel.category.load()).montant
-
       
-
+      if(moisprimespersonnel.length!=0)
+      {
       if(personnel.status == Status.PERMANENT){
 
       const salaireNette = salaireBase + primes - retenus
@@ -98,6 +100,11 @@ export class SalaireService {
 
     }
 
+    if(moisprimespersonnel.length==0){
+    throw Error("le mois de paie ne correspond a aucun mois de prime attribuer au personnel")
+    }
+
+  }
 
 }
 
@@ -160,22 +167,21 @@ return salaire;
 }
 
 async personnelMonthSalary(personnelId:string){
-  const a= await this.findByOne(personnelId)
-  if(!a){
-    throw Error("PERSONNEL NOT FOUND")
-  }
-  const b = (await this.salairepersonnel(a.id)).map(a=>a.moisPaie)
+  const b = (await this.salairepersonnel(personnelId)).map(a=>a.moisPaie)
   return b
 }
 
 async personnelNetSalary(personnelId:string){
-  const a= await this.findByOne(personnelId)
-  if(!a){
-    throw Error("PERSONNEL NOT FOUND")
-  }
-  const b = (await this.salairepersonnel(a.id)).map(a=>a.montant)
+  const b = (await this.salairepersonnel(personnelId)).map(a=>a.montant)
   return b
 }
 
+async personnelsalairenetbymonth(personnelid:string, month:string){
+  const a= (await this.salairepersonnel(personnelid)).filter(a=>a.moisPaie==month)[0].montant
+  if(a==0){
+   throw Error("!!!!!!!!!!!!!!!!!!!!No net salary for this month!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+  }
+  return a
+}
 
 }

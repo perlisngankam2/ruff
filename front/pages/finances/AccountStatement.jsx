@@ -48,9 +48,11 @@ import { IoIosAdd } from "react-icons/io";
 import{ FiEdit, FiSearch, FiSidebar} from 'react-icons/fi';
 import {TfiFilter, TfiPrinter} from "react-icons/tfi"
 import {RiDeleteBin5Line} from "react-icons/ri"
-import {MdDelete} from 'react-icons/md';
+import {BiTrendingDown, BiTrendingUp} from "react-icons/bi"
+import {MdDelete, MdOutlineHorizontalRule} from 'react-icons/md';
+import {HiOutlineMinus} from "react-icons/hi"
 import {useRouter } from "next/router";
-import { 
+import {  
   GET_ALL_STUDENT, 
   GET_STUDENT_BY_ID,
   GET_ALL_CLASS
@@ -84,15 +86,34 @@ const AccountStatement = () => {
                   </Hide>
                 </Flex>
                     <Flex 
-                        align={"center"}
-                        // flexWrap={["wrap", "wrap", "wrap"]}
-                        gap={12}
-                        bg={"blackAlpha.100"}
-                        width={"220px"}
-                        borderRadius={"lg"}
-                        ml={["500px","600px","900px"]}
-                        mt={"30px"}
+                        
+                        // ml={["500px","600px","900px"]}
+                        mt={"40px"}
+                        gap={20}
                     > 
+                        <Box 
+                            display={{md:"flex"}}
+                            gap={2}
+                        >
+                            <Input type="date"/> 
+                            <Text 
+                                mt="9px" 
+                                fontWeight={"bold"}
+                                color={"colors.greenColor400"}
+                            >
+                                To:
+                            </Text>
+                            <Input type="date"/>
+                        </Box>
+                        <Flex
+                            align={"center"}
+                            // flexWrap={["wrap", "wrap", "wrap"]}
+                            gap={12}
+                            bg={"blackAlpha.100"}
+                            width={"220px"}
+                            borderRadius={"lg"}
+                            ml={"420px"}
+                        > 
                         <Icon
                             alignItems={"center"}
                             as={TfiPrinter}
@@ -119,12 +140,13 @@ const AccountStatement = () => {
                                 // _hover={{background:"blue.100"}}
                                 // onClick={onToggle}
                             />
+                            
+                        </Flex>
                     </Flex> 
                     <Flex 
                         gap={50}
                         mt="35px"
                     >
-                        
                         <Box 
                             display={{md:"flex"}}
                             gap={3}
@@ -177,35 +199,33 @@ const AccountStatement = () => {
                                     borderBottom={"1px"}
                                     background="colors.secondary"
                                 > 
-                                    <Box width='100px' 
+                                    <Box width='120px' 
                                         flex={1}
                                         borderLeft={"1px"}
                                     >
                                         Date
                                     </Box>
                                     <Box 
-                                        width='340px'
+                                        width='290px'
                                     >
                                         Description
                                     </Box>
                                     <Box 
-                                        width='100px'
+                                        width='160px'
                                     >
                                         Debit
                                     </Box>
                                     <Box 
-                                        width='100px'
+                                        width='150px'
                                     >
                                         Credit
                                     </Box>
                                     <Box 
-                                        width='100px'
-                                    
+                                        width='180px'
                                     >
                                         Net
                                     </Box>
                                 </Flex>
-
                                 <Flex
                                     gap={100}
                                     p="5px"
@@ -216,20 +236,67 @@ const AccountStatement = () => {
                                     <Box width='100px' 
                                         flex={1}
                                     >
-                                        Date
+                                        <Box>Date</Box>
                                     </Box>
-                                    <Box width='340px'
+                                    <Box width='290px'
 
                                     >
                                         Description
                                     </Box>
-                                    <Box width='100px'>
-                                        Debit
+                                    <Box 
+                                        width='160px'
+                                        display={{md:"flex"}}
+                                    >
+                                        <Flex 
+                                            flexDirection={"column"}
+                                            gap={1}
+                                        >
+                                            <Icon
+                                                as={BiTrendingDown}
+                                                boxSize="20px"
+                                                rounded="full"
+                                                color="colors.redColor400"
+                                                mb={"-17px"}
+                                            />
+                                            <Icon
+                                                as={HiOutlineMinus}
+                                                boxSize="25px"
+                                                ml={"-2px"}
+                                                // p="3"
+                                                rounded="full"
+                                                color="colors.redColor400"
+                                            />
+                                        </Flex>
+                                        <Box> Debit</Box>
                                     </Box>
-                                    <Box width='100px'>
-                                        Credit
+                                    <Box width='150px'
+                                        display={{md:"flex"}}
+                                    >
+                                    <Flex 
+                                        flexDirection={"column"}
+                                        gap={0}
+                                    >
+                                            <Icon
+                                                as={BiTrendingUp}
+                                                boxSize="20px"
+                                                // p="3"
+                                                rounded="full"
+                                                color="colors.greenColor400"
+                                                mb={"-15px"}
+                                            />
+                                            <Icon
+                                                as={HiOutlineMinus}
+                                                boxSize="25px"
+                                                ml={"-2px"}
+                                                // p="3"
+                                                rounded="full"
+                                                color="colors.greenColor400"
+                                               
+                                            />
+                                        </Flex>
+                                        <Box>Credit</Box>
                                     </Box>
-                                    <Box width='100px'>
+                                    <Box width='180px'>
                                         Net
                                     </Box>
                                 </Flex>
@@ -243,20 +310,20 @@ const AccountStatement = () => {
                                     <Box
                                         flex={1}
                                         fontWeight={"bold"}
-                                        ml="280px"
+                                        ml="150px"
 
                                     >
                                         Total
                                     </Box>
                                     <Box
-
+                                     width='160px'
                                     >
                                         350000
                                     </Box>
-                                    <Box width='100px'>
+                                    <Box width='150px'>
                                         500
                                     </Box>
-                                    <Box width='100px'>
+                                    <Box width='180px'>
                                         40000
                                     </Box>
                                 </Flex>

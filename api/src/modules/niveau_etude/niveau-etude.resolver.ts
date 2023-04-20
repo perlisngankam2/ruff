@@ -43,7 +43,6 @@ export class NiveauEtudeResolver {
     return await this.niveauEtudeService.getAll();
   }
   
-
   @Query(() => NiveauEtude)
   async findOneNiveauEtude(@Args('id', { type: () => String }) id: string) {
     return await this.niveauEtudeService.findByOne(id);

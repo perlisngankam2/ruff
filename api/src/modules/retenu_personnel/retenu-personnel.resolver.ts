@@ -13,6 +13,7 @@ import {
 import { RetenuPersonnel } from 'src/entities/retenu-personnel.entity';
 import { RetenuPersonnelCreateInput } from './dto/retenu-personnel.input';
 import { RetenuPersonnelService } from './retenu-personnel.service';
+import { RetenuPersonnelUpdateInput } from './dto/retenu-personnel.update';
 
 
 @Resolver(() => RetenuPersonnel)
@@ -34,10 +35,10 @@ export class RetenuPersonnelResolver {
     return await this.retenuPersonnelService.findByOne(id);
   }
 
-  // @Mutation(()=>RetenuPersonnel)
-  // async updateretenupersonnel(@Args('id') id:string,@Args('input') input:RetenuPersonnelUpdateInput){
-  //   return await this.retenuPersonnelService.update(id,input)
-  // }
+  @Mutation(()=>RetenuPersonnel)
+  async updateretenupersonnel(@Args('id') id:string,@Args('input') input:RetenuPersonnelUpdateInput){
+    return await this.retenuPersonnelService.update(id,input)
+  }
 
   @Mutation(()=> RetenuPersonnel)
   async deleteretenupersonnel(@Args('id') id:string){
@@ -51,6 +52,21 @@ export class RetenuPersonnelResolver {
 
   @Query(()=> Number)
   async findallretenupersonnel(@Args('personnelid') personnelid:string){
+ return await this.retenuPersonnelService.getallretenupersonnel(personnelid)
+  }
+
+    @Query(()=> [Number])
+  async findmontantretenubypersonnel(@Args('personnelid') personnelid:string){
+ return await this.retenuPersonnelService.findmontantretenuebypersonnel(personnelid)
+  }
+
+  @Query(()=> [String])
+  async findnamesretenubypersonnel(@Args('personnelid') personnelid:string){
+ return await this.retenuPersonnelService.findnamesretenuebypersonnel(personnelid)
+  }
+
+  @Query(()=> Number)
+  async findsumallretenupersonnel(@Args('personnelid') personnelid:string){
  return await this.retenuPersonnelService.getallretenupersonnel(personnelid)
   }
 

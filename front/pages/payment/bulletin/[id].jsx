@@ -5,35 +5,52 @@ import {
     Center,
     Heading,
     Flex,
-    Image
+    Image,
+    Button,
+    Icon
 } from "@chakra-ui/react";
+import ReactToPrint from 'react-to-print';
 import PaySlipBottom from "../../../components/atoms/PaySlipBottom";
 import PaySlipMiddle from "../../../components/atoms/PaySlipMiddle";
 import PaySlipFolderSalaryBox from "../../../components/atoms/PaySlipFolderSalaryBox";
 import PaySlipLogoBox from "../../../components/atoms/PaySlipLogoBox";
 import PaySlipInformationEmployeeBox from "../../../components/atoms/PaySlipInformationEmployeeBox";
 import DefaultLayout from "../../../components/layouts/DefaultLayout";
-import { GET_ALL_PERSONNEL_BY_ID,GET_PRIME, GET_ALL_RETENUE, GET_ALL_RETENUE_BY_ID, GET_ALL_PRIME_BY_ID ,GET_ALL_SALAIRE_BY_ID, GET_SALARY_NET,GET_Category_Personnel_BY_ID, GET_Category_Personnel_ID } from "../../../graphql/Queries";
+import { GET_ALL_PERSONNEL_BY_ID,
+         GET_ALL_NAME_PRIME_PERSONNEL, 
+         GET_ALL_AMOUNT_PRIME_PERSONNEL, 
+         GET_SUM_AMOUNT_PRIME_PERSONNEL,
+         GET_ALL_NAME_RETENU_PERSONNEL,
+         GET_ALL_AMOUNT_RETENU_PERSONNEL,
+         GET_SUM_AMOUNT_RETENU_PERSONNEL,
+         GET_ALL_SALAIRE_BY_ID, 
+         GET_SALARY_NET,
+         GET_Category_Personnel_BY_ID, 
+         GET_Category_Personnel_ID } from "../../../graphql/Queries";
 import { useRouter } from "next/router";
 import { useQuery } from "@apollo/client";
+import React, { useRef }  from "react";
+import { GiTrafficCone } from "react-icons/gi";
+import { TfiPrinter } from "react-icons/tfi";
 
 const Bulletin = () => {
 
   const router = useRouter();
 
- 
+ //
 
      const {data:dataPersonnelId, loading, error} = useQuery(GET_ALL_PERSONNEL_BY_ID,
       {
         variables:{ id: router.query.id}
       });
 
-
+//
       const {data:dataSalaireId} = useQuery(GET_ALL_SALAIRE_BY_ID,
       {
         variables:{ personnelid: router.query.id}
       });
 
+      //
       const {data:dataSalaireNet} = useQuery(GET_SALARY_NET,
       {
         variables:{ personnelid: router.query.id}
@@ -55,21 +72,40 @@ const Bulletin = () => {
     })
 
   //prime et retenues
- const {data:dataRetenue} = useQuery(GET_ALL_RETENUE_BY_ID,
+ const {data:dataRetenueNoms} = useQuery(GET_ALL_NAME_RETENU_PERSONNEL,
     {
         variables:{ personnelid: router.query.id}
     })
 
-   const {data:dataPrime} = useQuery(GET_ALL_PRIME_BY_ID,
+    const {data:dataRetenueMontant} = useQuery(GET_ALL_AMOUNT_RETENU_PERSONNEL,
+    {
+        variables:{ personnelid: router.query.id}
+    })
+
+    const {data:dataRetenueTotal} = useQuery(GET_SUM_AMOUNT_RETENU_PERSONNEL,
+    {
+        variables:{ personnelid: router.query.id}
+    })
+
+    //
+
+   const {data:dataPrimeNoms} = useQuery(GET_ALL_NAME_PRIME_PERSONNEL,
+    {
+        variables:{ personnelid: router.query.id}
+    })
+
+    const {data:dataPrimeMontant} = useQuery(GET_ALL_AMOUNT_PRIME_PERSONNEL,
+    {
+        variables:{ personnelid: router.query.id}
+    })
+
+    const {data:dataPrimeTotal} = useQuery(GET_SUM_AMOUNT_PRIME_PERSONNEL,
     {
         variables:{ personnelid: router.query.id}
     })
 
 
-    ////aeffacer
 
-     const {data:dataPrimee} = useQuery(GET_PRIME)
-  const {data:dataRetenuee} = useQuery(GET_ALL_RETENUE)
 
 
        const dernierIndice = dataSalaireNet?.PersonnelNetSalary.length - 1
@@ -84,8 +120,15 @@ console.log(dataSalaireNet?.PersonnelNetSalary)
 console.log(dataSalaireId?.getsalairebypersonnel)
 
 console.log("dataRetenue")
-console.log(dataRetenue?.findretenupersonnelbypersonnel)
-console.log(dataPrime)
+console.log(dataRetenueNoms?.findnamesretenubypersonnel)
+console.log(dataRetenueMontant?.findmontantretenubypersonnel)
+console.log(dataRetenueTotal?.findsumallretenupersonnel
+)
+console.log("dataPrime")
+console.log(dataPrimeNoms?.findnamesprimebypersonnel)
+console.log(dataPrimeMontant?.findmontantprimebypersonnel)
+console.log(dataPrimeTotal?.findsumallprimepersonnel
+)
 
 
 
@@ -131,7 +174,7 @@ function nombreEnLettres(montant) {
 const lettre =nombreEnLettres(dernierElement)
 console.log(lettre)
 
-
+const componentRef = useRef();
 
 
     if (loading) return <Text>Chargement en cour...</Text>
@@ -144,11 +187,20 @@ console.log(lettre)
 
       <DefaultLayout>
             <Box p="3" pt="70px" w="100%" background="colors.tertiary">
+              <ReactToPrint
+               trigger={() => <Button rightIcon={<Icon as={TfiPrinter} boxSize="20px" />}>Imprimer</Button>}
+               content={() => componentRef.current}
+                documentTitle =" Bulletin de paie de ${dataPersonnelId?.findOnePersonnel.firstName.toUpperCase()} ${dataPersonnelId?.findOnePersonnel.lastName.toUpperCase()}"
+                pageStyle="print"
+              />
+              <Box mt='15px'>
         <Center >
+
           <Box borderWidth='1px' 
                     bg={'white'}
                     borderColor='black' 
                     w='1000px'
+                   ref={componentRef}
                     >
             <Box px='20px' > 
                   <Flex gap='350px'>
@@ -199,8 +251,8 @@ console.log(lettre)
             </Flex>
             <Center mb='10px'>
               <Box>
-              <Box mt='20px' >
-                <Flex w='900px'>
+              <Box mt='20px' w='900px'>
+                <Flex w='full'>
                     <Box w='300px' borderLeft={'1px'}   py='6px' background="colors.primary"><Heading color='white' fontSize={'md'} textAlign={"center"}>Libelle</Heading></Box>
                     <Box  w='180px'  borderLeft={'1px'} py='6px' borderLeftColor={'white'} background="colors.primary"><Heading color='white' fontSize={'md'} textAlign={"center"}>Base</Heading></Box>
                     <Box w='100px'  borderLeft={'1px'} py='6px' borderLeftColor={'white'} background="colors.primary"><Heading color='white' fontSize={'md'} textAlign={"center"}>Tx/Mnt</Heading></Box>
@@ -208,26 +260,140 @@ console.log(lettre)
                     <Box  w='160px' borderLeft={'1px'} borderRight={'1px'} py='6px' borderLeftColor={'white'} background="colors.primary"><Heading  color='white' fontSize={'md'}textAlign={"center"}>Retenues</Heading></Box>
 
                 </Flex>
-                <Flex w='900px'>
-                    <Box w='300px' borderLeft={'1px'} py='6px' borderBottom={'1px'} >
+                <Flex w='full'>
+                  <Box w='300px' borderLeft={'1px'}   py='6px' ><Text ml='6px' >Salaire</Text></Box>
+                    <Box  w='180px'  borderLeft={'1px'} py='6px' ><Text textAlign={"right"} mr='6px'>{dataCategorie?.findOneCategoriepersonnel.montant}</Text></Box>
+                    <Box w='100px'  borderLeft={'1px'} py='6px'  ></Box>
+                    <Box w='160px'  borderLeft={'1px'} py='6px' ><Text textAlign={"right"} mr='6px'>{dataCategorie?.findOneCategoriepersonnel.montant}</Text></Box>
+                    <Box  w='160px' borderLeft={'1px'} borderRight={'1px'} py='6px'  ></Box>
+
+                  </Flex>
+               <Flex w='full'>
+                  <Box w='300px' borderLeft={'1px'}   py='6px' >
+
+                       <Heading fontSize={'md'} fontWeight={'bold'} color='black'ml='6px'>PRIMES SALARIALES</Heading>
+                          { 
+                      dataPrimeNoms && (
+                        dataPrimeNoms?.findnamesprimebypersonnel.map((prime) => (
+                            <Text ml='20px'>
+                              {prime}
+                            </Text>
+                        )))}
+                  </Box>
+                    <Box  w='180px'  borderLeft={'1px'} py='6px' >
+
+            
+                               { 
+                      dataPrimeMontant && <Box mt='20px'>
+                       { dataPrimeMontant?.findmontantprimebypersonnel.map((prime) => (
+                            <Text textAlign={"right"} mr='6px'>
+                              {prime}
+                            </Text>
+                            ))}</Box>}
+                    </Box>
+                    <Box w='100px'  borderLeft={'1px'} py='6px'  ></Box>
+                    <Box w='160px'  borderLeft={'1px'} py='6px' >
+
+                               { 
+                       dataPrimeMontant && <Box mt='20px'>
+                       { dataPrimeMontant?.findmontantprimebypersonnel.map((prime) => (
+                            <Text textAlign={"right"} mr='6px'>
+                              {prime}
+                            </Text>
+                            ))}</Box>}
+                    </Box>
+                    <Box  w='160px' borderLeft={'1px'} borderRight={'1px'} py='6px'  ></Box>
+
+                  </Flex>
+
+                   <Flex w='full'>
+                  <Box w='300px' borderLeft={'1px'}   py='6px' >
+
+                       <Heading fontSize={'md'} fontWeight={'bold'} color='black' ml='6px'>RETENUES SALARIALES</Heading>
+                          { 
+                      dataRetenueNoms && (
+                        dataRetenueNoms?.findnamesretenubypersonnel.map((retenue) => (
+                            <Text ml='20px' >
+                              {retenue}
+                            </Text>
+                        )))}
+                  </Box>
+                    <Box  w='180px'  borderLeft={'1px'} py='6px' >
+
+                               { 
+                     dataRetenueMontant && <Box mt='20px'>
+                        {dataRetenueMontant?.findmontantretenubypersonnel.map((retenue) => (
+                            <Text textAlign={"right"} mr='6px' mt='20px'>
+                              {retenue}
+                            </Text>
+                            ))}</Box>}
+                    </Box>
+                    <Box w='100px'  borderLeft={'1px'} py='6px'  ></Box>
+                    <Box w='160px'  borderLeft={'1px'} py='6px' ></Box>
+                    <Box  w='160px' borderLeft={'1px'} borderRight={'1px'} py='6px'  >
+                            { 
+                     dataRetenueMontant && <Box mt='20px'>
+                        {dataRetenueMontant?.findmontantretenubypersonnel.map((retenue) => (
+                            <Text textAlign={"right"} mr='6px' mt='20px'>
+                              {retenue}
+                            </Text>
+                            ))}</Box>}
+                    </Box>
+
+                  </Flex>
+
+                  {/* <Flex w='full'>
+                    <Box w='300px' borderLeft={'1px'}   py='6px' ><Heading fontSize={'md'} fontWeight={'bold'} color='black' ml='6px'>RETRAITE</Heading></Box>
+                    <Box  w='180px'  borderLeft={'1px'} py='6px' ></Box>
+                    <Box w='100px'  borderLeft={'1px'} py='6px'  ></Box>
+                    <Box w='160px'  borderLeft={'1px'} py='6px' ></Box>
+                    <Box  w='160px' borderLeft={'1px'} borderRight={'1px'} py='6px'  ></Box>
+
+                  </Flex> */}
+
+                  <Flex w='full'>
+                    <Box w='300px' borderLeft={'1px'}   py='6px' ><Heading fontSize={'md'} fontWeight={'bold'} color='black' ml='6px'>TOTAL PRIMES</Heading></Box>
+                    <Box  w='180px'  borderLeft={'1px'} py='6px' ></Box>
+                    <Box w='100px'  borderLeft={'1px'} py='6px'  ></Box>
+                    <Box w='160px'  borderLeft={'1px'} py='6px' ><Text textAlign={"right"} mr='6px' fontWeight={'bold'}>{dataPrimeTotal?.findsumallprimepersonnel}</Text></Box>
+                    <Box  w='160px' borderLeft={'1px'} borderRight={'1px'} py='6px'  ></Box>
+
+                  </Flex>
+
+                  <Flex w='full' mb='8px'>
+                    <Box w='300px' borderLeft={'1px'} borderBottom={'1px'}  py='6px' ><Heading fontSize={'md'} fontWeight={'bold'} color='black' ml='6px'>TOTAL RETENUES</Heading></Box>
+                    <Box  w='180px'  borderLeft={'1px'} borderBottom={'1px'} py='6px' ></Box>
+                    <Box w='100px'  borderLeft={'1px'} borderBottom={'1px'} py='6px'  ></Box>
+                    <Box w='160px'  borderLeft={'1px'} borderBottom={'1px'} py='6px' ></Box>
+                    <Box  w='160px' borderLeft={'1px'}borderBottom={'1px'} borderRight={'1px'} py='6px'  ><Text textAlign={"right"} mr='6px' fontWeight={'bold'}>{dataRetenueTotal?.findsumallretenupersonnel}</Text></Box>
+
+                  </Flex>
+
+
+
+
+
+
+                  
+                    {/* <Box w='300px' borderLeft={'1px'} py='6px' borderBottom={'1px'} >
                       <Text ml='6px' >Salaire</Text>
                         <Box mt='20px' ml='6px'>
                           <Heading fontSize={'md'} fontWeight={'bold'} color='black'>PRIMES SALARIALES</Heading>
                           { 
-                      dataPrimee && (
-                        dataPrimee?.findAllprime.map((prime) => (
+                      dataPrimeNoms && (
+                        dataPrimeNoms?.findnamesprimebypersonnel.map((prime) => (
                             <Text ml='20px'>
-                              {prime.nom}
+                              {prime}
                             </Text>
                         )))}
                         </Box>
                          <Box mt='20px' ml='6px'>
                           <Heading fontSize={'md'} fontWeight={'bold'} color='black'>RETENUES SALARIALES</Heading>
                           { 
-                      dataRetenuee && (
-                        dataRetenuee?.findAllretenusalarial.map((retenue) => (
+                      dataRetenueNoms && (
+                        dataRetenueNoms?.findnamesretenubypersonnel.map((retenue) => (
                             <Text ml='20px'>
-                              {retenue.nom}
+                              {retenue}
                             </Text>
                         )))}
                         </Box>
@@ -241,41 +407,41 @@ console.log(lettre)
                           <Box mt='20px' ml='6px'>
                           <Heading fontSize={'md'} fontWeight={'bold'} color='black'>TOTAL PRIMES</Heading>
                         </Box>
-                    </Box>
+                    </Box> */}
 
 
 
 
-                    <Box  w='180px'  borderLeft={'1px'} py='6px' borderBottom={'1px'} background='green.50' >
+                    {/* <Box  w='180px'  borderLeft={'1px'} py='6px' borderBottom={'1px'} background='green.50' >
                       <Text textAlign={"right"} mr='6px'>{dataCategorie?.findOneCategoriepersonnel.montant}</Text>
                      < Box mt='20px'>
                           <Heading fontSize={'md'} mb='20px'></Heading>
                                { 
-                      dataPrimee && <Box pt='18px' mr='6px'>
-                       { dataPrimee?.findAllprime.map((prime) => (
+                      dataPrimeMontant && <Box pt='18px' mr='6px'>
+                       { dataPrimeMontant?.findmontantprimebypersonnel.map((prime) => (
                             <Text textAlign={"right"}>
-                              {prime.montant}
+                              {prime}
                             </Text>
                             ))}</Box>}
                         </Box>
                         < Box mt='20px'>
                           <Heading fontSize={'md'}></Heading>
                             { 
-                      dataRetenuee && <Box pt='18px' mr='6px'>
-                       { dataRetenuee?.findAllretenusalarial.map((retenue) => (
+                      dataRetenueMontant && <Box pt='18px' mr='6px'>
+                       { dataRetenueMontant?.findmontantretenubypersonnel.map((retenue) => (
                             <Text textAlign={"right"} >
-                              {retenue.montant}
+                              {retenue}
                             </Text>
-                            ))}</Box>}
-                        </Box>
+                            ))}</Box>} */}
+                        {/* </Box>
                         {/* < Box mt='20px'>
                           <Heading fontSize={'md'}></Heading>
                           <Text>XXXXXXXXXXXX</Text>
                         </Box> */}
-                      </Box>
+                      
 {/* colonnes des taux */}
 
-                    <Box w='100px' borderLeft={'1px'} py='6px' borderBottom={'1px'}  >
+                    {/* <Box w='100px' borderLeft={'1px'} py='6px' borderBottom={'1px'}  >
                       {/* <Text textAlign={"center"}></Text>
                         < Box mt='20px'>
                           <Heading fontSize={'md'}></Heading>
@@ -289,18 +455,18 @@ console.log(lettre)
                           <Heading fontSize={'md'}></Heading>
                           <Text></Text>
                         </Box> */}
-                      </Box>
+                     
 
 {/* colonnes des gains */}
-                    <Box w='160px'  borderLeft={'1px'} py='6px' borderBottom={'1px'} background='green.50'>
+                    {/* <Box w='160px'  borderLeft={'1px'} py='6px' borderBottom={'1px'} background='green.50'>
                   
                        < Box mt='20px'>
                           <Heading fontSize={'md'}></Heading>
                             { 
-                      dataPrimee && <Box pt='39px' mr='6px'>
-                       { dataPrimee?.findAllprime.map((prime) => (
+                      dataPrimeMontant && <Box pt='39px' mr='6px'>
+                       { dataPrimeMontant?.findmontantprimebypersonnel.map((prime) => (
                             <Text textAlign={"right"}>
-                              {prime.montant}
+                              {prime}
                             </Text>
                             ))}</Box>}
                         </Box>
@@ -309,9 +475,9 @@ console.log(lettre)
                           <Text></Text>
                         </Box>
                         
-                      </Box>
+                      </Box> */}
 {/* colonnes des retenues */}
-
+{/* 
                     <Box  w='160px' borderLeft={'1px'}  borderRight={'1px'} py='6px' borderBottom={'1px'} >
                       <Text textAlign={"center"}></Text>
                        < Box mt='20px'>
@@ -325,10 +491,10 @@ console.log(lettre)
                          < Box mt='20px'>
                           <Heading fontSize={'md'}></Heading>
                            { 
-                      dataRetenuee && <Box pt='150px' mr='6px'>
-                       { dataRetenuee?.findAllretenusalarial.map((retenue) => (
-                            <Text textAlign={"right"}>
-                              {retenue.montant}
+                      dataRetenueMontant && <Box pt='150px' mr='6px'>
+                        { dataRetenueMontant?.findmontantretenubypersonnel.map((retenue) => (
+                            <Text textAlign={"right"} >
+                              {retenue}
                             </Text>
                             ))}</Box>}
                         </Box>
@@ -336,6 +502,8 @@ console.log(lettre)
 
                 </Flex>
                                       
+
+              </Box> */}
 
               </Box>
               <Flex w='900px' border={'1px'} mt='20px'>
@@ -402,7 +570,7 @@ console.log(lettre)
 
            </Center>
 
-       
+       </Box>
         </Box>
 
          

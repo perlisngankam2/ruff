@@ -40,7 +40,7 @@ const Personnel = () => {
   const [deletePersonnel] = useMutation(DELETE_PERSONNEL);
   const [personnel, setPersonnel] = useState([]);
   const [pageNumber, setPageNumber] = useState(0);
-  const itemsPerPage = 15;
+  const itemsPerPage = 8;
   const pagesVisited = pageNumber * itemsPerPage;
   const {t} = useTranslation()
 
@@ -82,8 +82,8 @@ const Personnel = () => {
   
   const pageCount = Math.ceil(dataPersonnel?.findAllpersonnel.length / itemsPerPage);
 
-  const changePage = ({ page }) => {
-    setPageNumber(page);
+  const changePage = ({ selected }) => {
+    setPageNumber(selected);
   };
   return (
     <DefaultLayout>
@@ -170,6 +170,7 @@ const Personnel = () => {
                   fonction={personnel.fonction}
                   situationMatrimonial={personnel.situationMatrimonial}
                   id={personnel.id}
+                  sexe={personnel.sexe}
                 />
               </Box>
             )) )}

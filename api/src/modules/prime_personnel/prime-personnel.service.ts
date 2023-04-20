@@ -170,8 +170,12 @@ export class PrimePersonnelService {
        return a
       }
 
-    async findbypersonnel(personnelid:string){
-  return await this.primePersonnelRepository.find({personnel:personnelid})
+async findnamesprimesbypersonnel(personnelid:string){
+  return (await this.primePersonnelRepository.find({personnel:personnelid})).map(async a=>(await a.prime.load()).nom)
 }
+
+async findmontantprimesbypersonnel(personnelid:string){
+  return (await this.primePersonnelRepository.find({personnel:personnelid})).map(async a=>(await a.prime.load()).montant)
+} 
     
 }

@@ -522,6 +522,17 @@ mutation createprimepersonnel ($primePersonnel: PrimePersonnelCreateInput!) {
 }
 `;
 
+//retenue personnel
+
+export const CREATE_RETENUE_PERSONNEL = gql `
+mutation createretnupersonnel ($retenuPersonnel: RetenuPersonnelCreateInput!) {
+    createretnupersonnel (retenuPersonnel: $retenuPersonnel) {
+        id
+        startMonth
+    }
+}
+`;
+
 //generer le Salaire personnel
 
 export const CREATE_SALAIRE = gql `

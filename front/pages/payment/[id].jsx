@@ -1,6 +1,6 @@
 
 import {
-    Box, Button, Center, Divider, Flex, Heading, Input, Select, Text, Hide
+    Box, Button, Center, Divider, Flex, Heading, Input, Select, Text, Hide, Avatar
 } from "@chakra-ui/react";
 import PaySlipBottom from "../../components/atoms/PaySlipBottom";
 import PaySlipMiddle from "../../components/atoms/PaySlipMiddle";
@@ -179,54 +179,54 @@ const monthOptions = useMemo(() => {
   const options = [];
   let currentMonth = startMonth;
 
-   if (!unavailableMonths) {
-    // Si le tableau est vide, ajouter les options pour les 7 mois autour du mois actuel
-    for (let i = -3; i <= 3; i++) {
-      const date = new Date(today.getFullYear(), today.getMonth() + i, 1);
-      const year = date.getFullYear();
-      const month = (date.getMonth() + 1).toString().padStart(2, '0');
-      const optionValue = `${year}-${month}`;
-      const monthName = date.toLocaleString('default', { month: 'long' });
-      options.push(
-        <option key={optionValue} value={optionValue}>
-          {`${monthName} ${year}`}
-        </option>
-      );
-    }
-  }
+  //  if (!unavailableMonths) {
+  //   // Si le tableau est vide, ajouter les options pour les 7 mois autour du mois actuel
+  //   for (let i = -3; i <= 3; i++) {
+  //     const date = new Date(today.getFullYear(), today.getMonth() + i, 1);
+  //     const year = date.getFullYear();
+  //     const month = (date.getMonth() + 1).toString().padStart(2, '0');
+  //     const optionValue = `${year}-${month}`;
+  //     const monthName = date.toLocaleString('default', { month: 'long' });
+  //     options.push(
+  //       <option key={optionValue} value={optionValue}>
+  //         {`${monthName} ${year}`}
+  //       </option>
+  //     );
+  //   }
+  // }
 
-  while (currentMonth < endMonth) {
+  // while (currentMonth < endMonth) {
 
 
-    const year = currentMonth.getFullYear();
-    const month = (currentMonth.getMonth() + 1).toString().padStart(2, '0');
-    const optionValue = `${year}-${month}`;
+  //   const year = currentMonth.getFullYear();
+  //   const month = (currentMonth.getMonth() + 1).toString().padStart(2, '0');
+  //   const optionValue = `${year}-${month}`;
 
     
-    if(!loading){
-    const isUnavailable = unavailableMonths.some(
-      (unavailableMonth) =>
-        unavailableMonth.getFullYear() === currentMonth.getFullYear() &&
-        unavailableMonth.getMonth() === currentMonth.getMonth()
-    );
-    if (!isUnavailable) {
-      const monthName = currentMonth.toLocaleString('default', { month: 'long' });
-      options.push(
-        <option key={optionValue} value={optionValue}>
-          {`${monthName} ${year}`}
-        </option>
-      );
-    } 
+  //   if(!loading && !unavailableMonths && !error ){
+  //   const isUnavailable = unavailableMonths.some(
+  //     (unavailableMonth) =>
+  //       unavailableMonth.getFullYear() === currentMonth.getFullYear() &&
+  //       unavailableMonth.getMonth() === currentMonth.getMonth()
+  //   );
+  //   if (!isUnavailable) {
+  //     const monthName = currentMonth.toLocaleString('default', { month: 'long' });
+  //     options.push(
+  //       <option key={optionValue} value={optionValue}>
+  //         {`${monthName} ${year}`}
+  //       </option>
+  //     );
+  //   } 
   
-  }
-    currentMonth = new Date(year, currentMonth.getMonth() + 1, 1);
-  }
+  // }
+  //   currentMonth = new Date(year, currentMonth.getMonth() + 1, 1);
+  // }
   return options;
 }, [unavailableMonths]);
 
 
 
-// if (loading) return <Text>Chargement en cour...</Text>
+if (loading) return <Text>Chargement en cour...</Text>
 
     return ( 
 
@@ -263,15 +263,71 @@ const monthOptions = useMemo(() => {
           </Hide>
         </Flex>
           
-        <Flex 
-          bg='#5755c1' 
-          width='1000px' 
-          h='80px' 
+        <Box 
+          bg={"gray.200"} 
+          width='500px' 
           margin="0 auto" 
           pb='20px'
-          mt="50px" 
+          mt="50px"
+          text-align="center"
         > 
-        <Flex 
+        <Center w='full'>
+          
+               {dataPersonnelId?.findOnePersonnel.sexe.toLowerCase() === "homme" ? 
+                 <Avatar
+                  size="xl"
+                  mt={["10px","10px", "10px" ]}
+                  src="https://img.freepik.com/vecteurs-premium/profil-avatar-homme-icone-ronde_24640-14044.jpg?w=2000"
+                />
+             :
+                <Avatar
+                  size="xl"
+                  mt={["10px","10px", "10px" ]}
+                  src="https://img.freepik.com/premium-vector/woman-avatar-profile-round-icon_24640-14042.jpg?size=626&ext=jpg"
+                /> }
+                 </Center>
+                 <Heading  mr='20px'  textAlign="center" 
+                fontSize="2xl" 
+                m={["8px", "8px", "8px"]}>
+                        {dataPersonnelId?.findOnePersonnel.firstName.charAt(0).toUpperCase()+dataPersonnelId?.findOnePersonnel.firstName.substring(1) +' '+ dataPersonnelId?.findOnePersonnel.lastName.charAt(0).toUpperCase()+dataPersonnelId?.findOnePersonnel.lastName.substring(1)}
+                        </Heading>
+                <Box width='50%'
+    margin="0 auto">  
+
+                <Flex gap={20}>
+                  <Text>Fonction :</Text>
+                  <Text fontWeight={'bold'}>{dataPersonnelId?.findOnePersonnel.fonction}</Text>
+                </Flex>
+                <Flex>
+                  <Text>Mois de salaire :</Text>
+                  <Text></Text>
+                </Flex>
+                
+                <Flex>
+                  <Text>PRIMES SALARIALES</Text>
+                  <Flex>
+                    <Text></Text>
+                    <Text></Text>
+                  </Flex>
+                </Flex>
+                <Flex>
+                  <Text>RETENUES</Text>
+                  <Text></Text>
+                </Flex>
+                <Flex>
+                  <Text></Text>
+                  <Text></Text>
+                </Flex>
+                <Flex>
+                  <Text></Text>
+                  <Text></Text>
+                </Flex>
+                
+                
+                
+                </Box>
+             
+        {/* <Flex 
           p="1.5em" 
           textAlign="center" 
           ml='20px' 
@@ -299,10 +355,10 @@ const monthOptions = useMemo(() => {
               {dataPersonnelId?.findOnePersonnel.fonction}
             </Text>
           </Flex>
-        </Flex>
-        </Flex>
+        </Flex> */}
+        </Box>
 
-{/* //informaton salaire et mois */}
+
       <Center>
         <Flex 
           mt="20px"
@@ -310,18 +366,6 @@ const monthOptions = useMemo(() => {
         > 
          <Box width={'340px'} gap={7} >
           <Text fontSize='sm'> Salaire Mois</Text>
-              {/* <Input
-                    placeholder="nom prime"
-                    bg='white'
-                    type="month"
-                    name="dateOfPrime"
-                    rounded={2}
-                    onChange={handleMoisPaieChange}
-                    isDisabled={dataMoisSalaire?.PersonnelMonthSalary.includes(moisPaie)}
-                    value={moisPaie}
-
-                    
-                  /> */}
                   <Select
                   
         bg='white'         

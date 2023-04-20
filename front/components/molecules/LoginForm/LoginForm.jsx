@@ -30,10 +30,11 @@ import { LOGIN_USER} from "../../../graphql/Mutation";
 import { useMutation, useQuery } from "@apollo/client";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import { GET_USER_CONNECTED} from  "../../../graphql/Queries"
+import { GET_USER_CONNECTED} from  "../../../graphql/Queries";
 import dashboard from "../../../pages/dashboard.jsx";
-import { useAuth } from '../../../contexts/account/Auth/Auth'
+import { useAuth } from '../../../contexts/account/Auth/Auth';
 import { useTranslation } from "next-i18next";
+
 
 const LoginForm = () => {
 
@@ -53,12 +54,10 @@ console.log(dataUser)
 
 const Handle =()=>{
 
-
 }
 
-   const HandleClick = async (event) => {
-        event.preventDefault();
-        
+  const HandleClick = async (event) => {
+    event.preventDefault();
             const login = await loginInput({
                     variables:{
                       loginInput: { 
@@ -81,7 +80,6 @@ router.push('/dashboard')
                     
                   }
        };
-
 
 
   return (
@@ -109,8 +107,7 @@ router.push('/dashboard')
             boxShadow="xl"
             rounded={13}
             background="white"
-            as="form"
-            
+            as="form"  
           >
             <Container 
               maxW={{ base: "sm", sm: "md" }} 
@@ -148,15 +145,14 @@ router.push('/dashboard')
                   <FormLabel>
                     {t('molecules.LoginForm.motDePasse')}
                   </FormLabel>
-                  <Input
-                    id="password"
-                    type="password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    name="password"
-                  />
-                </FormControl>
-
+                    <Input
+                      id="password"
+                      type="password"
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                      name="password"
+                    />
+                  </FormControl>
                 <HStack 
                   mb={5} 
                   spacing={{ base: "10px", lg: "60px" }}
@@ -183,10 +179,11 @@ router.push('/dashboard')
                   colorScheme="green" 
                   type="submit" 
                   mb={5}
+                  onClick={HandleClick}
                 >
                  {t('molecules.LoginForm.seConnecter')}
                 </Button>
-<AlertDialog>
+              <AlertDialog>
 
                    <AlertDialogOverlay>
           <AlertDialogContent>

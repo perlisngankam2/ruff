@@ -148,4 +148,12 @@ async findbypersonnel(personnelid:string){
   return await this.retenuPersonnelRepository.find({personnel:personnelid})
 }
 
+async findnamesretenuebypersonnel(personnelid:string){
+  return (await this.retenuPersonnelRepository.find({personnel:personnelid})).map(async a=>(await a.retenue.load()).nom)
+}
+
+async findmontantretenuebypersonnel(personnelid:string){
+  return (await this.retenuPersonnelRepository.find({personnel:personnelid})).map(async a=>(await a.retenue.load()).montant)
+}
+
 }

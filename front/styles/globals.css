@@ -58,3 +58,12 @@ a {
 .previousBttn {
   background-color: lightgray;
 }
+
+@media print {
+  html, body {
+    height: 100vh;
+    margin: 0 !important;
+    padding: 0 !important;
+    -webkit-print-color-adjust: exact;
+  }
+}

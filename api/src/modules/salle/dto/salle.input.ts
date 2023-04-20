@@ -6,8 +6,6 @@ import { NiveauEtudeCreateInput } from 'src/modules/niveau_etude/dto/niveau-etud
 export class SalleCreateInput {
   @Field({nullable:true})
   ID?: string;
-  
-
 
   @Field({nullable:true})
   name?: string;

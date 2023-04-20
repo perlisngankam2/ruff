@@ -11,7 +11,7 @@ import { StudentModule } from '../student/student.module';
 @Module({
     imports:[
         MikroOrmModule.forFeature({ entities: [Pension] }),
-        TrancheStudentModule,
+        forwardRef(()=>TrancheStudentModule),
         forwardRef(() =>StudentModule)
     ],
     providers:[PensionService,PensionResolver],

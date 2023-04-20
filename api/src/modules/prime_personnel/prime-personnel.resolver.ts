@@ -15,6 +15,7 @@ import { Prime } from 'src/entities/prime.entity';
 import { PrimePersonnelCreateInput } from './dto/prime-personnel.input';
 import { PrimePersonnelUpdateInput } from './dto/prime-personnel.update';
 import { PrimePersonnelService } from './prime-personnel.service';
+import e from 'express';
 
 
 @Resolver(() => PrimePersonnel)
@@ -46,20 +47,25 @@ export class PrimePersonnelResolver {
  return await this.primePersonnelService.delete(id)
   }
 
-  @Query(()=> [PrimePersonnel])
-  async findprimepersonnelbypersonnel(@Args('personnelid') personnelid:string){
- return await this.primePersonnelService.findbypersonnel(personnelid)
+  @Query(()=> [Number])
+  async findmontantprimebypersonnel(@Args('personnelid') personnelid:string){
+ return await this.primePersonnelService.findmontantprimesbypersonnel(personnelid)
+  }
+
+  
+  @Query(()=> [String])
+  async findnamesprimebypersonnel(@Args('personnelid') personnelid:string){
+ return await this.primePersonnelService.findnamesprimesbypersonnel(personnelid)
   }
 
   @Query(()=> Number)
-  async findallprimepersonnel(@Args('personnelid') personnelid:string){
+  async findsumallprimepersonnel(@Args('personnelid') personnelid:string){
  return await this.primePersonnelService.getallpersonnelprime(personnelid)
   }
 
-  @Query(()=> Number)
-  async getallprimepersonnel(@Args('personnelid') personnelid:string){
- return await this.primePersonnelService.getallpersonnelprime(personnelid)
+  @Query(()=> [[String],[Number]] )
+  async primesETnomprimepersonnel(@Args('personnelid') personnelid:string){
+ return await this.primePersonnelService.primesETnomprimepersonnel(personnelid)
   }
-
 
 }

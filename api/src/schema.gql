@@ -258,6 +258,12 @@ type Student {
   tutorProfession: String
 }
 
+type ParentStudent {
+  id: ID!
+  tuteur: Boolean!
+  childNumber: Float!
+}
+
 type Parent {
   id: ID!
   firstname: String
@@ -303,12 +309,6 @@ type LoginResponse {
   user: User!
 }
 
-type TranchePriority {
-  id: ID!
-  name: String
-  description: String
-}
-
 type Query {
   findAlluser: [User!]!
   user(id: String!): User!
@@ -324,8 +324,8 @@ type Query {
   findOnesalle(id: String!): Salle!
   etatInscriptionSalle(id: String!): Salle!
   findSalleByStudent(studentid: String!): Salle!
-  findAllNiveauEtude: [NiveauEtude!]!
-  niveaEtude(id: String!): NiveauEtude!
+  findallniveauetude: [[String!]!]!
+  findOneNiveauEtude(id: String!): NiveauEtude!
   etatInscriptionNiveau(id: String!): NiveauEtude!
   findAllsectioncycle: [SectionCycle!]!
   sectionCycle(id: String!): SectionCycle!
@@ -339,6 +339,7 @@ type Query {
   getTrancheStudentByStudent(studentid: String!): TrancheStudent!
   AmountrExpectedByTranche(studentid: String!): [Float!]!
   getClassfeebyStudent(studentid: String!): Float!
+  getClassfeeofStudent(studentid: String!): [Tranche!]!
   findAlllocalistaion: [Localisation!]!
   localisation(id: String!): Localisation!
   findAllcategorieeleve: [CategorieEleve!]!
@@ -359,15 +360,18 @@ type Query {
   findAllcategorieretenu: [CategorieRetenu!]!
   categorieRetenu(id: String!): CategorieRetenu!
   findAllprimepersonnel: [PrimePersonnel!]!
-  findprimepersonnelbypersonnel(personnelid: String!): [PrimePersonnel!]!
-  findallprimepersonnel(personnelid: String!): Float!
-  getallprimepersonnel(personnelid: String!): Float!
+  findmontantprimebypersonnel(personnelid: String!): [Float!]!
+  findnamesprimebypersonnel(personnelid: String!): [String!]!
+  findsumallprimepersonnel(personnelid: String!): Float!
+  primesETnomprimepersonnel(personnelid: String!): [[String!]!]!
   findAllperiod: [Periode!]!
   periode(id: String!): Periode!
   findAllretenupersonnel: [RetenuPersonnel!]!
   retenuPersonnel(id: String!): RetenuPersonnel!
-  findretenupersonnelbypersonnel(personnelid: String!): [RetenuPersonnel!]!
-  findallretenupersonnel(personnelid: String!): Float!
+  findmontantretenubypersonnel(personnelid: String!): [Float!]!
+  findnamesretenubypersonnel(personnelid: String!): [String!]!
+  findsumallretenupersonnel(personnelid: String!): Float!
+  getRetenuEtNom(personnelid: String!): [[String!]!]!
   findAllAnnerAccademique: [AnneeAccademique!]!
   anneeAccademique(id: String!): AnneeAccademique!
   findAllfraisexam: [FraisExamen!]!
@@ -385,10 +389,11 @@ type Query {
   findAlltranchestudent: [TrancheStudent!]!
   trancheStudent(id: String!): TrancheStudent!
   getStudentByTrancheStudent(studentid: String!): TrancheStudent!
+  getrestTranchebystudent(studentid: String!): [[String!]!]!
   findAllpension: [Pension!]!
   pension(id: String!): Pension!
-  findAlltranchepriority: [TranchePriority!]!
-  findOnetranchepriority(id: String!): TranchePriority!
+  findpensionbystudent(studentid: String!): Pension!
+  findrestpensionbystudent(studentid: String!): Float!
   findAll: [Inscription!]!
   findOne(id: String!): Inscription!
   findAllavanceinscription: [AvanceInscription!]!
@@ -401,12 +406,26 @@ type Query {
   getsalairebypersonnel(personnelid: String!): [Salaire!]!
   PersonnelMonthSalary(personnelid: String!): [String!]!
   PersonnelNetSalary(personnelid: String!): [Float!]!
+  personnelsalairenetbymonth(personnelid: String!, month: String!): Float!
   findAllparents: [Parent!]!
   parent(id: String!): Parent!
   totalNumberofStudentsinClass(id: String!): Float!
+  getallStudentswhoCompletedAdmissionfees: [Student!]!
+  getallStudentswhohaveCompletedTuitionfee: [Student!]!
+  getallStudentswhohavenotCompletedAdmissionfee: [Student!]!
+  numberStudentswhohavenotCompletedTuitionfee: [Student!]!
+  totalAmountofEntries: Float!
+  balanceeExpected(salleid: String!): Float!
+  balanceInquierybyclass(salleid: String!): Float!
+  totalAmountofExpenses: Float!
+  AmountRemaining(salleid: String!): Float!
+  CollectionRate(salleid: String!): Float!
+  RARrate(salleid: String!): Float!
   findAllCourse: [Course!]!
   findOneCourse(id: String!): Course!
   me: Personnel!
+  findAllparentstudents: [ParentStudent!]!
+  findOneparentstudent(id: String!): ParentStudent!
 }
 
 type Mutation {
@@ -469,6 +488,7 @@ type Mutation {
   updateperiod(id: String!, input: PeriodeUpdateInput!): Periode!
   deleteperiod(id: String!): Periode!
   createretnupersonnel(retenuPersonnel: RetenuPersonnelCreateInput!): RetenuPersonnel!
+  updateretenupersonnel(id: String!, input: RetenuPersonnelUpdateInput!): RetenuPersonnel!
   deleteretenupersonnel(id: String!): RetenuPersonnel!
   createAnnerAccademique(anneeAccademique: AnneeAccademiqueCreateInput!): AnneeAccademique!
   updateanneeacademique(id: String!, input: AnneeAccademiqueUpdateInput!): AnneeAccademique!
@@ -484,7 +504,6 @@ type Mutation {
   createPension(pension: PensionCreateInput!): Pension!
   updatePension(id: String!): Pension!
   deletepension(id: String!): Pension!
-  createtranchepriority(input: TranchePriorityInput!): TranchePriority!
   createInscription(inscription: InscriptionInput!): Inscription!
   update(inscription: InscriptionInput!, id: String!): Inscription!
   createAvanceInscription(avanceInscription: AvanceInscriptionCreateInput!): AvanceInscription!
@@ -505,6 +524,9 @@ type Mutation {
   deleteCourse(id: String!): Course!
   login(loginInput: LoginInput!): LoginResponse!
   loginUpdate(loginInput: LoginUpdate!): User!
+  createParentstudent(input: ParentStudentCreateInput!): ParentStudent!
+  updateParentstudent(id: String!): ParentStudent!
+  deleteparentstudent(id: String!): ParentStudent!
 }
 
 input UserCreateInput {
@@ -566,7 +588,7 @@ input PersonnelUpdateInput {
 }
 
 input SalleCreateInput {
-  ID: String
+  ID: ID
   name: String
   sectionId: ID
   cycleId: String
@@ -615,7 +637,7 @@ input RedutionScolariteInput {
 }
 
 input SalleUpdateInput {
-  ID: String
+  ID: ID
   name: String
   sectionId: ID
   cycleId: String
@@ -836,6 +858,12 @@ input RetenuPersonnelCreateInput {
   startMonth: String
 }
 
+input RetenuPersonnelUpdateInput {
+  retenuId: ID
+  personnelId: ID
+  startMonth: String
+}
+
 input AnneeAccademiqueCreateInput {
   ID: String
   name: String
@@ -893,11 +921,6 @@ input PensionCreateInput {
   name: String
   description: String
   dateLine: DateTime
-}
-
-input TranchePriorityInput {
-  ID: ID
-  name: String
 }
 
 input InscriptionInput {
@@ -1003,4 +1026,9 @@ input LoginUpdate {
   email: String!
   oldpassword: String!
   newpassword: String!
+}
+
+input ParentStudentCreateInput {
+  studentId: ID
+  parentId: ID
 }

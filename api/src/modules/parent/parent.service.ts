@@ -58,16 +58,16 @@ export class ParentService {
       
       async update(id:string, input: ParentUpdateInput): Promise<Parent> {
         const parent =await this.findById(id)
-        if(input.user){
-            const user =
-            input.user?.ID &&
-              (await this.userService.findOne({ id: input.user?.ID }));
+        // if(input.user){
+        //     const user =
+        //     input.user?.ID &&
+        //       (await this.userService.findOne({ id: input.user?.ID }));
 
-              if (!user) {
-                throw new NotFoundError('user no exist' || '');
-              }
-              this.userService.update(user.id, input.user);
-        }
+        //       if (!user) {
+        //         throw new NotFoundError('user no exist' || '');
+        //       }
+        //       this.userService.update(user.id, input.user);
+        // }
         wrap(parent).assign({
             firstname:input.firstname,
             lastname:input.lastname,

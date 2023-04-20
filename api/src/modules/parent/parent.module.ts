@@ -12,6 +12,6 @@ import { ParentService } from './parent.service';
         UserModule
     ],
     providers:[ParentService,ParentResolver],
-    exports:[]
+    exports:[ParentService]
 })
 export class ParentModule {}

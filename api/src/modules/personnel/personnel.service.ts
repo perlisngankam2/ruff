@@ -126,7 +126,7 @@ async findpersonnelbyaccount(userid:string){
    return (await this.em.find(Personnel,{user: userid}))[0]
   }
 
-  async findCategoriepersonnelbypersonnel(personnnelid:string){
+async findCategoriepersonnelbypersonnel(personnnelid:string){
     return (await (await this.findOne(personnnelid)).category.load()).id
    }
 

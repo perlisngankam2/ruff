@@ -51,7 +51,7 @@ export class SalaireService {
       }
       const salaireBase = (await personnel.category.load()).montant
       
-      if(moisprimespersonnel.length!=0)
+      if(moisprimespersonnel.length>0)
       {
       if(personnel.status == Status.PERMANENT){
 

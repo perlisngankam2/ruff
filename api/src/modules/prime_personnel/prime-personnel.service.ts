@@ -97,7 +97,7 @@ export class PrimePersonnelService {
       findById(id:string){
         return this.primePersonnelRepository.findOne(id)
       }
-    
+ 
       getAll(): Promise<PrimePersonnel[]> {
         return this.primePersonnelRepository.findAll()
       }
@@ -126,6 +126,51 @@ export class PrimePersonnelService {
       console.log(c)
       return c 
       }
+
+      }
+
+      async getallpersonnelprimebymonth(personnelid:string,month:string){
+        const where = {};
+        if (personnelid) {
+          where['personnel'] = personnelid;
+        }
+    
+        const a = await this.em.find(PrimePersonnel, where, {
+          populate: true,
+          orderBy: { id: 'ASC' },
+        });
+
+        const t = a.filter(a=>a.startMonth==month)
+    
+        console.log('============>list of primes personnel::'+t)
+       
+        if(t.length==0){
+          return 0
+        }
+        if(t.length!=0){
+        console.log('==============>montant prime::'+await t.map(async a=>(await a.prime.load()).montant).reduce(async function(a,b){return await a+ await b}))
+        const b = t.map(async a=>(await a.prime.load()).montant)
+        console.log(b)
+        const c=await b.reduce(async function(a,b){return await a+ await b})
+        console.log(c)
+        return c 
+        }
+  
+        }
+
+      async getallprimespersonnel(id:string){
+      const where = {};
+      if (id) {
+        where['personnel'] = id;
+      }
+
+      const a = await this.em.find(PrimePersonnel, where, {
+        populate: true,
+        orderBy: { id: 'ASC' },
+      });
+
+      return a
+
       }
       
     //   async update(id:string, input: PrimePersonnelUpdateInput): Promise<PrimePersonnel> {
@@ -170,8 +215,17 @@ export class PrimePersonnelService {
        return a
       }
 
-    async findbypersonnel(personnelid:string){
-  return await this.primePersonnelRepository.find({personnel:personnelid})
+async findnamesprimesbypersonnel(personnelid:string){
+  return (await this.primePersonnelRepository.find({personnel:personnelid})).map(async a=>(await a.prime.load()).nom)
 }
-    
+
+async findmontantprimesbypersonnel(personnelid:string){
+  return (await this.primePersonnelRepository.find({personnel:personnelid})).map(async a=>(await a.prime.load()).montant)
+}  
+
+async primesETnomprimepersonnel(personnelid:string){
+  const a=(await this.primePersonnelRepository.find({personnel:personnelid})).map(async a=>(await a.prime.load()).nom)
+  const b = (await this.primePersonnelRepository.find({personnel:personnelid})).map(async a=>(await a.prime.load()).montant)
+  return [a,b]
+}
 }

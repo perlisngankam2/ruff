@@ -29,6 +29,7 @@ export class PensionService {
         @Inject(forwardRef(() => StudentService))
         private studentservice: StudentService,
         @Inject(forwardRef(() => TrancheStudentService))
+        @Inject(forwardRef(() => TrancheStudentService))
         private trancheStudentservice: TrancheStudentService,
         private  em: EntityManager,
       ) {}
@@ -153,7 +154,6 @@ export class PensionService {
           throw Error('!!!!!!!!!!!!!!!!!STUDENT DOES NOT EXISTS!!!!!!!!!!!!!!!!!!')
         }
         const montant = (await this.trancheStudentservice.findByStudents(student.id)).map(a=>a.montant).reduce(function(a,b){return a+b})
-
         wrap(pension).assign({
             name:input.name || pension.name,
             dateLine: input.dateLine,

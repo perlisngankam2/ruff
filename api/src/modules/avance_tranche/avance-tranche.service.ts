@@ -42,7 +42,7 @@ async SumAvanceTrancheByStudent(studentid:string,trancheid:string){
         console.log(avancetranche)
    
         if(avancetranche.length==0){
-         throw Error("Aucune avance a ete fait pour cette tranche")
+         return 0
         }
     
         return avancetranche.map(a=>a.montant).reduce(function(a,b){return a+b});
@@ -228,10 +228,26 @@ async  findByStudent(id: string):Promise<AvanceTranche[]> {
 
 
 async  findBystudentandtranche(studentid: string,trancheid:string):Promise<AvanceTranche[]> {
-    return await this.avanceTrancheRepository.find({student:studentid,tranche:trancheid,})
+    // return await this.avanceTrancheRepository.find({student:studentid,tranche:trancheid,})
+    const where = {};
+    if (studentid) {
+      where['student'] = studentid;
+    }
+
+    if (trancheid) {
+      where['tranche'] = trancheid;
+    }
+
+    const a = await this.em.find(AvanceTranche, where, {
+      populate: true,
+      orderBy: { id: 'ASC' },
+    });
+
+    return a
   }
 
 async  findBytranche(id: string):Promise<AvanceTranche[]> {
+
     return await this.avanceTrancheRepository.find({tranche:id})
   }
 

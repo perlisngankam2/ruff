@@ -50,14 +50,14 @@ export class StudentResolver {
     return await this.studentService.delete(id)
   }
   
-  @Query(()=>TrancheStudent)
-  async getTrancheStudentByStudent(@Args('studentid') studentid:string){
-    const TrancheStudent=await this.studentService.findTrancheStudentByStudent(studentid)
-    if(!TrancheStudent){
-      throw Error("not found")
-    }
-    return TrancheStudent
-  }
+  // @Query(()=>TrancheStudent)
+  // async getTrancheStudentByStudent(@Args('studentid') studentid:string){
+  //   const TrancheStudent=await this.studentService.findTrancheStudentByStudent(studentid)
+  //   if(!TrancheStudent){
+  //     throw Error("not found")
+  //   }
+  //   return TrancheStudent
+  // }
 
   @Query(()=>[Number])
   async AmountrExpectedByTranche(@Args('studentid') studentid:string){

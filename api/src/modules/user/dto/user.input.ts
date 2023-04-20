@@ -22,6 +22,8 @@ export class UserCreateInput {
   @Field(() => String, { nullable: true })
   phoneNumber?: string;
 
+
+
   @Field(() => Role,{nullable: true})
   role!: Role
 

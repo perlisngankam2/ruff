@@ -20,7 +20,7 @@ import { TrancheStudent } from './tranche-student.entity';
 import { AnneeAccademique } from './annee-accademique.entity';
 import { AvanceTranche } from './avance-tranche.entity';
 import { Salle } from './salle.entity';
-import { TranchePriority } from './tranche-priority.entity';
+
 
 @Entity()
 @ObjectType()

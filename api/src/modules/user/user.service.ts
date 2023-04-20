@@ -41,7 +41,8 @@ export class UserService {
     firstName: input.firstName,
     email: input.email,
     phoneNumber: input.phoneNumber,
-    role: input.role
+    role: input.role,
+    lastConnection: new Date()
       },
       {
         em: this.em
@@ -96,6 +97,7 @@ export class UserService {
       firstName,
       lastName,
       phoneNumber: inputWithoutPassword.phoneNumber || user.phoneNumber,
+      lastConnection: new Date()
     });
 
     await this.userRepository.persistAndFlush(user);

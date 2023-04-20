@@ -6,6 +6,8 @@ import { SectionCycleModule } from '../section-cycle/section-cycle.module';
 import { NiveauEtudeResolver } from './niveau-etude.resolver';
 import { NiveauEtudeService } from './niveau-etude.service';
 import { CycleModule } from '../cycle/cycle.module';
+import { CycleService } from '../cycle/cycle.service';
+
 
 @Module({
     imports:[

@@ -33,15 +33,15 @@ import React, { useRef }  from "react";
 import { GiTrafficCone } from "react-icons/gi";
 import { TfiPrinter } from "react-icons/tfi";
 // import $ from 'jquery';
-import 'datatables.net';
-import 'datatables.net-buttons';
-import 'jszip';
-import 'pdfmake';
+// import 'datatables.net';
+// import 'datatables.net-buttons';
+// import 'jszip';
+// import 'pdfmake';
 
 const Bulletin = () => {
 
   const router = useRouter();
-  const tableRef = useRef();
+  // const tableRef = useRef();
  //
 
      const {data:dataPersonnelId, loading, error} = useQuery(GET_ALL_PERSONNEL_BY_ID,
@@ -181,12 +181,12 @@ console.log(lettre)
 
 const componentRef = useRef();
 
-    {tableRef.current.DataTable({
-      dom: 'Bfrtip',
-      buttons: [
-        'copy', 'csv', 'excel', 'pdf', 'print'
-      ]
-    });}
+//     {tableRef.current.DataTable({
+//       dom: 'Bfrtip',
+//       buttons: [
+//         'copy', 'csv', 'excel', 'pdf', 'print'
+//       ]
+//     });}
 
 
     if (loading) return <Text>Chargement en cour...</Text>
@@ -266,7 +266,10 @@ const componentRef = useRef();
             
             </Flex>
             <Center mb='10px'>
-              <Box as={'table'} id="my-table">
+              <Box 
+              // as={'table'} 
+              // id="my-table"
+              >
               <Box mt='20px' w='900px'>
                 <Flex w='full'>
                     <Box w='300px' borderLeft={'1px'}   py='6px' background="colors.primary"><Heading color='white' fontSize={'md'} textAlign={"center"}>Libelle</Heading></Box>

@@ -39,7 +39,7 @@ const Payment = () => {
   // const [searchName, setSearchName] = useState("");
 
   //STATE DE LA PAGINATION
-  const itemsPerPage = 7;
+  const itemsPerPage = 15;
   const [pageNumber, setPageNumber] = useState(0);
   const pagesVisited = pageNumber * itemsPerPage;
 
@@ -67,8 +67,8 @@ const Payment = () => {
 
   const pageCountPersonnel = Math.ceil(dataPersonnel?.findAllpersonnel.length / itemsPerPage);
 
-    const changePage = ({ selected }) => {
-      setPageNumber(selected);
+    const changePage = ({ page }) => {
+      setPageNumber(page);
     }
   return (
     <DefaultLayout>
@@ -179,7 +179,8 @@ const Payment = () => {
                     {dataPersonnel && ( 
                     <Tbody>
                       { dataPersonnel.findAllpersonnel
-                       .filter((personnel) => {
+                      .slice(pagesVisited, pagesVisited + itemsPerPage)
+                      .filter((personnel) => {
                          if (searchName === ""){
                             return personnel;
                           } else if (personnel.firstName.toLowerCase().includes (searchName.toLowerCase()) || 
@@ -188,8 +189,6 @@ const Payment = () => {
                               return personnel;
                       })
                       
-                      .slice(pagesVisited, pagesVisited + itemsPerPage)
-                     
                       .map((personnel, index) => ( 
                         <Tr key={index}>
                           

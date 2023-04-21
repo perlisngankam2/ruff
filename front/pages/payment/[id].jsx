@@ -1,6 +1,6 @@
 
 import {
-    Box, Button, Center, Divider, Flex, Heading, Input, Select, Text, Hide, Avatar
+    Box, Button, Center, Divider, Flex, Heading, Input, Select, Text, Hide
 } from "@chakra-ui/react";
 import PaySlipBottom from "../../components/atoms/PaySlipBottom";
 import PaySlipMiddle from "../../components/atoms/PaySlipMiddle";
@@ -187,8 +187,8 @@ const monthOptions = useMemo(() => {
   const endMonth = new Date(today.getFullYear(), today.getMonth() + 3, 1);
   const options = [];
   let currentMonth = startMonth;
-  
-  if (!unavailableMonths) {
+
+   if (!unavailableMonths) {
     // Si le tableau est vide, ajouter les options pour les 7 mois autour du mois actuel
     for (let i = -3; i <= 3; i++) {
       const date = new Date(today.getFullYear(), today.getMonth() + i, 1);
@@ -202,28 +202,34 @@ const monthOptions = useMemo(() => {
         </option>
       );
     }
-  } else {
-    while (currentMonth < endMonth) {
-      const year = currentMonth.getFullYear();
-      const month = (currentMonth.getMonth() + 1).toString().padStart(2, '0');
-      const optionValue = `${year}-${month}`;
-      const isUnavailable = unavailableMonths.some(
-        (unavailableMonth) =>
-          unavailableMonth.getFullYear() === currentMonth.getFullYear() &&
-          unavailableMonth.getMonth() === currentMonth.getMonth()
-      );
-      if (!isUnavailable) {
-        const monthName = currentMonth.toLocaleString('default', { month: 'long' });
-        options.push(
-          <option key={optionValue} value={optionValue}>
-            {`${monthName} ${year}`}
-          </option>
-        );
-      } 
-      currentMonth = new Date(year, currentMonth.getMonth() + 1, 1);
-    }
   }
+
+  while (currentMonth < endMonth) {
+
+
+    const year = currentMonth.getFullYear();
+    const month = (currentMonth.getMonth() + 1).toString().padStart(2, '0');
+    const optionValue = `${year}-${month}`;
+
+    
+    if(!loading){
+    const isUnavailable = unavailableMonths.some(
+      (unavailableMonth) =>
+        unavailableMonth.getFullYear() === currentMonth.getFullYear() &&
+        unavailableMonth.getMonth() === currentMonth.getMonth()
+    );
+    if (!isUnavailable) {
+      const monthName = currentMonth.toLocaleString('default', { month: 'long' });
+      options.push(
+        <option key={optionValue} value={optionValue}>
+          {`${monthName} ${year}`}
+        </option>
+      );
+    } 
   
+  }
+    currentMonth = new Date(year, currentMonth.getMonth() + 1, 1);
+  }
   return options;
 }, [unavailableMonths]);
 
@@ -257,31 +263,8 @@ const monthOptions = useMemo(() => {
 //     const month = (currentMonth.getMonth() + 1).toString().padStart(2, '0');
 //     const optionValue = `${year}-${month}`;
 
-    
-//     if(!loading && !unavailableMonths && !error ){
-//     const isUnavailable = unavailableMonths.some(
-//       (unavailableMonth) =>
-//         unavailableMonth.getFullYear() === currentMonth.getFullYear() &&
-//         unavailableMonth.getMonth() === currentMonth.getMonth()
-//     );
-//     if (!isUnavailable) {
-//       const monthName = currentMonth.toLocaleString('default', { month: 'long' });
-//       options.push(
-//         <option key={optionValue} value={optionValue}>
-//           {`${monthName} ${year}`}
-//         </option>
-//       );
-//     } 
-  
-//   }
-//     currentMonth = new Date(year, currentMonth.getMonth() + 1, 1);
-//   }
-//   return options;
-// }, [unavailableMonths]);
 
-
-
-if (loading) return <Text>Chargement en cour...</Text>
+// if (loading) return <Text>Chargement en cour...</Text>
 
     return ( 
 
@@ -318,14 +301,16 @@ if (loading) return <Text>Chargement en cour...</Text>
           </Hide>
         </Flex>
           
-        <Box 
-          bg={"gray.200"} 
-          width='500px' 
+        <Flex 
+          bg='#5755c1' 
+          width='1000px' 
+          h='80px' 
           margin="0 auto" 
           pb='20px'
           mt="50px"
           text-align="center"
           rounded={'7px'}
+     
         > 
         <Center w='full'>
           
@@ -386,8 +371,10 @@ if (loading) return <Text>Chargement en cour...</Text>
                 
                 
                 </Box>
+                </Flex>
              
         {/* <Flex 
+        <Flex 
           p="1.5em" 
           textAlign="center" 
           ml='20px' 
@@ -415,10 +402,10 @@ if (loading) return <Text>Chargement en cour...</Text>
               {dataPersonnelId?.findOnePersonnel.fonction}
             </Text>
           </Flex>
-        </Flex> */}
-        </Box>
+        </Flex>
+        </Flex>
 
-
+{/* //informaton salaire et mois */}
       <Center>
         <Flex 
           mt="20px"
@@ -426,6 +413,18 @@ if (loading) return <Text>Chargement en cour...</Text>
         > 
          <Box width={'340px'} gap={7} >
           <Text fontSize='sm'> Salaire Mois</Text>
+              {/* <Input
+                    placeholder="nom prime"
+                    bg='white'
+                    type="month"
+                    name="dateOfPrime"
+                    rounded={2}
+                    onChange={handleMoisPaieChange}
+                    isDisabled={dataMoisSalaire?.PersonnelMonthSalary.includes(moisPaie)}
+                    value={moisPaie}
+
+                    
+                  /> */}
                   <Select
                   
         bg='white'         

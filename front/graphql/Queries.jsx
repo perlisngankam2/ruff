@@ -429,17 +429,6 @@ export const GET_PRIME= gql `
     }
 `;
 
-export const GET_RETENUE= gql `
-    query findAllretenusalarial {
-        findAllretenusalarial {
-            id
-            nom
-            description
-            montant
-        }
-    }
-`;
-
 export const GET_ALL_COURSE_PERSONNEL_SALLE = gql `
     query findbyCoursePersonnelSalle ($salleid: String!, $personnelid: String!, $courseid: String!) {
         findbyCoursePersonnelSalle (salleid: $salleid, personnelid: $personnelid, courseid: $courseid) {

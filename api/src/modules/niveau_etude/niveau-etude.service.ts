@@ -74,9 +74,12 @@ export class NiveauEtudeService {
           populate:['cycle']
         })
       const a= (await niveaus).map(a=>a.id)
-      const b = (await niveaus).map(async (niveau) => (await niveau.cycle.load()).name);
+      const d=(await niveaus).map(a=>a.name)
+      const e =((await niveaus).map(a=>a.description))
+      const f = (await niveaus).map(a=>a.montantPension)
+      const b = (await niveaus).map(async (niveau) => (await niveau.cycle.load()).id);
       const c = await Promise.all(b);
-      return [a,c]
+      return [a,d,e,f,c]
       }
 
       // async getallcycle():

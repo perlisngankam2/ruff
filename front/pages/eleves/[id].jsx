@@ -93,7 +93,8 @@ import {
 import {
   CREATE_TRANCHE_STUDENT, 
   CREATE_AVANCE_TRANCHE,
-  CREATE_SCOLARITE_TRANCHE_STUDENT
+  CREATE_SCOLARITE_TRANCHE_STUDENT,
+  AFFECTATION_PARENT_TO_STUDENT 
 } from "../../graphql/Mutation"
 
 // export const getStaticPath = async() => {
@@ -156,7 +157,7 @@ const DetailComponent = () => {
   const [trancheId, setTrancheId] = useState([]);
   const [errorss, setErrorss] = useState(null);
   const [selectedTranches, setSelectedTranches] = useState([])
-  const [selectedParents, setSlectedParent] = useState([]);
+  const [selectedParents, setSelectedParent] = useState([]);
   const [salleStudent, setSalleStudent] = useState(null);
   // const isDisabled = true
   // const {register, handleSubmit, control,  formState: { isSubmitting, errors }, setValue} = useForm({
@@ -249,6 +250,7 @@ const {data:dataResteFeesToPayByStudent} = useQuery(GET_RESTE_PENSION_A_PAYER_BY
     const {data:dataTranchePension} = useQuery(GET_ALL_TRANCHE_PENSION);
     const {data: dataTrancheStudent} = useQuery(GET_ALL_TRANCHE_STUDENT)
     const {data: dataParents} = useQuery(GET_ALL_PARENT);
+   const [dataAffectationParentToStudent] = useMutation(AFFECTATION_PARENT_TO_STUDENT);
     const {data:dataTrancheById} = useQuery(GET_TRANCHE_PENSION_BY_ID);
     const [createTrancheStudent] = useMutation(CREATE_TRANCHE_STUDENT);
     const [createFeesAvanceTranche] = useMutation(CREATE_AVANCE_TRANCHE
@@ -436,7 +438,7 @@ const {data:dataResteFeesToPayByStudent} = useQuery(GET_RESTE_PENSION_A_PAYER_BY
           console.log (dataTrancheByStudentId?.getClassfeeofStudent)
           console.log(dataStudent?.findAllstudents.firstname);
           console.log(dataTrancheCompleteByStudent?.getalltranchecompletedbystudent)
-          console.log(dataTrancheStudentBySudentId?.getTrancheStudentByStudent)
+          // console.log(dataTrancheStudentBySudentId?.getTrancheStudentByStudent)
         })
 
     // console.log(dataTranchePension?.findAlltranche)
@@ -526,7 +528,6 @@ const {data:dataResteFeesToPayByStudent} = useQuery(GET_RESTE_PENSION_A_PAYER_BY
             isClosable: true,
           });
         }
-
           // const pension = dataStudentSalle?.findSalleByStudent?.montantPensionSalle
           // // const trancheStudentByStudent = dataTrancheStudentBySudentId?.getTrancheStudentByStudent
           // let totalTrancheSelectionner = 0
@@ -565,6 +566,30 @@ const {data:dataResteFeesToPayByStudent} = useQuery(GET_RESTE_PENSION_A_PAYER_BY
           //   setMontant(0);
           // }
         }  
+
+        const affectionParentToStudent = async() => {
+          let studentId = dataStudentId?.findOnestudent.id
+          console.log(studentId)
+          console.log(selectedParents)
+              selectedParents.map((parent, index) => {
+                dataAffectationParentToStudent({
+                  variables:{
+                    input:{
+                      studentId: studentId,
+                      parentId: parent.value
+                    }
+                  }
+                })
+              })
+              onClosseParent();
+              toast({
+                title: `Vous avez affecte un parent a cet eleve`,
+                description: " paye avec succes.",
+                status: "success",
+                duration: 3000,
+                isClosable: true,
+              });
+          }
         //   onClose();
         //   toast({
         //     title: "paiement tranche pension.",
@@ -821,7 +846,7 @@ const {data:dataResteFeesToPayByStudent} = useQuery(GET_RESTE_PENSION_A_PAYER_BY
               >
                 Derniere scolarite :
               </Text>
-                {dataTrancheStudentBySudentId?.getTrancheStudentByStudent.montant} FCFA
+                {/* {dataTrancheStudentBySudentId?.getTrancheStudentByStudent.montant} FCFA */}
             </Text> 
               <Box 
               // fontWeight={800}
@@ -1278,7 +1303,7 @@ const {data:dataResteFeesToPayByStudent} = useQuery(GET_RESTE_PENSION_A_PAYER_BY
                                   isMulti
                                   name={"selectedParents"}
                                   value={selectedParents}
-                                  onChange={setSlectedParent}
+                                  onChange={setSelectedParent}
                                   options={parents}
                                   placeholder={"Motif"}
                                   trancheMiseAJour
@@ -1317,7 +1342,7 @@ const {data:dataResteFeesToPayByStudent} = useQuery(GET_RESTE_PENSION_A_PAYER_BY
                           <Button 
                             colorScheme='green'  
                             ml={3}
-                            // onClick={addAvanceTranche}
+                            onClick={affectionParentToStudent}
                               // (dataTrancheStudentBySudentId?.getTrancheStudentByStudent.id)
                           >
                             payer

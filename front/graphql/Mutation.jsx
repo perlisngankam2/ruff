@@ -273,6 +273,16 @@ mutation createParent ($parent: ParentCreateInput!) {
     }
 }`
 
+export const AFFECTATION_PARENT_TO_STUDENT = gql `
+mutation createParentstudent ($input: ParentStudentCreateInput!) {
+    createParentstudent (input: $input) {
+        id
+        tuteur
+        childNumber
+    }
+}
+`;
+
 export const fragmentCycle = gql` fragment CycleClass on cyle {
     id
     name

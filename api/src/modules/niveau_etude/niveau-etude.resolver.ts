@@ -40,10 +40,14 @@ export class NiveauEtudeResolver {
    return await this.niveauEtudeService.delete(id)
   }
 
-  @Query(()=>[[String],[String],[String],[String],[String]])
-  async findallniveauetude() {
+  // @Query(()=>[[String],[String],[String],[String],[String]])
+  // async findallniveauetude() {
+  //   return await this.niveauEtudeService.getAll();
+  // }
+  @Query(()=>[NiveauEtude])
+  async findAllNiveauEtude() {
     return await this.niveauEtudeService.getAll();
-  }
+  }
   
   @Query(() => NiveauEtude)
   async findOneNiveauEtude(@Args('id', { type: () => String }) id: string) {

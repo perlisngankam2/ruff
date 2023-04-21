@@ -97,6 +97,7 @@ export class UserService {
       firstName,
       lastName,
       phoneNumber: inputWithoutPassword.phoneNumber || user.phoneNumber,
+      lastConnection: new Date()
     });
 
     await this.userRepository.persistAndFlush(user);

@@ -49,10 +49,6 @@ const RouteName = {
       // type: AuthRoute.Public,
       // platforms: [Platform.Main]
     },
-    Bulletin: {
-      path: '/payment/bulletin/[id]'
-    }
-    ,
     Payment: {
       path: '/payment',
     },
@@ -62,11 +58,11 @@ const RouteName = {
     Receipt:{
       path: '/eleves/recu/[id]'
     },
-    PersonnelDetails: {
-      path: '/personnel/[id]',
-      // type: AuthRoute.Public,
-      // platforms: [Platform.Main]
-    },
+    // PersonnelDetails: {
+    //   path: '/personnel/[id]',
+    //   // type: AuthRoute.Public,
+    //   // platforms: [Platform.Main]
+    // },
     levelEdit: {
       path: '/level/addLevel',
       // type: AuthRoute.Public,

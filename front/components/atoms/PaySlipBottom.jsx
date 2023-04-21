@@ -117,7 +117,7 @@ const PaySlipBottom = () => {
                     <Box 
                         p={'10px'}>
                         <Text textAlign={'center'}>
-                            Montant en lettre du salaire net :<Text>{props.montantLettre}</Text>
+                            Montant en lettre du salaire net
                         </Text>
                     </Box>
                 </Box>
@@ -130,10 +130,10 @@ const PaySlipBottom = () => {
                       <Text 
                         textAlign={'center'}  
                         fontWeight={'bold'}>
-                            MOIS DE PAIE
+                            PERIODE DE PAIE
                       </Text>
                       <Text textAlign={'center'}>
-                         {props.periode}
+                         Date
                         </Text>
                     </Box>
                     <Box 
@@ -161,7 +161,7 @@ const PaySlipBottom = () => {
                         >
                              DATE DE PAIE
                         </Text>
-                      <Text textAlign={'center'}>{props.date}</Text>
+                      <Text textAlign={'center'}>Date</Text>
                     </Box>
                 </Box>
             </Box>

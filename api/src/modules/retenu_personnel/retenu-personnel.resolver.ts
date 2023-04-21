@@ -14,6 +14,7 @@ import { RetenuPersonnel } from 'src/entities/retenu-personnel.entity';
 import { RetenuPersonnelCreateInput } from './dto/retenu-personnel.input';
 import { RetenuPersonnelService } from './retenu-personnel.service';
 import { RetenuPersonnelUpdateInput } from './dto/retenu-personnel.update';
+import { Retenue } from 'src/entities/retenu-salaire.entity';
 
 
 @Resolver(() => RetenuPersonnel)
@@ -45,17 +46,7 @@ export class RetenuPersonnelResolver {
  return await this.retenuPersonnelService.delete(id)
   }
 
-  @Query(()=> [RetenuPersonnel])
-  async findretenupersonnelbypersonnel(@Args('personnelid') personnelid:string){
- return await this.retenuPersonnelService.findbypersonnel(personnelid)
-  }
-
-  @Query(()=> Number)
-  async findallretenupersonnel(@Args('personnelid') personnelid:string){
- return await this.retenuPersonnelService.getallretenupersonnel(personnelid)
-  }
-
-    @Query(()=> [Number])
+  @Query(()=> [Number])
   async findmontantretenubypersonnel(@Args('personnelid') personnelid:string){
  return await this.retenuPersonnelService.findmontantretenuebypersonnel(personnelid)
   }
@@ -69,5 +60,12 @@ export class RetenuPersonnelResolver {
   async findsumallretenupersonnel(@Args('personnelid') personnelid:string){
  return await this.retenuPersonnelService.getallretenupersonnel(personnelid)
   }
+
+  @Query(()=>[[String],[Number]])
+  async getRetenuEtNom(@Args('personnelid') personnelid:string){
+ return await this.retenuPersonnelService.NomRetenuEtMontant(personnelid)
+  }
+
+
 
 }

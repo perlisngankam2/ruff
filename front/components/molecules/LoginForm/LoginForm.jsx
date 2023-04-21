@@ -11,18 +11,8 @@ import {
   Hide,
   HStack,
   Image,
-  Select,
   Input,
-  AlertDialog,
-  AlertDialogBody,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogContent,
-  AlertDialogOverlay,
-  useDisclosure,
-  Text,
 } from "@chakra-ui/react";
-import React from "react";
 import { useFormik } from "formik";
 import { NextLink } from "next/link";
 import { Link } from "@chakra-ui/react";
@@ -30,16 +20,12 @@ import { LOGIN_USER} from "../../../graphql/Mutation";
 import { useMutation, useQuery } from "@apollo/client";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import { GET_USER_CONNECTED} from  "../../../graphql/Queries";
+import { GET_USER_CONNECTED} from  "../../../graphql/Queries"
 import dashboard from "../../../pages/dashboard.jsx";
-import { useAuth } from '../../../contexts/account/Auth/Auth';
+import { useAuth } from '../../../contexts/account/Auth/Auth'
 import { useTranslation } from "next-i18next";
 
-
 const LoginForm = () => {
-
-  const { isOpen, onOpen, onClose } = useDisclosure()
-  const cancelRef = React.useRef()
   const[email , setEmail] = useState("");
   const[password , setPassword] = useState("");
   const [loginInput , error] = useMutation(LOGIN_USER);
@@ -52,34 +38,23 @@ const LoginForm = () => {
 
 console.log(dataUser)
 
-const Handle =()=>{
-
-}
-
-  const HandleClick = async (event) => {
+   const HandleClick = async (event) => {
     event.preventDefault();
-            const login = await loginInput({
-                    variables:{
-                      loginInput: { 
-                        username: email,
-                        password : password
-                      }
-                  }
-              });
-
-                console.log(login.data.login.user)
-                  if (login.data.login) {
-                    setAuthToken?.(login.data.login.access_token , login.data.login.user.id);
-                    if(login.data.login.user.deactivatedAt === null && login.data.login.user.role !== 'ADMIN'){
-                      // router.push('/resetPassword')
-                      onOpen()
-
-                    } else {
-router.push('/dashboard')
-                    }
-                    
-                  }
-       };
+    
+    const login = await loginInput({
+            variables:{
+              loginInput: { 
+                username: email,
+                password : password
+              }
+          }
+      });
+      console.log(login.data.login)
+        if (login.data.login) {
+          setAuthToken?.(login.data.login.access_token , login.data.login.user.id);
+          router.push('/dashboard');
+        }
+    };
 
 
   return (
@@ -107,7 +82,6 @@ router.push('/dashboard')
             boxShadow="xl"
             rounded={13}
             background="white"
-            as="form"  
           >
             <Container 
               maxW={{ base: "sm", sm: "md" }} 
@@ -145,14 +119,15 @@ router.push('/dashboard')
                   <FormLabel>
                     {t('molecules.LoginForm.motDePasse')}
                   </FormLabel>
-                    <Input
-                      id="password"
-                      type="password"
-                      value={password}
-                      onChange={(e) => setPassword(e.target.value)}
-                      name="password"
-                    />
-                  </FormControl>
+                  <Input
+                    id="password"
+                    type="password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    name="password"
+                  />
+                </FormControl>
+
                 <HStack 
                   mb={5} 
                   spacing={{ base: "10px", lg: "60px" }}
@@ -173,42 +148,14 @@ router.push('/dashboard')
                     </Box>
                   </Link>
                 </HStack>
-                <>
                 <Button 
                   w="100%" 
                   colorScheme="green" 
                   type="submit" 
                   mb={5}
-                  onClick={HandleClick}
                 >
                  {t('molecules.LoginForm.seConnecter')}
                 </Button>
-              <AlertDialog>
-
-                   <AlertDialogOverlay>
-          <AlertDialogContent>
-            <AlertDialogHeader fontSize='lg' fontWeight='bold'>
-              Reinitialisation de mot de passe
-            </AlertDialogHeader>
-
-            <AlertDialogBody>
-              Souhaitez vous modifier le de passe qui vous a ete donnee?
-            </AlertDialogBody>
-
-            <AlertDialogFooter>
-              <Button ref={cancelRef} onClick={onClose}>
-                Non
-              </Button>
-              <Link href={'#'}>
-                <Button colorScheme='green'  ml={3}>
-                  Oui
-                </Button>
-              </Link>
-            </AlertDialogFooter>
-          </AlertDialogContent>
-        </AlertDialogOverlay>
-      </AlertDialog>
-                </>
               </Box>
             </Container>
           </Box>

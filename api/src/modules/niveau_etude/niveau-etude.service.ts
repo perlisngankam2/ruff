@@ -4,6 +4,7 @@ import {
     Entity,
     EntityManager,
     FilterQuery,
+    Loaded,
     NotFoundError,
     wrap,
   } from '@mikro-orm/core';
@@ -18,6 +19,7 @@ import { SectionCycleService } from '../section-cycle/section-cycle.service';
 import { NiveauEtudeCreateInput } from './dto/niveau-etude.input';
 import { NiveauEtudeUpdateInput } from './dto/niveau-etude.update';
 import { CycleService } from '../cycle/cycle.service';
+import { cy } from 'date-fns/locale';
 
 @Injectable()
 export class NiveauEtudeService {
@@ -61,12 +63,20 @@ export class NiveauEtudeService {
       findById(id:string){
         return this.niveauEtudeRepository.findOne(id)
       }
+
+      async findcyclebyniveau(niveauid:string){
+        return (await this.findByOne(niveauid)).cycle.load()
+       }
+       
     
-      async getAll(): Promise<NiveauEtude[]> {
-       return  await this.niveauEtudeRepository.findAll({
-           populate:true,
-          orderBy: { id: 'ASC' },
-         })
+      async getAll() {
+        const niveaus= this.niveauEtudeRepository.findAll({
+          populate:['cycle']
+        })
+      const a= (await niveaus).map(a=>a.id)
+      const b = (await niveaus).map(async (niveau) => (await niveau.cycle.load()).name);
+      const c = await Promise.all(b);
+      return [a,c]
       }
 
       // async getallcycle():

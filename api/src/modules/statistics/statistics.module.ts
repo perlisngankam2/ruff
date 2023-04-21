@@ -7,6 +7,9 @@ import { SalleModule } from "../salle/salle.module";
 import { TrancheStudentModule } from "../tranche-student/tranche-student.module";
 import { StatisticResolver } from "./statistics.resolver";
 import { StatisticService } from "./statistics.service";
+import { PensionModule } from "../pension/pension.module";
+import { TrancheModule } from "../tranche/tranche.module";
+import { StudentModule } from "../student/student.module";
 
 
 @Module({
@@ -14,7 +17,10 @@ import { StatisticService } from "./statistics.service";
         InscriptionModule,
         TrancheStudentModule,
         SalleModule,
-        ExpenseModule
+        ExpenseModule,
+        PensionModule,
+        TrancheModule,
+        StudentModule
     ],
     providers:[StatisticService,StatisticResolver],
     exports:[StatisticService]

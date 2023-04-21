@@ -100,16 +100,15 @@ async validateUser(email:string,passwd:string) {
 // }
 
 async login(user:User){
-
+  await this.userservice.findOne(user.id)
+  user.lastConnection == new Date()
    return {
         access_token: this.jwtservice.sign({
             username: user.email,
-            password: user.password, 
+            password: user.password,
             sub: user.id}),
         user
-        
     }
-    user.lastConnection == new Date()
 }
 
 

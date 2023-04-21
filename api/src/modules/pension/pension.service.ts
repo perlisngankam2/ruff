@@ -17,7 +17,7 @@ import { NiveauEtudeService } from '../niveau_etude/niveau-etude.service';
 import { SalleService } from '../salle/salle.service';
 import { PensionCreateInput } from './dto/pension.input';
 import { PensionUpdateInput } from './dto/pension.update';
-// import { format } from 'date-fns';
+import { format } from 'date-fns';
 import { StudentService } from '../student/student.service';
 import { TrancheStudentService } from '../tranche-student/tranche-student.service';
 
@@ -28,7 +28,7 @@ export class PensionService {
         private pensionRepository: EntityRepository<Pension>,
         @Inject(forwardRef(() => StudentService))
         private studentservice: StudentService,
-        @Inject(forwardRef(() => StudentService))
+        @Inject(forwardRef(() => TrancheStudentService))
         private trancheStudentservice: TrancheStudentService,
         private  em: EntityManager,
       ) {}
@@ -76,7 +76,10 @@ export class PensionService {
       }
 
       async savePension(studentid:string){
-        const montantpension = (await this.trancheStudentservice.findByStudent(studentid)).map(a=>a.montant).reduce(function(a,b){return a+b})
+        // const montantpension = (await this.trancheStudentservice.findByStudent(studentid)).map(a=>a.montant).reduce(function(a,b){return a+b})
+        const tranchestudent = await this.trancheStudentservice.findByStudents(studentid)
+        console.log('========>'+tranchestudent)
+        const montantpension = tranchestudent.map(a=>a.montant).reduce(function(a,b){return a+b})
         const pension = await this.findpensionbystudent(studentid)
         const fees_to_be_paied = await this.studentservice.getclassfeebystudent(studentid)
 
@@ -150,7 +153,7 @@ export class PensionService {
         if(!student){
           throw Error('!!!!!!!!!!!!!!!!!STUDENT DOES NOT EXISTS!!!!!!!!!!!!!!!!!!')
         }
-        const montant = (await this.trancheStudentservice.findByStudent(student.id)).map(a=>a.montant).reduce(function(a,b){return a+b})
+        const montant = (await this.trancheStudentservice.findByStudents(student.id)).map(a=>a.montant).reduce(function(a,b){return a+b})
 
         wrap(pension).assign({
             name:input.name || pension.name,
@@ -175,5 +178,9 @@ export class PensionService {
       
       async findpensionbystudent(studentid:string){
         return await this.pensionRepository.findOne({student:studentid})
+      }
+
+      async findrestpensionbyatudent(studentid: string){
+        return (await this.findpensionbystudent(studentid)).reste
       }
 }

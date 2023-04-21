@@ -27,14 +27,14 @@ import {
   Select,
   useToast
 } from "@chakra-ui/react";
-import { AddIcon,MinusIcon } from '@chakra-ui/icons';
+import { AddIcon } from '@chakra-ui/icons';
 import { useRouter } from "next/router";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import DefaultLayout from "../../components/layouts/DefaultLayout";
 import { GET_ALL_PERSONNEL_BY_ID} from "../../graphql/Queries";
 import { GET_ALL_PERSONNELS } from "../../graphql/Queries";
-import { GET_PRIME, GET_RETENUE, GET_Category_Personnel_BY_ID, GET_Category_Personnel_ID } from "../../graphql/Queries";
+import { GET_PRIME, GET_ALL_RETENUE, GET_Category_Personnel_BY_ID, GET_Category_Personnel_ID } from "../../graphql/Queries";
 import { CREATE_PRIME_PERSONNEL, CREATE_RETENUE_PERSONNEL, CREATE_SALAIRE } from "../../graphql/Mutation";
 
 export const colorOptions = [ 
@@ -103,7 +103,6 @@ const Profil = () => {
 
   const {data:dataPersonnel} = useQuery(GET_ALL_PERSONNELS)
   const {data:dataPrime} = useQuery(GET_PRIME)
-   const {data:dataRetenue} = useQuery(GET_RETENUE)
 
   const [createPrimePersonnel, error] = useMutation(CREATE_PRIME_PERSONNEL);
   const [createRetenuePersonnel] = useMutation(CREATE_RETENUE_PERSONNEL);
@@ -111,8 +110,6 @@ const Profil = () => {
   const[primeId, setPrimeId] = useState("");
     const[startDate, setStartDate] = useState("");
       const[endDate, setEndDate] = useState("");
-  const[retenuId, setretenuId] = useState("");
-  const[startDate1, setStartDate1] = useState("");
 
 
   //generer salaire
@@ -185,7 +182,40 @@ const montant = dataCategorie?.findOneCategoriepersonnel.montant;
     setStartDate1("");
   }
 }
+//GENERER LE SALAIRE
+  const HandleClick3 = async (event) => {
+  event.preventDefault();
 
+  const salaireData = await createSalaire({
+        variables:{
+        input: { 
+          personnelId: dataPersonnelId.findOnePersonnel.id,
+          montant: parseInt(montant),
+          moisPaie: moisPaie, 
+          jourPaie: jourPaie
+        }
+      }
+    })
+
+    console.log(salaireData)
+    toast({
+      title: "Succès.",
+      description: "La prime a été crée .",
+      status: "success",
+      duration: 3000,
+      isClosable: true,
+    });
+
+        setMoisPaie("");
+        onClosses3();
+  }
+
+  console.log(moisPayes)
+
+  useEffect(() =>{
+    console.log(dataPersonnelId)
+    console.log(dataPersonnel)
+  })
 
   return (
     <DefaultLayout>
@@ -195,18 +225,10 @@ const montant = dataCategorie?.findOneCategoriepersonnel.montant;
         <Flex gap="5" pb={'7px'}>
           <Box rounded="md" p="5" boxShadow="md" w="40%" background="white">
             <Center>
-             {dataPersonnelId.findOnePersonnel.sexe.toLowerCase() === "homme" ? 
-                 <Avatar
-                  size="xl"
-                  mt={["10px","10px", "10px" ]}
-                  src="https://img.freepik.com/vecteurs-premium/profil-avatar-homme-icone-ronde_24640-14044.jpg?w=2000"
-                />
-             :
-                <Avatar
-                  size="xl"
-                  mt={["10px","10px", "10px" ]}
-                  src="https://img.freepik.com/premium-vector/woman-avatar-profile-round-icon_24640-14042.jpg?size=626&ext=jpg"
-                /> }
+              <Avatar
+                src="https://img.freepik.com/vecteurs-premium/profil-avatar-homme-icone-ronde_24640-14044.jpg?w=2000"
+                size="xl"
+              />
             </Center>
             <Text fontSize="2xl" fontWeight="bold" textAlign="center" my="2">
               {dataPersonnelId.findOnePersonnel.fonction}
@@ -723,6 +745,180 @@ const montant = dataCategorie?.findOneCategoriepersonnel.montant;
       </AlertDialog>
          </Box>
 
+
+
+  <Box>
+
+                  <Button 
+              leftIcon={<MinusIcon />} 
+              bg='red.200'
+              height='40px' 
+              color='white' 
+              onClick={onOpenns3}
+              w='110px'
+            >
+              Generer le paiement
+            </Button>
+
+              <AlertDialog
+                isOpen={isOpenns3}
+                leastDestructiveRef={cancelRef}
+                onClose={onClosses3}
+                size='xl'
+                
+            >
+              <AlertDialogOverlay>
+                  <AlertDialogContent  >
+                    <AlertDialogHeader 
+                      fontSize='sm' 
+                      fontWeight='base' 
+                      mt='0'
+                    >
+                    <Box  
+                      bg={"colors.secondary"} 
+                      borderBottomRightRadius={10} 
+                      borderBottomLeftRadius={10}
+                    >
+                        <Heading 
+                         
+                          textAlign={'center'} 
+                          fontSize={['15px','20px','26px']} 
+                          p='2' 
+                        >
+                                Groupe Scolaire Bilingue Awono Bilongue
+                        </Heading>
+                    </Box>
+                    </AlertDialogHeader>
+                    <AlertDialogBody>
+ 
+            <Box mt='4'>
+                <Flex 
+                  gap={5} 
+                  flexWrap={['wrap','wrap','nowrap']} 
+                  align='end'
+                >
+                    <FormControl>
+                        <FormLabel 
+                        fontWeight={"normal"}
+                        >
+                          Nom de l'employé :
+                        </FormLabel>
+                <Input
+
+                    type="text"
+                    value= {dataPersonnelId.findOnePersonnel.firstName}
+                    // onChange={(e) => setNom(e.target.value)}
+                    name="Nom"
+                    placeholder="nom prime"
+                    bg='white'
+                    // type="date"
+                    // id="dateOfPrime"
+                    // name="dateOfPrime"
+                    // placeholder="{formattedDate}"
+                    // bg='white'
+              
+                    // borderColor="purple.100"
+                    // onChange={e => setDateOfStartWork(e.target.value)}
+                    // value={dateOfStartWork}
+                    // // ref={dateOfStartWorkRef}
+                    
+                  />
+                    </FormControl>
+                            <FormControl>
+                        <FormLabel 
+                        fontWeight={"normal"}
+                        >
+                          date du jour
+                        </FormLabel>
+                           <Input
+                    placeholder="nom prime"
+                    bg='white'
+                    type="date"
+                    rounded={2}
+                    name="dateOfPrime"
+                    mt={'8px'}
+                    onChange={(event) => setJourPaie(event.target.value)}
+                    value={jourPaie}
+                    
+                  />
+                    </FormControl>
+                    {/* <FormControl>
+                        <FormLabel 
+                        placeholder="--motif--"
+                        >
+                          Classe 
+                        </FormLabel>
+                        <Select  
+                          isMulti
+                          options= {groupedOptions}
+                          // {[Tranches.map((tranche) => (
+                          //   <option>{tranche}</option>
+                          // ))]}
+                        >
+                        </Select>
+                    </FormControl> */}
+                </Flex>
+            </Box>
+            <Box mt='4'>
+                <Flex 
+                  gap={5} 
+                  flexWrap={['wrap','wrap','nowrap']} 
+                  align='end'
+                >
+                  <FormControl>
+                    <FormLabel>Mois courant</FormLabel>
+                       <Input
+                    placeholder="nom prime"
+                    bg='white'
+                    type="month"
+                    name="dateOfPrime"
+                    rounded={2}
+                    onChange={handleMoisPaieChange1}
+                    value={moisPaie}
+
+                    
+                  />
+                
+                    </FormControl>
+                  
+                    
+    
+                    <FormControl>
+                        <FormLabel>Salaire de base</FormLabel>
+                                <Input
+                    placeholder="nom prime"
+                    bg='white'
+                    type="text"
+                    rounded={2}
+                    name="dateOfPrime"
+                
+                   value={montant}
+                 
+                    
+                  />
+                    </FormControl>
+                </Flex>
+            </Box>
+            </AlertDialogBody>
+            <AlertDialogFooter>
+              <Button ref={cancelRef} onClick={onClosses1} colorScheme='red' >
+                annuler
+              </Button>
+             <Link href={'#'}>
+              <Box>
+                <Button colorScheme='green'  ml={3} type='submit' onClick={HandleClick3}>
+                  ajouter
+                </Button>
+                
+
+
+                </Box>
+              </Link> 
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialogOverlay>
+      </AlertDialog>
+         </Box>
 
     </Flex>
         </Box>

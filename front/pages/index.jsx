@@ -10,7 +10,8 @@ import dashboard from "./dashboard";
 
 export default function Home() {
 
-  return (  
+  return(  
+   
   <LoginPage />
   )
 }

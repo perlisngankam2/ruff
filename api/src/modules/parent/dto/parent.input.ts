@@ -35,5 +35,4 @@ export class ParentCreateInput {
 
   @Field({nullable:true})
   user:UserCreateInput
-    birthDate: Date;
 }

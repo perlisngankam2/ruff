@@ -36,10 +36,12 @@ export class SalaireService {
     //const categorie = personnel.category.load()
 
     const salaire= new Salaire()
-    const retenus =await this.retenuPersonnel.getallretenupersonnel(personnel.id)
+    const retenus =await this.retenuPersonnel.getallretenupersonnelbymonth(personnel.id,input.moisPaie)
     console.log(retenus)
-    const primes = await this.primepersonnelservice.getallpersonnelprime(personnel.id)
+    const primes = await this.primepersonnelservice.getallpersonnelprimebymonth(personnel.id,input.moisPaie)
     console.log(primes)
+    //ici j'ai tous les mois auquels les primes ont ete attribuer au personnel
+    const moisprimespersonnel = (await this.primepersonnelservice.getallprimespersonnel(personnel.id)).filter(a=>a.startMonth==input.moisPaie)
 
 
 
@@ -48,9 +50,9 @@ export class SalaireService {
         throw Error("!!!!!!!!!!! CE PERSONNEL A DEJA ETE PAYER POUR CE MOIS !!!!!!!!!!!!")
       }
       const salaireBase = (await personnel.category.load()).montant
-
       
-
+      if(moisprimespersonnel.length!=0)
+      {
       if(personnel.status == Status.PERMANENT){
 
       const salaireNette = salaireBase + primes - retenus
@@ -98,6 +100,11 @@ export class SalaireService {
 
     }
 
+    if(moisprimespersonnel.length==0){
+    throw Error("le mois de paie ne correspond a aucun mois de prime attribuer au personnel")
+    }
+
+  }
 
 }
 
@@ -168,5 +175,12 @@ async personnelNetSalary(personnelId:string){
   return b
 }
 
+async personnelsalairenetbymonth(personnelid:string, month:string){
+  const a= (await this.salairepersonnel(personnelid)).filter(a=>a.moisPaie==month)[0].montant
+  if(a==0){
+   throw Error("!!!!!!!!!!!!!!!!!!!!No net salary for this month!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+  }
+  return a
+}
 
 }

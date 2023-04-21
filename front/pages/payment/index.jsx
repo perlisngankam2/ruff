@@ -10,7 +10,6 @@ import {
   InputGroup,
   InputRightElement,
   Icon,
-  Hide,
   // Link as Links,
   Grid,
   Text,
@@ -39,7 +38,7 @@ const Payment = () => {
   // const [searchName, setSearchName] = useState("");
 
   //STATE DE LA PAGINATION
-  const itemsPerPage = 7;
+  const itemsPerPage = 15;
   const [pageNumber, setPageNumber] = useState(0);
   const pagesVisited = pageNumber * itemsPerPage;
 
@@ -67,8 +66,8 @@ const Payment = () => {
 
   const pageCountPersonnel = Math.ceil(dataPersonnel?.findAllpersonnel.length / itemsPerPage);
 
-    const changePage = ({ selected }) => {
-      setPageNumber(selected);
+    const changePage = ({ page }) => {
+      setPageNumber(page);
     }
   return (
     <DefaultLayout>
@@ -77,31 +76,19 @@ const Payment = () => {
         w="full" 
         minH="100vh" 
         bgColor="colors.tertiary"
-         pt="70px" 
       >
-        <Flex
-          align="center"
-          justify="space-between"
-          boxShadow="md"
-          p="5"
-          rounded="lg"
-          background="white"
-          mb='10px'
-        >
-          <Heading
-            textAlign="center"
-            color="WindowText"
-            size="lg"
-            textColor="pink.300"
+        <Box pt="70px" w="100%">
+          <Heading 
+            p="1em" 
+            textAlign="center" 
+            bgGradient='linear(to-r, teal.500, green.500)' 
+            bgClip='text' fontSize={'30px'}
           >
-            Paiement
+            gestion de la paie de salaire
           </Heading>
-          <Hide below="sm">
-            <Text>Dashboad / Salaires / Paiement</Text>
-          </Hide>
-        </Flex>
+        </Box>
         <Center>
-          <Box pb='5px' mt='20px'>
+          <Box pb='5px'>
              <InputGroup width="300px">
               {filteredData.length === 0 ?
             <InputRightElement
@@ -179,7 +166,8 @@ const Payment = () => {
                     {dataPersonnel && ( 
                     <Tbody>
                       { dataPersonnel.findAllpersonnel
-                       .filter((personnel) => {
+                      .slice(pagesVisited, pagesVisited + itemsPerPage)
+                      .filter((personnel) => {
                          if (searchName === ""){
                             return personnel;
                           } else if (personnel.firstName.toLowerCase().includes (searchName.toLowerCase()) || 
@@ -188,8 +176,6 @@ const Payment = () => {
                               return personnel;
                       })
                       
-                      .slice(pagesVisited, pagesVisited + itemsPerPage)
-                     
                       .map((personnel, index) => ( 
                         <Tr key={index}>
                           

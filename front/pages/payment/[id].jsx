@@ -1,6 +1,6 @@
 
 import {
-    Box, Button, Center, Divider, Flex, Heading, Input, Select, Text, Hide, Avatar
+    Box, Button, Center, Divider, Flex, Heading, Input, Text 
 } from "@chakra-ui/react";
 import PaySlipBottom from "../../components/atoms/PaySlipBottom";
 import PaySlipMiddle from "../../components/atoms/PaySlipMiddle";
@@ -9,14 +9,11 @@ import PaySlipLogoBox from "../../components/atoms/PaySlipLogoBox";
 import PaySlipInformationEmployeeBox from "../../components/atoms/PaySlipInformationEmployeeBox";
 import DefaultLayout from "../../components/layouts/DefaultLayout";
 import { useQuery, useMutation } from "@apollo/client";
-import { GET_ALL_PERSONNEL_BY_ID, GET_Category_Personnel_BY_ID, GET_Category_Personnel_ID, GET_ALL_SALAIRE_BY_ID, GET_ALL_MONTH_SALARY, GET_SALARY_NET} from "../../graphql/Queries";
+import { GET_ALL_PERSONNEL_BY_ID, GET_Category_Personnel_BY_ID, GET_Category_Personnel_ID} from "../../graphql/Queries";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { CREATE_SALAIRE } from "../../graphql/Mutation";
 import { useToast } from "@chakra-ui/react";
-import Routes from "../../modules/routes";
-import Link from "next/link";
-import { useMemo } from 'react';
 
 const PaySlip = () => {
 
@@ -27,7 +24,7 @@ const PaySlip = () => {
 
   //information du personnel par son ID
 
-    const {data:dataPersonnelId, error} = useQuery(GET_ALL_PERSONNEL_BY_ID,
+    const {data:dataPersonnelId} = useQuery(GET_ALL_PERSONNEL_BY_ID,
       {
         variables:{ id: router.query.id}
       })
@@ -37,7 +34,7 @@ const PaySlip = () => {
 
     const {data:dataCategorieId} = useQuery(GET_Category_Personnel_ID,
      {
-        variables:{ personnelid: router.query.id}
+        variables:{ personnelid: dataPersonnelId?.findOnePersonnel.id}
      })
 
 // information de la categorie associee au personnel
@@ -50,15 +47,7 @@ const PaySlip = () => {
 
       const {data:dataSalaireId} = useQuery(GET_ALL_SALAIRE_BY_ID,
   {
-    variables:{ personnelid: router.query.id}
-  });
-
-
-//recupere tout les mois de salaire d'un personnel
-
-    const {data:dataMoisSalaire , loading} = useQuery(GET_ALL_MONTH_SALARY,
-  {
-    variables:{ personnelid: router.query.id}
+    variables:{ personnelid: dataPersonnelId?.findOnePersonnel.id}
   });
 
 
@@ -67,68 +56,58 @@ const PaySlip = () => {
 
   const [moisPaie, setMoisPaie] = useState("");
   const [jourPaie , setJourPaie] = useState("");
-const [isMonthUnavailable, setIsMonthUnavailable] = useState(false);
-
   const [createSalaire] = useMutation(CREATE_SALAIRE);
 
   
     const moisPayes = []
-    
   const loadMoisPayes = () => {
-    dataMoisSalaire?.PersonnelMonthSalary.map((item) => { 
+    dataSalaireId?.getsalairebypersonnel.map((item) => { 
             moisPayes.push(
               {
-                value: item
+                value: item?.moisPaie.toLowerCase()
 
               }
             )
           })
 
   }
-    console.log("dataMoisSalaire")
-  console.log(dataMoisSalaire)
+  console.log(dataSalaireId)
   console.log(moisPayes)
   console.log(moisPayes.includes(moisPaie.toLowerCase()))
+ console.log(montant)
 
 
+  const handleMoisPaieChange = (event) => {
 
+    const selectedMonth = event.target.value;
 
+      console.log(!moisPayes.includes(selectedMonth))
 
-// ...
-
-const unavailableMonths = useMemo(
-  () =>
-    dataMoisSalaire?.PersonnelMonthSalary.map((paidMonth) => {
-      const [year, month] = paidMonth.split('-');
-      return new Date(year, month - 1, 1);
-    }),
-  [dataMoisSalaire?.PersonnelMonthSalary]
-);
-
- console.log(unavailableMonths)
-
-
-
-
+    if (!moisPayes.includes(selectedMonth)) {
+      setMoisPaie(selectedMonth);
+    }
+  };
 
 
 
   const HandleClick = async (event) => {
     event.preventDefault();
 
+    router.push({
+                  pathname: Routes.Bulletin?.path || '',
+                  query: {id: router.query.id}
+                })
 
     const salaireData = await createSalaire({
           variables:{
           input: { 
             personnelId: personnelId,
             montant: parseInt(montant),
-            payer: true,
             moisPaie: moisPaie, 
             jourPaie: jourPaie
           }
         }
       })
-
 
     console.log(salaireData)
 
@@ -140,10 +119,6 @@ const unavailableMonths = useMemo(
       isClosable: true,
     });
 
-    router.push({
-                  pathname: Routes.Bulletin?.path || '',
-                  query: {id: router.query.id}
-                })
 
         setMoisPaie("");
   }
@@ -152,189 +127,45 @@ const unavailableMonths = useMemo(
       loadMoisPayes()
       console.log(dataPersonnelId?.findOnePersonnel)
 
-   }, [dataMoisSalaire?.PersonnelMonthSalary]);
-
-const handleMonthChange = (e) => {
-  const { value } = e.target;
-  setMoisPaie(value);
-  const selectedMonth = new Date(value);
-  if(!loading){
-    if(!unavailableMonths){
-      const isMonthUnavailable = false
-    }else{
-  const isMonthUnavailable = unavailableMonths.some(
-    (unavailableMonth) =>
-      unavailableMonth.getFullYear() === selectedMonth.getFullYear() &&
-      unavailableMonth.getMonth() === selectedMonth.getMonth()
-  );}}
-  setIsMonthUnavailable(isMonthUnavailable);
-};
-
-// ...
-
-const monthOptions = useMemo(() => {
-  const today = new Date();
-  const startMonth = new Date(today.getFullYear(), today.getMonth() - 3, 1);
-  const endMonth = new Date(today.getFullYear(), today.getMonth() + 6, 1);
-  const options = [];
-  let currentMonth = startMonth;
-
-  //  if (!unavailableMonths) {
-  //   // Si le tableau est vide, ajouter les options pour les 7 mois autour du mois actuel
-  //   for (let i = -3; i <= 3; i++) {
-  //     const date = new Date(today.getFullYear(), today.getMonth() + i, 1);
-  //     const year = date.getFullYear();
-  //     const month = (date.getMonth() + 1).toString().padStart(2, '0');
-  //     const optionValue = `${year}-${month}`;
-  //     const monthName = date.toLocaleString('default', { month: 'long' });
-  //     options.push(
-  //       <option key={optionValue} value={optionValue}>
-  //         {`${monthName} ${year}`}
-  //       </option>
-  //     );
-  //   }
-  // }
-
-  // while (currentMonth < endMonth) {
-
-
-  //   const year = currentMonth.getFullYear();
-  //   const month = (currentMonth.getMonth() + 1).toString().padStart(2, '0');
-  //   const optionValue = `${year}-${month}`;
-
-    
-  //   if(!loading && !unavailableMonths && !error ){
-  //   const isUnavailable = unavailableMonths.some(
-  //     (unavailableMonth) =>
-  //       unavailableMonth.getFullYear() === currentMonth.getFullYear() &&
-  //       unavailableMonth.getMonth() === currentMonth.getMonth()
-  //   );
-  //   if (!isUnavailable) {
-  //     const monthName = currentMonth.toLocaleString('default', { month: 'long' });
-  //     options.push(
-  //       <option key={optionValue} value={optionValue}>
-  //         {`${monthName} ${year}`}
-  //       </option>
-  //     );
-  //   } 
-  
-  // }
-  //   currentMonth = new Date(year, currentMonth.getMonth() + 1, 1);
-  // }
-  return options;
-}, [unavailableMonths]);
-
-
-
-if (loading) return <Text>Chargement en cour...</Text>
+    })
+// if (loading) return <Text>Chargement en cour...</Text>
 
     return ( 
 
-<>{!loading &&
+
 
             <DefaultLayout>
       <Box 
-        p="3" 
         pt="70px" 
-        background="colors.tertiary" 
-        w="full" 
-        minH="100vh"
+        w="100%" 
+        bg={"#f6f7fb"}
       >
 
-         <Flex
-          align="center"
-          justify="space-between"
-          boxShadow="md"
-          p="5"
-          rounded="lg"
-          background="white"
-          mb='10px'
-        >
-          <Heading
-            textAlign="center"
-            color="WindowText"
-            size="lg"
-            textColor="pink.300"
-          >
+        <Heading 
+          p="1em" 
+          textAlign="center" 
+          bg='#eb808a' 
+          bgClip='text'
+          fontSize={'30px'}
+         >
             Formulaire de paie de salaire
           </Heading>
-          <Hide below="sm">
-            <Text>Dashboad / Salaires / Paiement</Text>
-          </Hide>
-        </Flex>
           
-        <Box 
-          bg={"gray.200"} 
-          width='500px' 
+        <Flex 
+          bg='#5755c1' 
+          width='1000px' 
+          h='80px' 
           margin="0 auto" 
           pb='20px'
-          mt="50px"
-          text-align="center"
         > 
-        <Center w='full'>
-          
-               {dataPersonnelId?.findOnePersonnel.sexe.toLowerCase() === "homme" ? 
-                 <Avatar
-                  size="xl"
-                  mt={["10px","10px", "10px" ]}
-                  src="https://img.freepik.com/vecteurs-premium/profil-avatar-homme-icone-ronde_24640-14044.jpg?w=2000"
-                />
-             :
-                <Avatar
-                  size="xl"
-                  mt={["10px","10px", "10px" ]}
-                  src="https://img.freepik.com/premium-vector/woman-avatar-profile-round-icon_24640-14042.jpg?size=626&ext=jpg"
-                /> }
-                 </Center>
-                 <Heading  mr='20px'  textAlign="center" 
-                fontSize="2xl" 
-                m={["8px", "8px", "8px"]}>
-                        {dataPersonnelId?.findOnePersonnel.firstName.charAt(0).toUpperCase()+dataPersonnelId?.findOnePersonnel.firstName.substring(1) +' '+ dataPersonnelId?.findOnePersonnel.lastName.charAt(0).toUpperCase()+dataPersonnelId?.findOnePersonnel.lastName.substring(1)}
-                        </Heading>
-                <Box width='50%'
-    margin="0 auto">  
-
-                <Flex gap={20}>
-                  <Text>Fonction :</Text>
-                  <Text fontWeight={'bold'}>{dataPersonnelId?.findOnePersonnel.fonction}</Text>
-                </Flex>
-                <Flex>
-                  <Text>Mois de salaire :</Text>
-                  <Text></Text>
-                </Flex>
-                
-                <Flex>
-                  <Text>PRIMES SALARIALES</Text>
-                  <Flex>
-                    <Text></Text>
-                    <Text></Text>
-                  </Flex>
-                </Flex>
-                <Flex>
-                  <Text>RETENUES</Text>
-                  <Text></Text>
-                </Flex>
-                <Flex>
-                  <Text></Text>
-                  <Text></Text>
-                </Flex>
-                <Flex>
-                  <Text></Text>
-                  <Text></Text>
-                </Flex>
-                
-                
-                
-                </Box>
-             
-        {/* <Flex 
+        <Flex 
           p="1.5em" 
           textAlign="center" 
           ml='20px' 
           gap={6} 
           margin="0 auto" 
         >
-          <Flex gap='3px'>
+          <Flex>
             <Text 
               color='#9490c9' 
               fontWeight={'bold'}
@@ -345,7 +176,7 @@ if (loading) return <Text>Chargement en cour...</Text>
               {dataPersonnelId?.findOnePersonnel.firstName +' '+ dataPersonnelId?.findOnePersonnel.lastName}
             </Text>
           </Flex>
-          <Flex gap='3px'>
+          <Flex>
             <Text 
               color='#9490c9' 
               fontWeight={'bold'}
@@ -355,10 +186,10 @@ if (loading) return <Text>Chargement en cour...</Text>
               {dataPersonnelId?.findOnePersonnel.fonction}
             </Text>
           </Flex>
-        </Flex> */}
-        </Box>
+        </Flex>
+        </Flex>
 
-
+{/* //informaton salaire et mois */}
       <Center>
         <Flex 
           mt="20px"
@@ -366,20 +197,18 @@ if (loading) return <Text>Chargement en cour...</Text>
         > 
          <Box width={'340px'} gap={7} >
           <Text fontSize='sm'> Salaire Mois</Text>
-                  <Select
-                  
-        bg='white'         
-        id="moisPaie"
-        name="moisPaie"
-        value={moisPaie}
-        onChange={handleMonthChange}
-        disabled={isMonthUnavailable}
-      >
-        <option value="">Sélectionnez un mois</option>
-        {monthOptions}
-      </Select>
-      {isMonthUnavailable && <p>Le mois sélectionné a déjà été payé.</p>}
-   
+              <Input
+                    placeholder="nom prime"
+                    bg='white'
+                    type="month"
+                    name="dateOfPrime"
+                    rounded={2}
+                    onChange={handleMoisPaieChange}
+                    isDisabled={moisPayes.includes(moisPaie)}
+                    value={moisPaie}
+
+                    
+                  />
                   {console.log(moisPaie)}
                   
                       <Input
@@ -420,7 +249,6 @@ if (loading) return <Text>Chargement en cour...</Text>
       </Box>
 
     </DefaultLayout>
-}</>
      );
 }
  

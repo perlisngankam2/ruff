@@ -39,6 +39,16 @@ export class PensionResolver {
     return  await this.pensionService.findByOne(id);
   }
 
+  @Query(()=>Pension)
+  async findpensionbystudent(@Args('studentid') studentid:string){
+  return await this.pensionService.findpensionbystudent(studentid)
+  }
+
+  @Query(()=>Number)
+  async findrestpensionbystudent(@Args('studentid') studentid:string){
+  return await this.pensionService.findrestpensionbyatudent(studentid)
+  }
+
   @Mutation(()=>Pension)
   async deletepension(@Args('id') id:string){
   return await this.pensionService.delete(id)

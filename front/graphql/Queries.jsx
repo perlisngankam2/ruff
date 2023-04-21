@@ -429,6 +429,17 @@ export const GET_PRIME= gql `
     }
 `;
 
+export const GET_RETENUE= gql `
+    query findAllretenusalarial {
+        findAllretenusalarial {
+            id
+            nom
+            description
+            montant
+        }
+    }
+`;
+
 export const GET_ALL_COURSE_PERSONNEL_SALLE = gql `
     query findbyCoursePersonnelSalle ($salleid: String!, $personnelid: String!, $courseid: String!) {
         findbyCoursePersonnelSalle (salleid: $salleid, personnelid: $personnelid, courseid: $courseid) {
@@ -518,4 +529,66 @@ export const GET_ALL_TRANCHE_COMPLETE_BY_STUDENT = gql `
             montant
         }
     }
+`;
+
+export const GET_ALL_MONTH_SALARY = gql `
+query PersonnelMonthSalary ($personnelid: String!) {
+    PersonnelMonthSalary (personnelid: $personnelid)
+}
+`;
+
+export const GET_SALARY_NET = gql `
+query PersonnelNetSalary ($personnelid: String!) {
+    PersonnelNetSalary (personnelid: $personnelid)
+}
+`;
+
+//NOMS DE TOUTES LES PRIMES ATTRIBUES A UN PERSONNEL
+export const GET_ALL_NAME_PRIME_PERSONNEL = gql `
+query findnamesprimebypersonnel ($personnelid: String!) {
+    findnamesprimebypersonnel (personnelid: $personnelid)
+}
+`;
+//MONTANT DE TOUTES LES PRIMES ATTRIBUES A UN PERSONNEL
+export const GET_ALL_AMOUNT_PRIME_PERSONNEL = gql `
+query findmontantprimebypersonnel ($personnelid: String!) {
+    findmontantprimebypersonnel (personnelid: $personnelid)
+}
+`;
+//MONTANT TOTAL DE TOUTES LES PRIMES ATTRIBUES A UN PERSONNEL
+export const GET_SUM_AMOUNT_PRIME_PERSONNEL = gql `
+query findsumallprimepersonnel ($personnelid: String!) {
+    findsumallprimepersonnel (personnelid: $personnelid)
+}
+`;
+
+//NOMS DE TOUTES LES RETENUES ATTRIBUES A UN PERSONNEL
+export const GET_ALL_NAME_RETENU_PERSONNEL = gql `
+query findnamesretenubypersonnel ($personnelid: String!) {
+    findnamesretenubypersonnel (personnelid: $personnelid)
+}
+`;
+//MONTANT DE TOUTES LES RETENUES ATTRIBUES A UN PERSONNEL
+export const GET_ALL_AMOUNT_RETENU_PERSONNEL = gql `
+query findmontantretenubypersonnel ($personnelid: String!) {
+    findmontantretenubypersonnel (personnelid: $personnelid)
+}
+`;
+//MONTANT TOTAL DE TOUTES LES RETENUES ATTRIBUES A UN PERSONNEL
+export const GET_SUM_AMOUNT_RETENU_PERSONNEL = gql `
+query findsumallretenupersonnel ($personnelid: String!) {
+    findsumallretenupersonnel (personnelid: $personnelid)
+}
+`;
+//noms et montant des primes d'un personnel
+export const GET_PRIME_PERSONNEL = gql `
+query primesETnomprimepersonnel ($personnelid: String!) {
+    primesETnomprimepersonnel (personnelid: $personnelid)
+}
+`;
+//noms et montant des retenue d'un personnel
+export const GET_RETENUE_PERSONNEL = gql `
+query getRetenuEtNom ($personnelid: String!) {
+    getRetenuEtNom (personnelid: $personnelid)
+}
 `;

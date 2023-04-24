@@ -23,6 +23,7 @@ import { TrancheStudent } from './tranche-student.entity';
 import { User } from './user.entity';
 import { AvanceTranche } from './avance-tranche.entity';
 import { Pension } from './pension.entity';
+import { Expense } from './expense.entity';
 
 @Entity()
 @ObjectType()
@@ -178,4 +179,25 @@ export class Student {
 
   @OneToMany(()=>ParentStudent, (parentStudent) => parentStudent.student)
   parentStudent = new Collection<ParentStudent>(this)
+
+  @OneToMany(()=> Expense, (expense) => expense.student)
+  expense = new Collection<Expense>(this)
+
+  @Field(() => ID)
+  @Property({ persist: false })
+  get userid() {
+    return `${this.user.id}`;
+  }
+
+  @Field(() => ID)
+  @Property({ persist: false })
+  get salleid() {
+    return `${this.salle.id}`;
+  }
+
+  @Field(() => ID)
+  @Property({ persist: false })
+  get categorieid() {
+    return `${this.categorie.id}`;
+  }
 }

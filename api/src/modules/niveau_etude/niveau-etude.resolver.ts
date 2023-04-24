@@ -38,7 +38,7 @@ export class NiveauEtudeResolver {
    return await this.niveauEtudeService.delete(id)
   }
 
-  @Query(()=>[[String],[String],[String],[String],[String]])
+  @Query(()=>[NiveauEtude])
   async findallniveauetude() {
     return await this.niveauEtudeService.getAll();
   }

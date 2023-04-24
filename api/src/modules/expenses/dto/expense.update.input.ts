@@ -8,13 +8,17 @@ export class ExpenseUpdateInput {
   @Field(()=>ID,{nullable:true})
   academicyearId!: string;
 
-  @Field({nullable:true})
-  title!: string;
+  @Field(()=>ID,{nullable:true})
+  studentId!: string;
+
+  @Field(()=>ID,{nullable:true})
+  personnelId!: string;
 
   @Field({nullable:true})
-  amount!: number;
+  debit!: number;
 
   @Field({nullable:true})
-  description!: string;
+  credit!: number;
+
 
 }

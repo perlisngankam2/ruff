@@ -38,4 +38,10 @@ export class CategorieEleve {
   })
   reductionScolarite!:IdentifiedReference<ReductionScolarite>|null
 
+  @Field(() => ID)
+  @Property({ persist: false })
+  get reductionScolariteid() {
+    return `${this.reductionScolarite.id}`;
+  }
+
 }

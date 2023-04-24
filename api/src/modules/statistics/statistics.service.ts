@@ -73,7 +73,7 @@ export class StatisticService {
   }
 
   async totalAmountofExpenses(){
-    return Number((await this.expensesservice.findall()).map(a=>a.amount).reduce(function(a,b){return a+b}))
+    return Number((await this.expensesservice.findall()).map(a=>a.creditamount).reduce(function(a,b){return a+b}))
   }
 
   async totalNumberofStudentsinClass(salle_id:string){

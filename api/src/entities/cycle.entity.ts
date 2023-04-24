@@ -40,4 +40,10 @@ export class Cycle{
       onDelete: 'CASCADE',
     })
     section!: IdentifiedReference<Section> | null;
+
+    @Field(() => ID)
+    @Property({ persist: false })
+    get sectionid() {
+      return `${this.section.id}`;
+    }
    }

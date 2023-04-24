@@ -68,4 +68,10 @@ export class Parent {
 
     @OneToMany(() => ParentStudent, parentStudent => parentStudent.parent)
     parentStudent = new Collection<ParentStudent>(this);
+
+    @Field(() => ID)
+    @Property({ persist: false })
+    get userid() {
+      return `${this.user.id}`;
+    }
 }

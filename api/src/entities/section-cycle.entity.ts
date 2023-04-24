@@ -44,6 +44,18 @@ export class SectionCycle {
       })
     section!: IdentifiedReference<Section> | null;
 
+    @Field(() => ID)
+    @Property({ persist: false })
+    get cycleid() {
+      return `${this.cycle.id}`;
+    }
+
+    @Field(() => ID)
+    @Property({ persist: false })
+    get sectionid() {
+      return `${this.section.id}`;
+    }
+
     // @OneToMany(() => NiveauEtude, (niveau) => niveau.sectionCycle)
     // niveau = new Collection<NiveauEtude>(this);
 }

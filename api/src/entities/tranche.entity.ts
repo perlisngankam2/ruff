@@ -20,6 +20,7 @@ import { TrancheStudent } from './tranche-student.entity';
 import { AnneeAccademique } from './annee-accademique.entity';
 import { AvanceTranche } from './avance-tranche.entity';
 import { Salle } from './salle.entity';
+import { PensionSalle } from './pensionsalle.entity';
 
 
 @Entity()
@@ -64,6 +65,12 @@ export class Tranche {
   })
   anneeAccademique!:IdentifiedReference<AnneeAccademique>|null
 
+  @ManyToOne(() => PensionSalle ,{
+    nullable:true,
+    onDelete:'CASCADE'
+  })
+  pensionsalle!:IdentifiedReference<PensionSalle>|null
+
   @ManyToOne(() => Pension ,{
     nullable:true,
     onDelete:'CASCADE'
@@ -75,6 +82,24 @@ export class Tranche {
     onDelete:'CASCADE'
   })
   salle!:IdentifiedReference<Salle>|null
+
+  @Field(() => ID)
+  @Property({ persist: false })
+  get yearid() {
+    return `${this.anneeAccademique.id}`;
+  }
+
+  @Field(() => ID)
+  @Property({ persist: false })
+  get salleid() {
+    return `${this.salle.id}`;
+  }
+
+  @Field(() => ID)
+  @Property({ persist: false })
+  get pensionid() {
+    return `${this.pension.id}`;
+  }
 
   // @ManyToOne(() => TranchePriority ,{
   //   nullable:false,

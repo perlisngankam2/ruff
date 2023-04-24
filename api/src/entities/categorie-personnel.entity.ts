@@ -62,6 +62,19 @@ export class CategoriePersonnel {
   })
   salaireBase!:IdentifiedReference<SalaireBase>|null
 
+  @Field(() => ID)
+  @Property({ persist: false })
+  get primeid() {
+    return `${this.prime.id}`;
+  }
+
+  @Field(() => ID)
+  @Property({ persist: false })
+  get retenuid() {
+    return `${this.retenu.id}`;
+  }
+
+
   // @ManyToMany(() => SalaireBase, salairebase => salairebase.categoriePersonnel)
   // salairebase = new Collection<SalaireBase>(this);
   

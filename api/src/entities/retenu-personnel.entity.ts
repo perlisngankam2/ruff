@@ -53,4 +53,22 @@ export class RetenuPersonnel {
   })
   salaire!:IdentifiedReference<Salaire>|null
 
+  @Field(() => ID)
+  @Property({ persist: false })
+  get retenueid() {
+    return `${this.retenue.id}`;
+  }
+
+  @Field(() => ID)
+  @Property({ persist: false })
+  get personnelid() {
+    return `${this.personnel.id}`;
+  }
+
+  @Field(() => ID)
+  @Property({ persist: false })
+  get salaireid() {
+    return `${this.salaire.id}`;
+  }
+
 }

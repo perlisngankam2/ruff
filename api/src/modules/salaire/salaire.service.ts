@@ -1,7 +1,7 @@
 /* eslint-disable prettier/prettier */
 import { EntityManager, FilterQuery, NotFoundError, wrap } from '@mikro-orm/core';
 import { InjectRepository } from '@mikro-orm/nestjs';
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable, forwardRef } from '@nestjs/common';
 import { PrimeService } from '../prime/prime.service';
 import { RetenuPersonnelService } from '../retenu_personnel/retenu-personnel.service';
 import { PrimePersonnelService } from '../prime_personnel/prime-personnel.service';
@@ -12,6 +12,7 @@ import { EntityRepository } from '@mikro-orm/postgresql';
 import {  Status } from 'src/entities/pesonnel.entity';
 import { SalaireUpdateInput } from './dto/salaire.update';
 import { Salaire } from 'src/entities/salaire.entity';
+import { ExpenseService } from '../expenses/expense.service';
 
 @Injectable()
 export class SalaireService {
@@ -23,6 +24,8 @@ export class SalaireService {
     private primepersonnelservice: PrimePersonnelService,
     private personnel : PersonnelService,
     private readonly em: EntityManager,
+    @Inject(forwardRef(() => ExpenseService))
+    private expenseservice:ExpenseService,
   ) {}
 
   async create(
@@ -41,7 +44,7 @@ export class SalaireService {
     const primes = await this.primepersonnelservice.getallpersonnelprimebymonth(personnel.id,input.moisPaie)
     console.log(primes)
     //ici j'ai tous les mois auquels les primes ont ete attribuer au personnel
-    const moisprimespersonnel = (await this.primepersonnelservice.getallprimespersonnel(personnel.id)).filter(a=>a.startMonth==input.moisPaie)
+    // const moisprimespersonnel = (await this.primepersonnelservice.getallprimespersonnel(personnel.id)).filter(a=>a.startMonth==input.moisPaie)
 
 
 
@@ -51,8 +54,7 @@ export class SalaireService {
       }
       const salaireBase = (await personnel.category.load()).montant
       
-      if(moisprimespersonnel.length>0)
-      {
+     
       if(personnel.status == Status.PERMANENT){
 
       const salaireNette = salaireBase + primes - retenus
@@ -74,6 +76,7 @@ export class SalaireService {
       )
 
       await this.salaireRepository.persistAndFlush(salaire)
+      await this.expenseservice.saveSalaireExpenses(personnel.id)
       return salaire
     
 
@@ -94,15 +97,12 @@ export class SalaireService {
         }
       )
       await this.salaireRepository.persistAndFlush(salaire)
+      await this.expenseservice.saveSalaireExpenses(personnel.id)
       return salaire
      
       }
 
-    }
-
-    if(moisprimespersonnel.length==0){
-    throw Error("le mois de paie ne correspond a aucun mois de prime attribuer au personnel")
-    }
+    
 
   }
 

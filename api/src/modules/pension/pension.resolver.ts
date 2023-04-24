@@ -42,7 +42,7 @@ export class PensionResolver {
 
   @Query(()=>Number)
   async findrestpensionbystudent(@Args('studentid') studentid:string){
-  return await this.pensionService.findrestpensionbyatudent(studentid)
+  return await this.pensionService.findrestpensionbystudent(studentid)
   }
 
   @Mutation(()=>Pension)

@@ -9,6 +9,7 @@ import {
     OneToMany,
     OneToOne,
     PrimaryKey,
+    PrimaryKeyType,
     Property,
   } from '@mikro-orm/core';
 import { Field, ID, ObjectType, registerEnumType } from '@nestjs/graphql';
@@ -77,10 +78,12 @@ export class NiveauEtude{
 
   @OneToMany(() => Salle, (salle) => salle.niveau)
   salle = new Collection<Salle>(this);
+
+
     
   @Field(() => ID)
   @Property({ persist: false })
     get cycleid() {
     return `${this.cycle.id}`;
-  }
+}
 }

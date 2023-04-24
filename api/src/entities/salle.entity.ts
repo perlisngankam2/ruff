@@ -7,7 +7,7 @@ import {
     ManyToOne,
     OneToMany,
     OneToOne,
-    PrimaryKey,
+    PrimaryKeyType,
     Property,
   } from '@mikro-orm/core';
 import { Field, ID, ObjectType, registerEnumType } from '@nestjs/graphql';
@@ -20,6 +20,7 @@ import { PersonnelSalle } from './personnelsalle.entity';
 import { Personnel } from './pesonnel.entity';
 import { Student } from './student.entity';
 import { Cycle } from './cycle.entity'; 
+import { PensionSalle } from './pensionsalle.entity';
 
 
 @Entity()
@@ -36,10 +37,6 @@ export class Salle{
     @Field({ nullable: true })
     @Property({nullable:true})
     section!: string;
-
-    @Field({ nullable: true })
-    @Property({nullable:true})
-    cycle!: string;
 
     @Field({nullable: true})
     @Property({nullable: true})
@@ -63,7 +60,7 @@ export class Salle{
       nullable: true,
       onDelete: 'CASCADE',
     })
-    cyle!: IdentifiedReference<Cycle> | null;
+    cycle!: IdentifiedReference<Cycle> | null;
 
     // @OneToOne(() => Pension, (pension) => pension.salle, {
     //     owner: false,
@@ -92,5 +89,19 @@ export class Salle{
     @OneToMany(()=>PersonnelSalle, (personnelsalle) => personnelsalle.salle)
     personnelsalle = new Collection<PersonnelSalle>(this)
 
+    @OneToMany(()=>PensionSalle, (pensionsalle) => pensionsalle.salle)
+    pensionsalle = new Collection<PensionSalle>(this)
+
+    @Field(() => ID)
+    @Property({ persist: false })
+    get niveauid() {
+      return `${this.niveau.id}`;
+    }
+
+    @Field(() => ID)
+    @Property({ persist: false })
+    get cycleid() {
+      return `${this.cycle.id}`;
+    }
 
 }

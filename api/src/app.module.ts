@@ -49,6 +49,7 @@ import { StatisticModule } from './modules/statistics/statistics.module';
 import { PersonnelSalleModule } from './modules/personnel_salle/personnelsalle.module';
 import { CourseModule } from './modules/course/course.module';
 import { TrancheStudentModule } from './modules/tranche-student/tranche-student.module';
+import { PensionSalleModule } from './modules/pensionsalle/pensionsalle.module';
 
 @Module({
   imports: [
@@ -87,6 +88,7 @@ import { TrancheStudentModule } from './modules/tranche-student/tranche-student.
     AvanceInscriptionModule,
     ExpenseModule,
     StatisticModule,
+    PensionSalleModule,
     CourseModule,
   
 

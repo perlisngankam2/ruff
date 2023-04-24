@@ -1,6 +1,6 @@
 /* eslint-disable prettier/prettier */
 import { MikroOrmModule } from '@mikro-orm/nestjs';
-import { Module } from '@nestjs/common';
+import { Module, forwardRef } from '@nestjs/common';
 import { Salaire } from 'src/entities/salaire.entity';
 import { PeriodeModule } from '../periode/periode.module';
 import { PersonnelModule } from '../personnel/personnel.module';
@@ -9,6 +9,7 @@ import { PrimePersonnelModule } from '../prime_personnel/prime_personnel.module'
 import { RetenuPersonnelModule } from '../retenu_personnel/retenu_personnel.module';
 import { SalaireResolver } from './salaire.resolver';
 import { SalaireService } from './salaire.service';
+import { ExpenseModule } from '../expenses/expense.module';
 
 
 
@@ -19,7 +20,8 @@ imports:[MikroOrmModule.forFeature({ entities: [Salaire] }),
  PrimePersonnelModule,
  PeriodeModule,
  PersonnelModule,
- PrimeModule
+ PrimeModule,
+ forwardRef(() => ExpenseModule)
 ],
 providers:[SalaireService,SalaireResolver],
 exports:[SalaireService]

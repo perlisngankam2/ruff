@@ -90,7 +90,7 @@ export class NiveauEtudeService {
   
       }
 
-      // async getallcycle():
+
       
       async update(id:string, input: NiveauEtudeUpdateInput): Promise<NiveauEtude> {
         const niveau = await this.findById(id)

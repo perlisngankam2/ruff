@@ -18,7 +18,6 @@ import { PensionService } from '../pension/pension.service';
 import { SalleService } from '../salle/salle.service';
 import { TrancheCreateInput } from './dto/tranche.input';
 import { TrancheUpdateInput } from './dto/tranche.update';
-import { TranchePriority } from 'src/entities/tranche-priority.entity';
 import { format } from 'date-fns';
 
 @Injectable()

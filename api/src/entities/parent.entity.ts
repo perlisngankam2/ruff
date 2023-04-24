@@ -72,4 +72,6 @@ export class Parent {
 
     @OneToMany(() => ParentStudent, parentStudent => parentStudent.parent)
     parentStudent = new Collection<ParentStudent>(this);
+
+ 
 }

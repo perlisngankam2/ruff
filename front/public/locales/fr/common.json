@@ -54,7 +54,6 @@
                 "cancelButton": "Annuler",
                 "submitButton": "Créer",
                 "valueSalaireDebase":"montant"
-                
             },
             "PersonnelAccountForm":{
                 "heading":"Créer un compte pour le personnel",
@@ -84,14 +83,14 @@
                 "studyLevel":"Niveau d'étude:",
                 "cycleName": "Cycle:",
                 "annuler": "Annuler",
-                "createBotton":"Créer"
+                "submitButton":"Créer"
             },
             "sectionCreate":{
                 "addButton":"Ajouter une section",
                 "name": "Nom",
                 "description": "Description",
                 "cancelButton": "Annuler",
-                "deleteButton": "Supprimer"
+                "submitButton": "Créer"
             },
             "cycleCreate":{
                 "heading":"Ajouter un cyle",
@@ -112,7 +111,90 @@
                 "wouldYouWantToDeleteSection": "Voulez-vous supprimer cette section?",
                 "cancelButton": "Annuler",
                 "deleteButton": "Supprimer"
+            }
+        },
+        "courses":{
+            "addCourse": {
+                "addButton": "Ajouter une matière",
+                "heading":"Ajouter une matière ",
+                "name": "Nom",
+                "courseHours": "Taux horaire",
+                "cancelButton": "Annuler",
+                "submitButton": "Ajouter"
+            },
+            "courseList":{
+                "heading":"Matière",
+                "name": "Nom",
+                "courseHours": "Taux horaire",
+                "Action": "Actions",
+                "confirmDeleting": " Confirmation de suppression",
+                "wouldYouWantToDeleteCourse": "Voulez-vous supprimer cette matière?",
+                "cancelButton": "Annuler",
+                "deleteButton": "Supprimer"
+            }
+        },
+        "level":{
+            "addLevel":{
+                "addButton":"Ajouter un niveau",
+                "heading":" Création d'un niveau d'étude",
+                "name": "Nom du niveau:",
+                "fees": "Pension",
+                "nameCycle": "Cycle",
+                "cancelButton": "Annuler",
+                "submitButton": "Ajouter"
+            },
+            "listLevel":{
+                "heading": "Liste des niveaux",
+                "name": "Nom:",
+                "fees": "Pension:",
+                "Action": "Actions",
+                "confirmDeleting": " Confirmation de suppression",
+                "wouldYouWantToDeleteLevel": "Voulez-vous supprimer ce niveau?",
+                "cancelButton": "Annuler",
+                "deleteButton": "Supprimer"
+            }
+        },
+        "finance":{
+            "accountStatement":{
+                "heading": "Etat des entrées et sorties",
+                "date": "Date",
+                "description": " Description", 
+                "debit": "Débit",
+                "credit": "Crédit",
+                "total": "Total",
+                "childNumber": "Enfant",
+                "cancelButton": "Annuler",
+                "submitButton": "Créer"
+            }
+        },
+        "parent":{
+            "addParent": {
+                "addButton": "Ajouter un parent",
+                "heading": " Ajouter un parent",
+                "firstName": "Nom:",
+                "lastName": "Prénom",
+                "gender": "Sexe",
+                "Proféssion": "Proféssion",
+                "phoneNumber": "Téléphone",
+                "status": "Statut"
+
                 
+            }
+
+        },
+        "trancheFees": {
+            "trancheList": {
+                "name": "Nom",
+                "amount": "Montant",
+                "priority": "Priority",
+                "dateLine": "Date limite",
+                "Action": "Actions",
+                "details": "Détails",
+                "confirmDeleting": " Confirmation de suppression",
+                "wouldYouWantToDeleteTrancheFees": "Voulez-vous supprimer cette tranche?",
+                "cancelButton": "Annuler",
+                "deleteButton": "Supprimer"
+
             }
         },
         "eleves": {

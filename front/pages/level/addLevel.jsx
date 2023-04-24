@@ -89,7 +89,7 @@ import {
                 name: level.name,
                 montantPension: parseInt(level.montantPension),
                 cycleId: level.cycleId
-              }
+             }
            },
            refetchQueries:[{
              query: GET_ALL_STUDY_LEVEL
@@ -168,7 +168,7 @@ import {
                     <FormControl>
                       <FormLabel>Nom du niveaux:</FormLabel>
                       <Input 
-                        placeholder="Nom du niveaux" 
+                        placeholder="Nom du niveau" 
                         type="text"
                         // maxW="300px"
                         name="name"

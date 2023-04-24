@@ -86,7 +86,6 @@ const AccountStatement = () => {
                   </Hide>
                 </Flex>
                     <Flex 
-                        
                         // ml={["500px","600px","900px"]}
                         mt={"40px"}
                         gap={20}
@@ -166,7 +165,7 @@ const AccountStatement = () => {
                                 border="1px"
                             >
                                 PDF
-                            </Button>
+                            </Button> 
                         </Box>
                         <Box width={"300px"} ml="700px">
                             <InputGroup >

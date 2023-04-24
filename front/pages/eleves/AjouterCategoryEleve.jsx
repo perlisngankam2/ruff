@@ -1,4 +1,4 @@
-import { } from "@chakra-ui/react";
+import { AlertDialogCloseButton } from "@chakra-ui/react";
 import SearchBar from "../../components/atoms/searchbar";
 import {
   AlertDialog,
@@ -109,7 +109,7 @@ function AjouterCategoryEleve  () {
                     size='xl'
                 >
                     <AlertDialogOverlay>
-                        <AlertDialogContent  >
+                        <AlertDialogContent width={"420px"} >
                             <AlertDialogHeader 
                                 fontSize='sm' 
                                 fontWeight='base' 
@@ -119,13 +119,14 @@ function AjouterCategoryEleve  () {
                                     <Heading 
                                         // as='H4' 
                                         textAlign={'center'} 
-                                        fontSize={['15px','20px','26px']} 
+                                        fontSize={['15px','20px','20px']} 
                                         p='2' 
                                     >
                                     Ajouter une categorie d'élève 
                                     </Heading>
                                 </Box>
                             </AlertDialogHeader>
+                            <AlertDialogCloseButton/>
                             <AlertDialogBody>
                             <Box>
                                 <FormControl>

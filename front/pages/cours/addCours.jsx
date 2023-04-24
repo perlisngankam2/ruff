@@ -1,4 +1,4 @@
-import { } from "@chakra-ui/react";
+import { AlertDialogCloseButton } from "@chakra-ui/react";
 import SearchBar from "../../components/atoms/searchbar";
 import {
   AlertDialog,
@@ -149,13 +149,15 @@ function AjouterCours () {
                                     <Heading 
                                         // as='H4' 
                                         textAlign={'center'} 
-                                        fontSize={['15px','20px','26px']} 
+                                        fontSize={['15px','20px','24px']} 
                                         p='2' 
                                     >
                                     Ajouter une matiere
                                     </Heading>
                                 </Box>
                             </AlertDialogHeader>
+                            <AlertDialogCloseButton/>
+
                             <AlertDialogBody>
                             <Box>
                                 <FormControl>

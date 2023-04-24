@@ -186,7 +186,6 @@ export class StudentService {
         const b=(await a.salle.load()).id  
         const c= (await this.trancheservice.findBysalle(b)).map(a=>a.montant) 
         return c
-
       }
 
       async findlistfees(studentid:string){

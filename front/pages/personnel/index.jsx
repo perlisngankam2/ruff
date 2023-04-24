@@ -10,8 +10,15 @@ import {
   Input,
   InputGroup,
   InputRightElement,
+  AlertDialog,
+  AlertDialogBody,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogContent,
+  AlertDialogOverlay,
   Text,
-  VStack
+  VStack,
+  useDisclosure
 } from "@chakra-ui/react";
 
 import Routes from "../../modules/routes";
@@ -22,7 +29,7 @@ import { FiSearch, FiEdit } from "react-icons/fi";
 import { MdDelete } from "react-icons/md";
 import { BiDetail } from "react-icons/bi";
 import { Formik } from "formik";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { IoIosAdd } from "react-icons/io";
 import { Router, useRouter } from "next/router";
 import { useMutation, useQuery } from "@apollo/client";
@@ -31,9 +38,12 @@ import { DELETE_PERSONNEL } from "../../graphql/Mutation";
 import Category from "./categorypersonnel";
 import ReactPaginate from "react-paginate";
 import { UseTranslation, useTranslation } from "next-i18next";
+import { getStaticPropsTranslations } from "../../types/staticProps";
+
+
 
 const Personnel = () => {
-  const router = useRouter();
+
   const [searchName, setSearchName] = useState("");
   console.log(searchName);
   const {data:dataPersonnel, loading, error} = useQuery(GET_ALL_PERSONNELS)
@@ -42,6 +52,11 @@ const Personnel = () => {
   const [pageNumber, setPageNumber] = useState(0);
   const itemsPerPage = 15;
   const pagesVisited = pageNumber * itemsPerPage;
+  const { isOpen, onToggle, onClose, onOpen } = useDisclosure();
+  const router = useRouter();
+  const cancelRef = React.useRef()
+
+
   const {t} = useTranslation()
 
 
@@ -65,6 +80,15 @@ const Personnel = () => {
   if (loading) return <Text>Chargement en cour...</Text>
   if (error) return <Text>Une erreur s'est produite!</Text>
 
+  const removePersonnel = async(id) => {
+    await deletePersonnel({
+        variables: {id},
+        refetchQueries:[{
+          query: GET_ALL_PERSONNELS
+        }]
+    })
+    onClose();
+  }
   // const removePersonnel = async(id) => {
   //   await deletePersonnel({
   //       variables: {id},
@@ -160,17 +184,141 @@ const Personnel = () => {
               personnel.fonction.toLowerCase().includes (searchName.toLowerCase()))
               return personnel;
             }
-              
             )
             .map((personnel, index) => (
               <Box key={index}>
-                <Employee
+                 <Employee
                   firstName={personnel.firstName}
                   lastName={personnel.lastName}
                   fonction={personnel.fonction}
                   situationMatrimonial={personnel.situationMatrimonial}
                   id={personnel.id}
+                /> 
+              {/* <Box
+                bg={"gray.200"}
+                width={"200px"}
+                rounded="md"
+              > 
+              <Center>
+                <Avatar
+                  boxSize="70px"
+                  mt={["10px","10px", "10px" ]}
+                  src="https://img.freepik.com/vecteurs-premium/profil-avatar-homme-icone-ronde_24640-14044.jpg?w=2000"
                 />
+              </Center>
+              <Text 
+                textAlign="center" 
+                fontSize="0.85em" 
+                m={["8px", "8px", "8px"]}
+              >
+                {personnel.firstName}
+              </Text>
+              <Text 
+                textAlign="center" 
+                fontSize="0.85em" 
+                m={["8px", "8px", "8px"]}
+              >
+                {personnel.lastName}
+              </Text>
+              <Text 
+                textAlign="center"
+                fontWeight="bold" 
+                fontSize="0.85em"
+                mb={"3px"}
+              >
+                {personnel.fonction}
+                {/* {props.fonction} */}
+              {/* </Text> */}
+              {/* <Text 
+                textAlign="center" 
+                fontWeight="bold" 
+                fontSize="0.85em"
+                mb={["7px", "7px", "7px"]}
+              >
+                {props.situationMatrimonial}
+              </Text> */}
+              {/* // <Flex justify="center" gap="4">
+              //   <Link  */}
+              {/* //     href={{ */}
+              {/* //       pathname: Routes.PersonnelDetails?.path || '',
+              //       query: {id: personnel.id}
+              //     }}
+              //   >
+              //     <Icon
+              //       as={BiDetail} */}
+              {/* //       boxSize="40px"
+              //       p="3"
+              //       bg="purple.100"
+              //       rounded="full"
+              //     />
+              //   </Link> */}
+              {/* //   <Link href="/personnel/modifierpersonnel">
+              //     <Icon
+              //       as={FiEdit} */}
+              {/* //       boxSize="40px"
+              //       p="3"
+              //       bg="blue.100"
+              //       rounded="full"
+              //     />
+              //   </Link>
+              //   <Box href="#"> */}
+              {/* //     <Icon
+              //       as={MdDelete} */}
+              {/* //       boxSize="40px"
+              //       p="3"
+              //       bg="red.500"
+              //       rounded="full"
+              //       color="white"
+              //       onClick={onToggle}
+              //     />
+              //       <Box> 
+              //         <AlertDialog */}
+              {/* //           isOpen={isOpen}
+              //           leastDestructiveRef={cancelRef}
+              //           onClose={onClose}
+              //           isCentered
+              //         >
+              //             <AlertDialogOverlay
+              //               // alignSelf={"center"}
+              //             >
+              //               <AlertDialogContent
+              //               width={"380px"}
+              //               > */}
+              {/* //                 <AlertDialogHeader 
+              //                   fontSize='lg' 
+              //                   fontWeight='bold'
+              //                   textAlign={"center"}
+              //                   >
+              //                   Confirmation de suppression
+              //                 </AlertDialogHeader>
+              //                 <AlertDialogBody textAlign={"center"}>
+              //                 Voulez-vous supprimer cet Personnel?
+              //                 </AlertDialogBody>
+
+              //                 <AlertDialogFooter>
+              //                   <Button 
+              //                     ref={cancelRef} 
+              //                     onClick={onClose}
+              //                     colorScheme="red"
+              //                   >
+              //                     Annuler 
+              //                   </Button>
+              //                   <Button  */}
+              {/* //                     colorScheme='green' 
+              //                     onClick={() => {removePersonnel(props.id)}}
+              //                     ml={3}
+              //                   >
+              //                     Supprimer
+              //                   </Button>
+              //                 </AlertDialogFooter>
+              //               </AlertDialogContent>
+              //             </AlertDialogOverlay>
+              //         </AlertDialog>
+              //       </Box> */}
+              {/* //   </Box>
+              // </Flex>
+            // </Box> */} 
+              
               </Box>
             )) )}
           </Flex>
@@ -232,4 +380,12 @@ const Personnel = () => {
   );
 };
 
+export async function getStaticProps({ locale }) {
+  return {
+    props: {
+      ...(await getStaticPropsTranslations(locale)),
+      // Will be passed to the page component as props
+    },
+  };
+}
 export default Personnel;

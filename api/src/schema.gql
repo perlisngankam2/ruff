@@ -2,21 +2,6 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
-type ReductionScolarite {
-  id: ID!
-  name: String
-  description: String
-  montant: Float!
-  pourcentage: Float!
-}
-
-type CategorieEleve {
-  id: ID!
-  nom: String
-  description: String
-  reductionScolariteid: ID!
-}
-
 type CategoriePrime {
   id: ID!
   nom: String
@@ -96,17 +81,184 @@ type CategoriePersonnel {
   retenuid: ID!
 }
 
-type FraisExamen {
+type ReductionScolarite {
   id: ID!
+  name: String
   description: String
   montant: Float!
+  pourcentage: Float!
+}
+
+type CategorieEleve {
+  id: ID!
+  nom: String
+  description: String
+  reductionScolariteid: ID!
+}
+
+type AvanceInscription {
+  id: ID!
+  name: String
+  description: String
+  paiementDate: DateTime!
   dateLine: DateTime
+  montant: Float!
+  complete: Boolean!
+  reste: Float!
 }
 
 type FraisInscription {
   id: ID!
   nameFraisInscription: String
   montant: Float!
+}
+
+type Inscription {
+  id: ID!
+  name: String
+  description: String
+  dateLine: String
+  complete: Boolean!
+  montant: Float!
+  reste: Float!
+}
+
+type Localisation {
+  id: ID!
+  ville: String
+  region: String
+  pays: String
+  quartier: String
+  longitude: Float!
+  latitude: Float!
+  bp: String
+}
+
+type Parent {
+  id: ID!
+  firstname: String
+  lastname: String
+  profession: String
+  email: String
+  phonenumber: String
+  gender: String
+  parentStatus: String
+  childNumber: Float!
+}
+
+type ParentStudent {
+  id: ID!
+  tuteur: Boolean!
+  childNumber: Float!
+  parentid: ID!
+  studentid: ID!
+}
+
+type Pension {
+  id: ID!
+  name: String
+  description: String
+  montantPension: Float!
+  complete: Boolean!
+  reste: Float!
+  surplus: Float!
+  dateLine: DateTime
+  yearid: ID!
+  studentid: ID!
+}
+
+type AvanceTranche {
+  id: ID!
+  name: String
+  description: String
+  dateLine: DateTime
+  montant: Float!
+  reste: Float!
+  complete: Boolean!
+  studentid: ID!
+  trancheid: ID!
+}
+
+type PensionSalle {
+  id: ID!
+  name: String
+  description: String
+  montantPension: Float!
+  dateLine: DateTime
+  yearid: ID!
+  classid: ID!
+}
+
+type Tranche {
+  id: ID!
+  name: String
+  description: String
+  dateLine: DateTime
+  montant: Float
+  priority: Float
+  yearid: ID!
+  salleid: ID!
+  pensionid: ID!
+}
+
+type TrancheStudent {
+  id: ID!
+  name: String
+  description: String
+  montant: Float
+  complete: Boolean!
+  reste: Float!
+  surplus: Float!
+  studentid: ID!
+  trancheid: ID!
+}
+
+type Student {
+  id: ID!
+  matricule: String
+  firstname: String
+  lastname: String
+  dateOfBirth: DateTime!
+  sex: String
+  adress: String
+  transport: String
+  fatherFirstName: String
+  fatherLastName: String
+  fatherPhoneNumber: String
+  fatherProfession: String
+  motherFirstName: String
+  motherLastName: String!
+  motherPhoneNumber: String
+  motherProfession: String
+  tutorFirstName: String
+  tutorLastName: String
+  tutorPhoneNumber: String
+  tutorProfession: String
+  userid: ID!
+  salleid: ID!
+  categorieid: ID!
+}
+
+type Expense {
+  id: ID!
+  creditamount: Float
+  debitamount: Float
+  studentid: ID!
+  personnelid: ID!
+  createdOn: String!
+}
+
+type AnneeAccademique {
+  id: ID!
+  name: String
+  description: String
+}
+
+type FraisExamen {
+  id: ID!
+  description: String
+  montant: Float!
+  dateLine: DateTime
 }
 
 type Section {
@@ -142,65 +294,6 @@ type PersonnelSalle {
   courseid: ID!
 }
 
-type Pension {
-  id: ID!
-  name: String
-  description: String
-  montantPension: Float!
-  complete: Boolean!
-  reste: Float!
-  surplus: Float!
-  dateLine: DateTime
-  yearid: ID!
-  studentid: ID!
-}
-
-type TrancheStudent {
-  id: ID!
-  name: String
-  description: String
-  montant: Float
-  complete: Boolean!
-  reste: Float!
-  surplus: Float!
-  studentid: ID!
-  trancheid: ID!
-}
-
-type AvanceTranche {
-  id: ID!
-  name: String
-  description: String
-  dateLine: DateTime
-  montant: Float!
-  reste: Float!
-  complete: Boolean!
-  studentid: ID!
-  trancheid: ID!
-}
-
-type Tranche {
-  id: ID!
-  name: String
-  description: String
-  dateLine: DateTime
-  montant: Float
-  priority: Float
-  yearid: ID!
-  salleid: ID!
-  pensionid: ID!
-}
-
-type PensionSalle {
-  id: ID!
-  name: String
-  description: String
-  montantPension: Float!
-  dateLine: DateTime
-  yearid: ID!
-  classid: ID!
-}
-
 type Salle {
   id: ID!
   name: String
@@ -227,100 +320,6 @@ type Personnel {
   categorieid: ID!
 }
 
-type Expense {
-  id: ID!
-  creditamount: Float
-  debitamount: Float
-  studentid: ID!
-  personnelid: ID!
-  createdOn: String!
-}
-
-type AnneeAccademique {
-  id: ID!
-  name: String
-  description: String
-}
-
-type AvanceInscription {
-  id: ID!
-  name: String
-  description: String
-  paiementDate: DateTime!
-  dateLine: DateTime
-  montant: Float!
-  complete: Boolean!
-  reste: Float!
-}
-
-type Inscription {
-  id: ID!
-  name: String
-  description: String
-  dateLine: String
-  complete: Boolean!
-  montant: Float!
-  reste: Float!
-}
-
-type Localisation {
-  id: ID!
-  ville: String
-  region: String
-  pays: String
-  quartier: String
-  longitude: Float!
-  latitude: Float!
-  bp: String
-}
-
-type Student {
-  id: ID!
-  matricule: String
-  firstname: String
-  lastname: String
-  dateOfBirth: DateTime!
-  sex: String
-  adress: String
-  transport: String
-  fatherFirstName: String
-  fatherLastName: String
-  fatherPhoneNumber: String
-  fatherProfession: String
-  motherFirstName: String
-  motherLastName: String!
-  motherPhoneNumber: String
-  motherProfession: String
-  tutorFirstName: String
-  tutorLastName: String
-  tutorPhoneNumber: String
-  tutorProfession: String
-  userid: ID!
-  salleid: ID!
-  categorieid: ID!
-}
-
-type ParentStudent {
-  id: ID!
-  tuteur: Boolean!
-  childNumber: Float!
-  parentid: ID!
-  studentid: ID!
-}
-
-type Parent {
-  id: ID!
-  firstname: String
-  lastname: String
-  profession: String
-  email: String
-  phonenumber: String
-  parent: Boolean!
-  tuteur: Boolean!
-  childNumber: Float!
-  userid: ID!
-}
-
 type User {
   id: ID!
   email: String
@@ -334,7 +333,6 @@ type User {
   lastConnection: DateTime
   deactivatedAt: DateTime
   personnelid: ID!
-  parentid: ID!
   studentid: ID!
 }
 
@@ -374,7 +372,7 @@ type Query {
   findOnesalle(id: String!): Salle!
   etatInscriptionSalle(id: String!): Salle!
   findSalleByStudent(studentid: String!): Salle!
-  findallniveauetude: [NiveauEtude!]!
+  findAllNiveauEtude: [NiveauEtude!]!
   findOneNiveauEtude(id: String!): NiveauEtude!
   etatInscriptionNiveau(id: String!): NiveauEtude!
   findAllsectioncycle: [SectionCycle!]!
@@ -386,7 +384,6 @@ type Query {
   findOnecycle(id: String!): Cycle!
   findAllstudents: [Student!]!
   findOnestudent(id: String!): Student!
-  getTrancheStudentByStudent(studentid: String!): TrancheStudent!
   AmountrExpectedByTranche(studentid: String!): [Float!]!
   getClassfeebyStudent(studentid: String!): Float!
   getClassfeeofStudent(studentid: String!): [Tranche!]!
@@ -442,8 +439,8 @@ type Query {
   getrestTranchebystudent(studentid: String!): [[String!]!]!
   findAllpension: [Pension!]!
   pension(id: String!): Pension!
-  findpensionbystudent(studentid: String!): Pension!
   findrestpensionbystudent(studentid: String!): Float!
+  findpensionbystudent(studentid: String!): Pension!
   findallsalaire: [Salaire!]!
   getonesalaire(id: String!): Salaire!
   getsalairebypersonnel(personnelid: String!): [Salaire!]!
@@ -1059,11 +1056,10 @@ input ParentCreateInput {
   lastname: String
   profession: String
   phonenumber: String
+  parentStatus: String
+  gender: String
   email: String
-  tuteur: Boolean! = false
-  parent: Boolean! = false
   childNumber: Float! = 0
-  user: UserCreateInput
 }
 
 input PensionSalleCreateInput {

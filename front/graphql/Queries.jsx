@@ -49,6 +49,18 @@ query findCategoriepersonnelbypersonnel ($personnelid: String!) {
 }
 `;
 
+export const GET_SALLE_BY_ID = gql ` 
+    query findOnesalle ($id: String!) {
+        findOnesalle (id: $id) {
+            id
+            name
+            section
+            cycle
+            montantPensionSalle
+            effectif
+        }
+    }
+` 
 
 //student
 export const GET_ALL_STUDENT =  gql `
@@ -259,7 +271,7 @@ export const GET_ALL_TRANCHE_PRIORITY = gql `
 `;
 
 //recuperation d'une tranche de pension
-export const GET_TRANCHE_PENSION_BY_ID= gql `
+export const GET_TRANCHE_PENSION_BY_ID = gql `
     query tranche ($id: String!) {
         tranche (id: $id) {
             id
@@ -278,11 +290,11 @@ export const GET_ALL_MONTANT_TRANCHE_BY_SALLE = gql `
     }
 `
 
-export const GET_MONTANT_PENSION_SALLE_BY_STUDENT = gql `
-    query findMontantPensionstudent ($studentid: String!) {
-        findMontantPensionstudent (studentid: $studentid)
-    }
-`
+// export const GET_MONTANT_PENSION_SALLE_BY_STUDENT = gql `
+//     query findMontantPensionstudent ($studentid: String!) {
+//         findMontantPensionstudent (studentid: $studentid)
+//     }
+// `
 
 //one cycle
 export const GET_ONE_CYCLE =  gql `
@@ -389,6 +401,13 @@ export const GET_CLASS_FEES_BY_STUDENT_ID = gql `
         getClassfeebyStudent (studentid: $studentid)
     }
 `
+
+export const GET_RESTE_PENSION_A_PAYER_BY_STUDENT_ID = gql `
+    query findrestpensionbystudent ($studentid: String!) {
+        findrestpensionbystudent (studentid: $studentid)
+    }
+`
+
  export const GET_ALL_MONTANT_PENSION_CLASS = gql`
     query findAllpension {
         findAllpension {
@@ -436,6 +455,22 @@ export const GET_ALL_COURSE_PERSONNEL_SALLE = gql `
         }
     }
 `;
+
+export const GET_ALL_PARENT = gql `
+query findAllparents {
+    findAllparents {
+        id
+        firstname
+        lastname
+        profession
+        email
+        phonenumber
+        gender
+        parentStatus
+        childNumber
+    }
+}
+`
 
 //recuperation des infos de l'eleve a partir de tranche student
 export const GET_STUDENT_BY_TRANCHE_STUDENT = gql `
@@ -519,3 +554,42 @@ export const GET_ALL_TRANCHE_COMPLETE_BY_STUDENT = gql `
         }
     }
 `;
+
+export const GET_ALL_TRANCHE_BY_STUDENT_ID = gql `
+    query getClassfeeofStudent ($studentid: String!) {
+        getClassfeeofStudent (studentid: $studentid) {
+            id
+            name
+            description
+            dateLine
+            montant
+            priority
+        }
+    }
+`;
+
+export const GET_PENSION_ALREADY_PAY_BY_STUDENT_ID = gql `
+    query findpensionbystudent ($studentid: String!) {
+        findpensionbystudent (studentid: $studentid) {
+            id
+            name
+            description
+            montantPension
+            complete
+            reste
+            surplus
+            dateLine
+        }
+    }
+`;
+
+export const GET_ALL_RETENUE = gql `
+    query findAllretenusalarial {
+        findAllretenusalarial {
+            id
+            nom
+            description
+            montant
+        }
+    }`
+    

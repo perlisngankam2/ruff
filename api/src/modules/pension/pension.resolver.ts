@@ -25,32 +25,34 @@ export class PensionResolver {
   }
 
   @Mutation(() => Pension)
-   async updatePension(@Args('id', { type: () => String }) id: string, Input: PensionUpdateInput) {
+    async updatePension(@Args('id', { type: () => String }) id: string, Input: PensionUpdateInput) {
      return await this.pensionService.update(id,Input);
   }
 
   @Query(() => [Pension])
-  async findAllpension() {
+    async findAllpension() {
     return await this.pensionService.getAll()
   }
   
   @Query(() => Pension, { name: 'pension' })
-  async findOnepension(@Args('id', { type: () => String }) id: string) {
+    async findOnepension(@Args('id', { type: () => String }) id: string) {
     return  await this.pensionService.findByOne(id);
   }
 
-  @Query(()=>Pension)
-  async findpensionbystudent(@Args('studentid') studentid:string){
-  return await this.pensionService.findpensionbystudent(studentid)
-  }
 
   @Query(()=>Number)
   async findrestpensionbystudent(@Args('studentid') studentid:string){
-  return await this.pensionService.findrestpensionbyatudent(studentid)
+  return await this.pensionService.findrestpensionbystudent(studentid)
   }
 
   @Mutation(()=>Pension)
-  async deletepension(@Args('id') id:string){
-  return await this.pensionService.delete(id)
+    async deletepension(@Args('id') id:string){
+    return await this.pensionService.delete(id)
   }
+
+  @Query(()=>Pension)
+    async findpensionbystudent(@Args('studentid') studentid:string){
+    return await this.pensionService.findpensionbystudent(studentid)
+  }
+
 }

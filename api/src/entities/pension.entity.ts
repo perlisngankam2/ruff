@@ -90,6 +90,7 @@ export class Pension {
   @ManyToOne(() => Student ,{
     nullable:true,
     onDelete:'CASCADE',
+    unique: true
   })
   student!:IdentifiedReference<Student>|null
 

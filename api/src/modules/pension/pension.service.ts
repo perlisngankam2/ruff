@@ -30,6 +30,7 @@ export class PensionService {
         @Inject(forwardRef(() => StudentService))
         private studentservice: StudentService,
         @Inject(forwardRef(() => TrancheStudentService))
+        @Inject(forwardRef(() => TrancheStudentService))
         private trancheStudentservice: TrancheStudentService,
         private expenseservice: ExpenseService,
         private  em: EntityManager,
@@ -71,89 +72,89 @@ export class PensionService {
         }
       findById(id:string){
         return this.pensionRepository.findOne(id)
-        }
+      }
     
       getAll(): Promise<Pension[]> {
         return this.pensionRepository.findAll()
       }
+    
 
-      async savePension(studentid:string){
-        try {
-            // const montantpension = (await this.trancheStudentservice.findByStudent(studentid)).map(a=>a.montant).reduce(function(a,b){return a+b})
-            const tranchestudent = await this.trancheStudentservice.findByStudents(studentid)
-            console.log('========>'+tranchestudent)
-            const montantpension = tranchestudent.map(a=>a.montant).reduce(function(a,b){return a+b})
-            const pension = await this.findpensionbystudent(studentid)
-            const fees_to_be_paied = await this.studentservice.getclassfeebystudent(studentid)
-    
-            if(pension==null){
-              const pension = new Pension()
-              wrap(pension).assign({
-                montantPension:0.0000,
-                student: studentid
-              },
-              {
-                em:this.em
-              })
-    
-              await this.pensionRepository.persistAndFlush(pension)
-              pension.montantPension = montantpension
-    
-              if(pension.montantPension == fees_to_be_paied){
-                pension.complete = true
-                // tranche.regimePaimemnt = RegimePaiement.NORMAL
-                pension.reste = 0.0
-              }
-    
-              if(pension.montantPension > fees_to_be_paied){
-                pension.complete = true
-                // tranche.regimePaimemnt = RegimePaiement.NORMAL
-                pension.surplus = pension.montantPension - fees_to_be_paied
-              }   
-    
-              if(pension.montantPension < fees_to_be_paied){
-                pension.complete = false
-                pension.reste =  fees_to_be_paied - pension.montantPension
-              }
-            
-              await this.pensionRepository.persistAndFlush(pension)
-              await this.expenseservice.savePensionExpense(studentid)
-              return pension
-        
+    async savePension(studentid:string){
+      try {
+          const tranchestudent = await this.trancheStudentservice.findByStudents(studentid)
+          console.log('========>'+tranchestudent)
+          const montantpension = tranchestudent.map(a=>a.montant).reduce(function(a,b){return a+b})
+          const pension = await this.findpensionbystudent(studentid)
+          const fees_to_be_paied = await this.studentservice.getclassfeebystudent(studentid)
+  
+          if(pension==null){
+            const pension = new Pension()
+            wrap(pension).assign({
+              montantPension:0.0000,
+              student: studentid
+            },
+            {
+              em:this.em
+            })
+  
+            await this.pensionRepository.persistAndFlush(pension)
+            pension.montantPension = montantpension
+  
+            if(pension.montantPension == fees_to_be_paied){
+              pension.complete = true
+              // tranche.regimePaimemnt = RegimePaiement.NORMAL
+              pension.reste = 0.0
             }
-    
-            if(pension!=null){
-    
-              pension.montantPension = montantpension
-    
-              if(pension.montantPension == fees_to_be_paied){
-                pension.complete = true
-                // tranche.regimePaimemnt = RegimePaiement.NORMAL
-                pension.reste = 0.0
-              }
-    
-              if(pension.montantPension > fees_to_be_paied){
-                pension.complete = true
-                // tranche.regimePaimemnt = RegimePaiement.NORMAL
-                pension.surplus = pension.montantPension - fees_to_be_paied
-              }   
-    
-              if(pension.montantPension < fees_to_be_paied){
-                pension.complete = false
-                pension.reste =  fees_to_be_paied - pension.montantPension
-              }
-            
-              await this.pensionRepository.persistAndFlush(pension)
-              await this.expenseservice.savePensionExpense(studentid)
-              return pension
+  
+            if(pension.montantPension > fees_to_be_paied){
+              pension.complete = true
+              // tranche.regimePaimemnt = RegimePaiement.NORMAL
+              pension.surplus = pension.montantPension - fees_to_be_paied
+            }   
+  
+            if(pension.montantPension < fees_to_be_paied){
+              pension.complete = false
+              pension.reste =  fees_to_be_paied - pension.montantPension
             }
-        } catch (error) {
-            console.error(error)
-            throw new Error('Error in savePension function')
-        }
-    }
-    
+          
+            await this.pensionRepository.persistAndFlush(pension)
+            await this.expenseservice.savePensionExpense(studentid)
+            return pension
       
+          }
+  
+          if(pension!=null){
+  
+            pension.montantPension = montantpension
+  
+            if(pension.montantPension == fees_to_be_paied){
+              pension.complete = true
+              // tranche.regimePaimemnt = RegimePaiement.NORMAL
+              pension.reste = 0.0
+            }
+  
+            if(pension.montantPension > fees_to_be_paied){
+              pension.complete = true
+              // tranche.regimePaimemnt = RegimePaiement.NORMAL
+              pension.surplus = pension.montantPension - fees_to_be_paied
+            }   
+            if(pension.montantPension < fees_to_be_paied){
+              pension.complete = false
+              pension.reste =  fees_to_be_paied - pension.montantPension
+            }
+          
+            await this.pensionRepository.persistAndFlush(pension)
+            await this.expenseservice.savePensionExpense(studentid)
+            return pension
+          }
+      } catch (error) {
+          console.error(error)
+          throw new Error('Error in savePension function')
+      }
+  }
+  
+    
+
       async update(id:string, input: PensionUpdateInput): Promise<Pension> {
         const pension = await this.findById(id)
         const student = await this.studentservice.findByOne(input.studentId)
@@ -161,7 +162,6 @@ export class PensionService {
           throw Error('!!!!!!!!!!!!!!!!!STUDENT DOES NOT EXISTS!!!!!!!!!!!!!!!!!!')
         }
         const montant = (await this.trancheStudentservice.findByStudents(student.id)).map(a=>a.montant).reduce(function(a,b){return a+b})
-
         wrap(pension).assign({
             name:input.name || pension.name,
             dateLine: input.dateLine,
@@ -187,7 +187,7 @@ export class PensionService {
         return await this.pensionRepository.findOne({student:studentid})
       }
 
-      async findrestpensionbyatudent(studentid: string){
+      async findrestpensionbystudent(studentid: string){
         return (await this.findpensionbystudent(studentid)).reste
-      }
+      }
 }

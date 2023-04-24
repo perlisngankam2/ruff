@@ -258,7 +258,30 @@ export const CREATE_TRANCHE_PRIORITY = gql`
         }
     }
 `
+export const CREATE_PARENT = gql`
+mutation createParent ($parent: ParentCreateInput!) {
+    createParent (parent: $parent) {
+        id
+        firstname
+        lastname
+        profession
+        email
+        phonenumber
+        gender
+        parentStatus
+        childNumber
+    }
+}`
 
+export const AFFECTATION_PARENT_TO_STUDENT = gql `
+mutation createParentstudent ($input: ParentStudentCreateInput!) {
+    createParentstudent (input: $input) {
+        id
+        tuteur
+        childNumber
+    }
+}
+`;
 
 export const fragmentCycle = gql` fragment CycleClass on cyle {
     id
@@ -410,12 +433,12 @@ export const DELETE_TRANCHE_PENSION = gql `
     }
 `;
 //update class
-export const UPDATE_CLASS = gql `
+export const UPDATE_SALLE = gql `
     mutation UpdateSalle ($id: String!, $input: SalleUpdateInput!) {
         UpdateSalle (id: $id, input: $input) {
             id
             name
-            section
+            section 
             cycle
             montantPensionSalle
             effectif
@@ -423,7 +446,22 @@ export const UPDATE_CLASS = gql `
     }
 `;
 
-
+//Suppression d'un parent
+export const DELETE_PARENT = gql `
+    mutation deleteparent ($id: String!) {
+        deleteparent (id: $id) {
+            id
+            firstname
+            lastname
+            profession
+            email
+            phonenumber
+            gender
+            parentStatus
+            childNumber
+        }
+    }
+`
 
 //mise a jour de la section
 
@@ -446,6 +484,36 @@ export const UPDATE_CYCLE = gql `
         }
     }
 `;
+
+
+//update eleve
+
+export const UPDATE_STUDENT = gql `
+mutation updateStudent ($id: String!, $input: StudentCreateInput!) {
+    updateStudent (id: $id, input: $input) {
+        id
+        matricule
+        firstname
+        lastname
+        dateOfBirth
+        sex
+        adress
+        transport
+        fatherFirstName
+        fatherLastName
+        fatherPhoneNumber
+        fatherProfession
+        motherFirstName
+        motherLastName
+        motherPhoneNumber
+        motherProfession
+        tutorFirstName
+        tutorLastName
+        tutorPhoneNumber
+        tutorProfession
+    }
+}
+`
 
 //create user
 export const CREATE_USER = gql `

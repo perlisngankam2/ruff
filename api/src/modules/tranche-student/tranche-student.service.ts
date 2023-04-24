@@ -67,26 +67,29 @@ export class TrancheStudentService {
         return this.trancheStudentRepository.findOne(filters);
       }
 
+    // async findBystudent(id: string): Promise<TrancheStudent[] | null> {
+    //     return await this.trancheStudentRepository.find({student:id});
+    //   }
+
     async findByStudents(studentid: string): Promise<TrancheStudent[] | null> {
         // return this.trancheStudentRepository.find({student:id});
         const where = {};
       if (studentid) {
         where['student'] = studentid;
       }
-  
+      
       const a = await this.em.find(TrancheStudent, where, {
         populate: true,
         orderBy: { id: 'ASC' },
       });
-
-      return a
-      }
+      
+      return a
+            }
 
     findByTrancheandStudent(studentid: string,trancheid:string): Promise<TrancheStudent | null> {
         return this.trancheStudentRepository.findOne({student:studentid,tranche:trancheid});
       }
    
-
     findById(id:string){
         return this.trancheStudentRepository.findOne(id)
     }
@@ -217,13 +220,12 @@ async saveTranche(studentid:string,trancheid:string){
         return (await this.em.find(TrancheStudent,{student:studentid}))[0].student.load()
       } 
 
-    async findbystudentresttranche(studentid:string){
-      const a= (await this.findByStudents(studentid)).map(async a=>(await a.tranche.load()).name)
-      const b= (await this.findByStudents(studentid)).map(async a=> (await a.tranche.load()).priority)
-      const c= (await this.findByStudents(studentid)).map(a=>a.reste)
-      return [a,b,c]
-    }
-
+      async findbystudentresttranche(studentid:string){
+        const a= (await this.findByStudents(studentid)).map(async a=>(await a.tranche.load()).name)
+        const b= (await this.findByStudents(studentid)).map(async a=> (await a.tranche.load()).priority)
+        const c= (await this.findByStudents(studentid)).map(a=>a.reste)
+        return [a,b,c]
+      }
  
 }
 

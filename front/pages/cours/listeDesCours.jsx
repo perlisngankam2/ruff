@@ -177,21 +177,25 @@ import ReactPaginate from "react-paginate";
                             key={index} 
                             borderColor={'#C6B062'}
                            >
-                               <Td 
+                              <Td 
                                 flex={"1"} 
                                 p={0} 
                                 pl={6}
-                               >{course.title} </Td>
+                              >
+                                {course.title} 
+                              </Td>
                                <Td 
-                                p={0} 
-                                pl={6}
-                               >{course.time}</Td>
+                                  p={0} 
+                                  pl={6}
+                               >
+                                {course.time}
+                               </Td>
                                <Td 
                                 p={0} 
                                 pl={6}
                                >
                                <Box display="flex">
-                                 <Link 
+                                  <Link 
                                    href="#">
                                      <Icon
                                      as={FiEdit}
@@ -200,18 +204,18 @@ import ReactPaginate from "react-paginate";
                                      rounded={"full"}
                                      _hover={{background:"blue.100"}}
                                      />
-                                 </Link>
-                                 <Box href="#" mt="-3px">
-                                   <Icon
-                                     as={MdDelete}
-                                     boxSize="4px"
-                                     p="3"
-                                     rounded="full"
-                                     color="colors.quaternary"
-                                     _hover={{background:"blue.100"}}
-                                     onClick={onOpen}
-                                   />
-                                   <Box> 
+                                  </Link>
+                                  <Box href="#" mt="-3px"> 
+                                    <Icon
+                                      as={MdDelete}
+                                      boxSize="42px"
+                                      p="3"
+                                      rounded="full"
+                                      color="colors.quaternary"
+                                      _hover={{background:"blue.100"}}
+                                      onClick={onOpen}
+                                    />
+                                  <Box> 
                                     <AlertDialog
                                       isOpen={isOpen}
                                       leastDestructiveRef={cancelRef}
@@ -265,20 +269,20 @@ import ReactPaginate from "react-paginate";
                  </Table>
              </TableContainer>
          </Box>
-         <Box mt={"15px"}> 
-          <ReactPaginate 
-            previousLabel={"<<"}
-            nextLabel={">>"}
-            pageCount={pageCountCourse}
-            onPageChange={changePage}
-            containerClassName={"paginationBttns"}
-            previousLinkClassName={"previousBttn"}
-            nextLinkClassName={"nextBttn"}
-            disabledClassName={"paginationDisabled"}
-            activeClassName={"paginationActive"}
-          />
-      </Box>
-       </Box>
+          <Box mt={"15px"}> 
+            <ReactPaginate 
+              previousLabel={"<<"}
+              nextLabel={">>"}
+              pageCount={pageCountCourse}
+              onPageChange={changePage}
+              containerClassName={"paginationBttns"}
+              previousLinkClassName={"previousBttn"}
+              nextLinkClassName={"nextBttn"}
+              disabledClassName={"paginationDisabled"}
+              activeClassName={"paginationActive"}
+            />
+          </Box>
+        </Box>
      </DefaultLayout>
    );
   };

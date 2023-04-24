@@ -25,7 +25,8 @@ import {
   AlertDialogOverlay,
   useDisclosure,
   Button,
-  InputRightElement
+  InputRightElement,
+  AlertDialogCloseButton
 } from "@chakra-ui/react";
 
 import React, { useEffect, useState } from "react";
@@ -171,10 +172,10 @@ const Category = () => {
                 >
                     <Thead background="colors.secondary">
                     <Tr>
-                        <Th>Nom</Th>
-                        <Th>Description</Th>
-                        <Th>Salaire de base</Th>
-                        <Th>Actions</Th>
+                        <Th>{t('pages.personnel.categorypersonnel.name')}</Th>
+                        <Th>{t('pages.personnel.categorypersonnel.description')}</Th>
+                        <Th>{t('pages.personnel.categorypersonnel.salaireDebase')}</Th>
+                        <Th>{t('pages.personnel.categorypersonnel.action')}</Th>
                     </Tr>
                     </Thead>
                     {data && ( 
@@ -233,12 +234,15 @@ const Category = () => {
                                               fontSize='lg' 
                                               fontWeight='bold'
                                               textAlign={"center"}
+                                              mt="5px"
                                             >
                                                 {t('pages.personnel.categorypersonnel.confirmDeletingAlertDialogHeader')}
                                             </AlertDialogHeader>
+                                            <AlertDialogCloseButton/>
                                             <AlertDialogBody textAlign={"center"}>
                                               {t('pages.personnel.categorypersonnel.confirmDeletingAlertDialogBody')}
                                             </AlertDialogBody>
+
                                             <AlertDialogFooter>
                                               <Button 
                                                 ref={cancelRef} 

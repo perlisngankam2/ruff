@@ -15,7 +15,8 @@ import {
   AlertDialogOverlay,
   Text,
   VStack,
-  useDisclosure
+  useDisclosure,
+  AlertDialogCloseButton
 } from "@chakra-ui/react";
 
 import Routes from "../../modules/routes";
@@ -31,6 +32,7 @@ import { Router, useRouter } from "next/router";
 import { useMutation, useQuery } from "@apollo/client";
 import { GET_ALL_PERSONNELS } from "../../graphql/Queries";
 import { DELETE_PERSONNEL } from "../../graphql/Mutation";
+// import { GetStaticPaths } from "next/types";
 
 const Employee = (props) => {
 
@@ -41,6 +43,7 @@ const Employee = (props) => {
   const [personnel, setPersonnel] = useState([]);
   const { isOpen, onToggle, onClose, onOpen } = useDisclosure();
   
+
   useEffect (() => {
     setPersonnel(dataPersonnel)
     console.log(dataPersonnel) 
@@ -49,15 +52,7 @@ const Employee = (props) => {
   if (loading) return <Text>Chargement en cour...</Text>
   if (error) return <Text>Une erreur s'est produite!</Text>
 
-  const removePersonnel = async(id) => {
-    await deletePersonnel({
-        variables: {id},
-        refetchQueries:[{
-          query: GET_ALL_PERSONNELS
-        }]
-    })
-    onClose();
-  }
+ 
   return(
           <Box
             bg={"gray.200"}
@@ -103,11 +98,12 @@ const Employee = (props) => {
               </Text> */}
               <Flex justify="center" gap="4">
                 <Link 
-                href={{
-                  pathname: Routes.PersonnelDetails.path,
-                  query: {id: props.id}
-                }}
+                  href={{
+                    pathname: Routes.PersonnelDetails?.path || '',
+                    query: {id: props.id}
+                  }}
                 >
+                  {console.log(props.id)}
                   <Icon
                     as={BiDetail}
                     boxSize="40px"
@@ -152,9 +148,12 @@ const Employee = (props) => {
                                 fontSize='lg' 
                                 fontWeight='bold'
                                 textAlign={"center"}
+                                mt="5px"
                                 >
                                 Confirmation de suppression
                               </AlertDialogHeader>
+                              <AlertDialogCloseButton/>
+
                               <AlertDialogBody textAlign={"center"}>
                               Voulez-vous supprimer cet Personnel?
                               </AlertDialogBody>

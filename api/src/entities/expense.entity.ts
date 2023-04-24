@@ -22,7 +22,7 @@ export class Expense {
     @Property({ nullable: true })
     creditamount: number;
 
-    // @Field({ nullable: true })
+  
     @Property({ onCreate: () => new Date() })
     createdAt = new Date();
   

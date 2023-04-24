@@ -86,10 +86,10 @@ import {
         await createStudyLevel({
            variables: {
              niveauEtude: {
-                   name: level.name,
-                   montantPension: parseInt(level.montantPension),
-                   cycleId: level.cycleId
-               }
+                name: level.name,
+                montantPension: parseInt(level.montantPension),
+                cycleId: level.cycleId
+              }
            },
            refetchQueries:[{
              query: GET_ALL_STUDY_LEVEL

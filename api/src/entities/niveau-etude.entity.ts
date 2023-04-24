@@ -29,6 +29,7 @@ export class NiveauEtude{
     @PrimaryKeyUuid()
     id!: string;
   
+  
     @Field({ nullable: true })
     @Property({nullable:true})
     name!: string;
@@ -78,10 +79,11 @@ export class NiveauEtude{
   @OneToMany(() => Salle, (salle) => salle.niveau)
   salle = new Collection<Salle>(this);
 
+
+    
   @Field(() => ID)
   @Property({ persist: false })
-  get cycleid() {
+    get cycleid() {
     return `${this.cycle.id}`;
-  }
-    
+}
 }

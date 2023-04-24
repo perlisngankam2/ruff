@@ -19,7 +19,7 @@ import { SectionCycleService } from '../section-cycle/section-cycle.service';
 import { NiveauEtudeCreateInput } from './dto/niveau-etude.input';
 import { NiveauEtudeUpdateInput } from './dto/niveau-etude.update';
 import { CycleService } from '../cycle/cycle.service';
-import { cy } from 'date-fns/locale';
+// import { cy } from 'date-fns/locale';
 
 @Injectable()
 export class NiveauEtudeService {
@@ -69,15 +69,28 @@ export class NiveauEtudeService {
        }
        
     
+      // async getAll() {
+      //   const niveaus= this.niveauEtudeRepository.findAll({
+      //     populate:['cycle']
+      //   })
+      // const a= (await niveaus).map(a=>a.id)
+      // const d=(await niveaus).map(a=>a.name)
+      // const e =((await niveaus).map(a=>a.description))
+      // const f = (await niveaus).map(a=>a.montantPension)
+      // const b = (await niveaus).map(async (niveau) => (await niveau.cycle.load()).id);
+      // const c = await Promise.all(b);
+      // return [a,d,e,f,c]
+      // }
+      
       async getAll() {
         const niveaus= this.niveauEtudeRepository.findAll({
           populate:['cycle']
         })
         return niveaus
-  
-      }
+  
+      }
 
-      // async getallcycle():
+
       
       async update(id:string, input: NiveauEtudeUpdateInput): Promise<NiveauEtude> {
         const niveau = await this.findById(id)

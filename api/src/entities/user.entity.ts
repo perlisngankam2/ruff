@@ -78,11 +78,11 @@ export class User {
   })
   personnel!: IdentifiedReference<Personnel> | null;
 
-  @OneToOne(() => Parent, (parent) => parent.user, {
-    owner: false,
-    nullable: true,
-  })
-  parent!: IdentifiedReference<Parent> | null;
+  // @OneToOne(() => Parent, (parent) => parent.user, {
+  //   owner: false,
+  //   nullable: true,
+  // })
+  // parent!: IdentifiedReference<Parent> | null;
 
   @OneToOne(() => Student, (student) => student.user, {
     owner: false,
@@ -96,11 +96,7 @@ export class User {
     return `${this.personnel.id}`;
   }
 
-  @Field(() => ID)
-  @Property({ persist: false })
-  get parentid() {
-    return `${this.parent.id}`;
-  }
+  
 
   @Field(() => ID)
   @Property({ persist: false })

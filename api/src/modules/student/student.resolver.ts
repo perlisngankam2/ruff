@@ -17,7 +17,6 @@ import { StudentUpdateInput } from './dto/student.update';
 import { StudentService } from './student.service';
 import { Tranche } from 'src/entities/tranche.entity';
 
-
 @Resolver(() => Student)
 export class StudentResolver {
   constructor(private readonly studentService: StudentService,
@@ -51,14 +50,14 @@ export class StudentResolver {
     return await this.studentService.delete(id)
   }
   
-  @Query(()=>TrancheStudent)
-  async getTrancheStudentByStudent(@Args('studentid') studentid:string){
-    const TrancheStudent=await this.studentService.findTrancheStudentByStudent(studentid)
-    if(!TrancheStudent){
-      throw Error("not found")
-    }
-    return TrancheStudent
-  }
+  // @Query(()=>TrancheStudent)
+  // async getTrancheStudentByStudent(@Args('studentid') studentid:string){
+  //   const TrancheStudent=await this.studentService.findTrancheStudentByStudent(studentid)
+  //   if(!TrancheStudent){
+  //     throw Error("not found")
+  //   }
+  //   return TrancheStudent
+  // }
 
   @Query(()=>[Number])
   async AmountrExpectedByTranche(@Args('studentid') studentid:string){
@@ -73,6 +72,5 @@ export class StudentResolver {
   @Query(()=>[Tranche])
   async getClassfeeofStudent(@Args('studentid') studentid:string){
     return await this.studentService.findlistfees(studentid)
-  }
- 
+  }
 }

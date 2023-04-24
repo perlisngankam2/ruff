@@ -107,9 +107,17 @@ async savePensionExpense(studentid: string){
         {
             em:this.em
         })
-
+        const depense = await this.findexpensebystudent(studentid)
+        if(depense){
+            await this.ExpenseRepository.removeAndFlush(depense)
+            console.log(depense)
+            await this.ExpenseRepository.persistAndFlush(expense)
+            return expense
+        }
+        if(!depense){
         await this.ExpenseRepository.persistAndFlush(expense)
         return expense
+        }
     }
 
     if(!pension){
@@ -133,7 +141,7 @@ async saveSalaireExpenses(personnelid: string){
         {
             em:this.em
         })
-
+   
         await this.ExpenseRepository.persistAndFlush(expense)
         return expense
 
@@ -144,6 +152,8 @@ async saveSalaireExpenses(personnelid: string){
     }   
 }
 
-
+async findexpensebystudent(studentid:string){
+ return await this.ExpenseRepository.findOne({student:studentid})
+}
   
 }

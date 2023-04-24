@@ -58,7 +58,7 @@ export class SalleResolver {
   
   @Mutation(()=>Salle)
   async UpdateSalle(@Args('id') id:string, @Args('input') input:SalleUpdateInput){
-   return this.salleService.updateSalle(id,input)
+   return this.salleService.update(id,input)
   }
 
   @Query(() => Salle)

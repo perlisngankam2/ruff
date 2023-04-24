@@ -15,6 +15,7 @@
   import { MdOutlineClass, MdLibraryBooks, MdOutlineLibraryBooks, MdOutlinePayments } from "react-icons/md";
   import {MdOutlineSms} from "react-icons/md";
   import {FaLevelUpAlt} from "react-icons/fa"
+  import {MdOutlineFamilyRestroom} from "react-icons/md"
   
 
   const AdminLayout = ({ children }) => {
@@ -158,7 +159,7 @@
             <AccordionButton  pl={0}>
               <Flex align="center" gap="1">
                 <Icon as={MdOutlineClass} />
-                <Box as="span">Reduction</Box>
+                <Box as="span">Parents</Box>
               </Flex>
             </AccordionButton>
             <AccordionPanel _hover={{background:"rgba(0,0,0,0.16)"}}>
@@ -167,6 +168,19 @@
               </Link>
             </AccordionPanel>
           </AccordionItem> */}
+           <AccordionItem>
+            <AccordionButton  pl={0}>
+              <Flex align="center" gap="1">
+                <Icon as={MdOutlineFamilyRestroom} />
+                <Box as="span">Parents</Box>
+              </Flex>
+            </AccordionButton>
+            <AccordionPanel _hover={{background:"rgba(0,0,0,0.16)"}}>
+              <Link href="parents/listOfParents">
+                <Box as="span">Tout les parents</Box>
+              </Link>
+            </AccordionPanel>
+          </AccordionItem>
           <AccordionItem>
             <AccordionButton pl={0} >
               <Flex align="center" gap="1">
@@ -175,8 +189,8 @@
               </Flex>
             </AccordionButton>
             <AccordionPanel pb={1} _hover={{background:"rgba(0,0,0,0.16)"}}>
-              <Link href="/finances">
-                <Box as="span">Finance 1</Box>
+              <Link href="/finances/AccountStatement">
+                <Box as="span">Etat du compte</Box>
               </Link>
             </AccordionPanel>
             <AccordionPanel pb={1} _hover={{background:"rgba(0,0,0,0.16)"}}>

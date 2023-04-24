@@ -34,7 +34,9 @@ const RouteName = {
     //   platforms: [Platform.Main, Platform.Subdomain],
     //   roles: [AuthRole.Admin],
     // },
-
+    PersonnelDetails: {
+      path: '/personnel/[id]',
+    },
     Eleve: {
       path: '/eleves',
       // platforms: [Platform.Main]
@@ -43,6 +45,9 @@ const RouteName = {
         path: '/eleves/[id]',
         // type: AuthRoute.Public,
         // platforms: [Platform.Main]
+    },
+    EleveEdit:{ 
+      path:'/eleves/ajoutereleve'
     },
     Personnel: {
       path: '/personnel',
@@ -55,14 +60,14 @@ const RouteName = {
     PaymentDetails: {
       path: '/payment/[id]'
     },
+    
     Receipt:{
       path: '/eleves/recu/[id]'
     },
-    // PersonnelDetails: {
-    //   path: '/personnel/[id]',
-    //   // type: AuthRoute.Public,
-    //   // platforms: [Platform.Main]
-    // },
+    ClasseEdit: {
+      path: '/class/addclass'
+    },
+   
     levelEdit: {
       path: '/level/addLevel',
       // type: AuthRoute.Public,

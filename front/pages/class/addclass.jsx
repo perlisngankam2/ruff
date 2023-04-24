@@ -197,7 +197,7 @@ const AddClass = () => {
                     />
                   </FormControl>
                   <FormControl mt="15px">
-                      <FormLabel>Niveau d'etude</FormLabel>
+                      <FormLabel>Niveau d'etude:</FormLabel>
                       <Select 
                         id="cycle"
                         name="niveauEtudeId"
@@ -219,7 +219,7 @@ const AddClass = () => {
                       </Select>
                   </FormControl> 
                   <FormControl mt="15px">
-                      <FormLabel>Cycle</FormLabel>
+                      <FormLabel>Cycle:</FormLabel>
                         <Select 
                           name="cycleId"
                           placeholder="Cycle"

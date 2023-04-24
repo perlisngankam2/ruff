@@ -318,12 +318,13 @@ export const GET_ONE_SECTION = gql `
 `;
 
 export const GET_LEVEL_BY_ID = gql`
-    query niveaEtude ($id: String!) {
-        niveaEtude (id: $id) {
+    query findOneNiveauEtude ($id: String!) {
+        findOneNiveauEtude (id: $id) {
             id
             name
             description
             montantPension
+            cycleid
         }
     }
 `

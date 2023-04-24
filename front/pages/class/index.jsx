@@ -496,7 +496,7 @@ const Class = () => {
                       <Th>Nom</Th>
                       <Th>Montant pension</Th>
                       {/* <Th >section</Th>  */}
-                      <Th >Action</Th>
+                      <Th >Actions</Th>
                   </Tr>
                   </Thead>
                   <Tbody>

@@ -201,7 +201,7 @@ const AccountStatement = () => {
                                 > 
                                     <Box width='120px' 
                                         flex={1}
-                                        borderLeft={"1px"}
+                                        // borderLeft={"1px"}
                                     >
                                         Date
                                     </Box>
@@ -231,7 +231,8 @@ const AccountStatement = () => {
                                     p="5px"
                                     width={"full"}
                                     // fontWeight={"bold"}
-                                    mt="12px"
+                                    // mt="5px"
+                                    borderBottom={"1px"}
                                 > 
                                     <Box width='100px' 
                                         flex={1}
@@ -305,7 +306,7 @@ const AccountStatement = () => {
                                     p="5px"
                                     width={"full"}
                                     // fontWeight={"bold"}
-                                    mt="12px"
+                                    // mt="12px"
                                 > 
                                     <Box
                                         flex={1}

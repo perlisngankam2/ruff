@@ -67,6 +67,8 @@ import { useQuery, useMutation } from "@apollo/client";
 import Routes from "../../modules/routes";
 import {useForm, Controller, defaultValues } from "react-hook-form";
 import { zodResolver } from '@hookform/resolvers/zod';
+import { UseTranslation, useTranslation } from "next-i18next";
+import { getStaticPropsTranslations } from "../../types/staticProps";
 
 import { 
   GET_ALL_STUDENT, 
@@ -144,6 +146,8 @@ const DetailComponent = () => {
 
   const router = useRouter();
   const toast = useToast();
+  const {t} = useTranslation();
+
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { isOpen:isOpenns, onOpen:onOpenns, onClose:onClosses } = useDisclosure();
   const { isOpen:isOpenParent, onOpen:onOpenParent, onClose:onClosseParent } = useDisclosure();
@@ -1355,13 +1359,22 @@ const {data:dataResteFeesToPayByStudent} = useQuery(GET_RESTE_PENSION_A_PAYER_BY
               </Box>
       </SimpleGrid>
 )} 
-      </Box>
+        b</Box>
     </DefaultLayout>
   );
 };
 
+ 
+export async function getStaticProps({ locale }) {
+  return {
+    props: {
+      ...(await getStaticPropsTranslations(locale)),
+      // Will be passed to the page component as props
+    },
+  };
+}
 export default DetailComponent;
-
+ 
 
 
 

@@ -1,6 +1,13 @@
 
 import {
-    Box, Button, Center, Divider, Flex, Heading, Input, Select, Text, Hide
+    Box, Button, Center, Divider, Flex, Heading, Input, Select, Text, Hide, Avatar,
+    AlertDialog,
+    AlertDialogBody,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogContent,
+    AlertDialogOverlay,
+    useDisclosure,
 } from "@chakra-ui/react";
 import PaySlipBottom from "../../components/atoms/PaySlipBottom";
 import PaySlipMiddle from "../../components/atoms/PaySlipMiddle";
@@ -10,7 +17,7 @@ import PaySlipInformationEmployeeBox from "../../components/atoms/PaySlipInforma
 import DefaultLayout from "../../components/layouts/DefaultLayout";
 import { useQuery, useMutation } from "@apollo/client";
 import { GET_ALL_PERSONNEL_BY_ID, GET_PRIME_PERSONNEL, GET_RETENUE_PERSONNEL, GET_Category_Personnel_BY_ID, GET_Category_Personnel_ID, GET_ALL_SALAIRE_BY_ID, GET_ALL_MONTH_SALARY, GET_SALARY_NET} from "../../graphql/Queries";
-import { useEffect, useState } from "react";
+import React,  { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { CREATE_SALAIRE } from "../../graphql/Mutation";
 import { useToast } from "@chakra-ui/react";
@@ -78,8 +85,8 @@ const PaySlip = () => {
 const [isMonthUnavailable, setIsMonthUnavailable] = useState(false);
 
   const [createSalaire] = useMutation(CREATE_SALAIRE);
-
-  
+    const { isOpen,  onOpen, onClose } = useDisclosure();
+  const cancelRef = React.useRef()
     const moisPayes = []
     
   const loadMoisPayes = () => {
@@ -301,10 +308,9 @@ const monthOptions = useMemo(() => {
           </Hide>
         </Flex>
           
-        <Flex 
-          bg='#5755c1' 
-          width='1000px' 
-          h='80px' 
+        <Box 
+          bg={"gray.200"}
+          width='500px' 
           margin="0 auto" 
           pb='20px'
           mt="50px"
@@ -371,7 +377,7 @@ const monthOptions = useMemo(() => {
                 
                 
                 </Box>
-                </Flex>
+                </Box>
              
         {/* <Flex 
         <Flex 
@@ -471,9 +477,38 @@ const monthOptions = useMemo(() => {
              <Center>
           <Button disabled={!moisPaie} type="submit" color='white' bg='#eb808a' variant='solid' mx='auto' my='auto' onClick={HandleClick}>
               
-            Soumettre
+            Generer le paiement
                
            </Button>
+
+             <AlertDialog
+             
+             
+             >
+
+                   <AlertDialogOverlay>
+          <AlertDialogContent>
+            <AlertDialogHeader fontSize='lg' fontWeight='bold'>
+              Reinitialisation de mot de passe
+            </AlertDialogHeader>
+
+            <AlertDialogBody>
+              Souhaitez vous modifier le de passe qui vous a ete donnee?
+            </AlertDialogBody>
+
+            <AlertDialogFooter>
+              <Button ref={cancelRef} onClick={onClose}>
+                Non
+              </Button>
+              <Link href={'#'}>
+                <Button colorScheme='green'  ml={3}>
+                  Oui
+                </Button>
+              </Link>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialogOverlay>
+      </AlertDialog>
         </Center>
       </Box>
 

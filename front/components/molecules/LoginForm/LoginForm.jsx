@@ -31,9 +31,7 @@ import { useMutation, useQuery } from "@apollo/client";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { GET_USER_CONNECTED} from  "../../../graphql/Queries"
-import { GET_USER_CONNECTED} from  "../../../graphql/Queries"
 import dashboard from "../../../pages/dashboard.jsx";
-import { useAuth } from '../../../contexts/account/Auth/Auth'
 import { useAuth } from '../../../contexts/account/Auth/Auth'
 import { useTranslation } from "next-i18next";
 
@@ -53,15 +51,8 @@ const LoginForm = () => {
 
 console.log(dataUser)
 
-const Handle =()=>{
 
-
-
-}
-
-   const HandleClick = async (event) => {
-        event.preventDefault();
-        
+ 
    const HandleClick = async (event) => {
         event.preventDefault();
         
@@ -243,6 +234,6 @@ router.push('/dashboard')
       </Box>
     </Flex>
   );
-}}
+}
 
 export default LoginForm;

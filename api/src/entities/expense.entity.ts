@@ -49,24 +49,73 @@ export class Expense {
     })
     anneeAccademique!:IdentifiedReference<AnneeAccademique>|null
 
-    @Field(() => ID)
-    @Property({ persist: false })
-    get studentid() {
-      return `${this.student.id}`;
-    }
+//     @Field(() => ID)
+//     @Property({ persist: false })
+//     get studentid(): string | null{
+//       return this.student.id ? `${this.student.id}` : null;
+//     }
 
-    @Field(() => ID)
-    @Property({ persist: false })
-    get personnelid() {
-      return `${this.personnel.id}`;
-    }
+//     // @Field(() => ID)
+//     // @Property({ persist: false })
+//     // get personnelid() {
+//     //   return `${this.personnel.id}`;
+//     // }
+
+//     @Field(() => ID, { nullable: true })
+//     @Property({ persist: false })
+//     get personnelid(): string | null {
+//       return this.personnel.id ? `${this.personnel.id}` : null;
+//     }
 
     @Field(() => String)
     @Property({ persist: false })
     get createdOn() {
       return `${this.createdAt}`;
+    }  
+
+    @Field(() => ID, { nullable: true })
+    @Property({ persist: false })
+    get personnelid(): string | null {
+      return this.personnel ? `${this.personnel.id}` : null;
     }
-  }
+
+    @Field(() => ID, { nullable: true })
+    @Property({ persist: false })
+    get personnelFirstName(): string | null {
+      return this.personnel ? `${this.personnel.getEntity().firstName}` : null;
+    }
+
+    @Field(() => ID, { nullable: true })
+    @Property({ persist: false })
+    get personnelLastName(): string | null {
+      return this.personnel ? `${this.personnel.getEntity().lastName}` : null;
+    }
+
+    @Field(() => ID, { nullable: true })
+    @Property({ persist: false })
+    get personnelFonction(): string | null {
+      return this.personnel ? `${this.personnel.getEntity().fonction}` : null;
+    }
+
+    @Field(() => ID)
+    @Property({ persist: false })
+    get studentid() {
+      return this.student ? `${this.student.id}` : null;
+    }
+
+    @Field(() => ID)
+    @Property({ persist: false })
+    get studentFirstname() {
+      return this.student ? `${this.student.getEntity().firstname}` : null;
+       }
+
+    @Field(() => ID)
+    @Property({ persist: false })
+    get studentLastname() {
+      return this.student ? `${this.student.getEntity().lastname})` : null;
+    }
+  
+}
   
 
   

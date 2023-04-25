@@ -95,11 +95,11 @@ export class Tranche {
     return `${this.salle.id}`;
   }
 
-  @Field(() => ID)
-  @Property({ persist: false })
-  get pensionid() {
-    return `${this.pension.id}`;
-  }
+  // @Field(() => ID)
+  // @Property({ persist: false })
+  // get pensionid() {
+  //   return `${this.pension.id}`;
+  // }
 
   // @ManyToOne(() => TranchePriority ,{
   //   nullable:false,

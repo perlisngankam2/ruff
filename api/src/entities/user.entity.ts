@@ -96,8 +96,6 @@ export class User {
     return `${this.personnel.id}`;
   }
 
-  
-
   @Field(() => ID)
   @Property({ persist: false })
   get studentid() {

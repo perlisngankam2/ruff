@@ -98,10 +98,10 @@ export class Salle{
       return `${this.niveau.id}`;
     }
 
-    @Field(() => ID)
-    @Property({ persist: false })
-    get cycleid() {
-      return `${this.cycle.id}`;
-    }
+    // @Field(() => ID)
+    // @Property({ persist: false })
+    // get cycleid() {
+    //   return `${this.cycle.id}`;
+    // }
 
 }

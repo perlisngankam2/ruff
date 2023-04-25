@@ -41,6 +41,6 @@ export class Section {
     createdAt = new Date();
 
     @OneToMany(() => Cycle, (cycle) => cycle.section)
-    cycle = new Collection<SectionCycle>(this);
+    cycle = new Collection<Cycle>(this);
 
 }

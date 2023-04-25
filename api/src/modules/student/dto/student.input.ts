@@ -10,7 +10,6 @@ import { UserCreateInput } from 'src/modules/user/dto/user.input';
 export class StudentCreateInput {
   @Field({nullable:true})
   ID!: string;
-
     
   @Field({nullable:true})
   salleId!: string;

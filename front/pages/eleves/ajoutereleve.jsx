@@ -13,11 +13,12 @@ import {
   useToast
 } from "@chakra-ui/react";
 
+
 import { useRouter } from "next/router";
 import DefaultLayout from "../../components/layouts/DefaultLayout";
 import { useMutation, useQuery } from "@apollo/client";
 import { getStaticPropsTranslations } from "../../types/staticProps";
-import { UseTranslation } from "next-i18next";
+import { useTranslation } from "next-i18next";
 
 
 import { 

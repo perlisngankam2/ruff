@@ -83,9 +83,10 @@ export const CREATE_SALLE = gql `
             id
             name
             section
-            cycle
             montantPensionSalle
             effectif
+            niveauid
+            cycleid
         }
     }
 `;
@@ -114,7 +115,7 @@ export const CREATE_CYCLE = gql `
 
 export const CREATE_STUDY_LEVEL = gql `
     mutation createNiveauEtude ($niveauEtude: NiveauEtudeCreateInput!) {
-        createNiveauEtude (niveauEtude: $niveauEtude) {
+        createNiveauEtude (niveauEtude: $niveauEtude){
             id
             name
             description
@@ -234,6 +235,9 @@ export const CREATE_PERSONNEL_SALLE = gql `
     mutation createPersonnelSalle ($input: PersonnelSalleCreateInput!) {
         createPersonnelSalle (input: $input) {
             id
+            personnelid
+            salleid
+            courseid
         }
     }
 `;
@@ -349,9 +353,10 @@ export const DELETE_SALLE = gql `
             id
             name
             section
-            cycle
             montantPensionSalle
             effectif
+            niveauid
+            cycleid
         }
     }
 `;
@@ -438,10 +443,11 @@ export const UPDATE_SALLE = gql `
         UpdateSalle (id: $id, input: $input) {
             id
             name
-            section 
-            cycle
+            section
             montantPensionSalle
             effectif
+            niveauid
+            cycleid
         }
     }
 `;

@@ -76,14 +76,16 @@ const AddClass = () => {
     // console.log(dataSection?.findAllsection)
     console.log("j")
     console.log(dataStudyLevel?.findAllNiveauEtude)
+    console.log(dataSalleById);
+
     if(router.query.id) {
       const dataSalleEdit = dataSalleById?.findOnesalle
       if(dataSalleEdit){
         setSalle({
           name: dataSalleEdit.name,
           montantPensionSalle: dataSalleEdit.montantPensionSalle,
-          cycleId: dataSalleEdit.cycleId,
-          niveauEtudeId: dataSalleEdit.niveauEtudeId
+          // cycleId: dataSalleEdit.cycleid,
+          niveauEtudeId: dataSalleEdit.niveauid
         })
       }
     }
@@ -95,9 +97,10 @@ const AddClass = () => {
 
     console.log(name);
     console.log(section);
-    console.log(cycleId);
+    // console.log(cycleId);
     console.log(montantPensionSalle);
     console.log(niveauEtudeId);
+
 
     // const cycleData =
     if(!router.query.id){
@@ -106,7 +109,7 @@ const AddClass = () => {
           salle: {
             name: salle.name,
             niveauEtudeId: salle.niveauEtudeId,
-            cycleId: salle.cycleId,
+            // cycleId: salle.cycleId,
             montantPensionSalle: parseInt(salle.montantPensionSalle)
           }
         },
@@ -114,7 +117,6 @@ const AddClass = () => {
           query: GET_ALL_CLASS
         }]
     })
-    console.log(cycleData)
     toast({
       title: "Creation d'une classe.",
       description: "La classe a ete créée avec succes.",
@@ -125,12 +127,12 @@ const AddClass = () => {
   }else{
     await updateSalle({
       variables:{
-        id:router.query.id,
+        id: router.query.id,
         input: {
           name: salle.name,
           montantPensionSalle: parseInt(salle.montantPensionSalle),
           niveauEtudeId: salle.niveauEtudeId,
-          cycleId: salle.cycleId
+          // cycleId: salle.cycleId
         }
       },
       refetchQueries:[{
@@ -182,7 +184,7 @@ const AddClass = () => {
                       // maxW="300px"
                       name="name"
                       value={salle.name}
-                      onChange = {(event) => setSalle( ...salle,{name:event.target.value})}
+                      onChange = {(event) => setSalle({...salle, name:event.target.value})}
                     />
                   </FormControl>
                   <FormControl>
@@ -212,19 +214,19 @@ const AddClass = () => {
                                     selected={salle.niveauEtudeId == niveauEtude.id? "selected": ''}
                                     value={niveauEtude.id} key={index}
                                   >
-                                    {niveauEtude.name}
+                                    {niveauEtude.name}({niveauEtude.cyclename})
                                   </option>
                               ))
                           )}
                       </Select>
                   </FormControl> 
-                  <FormControl mt="15px">
+                  {/* <FormControl mt="15px">
                       <FormLabel>Cycle:</FormLabel>
                         <Select 
                           name="cycleId"
                           placeholder="Cycle"
                           minW="300px"
-                          onChange = {(event) => setSalle({...salle,cycleId:event.target.value})}
+                          onChange = {(event) => setSalle({...salle, cycleId:event.target.value})}
                           value={salle.cycleId}
                         >
                          {dataCycle &&(
@@ -235,7 +237,7 @@ const AddClass = () => {
                                 ))
                           )} 
                         </Select>
-                 </FormControl>
+                 </FormControl> */}
                   <Flex gap={5} pt="30px">
                     <Button colorScheme="red" onClick={() => router.back()}>
                       Annuler

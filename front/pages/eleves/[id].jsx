@@ -68,7 +68,8 @@ import Routes from "../../modules/routes";
 import {useForm, Controller, defaultValues } from "react-hook-form";
 import { zodResolver } from '@hookform/resolvers/zod';
 import { UseTranslation, useTranslation } from "next-i18next";
-import { getStaticPropsTranslations } from "../../types/staticProps";
+// import { getStaticPropsTranslations } from "../../types/staticProps";
+
 
 import { 
   GET_ALL_STUDENT, 
@@ -143,6 +144,7 @@ import {
 // });
 
 const DetailComponent = () => {
+
 
   const router = useRouter();
   const toast = useToast();
@@ -269,9 +271,9 @@ const {data:dataResteFeesToPayByStudent} = useQuery(GET_RESTE_PENSION_A_PAYER_BY
 
     //  }
     );
-    const [paySchoolFees] = useMutation(CREATE_SCOLARITE_TRANCHE_STUDENT);
+//     const [paySchoolFees] = useMutation(CREATE_SCOLARITE_TRANCHE_STUDENT);
        
-        console.log("i")
+//         console.log("i")
         // const PayTrancheSchoolFees = handleSubmit(async(values) =>{
         //   console.log("i")
         //   // event.preventDefault();
@@ -445,13 +447,13 @@ const {data:dataResteFeesToPayByStudent} = useQuery(GET_RESTE_PENSION_A_PAYER_BY
           // console.log(dataTrancheStudentBySudentId?.getTrancheStudentByStudent)
         })
 
-    // console.log(dataTranchePension?.findAlltranche)
-    // const AllTranche = dataTranchePension?.findAlltranche.map((tranche) => {
-    //   const totalPension = dataTrancheStudentBySudentId?.getTrancheStudentByStudent.montant;
-    //   if (totalPension >= tranche.montant) {
-    //     return tranche;
-    //   }
-    // });
+    console.log(dataTranchePension?.findAlltranche)
+    const AllTranche = dataTranchePension?.findAlltranche.map((tranche) => {
+      const totalPension = dataTrancheStudentBySudentId?.getTrancheStudentByStudent.montant;
+      if (totalPension >= tranche.montant) {
+        return tranche;
+      }
+    });
 
         const [resteMontantTranche, setResteMontantTranche] = useState([])
         // const montantTranche = getTrancheById(tranche.value)?.montant
@@ -1359,20 +1361,20 @@ const {data:dataResteFeesToPayByStudent} = useQuery(GET_RESTE_PENSION_A_PAYER_BY
               </Box>
       </SimpleGrid>
 )} 
-        b</Box>
+      </Box>
     </DefaultLayout>
   );
 };
 
  
-export async function getStaticProps({ locale }) {
-  return {
-    props: {
-      ...(await getStaticPropsTranslations(locale)),
-      // Will be passed to the page component as props
-    },
-  };
-}
+// export async function getStaticProps({ locale }) {
+//   return {
+//     props: {
+//       ...(await getStaticPropsTranslations(locale)),
+//       // Will be passed to the page component as props
+//     },
+//   };
+// }
 export default DetailComponent;
  
 

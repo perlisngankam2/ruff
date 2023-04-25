@@ -67,6 +67,8 @@ import {
       // console.log(dataSection?.findAllsection)
       console.log("j")
       console.log(dataCycle?.findAllcycle)
+      console.log(dataLevelById)
+      
       if(router.query.id) {
         const data = dataLevelById?.findOneNiveauEtude
         if(data) {
@@ -89,7 +91,7 @@ import {
                 name: level.name,
                 montantPension: parseInt(level.montantPension),
                 cycleId: level.cycleId
-             }
+              }
            },
            refetchQueries:[{
              query: GET_ALL_STUDY_LEVEL

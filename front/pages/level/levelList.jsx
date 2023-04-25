@@ -187,7 +187,7 @@ import {
                             p={0} 
                             pl={6}
                           >
-                            {niveauEtude.name}
+                            {niveauEtude.name}({niveauEtude.cyclename})
                           </Td>
                           <Td 
                             p={0} 

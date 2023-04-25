@@ -45,7 +45,7 @@ import {
   GET_ALL_SECTION,
   GET_ONE_SECTION, 
   GET_ONE_CYCLE, 
-  GET_ALL_CYCLE 
+  GET_ALL_CYCLE
 } from "../../graphql/Queries";
 import { 
   DELETE_SECTION, 
@@ -343,7 +343,8 @@ const CycleElement = ({cycle, index}) =>{
   } 
   return (
       <Tr key={index}>
-        <Td p={0} pl={6}>{cycle.name}</Td>
+        <Td p={0} pl={6}>{cycle.name}({cycle.sectionname})</Td>
+        
         {/* <Td  borderColor={'#C6B062'}>{cycle.section_id}</Td> */}
         <Td p={0} pl={6}>pppp</Td>
         <Td p={0} pl={3}>

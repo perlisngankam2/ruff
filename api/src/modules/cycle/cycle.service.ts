@@ -59,17 +59,13 @@ export class CycleService {
         return this.cycleRepository.findOne(id)
       }
 
-      findByniveauetude(id:string){
-        return this.cycleRepository.findOne({niveauEtude:id})
-      }
+
     
       getAll(): Promise<Cycle[]> {
         return this.cycleRepository.findAll()
       }
 
-      async getAllbyniveau(niveauid:string): Promise<Cycle[]> {
-        return await this.cycleRepository.find({niveauEtude:niveauid})
-      }
+   
       
       async update(id:string, input: CycleUpdateInput): Promise<Cycle> {
         const cycle = await this.findById(id)

@@ -52,6 +52,7 @@ import {
   NumberInputStepper,
   NumberIncrementStepper,
   NumberDecrementStepper,
+  AlertDialogCloseButton,
 } from "@chakra-ui/react";
 import { Select as Selects} from 'chakra-react-select';
 import { z } from 'zod';
@@ -81,15 +82,20 @@ import {
   GET_MONTANT_PENSION_SALLE_BY_STUDENT,
   GET_ALL_TRANCHE_COMPLETE_BY_STUDENT,
   GET_STUDENT_SALLE,
-  GET_CLASS_FEES_BY_STUDENT_ID
+  GET_CLASS_FEES_BY_STUDENT_ID,
+  GET_ALL_TRANCHE_BY_STUDENT_ID,
+  GET_PENSION_ALREADY_PAY_BY_STUDENT_ID,
+  GET_RESTE_PENSION_A_PAYER_BY_STUDENT_ID,
+  GET_ALL_PARENT
 
 } from "../../graphql/Queries";
+
 import {
   CREATE_TRANCHE_STUDENT, 
   CREATE_AVANCE_TRANCHE,
-  CREATE_SCOLARITE_TRANCHE_STUDENT
+  CREATE_SCOLARITE_TRANCHE_STUDENT,
+  AFFECTATION_PARENT_TO_STUDENT 
 } from "../../graphql/Mutation"
-
 
 // export const getStaticPath = async() => {
 //   // const apolloClient = initializeApollo();
@@ -140,6 +146,8 @@ const DetailComponent = () => {
   const toast = useToast();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { isOpen:isOpenns, onOpen:onOpenns, onClose:onClosses } = useDisclosure();
+  const { isOpen:isOpenParent, onOpen:onOpenParent, onClose:onClosseParent } = useDisclosure();
+
 
   const cancelRef = React.useRef()
   const [classId, setClassId] = useState("");
@@ -149,6 +157,7 @@ const DetailComponent = () => {
   const [trancheId, setTrancheId] = useState([]);
   const [errorss, setErrorss] = useState(null);
   const [selectedTranches, setSelectedTranches] = useState([])
+  const [selectedParents, setSelectedParent] = useState([]);
   const [salleStudent, setSalleStudent] = useState(null);
   // const isDisabled = true
   // const {register, handleSubmit, control,  formState: { isSubmitting, errors }, setValue} = useForm({
@@ -164,9 +173,11 @@ const DetailComponent = () => {
   // const [selectedTranches, setSelectedTranches] = useState([]); 
   // const {data:singleStudent} = useQuery(GET_STUDENT_BY_ID);
 
+  //RECUPERATION DE TOUT LES ELEVES
   const {data: dataStudent} = useQuery (GET_ALL_STUDENT);
   const {data:dataClasse} = useQuery(GET_ALL_CLASS);
   
+  //RECUPERATION DES INFOS DE CHAQUE ELEVE
   const {data:dataStudentId, loading, error} = useQuery(GET_STUDENT_BY_ID,
       {
         variables: {id: router.query.id}
@@ -178,11 +189,13 @@ const DetailComponent = () => {
       variables: {studentid: router.query.id} 
     }
   ); 
+
+  //CLASSE DE CHAQUE ELEVE
   const {data:dataStudentSalle} = useQuery(GET_STUDENT_SALLE,
     {
-        variables: {studentid: router.query.id} 
+      variables: {studentid: router.query.id} 
     }
-)
+  )
 
 //PENSION PAR CLASSE DE CHQUE ELEVE
 const {data:dataClassFeesByStudentId} = useQuery(GET_CLASS_FEES_BY_STUDENT_ID,
@@ -190,27 +203,54 @@ const {data:dataClassFeesByStudentId} = useQuery(GET_CLASS_FEES_BY_STUDENT_ID,
     variables: {studentid: router.query.id}
   }
 )
+
+//RESTE DE LA PENSION A PAYER POUR CHAQUE ELEVE
+const {data:dataResteFeesToPayByStudent} = useQuery(GET_RESTE_PENSION_A_PAYER_BY_STUDENT_ID,
+  {
+    variables: {studentid: router.query.id} 
+  }
+)
   // const {data:dataTrancheById} = useQuery(GET_STUDENT_BY_ID,
   //       {
   //         variables: {trancheid: router.query.id}
   //       }
   // );
+
+  //LISTE DES TRANCHES QUI ONT DEJA ETE SOLDE PAR CHAQUE ELEVE
   const {data:dataTrancheCompleteByStudent} = useQuery(GET_ALL_TRANCHE_COMPLETE_BY_STUDENT,
     {
       variables: {studentid: router.query.id} 
     }
   );
 
-  const {data:dataPensionSalleByStudent} = useQuery(GET_MONTANT_PENSION_SALLE_BY_STUDENT,
+
+  const {data:dataTrancheByStudentId} = useQuery(GET_ALL_TRANCHE_BY_STUDENT_ID,
     {
-      variables: {studentid: router.query.id} 
+          variables: {studentid: router.query.id} 
     }
   );
 
+  //PENSION TOTALE DEJA PAYE PAR ELEVE 
+  const {data:dataAlreadyPayBySudent} = useQuery(GET_PENSION_ALREADY_PAY_BY_STUDENT_ID,
+    {
+      variables: {studentid: router.query.id} 
+    }
+  )
+
+  
+  // const {data:dataPensionSalleByStudent} = useQuery(GET_MONTANT_PENSION_SALLE_BY_STUDENT,
+  //   {
+  //     variables: {studentid: router.query.id} 
+  //   }
+  // );
+
     const {data:dataClass} = useQuery(GET_ALL_CLASS);
     const {data:dataFraisInscription} = useQuery(GET_ALL_FRAIS_INSCRIPTION);
+    // const {data:dataTranchePension} = useQuery(GET_ALL_TRANCHE_PENSION);
     const {data:dataTranchePension} = useQuery(GET_ALL_TRANCHE_PENSION);
     const {data: dataTrancheStudent} = useQuery(GET_ALL_TRANCHE_STUDENT)
+    const {data: dataParents} = useQuery(GET_ALL_PARENT);
+   const [dataAffectationParentToStudent] = useMutation(AFFECTATION_PARENT_TO_STUDENT);
     const {data:dataTrancheById} = useQuery(GET_TRANCHE_PENSION_BY_ID);
     const [createTrancheStudent] = useMutation(CREATE_TRANCHE_STUDENT);
     const [createFeesAvanceTranche] = useMutation(CREATE_AVANCE_TRANCHE
@@ -317,39 +357,50 @@ const {data:dataClassFeesByStudentId} = useQuery(GET_CLASS_FEES_BY_STUDENT_ID,
       // } 
    //CODE POUR LE SELECT MULTIPLE
       
-//    const totalPension = dataTrancheStudentBySudentId?.getTrancheStudentByStudent.montant;
-//    console.log(totalPension)
-//    const trancheMontants = dataTranchePension?.findAlltranche.map((tranche) => tranche.montant);
-//    console.log(trancheMontants)
-//    const indexMontantSupérieur = trancheMontants?.findIndex((montant) => totalPension >= montant);
-//    console.log(indexMontantSupérieur)
-//   const  newDisabledOptions = []
-//    if (indexMontantSupérieur >= 0) {
-//  const trancheAvecMontantSupérieur = dataTranchePension?.findAlltranche[indexMontantSupérieur];
-//  newDisabledOptions.push(trancheAvecMontantSupérieur)
-// //  console.log(newDisabledOptions)
-//  }else if(indexMontantSupérieur >= 1){
-//     const b= dataTranchePension?.findAlltranche[indexMontantSupérieur]
-//     console.log(b)
-//  }
 
-  const tranches = []
-    const getTrancheById = (id) => {
-      return (dataTranchePension?.findAlltranche)?.find((t, i) => t.id === id)
+  // const loadTranches = () => {
+  //   // const trancheDisable = newDisabledOptions
+  //   // console.log(newDisabledOptions)
+  //   const totalPension = dataTrancheStudentBySudentId?.getTrancheStudentByStudent.montant;
+  //   // const trancheIds = dataTranchePension?.findAlltranche.map((tranche) => tranche.id);
+  //   // console.log(trancheIds)
+  //     dataTranchePension?.findAlltranche.map((tranche) =>{
+  //       const trancheCompleteByStudent = dataTrancheCompleteByStudent?.getalltranchecompletedbystudent.map(tranche=>tranche.id)
+  //       console.log(trancheCompleteByStudent)
+  //       tranches.push(
+  //         {
+  //           label: tranche?.name,
+  //           value: tranche?.id,
+  //           isDisabled: totalPension >= tranche?.montant && trancheCompleteByStudent?.includes(tranche?.id)
+  //          //  (il faut aussi que l'id de cette tranche soit inclu dans la liste des tranches qui sont dans avancetranche) 
+  //           //la liste des tranches qi sont dans avance tranches et dont la somme total de tout ses avances soit superieur au montant de la tranche
+  //         }
+  //       )
+  //     })
+  // }
+//
+  const getTrancheById = (id) => {
+    return (dataTranchePension?.findAlltranche)?.find((t, i) => t.id === id)
+  }
+  const getTrancheStudentById = (id) => {
+    return (dataTrancheStudent?.findAlltranchestudent)?.find((t, i) => t.id === id)
   }
 
+  // RECUPERATION DE LA LISTE DES TRANCHES LIES A UN ELEVE
+  const tranches = []
   const loadTranches = () => {
     // const trancheDisable = newDisabledOptions
     // console.log(newDisabledOptions)
-    const totalPension = dataTrancheStudentBySudentId?.getTrancheStudentByStudent.montant;60
-    const trancheIds = dataTranchePension?.findAlltranche.map((tranche) => tranche.id);
-    console.log(trancheIds)
-      dataTranchePension?.findAlltranche.map((tranche) =>{
+    // const totalPension = dataTrancheStudentBySudentId?.getTrancheStudentByStudent.montant;
+    const totalPension = dataClassFeesByStudentId?.getClassfeebyStudent
+    // const trancheIds = dataTranchePension?.findAlltranche.map((tranche) => tranche.id);
+    // console.log(trancheIds)
+      dataTrancheByStudentId?.getClassfeeofStudent.map((tranche) =>{
         const trancheCompleteByStudent = dataTrancheCompleteByStudent?.getalltranchecompletedbystudent.map(tranche=>tranche.id)
         console.log(trancheCompleteByStudent)
         tranches.push(
           {
-            label: tranche?.name,
+            label: tranche?.name + " ," + tranche?.montant +"Fcfa",
             value: tranche?.id,
             isDisabled: totalPension >= tranche?.montant && trancheCompleteByStudent?.includes(tranche?.id)
            //  (il faut aussi que l'id de cette tranche soit inclu dans la liste des tranches qui sont dans avancetranche) 
@@ -358,23 +409,39 @@ const {data:dataClassFeesByStudentId} = useQuery(GET_CLASS_FEES_BY_STUDENT_ID,
         )
       })
   }
-           useEffect(() =>{
+
+  //RECUPERATION DE LA LISTE DES PARENTS POUR L'AFFECTER A UN ELELE
+  const parents = []
+  const loadParents = () =>{
+    dataParents?.findAllparents.map((parent, index) =>{
+      parents.push(
+        {
+          label: parent?.firstname + " " + parent?.lastname + " " + parent?.parentStatus +" "+ parent?.gender,
+          value: parent?.id
+        }
+      )
+    })
+  }
+
+        useEffect(() =>{
           loadTranches();
+          loadParents();
           // console.log(dataTranchePension?.findAlltranche.tranche.montant[0])
           // dataStudentId && console.log(dataStudentId.findOnestudent)
           // console.log(dataClass);
           //  console.log(dataFraisInscription);
           // console.log(dataClasse?.findAllsalle);
-
-          // console.log(dataTranchePension?.findAlltranche);
-          // console.log(dataTrancheStudent?.findAlltranchestudent)
+          console.log(dataParents?.findAllparents)
+          console.log(dataTranchePension?.findAlltranche);
+          console.log(dataTrancheStudent?.findAlltranchestudent)
           // console.log(dataPensionSalleByStudent?.findMontantPensionstudent)
-            console.log(dataStudent?.findAllstudents.firstname);
+          console.log (dataTrancheByStudentId?.getClassfeeofStudent)
+          console.log(dataStudent?.findAllstudents.firstname);
           console.log(dataTrancheCompleteByStudent?.getalltranchecompletedbystudent)
-          console.log(dataTrancheStudentBySudentId?.getTrancheStudentByStudent)
+          // console.log(dataTrancheStudentBySudentId?.getTrancheStudentByStudent)
         })
-        // console.log(dataTranchePension?.findAlltranche)
 
+    // console.log(dataTranchePension?.findAlltranche)
     // const AllTranche = dataTranchePension?.findAlltranche.map((tranche) => {
     //   const totalPension = dataTrancheStudentBySudentId?.getTrancheStudentByStudent.montant;
     //   if (totalPension >= tranche.montant) {
@@ -384,190 +451,145 @@ const {data:dataClassFeesByStudentId} = useQuery(GET_CLASS_FEES_BY_STUDENT_ID,
 
         const [resteMontantTranche, setResteMontantTranche] = useState([])
         // const montantTranche = getTrancheById(tranche.value)?.montant
+        // const alertMontantMaxAPayer = () => {
+        //   if(montant>)
+        // }
+        const addAvanceTranche = async() => { 
+        let studentId = dataStudentId?.findOnestudent.id
+        console.log(montant)
+        console.log(selectedTranches)
+        console.log(studentId) 
+        let orderTranche = selectedTranches.sort((a,b) => a.priority - b.priority)
+        console.log(orderTranche);
 
-        const addAvanceTranche = async() => {
-          console.log(montant)
-          console.log(selectedTranches)
-          // console.log(dataStudentId?.findOnestudent.id)
-          // if(montant <= dataTranchePension.findAlltranche.montant[0])
-          const pension = dataStudentSalle?.findSalleByStudent?.montantPensionSalle
-          // const trancheStudentByStudent = dataTrancheStudentBySudentId?.getTrancheStudentByStudent
-          let totalTrancheSelectionner = 0
-          selectedTranches.forEach((tranche, index) => {
-            // console.log(getTrancheById(tranche.value));
-              totalTrancheSelectionner += getTrancheById(tranche.value)?.montant
-          })
-          console.log("pension",pension);
-          console.log("pension sel",totalTrancheSelectionner);
-          if(totalTrancheSelectionner >= pension) {
-            // if(trancheStudentByStudent == undefined ){
-            let temp = montant
-            console.log(temp)
-            selectedTranches.map(tranche=>{
-              const mont = getTrancheById(tranche.value)?.montant
-              temp = temp - mont
-              console.log(temp)
-              setMontant(temp)
+        orderTranche.forEach((tranche , index) => {
+          const trancheMontant = getTrancheById(tranche.value)?.montant
+          const trancheStudent = getTrancheStudentById(studentId)
+          if(montant != 0) {
+            if(montant <  trancheMontant) {
               createFeesAvanceTranche({
                 variables: {
                   avancetranche:{
-                    // trancheStudentId: dataTrancheStudentBySudentId?.getTrancheStudentByStudent.id,
-                    montant: mont,
+                    montant: montant,
                     trancheId: tranche.value,
-                    studentId: dataStudentId?.findOnestudent.id
+                    studentId: studentId
                   }
                 }
               })
-            })
-            toast({
-              title: "paiement tranche pension.",
-              description: " paye avec succes.",
-              status: "success",
-              duration: 3000,
-              isClosable: true,
-            });
-            setMontant(0);
-            // selectedTranches.map(tranche => tranche?.value)
-          // } 
-        } else if(totalTrancheSelectionner < pension){
-            //  selectedTranches.map(tranche =>{
-            //   let tempMontant = montant
-            //   const montantTranche = getTrancheById(tranche.value)?.montant
-            //   tempMontant = montantTranche - tempMontant
-            //   setMontant(tempMontant)
-            //   createFeesAvanceTranche({
-            //     variables: {
-            //       avancetranche:{
-            //         trancheStudentId: dataTrancheStudentBySudentId?.getTrancheStudentByStudent.id,
-            //         montant: tempMontant,
-            //         trancheId: tranche.value,
-            //         tranchestudentinput: {
-            //           studentId: "",
-            //           name: "",
-            //           description: "",
-            //           montant : 0
-            //         }
-            //       }
-            //     }
-            //   })
-            // })
-            // toast({
-            //   title: "paiement tranche pension.",
-            //   description: " paye avec succes.",
-            //   status: "success",
-            //   duration: 3000,
-            //   isClosable: true,
-            // });
-            // setMontant(0);
+              toast({
+                title: `Tranche : ${ tranche.label } partiellement soldé, reste a payer : ${ (trancheMontant - montant) } `,
+                description: " paye avec succes.",
+                status: "success",
+                duration: 3000,
+                isClosable: true,
+              });
+              setMontant(0)
+            } else if(montant > trancheMontant) {
+              createFeesAvanceTranche({
+                variables: {
+                  avancetranche:{
+                    montant: trancheMontant,
+                    trancheId: tranche.value,
+                    studentId: studentId
+                  }
+                }
+              })
+              const reste = montant - trancheMontant
+              setMontant(reste)
+            } else {
+              createFeesAvanceTranche({
+                variables: {
+                  avancetranche:{
+                    montant: montant,
+                    trancheId: tranche.value,
+                    studentId: studentId
+                  }
+                }
+              })
+              setMontant(0)
+            }
           }
-          
-          // selectedTranches.map(tranche=> {
-          // const datas = dataTranchePension?.findAlltranche.map((tranche)=> tranche.montant)
-          //let montantResant  ici je vais recuperer le montant restant de toutes les tranches
-          // for(let i =0; i<selectedTranches.length[i]; i++){
-          // const trancheSelected = selectedTranches[i];
-          //   if(montant <= datas){
-          //   let restTranche = 
-          //   }if (montant > datas)
-          //   { 
-            // }}
+        })
 
-              // result()
-          //  })
-          //  if(montant > tranche.value && selectedTranches.length ==2){
-          //   const montantTranche1 = dataTranchePension?.findAlltranche[0].montant
-          //     const surplus = montant - montantTranche1
-
-          //     const newTable = [dataTranchePension?.findAlltranche[0], dataTranchePension?.findAlltranche[1]]
-          //     .map((tranche) => {
-          //       if(tranche[0].value == newTable[0].id && tranche[1].value == newTable[1]){
-          //       createFeesAvanceTranche({
-          //         variables: {
-          //           avancetranche:{
-          //             // trancheStudentId: "",
-          //             montant: parseInt(montantTranche1),
-          //             trancheId: tranche.value,
-          //             tranchestudentinput: {
-          //               studentId: dataStudentId?.findOnestudent.id,
-          //               name: "",
-          //               description: "",
-          //               montant : 0
-          //             }
-          //           }
-          //         }
-          //       })
-          //       createFeesAvanceTranche({
-          //         variables: {
-          //           avancetranche:{
-          //             // trancheStudentId: "",
-          //             montant: parseInt(surplus),
-          //             trancheId: tranche.value,
-          //             tranchestudentinput: {
-          //               studentId: dataStudentId?.findOnestudent.id,
-          //               name: "",
-          //               description: "",
-          //               montant : 0
-          //             }
-          //           }
-          //         }
-          //       })
-
-          //     }
-          //     })
-          //  }
-
-            // })
-
-          // if (tranches[0].value){  
-          //   result = await createFeesAvanceTranche({
-          //     variables: {
-          //       avancetranche:{
-          //         // trancheStudentId: "",
-          //         montant: parseInt(montant),
-          //         trancheId: tranches[0].value,
-          //         tranchestudentinput: {
-          //           studentId: dataStudentId?.findOnestudent.id,
-          //           name: "",
-          //           description: "",
-          //           montant : 0
+        if(montant > 0 ) {
+          toast({
+            title: `Toutes les tranche ont été soldé, votre différence est : ${  montant } `,
+            description: " paye avec succes.",
+            status: "success",
+            duration: 3000,
+            isClosable: true,
+          });
+        } else {
+          toast({
+            title: `Toutes les tranches ont été soldé`,
+            description: " paye avec succes.",
+            status: "success",
+            duration: 3000,
+            isClosable: true,
+          });
+        }
+          // const pension = dataStudentSalle?.findSalleByStudent?.montantPensionSalle
+          // // const trancheStudentByStudent = dataTrancheStudentBySudentId?.getTrancheStudentByStudent
+          // let totalTrancheSelectionner = 0
+          // selectedTranches.forEach((tranche, index) => {
+          //   // console.log(getTrancheById(tranche.value));
+          //     totalTrancheSelectionner += getTrancheById(tranche.value)?.montant
+          // })
+          // console.log("pension",pension);
+          // console.log("pension sel",totalTrancheSelectionner);
+          // if(totalTrancheSelectionner >= pension) {
+          //   let temp = montant
+          //   console.log(temp)
+          //   selectedTranches.map(tranche=>{
+          //     const mont = getTrancheById(tranche.value)?.montant
+          //     temp = temp - mont
+          //     console.log(temp)
+          //     setMontant(temp)
+          //     createFeesAvanceTranche({
+          //       variables: {
+          //         avancetranche:{
+          //           // trancheStudentId: dataTrancheStudentBySudentId?.getTrancheStudentByStudent.id,
+          //           montant: mont,
+          //           trancheId: tranche.value,
+          //           studentId: dataStudentId?.findOnestudent.id
           //         }
           //       }
-          //     }
+          //     })
           //   })
-          // console.log(result)
-        // }else if (tranches[1].value){
-        //   await createFeesAvanceTranche({
-        //     variables: {
-        //       avancetranche:{
-        //         // trancheStudentId: "",
-        //         montant: parseInt(montant),
-        //         trancheId: tranches[1].value,
-        //         tranchestudentinput: {
-        //           studentId: dataStudentId?.findOnestudent.id,
-        //           name: "",
-        //           description: "",
-        //           montant : 0
-        //         }
-        //       }
-        //     }
-        //   })
-        // }else if (tranches[2].value)
-        //  { await createFeesAvanceTranche({
-        //     variables: {
-        //       avancetranche:{
-        //         // trancheStudentId: "",
-        //         montant: parseInt(montant),
-        //         trancheId: tranches[2].value,
-        //         tranchestudentinput: {
-        //           studentId: dataStudentId?.findOnestudent.id,
-        //           name: "",
-        //           description: "",
-        //           montant : 0
-        //         }
-        //       }
-        //     }
-        //   })
+          //   toast({
+          //     title: "paiement tranche pension.",
+          //     description: "Vous avez solde votre scolarite.",
+          //     status: "success",
+          //     duration: 3000,
+          //     isClosable: true,
+          //   });
+          //   setMontant(0);
+          // }
         }  
+
+        const affectionParentToStudent = async() => {
+          let studentId = dataStudentId?.findOnestudent.id
+          console.log(studentId)
+          console.log(selectedParents)
+              selectedParents.map((parent, index) => {
+                dataAffectationParentToStudent({
+                  variables:{
+                    input:{
+                      studentId: studentId,
+                      parentId: parent.value
+                    }
+                  }
+                })
+              })
+              onClosseParent();
+              toast({
+                title: `Vous avez affecte un parent a cet eleve`,
+                description: " paye avec succes.",
+                status: "success",
+                duration: 3000,
+                isClosable: true,
+              });
+          }
         //   onClose();
         //   toast({
         //     title: "paiement tranche pension.",
@@ -580,9 +602,9 @@ const {data:dataClassFeesByStudentId} = useQuery(GET_CLASS_FEES_BY_STUDENT_ID,
         // }
     // if (loading) return <Text>Chargement en cour...</Text>
     // if (error) return <Text>Une erreur s'est produite!</Text>
-
     // const minNumberInput = if dataTrancheById.tranche.name = 
     
+  
   return (
     <DefaultLayout >
       <Box 
@@ -675,11 +697,17 @@ const {data:dataClassFeesByStudentId} = useQuery(GET_CLASS_FEES_BY_STUDENT_ID,
           <Center 
             g='#FA6060' 
             height='40px' 
-            color='white' 
+            // color='white' 
             borderRadius={'md'}
-            bg="#e2d39c"
+            // bg="#e2d39c"
           >
-            <Text m='2'>Bulletin</Text>
+            <Button 
+              m='2'
+              bg={"colors.secondary"}
+              onClick={onOpenParent}
+            >
+              Affecter un parent
+            </Button>
           </Center>
           <Center 
             g='#60736A'  
@@ -732,7 +760,6 @@ const {data:dataClassFeesByStudentId} = useQuery(GET_CLASS_FEES_BY_STUDENT_ID,
       </CardHeader>
       
       <CardBody fontSize={'sm'}>
-        
         <Flex 
           flexDirection={'column'} 
           spacing='5'
@@ -819,13 +846,28 @@ const {data:dataClassFeesByStudentId} = useQuery(GET_CLASS_FEES_BY_STUDENT_ID,
               >
                 Derniere scolarite :
               </Text>
-                {dataTrancheStudentBySudentId?.getTrancheStudentByStudent.montant} FCFA
+                {/* {dataTrancheStudentBySudentId?.getTrancheStudentByStudent.montant} FCFA */}
             </Text> 
-              <Box fontWeight={800}>
-              <Text>Frais de la scolarite</Text>
-              <Text>Frais tranche 1</Text>
-              <Text>Frais tranche 2</Text>
-              <Text>Frais tranche 3</Text>
+              <Box 
+              // fontWeight={800}
+              >
+                <Box> 
+                  <Text fontWeight={800}>Pension total</Text>
+                  <Box display={"flex"} gap={15}> 
+                    <Text>
+                      Montant attendu: {dataClassFeesByStudentId?.getClassfeebyStudent} FCFA |
+                    </Text>
+                    <Text>
+                      Montant percu: {dataAlreadyPayBySudent?.findpensionbystudent.montantPension} FCFA |
+                    </Text>
+                    <Text>
+                    Reste a payer: {dataResteFeesToPayByStudent?.findrestpensionbystudent} FCFA
+                      </Text>
+                  </Box>
+                </Box>
+                <Text>Frais tranche 1</Text>
+                <Text>Frais tranche 2</Text>
+                <Text>Frais tranche 3</Text>
               </Box>
             </Box> 
           </Box>
@@ -960,7 +1002,13 @@ const {data:dataClassFeesByStudentId} = useQuery(GET_CLASS_FEES_BY_STUDENT_ID,
                     size='xl'
                   >
                   <AlertDialogOverlay>
+
                     <AlertDialogContent  >
+                      <AlertDialogCloseButton
+                        pl="20px"
+                        pb="20px"
+                      />
+
                         <AlertDialogHeader 
                           fontSize='sm' 
                           fontWeight='base' 
@@ -974,13 +1022,15 @@ const {data:dataClassFeesByStudentId} = useQuery(GET_CLASS_FEES_BY_STUDENT_ID,
                           <Heading 
                             as='h4' 
                             textAlign={'center'} 
-                            fontSize={['15px','20px','26px']} 
+                            fontSize={['15px','20px','20px']} 
                             p='2' 
+                            mt="10px"
                           >
                               Groupe Scolaire Bilingue Awono Bilongue
                           </Heading>
                         </Box>
                         </AlertDialogHeader>
+                        
                       <AlertDialogBody>
                         <Box mt='4'>
                           {/* BOUTON D'INITIALISATION DE LA PENSION */}
@@ -1014,7 +1064,7 @@ const {data:dataClassFeesByStudentId} = useQuery(GET_CLASS_FEES_BY_STUDENT_ID,
                                 <Text 
                                   type={'text'} 
                                 >
-                                  {dataTrancheStudentBySudentId?.getTrancheStudentByStudent.montant} FCFA
+                                  {dataAlreadyPayBySudent?.findpensionbystudent.montantPension} FCFA
                               </Text>
                             </Flex>
                           {/* <FormControl>
@@ -1116,9 +1166,9 @@ const {data:dataClassFeesByStudentId} = useQuery(GET_CLASS_FEES_BY_STUDENT_ID,
                                    type="number"
                                     name="montant"
                                     isRequired
-                                    min={500} 
+                                    // min={500} 
                                     // value={montant}
-                                    defaultValue={2000}
+                                    defaultValue={500}
                                     // onChange={(e)=>setMontant(e.target.value)}
                                     max={150000}
                                     // error={error}
@@ -1204,7 +1254,106 @@ const {data:dataClassFeesByStudentId} = useQuery(GET_CLASS_FEES_BY_STUDENT_ID,
                   </AlertDialogOverlay>
                 </AlertDialog>
               </Box>
-</SimpleGrid>
+
+
+{/* FORMULAIRE D'ATTRIBUTION D'UN PARENT A UN ELEVE */}
+              <Box
+                as="form"
+                // onSubmit={PayTrancheSchoolFees}
+                // onSubmit={PayTrancheSchoolFees(handleSubmit)}
+              > 
+                <AlertDialog
+                    isOpen={isOpenParent}
+                    leastDestructiveRef={cancelRef}
+                    onClose={onClosseParent}
+                    size='xl'
+                  >
+                  <AlertDialogOverlay>
+                    <AlertDialogContent  >
+                      <AlertDialogCloseButton/>
+
+                        <AlertDialogHeader 
+                          fontSize='sm' 
+                          fontWeight='base' 
+                          mt='0'
+                        >
+                        <Box  
+                          // bg={"colors.secondary"} 
+                          borderBottomRightRadius={10} 
+                          borderBottomLeftRadius={10}
+                        >
+                          <Heading 
+                            as='h4' 
+                            textAlign={'center'} 
+                            fontSize={['15px','20px','20px']} 
+                            mt={"10px"}
+                          >
+                              Attribuer un parent a cet eleve
+                          </Heading>
+                        </Box>
+                        </AlertDialogHeader>
+                      <AlertDialogBody>
+                        <Box mt='4'>
+                          <Box> 
+                            <FormControl>
+                              <FormLabel>
+                                Parent
+                              </FormLabel>
+                                <Selects
+                                  isMulti
+                                  name={"selectedParents"}
+                                  value={selectedParents}
+                                  onChange={setSelectedParent}
+                                  options={parents}
+                                  placeholder={"Motif"}
+                                  trancheMiseAJour
+                                >
+                                  {console.log(selectedParents)}
+                                {/* {console.log(trancheId)} */}
+                                </Selects>
+                                {/* {errors.trancheId && <Text>{errors.trancheId.message}</Text>} */}
+                            </FormControl>
+                                
+                          </Box>
+                        </Box>
+                        <Box mt="10px"> 
+                            <FormControl>
+                              <FormLabel> Eleve</FormLabel>
+                              <Input 
+                                type={'text'} 
+                              
+                                value={dataStudentId?.findOnestudent.firstname}
+                              />
+                              {/* {console.log(dataStudentId?.findOnestudent.id)} */}
+                            </FormControl>
+                          {/* )}}
+                          /> */}
+                        </Box>
+                      </AlertDialogBody>
+                      <AlertDialogFooter>
+                        <Button 
+                          ref={cancelRef} 
+                          onClick={onClosseParent} 
+                          colorScheme='red' 
+                        >
+                          annuler
+                        </Button>
+                        <Link href={'#'}>
+                          <Button 
+                            colorScheme='green'  
+                            ml={3}
+                            onClick={affectionParentToStudent}
+                              // (dataTrancheStudentBySudentId?.getTrancheStudentByStudent.id)
+                          >
+                            payer
+                          </Button>
+                        </Link> 
+                      </AlertDialogFooter>
+                    </AlertDialogContent>
+                  </AlertDialogOverlay>
+                </AlertDialog>
+              </Box>
+      </SimpleGrid>
 )} 
       </Box>
     </DefaultLayout>

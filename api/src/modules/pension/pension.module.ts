@@ -7,12 +7,14 @@ import { PensionResolver } from './pension.resolver';
 import { PensionService } from './pension.service';
 import { TrancheStudentModule } from '../tranche-student/tranche-student.module';
 import { StudentModule } from '../student/student.module';
+import { ExpenseModule } from '../expenses/expense.module';
 
 @Module({
     imports:[
         MikroOrmModule.forFeature({ entities: [Pension] }),
         forwardRef(()=>TrancheStudentModule),
-        forwardRef(() =>StudentModule)
+        forwardRef(() =>StudentModule),
+        ExpenseModule
     ],
     providers:[PensionService,PensionResolver],
     exports:[PensionService]

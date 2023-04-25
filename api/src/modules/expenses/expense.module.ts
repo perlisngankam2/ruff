@@ -1,16 +1,20 @@
 /* eslint-disable prettier/prettier */
 import { MikroOrmModule } from "@mikro-orm/nestjs";
-import { Module } from "@nestjs/common";
+import { Module, forwardRef } from "@nestjs/common";
 import { Expense } from "src/entities/expense.entity";
 import { AnneAccademiqueModule } from "../anne_accademique/anne_accademique.module";
 import { ExpenseResolver } from "./expense.resolver";
 import { ExpenseService } from "./expense.service";
+import { PensionModule } from "../pension/pension.module";
+import { SalaireModule } from "../salaire/salaire.module";
 
 
 @Module({
     imports:[
         MikroOrmModule.forFeature({ entities: [Expense] }),
-        AnneAccademiqueModule
+        AnneAccademiqueModule,
+        forwardRef(() => PensionModule),
+        forwardRef(() => SalaireModule)
     ],
     providers:[ExpenseService,ExpenseResolver],
     exports:[ExpenseService]

@@ -1,4 +1,4 @@
-import { Box, Heading } from "@chakra-ui/react";
+import { AlertDialogCloseButton, Box, Heading } from "@chakra-ui/react";
 import SearchBar from "../../components/atoms/searchbar";
 import {
   AlertDialog,
@@ -9,7 +9,7 @@ import {
   AlertDialogOverlay,
   useDisclosure,
   Button,
-    Center,
+  Center,
   Flex,
   Input,
   FormControl,
@@ -25,7 +25,6 @@ import { CREATE_SECTION, UPDATA_SECTION} from "../../graphql/Mutation";
 import { GET_ALL_SECTION } from "../../graphql/Queries";
 import { useState } from "react";
 import { useRouter } from "next/router";
-
 
 const  SectionCreate =  () => {
 
@@ -119,7 +118,7 @@ const  SectionCreate =  () => {
                     size='xl'
                 >
                     <AlertDialogOverlay>
-                        <AlertDialogContent  >
+                        <AlertDialogContent width={"400px"} >
                             <AlertDialogHeader 
                                 fontSize='sm' 
                                 fontWeight='base' 
@@ -128,13 +127,15 @@ const  SectionCreate =  () => {
                                 <Box>
                                     <Heading 
                                         textAlign={'center'} 
-                                        fontSize={['15px','20px','26px']} 
+                                        fontSize={['15px','20px','24px']} 
                                         p='2' 
                                     >
                                     Ajouter une section
                                     </Heading>
                                 </Box>
                             </AlertDialogHeader>
+                            <AlertDialogCloseButton/>
+
                             <AlertDialogBody>
                             <Box>
                                 <FormControl>

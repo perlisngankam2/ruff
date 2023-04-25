@@ -25,6 +25,7 @@ import { Role } from './../modules/auth/roles/roles';
 import { Prime } from './prime.entity';
 import { Salaire } from './salaire.entity';
 import { PersonnelSalle } from './personnelsalle.entity';
+import { Expense } from './expense.entity';
 
 export enum Status{
   PERMANENT='PERMANENT',
@@ -129,6 +130,18 @@ export class Personnel {
   })
   category!:IdentifiedReference<CategoriePersonnel>|null
 
+  @Field(() => ID)
+  @Property({ persist: false })
+  get userid() {
+    return `${this.user.id}`;
+  }
+
+  @Field(() => ID)
+  @Property({ persist: false })
+  get categorieid() {
+    return `${this.category.id}`;
+  }
+
 
 // relation with another Entites
   @OneToMany(() => PrimePersonnel, prime => prime.personnel,{nullable:true})
@@ -152,5 +165,8 @@ export class Personnel {
 
   @OneToMany(()=>PersonnelSalle, (personnelsalle) => personnelsalle.personnel)
   personnelsalle = new Collection<PersonnelSalle>(this)
+
+  @OneToMany(()=> Expense, (expense) => expense.personnel)
+  expense = new Collection<Expense>(this)
 
 }

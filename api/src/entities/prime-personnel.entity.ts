@@ -59,6 +59,24 @@ export class PrimePersonnel {
   })
   salaire!:IdentifiedReference<Salaire>|null
 
+  @Field(() => ID)
+  @Property({ persist: false })
+  get primeid() {
+    return `${this.prime.id}`;
+  }
+
+  @Field(() => ID)
+  @Property({ persist: false })
+  get personnelid() {
+    return `${this.personnel.id}`;
+  }
+
+  @Field(() => ID)
+  @Property({ persist: false })
+  get salaireid() {
+    return `${this.salaire.id}`;
+  }
+
 
 
 }

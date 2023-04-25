@@ -29,22 +29,35 @@ export class ParentService {
         input: ParentCreateInput,
       ): Promise<Parent> {        
         const parent = new Parent()
+        wrap(parent).assign({
+          firstname: input.firstname,
+          lastname: input.lastname,
+          phonenumber: input.phonenumber,
+          gender: input.gender,
+          profession: input.profession,
+          parentStatus : input.parentStatus
+        // const user = input.user
+        //         ? await this.userService.findOne(input.user)
+        //         : await this.userService.create(input.user)
 
-        const user = input.user
-                ? await this.userService.findOne(input.user)
-                : await this.userService.create(input.user)
+        // parent.firstname = input.firstname
+        // parent.lastname = input.lastname
+        // parent.profession = input.profession
+        // parent.email = input.email
+        // parent.phonenumber=input.phonenumber
+        // parent.user.id = user.id
+        },
+          {
+            em:this.em
+          },
+        )
 
-        parent.firstname = input.firstname
-        parent.lastname = input.lastname
-        parent.profession = input.profession
-        parent.email = input.email
-        parent.phonenumber=input.phonenumber
-        parent.user.id = user.id
-        
         await this.parentRepository.persistAndFlush(parent)
         return parent
       }
     
+
+
       findOne(filters: FilterQuery<Parent>): Promise<Parent | null> {
         return this.parentRepository.findOne(filters);
       }
@@ -82,7 +95,7 @@ export class ParentService {
       }
       async delete(id:string){
         const a = this.findById(id)
-        await this.parentRepository.removeAndFlush(a)
+        await this.parentRepository.nativeDelete(await a)
         if(!a){
         throw Error("not found")
         }

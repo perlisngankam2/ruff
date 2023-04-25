@@ -17,6 +17,7 @@ import { PrimaryKeyUuid } from '../decorators/PrimaryKeyUuid.decorator';
 import { Expense } from './expense.entity';
 import { Inscription } from './inscription.entity';
 import { Pension } from './pension.entity';
+import { PensionSalle } from './pensionsalle.entity';
 
 @Entity()
 @ObjectType()
@@ -48,4 +49,8 @@ export class AnneeAccademique {
   @OneToMany(()=> Expense, (expense) => expense.anneeAccademique
   )
   expense = new Collection<Expense>(this)
+
+  @OneToMany(()=> PensionSalle, (pensionsalle) => pensionsalle.anneeAccademique
+    )
+  pensionsalle = new Collection<PensionSalle>(this)
 }

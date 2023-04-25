@@ -34,4 +34,22 @@ export class PersonnelSalle {
   })
   course!:IdentifiedReference<Course>|null
 
+  @Field(() => ID)
+  @Property({ persist: false })
+  get personnelid() {
+    return `${this.personnel.id}`;
+  }
+
+  @Field(() => ID)
+  @Property({ persist: false })
+  get salleid() {
+    return `${this.salle.id}`;
+  }
+
+  @Field(() => ID)
+  @Property({ persist: false })
+  get courseid() {
+    return `${this.course.id}`;
+  }
+
 }

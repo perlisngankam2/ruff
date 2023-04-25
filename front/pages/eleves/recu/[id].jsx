@@ -29,7 +29,10 @@ import {
     GET_RESTE_TRANCHE_BY_STUDENT,
     GET_ALL_MONTANT_TRANCHE_BY_STUDENT,
     GET_ALL_TRANCHE_DATE_LINE_BY_STUDENT,
-    GET_CLASS_FEES_BY_STUDENT_ID
+    GET_CLASS_FEES_BY_STUDENT_ID,
+    GET_PENSION_ALREADY_PAY_BY_STUDENT_ID,
+  GET_RESTE_PENSION_A_PAYER_BY_STUDENT_ID
+
  } from "../../../graphql/Queries";
 import { use, useEffect } from "react";
 import { useQuery } from "@apollo/client";
@@ -67,9 +70,16 @@ const receipt = () => {
     //PENSION PAR CLASSE DE CHQUE ELEVE
     const {data:dataClassFeesByStudentId} = useQuery(GET_CLASS_FEES_BY_STUDENT_ID,
         {
-        variables: {studentid: router.query.id}
+            variables: {studentid: router.query.id}
         }
     )
+
+    //RESTE DE LA PENSION A PAYER POUR CHAQUE ELEVE
+  const {data:dataResteFeesToPayByStudent} = useQuery(GET_RESTE_PENSION_A_PAYER_BY_STUDENT_ID,
+    {
+      variables: {studentid: router.query.id} 
+    }
+  )
 
     //MONTANT DES TRANCHES PAYE EN FONCTION DE CHAQUE ELEVE
     const {data:dataAvanceMontantInscriptionByStudent} = useQuery(GET_AVANCE_MONTANT_TRANCHE_BY_STUDENT,
@@ -161,6 +171,13 @@ const receipt = () => {
             variables:{
                 studentid: router.query.id,
         }   }   
+    )
+
+     //PENSION TOTALE DEJA PAYE PAR ELEVE 
+    const {data:dataAlreadyPayBySudent} = useQuery(GET_PENSION_ALREADY_PAY_BY_STUDENT_ID,
+        {
+        variables: {studentid: router.query.id} 
+        }
     )
     // const {data:dataStudentByTrancheStudent} = useQuery(GET_STUDENT_BY_TRANCHE_STUDENT,
     //     {
@@ -408,12 +425,12 @@ const receipt = () => {
                                                             <Text>Net Paid</Text>
                                                         </Box>
                                                     </Th>
-                                                    <Th border='1px'>
+                                                    {/* <Th border='1px'>
                                                         <Box fontSize='8px' textAlign='center'>
                                                             <Text>Net Reduit</Text>
                                                             <Text>Net Discount</Text>
                                                         </Box>
-                                                    </Th>
+                                                    </Th> */}
                                                     <Th border='1px'>
                                                         <Box fontSize='8px' textAlign='center'>
                                                             <Text>Reste à Payer</Text>
@@ -431,17 +448,24 @@ const receipt = () => {
                                                     </Th>
                                                     <Th border='1px'>
                                                         <Box fontSize='8px'>
-                                                            <Text textAlign={"center"}> {dataStudentByTrancheStudent?.getTrancheStudentByStudent.montant}</Text>
+                                                            <Text textAlign={"center"}> 
+                                                                {/* {dataStudentByTrancheStudent?.getTrancheStudentByStudent.montant} */}
+                                                                {dataAlreadyPayBySudent?.findpensionbystudent.montantPension}
+                                                            </Text>
                                                         </Box>
                                                     </Th>
-                                                    <Th border='1px'>
+                                                    {/* <Th border='1px'>
                                                         <Box fontSize='8px'>
-                                                            <Text textAlign={"center"} ></Text>
+                                                            <Text textAlign={"center"} >
+
+                                                            </Text>
                                                         </Box>
-                                                    </Th>
+                                                    </Th> */}
                                                     <Th border='1px'>
                                                         <Box fontSize='8px'>
-                                                        <Text textAlign={"center"}></Text>
+                                                        <Text textAlign={"center"}>
+                                                            {dataResteFeesToPayByStudent?.findrestpensionbystudent} FCFA
+                                                        </Text>
                                                         </Box>
                                                     </Th>
                                                 </Tr>
@@ -686,7 +710,8 @@ const receipt = () => {
                                                     fontSize='xl' 
                                                 >
                                                     {/* {dataStudentByTrancheStudent?.getStudentByTrancheStudent.montant} */}
-                                                    {dataStudentByTrancheStudent?.getTrancheStudentByStudent.montant}
+                                                    {/* {dataStudentByTrancheStudent?.getTrancheStudentByStudent.montant} */}
+                                                    {dataAlreadyPayBySudent?.findpensionbystudent.montantPension}
                                                 </Text>
                                                 <Text 
                                                     fontWeight='bold'

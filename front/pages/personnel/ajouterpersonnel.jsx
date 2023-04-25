@@ -412,7 +412,6 @@ const AjouterPersonnel = () => {
                   <FormLabel fontWeight={"normal"}> 
                     {/* {t('components.school.Register.phoneNumber')} */}
                     {t('pages.personnel.ajouterpersonnel.phoneNumber')}
-                     Telephone
                   </FormLabel>
                   <Input
                     type='tel'

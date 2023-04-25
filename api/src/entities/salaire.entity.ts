@@ -19,6 +19,7 @@ import { Personnel } from './pesonnel.entity';
 import { PrimePersonnel } from './prime-personnel.entity';
 import { RetenuPersonnel } from './retenu-personnel.entity';
 import { format } from 'date-fns';
+import { Expense } from './expense.entity';
 
 
 @Entity()
@@ -64,11 +65,19 @@ periode!:IdentifiedReference<Periode>|null
 })
 personnel!:IdentifiedReference<Personnel>|null
 
+@Field(() => ID)
+@Property({ persist: false })
+get personnelid() {
+  return `${this.personnel.id}`;
+}
+
 @OneToMany(() => PrimePersonnel, primePersonel => primePersonel.salaire)
 primePersonnel = new Collection<PrimePersonnel>(this);
 
 @OneToMany(() => RetenuPersonnel, retenuPernole => retenuPernole.salaire)
 retenuPersonnel = new Collection<RetenuPersonnel>(this);
+
+
 
 // @ManyToOne(() => RetenuPersonnel ,{
 //   nullable:false,

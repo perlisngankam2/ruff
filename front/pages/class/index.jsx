@@ -18,7 +18,7 @@ import {
   Th,
   Thead,
   Tr,
-  Link,
+  Link as Links,
   Avatar,
   Icon,
   Heading,
@@ -45,6 +45,7 @@ import {
   
 } from "@chakra-ui/react";
 
+// import {Link} from "next"
 import { useRouter } from "next/router";
 import React, { use, useEffect, useState } from "react";
 import { FiSearch, FiEdit } from "react-icons/fi";
@@ -68,7 +69,8 @@ import { useMutation, useQuery } from "@apollo/client";
 import {IoIosAdd} from 'react-icons/io';
 import {MdDelete} from 'react-icons/md';
 import ReactPaginate from "react-paginate";
-
+import Link  from "next/link"
+import Routes from "../../modules/routes";
 
 const Class = () => {
 
@@ -369,7 +371,7 @@ const Class = () => {
                     >
                       annuler
                     </Button>
-                  <Link href={'#'}>
+                  <Links href={'#'}>
                       <Button 
                         colorScheme='green'  
                         ml={3}
@@ -377,7 +379,7 @@ const Class = () => {
                       >
                         Affectez  
                     </Button>
-                    </Link> 
+                    </Links> 
                   </AlertDialogFooter>
                 </Box>
               </AlertDialogContent>
@@ -463,7 +465,7 @@ const Class = () => {
                 >
                   annuler
                 </Button>
-              <Link href={'#'}>
+              <Links href={'#'}>
                   <Button 
                     colorScheme='green'  
                     ml={3}
@@ -471,7 +473,7 @@ const Class = () => {
                   >
                     Affectez  
                   </Button>
-                </Link> 
+                </Links> 
               </AlertDialogFooter>
             </Box>
           </AlertDialogContent>
@@ -480,7 +482,7 @@ const Class = () => {
     </Box>
 
 {/* LISTE DES CLASSES */}
-        <Box mt={10}>
+<Box mt={10}>
            <TableContainer
             border={"1px"} 
             rounded={"md"}
@@ -498,16 +500,144 @@ const Class = () => {
                   </Tr>
                   </Thead>
                   <Tbody>
+                    {dataClasse && ( 
+                      dataClasse.findAllsalle
+                      .slice(pagesVisited, pagesVisited + itemsPerPage)
+                      .map((salle, index) =>( 
+                      <Tr key={index}>
+                         <Td >{salle.name}</Td> 
+                         <Td>{salle.montantPensionSalle}</Td>
+                         {/* <Td borderColor={'#C6B062'}>{salle.montantPensionSalle}</Td>   */}
+                         {/* <Td borderColor={'#C6B062'}>{salle.section}</Td>  */}
+                         {/* <Td borderColor={'#C6B062'}>{salle.montantPension}</Td>  */}
+                        
+                        <Td >
+                          <ButtonGroup 
+                            size='sm' 
+                            isAttached 
+                            variant='link' 
+                            colorScheme={'teal'}
+                            >
+                              <Button>
+                                <Links 
+                                  href=''
+                                >Details</Links>
+                              </Button>
+                            </ButtonGroup> 
+                          </Td>
+                            <Box 
+                              display="flex"
+                              ml={['-140px', '-140px', '-140px', '-140px']} 
+                               mt={['8px', '8px', '8px', '8px']}
+                             >
+                                <Link 
+                                // href="/class/updateclass"
+                                  href= {{
+                                  pathname: Routes.ClasseEdit?.path || '',
+                                  query: {id: salle.id}
+                                  }}
+                                >
+                                  <Icon
+                                    as={FiEdit}
+                                    boxSize="40px"
+                                    p="3"
+                                    rounded="full"
+                                    _hover={{background:"red.100"}}
+                                  />
+                                </Link>
+                                <Box href="#" mt="-3px">
+                                  <Icon
+                                    as={MdDelete}
+                                    boxSize="44px"
+                                    p="3"
+                                    rounded="full"
+                                    color="colors.quaternary"
+                                    onClick={onToggle}
+                                    _hover={{background:"blue.100"}}
+                                  />
+                                  <Box> 
+                                    <AlertDialog
+                                      isOpen={isOpen}
+                                      leastDestructiveRef={cancelRef}
+                                      onClose={onClose}
+                                      isCentered
+                                    >
+                                        <AlertDialogOverlay
+                                          // alignSelf={"center"}
+                                        >
+                                          <AlertDialogContent
+                                          width={"380px"}
+                                          >
+                                            <AlertDialogHeader 
+                                              fontSize='lg' 
+                                              fontWeight='bold'
+                                              textAlign={"center"}
+                                              >
+                                              Confirmation de suppression
+                                            </AlertDialogHeader>
+                                            <AlertDialogBody textAlign={"center"}>
+                                            Voulez-vous supprimer cette classe?
+                                            </AlertDialogBody>
+
+                                            <AlertDialogFooter>
+                                              <Button 
+                                                ref={cancelRef} 
+                                                onClick={onClose}
+                                                colorScheme="red"
+                                              >
+                                                Annuler 
+                                              </Button>
+                                              <Button 
+                                                colorScheme='green' 
+                                                onClick={() => {removeClass(salle.id)}}
+                                                ml={3}
+                                              >
+                                                Supprimer
+                                              </Button>
+                                            </AlertDialogFooter>
+                                          </AlertDialogContent>
+                                        </AlertDialogOverlay>
+                                    </AlertDialog>
+                                  </Box>
+                                  </Box>
+                            </Box> 
+                        </Tr>
+                       )) 
+                     )} 
+                </Tbody>
+              </Table>
+            </TableContainer>
+        </Box>
+
+{/* //CLASSE ACCOMPAGNE DES PROFESSEUR ET DES COURS ASSOCIE */}
+        {/* <Box mt={10}>
+           <TableContainer
+            border={"1px"} 
+            rounded={"md"}
+           >
+              <Table 
+                variant='striped'
+                colorScheme={"white"}
+              >
+                  <Thead background="colors.secondary">
+                  <Tr>
+                      <Th>Nom</Th>
+                      <Th>Montant pension</Th>
+                      {/* <Th >section</Th>  */}
+                      {/* <Th >Action</Th>
+                  </Tr>
+                  </Thead>
+                  <Tbody>
                     {dataCoursePersonnelSalle && ( 
                       dataCoursePersonnelSalle.findbyCoursePersonnelSalle
                       .slice(pagesVisited, pagesVisited + itemsPerPage)
                       .map((personnelSalle, index) =>( 
                       <Tr key={index}>
-                         <Td >{personnelSalle.personnel_id.id}</Td> 
+                         <Td >{personnelSalle.personnel_id.id}</Td>  */}
                          {/* <Td borderColor={'#C6B062'}>{salle.montantPensionSalle}</Td>   */}
                          {/* <Td borderColor={'#C6B062'}>{salle.section}</Td>  */}
                          {/* <Td borderColor={'#C6B062'}>{salle.montantPension}</Td>  */}
-                        
+{/*                         
                         <Td >
                           <ButtonGroup 
                             size='sm' 
@@ -599,7 +729,7 @@ const Class = () => {
                 </Tbody>
               </Table>
             </TableContainer>
-        </Box>
+        </Box> */} 
         <Box mt={"15px"}> 
           <ReactPaginate 
             previousLabel={"<<"}

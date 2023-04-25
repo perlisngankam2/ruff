@@ -22,13 +22,19 @@ export class ParentUpdateInput {
   phonenumber?: string;
 
   @Field({nullable:true})
+  gender?: string;
+
+  @Field({ nullable: true })
+  parentStatus?: string;
+
+  @Field({nullable:true})
   email?: string;
 
-  @Field({defaultValue:false})
-  tuteur?: boolean;
+  // @Field({defaultValue:false})
+  // tuteur?: boolean;
 
-  @Field({defaultValue:false})
-  parent?: boolean;
+  // @Field({defaultValue:false})
+  // parent?: boolean;
 
   @Field({nullable:true})
   birthDate?: Date;
@@ -36,6 +42,6 @@ export class ParentUpdateInput {
   @Field({defaultValue:0})
   childNumber?: number;
 
-  @Field({nullable:true})
-  user:UserCreateInput
+  // @Field({nullable:true})
+  // user:UserCreateInput
 }

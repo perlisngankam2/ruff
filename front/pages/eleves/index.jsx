@@ -35,7 +35,8 @@ import {
   AlertDialogHeader,
   AlertDialogBody,
   AlertDialogFooter,
-  InputRightElement
+  InputRightElement,
+  AlertDialogCloseButton
 } from "@chakra-ui/react";
 // import Link from "../../components/atoms/Link"
 import React from "react";
@@ -280,7 +281,11 @@ const Eleves = () => {
                               mt={['8px', '8px', '8px', '8px']}
                             >
                               <Link 
-                                href="/eleves/modifiereleve">
+                                href={{
+                                  pathname: Routes.EleveEdit?.path || '',
+                                  query:{id: student.id}
+                                }}
+                                >
                                   <Icon
                                   as={FiEdit}
                                   boxSize="40px"
@@ -320,6 +325,7 @@ const Eleves = () => {
                                           >
                                           Confirmation de suppression
                                         </AlertDialogHeader>
+                                        <AlertDialogCloseButton/>
                                         <AlertDialogBody textAlign={"center"}>
                                         Voulez-vous supprimer cet elève?
                                         </AlertDialogBody>

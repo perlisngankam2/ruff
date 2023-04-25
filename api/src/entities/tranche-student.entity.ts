@@ -84,5 +84,17 @@ export class TrancheStudent {
   })
   tranche!:IdentifiedReference<Tranche>|null
 
+  @Field(() => ID)
+  @Property({ persist: false })
+  get studentid() {
+    return `${this.student.id}`;
+  }
+
+  @Field(() => ID)
+  @Property({ persist: false })
+  get trancheid() {
+    return `${this.tranche.id}`;
+  }
+
 
 }

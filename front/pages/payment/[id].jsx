@@ -417,7 +417,9 @@ const monthOptions = useMemo(() => {
           mt="20px"
           gap={7}
         > 
-         <Box width={'340px'} gap={7} >
+         <Box width={'340px'} gap={7} as={"form"}
+            onSubmit={HandleClick}
+         >
           <Text fontSize='sm'> Salaire Mois</Text>
               {/* <Input
                     placeholder="nom prime"
@@ -428,7 +430,6 @@ const monthOptions = useMemo(() => {
                     onChange={handleMoisPaieChange}
                     isDisabled={dataMoisSalaire?.PersonnelMonthSalary.includes(moisPaie)}
                     value={moisPaie}
-
                     
                   /> */}
                   <Select
@@ -460,10 +461,6 @@ const monthOptions = useMemo(() => {
                   
                    {console.log(jourPaie)}
                   </Box>
-                  
-                
-        
-
         </Flex>
       </Center>
        <Box 
@@ -473,7 +470,6 @@ const monthOptions = useMemo(() => {
        >
           <Divider />
         </Box>
-
              <Center>
           <Button disabled={!moisPaie} type="submit" color='white' bg='#eb808a' variant='solid' mx='auto' my='auto' onClick={HandleClick}>
               

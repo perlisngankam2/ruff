@@ -50,4 +50,5 @@ export class Retenue {
     onDelete:'CASCADE'
   })
   categorieRetenu!:IdentifiedReference<CategorieRetenu>|null
+
 }

@@ -1,11 +1,10 @@
-import { useQuery , useMutation } from "@apollo/client";
 import {
   Avatar,
   Box,
   Center,
   Flex,
-    Heading , 
-    Input, 
+  Heading , 
+  Input, 
   Table,
   TableContainer,
   Tbody,
@@ -32,10 +31,18 @@ import { useRouter } from "next/router";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import DefaultLayout from "../../components/layouts/DefaultLayout";
+import { useQuery , useMutation } from "@apollo/client";
 import { GET_ALL_PERSONNEL_BY_ID} from "../../graphql/Queries";
 import { GET_ALL_PERSONNELS } from "../../graphql/Queries";
 import { GET_PRIME, GET_ALL_RETENUE, GET_Category_Personnel_BY_ID, GET_Category_Personnel_ID } from "../../graphql/Queries";
-import { CREATE_PRIME_PERSONNEL, CREATE_RETENUE_PERSONNEL, CREATE_SALAIRE } from "../../graphql/Mutation";
+import { 
+  CREATE_PRIME_PERSONNEL, 
+  CREATE_RETENUE_PERSONNEL, 
+  CREATE_SALAIRE 
+} from "../../graphql/Mutation";
+// import { getStaticPropsTranslations } from "../../types/staticProps";
+import {useTranslation } from "next-i18next";
+import { MinusIcon } from "@chakra-ui/icons";
 
 export const colorOptions = [ 
   { value: "blue", label: "Blue", color: "#0052CC" },
@@ -57,30 +64,32 @@ const Profil = () => {
 
   
     const toast = useToast();
-
     const { isOpen,  onOpen, onClose } = useDisclosure();
     const { isOpen:isOpenns, onOpen:onOpenns, onClose:onClosses } = useDisclosure();
     const { isOpen:isOpenns1, onOpen:onOpenns1, onClose:onClosses1 } = useDisclosure();
     const { isOpen:isOpenns2, onToggle:onToggle1, onOpen:onOpenns2, onClose:onClosses2 } = useDisclosure();
-        const { isOpen:isOpenns3, onOpen:onOpenns3, onClose:onClosses3 } = useDisclosure();
+     const { isOpen:isOpenns3, onOpen:onOpenns3, onClose:onClosses3 } = useDisclosure();
     const cancelRef = React.useRef()
+    const router = useRouter();
+    const { t } = useTranslation();
 
-  const router = useRouter();
-
-   const {data:dataPersonnelId} = useQuery(GET_ALL_PERSONNEL_BY_ID,
+   const {data:dataPersonnelId, loading} = useQuery(GET_ALL_PERSONNEL_BY_ID,
   {
     variables:{ id: router.query.id}
   })
+  const {data:dataRetenue} = useQuery(GET_ALL_RETENUE)
 
-      const {data:dataCategorieId} = useQuery(GET_Category_Personnel_ID,
-     {
-        variables:{ personnelid: dataPersonnelId?.findOnePersonnel.id}
-     })
+    //   const {data:dataCategorieId} = useQuery(GET_Category_Personnel_ID,
+    //  {
+    //     variables: { personnelid: router.query.id}
+    //       // dataPersonnelId?.findOnePersonnel.id}
+    //  })
 
-    const {data:dataCategorie} = useQuery(GET_Category_Personnel_BY_ID,
-    {
-        variables:{ id: dataCategorieId?.findCategoriepersonnelbypersonnel}
-    })
+    // const {data:dataCategorie} = useQuery(GET_Category_Personnel_BY_ID,
+    // {
+    //     variables:{ personnelid: router.query.id}
+    //       // dataCategorieId?.fin?dCategoriepersonnelbypersonnel}
+    // })
 
  
 
@@ -104,22 +113,22 @@ const Profil = () => {
   const {data:dataPersonnel} = useQuery(GET_ALL_PERSONNELS)
   const {data:dataPrime} = useQuery(GET_PRIME)
 
-  const [createPrimePersonnel, error] = useMutation(CREATE_PRIME_PERSONNEL);
-  const [createRetenuePersonnel] = useMutation(CREATE_RETENUE_PERSONNEL);
+  const [createPrimePersonnel] = useMutation(CREATE_PRIME_PERSONNEL);
+  // const [createRetenuePersonnel] = useMutation(CREATE_RETENUE_PERSONNEL);
   const[personnelId, setPersonnelId] = useState("");
   const[primeId, setPrimeId] = useState("");
     const[startDate, setStartDate] = useState("");
-      const[endDate, setEndDate] = useState("");
-
+    const[endDate, setEndDate] = useState("");
+    const [startDate1, setStartDate1] = useState("");
+    const [retenuId, setRetenuId] = useState("");
 
   //generer salaire
 
-const montant = dataCategorie?.findOneCategoriepersonnel.montant;
+// const montant = dataCategorie?.findOneCategoriepersonnel.montant;
   const [moisPaie, setMoisPaie] = useState("");
   const [jourPaie , setJourPaie] = useState("");
   const [createSalaire] = useMutation(CREATE_SALAIRE);
   
-
 // fonction prime
     const HandleClick = async (event) => {
   event.preventDefault();
@@ -153,7 +162,6 @@ const montant = dataCategorie?.findOneCategoriepersonnel.montant;
 
   //fonction retenue
 
-
   const HandleClick1 = async (event) => {
   event.preventDefault();
 
@@ -182,33 +190,6 @@ const montant = dataCategorie?.findOneCategoriepersonnel.montant;
     setStartDate1("");
   }
 }
-//GENERER LE SALAIRE
-  const HandleClick3 = async (event) => {
-  event.preventDefault();
-
-  const salaireData = await createSalaire({
-        variables:{
-        input: { 
-          personnelId: dataPersonnelId.findOnePersonnel.id,
-          montant: parseInt(montant),
-          moisPaie: moisPaie, 
-          jourPaie: jourPaie
-        }
-      }
-    })
-
-    console.log(salaireData)
-    toast({
-      title: "Succès.",
-      description: "La prime a été crée .",
-      status: "success",
-      duration: 3000,
-      isClosable: true,
-    });
-
-        setMoisPaie("");
-        onClosses3();
-  }
 
   console.log(moisPayes)
 
@@ -234,11 +215,23 @@ const montant = dataCategorie?.findOneCategoriepersonnel.montant;
               {dataPersonnelId.findOnePersonnel.fonction}
             </Text>
             <Box background="blue.500" p="3" rounded="md" color="white">
-              <Text>Nom : {dataPersonnelId.findOnePersonnel.firstName}</Text>
-              <Text>Prenom : {dataPersonnelId.findOnePersonnel.lastName}</Text>
-              <Text>Situation matrimoniale :{dataPersonnelId.findOnePersonnel.situationMatrimonial} </Text>
-              <Text>Telephone: {dataPersonnelId.findOnePersonnel.phoneNumber}</Text>
-              <Text>Sexe : {dataPersonnelId.findOnePersonnel.sexe}</Text>
+              <Text>
+                {t('pages.personnel.ajouterpersonnel.firstName')}
+                : {dataPersonnelId.findOnePersonnel.firstName}
+              </Text>
+              <Text>   
+                {t('pages.personnel.ajouterpersonnel.lastName')}
+                : {dataPersonnelId.findOnePersonnel.lastName}
+              </Text>
+              <Text>
+              {t('pages.personnel.ajouterpersonnel.maritalStatus')}
+                :{dataPersonnelId.findOnePersonnel.situationMatrimonial} </Text>
+              <Text>
+                {t('pages.personnel.ajouterpersonnel.phoneNumber')}
+                : {dataPersonnelId.findOnePersonnel.phoneNumber}</Text>
+              <Text>
+                {t('pages.personnel.ajouterpersonnel.gender')}
+                : {dataPersonnelId.findOnePersonnel.sexe}</Text>
             </Box>
             <Box background="white" p="3" rounded="md">
             <Text>Date de naissance :{dataPersonnelId.findOnePersonnel.dateOfBirth}</Text>
@@ -372,7 +365,6 @@ const montant = dataCategorie?.findOneCategoriepersonnel.montant;
                     // onChange={e => setDateOfStartWork(e.target.value)}
                     // value={dateOfStartWork}
                     // // ref={dateOfStartWorkRef}
-                    
                   />
                     </FormControl>
                             <FormControl>
@@ -673,9 +665,7 @@ const montant = dataCategorie?.findOneCategoriepersonnel.montant;
                     rounded={2}
                     name="dateOfPrime"
                 
-                   value={montant}
-                 
-                    
+                  //  value={montant}
                   />
                     </FormControl>
                 </Flex>
@@ -745,181 +735,6 @@ const montant = dataCategorie?.findOneCategoriepersonnel.montant;
       </AlertDialog>
          </Box>
 
-
-
-  <Box>
-
-                  <Button 
-              leftIcon={<MinusIcon />} 
-              bg='red.200'
-              height='40px' 
-              color='white' 
-              onClick={onOpenns3}
-              w='110px'
-            >
-              Generer le paiement
-            </Button>
-
-              <AlertDialog
-                isOpen={isOpenns3}
-                leastDestructiveRef={cancelRef}
-                onClose={onClosses3}
-                size='xl'
-                
-            >
-              <AlertDialogOverlay>
-                  <AlertDialogContent  >
-                    <AlertDialogHeader 
-                      fontSize='sm' 
-                      fontWeight='base' 
-                      mt='0'
-                    >
-                    <Box  
-                      bg={"colors.secondary"} 
-                      borderBottomRightRadius={10} 
-                      borderBottomLeftRadius={10}
-                    >
-                        <Heading 
-                         
-                          textAlign={'center'} 
-                          fontSize={['15px','20px','26px']} 
-                          p='2' 
-                        >
-                                Groupe Scolaire Bilingue Awono Bilongue
-                        </Heading>
-                    </Box>
-                    </AlertDialogHeader>
-                    <AlertDialogBody>
- 
-            <Box mt='4'>
-                <Flex 
-                  gap={5} 
-                  flexWrap={['wrap','wrap','nowrap']} 
-                  align='end'
-                >
-                    <FormControl>
-                        <FormLabel 
-                        fontWeight={"normal"}
-                        >
-                          Nom de l'employé :
-                        </FormLabel>
-                <Input
-
-                    type="text"
-                    value= {dataPersonnelId.findOnePersonnel.firstName}
-                    // onChange={(e) => setNom(e.target.value)}
-                    name="Nom"
-                    placeholder="nom prime"
-                    bg='white'
-                    // type="date"
-                    // id="dateOfPrime"
-                    // name="dateOfPrime"
-                    // placeholder="{formattedDate}"
-                    // bg='white'
-              
-                    // borderColor="purple.100"
-                    // onChange={e => setDateOfStartWork(e.target.value)}
-                    // value={dateOfStartWork}
-                    // // ref={dateOfStartWorkRef}
-                    
-                  />
-                    </FormControl>
-                            <FormControl>
-                        <FormLabel 
-                        fontWeight={"normal"}
-                        >
-                          date du jour
-                        </FormLabel>
-                           <Input
-                    placeholder="nom prime"
-                    bg='white'
-                    type="date"
-                    rounded={2}
-                    name="dateOfPrime"
-                    mt={'8px'}
-                    onChange={(event) => setJourPaie(event.target.value)}
-                    value={jourPaie}
-                    
-                  />
-                    </FormControl>
-                    {/* <FormControl>
-                        <FormLabel 
-                        placeholder="--motif--"
-                        >
-                          Classe 
-                        </FormLabel>
-                        <Select  
-                          isMulti
-                          options= {groupedOptions}
-                          // {[Tranches.map((tranche) => (
-                          //   <option>{tranche}</option>
-                          // ))]}
-                        >
-                        </Select>
-                    </FormControl> */}
-                </Flex>
-            </Box>
-            <Box mt='4'>
-                <Flex 
-                  gap={5} 
-                  flexWrap={['wrap','wrap','nowrap']} 
-                  align='end'
-                >
-                  <FormControl>
-                    <FormLabel>Mois courant</FormLabel>
-                       <Input
-                    placeholder="nom prime"
-                    bg='white'
-                    type="month"
-                    name="dateOfPrime"
-                    rounded={2}
-                    onChange={handleMoisPaieChange1}
-                    value={moisPaie}
-
-                    
-                  />
-                
-                    </FormControl>
-                  
-                    
-    
-                    <FormControl>
-                        <FormLabel>Salaire de base</FormLabel>
-                                <Input
-                    placeholder="nom prime"
-                    bg='white'
-                    type="text"
-                    rounded={2}
-                    name="dateOfPrime"
-                
-                   value={montant}
-                 
-                    
-                  />
-                    </FormControl>
-                </Flex>
-            </Box>
-            </AlertDialogBody>
-            <AlertDialogFooter>
-              <Button ref={cancelRef} onClick={onClosses1} colorScheme='red' >
-                annuler
-              </Button>
-             <Link href={'#'}>
-              <Box>
-                <Button colorScheme='green'  ml={3} type='submit' onClick={HandleClick3}>
-                  ajouter
-                </Button>
-                
-
-
-                </Box>
-              </Link> 
-            </AlertDialogFooter>
-          </AlertDialogContent>
-        </AlertDialogOverlay>
-      </AlertDialog>
-         </Box>
-
     </Flex>
         </Box>
     )}
@@ -930,5 +745,12 @@ const montant = dataCategorie?.findOneCategoriepersonnel.montant;
     </DefaultLayout>
   );
 };
-
+// export async function getStaticProps({ locale }) {
+//   return {
+//     props: {
+//       ...(await getStaticPropsTranslations(locale)),
+//       // Will be passed to the page component as props
+//     },
+//   };
+// }
 export default Profil;

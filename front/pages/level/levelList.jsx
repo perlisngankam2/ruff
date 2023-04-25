@@ -54,7 +54,7 @@ import {
     const cancelRef = React.useRef()
     const { isOpen, onToggle, onClose } = useDisclosure();
     const [searchStudyLevel, setSearchStudyLevel] = useState("");
-    const itemsPerPage = 15
+    const itemsPerPage = 2
     const [pageNumber, setPageNumber] = useState(0);
     const pagesVisited = pageNumber * itemsPerPage;
 
@@ -83,8 +83,8 @@ import {
 
     const pageCountStudyLevel = Math.ceil(dataStudyLevel?.findAllNiveauEtude.length / itemsPerPage);
 
-    const changePage = ({ page }) => {
-      setPageNumber(page);
+    const changePage = ({ selected }) => {
+      setPageNumber(selected);
     };
     return (
       <DefaultLayout>
@@ -215,10 +215,10 @@ import {
                                  mt={['8px', '8px', '8px', '8px']}
                                >
                                   <Link 
-                                  href= {{
-                                    pathname: Routes.levelEdit?.path || '',
-                                    query: {id: niveauEtude.id}
-                                  }}>
+                                    href= {{
+                                      pathname: Routes.levelEdit?.path || '',
+                                      query: {id: niveauEtude.id}
+                                    }}>
                                     <Icon
                                       as={FiEdit}
                                       boxSize="40px"

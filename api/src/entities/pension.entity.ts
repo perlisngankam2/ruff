@@ -20,6 +20,7 @@ import { Salaire } from './salaire.entity';
 import { Salle } from './salle.entity';
 import { Tranche } from './tranche.entity';
 import { Student } from './student.entity';
+import { Expense } from './expense.entity';
 
 
 @Entity()
@@ -83,9 +84,25 @@ export class Pension {
   anneeAccademique!:IdentifiedReference<AnneeAccademique>|null
 
   
+
+
+  
   @ManyToOne(() => Student ,{
     nullable:true,
     onDelete:'CASCADE',
+    unique: true
   })
   student!:IdentifiedReference<Student>|null
+
+  @Field(() => ID)
+  @Property({ persist: false })
+  get yearid() {
+    return `${this.anneeAccademique.id}`;
+  }
+
+  @Field(() => ID)
+  @Property({ persist: false })
+  get studentid() {
+    return `${this.student.id}`;
+  }
 }

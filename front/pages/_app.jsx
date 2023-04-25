@@ -28,7 +28,9 @@ function MyApp({ Component, pageProps}) {
         quinzaine: "pink.300",
         greencolor: "#2F855A",
         bluecolor: "#BEE3F8",
-        greenColor: "green"
+        greenColor: "green",
+        redColor400: "#F56565",
+        greenColor400: "#48BB78"
       }, 
     },
   });  

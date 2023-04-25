@@ -14,11 +14,11 @@
                 "vaccataireStatusOption":"PERMANENT",
                 "permanentStatusOption":"PERMANENT",
                 "fonction": "Fonction",
-                "fondatorFonctionOption": "Fondateur",
-                "economeFonctionOption":"Econome",
-                "teacherFonctionOption": "Enseignant",
-                "gestionnaireFonctionOption":"Gestionnaire",
-                "principalFonctionOption":"Principal",
+                "fondatorFonctionOption": "fondateur",
+                "economeFonctionOption":"econome",
+                "teacherFonctionOption": "enseignant",
+                "gestionnaireFonctionOption":"gestionnaire",
+                "principalFonctionOption":"principal",
                 "phoneNumber": "Numéro de téléphone",
                 "matricule": "Matricule",
                 "maritalStatus": "Situation matrimoniale",
@@ -39,8 +39,23 @@
                 "confirmDeletingAlertDialogHeader":"Confirmation de suppression",
                 "confirmDeletingAlertDialogBody":"Voulez-vous supprimer cette categorie?",
                 "cancelAlertDialogButtonForDeleting": "Annuler",
-                "submitAlertDialogButtonForDeleting": "Supprimer"
+                "submitAlertDialogButtonForDeleting": "Supprimer",
+                "name": "Nom",
+                "description": "Description",
+                "salaireDebase": "Salaire de base",
+                "actions": "Actions"
 
+            },
+            "AjouterCategoriePersonnel":{
+                "addButton":" Ajouter une categorie ",
+                "heading": "Ajouter une categorie de personnel",
+                "name": "Nom",
+                "description": "Description",
+                "salaireDebase": "Salaire de base",
+                "cancelButton": "Annuler",
+                "submitButton": "Créer",
+                "valueSalaireDebase":"montant"
+                
             },
             "PersonnelAccountForm":{
                 "heading":"Créer un compte pour le personnel",

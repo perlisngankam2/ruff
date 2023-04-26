@@ -609,9 +609,28 @@ const Class = () => {
               </Table>
             </TableContainer>
         </Box>
+ 
+        <Box mt={"15px"}> 
+          <ReactPaginate 
+            previousLabel={"<<"}
+            nextLabel={">>"}
+            pageCount={pageCountSalle}
+            onPageChange={changePage}
+            containerClassName={"paginationBttns"}
+            previousLinkClassName={"previousBttn"}
+            nextLinkClassName={"nextBttn"}
+            disabledClassName={"paginationDisabled"}
+            activeClassName={"paginationActive"}
+          />
+      </Box>
 
-{/* //CLASSE ACCOMPAGNE DES PROFESSEUR ET DES COURS ASSOCIE */}
-        {/* <Box mt={10}>
+      {/* //CLASSE ACCOMPAGNE DES PROFESSEUR ET DES COURS ASSOCIE */}
+      <Box mt="50px">
+        <Heading fontSize={"2xl"} textAlign={"center"}>
+          Classe, cours, profeseur
+        </Heading>
+      </Box>
+       <Box mt={10}>
            <TableContainer
             border={"1px"} 
             rounded={"md"}
@@ -622,23 +641,23 @@ const Class = () => {
               >
                   <Thead background="colors.secondary">
                   <Tr>
-                      <Th>Nom</Th>
-                      <Th>Montant pension</Th>
-                      {/* <Th >section</Th>  */}
-                      {/* <Th >Action</Th>
+                      <Th>Classes</Th>
+                      <Th>Professeur</Th>
+                      <Th >Cours</Th> 
+                    <Th >Actions</Th>
                   </Tr>
                   </Thead>
                   <Tbody>
-                    {dataCoursePersonnelSalle && ( 
+                    {/* {dataCoursePersonnelSalle && ( 
                       dataCoursePersonnelSalle.findbyCoursePersonnelSalle
                       .slice(pagesVisited, pagesVisited + itemsPerPage)
-                      .map((personnelSalle, index) =>( 
-                      <Tr key={index}>
+                      .map((personnelSalle, index) =>(  */}
+                      {/* <Tr key={index}>
                          <Td >{personnelSalle.personnel_id.id}</Td>  */}
                          {/* <Td borderColor={'#C6B062'}>{salle.montantPensionSalle}</Td>   */}
                          {/* <Td borderColor={'#C6B062'}>{salle.section}</Td>  */}
                          {/* <Td borderColor={'#C6B062'}>{salle.montantPension}</Td>  */}
-{/*                         
+                         
                         <Td >
                           <ButtonGroup 
                             size='sm' 
@@ -651,8 +670,8 @@ const Class = () => {
                                   href='/eleves/details'
                                 >Details</Link>
                               </Button>
-                            </ButtonGroup> 
-                          </Td>
+                          </ButtonGroup> 
+                        </Td>
                             <Box 
                               display="flex"
                               ml={['-140px', '-140px', '-140px', '-140px']} 
@@ -724,26 +743,13 @@ const Class = () => {
                                   </Box>
                                   </Box>
                             </Box> 
-                        </Tr>
-                       )) 
-                     )} 
+                        {/* </Tr> */}
+                       {/* ))  */}
+                     {/* )}  */}
                 </Tbody>
               </Table>
             </TableContainer>
-        </Box> */} 
-        <Box mt={"15px"}> 
-          <ReactPaginate 
-            previousLabel={"<<"}
-            nextLabel={">>"}
-            pageCount={pageCountSalle}
-            onPageChange={changePage}
-            containerClassName={"paginationBttns"}
-            previousLinkClassName={"previousBttn"}
-            nextLinkClassName={"nextBttn"}
-            disabledClassName={"paginationDisabled"}
-            activeClassName={"paginationActive"}
-          />
-      </Box>
+        </Box> 
       </Box>
       </Box>
     </DefaultLayout>

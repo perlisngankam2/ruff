@@ -341,6 +341,8 @@ const CycleElement = ({cycle, index}) =>{
     })
     onClose();
   } 
+
+  
   return (
       <Tr key={index}>
         <Td p={0} pl={6}>{cycle.name}({cycle.sectionname})</Td>

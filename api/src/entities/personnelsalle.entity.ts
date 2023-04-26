@@ -40,6 +40,24 @@ export class PersonnelSalle {
     return `${this.personnel.id}`;
   }
 
+  // @Field(() => ID, { nullable: true })
+  // @Property({ persist: false })
+  // get personnelFirstName(): string | null {
+  //   return this.personnel ? `${this.personnel.getEntity().firstName}` : null;
+  // }
+
+  // @Field(() => ID, { nullable: true })
+  // @Property({ persist: false })
+  // get personnelLastName(): string | null {
+  //   return this.personnel ? `${this.personnel.getEntity().lastName}` : null;
+  // }
+
+  // @Field(() => ID, { nullable: true })
+  // @Property({ persist: false })
+  // get personnelFonction(): string | null {
+  //   return this.personnel ? `${this.personnel.getEntity().fonction}` : null;
+  // }
+
   @Field(() => ID)
   @Property({ persist: false })
   get salleid() {

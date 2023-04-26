@@ -13,11 +13,6 @@ export class PersonnelSalleResolver {
     return this.personnelsalleService.create(Input);
   }
 
-//    @Mutation(() => TrancheStudent)
-//    updateTrancheStudent(@Args('id', { type: () => String }) id: string, Input: TrancheStudentUpdateInput) {
-//      return this.trancheService.update(id,Input);
-//   }
-
   @Query(() => [PersonnelSalle])
   findAllPersonnelSalle() {
     return this.personnelsalleService.findall()

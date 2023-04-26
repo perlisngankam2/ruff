@@ -90,4 +90,10 @@ export class NiveauEtude{
     get cyclename() {
     return `${this.cycle.getEntity().name}`;
 }
+
+  @Field(() => ID)
+  @Property({ persist: false })
+  get cycleName() {
+  return `${this.cycle.getEntity().name}`;
+}
 }

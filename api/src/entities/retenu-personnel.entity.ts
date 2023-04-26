@@ -18,6 +18,7 @@ import { Personnel } from './pesonnel.entity';
 import { Prime } from './prime.entity';
 import { Retenue } from './retenu-salaire.entity';
 import { Salaire } from './salaire.entity';
+import { PaySalary } from './paysalary.entity';
 
 
 
@@ -52,6 +53,13 @@ export class RetenuPersonnel {
     onDelete:'CASCADE'
   })
   salaire!:IdentifiedReference<Salaire>|null
+
+  
+  @ManyToOne(() => PaySalary,{
+    nullable:false,
+    onDelete:'CASCADE',
+  })
+  paysalary!:IdentifiedReference<PaySalary>|null
 
   @Field(() => ID)
   @Property({ persist: false })

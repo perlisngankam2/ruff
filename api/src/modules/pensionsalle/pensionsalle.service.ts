@@ -68,7 +68,9 @@ export class PensionSalleService {
         }
     
       getAll(): Promise<PensionSalle[]> {
-        return this.pensionsalleRepository.findAll()
+        return this.pensionsalleRepository.findAll({
+          populate:['salle','anneeAccademique']
+        })
       }
       
       async update(id:string, input: PensionSalleUpdateInput): Promise<PensionSalle> {

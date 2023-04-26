@@ -90,15 +90,16 @@ export class User {
   })
   student!: IdentifiedReference<Student> | null;
 
-  @Field(() => ID)
+  @Field(() => ID, { nullable: true })
   @Property({ persist: false })
-  get personnelid() {
-    return `${this.personnel.id}`;
+  get personnelid(): string | null {
+    return this.personnel? `${this.personnel.id}` : null;
   }
+  
 
-  @Field(() => ID)
+  @Field(() => ID,{ nullable: true })
   @Property({ persist: false })
-  get studentid() {
-    return `${this.student.id}`;
+  get studentid(): string | null {
+    return this.student? `${this.student.id}`:null;
   }
 }

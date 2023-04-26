@@ -8,6 +8,7 @@ import { ExpenseService } from "./expense.service";
 
 
 
+
 @Resolver(() => Expense)
 export class ExpenseResolver {
   constructor(private readonly expenseService: ExpenseService) {}

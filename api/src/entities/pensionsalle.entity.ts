@@ -65,7 +65,7 @@ export class PensionSalle {
   }
 
   @Field(() => ID)
-  @Property({ persist: false })
+  @Property({ persist: false})
   get classid() {
     return `${this.salle.id}`;
   }

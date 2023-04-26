@@ -84,9 +84,6 @@ export class Pension {
   anneeAccademique!:IdentifiedReference<AnneeAccademique>|null
 
   
-
-
-  
   @ManyToOne(() => Student ,{
     nullable:true,
     onDelete:'CASCADE',

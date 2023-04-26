@@ -64,9 +64,16 @@ export class SalleService {
         return this.salleRepository.findOne(id)
       }
     
+      // getAll(): Promise<Salle[]> {
+      //   return this.salleRepository.findAll()
+      // }
+
       getAll(): Promise<Salle[]> {
-        return this.salleRepository.findAll()
-      }
+        const salles= this.salleRepository.findAll({
+          populate:['cycle','niveau']
+        })
+        return salles
+      }
 
       async deleteSalle(id:string){
         const a = this.findById(id)

@@ -58,7 +58,7 @@ import {
   GET_ALL_ANNEE_ACADEMIQUE,
   GET_ALL_COURSES,
   GET_ALL_PERSONNEL_SALLE,
-  GET_ALL_COURSE_PERSONNEL_SALLE
+  // GET_ALL_COURSE_PERSONNEL_SALLE
 } from "../../graphql/Queries";
 import { 
   DELETE_SALLE,
@@ -94,7 +94,8 @@ const Class = () => {
   const {data:dataEnseignant} = useQuery(GET_ALL_PERSONNELS);
   const {data:dataAnneeAcademique} = useQuery(GET_ALL_ANNEE_ACADEMIQUE);
   const {data:dataCourse} = useQuery(GET_ALL_COURSES);
-  const {data:dataCoursePersonnelSalle} = useQuery(GET_ALL_COURSE_PERSONNEL_SALLE);
+  const {data:dataPersonnelSalle} = useQuery(GET_ALL_PERSONNEL_SALLE);
+  // const {data:dataCoursePersonnelSalle} = useQuery(GET_ALL_COURSE_PERSONNEL_SALLE);
   const [createPersonnelSalle] = useMutation(CREATE_PERSONNEL_SALLE);
   const [createMonantPensionClasse] = useMutation(CREATE_MONTANT_SCOLARITE_CLASS);
 
@@ -109,8 +110,8 @@ const Class = () => {
   }
 
   useEffect(() => {
-    console.log(dataClasse?.findAllsalle);
-    console.log(dataCoursePersonnelSalle?.findbyCoursePersonnelSalle);
+    console.log(dataPersonnelSalle)
+    // console.log(dataCoursePersonnelSalle?.findbyCoursePersonnelSalle);
   })
   // const handleClose = () => {
   //   setShow(false)
@@ -496,7 +497,7 @@ const Class = () => {
                       <Th>Nom</Th>
                       <Th>Montant pension</Th>
                       {/* <Th >section</Th>  */}
-                      <Th >Action</Th>
+                      <Th >Actions</Th>
                   </Tr>
                   </Thead>
                   <Tbody>
@@ -534,7 +535,7 @@ const Class = () => {
                                 // href="/class/updateclass"
                                   href= {{
                                   pathname: Routes.ClasseEdit?.path || '',
-                                  query: {id: salle.id}
+                                  query: {id: salle?.id}
                                   }}
                                 >
                                   <Icon
@@ -589,7 +590,7 @@ const Class = () => {
                                               </Button>
                                               <Button 
                                                 colorScheme='green' 
-                                                onClick={() => {removeClass(salle.id)}}
+                                                onClick={() => {removeClass(salle?.id)}}
                                                 ml={3}
                                               >
                                                 Supprimer

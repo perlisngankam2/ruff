@@ -67,6 +67,9 @@ import { useQuery, useMutation } from "@apollo/client";
 import Routes from "../../modules/routes";
 import {useForm, Controller, defaultValues } from "react-hook-form";
 import { zodResolver } from '@hookform/resolvers/zod';
+import { UseTranslation, useTranslation } from "next-i18next";
+// import { getStaticPropsTranslations } from "../../types/staticProps";
+
 
 import { 
   GET_ALL_STUDENT, 
@@ -142,8 +145,11 @@ import {
 
 const DetailComponent = () => {
 
+
   const router = useRouter();
   const toast = useToast();
+  const {t} = useTranslation();
+
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { isOpen:isOpenns, onOpen:onOpenns, onClose:onClosses } = useDisclosure();
   const { isOpen:isOpenParent, onOpen:onOpenParent, onClose:onClosseParent } = useDisclosure();
@@ -265,9 +271,9 @@ const {data:dataResteFeesToPayByStudent} = useQuery(GET_RESTE_PENSION_A_PAYER_BY
 
     //  }
     );
-    const [paySchoolFees] = useMutation(CREATE_SCOLARITE_TRANCHE_STUDENT);
+//     const [paySchoolFees] = useMutation(CREATE_SCOLARITE_TRANCHE_STUDENT);
        
-        console.log("i")
+//         console.log("i")
         // const PayTrancheSchoolFees = handleSubmit(async(values) =>{
         //   console.log("i")
         //   // event.preventDefault();
@@ -441,13 +447,13 @@ const {data:dataResteFeesToPayByStudent} = useQuery(GET_RESTE_PENSION_A_PAYER_BY
           // console.log(dataTrancheStudentBySudentId?.getTrancheStudentByStudent)
         })
 
-    // console.log(dataTranchePension?.findAlltranche)
-    // const AllTranche = dataTranchePension?.findAlltranche.map((tranche) => {
-    //   const totalPension = dataTrancheStudentBySudentId?.getTrancheStudentByStudent.montant;
-    //   if (totalPension >= tranche.montant) {
-    //     return tranche;
-    //   }
-    // });
+    console.log(dataTranchePension?.findAlltranche)
+    const AllTranche = dataTranchePension?.findAlltranche.map((tranche) => {
+      const totalPension = dataTrancheStudentBySudentId?.getTrancheStudentByStudent.montant;
+      if (totalPension >= tranche.montant) {
+        return tranche;
+      }
+    });
 
         const [resteMontantTranche, setResteMontantTranche] = useState([])
         // const montantTranche = getTrancheById(tranche.value)?.montant
@@ -1360,8 +1366,17 @@ const {data:dataResteFeesToPayByStudent} = useQuery(GET_RESTE_PENSION_A_PAYER_BY
   );
 };
 
+ 
+// export async function getStaticProps({ locale }) {
+//   return {
+//     props: {
+//       ...(await getStaticPropsTranslations(locale)),
+//       // Will be passed to the page component as props
+//     },
+//   };
+// }
 export default DetailComponent;
-
+ 
 
 
 

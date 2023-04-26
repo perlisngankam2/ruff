@@ -99,6 +99,7 @@ import ReactPaginate from "react-paginate";
       setPageNumber(page);
     };
 
+
    return (
      <DefaultLayout>
        <Box p="3" pt={"80px"} w="full">
@@ -115,8 +116,8 @@ import ReactPaginate from "react-paginate";
              color="WindowText"
              size="lg"
              textColor="pink.300"
-           >
-                Matiere
+            >
+              Matière
            </Heading>
            <Hide below="sm">
              <Text>Dashboad/cours/liste des matiere </Text>
@@ -131,7 +132,6 @@ import ReactPaginate from "react-paginate";
              <Input
                placeholder="Recherchez une matiere..."
                variant="flushed"
-
                //value={recherche}
                onChange={handlechangeSearchCourse}
              />
@@ -149,11 +149,11 @@ import ReactPaginate from "react-paginate";
                 border={"1px"} 
                 rounded={"md"}
               >
-                 <Table 
-                  variant={"striped"} 
-                  colorScheme={"white"}
-                  bg={"white"}
-                 >
+                  <Table 
+                    variant={"striped"} 
+                    colorScheme={"white"}
+                    bg={"white"}
+                  >
                      <Thead background="colors.secondary">
                        <Tr>
                          <Th >Nom</Th>

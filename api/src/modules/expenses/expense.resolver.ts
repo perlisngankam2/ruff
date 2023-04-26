@@ -1,5 +1,5 @@
 /* eslint-disable prettier/prettier */
-import { Args, Mutation, Resolver } from "@nestjs/graphql";
+import { Args, Mutation, Query, Resolver } from "@nestjs/graphql";
 import { Expense } from "src/entities/expense.entity";
 import { ExpenseCreateInput } from "./dto/expense.create.input";
 import { ExpenseUpdateInput } from "./dto/expense.update.input";
@@ -28,12 +28,12 @@ export class ExpenseResolver {
     return await this.expenseService.delete(id)
   }
 
-  @Mutation(()=>Expense)
+  @Query(()=>Expense)
   async findoneexpense(@Args('id') id: string){
     return await this.expenseService.findByOne(id)
   }
 
-  @Mutation(()=>[Expense])
+  @Query(()=>[Expense])
   async findallexpenses(){
     return await this.expenseService.findall()
   }

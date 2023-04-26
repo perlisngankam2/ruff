@@ -50,6 +50,10 @@ import { IoIosAdd } from "react-icons/io";
 import{ FiEdit, FiSearch} from 'react-icons/fi';
 import {MdDelete} from 'react-icons/md';
 import {useRouter } from "next/router";
+import {useTranslation} from "next-i18next";
+import { getStaticPropsTranslations } from "../../types/staticProps";
+
+
 import { 
   GET_ALL_STUDENT, 
   GET_STUDENT_BY_ID,
@@ -65,6 +69,7 @@ const Eleves = () => {
 
     const cancelRef = React.useRef()
     const router = useRouter();
+    const {t} = useTranslation();
     const [query , setQuery] = useState("");
     const [data, setData] = useState([]);
     const keys = ["first_name", "last_name", "email", "classe"];
@@ -155,7 +160,7 @@ const Eleves = () => {
             size="lg"
             textColor="pink.300"
           >
-            Liste des élèves
+            {t("pages.eleves.listeDesEleves.listOfStudent")}
           </Heading>
           <Hide below="sm">
             <Text>Dashboad / Éleves / Liste Élèves</Text>
@@ -222,12 +227,12 @@ const Eleves = () => {
                   {/* <TableCaption>Liste des eleves</TableCaption> */}
                   <Thead background="colors.secondary">
                   <Tr>
-                    <Th>Nom</Th>
-                    <Th>Prenom</Th>
+                    <Th>{t("pages.eleves.listeDesEleves.firstName")}</Th>
+                    <Th>{t("pages.eleves.listeDesEleves.lastName")}</Th>
                     {/* <Th >classe</Th> */}
                     {/* <Th>sexe</Th> */}
                     {/* <Th>Photo</Th> */}
-                    <Th>Action</Th>
+                    <Th>{t("pages.eleves.listeDesEleves.actions")}</Th>
                   </Tr>
                   </Thead>
                   <Tbody>
@@ -270,7 +275,7 @@ const Eleves = () => {
                                   query: {id: student.id}
                                   }}
                                 >
-                                 Details
+                                 {t("pages.eleves.listeDesEleves.details")}
                                 </Link>
                               </Button>
                             </ButtonGroup> 
@@ -323,11 +328,11 @@ const Eleves = () => {
                                           fontWeight='bold'
                                           textAlign={"center"}
                                           >
-                                          Confirmation de suppression
+                                            {t("pages.eleves.listeDesEleves.confirmDeletingPassword")}
                                         </AlertDialogHeader>
                                         <AlertDialogCloseButton/>
                                         <AlertDialogBody textAlign={"center"}>
-                                        Voulez-vous supprimer cet elève?
+                                          {t("pages.eleves.listeDesEleves.wouldYouWantToDeleteStudent")}
                                         </AlertDialogBody>
 
                                         <AlertDialogFooter>
@@ -336,14 +341,14 @@ const Eleves = () => {
                                             onClick={onClose}
                                             colorScheme="red"
                                           >
-                                            Annuler 
+                                            {t("pages.eleves.listeDesEleves.cancel")}
                                           </Button>
                                           <Button 
                                             colorScheme='green' 
                                             onClick={() => removeStudent(student.id)}
                                             ml={3}
                                           >
-                                            Supprimer
+                                            {t("pages.eleves.listeDesEleves.delete")}
                                           </Button>
                                         </AlertDialogFooter>
                                       </AlertDialogContent>
@@ -395,6 +400,14 @@ const Eleves = () => {
     </DefaultLayout>
   );
 };
+export async function getStaticProps({ locale }) {
+  return {
+    props: {
+      ...(await getStaticPropsTranslations(locale)),
+      // Will be passed to the page component as props
+    },
+  };
+}
 
 export default Eleves;
 

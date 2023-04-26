@@ -55,9 +55,10 @@ export const GET_SALLE_BY_ID = gql `
             id
             name
             section
-            cycle
             montantPensionSalle
             effectif
+            niveauid
+            cycleid
         }
     }
 ` 
@@ -118,23 +119,25 @@ export const GET_ALL_CYCLE =  gql `
         findAllcycle {
             id
             name
+            sectionid
+            sectionname
         }
     }
 `;
 
 //liste des classes
-export const GET_ALL_CLASS =  gql `
+export const GET_ALL_CLASS = gql `
     query findAllsalle {
         findAllsalle {
             id
             name
             section
-            cycle
             montantPensionSalle
             effectif
+            niveauid
         }
     }
-`;
+`
 
 //get al frais inscription
 export const GET_ALL_FRAIS_INSCRIPTION =  gql `
@@ -214,6 +217,8 @@ export const GET_ALL_STUDY_LEVEL = gql `
             name
             description
             montantPension
+            cycleid
+            cyclename
         }
     }
 `
@@ -245,6 +250,7 @@ export const GET_ALL_TRANCHE_PENSION = gql `
     }
 `;
 
+//tranche student recupere toutes les tranches qui ont ete paye par un eleve
 export const GET_ALL_TRANCHE_STUDENT = gql `
     query findAlltranchestudent {
         findAlltranchestudent {
@@ -296,6 +302,26 @@ export const GET_ALL_MONTANT_TRANCHE_BY_SALLE = gql `
 //     }
 // `
 
+
+//recuperation de toutes les payement de salaire et de scolarite pour gerer les depenses
+export const GET_ALL_EXPENSE_PERSONNEL_STUDENT = gql `
+    query findallexpenses {
+        findallexpenses {
+            id
+            creditamount
+            debitamount
+            createdOn
+            personnelid
+            personnelFirstName
+            personnelLastName
+            personnelFonction
+            studentid
+            studentFirstname
+            studentLastname
+        }
+    }
+`
+
 //one cycle
 export const GET_ONE_CYCLE =  gql `
     query findOnecycle ($id: String!) {
@@ -318,12 +344,13 @@ export const GET_ONE_SECTION = gql `
 `;
 
 export const GET_LEVEL_BY_ID = gql`
-    query niveaEtude ($id: String!) {
-        niveaEtude (id: $id) {
+    query findOneNiveauEtude ($id: String!) {
+        findOneNiveauEtude (id: $id) {
             id
             name
             description
             montantPension
+            cycleid
         }
     }
 `
@@ -433,6 +460,9 @@ export const GET_ALL_PERSONNEL_SALLE = gql`
     query findAllPersonnelSalle {
         findAllPersonnelSalle {
             id
+            personnelid
+            salleid
+            courseid
         }
     }
 `;

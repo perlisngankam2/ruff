@@ -130,8 +130,8 @@ function AjouterCours () {
                         Ajoutez une matiere                               
                     {/* </Link>               */}
                 </Button>
-          </Box>
-            <Box as={"form"}  > 
+            </Box>
+            <Box as={"form"}> 
                 <AlertDialog
                     isOpen={isOpen}
                     leastDestructiveRef={cancelRef}
@@ -221,7 +221,7 @@ function AjouterCours () {
                                     ml={3}
                                     onClick={addCourse}
                                     >
-                                        Ajoutez
+                                        Ajouter
                                     </Button>
                                 {/* </Link>  */}
                             </AlertDialogFooter>

@@ -198,7 +198,6 @@ type Tranche {
   priority: Float
   yearid: ID!
   salleid: ID!
-  pensionid: ID!
 }
 
 type TrancheStudent {
@@ -234,7 +233,6 @@ type Student {
   tutorLastName: String
   tutorPhoneNumber: String
   tutorProfession: String
-  userid: ID!
   salleid: ID!
   categorieid: ID!
 }
@@ -243,9 +241,14 @@ type Expense {
   id: ID!
   creditamount: Float
   debitamount: Float
-  studentid: ID!
-  personnelid: ID!
   createdOn: String!
+  personnelid: ID
+  personnelFirstName: ID
+  personnelLastName: ID
+  personnelFonction: ID
+  studentid: ID!
+  studentFirstname: ID!
+  studentLastname: ID!
 }
 
 type AnneeAccademique {
@@ -271,6 +274,7 @@ type Cycle {
   id: ID!
   name: String
   sectionid: ID!
+  sectionname: ID!
 }
 
 type NiveauEtude {
@@ -279,6 +283,7 @@ type NiveauEtude {
   description: String
   montantPension: Float
   cycleid: ID!
+  cyclename: ID!
 }
 
 type Course {
@@ -301,7 +306,6 @@ type Salle {
   montantPensionSalle: Float
   effectif: Float
   niveauid: ID!
-  cycleid: ID!
 }
 
 type Personnel {
@@ -440,6 +444,8 @@ type Query {
   pension(id: String!): Pension!
   findrestpensionbystudent(studentid: String!): Float!
   findpensionbystudent(studentid: String!): Pension!
+  findoneexpense(id: String!): Expense!
+  findallexpenses: [Expense!]!
   findallsalaire: [Salaire!]!
   getonesalaire(id: String!): Salaire!
   getsalairebypersonnel(personnelid: String!): [Salaire!]!
@@ -555,8 +561,6 @@ type Mutation {
   createExpense(input: ExpenseCreateInput!): Expense!
   updateExpense(id: String!, input: ExpenseUpdateInput!): Expense!
   deleteExpense(id: String!): Expense!
-  findoneexpense(id: String!): Expense!
-  findallexpenses: [Expense!]!
   createsalaire(input: SalaireCreateInput!): Salaire!
   createInscription(inscription: InscriptionInput!): Inscription!
   update(inscription: InscriptionInput!, id: String!): Inscription!

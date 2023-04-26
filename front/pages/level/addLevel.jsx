@@ -67,13 +67,15 @@ import {
       // console.log(dataSection?.findAllsection)
       console.log("j")
       console.log(dataCycle?.findAllcycle)
+      console.log(dataLevelById)
+      
       if(router.query.id) {
-        const data = dataLevelById?.niveaEtude
+        const data = dataLevelById?.findOneNiveauEtude
         if(data) {
           setLevel({
             name: data.name,
             montantPension: data.montantPension,
-            cycleId: data.cycleId,
+            cycleId: data.cycleid,
           })
         }
       }
@@ -155,7 +157,7 @@ import {
                 as="form"
                 width="500px"
               > 
-              <Text>jj</Text>
+              {/* <Text>jj</Text> */}
                 <Heading color={"colors.primary"}>
                   Creation d'un niveau d'etude
                 </Heading>
@@ -168,7 +170,7 @@ import {
                     <FormControl>
                       <FormLabel>Nom du niveaux:</FormLabel>
                       <Input 
-                        placeholder="Nom du niveaux" 
+                        placeholder="Nom du niveau" 
                         type="text"
                         // maxW="300px"
                         name="name"

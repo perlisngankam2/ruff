@@ -55,13 +55,21 @@ import {useRouter } from "next/router";
 import {  
   GET_ALL_STUDENT, 
   GET_STUDENT_BY_ID,
-  GET_ALL_CLASS
+  GET_ALL_CLASS,
+  GET_ALL_EXPENSE_PERSONNEL_STUDENT
 } from "../../graphql/Queries";
 import { DELETE_STUDENT } from "../../graphql/Mutation";
 import { useMutation, useQuery } from "@apollo/client";
 import ReactPaginate from "react-paginate";
 
 const AccountStatement = () => {
+
+    const {data:dataExpensePersonnelStudent} = useQuery(GET_ALL_EXPENSE_PERSONNEL_STUDENT)
+
+    useEffect(() => {
+        console.log(dataExpensePersonnelStudent?.findallexpenses)
+    })
+
     return(
             <DefaultLayout>
               <Box p="3" pt={"70px"} w="full">
@@ -86,7 +94,6 @@ const AccountStatement = () => {
                   </Hide>
                 </Flex>
                     <Flex 
-                        
                         // ml={["500px","600px","900px"]}
                         mt={"40px"}
                         gap={20}
@@ -166,7 +173,7 @@ const AccountStatement = () => {
                                 border="1px"
                             >
                                 PDF
-                            </Button>
+                            </Button> 
                         </Box>
                         <Box width={"300px"} ml="700px">
                             <InputGroup >
@@ -201,7 +208,7 @@ const AccountStatement = () => {
                                 > 
                                     <Box width='120px' 
                                         flex={1}
-                                        borderLeft={"1px"}
+                                        // borderLeft={"1px"}
                                     >
                                         Date
                                     </Box>
@@ -226,86 +233,106 @@ const AccountStatement = () => {
                                         Net
                                     </Box>
                                 </Flex>
-                                <Flex
-                                    gap={100}
-                                    p="5px"
-                                    width={"full"}
-                                    // fontWeight={"bold"}
-                                    mt="12px"
-                                > 
-                                    <Box width='100px' 
-                                        flex={1}
-                                    >
-                                        <Box>Date</Box>
-                                    </Box>
-                                    <Box width='290px'
-
-                                    >
-                                        Description
-                                    </Box>
-                                    <Box 
-                                        width='160px'
-                                        display={{md:"flex"}}
-                                    >
-                                        <Flex 
-                                            flexDirection={"column"}
-                                            gap={1}
+                                <>
+                                <Box>  
+                                     {dataExpensePersonnelStudent && 
+                                        (dataExpensePersonnelStudent?.findallexpenses.map((expense, index) => ( 
+                                    <Flex
+                                        gap={100}
+                                        p="5px"
+                                        width={"full"}
+                                        // fontWeight={"bold"}
+                                        // mt="5px"
+                                        borderBottom={"1px"}
+                                        key={index}
+                                    > 
+                                    
+                                        <Box width='100px' 
+                                            flex={1}
                                         >
-                                            <Icon
-                                                as={BiTrendingDown}
-                                                boxSize="20px"
-                                                rounded="full"
-                                                color="colors.redColor400"
-                                                mb={"-17px"}
-                                            />
-                                            <Icon
-                                                as={HiOutlineMinus}
-                                                boxSize="25px"
-                                                ml={"-2px"}
-                                                // p="3"
-                                                rounded="full"
-                                                color="colors.redColor400"
-                                            />
-                                        </Flex>
-                                        <Box> Debit</Box>
-                                    </Box>
-                                    <Box width='150px'
-                                        display={{md:"flex"}}
-                                    >
-                                    <Flex 
-                                        flexDirection={"column"}
-                                        gap={0}
-                                    >
-                                            <Icon
-                                                as={BiTrendingUp}
-                                                boxSize="20px"
-                                                // p="3"
-                                                rounded="full"
-                                                color="colors.greenColor400"
-                                                mb={"-15px"}
-                                            />
-                                            <Icon
-                                                as={HiOutlineMinus}
-                                                boxSize="25px"
-                                                ml={"-2px"}
-                                                // p="3"
-                                                rounded="full"
-                                                color="colors.greenColor400"
+                                            
+                                            <Box>
                                                
-                                            />
-                                        </Flex>
-                                        <Box>Credit</Box>
-                                    </Box>
-                                    <Box width='180px'>
-                                        Net
-                                    </Box>
-                                </Flex>
+                                                {expense.createdOn} 
+                                                
+                                            </Box>
+                                        </Box>
+                                        <Box 
+                                            width='290px'
+                                        >
+                                           {expense.studentFirstname}
+                                           {expense.studentLastname}
+                                           {expense.personnelFirstName}
+                                           {expense.personnelLastName}
+                                           {expense.personnelFonction}
+                                        </Box>
+                                        <Box 
+                                            width='160px'
+                                            display={{md:"flex"}}
+                                        >
+                                            <Flex 
+                                                flexDirection={"column"}
+                                                gap={1}
+                                            >
+                                                <Icon
+                                                    as={BiTrendingDown}
+                                                    boxSize="20px"
+                                                    rounded="full"
+                                                    color="colors.redColor400"
+                                                    mb={"-17px"}
+                                                />
+                                                <Icon
+                                                    as={HiOutlineMinus}
+                                                    boxSize="25px"
+                                                    ml={"-2px"}
+                                                    // p="3"
+                                                    rounded="full"
+                                                    color="colors.redColor400"
+                                                />
+                                            </Flex>
+                                            <Box> {expense.debitamount}</Box>
+                                        </Box>
+                                        <Box width='150px'
+                                            display={{md:"flex"}}
+                                        >
+                                            <Flex 
+                                                flexDirection={"column"}
+                                                gap={0}
+                                            >
+                                                <Icon
+                                                    as={BiTrendingUp}
+                                                    boxSize="20px"
+                                                    // p="3"
+                                                    rounded="full"
+                                                    color="colors.greenColor400"
+                                                    mb={"-15px"}
+                                                />
+                                                <Icon
+                                                    as={HiOutlineMinus}
+                                                    boxSize="25px"
+                                                    ml={"-2px"}
+                                                    // p="3"
+                                                    rounded="full"
+                                                    color="colors.greenColor400"
+                                                
+                                                />
+                                            </Flex>
+                                            <Box>{expense.creditamount}</Box>
+                                        </Box>
+                                        <Box width='180px'>
+                                            Net
+                                        </Box> 
+                                    </Flex>
+                                     )) 
+                                     )} 
+                                </Box>
+                                </>
                                 <Flex
                                     gap={100}
                                     p="5px"
                                     width={"full"}
                                     // fontWeight={"bold"}
-                                    mt="12px"
+                                    // mt="12px"
                                 > 
                                     <Box
                                         flex={1}

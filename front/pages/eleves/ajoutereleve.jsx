@@ -13,9 +13,14 @@ import {
   useToast
 } from "@chakra-ui/react";
 
+
 import { useRouter } from "next/router";
 import DefaultLayout from "../../components/layouts/DefaultLayout";
 import { useMutation, useQuery } from "@apollo/client";
+import { getStaticPropsTranslations } from "../../types/staticProps";
+import { useTranslation } from "next-i18next";
+
+
 import { 
   CREATE_STUDENT,
   UPDATE_STUDENT,
@@ -34,7 +39,8 @@ import {
 const AjouterEleve = () => {
 
   const toast = useToast();
- const router = useRouter();
+  const router = useRouter();
+  const {t} = useTranslation();
   const [matricule, setMatricule] = useState("");
   const [firstname, setFirstname] = useState("");
   const [lastname, setLastname] = useState("");
@@ -792,5 +798,14 @@ useEffect(() => {
     </DefaultLayout>
   );
 };
+
+export async function getStaticProps({ locale }) {
+  return {
+    props: {
+      ...(await getStaticPropsTranslations(locale)),
+      // Will be passed to the page component as props
+    },
+  };
+}
 
 export default AjouterEleve;

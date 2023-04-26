@@ -29,9 +29,10 @@ import { GET_ALL_PERSONNEL_BY_ID,
          GET_Category_Personnel_ID } from "../../../graphql/Queries";
 import { useRouter } from "next/router";
 import { useQuery } from "@apollo/client";
-import React, { useRef }  from "react";
+import React, { useRef, useEffect }  from "react";
 import { GiTrafficCone } from "react-icons/gi";
 import { TfiPrinter } from "react-icons/tfi";
+import ReactToPdf from "react-to-pdf";
 // import $ from 'jquery';
 // import 'datatables.net';
 // import 'datatables.net-buttons';
@@ -180,6 +181,12 @@ const lettre =nombreEnLettres(dernierElement)
 console.log(lettre)
 
 const componentRef = useRef();
+const ref = React.createRef();
+const options = {
+      orientation: 'landscape',
+      unit: 'mm',
+      format: 'a4',
+};
 
 //     {tableRef.current.DataTable({
 //       dom: 'Bfrtip',
@@ -192,10 +199,6 @@ const componentRef = useRef();
     if (loading) return <Text>Chargement en cour...</Text>
     if (error) return <Text>Une erreur s'est produite!</Text>
 
-      useEffect(() => {
-
-  }, []);
-
     
     return ( 
       <>
@@ -203,12 +206,18 @@ const componentRef = useRef();
 
       <DefaultLayout>
             <Box p="3" pt="70px" w="100%" background="colors.tertiary">
+              <Flex gap={4}>
               <ReactToPrint
                trigger={() => <Button rightIcon={<Icon as={TfiPrinter} boxSize="20px" />}>Imprimer</Button>}
                content={() => componentRef.current}
                 documentTitle= "Bulletin de paie"
                 pageStyle="print"
               />
+              <ReactToPdf targetRef={componentRef} filename="Bulletin de paie" options={options} x={17} y={10} >
+              {({toPdf}) => ( <Button onClick={toPdf}>Generate pdf</Button>)}
+              </ReactToPdf>
+              
+              </Flex>
               <Box mt='15px'>
         <Center >
 
@@ -218,13 +227,13 @@ const componentRef = useRef();
                     w='1000px'
                    ref={componentRef}
                     >
-            <Box px='20px' > 
-                  <Flex gap='350px'>
-                    <Box><Image  src="../../logo.png" w='150px' /></Box>
-                    <Box mt='30px'>
+            <Box  w='1000px' > 
+                  <Flex gap='350px' borderBottom={'1px'} w='full'>
+                    <Box ml='20px' mb='5px'><Image  src="../../logo.png" w='150px' /></Box>
+                    <Box mt='30px' mr='20px' >
                       <Heading > BULLETIN DE PAIE</Heading>  
-                      <Text mt='10px' textAlign={"center"} >Mois de paie: {dernierElementSalaire?.moisPaie}</Text>
-                      <Text textAlign={"center"} >Paiement, le {dernierElementSalaire?.jourPaie}</Text>
+                      <Text mt='10px' textAlign={"center"} >Mois de paie: {dernierElementSalaire?.moisPaie.split("-").reverse().join("-")}</Text>
+                      <Text textAlign={"center"} >Paiement, le {dernierElementSalaire?.jourPaie.split("-").reverse().join("-")}</Text>
                     </Box>
                     
 
@@ -361,14 +370,7 @@ const componentRef = useRef();
 
                   </Flex>
 
-                  {/* <Flex w='full'>
-                    <Box w='300px' borderLeft={'1px'}   py='6px' ><Heading fontSize={'md'} fontWeight={'bold'} color='black' ml='6px'>RETRAITE</Heading></Box>
-                    <Box  w='180px'  borderLeft={'1px'} py='6px' ></Box>
-                    <Box w='100px'  borderLeft={'1px'} py='6px'  ></Box>
-                    <Box w='160px'  borderLeft={'1px'} py='6px' ></Box>
-                    <Box  w='160px' borderLeft={'1px'} borderRight={'1px'} py='6px'  ></Box>
-
-                  </Flex> */}
+              
 
                   <Flex w='full'>
                     <Box w='300px' borderLeft={'1px'}   py='6px' ><Heading fontSize={'md'} fontWeight={'bold'} color='black' ml='6px'>TOTAL PRIMES</Heading></Box>
@@ -388,141 +390,6 @@ const componentRef = useRef();
 
                   </Flex>
 
-
-
-
-
-
-                  
-                    {/* <Box w='300px' borderLeft={'1px'} py='6px' borderBottom={'1px'} >
-                      <Text ml='6px' >Salaire</Text>
-                        <Box mt='20px' ml='6px'>
-                          <Heading fontSize={'md'} fontWeight={'bold'} color='black'>PRIMES SALARIALES</Heading>
-                          { 
-                      dataPrimeNoms && (
-                        dataPrimeNoms?.findnamesprimebypersonnel.map((prime) => (
-                            <Text ml='20px'>
-                              {prime}
-                            </Text>
-                        )))}
-                        </Box>
-                         <Box mt='20px' ml='6px'>
-                          <Heading fontSize={'md'} fontWeight={'bold'} color='black'>RETENUES SALARIALES</Heading>
-                          { 
-                      dataRetenueNoms && (
-                        dataRetenueNoms?.findnamesretenubypersonnel.map((retenue) => (
-                            <Text ml='20px'>
-                              {retenue}
-                            </Text>
-                        )))}
-                        </Box>
-                           <Box mt='20px' ml='6px'>
-                          <Heading fontSize={'md'} fontWeight={'bold'} color='black'>RETRAITE</Heading>
-                          <Text ml='20px'></Text>
-                        </Box>
-                          <Box mt='20px' ml='6px'>
-                          <Heading fontSize={'md'} fontWeight={'bold'} color='black'>TOTAL RETENUES</Heading>
-                        </Box>
-                          <Box mt='20px' ml='6px'>
-                          <Heading fontSize={'md'} fontWeight={'bold'} color='black'>TOTAL PRIMES</Heading>
-                        </Box>
-                    </Box> */}
-
-
-
-
-                    {/* <Box  w='180px'  borderLeft={'1px'} py='6px' borderBottom={'1px'} background='green.50' >
-                      <Text textAlign={"right"} mr='6px'>{dataCategorie?.findOneCategoriepersonnel.montant}</Text>
-                     < Box mt='20px'>
-                          <Heading fontSize={'md'} mb='20px'></Heading>
-                               { 
-                      dataPrimeMontant && <Box pt='18px' mr='6px'>
-                       { dataPrimeMontant?.findmontantprimebypersonnel.map((prime) => (
-                            <Text textAlign={"right"}>
-                              {prime}
-                            </Text>
-                            ))}</Box>}
-                        </Box>
-                        < Box mt='20px'>
-                          <Heading fontSize={'md'}></Heading>
-                            { 
-                      dataRetenueMontant && <Box pt='18px' mr='6px'>
-                       { dataRetenueMontant?.findmontantretenubypersonnel.map((retenue) => (
-                            <Text textAlign={"right"} >
-                              {retenue}
-                            </Text>
-                            ))}</Box>} */}
-                        {/* </Box>
-                        {/* < Box mt='20px'>
-                          <Heading fontSize={'md'}></Heading>
-                          <Text>XXXXXXXXXXXX</Text>
-                        </Box> */}
-                      
-{/* colonnes des taux */}
-
-                    {/* <Box w='100px' borderLeft={'1px'} py='6px' borderBottom={'1px'}  >
-                      {/* <Text textAlign={"center"}></Text>
-                        < Box mt='20px'>
-                          <Heading fontSize={'md'}></Heading>
-                          <Text></Text>
-                        </Box>
-                         < Box mt='20px'>
-                          <Heading fontSize={'md'}></Heading>
-                          <Text></Text>
-                        </Box>
-                         < Box mt='20px'>
-                          <Heading fontSize={'md'}></Heading>
-                          <Text></Text>
-                        </Box> */}
-                     
-
-{/* colonnes des gains */}
-                    {/* <Box w='160px'  borderLeft={'1px'} py='6px' borderBottom={'1px'} background='green.50'>
-                  
-                       < Box mt='20px'>
-                          <Heading fontSize={'md'}></Heading>
-                            { 
-                      dataPrimeMontant && <Box pt='39px' mr='6px'>
-                       { dataPrimeMontant?.findmontantprimebypersonnel.map((prime) => (
-                            <Text textAlign={"right"}>
-                              {prime}
-                            </Text>
-                            ))}</Box>}
-                        </Box>
-                         < Box mt='20px'>
-                          <Heading fontSize={'md'}></Heading>
-                          <Text></Text>
-                        </Box>
-                        
-                      </Box> */}
-{/* colonnes des retenues */}
-{/* 
-                    <Box  w='160px' borderLeft={'1px'}  borderRight={'1px'} py='6px' borderBottom={'1px'} >
-                      <Text textAlign={"center"}></Text>
-                       < Box mt='20px'>
-                          <Heading fontSize={'md'}></Heading>
-                          <Text></Text>
-                        </Box>
-                         < Box mt='20px'>
-                          <Heading fontSize={'md'}></Heading>
-                          <Text></Text>
-                        </Box>
-                         < Box mt='20px'>
-                          <Heading fontSize={'md'}></Heading>
-                           { 
-                      dataRetenueMontant && <Box pt='150px' mr='6px'>
-                        { dataRetenueMontant?.findmontantretenubypersonnel.map((retenue) => (
-                            <Text textAlign={"right"} >
-                              {retenue}
-                            </Text>
-                            ))}</Box>}
-                        </Box>
-                      </Box>
-
-                </Flex>
-                                      
-
-              </Box> */}
 
               </Box>
               <Flex w='900px' border={'1px'} mt='20px'>
@@ -549,42 +416,7 @@ const componentRef = useRef();
 
 
           </Box>
-     {/* <Center >
-           <Box  borderWidth='1px' 
-                    bg={'white'}
-                    borderColor='black' 
-                    px='20px' >
-
-                <Box textAlign={'center'} mt={'4%'}>
-                    <Heading>BULLETIN DE PAIE</Heading>
-                    <Text>Du 23/07/2023 au 23/08/2023</Text>
-                </Box>
-                <Box
-                    gap={6}
-                    mt={'10'}
-                    display={{ md: 'flex' }}
-                    mb={'20px'}
-                >
-                   <PaySlipLogoBox />
-
-                    <Box>
-                        <PaySlipFolderSalaryBox name1='DOSSIER/SALAIRE' name2='EMPLOI' name3='xxxxxxxx' name4='xxxxxxx' />
-                        <PaySlipFolderSalaryBox name1='MAT.CNPS' name2='CLASSIFICATION' name3='xxxxxxxx' name4='xxxxxxx' />
-                        <PaySlipFolderSalaryBox name1="Date d'entrée" name2='Date de sortie' name3='xxxxxxxx' name4='xxxxxxx' />
-
-                        <PaySlipInformationEmployeeBox 
-                        id={dataPersonnelId?.findOnePersonnel.id} 
-                        firstName={dataPersonnelId?.findOnePersonnel.firstName}
-                        lastName={dataPersonnelId?.findOnePersonnel.lastName}
-                        fonction={dataPersonnelId?.findOnePersonnel.fonction}
-                        status={dataPersonnelId?.findOnePersonnel.status}
-                        />
-                    </Box>
-                </Box>
-                <PaySlipMiddle />
-                <PaySlipBottom montant ={dernierElement } periode={dernierElementSalaire.moisPaie} date={dernierElementSalaire.jourPaie} montantLettre={lettre} />
-            </Box>
-        </Center> */}
+    
 
 
            </Center>
@@ -596,46 +428,7 @@ const componentRef = useRef();
         </DefaultLayout>
       
         }</>
-         // <DefaultLayout>
-        //     <Box p="3" pt="70px" w="100%" background="colors.tertiary">
-        // <Center >
-        //     <Box  borderWidth='1px' 
-        //             bg={'white'}
-        //             borderColor='black' 
-        //             px='20px' >
-
-        //         <Box textAlign={'center'} mt={'4%'}>
-        //             <Heading>BULLETIN DE PAIE</Heading>
-        //             <Text>Du 23/07/2023 au 23/08/2023</Text>
-        //         </Box>
-        //         <Box
-        //             gap={6}
-        //             mt={'10'}
-        //             display={{ md: 'flex' }}
-        //             mb={'20px'}
-        //         >
-        //            <PaySlipLogoBox />
-
-        //             <Box>
-        //                 <PaySlipFolderSalaryBox name1='DOSSIER/SALAIRE' name2='EMPLOI' name3='xxxxxxxx' name4='xxxxxxx' />
-        //                 <PaySlipFolderSalaryBox name1='MAT.CNPS' name2='CLASSIFICATION' name3='xxxxxxxx' name4='xxxxxxx' />
-        //                 <PaySlipFolderSalaryBox name1="Date d'entrée" name2='Date de sortie' name3='xxxxxxxx' name4='xxxxxxx' />
-
-        //                 <PaySlipInformationEmployeeBox 
-        //                 id={dataPersonnelId?.findOnePersonnel.id} 
-        //                 firstName={dataPersonnelId?.findOnePersonnel.firstName}
-        //                 lastName={dataPersonnelId?.findOnePersonnel.lastName}
-        //                 fonction={dataPersonnelId?.findOnePersonnel.fonction}
-        //                 status={dataPersonnelId?.findOnePersonnel.status}
-        //                 />
-        //             </Box>
-        //         </Box>
-        //         <PaySlipMiddle />
-        //         <PaySlipBottom montant ={dernierElement } periode={dernierElementSalaire.moisPaie} date={dernierElementSalaire.jourPaie} montantLettre={lettre} />
-        //     </Box>
-        // </Center>
-        //  </Box>
-        // </DefaultLayout>
+       
      );
 }
  

@@ -130,11 +130,11 @@ export class Personnel {
   })
   category!:IdentifiedReference<CategoriePersonnel>|null
 
-  @Field(() => ID)
-  @Property({ persist: false })
-  get userid() {
-    return `${this.user.id}`;
-  }
+  // @Field(() => ID)
+  // @Property({ persist: false })
+  // get userid() {
+  //   return `${this.user.id}`;
+  // }
 
   @Field(() => ID)
   @Property({ persist: false })

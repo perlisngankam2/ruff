@@ -102,7 +102,7 @@ const [isMonthUnavailable, setIsMonthUnavailable] = useState(false);
   }
     console.log("dataMoisSalaire")
   console.log(dataMoisSalaire?.PersonnelMonthSalary)
-  console.log(moisPayes)
+  console.log(dataPrimePersonnel)
   console.log(moisPayes.includes(moisPaie.toLowerCase()))
 
 
@@ -135,6 +135,7 @@ const unavailableMonths = useMemo(
     const salaireData = await createSalaire({
           variables:{
           input: { 
+            ID: "",
             personnelId: personnelId,
             montant: parseInt(montant),
             payer: true,
@@ -341,16 +342,52 @@ const monthOptions = useMemo(() => {
                 <Box width='50%'
     margin="0 auto">  
 
-                <Flex gap={20}>
+                <Flex gap={6}>
                   <Text>Fonction :</Text>
-                  <Text fontWeight={'bold'}>{dataPersonnelId?.findOnePersonnel.fonction}</Text>
+                  <Text fontWeight={'bold'}>{dataPersonnelId?.findOnePersonnel.fonction.toUpperCase()}</Text>
                 </Flex>
-                <Flex>
-                  <Text>Mois de salaire :</Text>
-                  <Text></Text>
+                <Flex gap={6}>
+                  <Text>Categorie :</Text>
+                  <Text fontWeight={'bold'} >{dataCategorie?.findOneCategoriepersonnel.nom.toUpperCase()}</Text>
                 </Flex>
+                <Flex gap={10}>
+                  <Text>Statut :</Text>
+                  <Text fontWeight={'bold'}>{dataPersonnelId?.findOnePersonnel.status}</Text>
+                </Flex>
+                 <Box width={'340px'} gap={7} as={"form"} mt="20px"
+            onSubmit={HandleClick}
+         >
+          <Text fontSize='sm'>Mois de salaire</Text>
+              {/* <Input
+                    placeholder="nom prime"
+                    bg='white'
+                    type="month"
+                    name="dateOfPrime"
+                    rounded={2}
+                    onChange={handleMoisPaieChange}
+                    isDisabled={dataMoisSalaire?.PersonnelMonthSalary.includes(moisPaie)}
+                    value={moisPaie}
+                    
+                  /> */}
+                  <Select
+                  
+        bg='white'         
+        id="moisPaie"
+        name="moisPaie"
+        value={moisPaie}
+        onChange={handleMonthChange}
+      >
+        <option value="">Sélectionnez un mois</option>
+        {monthOptions}
+      </Select>
+      {isMonthUnavailable && <p>Le mois sélectionné a déjà été payé.</p>}
+   
+                  {console.log(moisPaie)}
+                  
+                  
+                  </Box>
                 
-                <Box>
+                {/* <Box>
                   <Text>PRIMES SALARIALES</Text>
                   {dataPrimePersonnel && 
                  (dataPrimePersonnel?.primesETnomprimepersonnel.map((prime) =>(
@@ -360,8 +397,8 @@ const monthOptions = useMemo(() => {
                  )) )
                     
                   }
-                </Box>
-                <Flex>
+                </Box> */}
+                {/* <Flex>
                   <Text>RETENUES</Text>
                   <Text></Text>
                 </Flex>
@@ -372,7 +409,7 @@ const monthOptions = useMemo(() => {
                 <Flex>
                   <Text></Text>
                   <Text></Text>
-                </Flex>
+                </Flex> */}
                 
                 
                 
@@ -412,7 +449,9 @@ const monthOptions = useMemo(() => {
         </Flex>
 
 {/* //informaton salaire et mois */}
-      <Center>
+
+
+      {/* <Center>
         <Flex 
           mt="20px"
           gap={7}
@@ -420,7 +459,7 @@ const monthOptions = useMemo(() => {
          <Box width={'340px'} gap={7} as={"form"}
             onSubmit={HandleClick}
          >
-          <Text fontSize='sm'> Salaire Mois</Text>
+          <Text fontSize='sm'> Salaire Mois</Text> */}
               {/* <Input
                     placeholder="nom prime"
                     bg='white'
@@ -432,7 +471,7 @@ const monthOptions = useMemo(() => {
                     value={moisPaie}
                     
                   /> */}
-                  <Select
+                  {/* <Select
                   
         bg='white'         
         id="moisPaie"
@@ -445,24 +484,24 @@ const monthOptions = useMemo(() => {
       </Select>
       {isMonthUnavailable && <p>Le mois sélectionné a déjà été payé.</p>}
    
-                  {console.log(moisPaie)}
+                  {console.log(moisPaie)} */}
                   
-                      <Input
-                    placeholder="nom prime"
+                      {/* <Input
+                    placeholder="jour de paie"
                     bg='white'
                     type="date"
                     rounded={2}
                     name="dateOfPrime"
                     mt={'8px'}
                     onChange={(event) => setJourPaie(event.target.value)}
-                    value={jourPaie}
+                    value={jourPaie || new Date().toISOString().slice(0, 10)}
                     
                   />
                   
                    {console.log(jourPaie)}
                   </Box>
         </Flex>
-      </Center>
+      </Center> */}
        <Box 
         mx='100px' 
         pb={'20px'} 
@@ -471,36 +510,118 @@ const monthOptions = useMemo(() => {
           <Divider />
         </Box>
              <Center>
-          <Button disabled={!moisPaie} type="submit" color='white' bg='#eb808a' variant='solid' mx='auto' my='auto' onClick={HandleClick}>
+          <Button disabled={!moisPaie} type="submit" color='white' bg='#eb808a' variant='solid' mx='auto' my='auto'
+          //  onClick={HandleClick}
+          onClick={onOpen}
+           >
               
             Generer le paiement
                
            </Button>
 
              <AlertDialog
-             
+              isOpen={isOpen}
+              leastDestructiveRef={cancelRef}
+              onClose={onClose}
+              size='xl'
              
              >
 
-                   <AlertDialogOverlay>
-          <AlertDialogContent>
-            <AlertDialogHeader fontSize='lg' fontWeight='bold'>
-              Reinitialisation de mot de passe
-            </AlertDialogHeader>
+             <AlertDialogOverlay>
+                  <AlertDialogContent  >
+                    <AlertDialogHeader 
+                      fontSize='sm' 
+                      fontWeight='base' 
+                      mt='0'
+                    >
+                    <Box  
+                      bg={"colors.secondary"} 
+                      borderBottomRightRadius={10} 
+                      borderBottomLeftRadius={10}
+                    >
+                        <Heading 
+                         
+                          textAlign={'center'} 
+                          fontSize={['15px','20px','26px']} 
+                          p='2' 
+                        >
+                                PREVISUALISATION
+                        </Heading>
+                    </Box>
+                    </AlertDialogHeader>
+                    <AlertDialogBody>
+ 
+            <Box mt='4'>
+                <Box 
+                  // gap={5} 
+                  // flexWrap={['wrap','wrap','nowrap']} 
+                  // align='end'
+                >
+                   
+                <Heading  mr='20px'  textAlign="center" 
+                fontSize="2xl" 
+                m={["8px", "8px", "8px"]}
+                textColor='#eb808a'>
+                        {dataPersonnelId?.findOnePersonnel.firstName.charAt(0).toUpperCase()+dataPersonnelId?.findOnePersonnel.firstName.substring(1) +' '+ dataPersonnelId?.findOnePersonnel.lastName.charAt(0).toUpperCase()+dataPersonnelId?.findOnePersonnel.lastName.substring(1)}
+                        </Heading>
+                      <Center>
 
-            <AlertDialogBody>
-              Souhaitez vous modifier le de passe qui vous a ete donnee?
+                        
+        <Box 
+          mt="20px"
+          
+        >  <Flex gap={6}>
+                  <Text>Salaire du mois de :</Text>
+                  <Text fontWeight={'bold'}>XXXXXXXXXXXXXXX</Text>
+                </Flex>
+                <Flex gap={6}>
+                  <Text>Montant de base :</Text>
+                  <Text fontWeight={'bold'}>{dataCategorie?.findOneCategoriepersonnel.montant}</Text>
+                </Flex>
+                <Box>
+                  <Text>PRIMES SALARIALES</Text>
+                  {dataPrimePersonnel ?
+                 (dataPrimePersonnel?.primesETnomprimepersonnel.map((prime) =>(
+                   <Flex>{prime[0]}
+                    
+</Flex>
+                 ))) :
+                 <Text>Aucune prime pour ce mois</Text>
+                    
+                  }
+                </Box>
+         <Box width={'340px'} as={"form"}
+            onSubmit={HandleClick}
+            mt={'8px'}
+         >
+          <Text fontSize='sm'> Jour de Paie</Text>
+                      <Input
+                    placeholder="jour de paie"
+                    bg='white'
+                    type="date"
+                    rounded={2}
+                    name="dateOfPrime"
+                    // mt={'8px'}
+                    onChange={(event) => setJourPaie(event.target.value)}
+                    value={jourPaie || new Date().toISOString().slice(0, 10)}
+                    
+                  />
+                  
+                   {console.log(jourPaie)}
+                  </Box>
+        </ Box>
+      </Center>
+                   
+                </Box>
+            </Box>
             </AlertDialogBody>
-
             <AlertDialogFooter>
-              <Button ref={cancelRef} onClick={onClose}>
-                Non
+              <Button ref={cancelRef} onClick={onClose} colorScheme='red' >
+                annuler
               </Button>
-              <Link href={'#'}>
-                <Button colorScheme='green'  ml={3}>
-                  Oui
+                <Button colorScheme='green'  ml={3} type='submit' onClick={HandleClick}>
+                  ajouter
                 </Button>
-              </Link>
             </AlertDialogFooter>
           </AlertDialogContent>
         </AlertDialogOverlay>

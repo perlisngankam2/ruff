@@ -183,11 +183,11 @@ export class Student {
   @OneToMany(()=> Expense, (expense) => expense.student)
   expense = new Collection<Expense>(this)
 
-  @Field(() => ID)
-  @Property({ persist: false })
-  get userid() {
-    return `${this.user.id}`;
-  }
+  // @Field(() => ID)
+  // @Property({ persist: false })
+  // get userid() {
+  //   return `${this.user.id}`;
+  // }
 
   @Field(() => ID)
   @Property({ persist: false })

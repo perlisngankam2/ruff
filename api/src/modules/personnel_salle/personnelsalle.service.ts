@@ -3,8 +3,6 @@ import {  EntityManager, EntityRepository, FilterQuery, wrap } from "@mikro-orm/
 import { InjectRepository } from "@mikro-orm/nestjs";
 import { Injectable } from "@nestjs/common";
 import { PersonnelSalle } from "src/entities/personnelsalle.entity";
-import { PersonnelService } from "../personnel/personnel.service";
-import { SalleService } from "../salle/salle.service";
 import { PersonnelSalleCreateInput } from "./dto/personnelsalle.create.input";
 
 @Injectable()
@@ -12,8 +10,6 @@ export class PersonnelSalleService {
     constructor(
         @InjectRepository(PersonnelSalle)
         private personnelsalleRepository: EntityRepository<PersonnelSalle>,
-        private personnelService: PersonnelService,
-        private salleService: SalleService,
         private  em: EntityManager,
       ) {}
     
@@ -54,7 +50,9 @@ async update(
 }
 
 async findall(){
-    return await this.personnelsalleRepository.findAll()
+    return await this.personnelsalleRepository.findAll({
+      populate:['course','personnel','salle']
+    })
 }
 
 findByOne(filters: FilterQuery<PersonnelSalle>): Promise<PersonnelSalle | null> {
@@ -78,7 +76,6 @@ async findbyCoursePersonnelSalle(salleId:string, personnelId: string, courseId: 
   const a=(await this.em.find(PersonnelSalle,{salle: salleId, personnel:personnelId, course:courseId})).map(async a=>(await a.personnel.load()).firstName)
   const b = (await this.em.find(PersonnelSalle,{salle: salleId, personnel:personnelId, course:courseId})).map(async a=>((await a.course.load()).title))
   const c= (await this.em.find(PersonnelSalle,{salle: salleId, personnel:personnelId, course:courseId})).map(async a=>((await a.salle.load()).name))[0]
-  // const personnelsalle = new PersonnelSalle()
   return {a, c, b}
   
 }

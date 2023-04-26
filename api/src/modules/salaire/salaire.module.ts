@@ -10,6 +10,7 @@ import { RetenuPersonnelModule } from '../retenu_personnel/retenu_personnel.modu
 import { SalaireResolver } from './salaire.resolver';
 import { SalaireService } from './salaire.service';
 import { ExpenseModule } from '../expenses/expense.module';
+import { PaySalaryModule } from '../paysalary/paysalary.module';
 
 
 
@@ -21,6 +22,7 @@ imports:[MikroOrmModule.forFeature({ entities: [Salaire] }),
  PeriodeModule,
  PersonnelModule,
  PrimeModule,
+ PaySalaryModule,
  forwardRef(() => ExpenseModule)
 ],
 providers:[SalaireService,SalaireResolver],

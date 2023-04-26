@@ -52,13 +52,43 @@ export class Expense {
     @Field(() => ID)
     @Property({ persist: false })
     get studentid() {
-      return `${this.student.id}`;
+      return this.student? `${this.student.id}` : null;
+    }
+
+    @Field(() => ID, { nullable: true })
+    @Property({ persist: false })
+    get personnelid(): string | null {
+      return this.personnel? `${this.personnel.id}` : null;
+    }
+
+    @Field(() => ID, { nullable: true })
+    @Property({ persist: false })
+    get personnelName(): string | null {
+      return this.personnel? `${this.personnel.getEntity().lastName}` : null;
+    }
+
+    @Field(() => ID, { nullable: true })
+    @Property({ persist: false })
+    get personnelSurName(): string | null {
+      return this.personnel? `${this.personnel.getEntity().firstName}` : null;
+    }
+
+    @Field(() => ID, { nullable: true })
+    @Property({ persist: false })
+    get personnelFunction(): string | null {
+      return this.personnel? `${this.personnel.getEntity().fonction}` : null;
     }
 
     @Field(() => ID)
     @Property({ persist: false })
-    get personnelid() {
-      return `${this.personnel.id}`;
+    get studentLastname() {
+      return this.student? `${this.student.getEntity().lastname})` : null;
+    }
+
+    @Field(() => ID)
+    @Property({ persist: false })
+    get studentSurname() {
+      return this.student? `${this.student.getEntity().firstname}` : null;
     }
 
     @Field(() => String)

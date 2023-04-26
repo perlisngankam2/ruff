@@ -62,7 +62,10 @@ export class CycleService {
 
     
       getAll(): Promise<Cycle[]> {
-        return this.cycleRepository.findAll()
+        const cycle= this.cycleRepository.findAll({
+          populate:['section']
+        })
+        return cycle
       }
 
    

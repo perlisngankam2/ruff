@@ -24,8 +24,12 @@ export class ExpenseService {
   ) {}
 
 async findall(){
-    return await this.ExpenseRepository.findAll()
-}
+        const expense= this.ExpenseRepository.findAll({
+          populate:['student','personnel']
+        })
+        return expense
+      }
+
 
 async findByOne(filters: FilterQuery<Expense>): Promise<Expense | null> {
     return await this.ExpenseRepository.findOne(filters);

@@ -120,7 +120,7 @@ export const GET_ALL_CYCLE =  gql `
             id
             name
             sectionid
-            sectionname
+            sectionName
         }
     }
 `;
@@ -460,12 +460,33 @@ export const GET_ALL_PERSONNEL_SALLE = gql`
     query findAllPersonnelSalle {
         findAllPersonnelSalle {
             id
-            personnelid
-            salleid
-            courseid
+            personnelId
+            personnelFirstName
+            personnelLastName
+            personnelFunction
+            salleId
+            salleName
+            courseId
+            courseName
         }
     }
 `;
+
+//recuperation de la pension fixe a une classe dans la table pension salle
+export const GET_ALL_PENSION_SALLE_ENTITY = gql `
+query findAllpensionSalle {
+    findAllpensionSalle {
+        id
+        name
+        description
+        montantPension
+        dateLine
+        yearid
+        yearName
+        salleId
+        salleName
+    }
+}`
 
 export const GET_PRIME= gql `
     query findAllprime {

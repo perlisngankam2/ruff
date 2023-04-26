@@ -65,6 +65,7 @@ import ReactPaginate from "react-paginate";
 const AccountStatement = () => {
 
     const {data:dataExpensePersonnelStudent} = useQuery(GET_ALL_EXPENSE_PERSONNEL_STUDENT)
+    const date1 = new Date('December 17, 1995 03:24:00')
 
     useEffect(() => {
         console.log(dataExpensePersonnelStudent?.findallexpenses)
@@ -250,11 +251,12 @@ const AccountStatement = () => {
                                         <Box width='100px' 
                                             flex={1}
                                         >
-                                            
                                             <Box>
-                                               
-                                                {expense.createdOn} 
-                                                
+                                                {((new Date(expense.createdOn)).toDateString())} 
+                                                {/* {/* {console.log(typeof(expense.createdOn))} */}
+                                                {console.log((date1).toDateString())}
+                                                {/* // {console.log((new Date(expense.createdOn)).toDateString())} */} 
+
                                             </Box>
                                         </Box>
                                         <Box 

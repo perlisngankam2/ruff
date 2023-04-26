@@ -28,6 +28,7 @@ import {
   GET_ALL_STUDY_LEVEL, 
   GET_ALL_CLASS,
   GET_SALLE_BY_ID,
+  GET_ALL_ANNEE_ACADEMIQUE
 }  from "../../graphql/Queries";
 
 const AddClass = () => {
@@ -39,11 +40,13 @@ const AddClass = () => {
   const [section, setSection] = useState();
   const [niveauEtudeId, setNiveauEtudeId] = useState("");
   const [cycleId, setCycleId] = useState("");
+  const [anneeAcademiqueId, setAnneeAcademiqueId] = useState("");
   const [montantPensionSalle, setMontantPensionSalle] = useState();
   const [createSalle] = useMutation(CREATE_SALLE);
   const [updateSalle] = useMutation(UPDATE_SALLE);
   const {data:dataSection} = useQuery(GET_ALL_SECTION);
   const {data:dataStudyLevel} = useQuery(GET_ALL_STUDY_LEVEL);
+  const {data:dataAnneeAcademique} = useQuery(GET_ALL_ANNEE_ACADEMIQUE);
   const {data:dataCycle} = useQuery(GET_ALL_CYCLE);
 
   const [salle, setSalle] = useState({
@@ -110,7 +113,8 @@ const AddClass = () => {
             name: salle.name,
             niveauEtudeId: salle.niveauEtudeId,
             // cycleId: salle.cycleId,
-            montantPensionSalle: parseInt(salle.montantPensionSalle)
+            montantPensionSalle: parseInt(salle.montantPensionSalle),
+            anneeAcademiqueId: anneeAcademiqueId
           }
         },
         refetchQueries:[{
@@ -220,8 +224,26 @@ const AddClass = () => {
                           )}
                       </Select>
                   </FormControl> 
+                  <FormControl mt={4}>
+                        <FormLabel>Annee academique</FormLabel>
+                        <Select 
+                            type={'date'} 
+                            name="anneeAcademiqueId"
+                            value={anneeAcademiqueId}
+                            placeholder="Annee academique"
+                            onChange = {(event)=> setAnneeAcademiqueId(event.target.value)}
+                        >
+                          {dataAnneeAcademique &&
+                            dataAnneeAcademique.findAllAnnerAccademique.map((anneeAcademique, index) => (
+                              <option value={anneeAcademique.id} key={index}>
+                                {anneeAcademique.name}
+                              </option>
+                            ))
+                          }
+                        </Select>
+                    </FormControl>
                   {/* <FormControl mt="15px">
-                      <FormLabel>Cycle:</FormLabel>
+                      <FormLabel>Annee academique:</FormLabel>
                         <Select 
                           name="cycleId"
                           placeholder="Cycle"

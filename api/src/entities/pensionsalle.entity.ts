@@ -60,13 +60,26 @@ export class PensionSalle {
 
   @Field(() => ID)
   @Property({ persist: false })
-  get yearid() {
-    return `${this.anneeAccademique.id}`;
+  get yearid(): string | null {
+    return this.anneeAccademique? `${this.anneeAccademique.id}`:null;
   }
 
   @Field(() => ID)
-  @Property({ persist: false})
-  get classid() {
-    return `${this.salle.id}`;
+  @Property({ persist: false })
+  get yearName(): string | null {
+    return this.anneeAccademique? `${this.anneeAccademique.getEntity().name}`:null;
   }
+
+  @Field(() => ID)
+  @Property({ persist: false })
+  get salleId(): string | null {
+    return  this.salle? `${this.salle.id}`:null;
+  }
+
+  @Field(() => ID, { nullable: true })
+  @Property({ persist: false })
+  get salleName(): string | null {
+    return this.salle? `${this.salle.getEntity().name}` : null;
+
+}
 }

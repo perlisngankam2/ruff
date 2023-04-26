@@ -345,7 +345,7 @@ const CycleElement = ({cycle, index}) =>{
   
   return (
       <Tr key={index}>
-        <Td p={0} pl={6}>{cycle.name}({cycle.sectionname})</Td>
+        <Td p={0} pl={6}>{cycle.name}({cycle.sectionName})</Td>
         
         {/* <Td  borderColor={'#C6B062'}>{cycle.section_id}</Td> */}
         <Td p={0} pl={6}>pppp</Td>

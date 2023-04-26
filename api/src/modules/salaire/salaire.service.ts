@@ -1,28 +1,24 @@
 /* eslint-disable prettier/prettier */
-import { EntityManager, FilterQuery, NotFoundError, wrap } from '@mikro-orm/core';
+import { EntityManager, FilterQuery, wrap } from '@mikro-orm/core';
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { Inject, Injectable, forwardRef } from '@nestjs/common';
-import { PrimeService } from '../prime/prime.service';
-import { RetenuPersonnelService } from '../retenu_personnel/retenu-personnel.service';
-import { PrimePersonnelService } from '../prime_personnel/prime-personnel.service';
 import { SalaireCreateInput } from './dto/salaire.input';
 import { PersonnelService } from '../personnel/personnel.service';
-import { PeriodeService } from '../periode/periode.service';
 import { EntityRepository } from '@mikro-orm/postgresql';
 import {  Status } from 'src/entities/pesonnel.entity';
 import { SalaireUpdateInput } from './dto/salaire.update';
 import { Salaire } from 'src/entities/salaire.entity';
 import { ExpenseService } from '../expenses/expense.service';
+import { PaySalaryService } from '../paysalary/paysalary.service';
+import { error } from 'console';
 
 @Injectable()
 export class SalaireService {
   constructor(
     @InjectRepository(Salaire)
     private salaireRepository: EntityRepository<Salaire>,
-    // private salaireBaseeService: SalaireBaseService,
-    private retenuPersonnel : RetenuPersonnelService,
-    private primepersonnelservice: PrimePersonnelService,
     private personnel : PersonnelService,
+    private paysalaryservice: PaySalaryService,
     private readonly em: EntityManager,
     @Inject(forwardRef(() => ExpenseService))
     private expenseservice:ExpenseService,
@@ -32,33 +28,27 @@ export class SalaireService {
     input: SalaireCreateInput,
   ): Promise<Salaire> {
 
-    const personnel = await this.personnel.findOne(input.personnelId)
-    
-    // const periode = await this.periodeService.findByOne(input.periodeId)
-    // // check categorie prime
-    //const categorie = personnel.category.load()
-
-    const salaire= new Salaire()
-    const retenus =await this.retenuPersonnel.getallretenupersonnelbymonth(personnel.id,input.moisPaie)
-    console.log(retenus)
-    const primes = await this.primepersonnelservice.getallpersonnelprimebymonth(personnel.id,input.moisPaie)
-    console.log(primes)
-    //ici j'ai tous les mois auquels les primes ont ete attribuer au personnel
-    // const moisprimespersonnel = (await this.primepersonnelservice.getallprimespersonnel(personnel.id)).filter(a=>a.startMonth==input.moisPaie)
-
-
+     const personnel = await this.personnel.findOne(input.personnelId)
+     const salaire= new Salaire()
+   
 
     if(personnel){
+
+      const allPaySalary = await this.paysalaryservice.getAll()
+      const paysalary = allPaySalary.filter(async a=>(await a.personnel.load()).id==personnel.id).filter(a=>a.moisPaie==input.moisPaie)[0]
+
+      if(!paysalary){
+        throw error("!!!!!!!!!!!!!!!IL N'EXISTE AUCUN PAIEMENT FAIT POUR CE PERSONNEL!!!!!!!!!!!!!!!!")
+      }
+      const salaireNette = paysalary.montant
+
       if((await this.getAll()).filter(async a=>a.personnel.id === personnel.id).filter(a=>a.moisPaie==input.moisPaie).length>1){
-        throw Error("!!!!!!!!!!! CE PERSONNEL A DEJA ETE PAYER POUR CE MOIS !!!!!!!!!!!!")
+        throw Error("!!!!!!!!!!! LE PAIEMENT DE CE PERSONNEL A DEJA ETE ENREGISTRER POUR CE MOIS !!!!!!!!!!!!")
       }
       const salaireBase = (await personnel.category.load()).montant
       
      
       if(personnel.status == Status.PERMANENT){
-
-      const salaireNette = salaireBase + primes - retenus
-            // const salaireNette = salaireBase 
 
       wrap(salaire).assign(
         {
@@ -67,8 +57,6 @@ export class SalaireService {
          personnel: input.personnelId,
          jourPaie: input.jourPaie,
          moisPaie: input.moisPaie
-
-        //  periode: input.periodeId
         },
         {
         em: this.em
@@ -90,7 +78,6 @@ export class SalaireService {
         personnel: personnel.id,
         jourPaie: input.jourPaie,
         moisPaie: input.moisPaie
-        // periode: periode.id
         },
         {
           em: this.em
@@ -142,7 +129,6 @@ export class SalaireService {
     }
   )
     
-//   await this.salaireRepository.persistAndFlush(salaire);
 
     return salaire;
    }

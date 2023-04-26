@@ -89,5 +89,6 @@ export class NiveauEtude{
   @Property({ persist: false })
     get cyclename() {
     return `${this.cycle.getEntity().name}`;
-}
+  }
+
 }

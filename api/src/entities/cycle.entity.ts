@@ -46,10 +46,11 @@ export class Cycle{
     get sectionid() {
       return `${this.section.id}`;
     }
+
     
-    @Field(() => ID)
+    @Field(()=>ID)
     @Property({ persist: false })
-    get sectionname() {
+    get sectionName() {
       return `${this.section.getEntity().name}`;
     }
    }

@@ -45,7 +45,9 @@ export class SalleService {
           montantPensionSalle: input.montantPensionSalle,
           niveau : input.niveauEtudeId,
           section : input.sectionId,
-          cycle : input.cycleId
+          effectif: input.effectif,
+          cycle : input.cycleId,
+          anneeAcademique : input.anneeAcademiqueId
           },
           {
             em: this.em

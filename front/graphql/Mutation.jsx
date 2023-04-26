@@ -86,7 +86,6 @@ export const CREATE_SALLE = gql `
             montantPensionSalle
             effectif
             niveauid
-            cycleid
         }
     }
 `;
@@ -235,9 +234,14 @@ export const CREATE_PERSONNEL_SALLE = gql `
     mutation createPersonnelSalle ($input: PersonnelSalleCreateInput!) {
         createPersonnelSalle (input: $input) {
             id
-            personnelid
-            salleid
-            courseid
+            personnelId
+            personnelFirstName
+            personnelLastName
+            personnelFunction
+            salleId
+            salleName
+            courseId
+            courseName
         }
     }
 `;

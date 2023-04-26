@@ -10,8 +10,6 @@ import { PersonnelSalleService } from "./personnelsalle.service";
 @Module({
     imports:[
         MikroOrmModule.forFeature({ entities: [PersonnelSalle] }),
-        PersonnelModule,
-        SalleModule,
     ],
     providers:[PersonnelSalleService,PersonnelSalleResolver],
     exports:[PersonnelSalleService]

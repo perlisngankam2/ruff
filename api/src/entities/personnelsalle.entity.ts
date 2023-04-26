@@ -34,10 +34,42 @@ export class PersonnelSalle {
   })
   course!:IdentifiedReference<Course>|null
 
+  
+  @Field(() => ID, { nullable: true })
+  @Property({ persist: false })
+  get personnelId(): string | null {
+    return this.personnel? `${this.personnel.id}` : null;
+  }
+
+    @Field(() => ID, { nullable: true })
+    @Property({ persist: false })
+    get personnelFirstName(): string | null {
+      return this.personnel? `${this.personnel.getEntity().firstName}` : null;
+    }
+    
+    @Field(() => ID, { nullable: true })
+    @Property({ persist: false })
+    get personnelLastName(): string | null {
+      return this.personnel? `${this.personnel.getEntity().lastName}` : null;
+  }
+
+  @Field(() => ID, { nullable: true })
+    @Property({ persist: false })
+    get personnelFunction(): string | null {
+      return this.personnel? `${this.personnel.getEntity().fonction}` : null;
+    }
+
   @Field(() => ID)
   @Property({ persist: false })
-  get personnelid() {
-    return `${this.personnel.id}`;
+  get salleId(): string | null {
+    return  this.salle? `${this.salle.id}`:null;
+  }
+
+  
+  @Field(() => ID, { nullable: true })
+  @Property({ persist: false })
+  get salleName(): string | null {
+    return this.salle? `${this.salle.getEntity().name}` : null;
   }
 
   // @Field(() => ID, { nullable: true })
@@ -60,14 +92,16 @@ export class PersonnelSalle {
 
   @Field(() => ID)
   @Property({ persist: false })
-  get salleid() {
-    return `${this.salle.id}`;
+  get courseId(): string|null {
+    return this.course? `${this.course.id}`:null;
   }
 
-  @Field(() => ID)
+  @Field(() => ID, { nullable: true })
   @Property({ persist: false })
-  get courseid() {
-    return `${this.course.id}`;
-  }
+  get courseName(): string | null {
+    return this.course? `${this.course.getEntity().title}` : null;
+
+}
+
 
 }

@@ -50,6 +50,7 @@ import { PersonnelSalleModule } from './modules/personnel_salle/personnelsalle.m
 import { CourseModule } from './modules/course/course.module';
 import { TrancheStudentModule } from './modules/tranche-student/tranche-student.module';
 import { PensionSalleModule } from './modules/pensionsalle/pensionsalle.module';
+import { PaySalaryModule } from './modules/paysalary/paysalary.module';
 
 @Module({
   imports: [
@@ -75,6 +76,7 @@ import { PensionSalleModule } from './modules/pensionsalle/pensionsalle.module';
     CategorieEleveModule, 
     TrancheModule, 
     FraiExamenModule, 
+    PaySalaryModule,
     AvanceTrancheModule, 
     ReductionPensionModule, 
     InscriptionModule,

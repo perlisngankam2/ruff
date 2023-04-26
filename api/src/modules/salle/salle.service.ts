@@ -45,6 +45,7 @@ export class SalleService {
           montantPensionSalle: input.montantPensionSalle,
           niveau : input.niveauEtudeId,
           section : input.sectionId,
+          effectif: input.effectif,
           cycle : input.cycleId
           },
           {
@@ -65,7 +66,10 @@ export class SalleService {
       }
     
       getAll(): Promise<Salle[]> {
-        return this.salleRepository.findAll()
+        const salles= this.salleRepository.findAll({
+          populate:['cycle','niveau']
+        })
+        return salles
       }
 
       async deleteSalle(id:string){

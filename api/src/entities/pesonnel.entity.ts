@@ -26,6 +26,7 @@ import { Prime } from './prime.entity';
 import { Salaire } from './salaire.entity';
 import { PersonnelSalle } from './personnelsalle.entity';
 import { Expense } from './expense.entity';
+import { PaySalary } from './paysalary.entity';
 
 export enum Status{
   PERMANENT='PERMANENT',
@@ -132,14 +133,14 @@ export class Personnel {
 
   @Field(() => ID)
   @Property({ persist: false })
-  get userid() {
-    return `${this.user.id}`;
+  get userid(): string|null {
+    return this.user?`${this.user.id}`: null;
   }
 
   @Field(() => ID)
   @Property({ persist: false })
-  get categorieid() {
-    return `${this.category.id}`;
+  get categorieid(): string|null {
+    return this.category ?`${this.category.id}`: null;
   }
 
 
@@ -168,5 +169,8 @@ export class Personnel {
 
   @OneToMany(()=> Expense, (expense) => expense.personnel)
   expense = new Collection<Expense>(this)
+
+  @OneToMany(() => PaySalary, paysalary => paysalary.personnel)
+  paysalary = new Collection<PaySalary>(this);
 
 }

@@ -39,6 +39,7 @@ specifiers:
   next-translate: ^2.0.4
   pdfmake: ^0.2.7
   react: 18.2.0
+  react-csv: ^2.2.2
   react-dom: 18.2.0
   react-hook-form: ^7.43.8
   react-html-table-to-excel: ^2.0.0
@@ -87,6 +88,7 @@ dependencies:
   next-translate: 2.0.5_next@13.0.6+react@18.2.0
   pdfmake: 0.2.7
   react: 18.2.0
+  react-csv: 2.2.2
   react-dom: 18.2.0_react@18.2.0
   react-hook-form: 7.43.9_react@18.2.0
   react-html-table-to-excel: 2.0.0_react@18.2.0
@@ -4806,6 +4808,10 @@ packages:
     dependencies:
       '@babel/runtime': 7.20.13
       react: 18.2.0
+    dev: false
+
+  /react-csv/2.2.2:
+    resolution: {integrity: sha512-RG5hOcZKZFigIGE8LxIEV/OgS1vigFQT4EkaHeKgyuCbUAu9Nbd/1RYq++bJcJJ9VOqO/n9TZRADsXNDR4VEpw==}
     dev: false
 
   /react-dom/18.2.0_react@18.2.0:

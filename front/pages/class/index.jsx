@@ -71,12 +71,16 @@ import {MdDelete} from 'react-icons/md';
 import ReactPaginate from "react-paginate";
 import Link  from "next/link"
 import Routes from "../../modules/routes";
+import { useTranslation } from "next-i18next";
+import { getStaticPropsTranslations } from "../../types/staticProps";
+
 
 const Class = () => {
 
   const router = useRouter();
   const cancelRef = React.useRef()
   const toast = useToast();
+  const {t} = useTranslation();
   const { isOpen, onToggle, onClose, onOpen } = useDisclosure();
   const { isOpen:isOpenn, onClose:onClosse, onOpen:onOpenn } = useDisclosure();
   const { isOpen:isOpennes, onClose:onClosses, onOpen:onOpennes } = useDisclosure();
@@ -199,6 +203,7 @@ const Class = () => {
             size="lg"
             textColor="pink.300"
           >
+            {t('pages.class.classList.heading')}
             Liste des classes
           </Heading>
           <Hide below="sm">
@@ -497,10 +502,14 @@ const Class = () => {
               >
                   <Thead background="colors.secondary">
                   <Tr>
-                      <Th>Nom</Th>
+                      <Th>
+                        {t('pages.class.classList.name')}
+                      </Th>
                       <Th>Montant pension</Th>
                       {/* <Th >section</Th>  */}
-                      <Th >Actions</Th>
+                      <Th >
+                        {t('pages.class.classList.Action')}
+                      </Th>
                   </Tr>
                   </Thead>
                   <Tbody>
@@ -525,7 +534,9 @@ const Class = () => {
                               <Button>
                                 <Links 
                                   href=''
-                                >Details</Links>
+                                >
+                                  {t('pages.class.classList.details')}
+                                </Links>
                               </Button>
                             </ButtonGroup> 
                           </Td>
@@ -577,26 +588,25 @@ const Class = () => {
                                               fontWeight='bold'
                                               textAlign={"center"}
                                               >
-                                              Confirmation de suppression
+                                                {t('pages.class.classList.confirmDeletingClass')}
                                             </AlertDialogHeader>
                                             <AlertDialogBody textAlign={"center"}>
-                                            Voulez-vous supprimer cette classe?
+                                                {t('pages.class.classList.wouldYouWantToDeleteClass')}
                                             </AlertDialogBody>
-
                                             <AlertDialogFooter>
                                               <Button 
                                                 ref={cancelRef} 
                                                 onClick={onClose}
                                                 colorScheme="red"
                                               >
-                                                Annuler 
+                                                {t('pages.class.classList.cancelButton')}
                                               </Button>
                                               <Button 
                                                 colorScheme='green' 
                                                 onClick={() => {removeClass(salle?.id)}}
                                                 ml={3}
                                               >
-                                                Supprimer
+                                                {t('pages.class.classList.deleteButton')}
                                               </Button>
                                             </AlertDialogFooter>
                                           </AlertDialogContent>
@@ -761,5 +771,14 @@ const Class = () => {
     </DefaultLayout>
   );
 };
+
+export async function getStaticProps({ locale }) {
+  return {
+    props: {
+      ...(await getStaticPropsTranslations(locale)),
+      // Will be passed to the page component as props
+    },
+  };
+}
 
 export default Class;

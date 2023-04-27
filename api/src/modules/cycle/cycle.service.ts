@@ -68,7 +68,7 @@ export class CycleService {
       
       async update(id:string, input: CycleUpdateInput): Promise<Cycle> {
         const cycle = await this.findById(id)
-        wrap(cycle).assign({
+        wrap(cycle).assign({ 
             name: input.name || cycle.name,
             section: input.sectionId || cycle.section
         },

@@ -80,14 +80,18 @@
             "classAdd":{
                 "heading":"Créer une classe",
                 "name": "Nom de la classe:",
+                "feesAmount": "Valeur de la pension",
                 "studyLevel":"Niveau d'étude:",
+                "academicYear": "Anneé académique",
                 "cycleName": "Cycle:",
-                "annuler": "Annuler",
+                "cancelButton": "Annuler",
                 "submitButton":"Créer"
             },
             "sectionCreate":{
+                "heading":"Ajouter une section",
                 "addButton":"Ajouter une section",
                 "name": "Nom",
+                "section": "Section",
                 "description": "Description",
                 "cancelButton": "Annuler",
                 "submitButton": "Créer"
@@ -97,7 +101,9 @@
                 "addButton":"Ajouter un cyle",
                 "name": "Nom",
                 "description": "Description",
-                "sectionName": "Section"
+                "sectionName": "Section",
+                "cancelButton": "Annuler",
+                "submitButton": "Créer"
               
             },
             "listSectionCycle": {
@@ -126,7 +132,7 @@
                 "heading":"Matière",
                 "name": "Nom",
                 "courseHours": "Taux horaire",
-                "Action": "Actions",
+                "action": "Actions",
                 "confirmDeleting": " Confirmation de suppression",
                 "wouldYouWantToDeleteCourse": "Voulez-vous supprimer cette matière?",
                 "cancelButton": "Annuler",
@@ -135,17 +141,17 @@
         },
         "level":{
             "addLevel":{
-                "addButton":"Ajouter un niveau",
                 "heading":" Création d'un niveau d'étude",
-                "name": "Nom du niveau:",
+                "name": "Nom du niveau",
                 "fees": "Pension",
                 "nameCycle": "Cycle",
                 "cancelButton": "Annuler",
                 "submitButton": "Ajouter"
             },
             "listLevel":{
+                "addButton":"Ajouter un niveau",
                 "heading": "Liste des niveaux",
-                "name": "Nom:",
+                "name": "Nom",
                 "fees": "Pension:",
                 "Action": "Actions",
                 "confirmDeleting": " Confirmation de suppression",

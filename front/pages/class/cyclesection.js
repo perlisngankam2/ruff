@@ -58,8 +58,9 @@ import { useMutation, useQuery } from "@apollo/client";
 import SectionCreate from "./SectionCreate";
 import CycleCreate from "./CycleCreate";
 import ReactPaginate from "react-paginate";
-import Routes from "../../modules/routes";
-
+// import Routes from "../../modules/routes";
+import { useTranslation } from "next-i18next";
+// import { getStaticPropsTranslations } from "../../types/staticProps";
 
 const cyclesection = () => {
 

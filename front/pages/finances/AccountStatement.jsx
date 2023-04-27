@@ -88,7 +88,7 @@ const AccountStatement = () => {
                     size="lg"
                     textColor="pink.300"
                   >
-                   Etat des entrees et sorties 
+                    {t('pages.finances.accountStatement.heading')}
                   </Heading>
                   <Hide below="sm">
                     <Text>Dashboad /</Text>
@@ -216,7 +216,7 @@ const AccountStatement = () => {
                                     <Box 
                                         width='290px'
                                     >
-                                        Description
+                                        {t('pages.finances.accountStatement.description')}
                                     </Box>
                                     <Box 
                                         width='160px'

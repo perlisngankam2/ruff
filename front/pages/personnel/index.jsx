@@ -41,7 +41,6 @@ import { UseTranslation, useTranslation } from "next-i18next";
 import { getStaticPropsTranslations } from "../../types/staticProps";
 
 
-
 const Personnel = () => {
 
   const [searchName, setSearchName] = useState("");
@@ -58,7 +57,6 @@ const Personnel = () => {
 
 
   const {t} = useTranslation()
-
 
   const employees = [
     { id: 1, name: "DON WILFRIED", function: "Directeur" },
@@ -193,7 +191,7 @@ const Personnel = () => {
                   fonction={personnel.fonction}
                   situationMatrimonial={personnel.situationMatrimonial}
                   id={personnel.id}
-                /> 
+              /> 
               {/* <Box
                 bg={"gray.200"}
                 width={"200px"}

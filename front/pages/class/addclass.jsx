@@ -18,6 +18,8 @@ import { useEffect ,useState } from "react";
 import { useMutation, useQuery } from "@apollo/client";
 import { MdDescription } from "react-icons/md";
 import DefaultLayout from "../../components/layouts/DefaultLayout";
+import {useTranslation} from "next-i18next";
+import { getStaticPropsTranslations } from "../../types/staticProps";
 import { 
   CREATE_SALLE,
   UPDATE_SALLE
@@ -35,6 +37,7 @@ const AddClass = () => {
 
   const toast = useToast();
   const router = useRouter();
+  const {t} = useTranslation();
   const teachers = ["Ryan Jones", "Illary Daenarys ", "Julian Clinton"];
   const [name, setName] = useState();
   const [section, setSection] = useState();
@@ -172,7 +175,7 @@ const AddClass = () => {
                 color={"colors.primary"}
                 textAlign={"center"}
               >
-                Creation d'une classe
+                  {t('pages.class.classAdd.heading')}
               </Heading>
               <Stack
                 gap={2}
@@ -181,7 +184,10 @@ const AddClass = () => {
                 mt="25px"
               >
                   <FormControl>
-                    <FormLabel>Nom de la classe:</FormLabel>
+                    <FormLabel>
+                      {/* Nom de la classe: */}
+                      {t('pages.class.classAdd.name')}
+                    </FormLabel>
                     <Input 
                       placeholder="Nom de la classe" 
                       type="text"
@@ -192,7 +198,10 @@ const AddClass = () => {
                     />
                   </FormControl>
                   <FormControl>
-                    <FormLabel>Montant pension:</FormLabel>
+                    <FormLabel>
+                      {/* Montant pension: */}
+                      {t('pages.class.classAdd.feesAmount')}
+                    </FormLabel>
                     <Input 
                       placeholder="Valeur de la pension" 
                       type="number"
@@ -203,7 +212,10 @@ const AddClass = () => {
                     />
                   </FormControl>
                   <FormControl mt="15px">
-                      <FormLabel>Niveau d'etude:</FormLabel>
+                      <FormLabel>
+                         {t('pages.class.classAdd.studyLevel')}
+                        {/* Niveau d'etude: */}
+                      </FormLabel>
                       <Select 
                         id="cycle"
                         name="niveauEtudeId"
@@ -225,7 +237,10 @@ const AddClass = () => {
                       </Select>
                   </FormControl> 
                   <FormControl mt={4}>
-                        <FormLabel>Annee academique</FormLabel>
+                        <FormLabel>
+                          {/* Annee academique */}
+                         {t('pages.class.classAdd.academicYear')}
+                        </FormLabel>
                         <Select 
                             type={'date'} 
                             name="anneeAcademiqueId"
@@ -262,13 +277,15 @@ const AddClass = () => {
                  </FormControl> */}
                   <Flex gap={5} pt="30px">
                     <Button colorScheme="red" onClick={() => router.back()}>
-                      Annuler
+                      {t('pages.class.classAdd.cancelButton')}
+                      {/* Annuler */}
                     </Button>
                     <Button
                       colorScheme="green"
                       onClick={addClasse}
                     >
-                      Creer
+                      {t('pages.class.classAdd.submitButton')}
+                      {/* Creer */}
                     </Button>
                   </Flex>
               </Stack>
@@ -279,5 +296,14 @@ const AddClass = () => {
     </DefaultLayout>
   );
 };
+
+export async function getStaticProps({ locale }) {
+  return {
+    props: {
+      ...(await getStaticPropsTranslations(locale)),
+      // Will be passed to the page component as props
+    },
+  };
+}
 
 export default AddClass;

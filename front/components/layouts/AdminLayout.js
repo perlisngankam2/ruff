@@ -16,6 +16,7 @@
   import {MdOutlineSms} from "react-icons/md";
   import {FaLevelUpAlt} from "react-icons/fa"
   import {MdOutlineFamilyRestroom} from "react-icons/md"
+  import {AiFillSetting} from "react-icons/ai"
   
 
   const AdminLayout = ({ children }) => {
@@ -267,6 +268,24 @@
                 <Box as="span">Mail</Box>
               </Link>
             </AccordionPanel> */}
+          </AccordionItem>
+          <AccordionItem>
+            <AccordionButton pl={0} >
+              <Flex align="center" gap="1">
+                <Icon as={AiFillSetting} />
+                <Box as="span">Paramètre</Box>
+              </Flex>
+            </AccordionButton>
+            <AccordionPanel pb={1} _hover={{background:"rgba(0,0,0,0.16)"}}>
+              <Link href="settings/generalSettings">
+                <Box as="span">Paramètre généraux</Box>
+              </Link>
+            </AccordionPanel>
+            <AccordionPanel pb={1} _hover={{background:"rgba(0,0,0,0.16)"}}>
+              <Link href="/statistiques">
+                <Box as="span">Statistiques 2</Box>
+              </Link>
+            </AccordionPanel>
           </AccordionItem>
         </Accordion>
         { children }

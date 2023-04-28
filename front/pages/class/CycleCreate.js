@@ -48,11 +48,7 @@ import { getStaticPropsTranslations } from "../../types/staticProps";
 //      onSubmit:(value = formData) => {}
 // }
 
-const  CycleCreate =  (
-    // { defaultValues,
-    //     onSubmit
-    // } =  CycleProps
-    ) => {
+const  CycleCreate =  () => {
 
     const [name, setName] = useState("");
     const[sectionId, setSectionId] = useState("");
@@ -196,18 +192,18 @@ const  CycleCreate =  (
    
   return (
     <Center>
-            <Box> 
-            <Button
-                rightIcon={<Icon as={IoIosAdd} boxSize="20px" />}
-                onClick={onOpen}
-                ml={["245px", "490px","909px"]}
-                width ={"200px"}
-                mb={"20px"}
-                mt={"10px"}
-                // onClick = {() => router.push(personnel/AjouterCategoryPersonnel)} 
-            >
-                    Ajouter un Cycle                              
-            </Button>
+        <Box> 
+        <Button
+            rightIcon={<Icon as={IoIosAdd} boxSize="20px" />}
+            onClick={onOpen}
+            ml={["245px", "490px","909px"]}
+            width ={"200px"}
+            mb={"20px"}
+            mt={"10px"}
+            // onClick = {() => router.push(personnel/AjouterCategoryPersonnel)} 
+        >
+            Ajouter un Cycle                              
+        </Button>
         </Box> 
           {/* {isformOpen?   } */}
         <Box> 
@@ -232,7 +228,7 @@ const  CycleCreate =  (
                                         fontSize={['15px','20px','24px']} 
                                         p='2' 
                                     >
-                                         {t('pages.class.cycleCreate.heading')}
+                                        {t('pages.class.cycleCreate.heading')}
                                     </Heading>
                                 </Box>
                             </AlertDialogHeader>
@@ -254,7 +250,7 @@ const  CycleCreate =  (
                                 </FormControl>
                                 <FormControl mt="15px">
                                     <FormLabel>
-                                    {t('pages.class.cycleCreate.sectionName')}
+                                         {t('pages.class.cycleCreate.sectionName')}
                                     </FormLabel>
                                     <Select 
                                         name="sectionId"
@@ -311,5 +307,5 @@ export async function getStaticProps({ locale }) {
       },
     };
   }
-  
+
 export default CycleCreate;

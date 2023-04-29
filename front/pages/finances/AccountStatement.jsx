@@ -64,12 +64,14 @@ import { DELETE_STUDENT } from "../../graphql/Mutation";
 import { useMutation, useQuery } from "@apollo/client";
 import ReactPaginate from "react-paginate";
 import { CSVLink, CSVDownload } from "react-csv";
+import { useTranslation } from "next-i18next";
+import { getStaticPropsTranslations } from "../../types/staticProps";
 
 const AccountStatement = () => {
 
     const {data:dataExpensePersonnelStudent} = useQuery(GET_ALL_EXPENSE_PERSONNEL_STUDENT)
     const date1 = new Date('December 17, 1995 03:24:00')
-
+    const {t} = useTranslation()
 
     const componentRef = useRef();
     const ref = React.createRef();
@@ -390,6 +392,14 @@ const AccountStatement = () => {
               </Box>
             </DefaultLayout>
     )
+}
+export async function getStaticProps({ locale }) {
+  return {
+    props: {
+      ...(await getStaticPropsTranslations(locale)),
+      // Will be passed to the page component as props
+    },
+  };
 }
 
 export default AccountStatement;

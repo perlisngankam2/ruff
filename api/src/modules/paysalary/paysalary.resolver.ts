@@ -39,4 +39,9 @@ async deletePaysalire(@Args('id') id:string){
     return await this.paysalaireService.delete(id)
 }
 
+@Query(()=>[String])
+async PersonnelMonthPaySalary(@Args('personnelid') personnelid:string){
+    return await this.paysalaireService.personnelMonthSalary(personnelid)
+}
+
 }

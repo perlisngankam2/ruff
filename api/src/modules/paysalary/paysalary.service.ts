@@ -141,4 +141,9 @@ return paysalaire;
   
 }
 
+async personnelMonthSalary(personnelId:string){
+  const b = (await this.salairepersonnel(personnelId)).map(a=>a.moisPaie)
+  return b
+}
+
 }

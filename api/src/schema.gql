@@ -256,9 +256,9 @@ type Expense {
   personnelFirstName: ID
   personnelLastName: ID
   personnelFonction: ID
-  studentid: ID!
-  studentFirstname: ID!
-  studentLastname: ID!
+  studentid: ID
+  studentFirstname: ID
+  studentLastname: ID
 }
 
 type AnneeAccademique {
@@ -446,6 +446,7 @@ type Query {
   findallpaysalaire: [PaySalary!]!
   getonepaysalaire(id: String!): PaySalary!
   getpaysalairebypersonnel(personnelid: String!): [PaySalary!]!
+  PersonnelMonthPaySalary(personnelid: String!): [String!]!
   findavancetranchebyid(input: String!): AvanceTranche!
   findallavancetranche: [AvanceTranche!]!
   SumAvanceTrancheByTranche(trancheid: String!): Float!

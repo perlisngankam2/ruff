@@ -682,8 +682,8 @@ query findmontantprimebypersonnel ($personnelid: String!) {
 `;
 //MONTANT TOTAL DE TOUTES LES PRIMES ATTRIBUES A UN PERSONNEL
 export const GET_SUM_AMOUNT_PRIME_PERSONNEL = gql `
-query findsumallprimepersonnel ($personnelid: String!) {
-    findsumallprimepersonnel (personnelid: $personnelid)
+query getallpersonnelprimebymont ($personnelid: String!, $month: String!) {
+    getallpersonnelprimebymont (personnelid: $personnelid, month: $month)
 }
 `;
 
@@ -701,8 +701,8 @@ query findmontantretenubypersonnel ($personnelid: String!) {
 `;
 //MONTANT TOTAL DE TOUTES LES RETENUES ATTRIBUES A UN PERSONNEL
 export const GET_SUM_AMOUNT_RETENU_PERSONNEL = gql `
-query findsumallretenupersonnel ($personnelid: String!) {
-    findsumallretenupersonnel (personnelid: $personnelid)
+query getallretenupersonnelbymonth ($personnelid: String!, $month: String!) {
+    getallretenupersonnelbymonth (personnelid: $personnelid, month: $month)
 }
 `;
 //noms et montant des primes d'un personnel

@@ -34,4 +34,9 @@ async getonepaysalaire(@Args('id') id:string){
 async getpaysalairebypersonnel(@Args('personnelid') personnelid:string){
     return await this.paysalaireService.salairepersonnel(personnelid)
 }
+@Mutation(()=>PaySalary)
+async deletePaysalire(@Args('id') id:string){
+    return await this.paysalaireService.delete(id)
+}
+
 }

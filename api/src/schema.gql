@@ -415,6 +415,7 @@ type Query {
   findnamesprimebypersonnel(personnelid: String!): [String!]!
   findsumallprimepersonnel(personnelid: String!): Float!
   primesETnomprimepersonnel(personnelid: String!): [[String!]!]!
+  getallpersonnelprimebymont(personnelid: String!, month: String!): Float!
   findAllperiod: [Periode!]!
   periode(id: String!): Periode!
   findAllretenupersonnel: [RetenuPersonnel!]!
@@ -423,6 +424,7 @@ type Query {
   findnamesretenubypersonnel(personnelid: String!): [String!]!
   findsumallretenupersonnel(personnelid: String!): Float!
   getRetenuEtNom(personnelid: String!): [[String!]!]!
+  getallretenupersonnelbymonth(personnelid: String!, month: String!): Float!
   findAllsection: [Section!]!
   findOnesection(id: String!): Section!
   findAllcycle: [Cycle!]!
@@ -570,6 +572,7 @@ type Mutation {
   deletefraisfraisexam(id: String!): FraisExamen!
   createpaysalaire(input: PaySalaryCreateInput!): PaySalary!
   updatepaysalire(id: String!, input: PaySalaryUpdateInput!): PaySalary!
+  deletePaysalire(id: String!): PaySalary!
   createavancetranche(avancetranche: AvanceTrancheCreateInput!): AvanceTranche!
   deleteavancetranche(id: String!): AvanceTranche!
   createTrancheStudent(trancheStudent: TrancheStudentCreateInput!): TrancheStudent!

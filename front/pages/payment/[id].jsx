@@ -19,7 +19,7 @@ import { useQuery, useMutation } from "@apollo/client";
 import { GET_ALL_PERSONNEL_BY_ID, GET_PRIME_PERSONNEL, GET_ALL_PAYSALAIRE_BY_ID, GET_RETENUE_PERSONNEL, GET_Category_Personnel_BY_ID, GET_Category_Personnel_ID, GET_ALL_SALAIRE_BY_ID, GET_ALL_MONTH_SALARY, GET_SALARY_NET} from "../../graphql/Queries";
 import React,  { useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import { CREATE_SALAIRE, PAY_SALAIRE } from "../../graphql/Mutation";
+import { CREATE_SALAIRE, PAY_SALAIRE,DELETE_PAYSALAIRE } from "../../graphql/Mutation";
 import { useToast } from "@chakra-ui/react";
 import Routes from "../../modules/routes";
 import Link from "next/link";
@@ -32,7 +32,7 @@ const PaySlip = () => {
 
     const [genererSalaire] = useMutation(PAY_SALAIRE);
   const [createSalaire] = useMutation(CREATE_SALAIRE);
-
+  const [deletepaysalaire] = useMutation(DELETE_PAYSALAIRE);
 
 
   //information du personnel par son ID
@@ -315,6 +315,16 @@ const monthOptions = useMemo(() => {
 
 
 // if (loading) return <Text>Chargement en cour...</Text>
+
+ const removePaySalaire = async(id) => {
+      await deletepaysalaire({
+        variables: {id},
+        refetchQueries: [{
+          query: GET_ALL_PAYSALAIRE_BY_ID
+        }]
+      })
+      onClose();
+    }
 
     return ( 
 
@@ -663,7 +673,7 @@ const monthOptions = useMemo(() => {
             </Box>
             </AlertDialogBody>
             <AlertDialogFooter>
-              <Button ref={cancelRef} onClick={onClose} colorScheme='red' >
+              <Button onClick={() => removePaySalaire(dernierElementGenererSalaire.id)} colorScheme='red' >
                 annuler
               </Button>
                 <Button colorScheme='green'  ml={3} type='submit' onClick={HandleClickPayerSalaire}>

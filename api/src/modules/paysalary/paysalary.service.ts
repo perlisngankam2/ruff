@@ -128,7 +128,7 @@ return paysalaire;
    
   async delete(id:string){
     const a= this.findById(id)
-    await this.paysalaryRepository.removeAndFlush(a)
+    await this.paysalaryRepository.nativeDelete(await a)
     if(!a){
      throw Error("not found")
     }

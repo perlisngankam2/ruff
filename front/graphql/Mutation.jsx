@@ -651,6 +651,17 @@ mutation updateNiveauEtude ($id: String!, $input: NiveauEtudeUpdateInput!) {
         montantPension
     }
 }
+`;
+
+export const DELETE_PAYSALAIRE = gql `
+mutation deletePaysalire ($id: String!) {
+    deletePaysalire (id: $id) {
+        id
+        moisPaie
+        montant
+        personnelid
+    }
+}
 `
 
 

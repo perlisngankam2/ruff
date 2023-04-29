@@ -572,7 +572,7 @@ mutation createprime ($prime: PrimeCreateInput!) {
 }
 `;
 
-// retenue
+//retenue
 
 export const CREATE_RETENUE = gql `
 mutation createretenuesalarial ($retenue: RetenuCreateInput!) {
@@ -585,6 +585,19 @@ mutation createretenuesalarial ($retenue: RetenuCreateInput!) {
 }
 `;
 
+// retenue
+
+export const CREATE_RETENUE_PERSONNEL = gql `
+mutation createretnupersonnel ($retenuPersonnel: RetenuPersonnelCreateInput!) {
+    createretnupersonnel (retenuPersonnel: $retenuPersonnel) {
+        id
+        startMonth
+        retenueid
+        personnelid
+    }
+}
+`;
+
 //prime personel
 
 export const CREATE_PRIME_PERSONNEL = gql `
@@ -592,6 +605,8 @@ mutation createprimepersonnel ($primePersonnel: PrimePersonnelCreateInput!) {
     createprimepersonnel (primePersonnel: $primePersonnel) {
         id
         startMonth
+        primeid
+        personnelid
     }
 }
 `;
@@ -604,6 +619,7 @@ mutation createsalaire ($input: SalaireCreateInput!) {
         id
         jourPaie
         moisPaie
+        payer
         montant
     }
 }
@@ -612,13 +628,12 @@ mutation createsalaire ($input: SalaireCreateInput!) {
 //payer salaire
 
 export const PAY_SALAIRE = gql `
-mutation createpaysalaire ($input: PaySalaireCreateInput!) {
+mutation createpaysalaire ($input: PaySalaryCreateInput!) {
     createpaysalaire (input: $input) {
         id
-        jourPaie
         moisPaie
-        payer
         montant
+        personnelid
     }
 }
 `;

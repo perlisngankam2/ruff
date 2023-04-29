@@ -16,10 +16,10 @@ import PaySlipLogoBox from "../../components/atoms/PaySlipLogoBox";
 import PaySlipInformationEmployeeBox from "../../components/atoms/PaySlipInformationEmployeeBox";
 import DefaultLayout from "../../components/layouts/DefaultLayout";
 import { useQuery, useMutation } from "@apollo/client";
-import { GET_ALL_PERSONNEL_BY_ID, GET_PRIME_PERSONNEL, GET_RETENUE_PERSONNEL, GET_Category_Personnel_BY_ID, GET_Category_Personnel_ID, GET_ALL_SALAIRE_BY_ID, GET_ALL_MONTH_SALARY, GET_SALARY_NET} from "../../graphql/Queries";
+import { GET_ALL_PERSONNEL_BY_ID, GET_PRIME_PERSONNEL, GET_ALL_PAYSALAIRE_BY_ID, GET_RETENUE_PERSONNEL, GET_Category_Personnel_BY_ID, GET_Category_Personnel_ID, GET_ALL_SALAIRE_BY_ID, GET_ALL_MONTH_SALARY, GET_SALARY_NET} from "../../graphql/Queries";
 import React,  { useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import { CREATE_SALAIRE } from "../../graphql/Mutation";
+import { CREATE_SALAIRE, PAY_SALAIRE } from "../../graphql/Mutation";
 import { useToast } from "@chakra-ui/react";
 import Routes from "../../modules/routes";
 import Link from "next/link";
@@ -29,6 +29,9 @@ const PaySlip = () => {
 
   const router = useRouter();
   const toast = useToast();
+
+    const [genererSalaire] = useMutation(PAY_SALAIRE);
+  const [createSalaire] = useMutation(CREATE_SALAIRE);
 
 
 
@@ -77,14 +80,31 @@ const PaySlip = () => {
   });
 
 
+//generer salaire d'un personnel
+
+    const {data:dataGenererSalaire, refetch} = useQuery(GET_ALL_PAYSALAIRE_BY_ID,
+  {
+    variables:{ personnelid: router.query.id},
+    fetchPolicy: 'network-only',  
+  });
+
+  //recupere le dernier indice et le dernier element de generer salaire
+         const dernierIndiceGenererSalaire = dataGenererSalaire?.getpaysalairebypersonnel.length - 1
+       const dernierElementGenererSalaire = dataGenererSalaire?.getpaysalairebypersonnel[dernierIndiceGenererSalaire];
+console.log(dernierElementGenererSalaire)
+
+  
   const personnelId = dataPersonnelId?.findOnePersonnel.id ;
   const montant = dataCategorie?.findOneCategoriepersonnel.montant;
+
+  const moisSalaire = dernierElementGenererSalaire?.moisPaie ;
+  const montantSalaire = dernierElementGenererSalaire?.montant;
 
   const [moisPaie, setMoisPaie] = useState("");
   const [jourPaie , setJourPaie] = useState("");
 const [isMonthUnavailable, setIsMonthUnavailable] = useState(false);
 
-  const [createSalaire] = useMutation(CREATE_SALAIRE);
+
     const { isOpen,  onOpen, onClose } = useDisclosure();
   const cancelRef = React.useRef()
     const moisPayes = []
@@ -101,7 +121,7 @@ const [isMonthUnavailable, setIsMonthUnavailable] = useState(false);
 
   }
     console.log("dataMoisSalaire")
-  console.log(dataMoisSalaire?.PersonnelMonthSalary)
+  console.log(montantSalaire)
   console.log(dataPrimePersonnel)
   console.log(moisPayes.includes(moisPaie.toLowerCase()))
 
@@ -125,10 +145,33 @@ const unavailableMonths = useMemo(
 
 
 
+  const HandleClickGenererSalaire = async (event) => {
+    event.preventDefault();
+
+
+    const genererSalaireData = await genererSalaire({
+          variables:{
+          input: { 
+            personnelId: personnelId,
+            montant: parseInt(montant),
+            moisPaie: moisPaie
+          },
+      },
+    });
+    refetch();
+ 
+
+    console.log(genererSalaireData)
+    onOpen()
+  
+
+        setMoisPaie("");
+  }
+  console.log(dataGenererSalaire)
 
 
 
-  const HandleClick = async (event) => {
+  const HandleClickPayerSalaire = async (event) => {
     event.preventDefault();
 
 
@@ -137,10 +180,9 @@ const unavailableMonths = useMemo(
           input: { 
             ID: "",
             personnelId: personnelId,
-            montant: parseInt(montant),
-            payer: true,
-            moisPaie: moisPaie, 
-            jourPaie: jourPaie
+            montant: parseInt(montantSalaire),
+            moisPaie: moisSalaire, 
+            jourPaie: jourPaie,
           }
         }
       })
@@ -355,7 +397,7 @@ const monthOptions = useMemo(() => {
                   <Text fontWeight={'bold'}>{dataPersonnelId?.findOnePersonnel.status}</Text>
                 </Flex>
                  <Box width={'340px'} gap={7} as={"form"} mt="20px"
-            onSubmit={HandleClick}
+            onSubmit={HandleClickGenererSalaire}
          >
           <Text fontSize='sm'>Mois de salaire</Text>
               {/* <Input
@@ -512,7 +554,7 @@ const monthOptions = useMemo(() => {
              <Center>
           <Button disabled={!moisPaie} type="submit" color='white' bg='#eb808a' variant='solid' mx='auto' my='auto'
           //  onClick={HandleClick}
-          onClick={onOpen}
+          onClick={HandleClickGenererSalaire}
            >
               
             Generer le paiement
@@ -572,8 +614,9 @@ const monthOptions = useMemo(() => {
           
         >  <Flex gap={6}>
                   <Text>Salaire du mois de :</Text>
-                  <Text fontWeight={'bold'}>XXXXXXXXXXXXXXX</Text>
-                </Flex>
+                 {dernierElementGenererSalaire &&
+                 <Text fontWeight={'bold'}>{dernierElementGenererSalaire.moisPaie}</Text>
+                 }</Flex>
                 <Flex gap={6}>
                   <Text>Montant de base :</Text>
                   <Text fontWeight={'bold'}>{dataCategorie?.findOneCategoriepersonnel.montant}</Text>
@@ -582,7 +625,7 @@ const monthOptions = useMemo(() => {
                   <Text>PRIMES SALARIALES</Text>
                   {dataPrimePersonnel ?
                  (dataPrimePersonnel?.primesETnomprimepersonnel.map((prime) =>(
-                   <Flex>{prime[0]}
+                   <Flex>{prime[1]}
                     
 </Flex>
                  ))) :
@@ -590,8 +633,12 @@ const monthOptions = useMemo(() => {
                     
                   }
                 </Box>
+                <Flex gap={6}>
+                  <Text>SALAIRE NET :</Text>
+                  <Text fontWeight={'bold'}>{dernierElementGenererSalaire?.montant}</Text>
+                </Flex>
          <Box width={'340px'} as={"form"}
-            onSubmit={HandleClick}
+            onSubmit={HandleClickPayerSalaire}
             mt={'8px'}
          >
           <Text fontSize='sm'> Jour de Paie</Text>
@@ -603,8 +650,8 @@ const monthOptions = useMemo(() => {
                     name="dateOfPrime"
                     // mt={'8px'}
                     onChange={(event) => setJourPaie(event.target.value)}
-                    value={jourPaie || new Date().toISOString().slice(0, 10)}
-                    
+                    value={jourPaie}
+                    defaultValue={new Date().toISOString().slice(0, 10)}
                   />
                   
                    {console.log(jourPaie)}
@@ -619,7 +666,7 @@ const monthOptions = useMemo(() => {
               <Button ref={cancelRef} onClick={onClose} colorScheme='red' >
                 annuler
               </Button>
-                <Button colorScheme='green'  ml={3} type='submit' onClick={HandleClick}>
+                <Button colorScheme='green'  ml={3} type='submit' onClick={HandleClickPayerSalaire}>
                   ajouter
                 </Button>
             </AlertDialogFooter>

@@ -566,6 +566,16 @@ query getsalairebypersonnel ($personnelid: String!) {
     }
 }
 `
+export const GET_ALL_PAYSALAIRE_BY_ID = gql `
+query getpaysalairebypersonnel ($personnelid: String!) {
+    getpaysalairebypersonnel (personnelid: $personnelid) {
+        id
+        moisPaie
+        montant
+        personnelid
+    }
+}
+`
 
 export const GET_ALL_TRANCHE_DATE_LINE_BY_STUDENT = gql `
     query TrancheDateLine ($studentid: String!) {
@@ -684,5 +694,36 @@ query primesETnomprimepersonnel ($personnelid: String!) {
 export const GET_RETENUE_PERSONNEL = gql `
 query getRetenuEtNom ($personnelid: String!) {
     getRetenuEtNom (personnelid: $personnelid)
+}
+`;
+
+export const FIND_ALL_SALAIRE = gql `
+query findallsalaire {
+    findallsalaire {
+        id
+        jourPaie
+        moisPaie
+        payer
+        montant
+        personnelid
+        personnelFirstName
+        personnelLastName
+        personnelFonction
+    }
+}
+`;
+export const FIND_BY_ID_SALAIRE = gql `
+query getonesalaire ($id: String!) {
+    getonesalaire (id: $id) {
+        id
+        jourPaie
+        moisPaie
+        payer
+        montant
+        personnelid
+        personnelFirstName
+        personnelLastName
+        personnelFonction
+    }
 }
 `;

@@ -46,7 +46,6 @@ type RetenuPersonnel {
   startMonth: String
   retenueid: ID!
   personnelid: ID!
-  salaireid: ID!
 }
 
 type Salaire {
@@ -56,6 +55,9 @@ type Salaire {
   payer: Boolean!
   montant: Float!
   personnelid: ID!
+  personnelFirstName: ID
+  personnelLastName: ID
+  personnelFonction: ID
 }
 
 type PrimePersonnel {
@@ -63,7 +65,6 @@ type PrimePersonnel {
   startMonth: String
   primeid: ID!
   personnelid: ID!
-  salaireid: ID!
 }
 
 type Prime {
@@ -282,7 +283,7 @@ type Cycle {
   id: ID!
   name: String
   sectionid: ID!
-  sectionname: ID!
+  sectionName: ID!
 }
 
 type NiveauEtude {
@@ -292,6 +293,7 @@ type NiveauEtude {
   montantPension: Float
   cycleid: ID!
   cyclename: ID!
+  cycleName: ID!
 }
 
 type Course {
@@ -458,8 +460,6 @@ type Query {
   pension(id: String!): Pension!
   findrestpensionbystudent(studentid: String!): Float!
   findpensionbystudent(studentid: String!): Pension!
-  findoneexpense(id: String!): Expense!
-  findallexpenses: [Expense!]!
   findoneexpense(id: String!): Expense!
   findallexpenses: [Expense!]!
   findallsalaire: [Salaire!]!

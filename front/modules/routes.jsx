@@ -154,6 +154,10 @@ const RouteName = {
       path: '/payment/bulletin/[id]'
     }
     ,
+    BulletinLastPayment: {
+      path: '/payment/bulletinLastPayment/[id]'
+    }
+    ,
     Payment: {
       path: '/payment',
     },

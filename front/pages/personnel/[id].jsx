@@ -68,7 +68,7 @@ const Profil = () => {
     const { isOpen:isOpenns, onOpen:onOpenns, onClose:onClosses } = useDisclosure();
     const { isOpen:isOpenns1, onOpen:onOpenns1, onClose:onClosses1 } = useDisclosure();
     const { isOpen:isOpenns2, onToggle:onToggle1, onOpen:onOpenns2, onClose:onClosses2 } = useDisclosure();
-     const { isOpen:isOpenns3, onOpen:onOpenns3, onClose:onClosses3 } = useDisclosure();
+     
     const cancelRef = React.useRef()
     const router = useRouter();
     const { t } = useTranslation();
@@ -105,7 +105,7 @@ const Profil = () => {
     const handleMoisPaieChange1 = (event) => {
     const selectedMonth = event.target.value;
     if (!moisPayes.includes(selectedMonth)) {
-      setMoisPaie(selectedMonth);
+      setStartDate1(selectedMonth);
     }
   };
 
@@ -114,7 +114,7 @@ const Profil = () => {
   const {data:dataPrime} = useQuery(GET_PRIME)
 
   const [createPrimePersonnel] = useMutation(CREATE_PRIME_PERSONNEL);
-  // const [createRetenuePersonnel] = useMutation(CREATE_RETENUE_PERSONNEL);
+  const [createRetenuePersonnel] = useMutation(CREATE_RETENUE_PERSONNEL);
   const[personnelId, setPersonnelId] = useState("");
   const[primeId, setPrimeId] = useState("");
     const[startDate, setStartDate] = useState("");
@@ -130,11 +130,10 @@ const Profil = () => {
   const [createSalaire] = useMutation(CREATE_SALAIRE);
   
 // fonction prime
-    const HandleClick = async (event) => {
+    const HandleClickPrime = async (event) => {
   event.preventDefault();
 
-  const primeDataPersonnel = async() => {
-    await createPrimePersonnel({
+  const primeDataPersonnel = await createPrimePersonnel({
         variables:{
         primePersonnel: { 
           primeId: primeId,
@@ -158,15 +157,14 @@ const Profil = () => {
     setPrimeId("");
     setStartDate("");
     // dataPrime?.findAllprime.filter(prime => prime?.id !== primeId)
-  }}
+  }
 
   //fonction retenue
 
-  const HandleClick1 = async (event) => {
+  const HandleClickRetenue = async (event) => {
   event.preventDefault();
 
-  const retenueDataPersonnel = async() => {
-     await createRetenuePersonnel({
+  const retenueDataPersonnel =  await createRetenuePersonnel({
         variables:{
         retenuPersonnel: { 
           retenuId: retenuId,
@@ -188,7 +186,7 @@ const Profil = () => {
     });
     setRetenuId("");
     setStartDate1("");
-  }
+  
 }
 
   console.log(moisPayes)
@@ -413,7 +411,7 @@ const Profil = () => {
               
                     // borderColor="purple.100"
                      onChange={handleMoisPaieChange}
-                    disabled={moisPayes.includes(startDate)}
+                    // disabled={moisPayes.includes(startDate)}
                     value={startDate}
                     // // ref={dateOfStartWorkRef}
                     
@@ -481,7 +479,7 @@ const Profil = () => {
                                               </Button>
                                               <Button 
                                                 colorScheme='green' 
-                                                onClick={HandleClick}  
+                                                onClick={HandleClickPrime}  
                                                 ml={3}
                                               >
                                                 Attribuer
@@ -638,7 +636,7 @@ const Profil = () => {
                   <FormControl>
                     <FormLabel>Mois de la retenue</FormLabel>
                        <Input
-                    placeholder="nom prime"
+                    placeholder="mois retenue"
                     bg='white'
                     type="month"
                     name="dateOfPrime"
@@ -646,7 +644,7 @@ const Profil = () => {
                     // bg='white'
               
                     // borderColor="purple.100"
-                    onChange={(event) => setStartDate1(event.target.value)}
+                    onChange={handleMoisPaieChange1}
                     value={startDate1}
                     // // ref={dateOfStartWorkRef}
                     
@@ -654,9 +652,9 @@ const Profil = () => {
                 
                     </FormControl>
                   
-                    
+                    {console.log(startDate1)}
     
-                    <FormControl>
+                    {/* <FormControl>
                         <FormLabel>Salaire de base</FormLabel>
                                 <Input
                     placeholder="nom prime"
@@ -667,7 +665,7 @@ const Profil = () => {
                 
                   //  value={montant}
                   />
-                    </FormControl>
+                    </FormControl> */}
                 </Flex>
             </Box>
             </AlertDialogBody>
@@ -716,7 +714,7 @@ const Profil = () => {
                                               </Button>
                                               <Button 
                                                 colorScheme='green' 
-                                                onClick={HandleClick1}  
+                                                onClick={HandleClickRetenue}  
                                                 ml={3}
                                               >
                                                 Attribuer

@@ -61,7 +61,7 @@ export class PrimePersonnel {
   salaire!:IdentifiedReference<Salaire>|null
 
   @ManyToOne(() => PaySalary,{
-    nullable:false,
+    nullable:true,
     onDelete:'CASCADE',
   })
   paysalary!:IdentifiedReference<PaySalary>|null
@@ -78,11 +78,11 @@ export class PrimePersonnel {
     return `${this.personnel.id}`;
   }
 
-  @Field(() => ID)
-  @Property({ persist: false })
-  get salaireid() {
-    return `${this.salaire.id}`;
-  }
+  // @Field(() => ID)
+  // @Property({ persist: false })
+  // get salaireid() {
+  //   return `${this.salaire.id}`;
+  // }
 
 
 

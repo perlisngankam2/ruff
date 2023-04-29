@@ -269,7 +269,7 @@
               </Link>
             </AccordionPanel> */}
           </AccordionItem>
-          <AccordionItem>
+          <AccordionItem  mt="95px">
             <AccordionButton pl={0} >
               <Flex align="center" gap="1">
                 <Icon as={AiFillSetting} />

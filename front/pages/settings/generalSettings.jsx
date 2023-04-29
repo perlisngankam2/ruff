@@ -109,7 +109,7 @@ const addAnneeAcademique = async () =>{
                 pb={"40px"}
               >
                 <Box> 
-                    <Heading fontSize={"2xl"} textAlign={"center"}>
+                    <Heading fontSize={"3xl"} textAlign={"center"}>
                         Parametre généraux de l'application
                     </Heading>
                 </Box>

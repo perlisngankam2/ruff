@@ -60,7 +60,7 @@ const Employee = (props) => {
             rounded="md"
           > 
               <Center>
-                {dataPersonnelId?.findOnePersonnel.sexe.toLowerCase() === "homme" ? 
+                {props.sexe.toLowerCase() === "homme" ? 
                  <Avatar
                   size="70px"
                   mt={["10px","10px", "10px" ]}

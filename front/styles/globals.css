@@ -58,3 +58,10 @@ a {
 .previousBttn {
   background-color: lightgray;
 }
+
+@media print {
+  /* Appliquer l'ajustement exact des couleurs lors de l'impression */
+  * {
+    -webkit-print-color-adjust: exact;
+  }
+}

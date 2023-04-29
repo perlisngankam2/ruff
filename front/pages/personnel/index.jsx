@@ -49,7 +49,7 @@ const Personnel = () => {
   const [deletePersonnel] = useMutation(DELETE_PERSONNEL);
   const [personnel, setPersonnel] = useState([]);
   const [pageNumber, setPageNumber] = useState(0);
-  const itemsPerPage = 15;
+  const itemsPerPage = 8;
   const pagesVisited = pageNumber * itemsPerPage;
   const { isOpen, onToggle, onClose, onOpen } = useDisclosure();
   const router = useRouter();
@@ -104,8 +104,8 @@ const Personnel = () => {
   
   const pageCount = Math.ceil(dataPersonnel?.findAllpersonnel.length / itemsPerPage);
 
-  const changePage = ({ page }) => {
-    setPageNumber(page);
+  const changePage = ({ selected }) => {
+    setPageNumber(selected);
   };
   return (
     <DefaultLayout>
@@ -173,7 +173,6 @@ const Personnel = () => {
          {dataPersonnel && ( 
            
             dataPersonnel.findAllpersonnel
-            .slice(pagesVisited, pagesVisited + itemsPerPage)
             .filter((personnel) =>{
               if(searchName == ""){
                 return personnel;
@@ -183,6 +182,8 @@ const Personnel = () => {
               return personnel;
             }
             )
+            .slice(pagesVisited, pagesVisited + itemsPerPage)
+            
             .map((personnel, index) => (
               <Box key={index}>
                  <Employee
@@ -190,8 +191,10 @@ const Personnel = () => {
                   lastName={personnel.lastName}
                   fonction={personnel.fonction}
                   situationMatrimonial={personnel.situationMatrimonial}
+                  sexe={personnel.sexe}
                   id={personnel.id}
-              /> 
+
+                /> 
               {/* <Box
                 bg={"gray.200"}
                 width={"200px"}

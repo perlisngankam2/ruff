@@ -38,11 +38,13 @@ import {
   InputRightElement,
   AlertDialogCloseButton
 } from "@chakra-ui/react";
+import ReactToPrint from 'react-to-print';
+import ReactToPdf from "react-to-pdf";
 // import Link from "../../components/atoms/Link"
 import React from "react";
 import Link from "next/link";
 import Routes from "../../modules/routes";
-import { useState, useEffect } from "react";
+import { useState, useRef, useEffect } from "react";
 import DefaultLayout from "../../components/layouts/DefaultLayout";
 import { IoIosAdd } from "react-icons/io";
 import{ FiEdit, FiSearch, FiSidebar} from 'react-icons/fi';
@@ -61,11 +63,21 @@ import {
 import { DELETE_STUDENT } from "../../graphql/Mutation";
 import { useMutation, useQuery } from "@apollo/client";
 import ReactPaginate from "react-paginate";
+import { CSVLink, CSVDownload } from "react-csv";
 
 const AccountStatement = () => {
 
     const {data:dataExpensePersonnelStudent} = useQuery(GET_ALL_EXPENSE_PERSONNEL_STUDENT)
     const date1 = new Date('December 17, 1995 03:24:00')
+
+
+    const componentRef = useRef();
+    const ref = React.createRef();
+    const options = {
+        orientation: 'landscape',
+        // unit: 'mm',
+        // format: 'a4',
+    };
 
     useEffect(() => {
         console.log(dataExpensePersonnelStudent?.findallexpenses)
@@ -122,14 +134,20 @@ const AccountStatement = () => {
                             borderRadius={"lg"}
                             ml={"420px"}
                         > 
-                        <Icon
+                        <ReactToPrint
+               trigger={() => <Icon as={TfiPrinter} boxSize="42px" alignItems={"center"} p="3" />}
+               content={() => componentRef.current}
+                documentTitle= "Etat des entrees et sorties"
+                pageStyle="print"
+              />
+                        {/* <Icon
                             alignItems={"center"}
                             as={TfiPrinter}
                             boxSize="42px"
                             p="3"
                             // bg="blue.100"
                             // rounded="full"
-                        />
+                        /> */}
                         <Icon
                             as={RiDeleteBin5Line}
                             boxSize="42px"
@@ -165,16 +183,14 @@ const AccountStatement = () => {
                                 width={"50px"}
                                 border="1px"
                             >
-                                Excel
+                                {/* <CSVLink data={} filename={"my-file.csv"} > EXPORT</CSVLink> */}
                             </Button>
-                            <Button  
-                                bg={"blackAlpha.100"}
-                                fontSize={"sm"}
-                                width={"50px"}
-                                border="1px"
-                            >
-                                PDF
-                            </Button> 
+                            
+                            <ReactToPdf targetRef={componentRef} filename="Etat des entrees et sorties" options={options} y={10} >
+                                {({toPdf}) => ( <Button bg={"blackAlpha.100"} onClick={toPdf} border="1px" width={"50px"} fontSize={"sm"}>PDF</Button>)}
+                            </ReactToPdf>
+
+                        
                         </Box>
                         <Box width={"300px"} ml="700px">
                             <InputGroup >
@@ -197,7 +213,7 @@ const AccountStatement = () => {
                             // p="5px" 
                             border={"1px"}
                              rounded={"md"}
-
+                            ref={componentRef}
                         >
                                 <Flex
                                     gap={100}

@@ -17,7 +17,7 @@ import {
 } from "@chakra-ui/react";
 import DefaultLayout from "../../../components/layouts/DefaultLayout";
 import { GiDivergence } from "react-icons/gi";
-import { getStaticPropsTranslations } from "../../../types/staticProps";
+// import { getStaticPropsTranslations } from "../../../types/staticProps";
 // import Router from "next/router";
 import { useRouter } from "next/router";
 import { 
@@ -747,13 +747,13 @@ const receipt = () => {
     );
 }
  
-export async function getStaticProps({ locale }) {
-    return {
-      props: {
-        ...(await getStaticPropsTranslations(locale)),
-        // Will be passed to the page component as props
-      },
-    };
-}
+// export async function getStaticProps({ locale }) {
+//     return {
+//       props: {
+//         ...(await getStaticPropsTranslations(locale)),
+//         // Will be passed to the page component as props
+//       },
+//     };
+// }
 
 export default receipt;

@@ -95,16 +95,20 @@ export class SalaireService {
 
 }
 
-  findByOne(filters: FilterQuery<Salaire>): Promise<Salaire | null> {
-    return this.salaireRepository.findOne(filters);
+  async findByOne(filters: FilterQuery<Salaire>): Promise<Salaire | null> {
+    return this.salaireRepository.findOne(filters,{
+      populate:['personnel']
+    });
   }
 
   findById(id:string){
     return this.salaireRepository.findOne(id)
   }
 
-  getAll(): Promise<Salaire[]> {
-    return this.salaireRepository.findAll()
+  async getAll(): Promise<Salaire[]> {
+    return this.salaireRepository.findAll({
+      populate:['personnel']
+    })
   }
 
 

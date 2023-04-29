@@ -26,7 +26,8 @@ import { GET_ALL_PERSONNEL_BY_ID,
          GET_ALL_SALAIRE_BY_ID, 
          GET_SALARY_NET,
          GET_Category_Personnel_BY_ID, 
-         GET_Category_Personnel_ID } from "../../../graphql/Queries";
+         GET_Category_Personnel_ID,
+        FIND_BY_ID_SALAIRE } from "../../../graphql/Queries";
 import { useRouter } from "next/router";
 import { useQuery } from "@apollo/client";
 import React, { useRef, useEffect }  from "react";
@@ -39,35 +40,37 @@ import ReactToPdf from "react-to-pdf";
 // import 'jszip';
 // import 'pdfmake';
 
-const Bulletin = () => {
+const BulletinLastPayment = () => {
 
   const router = useRouter();
   // const tableRef = useRef();
  //
 
-     const {data:dataPersonnelId, loading, error} = useQuery(GET_ALL_PERSONNEL_BY_ID,
+
+      const {data:dataSalaireId, loading, error} = useQuery(FIND_BY_ID_SALAIRE,
       {
         variables:{ id: router.query.id}
       });
 
-//
-      const {data:dataSalaireId} = useQuery(GET_ALL_SALAIRE_BY_ID,
+      //
+    //   const {data:dataSalaireNet} = useQuery(GET_SALARY_NET,
+    //   {
+    //     variables:{ personnelid: router.query.id}
+    //   });
+
+
+         const {data:dataPersonnelId} = useQuery(GET_ALL_PERSONNEL_BY_ID,
       {
-        variables:{ personnelid: router.query.id}
+        variables:{ id: dataSalaireId?.getonesalaire.personnelid}
       });
 
-      //
-      const {data:dataSalaireNet} = useQuery(GET_SALARY_NET,
-      {
-        variables:{ personnelid: router.query.id}
-      });
 
 
         // recupere l'ID de la categorie associee a un personnel
 
     const {data:dataCategorieId} = useQuery(GET_Category_Personnel_ID,
      {
-        variables:{ personnelid: router.query.id}
+        variables:{ personnelid: dataSalaireId?.getonesalaire.personnelid}
      })
 
 // information de la categorie associee au personnel
@@ -78,63 +81,53 @@ const Bulletin = () => {
     })
 
   //prime et retenues
- const {data:dataRetenueNoms} = useQuery(GET_ALL_NAME_RETENU_PERSONNEL,
-    {
-        variables:{ personnelid: router.query.id}
-    })
+//  const {data:dataRetenueNoms} = useQuery(GET_ALL_NAME_RETENU_PERSONNEL,
+//     {
+//         variables:{ personnelid: router.query.id}
+//     })
 
-    const {data:dataRetenueMontant} = useQuery(GET_ALL_AMOUNT_RETENU_PERSONNEL,
-    {
-        variables:{ personnelid: router.query.id}
-    })
+//     const {data:dataRetenueMontant} = useQuery(GET_ALL_AMOUNT_RETENU_PERSONNEL,
+//     {
+//         variables:{ personnelid: router.query.id}
+//     })
 
-    const {data:dataRetenueTotal} = useQuery(GET_SUM_AMOUNT_RETENU_PERSONNEL,
-    {
-        variables:{ personnelid: router.query.id}
-    })
+//     const {data:dataRetenueTotal} = useQuery(GET_SUM_AMOUNT_RETENU_PERSONNEL,
+//     {
+//         variables:{ personnelid: router.query.id}
+//     })
 
     //
 
-   const {data:dataPrimeNoms} = useQuery(GET_ALL_NAME_PRIME_PERSONNEL,
-    {
-        variables:{ personnelid: router.query.id}
-    })
+//    const {data:dataPrimeNoms} = useQuery(GET_ALL_NAME_PRIME_PERSONNEL,
+//     {
+//         variables:{ personnelid: router.query.id}
+//     })
 
-    const {data:dataPrimeMontant} = useQuery(GET_ALL_AMOUNT_PRIME_PERSONNEL,
-    {
-        variables:{ personnelid: router.query.id}
-    })
+//     const {data:dataPrimeMontant} = useQuery(GET_ALL_AMOUNT_PRIME_PERSONNEL,
+//     {
+//         variables:{ personnelid: router.query.id}
+//     })
 
-    const {data:dataPrimeTotal} = useQuery(GET_SUM_AMOUNT_PRIME_PERSONNEL,
-    {
-        variables:{ personnelid: router.query.id}
-    })
-
-
+//     const {data:dataPrimeTotal} = useQuery(GET_SUM_AMOUNT_PRIME_PERSONNEL,
+//     {
+//         variables:{ personnelid: router.query.id}
+//     })
 
 
 
-       const dernierIndice = dataSalaireNet?.PersonnelNetSalary.length - 1
-       const dernierElement = dataSalaireNet?.PersonnelNetSalary[dernierIndice];
+// console.log(dataSalaireNet?.PersonnelNetSalary)
+console.log(dataSalaireId?.getonesalaire)
 
-       //
-       const dernierIndiceSalaire = dataSalaireId?.getsalairebypersonnel.length - 1
-       const dernierElementSalaire = dataSalaireId?.getsalairebypersonnel[dernierIndice];
-
-
-console.log(dataSalaireNet?.PersonnelNetSalary)
-console.log(dataSalaireId?.getsalairebypersonnel)
-
-console.log("dataRetenue")
-console.log(dataRetenueNoms?.findnamesretenubypersonnel)
-console.log(dataRetenueMontant?.findmontantretenubypersonnel)
-console.log(dataRetenueTotal?.findsumallretenupersonnel
-)
-console.log("dataPrime")
-console.log(dataPrimeNoms?.findnamesprimebypersonnel)
-console.log(dataPrimeMontant?.findmontantprimebypersonnel)
-console.log(dataPrimeTotal?.findsumallprimepersonnel
-)
+// console.log("dataRetenue")
+console.log(dataCategorie)
+// console.log(dataRetenueMontant?.findmontantretenubypersonnel)
+// console.log(dataRetenueTotal?.findsumallretenupersonnel
+// )
+// console.log("dataPrime")
+// console.log(dataPrimeNoms?.findnamesprimebypersonnel)
+// console.log(dataPrimeMontant?.findmontantprimebypersonnel)
+// console.log(dataPrimeTotal?.findsumallprimepersonnel
+// )
 
 
 
@@ -187,8 +180,8 @@ function nombreEnLettres(montant) {
 
 
 
-const lettre =nombreEnLettres(dernierElement)
-console.log(lettre)
+// const lettre =nombreEnLettres(dernierElement)
+// console.log(lettre)
 
 const componentRef = useRef();
 const ref = React.createRef();
@@ -214,7 +207,7 @@ const options = {
       <>
       {!loading &&
 
-      <DefaultLayout>
+ <DefaultLayout>
             <Box p="3" pt="70px" w="100%" background="colors.tertiary">
               <Flex gap={4}>
               <ReactToPrint
@@ -242,8 +235,8 @@ const options = {
                     <Box ml='20px' mb='5px'><Image  src="../../logo.png" w='150px' /></Box>
                     <Box mt='30px' mr='20px' >
                       <Heading > BULLETIN DE PAIE</Heading>  
-                      <Text mt='10px' textAlign={"center"} >Mois de paie: {dernierElementSalaire?.moisPaie.split("-").reverse().join("-")}</Text>
-                      <Text textAlign={"center"} >Paiement, le {dernierElementSalaire?.jourPaie.split("-").reverse().join("-")}</Text>
+                      <Text mt='10px' textAlign={"center"} >Mois de paie: {dataSalaireId?.getonesalaire.moisPaie.split("-").reverse().join("-")} </Text>
+                      <Text textAlign={"center"} >Paiement, le {dataSalaireId?.getonesalaire.jourPaie.split("-").reverse().join("-")}  </Text>
                     </Box>
                     
 
@@ -259,7 +252,7 @@ const options = {
                 </Flex>
                 <Flex>
                     <Text ml={['10px', '10px', '10px']}  fontWeight='bold'>Categorie:</Text>
-                    <Text ml={['10px', '10px', '10px']}> {dataCategorie?.findOneCategoriepersonnel.nom.toUpperCase()}</Text>
+                    <Text ml={['10px', '10px', '10px']}>{dataCategorie?.findOneCategoriepersonnel.nom.toUpperCase()} </Text>
                 </Flex>
 
                 <Flex>
@@ -272,12 +265,12 @@ const options = {
                 </Flex>
                  <Flex>
                     <Text ml={['10px', '10px', '10px']} fontWeight='bold'>Anciennete:</Text>
-                    <Text ml={['10px', '10px', '10px']} > {dataPersonnelId?.findOnePersonnel.dateOfStartWork}</Text>
+                    <Text ml={['10px', '10px', '10px']} > {dataPersonnelId?.findOnePersonnel.dateOfStartWork.split("-").reverse().join("-")}</Text>
                 </Flex>
             </Box>
 
             <Box  w='300px' >
-                <Text mt='30px' textAlign={'center'} fontWeight='bold'>{dataPersonnelId?.findOnePersonnel.firstName.toUpperCase()+' '+dataPersonnelId?.findOnePersonnel.lastName.toUpperCase()} </Text>
+           <Text mt='30px' textAlign={'center'} fontWeight='bold'>{dataPersonnelId?.findOnePersonnel.firstName.toUpperCase()+' '+dataPersonnelId?.findOnePersonnel.lastName.toUpperCase()} </Text>
                 <Text textAlign={'center'}  fontWeight='bold'>{dataPersonnelId?.findOnePersonnel.phoneNumber} </Text>
 
             </Box>
@@ -310,35 +303,35 @@ const options = {
                   <Box w='300px' borderLeft={'1px'}   py='6px' >
 
                        <Heading fontSize={'md'} fontWeight={'bold'} color='black'ml='6px'>PRIMES SALARIALES</Heading>
-                          { 
+                          {/* { 
                       dataPrimeNoms && (
                         dataPrimeNoms?.findnamesprimebypersonnel.map((prime) => (
                             <Text ml='20px'>
                               {prime}
                             </Text>
-                        )))}
+                        )))} */}
                   </Box>
                     <Box  w='180px'  borderLeft={'1px'} py='6px' >
 
             
-                               { 
+                               {/* { 
                       dataPrimeMontant && <Box mt='20px'>
                        { dataPrimeMontant?.findmontantprimebypersonnel.map((prime) => (
                             <Text textAlign={"right"} mr='6px'>
                               {prime}
                             </Text>
-                            ))}</Box>}
+                            ))}</Box>} */}
                     </Box>
                     <Box w='100px'  borderLeft={'1px'} py='6px'  ></Box>
                     <Box w='160px'  borderLeft={'1px'} py='6px' >
 
-                               { 
+                               {/* { 
                        dataPrimeMontant && <Box mt='20px'>
                        { dataPrimeMontant?.findmontantprimebypersonnel.map((prime) => (
                             <Text textAlign={"right"} mr='6px'>
                               {prime}
                             </Text>
-                            ))}</Box>}
+                            ))}</Box>} */}
                     </Box>
                     <Box  w='160px' borderLeft={'1px'} borderRight={'1px'} py='6px'  ></Box>
 
@@ -348,34 +341,34 @@ const options = {
                   <Box w='300px' borderLeft={'1px'}   py='6px' >
 
                        <Heading fontSize={'md'} fontWeight={'bold'} color='black' ml='6px'>RETENUES SALARIALES</Heading>
-                          { 
+                          {/* { 
                       dataRetenueNoms && (
                         dataRetenueNoms?.findnamesretenubypersonnel.map((retenue) => (
                             <Text ml='20px' >
                               {retenue}
                             </Text>
-                        )))}
+                        )))} */}
                   </Box>
                     <Box  w='180px'  borderLeft={'1px'} py='6px' >
 
-                               { 
+                               {/* { 
                      dataRetenueMontant && <Box mt='20px'>
                         {dataRetenueMontant?.findmontantretenubypersonnel.map((retenue) => (
                             <Text textAlign={"right"} mr='6px'>
                               {retenue}
                             </Text>
-                            ))}</Box>}
+                            ))}</Box>} */}
                     </Box>
                     <Box w='100px'  borderLeft={'1px'} py='6px'  ></Box>
                     <Box w='160px'  borderLeft={'1px'} py='6px' ></Box>
                     <Box  w='160px' borderLeft={'1px'} borderRight={'1px'} py='6px'  >
-                            { 
+                            {/* { 
                      dataRetenueMontant && <Box mt='20px'>
                         {dataRetenueMontant?.findmontantretenubypersonnel.map((retenue) => (
                             <Text textAlign={"right"} mr='6px' >
                               {retenue}
                             </Text>
-                            ))}</Box>}
+                            ))}</Box>} */}
                     </Box>
 
                   </Flex>
@@ -386,7 +379,7 @@ const options = {
                     <Box w='300px' borderLeft={'1px'}   py='6px' ><Heading fontSize={'md'} fontWeight={'bold'} color='black' ml='6px'>TOTAL PRIMES</Heading></Box>
                     <Box  w='180px'  borderLeft={'1px'} py='6px' ></Box>
                     <Box w='100px'  borderLeft={'1px'} py='6px'  ></Box>
-                    <Box w='160px'  borderLeft={'1px'} py='6px' ><Text textAlign={"right"} mr='6px' fontWeight={'bold'}>{dataPrimeTotal?.findsumallprimepersonnel}</Text></Box>
+                    <Box w='160px'  borderLeft={'1px'} py='6px' ><Text textAlign={"right"} mr='6px' fontWeight={'bold'}></Text></Box>
                     <Box  w='160px' borderLeft={'1px'} borderRight={'1px'} py='6px'  ></Box>
 
                   </Flex>
@@ -396,7 +389,9 @@ const options = {
                     <Box  w='180px'  borderLeft={'1px'} borderBottom={'1px'} py='6px' ></Box>
                     <Box w='100px'  borderLeft={'1px'} borderBottom={'1px'} py='6px'  ></Box>
                     <Box w='160px'  borderLeft={'1px'} borderBottom={'1px'} py='6px' ></Box>
-                    <Box  w='160px' borderLeft={'1px'}borderBottom={'1px'} borderRight={'1px'} py='6px'  ><Text textAlign={"right"} mr='6px' fontWeight={'bold'}>{dataRetenueTotal?.findsumallretenupersonnel}</Text></Box>
+                    <Box  w='160px' borderLeft={'1px'}borderBottom={'1px'} borderRight={'1px'} py='6px'  ><Text textAlign={"right"} mr='6px' fontWeight={'bold'}>
+                  
+                      </Text></Box>
 
                   </Flex>
 
@@ -404,12 +399,12 @@ const options = {
               </Box>
               <Flex w='900px' border={'1px'} mt='20px'>
                 <Box py='6px' w='450px' borderRight={'1px'} background="colors.primary"color='white'><Text>NET A PAYER</Text></Box>
-                <Box py='6px' w='450px' ><Text textAlign={'right'} mr='20px' fontSize={'18px'} fontWeight={'bold'}>{dernierElement} FCFA</Text></Box>
+                <Box py='6px' w='450px' ><Text textAlign={'right'} mr='20px' fontSize={'18px'} fontWeight={'bold'}>{dataSalaireId?.getonesalaire.montant}</Text></Box>
               </Flex>
                 <Box 
                         p={'10px'}>
                         <Text textAlign={'center'}>
-                            Montant en lettre du salaire net :<Text fontWeight={'bold'}>{lettre.toUpperCase()} FRANC CFA</Text>
+                            Montant en lettre du salaire net :<Text fontWeight={'bold'}>{nombreEnLettres(dataSalaireId?.getonesalaire.montant).toUpperCase()} FRANC CFA</Text>
                         </Text>
                     </Box>
               
@@ -442,4 +437,4 @@ const options = {
      );
 }
  
-export default Bulletin;
+export default BulletinLastPayment;

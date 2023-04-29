@@ -46,7 +46,6 @@ type RetenuPersonnel {
   startMonth: String
   retenueid: ID!
   personnelid: ID!
-  salaireid: ID!
 }
 
 type Salaire {
@@ -56,6 +55,9 @@ type Salaire {
   payer: Boolean!
   montant: Float!
   personnelid: ID!
+  personnelFirstName: ID
+  personnelLastName: ID
+  personnelFonction: ID
 }
 
 type PrimePersonnel {
@@ -63,7 +65,6 @@ type PrimePersonnel {
   startMonth: String
   primeid: ID!
   personnelid: ID!
-  salaireid: ID!
 }
 
 type Prime {

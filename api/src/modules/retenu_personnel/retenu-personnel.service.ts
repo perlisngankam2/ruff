@@ -44,7 +44,8 @@ export class RetenuPersonnelService {
         wrap(retenuPersonnel).assign(
           {
           personnel: input.personnelId,
-          retenue: input.retenuId
+          retenue: input.retenuId,
+          startMonth: input.startMonth,
           },
           {
             em: this.em

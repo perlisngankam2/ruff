@@ -107,9 +107,9 @@ export class Expense {
     @Property({ persist: false })
     get studentFirstname(): string | null {
       return this.student ? `${this.student.getEntity().firstname}` : null;
-       }
+    }
 
-    @Field(() => ID)
+    @Field(() => ID) 
     @Property({ persist: false })
     get studentLastname(): string | null  {
       return this.student ? `${this.student.getEntity().lastname})` : null;

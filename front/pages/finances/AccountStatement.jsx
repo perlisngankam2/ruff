@@ -68,6 +68,7 @@ import { CSVLink, CSVDownload } from "react-csv";
 const AccountStatement = () => {
 
     const {data:dataExpensePersonnelStudent} = useQuery(GET_ALL_EXPENSE_PERSONNEL_STUDENT)
+    const date1 = new Date('December 17, 1995 03:24:00')
 
 
     const componentRef = useRef();
@@ -99,7 +100,7 @@ const AccountStatement = () => {
                     size="lg"
                     textColor="pink.300"
                   >
-                   Etat des entrees et sorties 
+                    {t('pages.finances.accountStatement.heading')}
                   </Heading>
                   <Hide below="sm">
                     <Text>Dashboad /</Text>
@@ -231,7 +232,7 @@ const AccountStatement = () => {
                                     <Box 
                                         width='290px'
                                     >
-                                        Description
+                                        {t('pages.finances.accountStatement.description')}
                                     </Box>
                                     <Box 
                                         width='160px'
@@ -266,11 +267,12 @@ const AccountStatement = () => {
                                         <Box width='100px' 
                                             flex={1}
                                         >
-                                            
                                             <Box>
-                                               
-                                                {expense.createdOn} 
-                                                
+                                                {((new Date(expense.createdOn)).toDateString())} 
+                                                {/* {/* {console.log(typeof(expense.createdOn))} */}
+                                                {console.log((date1).toDateString())}
+                                                {/* // {console.log((new Date(expense.createdOn)).toDateString())} */} 
+
                                             </Box>
                                         </Box>
                                         <Box 

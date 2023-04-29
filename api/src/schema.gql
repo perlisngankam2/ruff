@@ -194,6 +194,7 @@ type PensionSalle {
   montantPension: Float!
   dateLine: DateTime
   yearid: ID!
+  yearName: ID!
   salleId: ID!
   salleName: ID
 }
@@ -293,7 +294,6 @@ type NiveauEtude {
   montantPension: Float
   cycleid: ID!
   cyclename: ID!
-  cycleName: ID!
 }
 
 type Course {
@@ -305,7 +305,9 @@ type Course {
 type PersonnelSalle {
   id: ID!
   personnelId: ID
-  personnelName: ID
+  personnelFirstName: ID
+  personnelLastName: ID
+  personnelFunction: ID
   salleId: ID!
   salleName: ID
   courseId: ID!
@@ -703,6 +705,7 @@ input SalleUpdateInput {
   cycleId: String
   montantPensionSalle: Float
   niveauEtudeId: ID
+  anneeAcademiqueId: String
   effectif: Float = 0
   niveau: NiveauEtudeCreateInput
 }
@@ -927,6 +930,7 @@ input SectionCycleUpdateInput {
 input SalleCreateInput {
   ID: ID
   name: String
+  anneeAcademiqueId: String
   sectionId: ID
   cycleId: String
   montantPensionSalle: Float

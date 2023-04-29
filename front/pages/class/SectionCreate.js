@@ -25,6 +25,9 @@ import { CREATE_SECTION, UPDATA_SECTION} from "../../graphql/Mutation";
 import { GET_ALL_SECTION } from "../../graphql/Queries";
 import { useState } from "react";
 import { useRouter } from "next/router";
+import { getStaticPropsTranslations } from "../../types/staticProps";
+import { useTranslation } from "next-i18next";
+
 
 const  SectionCreate =  () => {
 
@@ -36,6 +39,7 @@ const  SectionCreate =  () => {
     const [updateSection] = useMutation(UPDATA_SECTION);
     const router = useRouter()
     const toast = useToast();
+    const {t} = useTranslation();
     // const addCategoryPersonnel = async (event, value) => {
     //     console.log("value")
     //     event.preventDefault();
@@ -130,7 +134,7 @@ const  SectionCreate =  () => {
                                         fontSize={['15px','20px','24px']} 
                                         p='2' 
                                     >
-                                    Ajouter une section
+                                   {t('pages.class.sectionCreate.heading')}
                                     </Heading>
                                 </Box>
                             </AlertDialogHeader>
@@ -139,7 +143,9 @@ const  SectionCreate =  () => {
                             <AlertDialogBody>
                             <Box>
                                 <FormControl>
-                                    <FormLabel>Nom</FormLabel>
+                                    <FormLabel>
+                                        {t('pages.class.sectionCreate.name')} 
+                                    </FormLabel>
                                     <Input 
                                         id="name"
                                         type={'text'} 
@@ -151,7 +157,9 @@ const  SectionCreate =  () => {
                                      />
                                 </FormControl>
                                 <FormControl mt="15px">
-                                    <FormLabel>Description</FormLabel>
+                                    <FormLabel>
+                                    {t('pages.class.sectionCreate.description')} 
+                                    </FormLabel>
                                     <Input 
                                         id="description"
                                         type={'text'} 
@@ -170,7 +178,7 @@ const  SectionCreate =  () => {
                                     onClick={onClose} 
                                     colorScheme='red' 
                                 >
-                                    annuler 
+                                    {t('pages.class.sectionCreate.cancelButton')} 
                                 </Button>
                                 {/* <Link href={'/personnel/ajoutercategorypersonnel'}> */}
                                     <Button 
@@ -178,7 +186,7 @@ const  SectionCreate =  () => {
                                     ml={3}
                                     onClick={addSection}
                                     >
-                                    Creer
+                                    {t('pages.class.sectionCreate.submitButton')} 
                                     </Button>
                                 {/* </Link>  */}
                             </AlertDialogFooter>
@@ -191,4 +199,13 @@ const  SectionCreate =  () => {
     
     );
 }
+
+export async function getStaticProps({ locale }) {
+    return {
+      props: {
+        ...(await getStaticPropsTranslations(locale)),
+        // Will be passed to the page component as props
+      },
+    };
+  }
 export default SectionCreate;

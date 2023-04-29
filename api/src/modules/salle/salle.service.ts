@@ -46,7 +46,8 @@ export class SalleService {
           niveau : input.niveauEtudeId,
           section : input.sectionId,
           effectif: input.effectif,
-          cycle : input.cycleId
+          cycle : input.cycleId,
+          anneeAcademique : input.anneeAcademiqueId
           },
           {
             em: this.em
@@ -73,8 +74,8 @@ export class SalleService {
         const salles= this.salleRepository.findAll({
           populate:['cycle','niveau']
         })
-        return salles
-      }
+        return salles
+      }
 
       async deleteSalle(id:string){
         const a = this.findById(id)

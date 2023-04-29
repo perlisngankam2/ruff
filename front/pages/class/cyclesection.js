@@ -58,8 +58,9 @@ import { useMutation, useQuery } from "@apollo/client";
 import SectionCreate from "./SectionCreate";
 import CycleCreate from "./CycleCreate";
 import ReactPaginate from "react-paginate";
-import Routes from "../../modules/routes";
-
+// import Routes from "../../modules/routes";
+import { useTranslation } from "next-i18next";
+// import { getStaticPropsTranslations } from "../../types/staticProps";
 
 const cyclesection = () => {
 
@@ -341,9 +342,11 @@ const CycleElement = ({cycle, index}) =>{
     })
     onClose();
   } 
+
+  
   return (
       <Tr key={index}>
-        <Td p={0} pl={6}>{cycle.name}({cycle.sectionname})</Td>
+        <Td p={0} pl={6}>{cycle.name}({cycle.sectionName})</Td>
         
         {/* <Td  borderColor={'#C6B062'}>{cycle.section_id}</Td> */}
         <Td p={0} pl={6}>pppp</Td>

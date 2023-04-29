@@ -42,4 +42,5 @@ export class Section {
 
     @OneToMany(() => Cycle, (cycle) => cycle.section)
     cycle = new Collection<Cycle>(this);
+
 }

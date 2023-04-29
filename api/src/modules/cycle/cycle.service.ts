@@ -63,14 +63,12 @@ export class CycleService {
         const cycle= this.cycleRepository.findAll({
           populate:['section']
         })
-        return cycle
-      }
-
-   
+        return cycle
+      }
       
       async update(id:string, input: CycleUpdateInput): Promise<Cycle> {
         const cycle = await this.findById(id)
-        wrap(cycle).assign({
+        wrap(cycle).assign({ 
             name: input.name || cycle.name,
             section: input.sectionId || cycle.section
         },

@@ -21,7 +21,7 @@ import { Personnel } from './pesonnel.entity';
 import { Student } from './student.entity';
 import { Cycle } from './cycle.entity'; 
 import { PensionSalle } from './pensionsalle.entity';
-
+import { AnneeAccademique } from './annee-accademique.entity';
 
 @Entity()
 @ObjectType()
@@ -62,6 +62,13 @@ export class Salle{
     })
     cycle!: IdentifiedReference<Cycle> | null;
 
+    @ManyToOne(() => AnneeAccademique, {
+      nullable: true,
+      onDelete: 'CASCADE',
+    })
+    anneeAcademique!: IdentifiedReference<AnneeAccademique> | null;
+
+    
     // @OneToOne(() => Pension, (pension) => pension.salle, {
     //     owner: false,
     //     nullable: true,

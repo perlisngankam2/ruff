@@ -261,9 +261,10 @@ export const GET_ALL_TRANCHE_STUDENT = gql `
             complete
             reste
             surplus
-            avance
+            studentid
+            trancheid
         }
-    }
+}
 `;
 
 export const GET_ALL_TRANCHE_PRIORITY = gql `
@@ -404,6 +405,8 @@ export const GET_TRANCHE_STUDENT_BY_STUDENT_ID = gql `
     }
 `;
 
+
+
 //personnel by userid
 export const GET_PERSONNEL_BY_USERID= gql `
     query getpersonnelbyaccount ($userid: String!) {
@@ -537,6 +540,10 @@ query getTrancheStudentByStudent ($studentid: String!) {
     }
 }
 `; 
+
+//recuperation de toutes informations des paiement des tranches dans tranche_student
+// export const GET_ALL_TRANCHE_STUDENT
+
 
 //recuperation de la classe deml'eleve\
 export const GET_STUDENT_SALLE = gql `

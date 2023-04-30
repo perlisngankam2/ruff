@@ -294,7 +294,6 @@ type NiveauEtude {
   montantPension: Float
   cycleid: ID!
   cyclename: ID!
-  cycleName: ID!
 }
 
 type Course {

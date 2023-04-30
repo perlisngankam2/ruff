@@ -54,6 +54,10 @@ import {BiTrendingDown, BiTrendingUp} from "react-icons/bi"
 import {MdDelete, MdOutlineHorizontalRule} from 'react-icons/md';
 import {HiOutlineMinus} from "react-icons/hi"
 import {useRouter } from "next/router";
+import { useTranslation } from "next-i18next";
+import { GlobalContext } from "../../contexts/cyclesection/AppContext";
+import { getStaticPropsTranslations } from "../../types/staticProps";
+
 import {  
   GET_ALL_STUDENT, 
   GET_STUDENT_BY_ID,
@@ -67,6 +71,7 @@ import { CSVLink, CSVDownload } from "react-csv";
 
 const AccountStatement = () => {
 
+    const {t} = useTranslation();
     const {data:dataExpensePersonnelStudent} = useQuery(GET_ALL_EXPENSE_PERSONNEL_STUDENT)
     const date1 = new Date('December 17, 1995 03:24:00')
 
@@ -391,6 +396,16 @@ const AccountStatement = () => {
             </DefaultLayout>
     )
 }
+
+export async function getStaticProps({ locale }) {
+    return {
+      props: {
+        ...(await getStaticPropsTranslations(locale)),
+        // Will be passed to the page component as props
+      },
+    };
+  }
+
 
 export default AccountStatement;
 

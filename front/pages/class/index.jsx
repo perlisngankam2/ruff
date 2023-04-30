@@ -41,7 +41,8 @@ import {
   FormLabel,
   useToast,
   AlertDialogHeader,
-  InputRightElement
+  InputRightElement,
+  Card
   
 } from "@chakra-ui/react";
 
@@ -253,40 +254,47 @@ const Class = () => {
 
         {/* FORMULAIRE D'AFFECTATION D'UN PROFESSEUR A UNE CLASSE */}
         <Box> 
-            <Flex 
-              direction={["column", "column", "column"]}
-              mt={"15px"}
-              flexWrap={["wrap", "wrap", "wrap"]}
-              pl={["500px", "100px", "200px", "1050px"]}
+            <Box 
+              display={{md:"flex"}}
+              mt={"30px"}
+              // flexWrap={["wrap", "wrap", "wrap"]}
+              ml={["300px", "400px", "700px", "1020px"]}
+              gap={1}
+              flexDirection={"column"}
+              // align={"rigth"}
             > 
               <Flex gap={1}> 
-                <Text 
+                <Button 
                   mb={5}
                   fontSize="14px"
                   color = "colors.quinzaine"
-                  >
+                  onClick={onOpenn}
+                >
                   Affecter un enseignant
-                </Text>
-                <Icon 
+                </Button>
+                {/* <Icon 
                   as={IoIosAdd} 
                   boxSize="30px"
-                  color={"colors.greencolor"}
+                  color={"white"}
                   rounded="full"
                   // ml={["5px", "5px", "5px" ]}
                   mt={["-3px"]}
                   _hover={{background:"colors.bluecolor"}}
                   onClick={onOpenn}
-                  />
+                  bg={"colors.greencolor"}
+                  /> */}
               </Flex>
-              <Flex > 
-                <Text 
+              <Flex gap={1}> 
+                <Button 
                   mb={5}
                   fontSize="14px"
                   color = "colors.quinzaine"
+                  onClick={onOpennes}
+
                 >
                   Fixer une pension
-                </Text>
-                <Icon 
+                </Button>
+                {/* <Icon 
                   as={IoIosAdd} 
                   boxSize="30px"
                   color={"colors.greencolor"}
@@ -295,9 +303,9 @@ const Class = () => {
                   mt={["-3px"]}
                   _hover={{background:"colors.bluecolor"}}
                   onClick={onOpennes}
-                  />
+                  /> */}
               </Flex>
-            </Flex>
+            </Box>
           <AlertDialog
             isOpen={isOpenn}
             leastDestructiveRef={cancelRef}

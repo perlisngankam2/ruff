@@ -263,13 +263,8 @@
                 <Box as="span">Créer un message</Box>
               </Link>
             </AccordionPanel>
-            {/* <AccordionPanel>
-              <Link href="/mail/mail">
-                <Box as="span">Mail</Box>
-              </Link>
-            </AccordionPanel> */}
           </AccordionItem>
-          <AccordionItem  mt="80px" border="0px">
+          <AccordionItem  mt="60px" border="0px">
             <AccordionButton pl={0} >
               <Flex align="center" gap="1">
                 <Icon as={AiFillSetting} />

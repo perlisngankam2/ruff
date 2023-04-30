@@ -388,8 +388,9 @@ const {data:dataResteFeesToPayByStudent} = useQuery(GET_RESTE_PENSION_A_PAYER_BY
   const getTrancheById = (id) => {
     return (dataTranchePension?.findAlltranche)?.find((t, i) => t.id === id)
   }
-  const getTrancheStudentById = (id) => {
-    return (dataTrancheStudent?.findAlltranchestudent)?.find((t, i) => t.id === id)
+  const getTrancheStudentById =  (studentId , trancheId) => {
+    return (dataTrancheStudent?.findAlltranchestudent)?.find((t, i) => (t.trancheid === trancheId && t.studentid === studentId))
+    // return (dataTrancheStudent?.findAlltranchestudent)
   }
 
   // RECUPERATION DE LA LISTE DES TRANCHES LIES A UN ELEVE
@@ -437,13 +438,13 @@ const {data:dataResteFeesToPayByStudent} = useQuery(GET_RESTE_PENSION_A_PAYER_BY
           // console.log(dataClass);
           //  console.log(dataFraisInscription);
           // console.log(dataClasse?.findAllsalle);
-          console.log(dataParents?.findAllparents)
-          console.log(dataTranchePension?.findAlltranche);
-          console.log(dataTrancheStudent?.findAlltranchestudent)
-          // console.log(dataPensionSalleByStudent?.findMontantPensionstudent)
-          console.log (dataTrancheByStudentId?.getClassfeeofStudent)
-          console.log(dataStudent?.findAllstudents.firstname);
-          console.log(dataTrancheCompleteByStudent?.getalltranchecompletedbystudent)
+          // console.log(dataParents?.findAllparents)
+          // console.log(dataTranchePension?.findAlltranche);
+          // console.log(dataTrancheStudent?.findAlltranchestudent)
+          // // console.log(dataPensionSalleByStudent?.findMontantPensionstudent)
+          // console.log (dataTrancheByStudentId?.getClassfeeofStudent)
+          // console.log(dataStudent?.findAllstudents.firstname);
+          // console.log(dataTrancheCompleteByStudent?.getalltranchecompletedbystudent)
           // console.log(dataTrancheStudentBySudentId?.getTrancheStudentByStudent)
         })
 
@@ -462,78 +463,110 @@ const {data:dataResteFeesToPayByStudent} = useQuery(GET_RESTE_PENSION_A_PAYER_BY
         // }
         const addAvanceTranche = async() => { 
         let studentId = dataStudentId?.findOnestudent.id
-        console.log(montant)
-        console.log(selectedTranches)
-        console.log(studentId) 
+        let montantSaisie = montant;
         let orderTranche = selectedTranches.sort((a,b) => a.priority - b.priority)
-        console.log(orderTranche);
+        console.log(orderTranche , "Tranche trie");
 
-        orderTranche.forEach((tranche , index) => {
+        orderTranche.forEach( (tranche , index) => {
+
           const trancheMontant = getTrancheById(tranche.value)?.montant
-          const trancheStudent = getTrancheStudentById(studentId)
-          if(montant != 0) {
-            if(montant <  trancheMontant) {
-              createFeesAvanceTranche({
-                variables: {
-                  avancetranche:{
-                    montant: montant,
-                    trancheId: tranche.value,
-                    studentId: studentId
+          const trancheStudent =  getTrancheStudentById(studentId,tranche.value )
+          
+          if(montantSaisie != 0) {
+            if(trancheStudent && (!trancheStudent.complete)) {
+              const reste = trancheStudent.reste
+              if(montantSaisie < reste){
+                 createFeesAvanceTranche({
+                  variables: {
+                    avancetranche:{
+                      montant: montantSaisie,
+                      trancheId: tranche.value,
+                      studentId: studentId
+                    }
                   }
-                }
-              })
-              toast({
-                title: `Tranche : ${ tranche.label } partiellement soldé, reste a payer : ${ (trancheMontant - montant) } `,
-                description: " paye avec succes.",
-                status: "success",
-                duration: 3000,
-                isClosable: true,
-              });
-              setMontant(0)
-            } else if(montant > trancheMontant) {
-              createFeesAvanceTranche({
-                variables: {
-                  avancetranche:{
-                    montant: trancheMontant,
-                    trancheId: tranche.value,
-                    studentId: studentId
+                })
+                toast({
+                  title: `Tranche : ${ tranche.label } partiellement soldé, reste a payer : ${ (reste - montantSaisie) } `,
+                  description: " paye avec succes.",
+                  status: "success",
+                  duration: 3000,
+                  isClosable: true,
+                });
+                montantSaisie = 0
+              } else {
+                 createFeesAvanceTranche({
+                  variables: {
+                    avancetranche:{
+                      montant: reste,
+                      trancheId: tranche.value,
+                      studentId: studentId
+                    }
                   }
-                }
-              })
-              const reste = montant - trancheMontant
-              setMontant(reste)
+                })
+                toast({
+                  title: `Tranche : ${ tranche.label } soldé `,
+                  description: " paye avec succes.",
+                  status: "success",
+                  duration: 3000,
+                  isClosable: true,
+                });
+                montantSaisie = (montantSaisie - reste)
+                console.error("New montant : " , montantSaisie);
+              }
             } else {
-              createFeesAvanceTranche({
-                variables: {
-                  avancetranche:{
-                    montant: montant,
-                    trancheId: tranche.value,
-                    studentId: studentId
+              if(montantSaisie < trancheMontant) {
+                 createFeesAvanceTranche({
+                  variables: {
+                    avancetranche:{
+                      montant: montantSaisie,
+                      trancheId: tranche.value,
+                      studentId: studentId
+                    }
                   }
-                }
-              })
-              setMontant(0)
+                })
+                toast({
+                  title: `Tranche : ${ tranche.label } partiellement soldé, reste a payer : ${ (trancheMontant - montantSaisie) } `,
+                  description: " paye avec succes.",
+                  status: "success",
+                  duration: 3000,
+                  isClosable: true,
+                });
+                montantSaisie = 0
+                console.error("New montant : " , montantSaisie);
+              } else {
+                 createFeesAvanceTranche({
+                  variables: {
+                    avancetranche:{
+                      montant: trancheMontant,
+                      trancheId: tranche.value,
+                      studentId: studentId
+                    }
+                  }
+                })
+                montantSaisie = (montantSaisie - trancheMontant)
+                console.error("New montant : " , montantSaisie);
+              }
             }
           }
         })
 
-        if(montant > 0 ) {
-          toast({
-            title: `Toutes les tranche ont été soldé, votre différence est : ${  montant } `,
-            description: " paye avec succes.",
-            status: "success",
-            duration: 3000,
-            isClosable: true,
-          });
-        } else {
-          toast({
-            title: `Toutes les tranches ont été soldé`,
-            description: " paye avec succes.",
-            status: "success",
-            duration: 3000,
-            isClosable: true,
-          });
-        }
+        // if(montantSaisie > 0 ) {
+        //   toast({
+        //     title: `Toutes les tranche ont été soldé, votre différence est : ${  montantSaisie } `,
+        //     description: " paye avec succes.",
+        //     status: "success",
+        //     duration: 3000,
+        //     isClosable: true,
+        //   });
+        // } else {
+        //   toast({
+        //     title: `Toutes les tranches ont été soldé`,
+        //     description: " paye avec succes.",
+        //     status: "success",
+        //     duration: 3000,
+        //     isClosable: true,
+        //   });
+        // }
           // const pension = dataStudentSalle?.findSalleByStudent?.montantPensionSalle
           // // const trancheStudentByStudent = dataTrancheStudentBySudentId?.getTrancheStudentByStudent
           // let totalTrancheSelectionner = 0

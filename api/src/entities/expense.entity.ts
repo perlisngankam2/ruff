@@ -22,7 +22,6 @@ export class Expense {
     @Property({ nullable: true })
     creditamount: number;
 
-  
     @Property({ onCreate: () => new Date() })
     createdAt = new Date();
   
@@ -42,30 +41,11 @@ export class Expense {
     })
     personnel!:IdentifiedReference<Personnel>|null
 
-
     @ManyToOne(() => AnneeAccademique ,{
       nullable:true,
       onDelete:'CASCADE'
     })
     anneeAccademique!:IdentifiedReference<AnneeAccademique>|null
-
-//     @Field(() => ID)
-//     @Property({ persist: false })
-//     get studentid(): string | null{
-//       return this.student.id ? `${this.student.id}` : null;
-//     }
-
-//     // @Field(() => ID)
-//     // @Property({ persist: false })
-//     // get personnelid() {
-//     //   return `${this.personnel.id}`;
-//     // }
-
-//     @Field(() => ID, { nullable: true })
-//     @Property({ persist: false })
-//     get personnelid(): string | null {
-//       return this.personnel.id ? `${this.personnel.id}` : null;
-//     }
 
     @Field(() => String)
     @Property({ persist: false })
@@ -112,7 +92,7 @@ export class Expense {
     @Field(() => ID) 
     @Property({ persist: false })
     get studentLastname(): string | null  {
-      return this.student ? `${this.student.getEntity().lastname})` : null;
+      return this.student ? `${this.student.getEntity().lastname}` : null;
     }
   
 }

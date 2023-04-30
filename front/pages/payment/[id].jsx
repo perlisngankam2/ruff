@@ -148,6 +148,10 @@ const unavailableMonths = useMemo(
   const HandleClickGenererSalaire = async (event) => {
     event.preventDefault();
 
+    router.push({
+                  pathname: Routes.Bulletin?.path || '',
+                  query: {id: router.query.id}
+                })
 
     const genererSalaireData = await genererSalaire({
           variables:{

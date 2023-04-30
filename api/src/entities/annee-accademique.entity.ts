@@ -18,6 +18,9 @@ import { Expense } from './expense.entity';
 import { Inscription } from './inscription.entity';
 import { Pension } from './pension.entity';
 import { PensionSalle } from './pensionsalle.entity';
+import { AvanceTranche } from './avance-tranche.entity';
+import { TrancheStudent } from './tranche-student.entity';
+import { Parameter } from './parameter.entity';
 
 @Entity()
 @ObjectType()
@@ -46,6 +49,14 @@ export class AnneeAccademique {
     )
   pension = new Collection<Pension>(this)
 
+  @OneToMany(()=> AvanceTranche, (avanceTranche) => avanceTranche.anneeAcademique
+  )
+  avanceTranche = new Collection<AvanceTranche>(this)
+
+  @OneToMany(()=> TrancheStudent, (trancheStudent) => trancheStudent.anneeAcademique
+  )
+  trancheStudent = new Collection<AvanceTranche>(this)
+
   @OneToMany(()=> Expense, (expense) => expense.anneeAccademique
   )
   expense = new Collection<Expense>(this)
@@ -53,4 +64,9 @@ export class AnneeAccademique {
   @OneToMany(()=> PensionSalle, (pensionsalle) => pensionsalle.anneeAccademique
     )
   pensionsalle = new Collection<PensionSalle>(this)
+
+  
+  // @OneToMany(()=> Parameter, (parameter) => parameter.anneeAccademique
+  //   )
+  // parameter = new Collection<Parameter>(this)
 }

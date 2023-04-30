@@ -54,6 +54,12 @@ export class ParentStudent {
       return `${this.parent.id}`;
     }
 
+    @Field(() => String)
+    @Property({ persist: false })
+    get parentTel(): string|null {
+      return this.parent ? `${this.parent.getEntity().phonenumber}`:null;
+    }
+
     @Field(() => ID)
     @Property({ persist: false })
     get studentid() {

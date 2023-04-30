@@ -102,7 +102,9 @@ export class SalaireService {
   }
 
   findById(id:string){
-    return this.salaireRepository.findOne(id)
+    return this.salaireRepository.findOne(id,{
+      populate:['personnel']
+    })
   }
 
   async getAll(): Promise<Salaire[]> {

@@ -14,6 +14,9 @@ export class TrancheStudentCreateInput {
   trancheid?:string
 
   @Field({nullable:true})
+  year?:string
+
+  @Field({nullable:true})
   name?: string;
 
   @Field({nullable:true})

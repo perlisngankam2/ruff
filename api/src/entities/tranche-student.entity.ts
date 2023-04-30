@@ -17,6 +17,7 @@ import { PrimaryKeyUuid } from '../decorators/PrimaryKeyUuid.decorator';
 import { AvanceTranche } from './avance-tranche.entity';
 import { Student } from './student.entity';
 import { Tranche } from './tranche.entity';
+import { AnneeAccademique } from './annee-accademique.entity';
 
 export enum RegimePaiement {
   SPECIAL = 'SPECIAL',
@@ -37,6 +38,10 @@ export class TrancheStudent {
   @Field({nullable:true})
   @Property({nullable:true})
   name!: string;
+
+  @Field({nullable:true})
+  @Property({nullable:true})
+  year!: string;
 
   @Field({nullable:true})
   @Property({nullable:true})
@@ -95,6 +100,18 @@ export class TrancheStudent {
   get trancheid() {
     return `${this.tranche.id}`;
   }
+
+  @ManyToOne(() => AnneeAccademique ,{
+    nullable:true,
+    onDelete:'CASCADE',
+  })
+  anneeAcademique!:IdentifiedReference<AnneeAccademique>|null
+
+  // @Field(() => ID)
+  // @Property({ persist: false })
+  // get anneAcademiquedate() {
+  //   return `${this.anneeAcademique.getEntity().name}`;
+  // }
 
 
 }

@@ -1,7 +1,7 @@
 /* eslint-disable prettier/prettier */
 import { EntityManager, FilterQuery, wrap } from '@mikro-orm/core';
 import { InjectRepository } from '@mikro-orm/nestjs';
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable, forwardRef } from '@nestjs/common';
 import { RetenuPersonnelService } from '../retenu_personnel/retenu-personnel.service';
 import { PrimePersonnelService } from '../prime_personnel/prime-personnel.service';
 
@@ -18,6 +18,7 @@ export class PaySalaryService {
     @InjectRepository(PaySalary)
     private paysalaryRepository: EntityRepository<PaySalary>,
     private retenuPersonnel : RetenuPersonnelService,
+    @Inject(forwardRef(() => PrimePersonnelService))
     private primepersonnelservice: PrimePersonnelService,
     private personnel : PersonnelService,
     private readonly em: EntityManager,
@@ -45,12 +46,13 @@ export class PaySalaryService {
      
       if(personnel.status == Status.PERMANENT){
 
-      const salaireNette = salaireBase + primes - retenus
+      const salaireNette = salaireBase + primes
+      const salaireNet = salaireNette - retenus
             // const salaireNette = salaireBase 
 
       wrap(paysalaire).assign(
         {
-         montant: Number(salaireNette),
+         montant: Number(salaireNet),
          personnel: input.personnelId,
          moisPaie: input.moisPaie
 
@@ -135,15 +137,17 @@ return paysalaire;
     return a
  }
 
+ async personnelMonthSalary(personnelId:string){
+  const b = (await this.salairepersonnel(personnelId)).map(a=>a.moisPaie)
+  return b
+}
+
  async salairepersonnel(personnelid:string){
   const a = this.paysalaryRepository.find({personnel:personnelid})
   return a
   
 }
 
-async personnelMonthSalary(personnelId:string){
-  const b = (await this.salairepersonnel(personnelId)).map(a=>a.moisPaie)
-  return b
-}
+
 
 }

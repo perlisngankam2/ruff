@@ -20,6 +20,7 @@ export class ExpenseService {
     private readonly em: EntityManager,
     @Inject(forwardRef(() => PensionService))
     private pensionservice:PensionService,
+    @Inject(forwardRef(() =>SalaireService))
     private salaireservice: SalaireService
   ) {}
 

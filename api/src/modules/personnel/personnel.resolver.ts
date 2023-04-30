@@ -52,7 +52,7 @@ export class PersonnelResolver {
   }
 
 @Query(()=>Personnel)
-  async getpersonnelbyaccount(@Args('userid') userid:string){
+  async getpersonnelbyaccount(@Args('userid') userid:string):Promise<Personnel|null>{
     const personnel=await this.personnelService.findpersonnelbyaccount(userid)
     if(!personnel){
      return console.log("Il n'existe aucun personnel associee a ce compte")

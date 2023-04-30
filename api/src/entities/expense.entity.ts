@@ -51,7 +51,7 @@ export class Expense {
 
     @Field(() => ID)
     @Property({ persist: false })
-    get studentid() {
+    get studentid():string|null {
       return this.student? `${this.student.id}` : null;
     }
 

@@ -43,6 +43,12 @@ export class SectionService {
         return this.sectionRepository.findOne(id)
       }
     
+      getAllForUse(): Promise<Section[]> {
+        return this.sectionRepository.findAll({
+          populate: ['cycle','cycle.salle','cycle.salle.student','cycle.salle.student.pension']
+        })
+      }
+
       getAll(): Promise<Section[]> {
         return this.sectionRepository.findAll()
       }

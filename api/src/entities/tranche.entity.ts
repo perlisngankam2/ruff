@@ -53,6 +53,10 @@ export class Tranche {
   @Property({ nullable: true})
   priority!: number;
 
+  @Field({ nullable: true })
+  @Property({ nullable: true})
+  year!: string;
+
   @OneToMany(()=>TrancheStudent, (trancheStudent) => trancheStudent.tranche)
   trancheStudent = new Collection<TrancheStudent>(this)
 
@@ -83,22 +87,17 @@ export class Tranche {
   })
   salle!:IdentifiedReference<Salle>|null
 
-  @Field(() => ID)
+
+  @Field(() => ID,{nullable:true})
   @Property({ persist: false })
-  get yearid() {
-    return `${this.anneeAccademique.id}`;
+  get salleid():string|null {
+    return this.salle?`${this.salle.id}`:null;
   }
 
-  @Field(() => ID)
+  @Field(() => ID,{nullable:true})
   @Property({ persist: false })
-  get salleid() {
-    return `${this.salle.id}`;
-  }
-
-  @Field(() => ID)
-  @Property({ persist: false })
-  get pensionid() {
-    return `${this.pension.id}`;
+  get pensionid():string|null {
+    return this.pension?`${this.pension.id}`:null;
   }
 
   // @ManyToOne(() => TranchePriority ,{

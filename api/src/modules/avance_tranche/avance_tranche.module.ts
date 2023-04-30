@@ -9,6 +9,8 @@ import { AvanceTrancheResolver } from './avance-tranche.resolver';
 import { TrancheModule } from '../tranche/tranche.module';
 import { StudentModule } from '../student/student.module';
 import { PensionModule } from '../pension/pension.module';
+import { AnneAccademiqueModule } from '../anne_accademique/anne_accademique.module';
+import { ParamaterModule } from '../parameter/parameter.module';
 
 @Module({
     imports:[
@@ -16,7 +18,9 @@ import { PensionModule } from '../pension/pension.module';
         forwardRef(() => TrancheStudentModule),
         forwardRef(() =>TrancheModule),
         forwardRef(() =>StudentModule),
-        PensionModule
+        forwardRef(() =>PensionModule),
+        ParamaterModule
+        // AnneAccademiqueModule
     ],
     providers:[AvanceTrancheService,AvanceTrancheResolver],
     exports:[AvanceTrancheService]

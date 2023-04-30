@@ -21,6 +21,7 @@ import { StudentService } from '../student/student.service';
 import { TrancheService } from '../tranche/tranche.service';
 import { TrancheStudentCreateInput } from './dto/tranche-student.input';
 import { TrancheStudentUpdateInput } from './dto/tranche-student.update';
+import { ParameterService } from '../parameter/parameter.service';
 
 @Injectable()
 export class TrancheStudentService {
@@ -34,6 +35,7 @@ export class TrancheStudentService {
         @Inject(forwardRef(() => StudentService))
         private studentService: StudentService,
         private twilioService: TwilioService,
+        private parameterservice: ParameterService,
         private  em: EntityManager,
       ) {}
     
@@ -43,7 +45,10 @@ export class TrancheStudentService {
         const trancheStudent = new TrancheStudent()
         const student = await this.studentService.findByOne({id:input.studentId})
         const tranche = await this.studentService.findByOne({id:input.trancheid})
+        const anneAcademique = String((await this.avance.findByStudent(input.studentId)).map(async a=>(await a.anneeAcademique.load()).id)[0])
  
+        const year = await this.parameterservice.getAll()
+        const annee = year[year.length-1].year
         wrap(trancheStudent).assign(
             {
             montant: 0.000000,
@@ -52,7 +57,10 @@ export class TrancheStudentService {
              description: input.description,
             //  regimePaimemnt: input.regimePaiement,
              tranche: tranche.id,
-             student: student.id
+             student: student.id,
+             year: annee
+             
+             
             },
             {
                 em:this.em
@@ -86,6 +94,10 @@ export class TrancheStudentService {
       return a
             }
 
+    async findTrancheByStudent(studentid:string){
+     return (await this.findByStudents(studentid)).map(a=>a.tranche.load())
+    }
+
     findByTrancheandStudent(studentid: string,trancheid:string): Promise<TrancheStudent | null> {
         return this.trancheStudentRepository.findOne({student:studentid,tranche:trancheid});
       }
@@ -98,9 +110,20 @@ export class TrancheStudentService {
         return this.trancheStudentRepository.findAll()
     }
 
+    async updatesaveTrancheStudent(input:string){
+      const trancheStudent= await this.getAll()
+      trancheStudent.forEach((parameter) => {
+          parameter.year= input;
+          this.trancheStudentRepository.persist(parameter);
+        });
+        
+        await this.trancheStudentRepository.flush();
+    }
 
 async saveTranche(studentid:string,trancheid:string){
         const tranchestudent = await this.findByTrancheandStudent(studentid,trancheid)
+        // const anneAcademique =(await this.avance.findByStudent(studentid)).map(async a=>(await a.anneeAcademique.load()).id)[0]
+ 
 
         if(tranchestudent!=null)
         {
@@ -139,11 +162,15 @@ async saveTranche(studentid:string,trancheid:string){
     if(tranchestudent==null)
         {
         const tranchestudent = new TrancheStudent()
+        
 
+        const year = await this.parameterservice.getAll()
+        const annee = year[year.length-1].year
         wrap(tranchestudent).assign({
             montant:0.00000,
             student:studentid,
-            tranche:trancheid        
+            tranche:trancheid,
+            year : annee     
         },
         {
             em:this.em
@@ -187,10 +214,13 @@ async saveTranche(studentid:string,trancheid:string){
         const trancheStudent = await this.findById(id)
         
  
+        const year = await this.parameterservice.getAll()
+        const annee = year[year.length-1].year
         wrap(trancheStudent).assign({
             name:input.name || trancheStudent.name,
             montant: input.montant || trancheStudent.montant,
             description: input.description || trancheStudent.description,
+            year: annee
         },
         { em: this.em },
         );

@@ -20,6 +20,11 @@ async updatepaysalire(@Args('id') id:string,@Args('input') input: PaySalaryUpdat
     return await this.paysalaireService.update(id,input)
 }
 
+@Mutation(()=>PaySalary)
+async deletePaysalire(@Args('id') id:string){
+    return await this.paysalaireService.delete(id)
+}
+
 @Query(()=>[PaySalary])
 async findallpaysalaire(){
     return await this.paysalaireService.getAll()
@@ -28,6 +33,11 @@ async findallpaysalaire(){
 @Query(()=>PaySalary)
 async getonepaysalaire(@Args('id') id:string){
     return await this.paysalaireService.findByOne(id)
+}
+
+@Query(()=>[String])
+async PersonnelMonthPaySalary(@Args('personnelid') personnelid:string){
+    return await this.paysalaireService.personnelMonthSalary(personnelid)
 }
 
 @Query(()=>[PaySalary])

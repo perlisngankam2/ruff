@@ -37,6 +37,10 @@ export class Pension {
 
   @Field({ nullable: true })
   @Property({ nullable: true })
+  year!: string;
+
+  @Field({ nullable: true })
+  @Property({ nullable: true })
   description!: string;
 
   @Field({ defaultValue:0 })
@@ -96,8 +100,8 @@ export class Pension {
 
   @Field(() => ID)
   @Property({ persist: false })
-  get yearid() {
-    return `${this.anneeAccademique.id}`;
+  get yearid():string|null {
+    return this.anneeAccademique? `${this.anneeAccademique.id}`:null;
   }
 
   @Field(() => ID)

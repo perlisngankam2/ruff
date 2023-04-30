@@ -1,6 +1,6 @@
 /* eslint-disable prettier/prettier */
 import { MikroOrmModule } from '@mikro-orm/nestjs';
-import { Module } from '@nestjs/common';
+import { Module, forwardRef } from '@nestjs/common';
 import { PersonnelModule } from '../personnel/personnel.module';
 import { PrimePersonnelModule } from '../prime_personnel/prime_personnel.module';
 import { RetenuPersonnelModule } from '../retenu_personnel/retenu_personnel.module';
@@ -16,8 +16,8 @@ import { PaySalaryService } from './paysalary.service';
 @Module({
 imports:[MikroOrmModule.forFeature({ entities: [PaySalary] }),
  RetenuPersonnelModule,
- PrimePersonnelModule,
  PersonnelModule,
+ forwardRef(() =>PrimePersonnelModule,),
 ],
 providers:[PaySalaryService,PaySalaryResolver],
 exports:[PaySalaryService]

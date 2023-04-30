@@ -18,7 +18,13 @@ export class AvanceTrancheCreateInput {
   @Field(()=>ID,{nullable:true})
   studentId?:string
 
+  @Field({nullable:true})
+  year?: string;
+  
+  
   // @Field(()=>ID,{nullable:true})
+  // anneeAcademiqueId?:string
+  // // @Field(()=>ID,{nullable:true})
   // StudentId?:string
 
   @Field({nullable:true})

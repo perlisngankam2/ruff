@@ -479,7 +479,7 @@ type Query {
   findIdPrimeByPersonnel(personnelid: String!): [String!]!
   findsumallprimepersonnel(personnelid: String!): Float!
   primesETnomprimepersonnel(personnelid: String!): [[String!]!]!
-  findIdPrimesByPrimesPersonnel(personnelid: String!): [String!]!
+  findIdPrimesByPrimesPersonnel(personnelid: String!, month: String!): [String!]!
   getallpersonnelprimebymont(personnelid: String!, month: String!): Float!
   findallsalaire: [Salaire!]!
   getonesalaire(id: String!): Salaire!
@@ -494,6 +494,7 @@ type Query {
   findsumallretenupersonnel(personnelid: String!): Float!
   getRetenuEtNom(personnelid: String!): [[String!]!]!
   getallretenupersonnelbymonth(personnelid: String!, month: String!): Float!
+  findIdRetenuByRetenuPersonnel(personnelid: String!, month: String!): [String!]!
   findallpaysalaire: [PaySalary!]!
   getonepaysalaire(id: String!): PaySalary!
   PersonnelMonthPaySalary(personnelid: String!): [String!]!

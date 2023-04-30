@@ -186,4 +186,7 @@ async NomRetenuEtMontant(personnelid:string){
 
 }
 
+async findIdRetenuByRetenuPersonnel(personnelid:string,month:string){
+  return (await this.retenuPersonnelRepository.find({personnel:personnelid})).filter(async a=>(await a.paysalary.load()).moisPaie===month).map(async a=>(await a.retenue.load()).id)
+}
 }

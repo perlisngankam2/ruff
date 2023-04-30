@@ -60,11 +60,18 @@ const Employee = (props) => {
             rounded="md"
           > 
               <Center>
-                <Avatar
-                  boxSize="70px"
+                {dataPersonnelId?.findOnePersonnel.sexe.toLowerCase() === "homme" ? 
+                 <Avatar
+                  size="70px"
                   mt={["10px","10px", "10px" ]}
                   src="https://img.freepik.com/vecteurs-premium/profil-avatar-homme-icone-ronde_24640-14044.jpg?w=2000"
                 />
+             :
+                <Avatar
+                  size="70px"
+                  mt={["10px","10px", "10px" ]}
+                  src="https://img.freepik.com/premium-vector/woman-avatar-profile-round-icon_24640-14042.jpg?size=626&ext=jpg"
+                /> }
               </Center>
               <Text 
                 textAlign="center" 

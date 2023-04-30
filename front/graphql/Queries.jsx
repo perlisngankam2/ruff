@@ -406,21 +406,21 @@ export const GET_TRANCHE_STUDENT_BY_STUDENT_ID = gql `
 
 //personnel by userid
 export const GET_PERSONNEL_BY_USERID= gql `
-    query getpersonnelbyaccount ($userid: String!) {
-        getpersonnelbyaccount (userid: $userid) {
-            id
-            firstName
-            lastName
-            phoneNumber
-            situationMatrimonial
-            sexe
-            fonction
-            status
-            dateOfStartWork
-            dateOfBirth
-            childNumber
-        }
+query getpersonnelbyaccount ($userid: String!) {
+    getpersonnelbyaccount (userid: $userid) {
+        id
+        firstName
+        lastName
+        phoneNumber
+        situationMatrimonial
+        sexe
+        fonction
+        status
+        dateOfStartWork
+        dateOfBirth
+        childNumber
     }
+}
 `;
 
 export const GET_CLASS_FEES_BY_STUDENT_ID = gql `

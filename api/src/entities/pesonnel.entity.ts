@@ -137,11 +137,11 @@ export class Personnel {
   //   return `${this.user.id}`;
   // }
 
-  @Field(() => ID)
-  @Property({ persist: false })
-  get categorieid(): string|null {
-    return this.category ?`${this.category.id}`: null;
-  }
+  // @Field(() => ID)
+  // @Property({ persist: false })
+  // get categorieid(): string|null {
+  //   return this.category ?`${this.category.id}`: null;
+  // }
 
 
 // relation with another Entites

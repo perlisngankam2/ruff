@@ -391,13 +391,13 @@ type SectionStatistics {
   numberOfStudents: Float!
   expectedAmount: Float!
   numberOfStudentsCompletedFee: Float!
-  rateR: Float!
+  TAUXA: Float!
   sumAmountAlreadyPaid: Float!
-  rateT: Float!
+  TAUXB: Float!
   numberOfStudentsNotPaid: Float!
-  rateS: Float!
+  TAUXC: Float!
   amountRest: Float!
-  rateZ: Float!
+  TAUXD: Float!
 }
 
 type StudentStatistics {

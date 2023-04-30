@@ -9,11 +9,15 @@ import PaySlipLogoBox from "../../components/atoms/PaySlipLogoBox";
 import PaySlipInformationEmployeeBox from "../../components/atoms/PaySlipInformationEmployeeBox";
 import DefaultLayout from "../../components/layouts/DefaultLayout";
 import { useQuery, useMutation } from "@apollo/client";
-import { GET_ALL_PERSONNEL_BY_ID, GET_Category_Personnel_BY_ID, GET_Category_Personnel_ID} from "../../graphql/Queries";
+import { GET_ALL_PERSONNEL_BY_ID,
+  GET_ALL_SALAIRE_BY_ID,
+   GET_Category_Personnel_BY_ID, GET_Category_Personnel_ID} from "../../graphql/Queries";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { CREATE_SALAIRE } from "../../graphql/Mutation";
 import { useToast } from "@chakra-ui/react";
+import Routes from "../../modules/routes";
+import Link from "next/link";
 
 const PaySlip = () => {
 
@@ -121,12 +125,6 @@ const unavailableMonths = useMemo(
 // }
   const HandleClick = async (event) => {
     event.preventDefault();
-
-    router.push({
-                  pathname: Routes.Bulletin?.path || '',
-                  query: {id: router.query.id}
-                })
-
     const salaireData = await createSalaire({
           variables:{
           input: { 
@@ -273,8 +271,6 @@ const monthOptions = useMemo(() => {
 // if (loading) return <Text>Chargement en cour...</Text>
 
     return ( 
-
-
 
             <DefaultLayout>
       <Box 
@@ -486,9 +482,9 @@ const monthOptions = useMemo(() => {
       </Box>
 
     </DefaultLayout>
-}</>
-     );
-}
+)};
+     
+
  
 export default PaySlip; 
 

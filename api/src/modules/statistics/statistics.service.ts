@@ -89,7 +89,7 @@ async getSectionStatistics(): Promise<SectionStatistics[]> {
         const numberOfStudents = cycleClass.student.count();
         const expectedAmount = cycleClass.montantPensionSalle * numberOfStudents;
         const numberOfStudentsCompletedFee = (await this.getallStudentswhohaveCompletedFirstInstalment()).length
-        const rateR = numberOfStudentsCompletedFee / numberOfStudents * 100;
+        const  TAUXA= numberOfStudentsCompletedFee / numberOfStudents * 100;
         const a = cycleClass.student.getItems()
         console.log('=============>'+a)
         const c = a.map(a=>a.pension)
@@ -110,11 +110,11 @@ async getSectionStatistics(): Promise<SectionStatistics[]> {
           0,
         );
         
-        const rateT = sumAmountAlreadyPaid / expectedAmount * 100;
+        const TAUXB = sumAmountAlreadyPaid / expectedAmount * 100;
         const numberOfStudentsNotPaid = numberOfStudents - numberOfStudentsCompletedFee;
-        const rateS = numberOfStudentsNotPaid / numberOfStudents * 100;
+        const TAUXC = numberOfStudentsNotPaid / numberOfStudents * 100;
         const amountRest = expectedAmount - sumAmountAlreadyPaid;
-        const rateZ = amountRest / expectedAmount * 100;
+        const TAUXD = amountRest / expectedAmount * 100;
 
         sectionStatistics.push({
           sectionName: section.name,
@@ -122,13 +122,13 @@ async getSectionStatistics(): Promise<SectionStatistics[]> {
           numberOfStudents,
           expectedAmount,
           numberOfStudentsCompletedFee,
-          rateR,
+          TAUXA,
           sumAmountAlreadyPaid,
-          rateT,
+          TAUXB,
           numberOfStudentsNotPaid,
-          rateS,
+          TAUXC,
           amountRest,
-          rateZ,
+          TAUXD,
         });
       }
     }

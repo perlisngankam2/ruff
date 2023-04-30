@@ -149,7 +149,8 @@ export class PensionService {
           }
       } catch (error) {
           console.error(error)
-          throw new Error('Error in savePension function')
+          // throw new Error('Error in savePension function')
+          
       }
   }
   

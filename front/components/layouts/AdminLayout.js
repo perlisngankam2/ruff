@@ -151,7 +151,7 @@
               </Flex>
             </AccordionButton>
             <AccordionPanel pb={1} _hover={{background:"rgba(0,0,0,0.16)"}}>
-              <Link href="pension/listeDroitScolaire">
+              <Link href="/pension/listeDroitScolaire">
                 <Box as="span">Pension</Box>
               </Link>
             </AccordionPanel>
@@ -177,7 +177,7 @@
               </Flex>
             </AccordionButton>
             <AccordionPanel _hover={{background:"rgba(0,0,0,0.16)"}}>
-              <Link href="parents/listOfParents">
+              <Link href="/parents/listOfParents">
                 <Box as="span">Tout les parents</Box>
               </Link>
             </AccordionPanel>
@@ -272,7 +272,7 @@
               </Flex>
             </AccordionButton>
             <AccordionPanel pb={1} _hover={{background:"rgba(0,0,0,0.16)"}}>
-              <Link href="settings/generalSettings">
+              <Link href="/settings/generalSettings">
                 <Box as="span">Paramètre généraux</Box>
               </Link>
             </AccordionPanel>

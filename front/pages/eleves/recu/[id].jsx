@@ -591,7 +591,7 @@ const receipt = () => {
                                                         <Th border='1px'>
                                                             <Box fontSize='8px'>
                                                                 <Text textAlign={"center"}>
-                                                                    {dataAvanceMontantInscriptionByStudent?.SumAvanceTrancheByStudent}
+                                                                    {dataAvanceMontantInscriptionByStudent?.SumAvanceTrancheByStudent ? dataAvanceMontantInscriptionByStudent?.SumAvanceTrancheByStudent : "0"}
                                                                 </Text>
                                                             </Box>
                                                         </Th>

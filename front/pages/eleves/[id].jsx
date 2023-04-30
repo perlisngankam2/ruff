@@ -466,89 +466,100 @@ const {data:dataResteFeesToPayByStudent} = useQuery(GET_RESTE_PENSION_A_PAYER_BY
         let montantSaisie = montant;
         let orderTranche = selectedTranches.sort((a,b) => a.priority - b.priority)
         console.log(orderTranche , "Tranche trie");
-
-        orderTranche.forEach( (tranche , index) => {
-
-          const trancheMontant = getTrancheById(tranche.value)?.montant
-          const trancheStudent =  getTrancheStudentById(studentId,tranche.value )
-          
-          if(montantSaisie != 0) {
-            if(trancheStudent && (!trancheStudent.complete)) {
-              const reste = trancheStudent.reste
-              if(montantSaisie < reste){
-                 createFeesAvanceTranche({
-                  variables: {
-                    avancetranche:{
-                      montant: montantSaisie,
-                      trancheId: tranche.value,
-                      studentId: studentId
+        try {
+          orderTranche.forEach( (tranche , index) => {
+  
+            const trancheMontant = getTrancheById(tranche.value)?.montant
+            const trancheStudent =  getTrancheStudentById(studentId,tranche.value )
+            
+            if(montantSaisie != 0) {
+              if(trancheStudent && (!trancheStudent.complete)) {
+                const reste = trancheStudent.reste
+                if(montantSaisie < reste){
+                   createFeesAvanceTranche({
+                    variables: {
+                      avancetranche:{
+                        montant: montantSaisie,
+                        trancheId: tranche.value,
+                        studentId: studentId
+                      }
                     }
-                  }
-                })
-                toast({
-                  title: `Tranche : ${ tranche.label } partiellement soldé, reste a payer : ${ (reste - montantSaisie) } `,
-                  description: " paye avec succes.",
-                  status: "success",
-                  duration: 3000,
-                  isClosable: true,
-                });
-                montantSaisie = 0
+                  })
+                  toast({
+                    title: `Tranche : ${ tranche.label } partiellement soldé, reste a payer : ${ (reste - montantSaisie) } `,
+                    description: " paye avec succes.",
+                    status: "success",
+                    duration: 3000,
+                    isClosable: true,
+                  });
+                  montantSaisie = 0
+                } else {
+                   createFeesAvanceTranche({
+                    variables: {
+                      avancetranche:{
+                        montant: reste,
+                        trancheId: tranche.value,
+                        studentId: studentId
+                      }
+                    }
+                  })
+                  toast({
+                    title: `Tranche : ${ tranche.label } soldé `,
+                    description: " paye avec succes.",
+                    status: "success",
+                    duration: 3000,
+                    isClosable: true,
+                  });
+                  montantSaisie = (montantSaisie - reste)
+                  console.error("New montant : " , montantSaisie);
+                }
               } else {
-                 createFeesAvanceTranche({
-                  variables: {
-                    avancetranche:{
-                      montant: reste,
-                      trancheId: tranche.value,
-                      studentId: studentId
+                if(montantSaisie < trancheMontant) {
+                   createFeesAvanceTranche({
+                    variables: {
+                      avancetranche:{
+                        montant: montantSaisie,
+                        trancheId: tranche.value,
+                        studentId: studentId
+                      }
                     }
-                  }
-                })
-                toast({
-                  title: `Tranche : ${ tranche.label } soldé `,
-                  description: " paye avec succes.",
-                  status: "success",
-                  duration: 3000,
-                  isClosable: true,
-                });
-                montantSaisie = (montantSaisie - reste)
-                console.error("New montant : " , montantSaisie);
-              }
-            } else {
-              if(montantSaisie < trancheMontant) {
-                 createFeesAvanceTranche({
-                  variables: {
-                    avancetranche:{
-                      montant: montantSaisie,
-                      trancheId: tranche.value,
-                      studentId: studentId
+                  })
+                  toast({
+                    title: `Tranche : ${ tranche.label } partiellement soldé, reste a payer : ${ (trancheMontant - montantSaisie) } `,
+                    description: " paye avec succes.",
+                    status: "success",
+                    duration: 3000,
+                    isClosable: true,
+                  });
+                  montantSaisie = 0
+                  console.error("New montant : " , montantSaisie);
+                } else {
+                   createFeesAvanceTranche({
+                    variables: {
+                      avancetranche:{
+                        montant: trancheMontant,
+                        trancheId: tranche.value,
+                        studentId: studentId
+                      }
                     }
-                  }
-                })
-                toast({
-                  title: `Tranche : ${ tranche.label } partiellement soldé, reste a payer : ${ (trancheMontant - montantSaisie) } `,
-                  description: " paye avec succes.",
-                  status: "success",
-                  duration: 3000,
-                  isClosable: true,
-                });
-                montantSaisie = 0
-                console.error("New montant : " , montantSaisie);
-              } else {
-                 createFeesAvanceTranche({
-                  variables: {
-                    avancetranche:{
-                      montant: trancheMontant,
-                      trancheId: tranche.value,
-                      studentId: studentId
-                    }
-                  }
-                })
-                montantSaisie = (montantSaisie - trancheMontant)
-                console.error("New montant : " , montantSaisie);
+                  })
+                  toast({
+                    title: `Tranche : ${ tranche.label } soldé,  `,
+                    description: " paye avec succes.",
+                    status: "success",
+                    duration: 3000,
+                    isClosable: true,
+                  });
+                  montantSaisie = (montantSaisie - trancheMontant)
+                  console.error("New montant : " , montantSaisie);
+                }
               }
             }
-          }
-        })
+          })
+          
+        } catch (error) {
+          console.log(error.message)
+        }
 
         // if(montantSaisie > 0 ) {
         //   toast({

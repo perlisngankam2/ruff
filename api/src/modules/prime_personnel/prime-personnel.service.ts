@@ -18,6 +18,8 @@ import { PersonnelService } from '../personnel/personnel.service';
 import { PrimeService } from '../prime/prime.service';
 import { PrimePersonnelCreateInput } from './dto/prime-personnel.input';
 import { PrimePersonnelUpdateInput } from './dto/prime-personnel.update';
+import { SalaireService } from '../salaire/salaire.service';
+import { PaySalaryService } from '../paysalary/paysalary.service';
 
 @Injectable()
 export class PrimePersonnelService {
@@ -26,7 +28,9 @@ export class PrimePersonnelService {
         private primePersonnelRepository: EntityRepository<PrimePersonnel>,
         private readonly em: EntityManager,
         private personnelService: PersonnelService,
-        private primeService: PrimeService
+        private primeService: PrimeService,
+        private salaireservice: SalaireService,
+        private paysalarie: PaySalaryService
       ) {}
     
       async create(
@@ -227,5 +231,13 @@ async primesETnomprimepersonnel(personnelid:string){
   const a=(await this.primePersonnelRepository.find({personnel:personnelid})).map(async a=>(await a.prime.load()).nom)
   const b = (await this.primePersonnelRepository.find({personnel:personnelid})).map(async a=>(await a.prime.load()).montant)
   return [a,b]
+}
+
+async findIdPrimeByPersonnel(personnelid:string){
+  return (await this.primePersonnelRepository.find({personnel:personnelid})).map(async a=>(await a.prime.load()).id)
+}
+
+async findIdPrimesByPrimesPersonnel(personnelid:string,month:string){
+  return (await this.primePersonnelRepository.find({personnel:personnelid})).filter(async a=>(await a.paysalary.load()).moisPaie===month).map(async a=>(await a.prime.load()).id)
 }
 }

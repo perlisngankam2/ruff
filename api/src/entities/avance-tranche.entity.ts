@@ -16,6 +16,8 @@ import {
 import { PrimaryKeyUuid } from '../decorators/PrimaryKeyUuid.decorator';
 import { Tranche } from './tranche.entity';
 import { Student } from './student.entity';
+import { AnneeAccademique } from './annee-accademique.entity';
+import { Parameter } from './parameter.entity';
 
 @Entity()
 @ObjectType()
@@ -39,6 +41,10 @@ export class AvanceTranche {
   @Property({ nullable: true })
   dateLine!: Date | null;
 
+  @Field(() => String, { nullable: true })
+  @Property({ nullable: true })
+  year!: string;
+
   @Field({ defaultValue:0 })
   @Property({ default:0 })
   montant!: number;
@@ -57,6 +63,13 @@ export class AvanceTranche {
   })
   student!:IdentifiedReference<Student>|null
 
+  
+  @ManyToOne(() => AnneeAccademique ,{
+    nullable:true,
+    onDelete:'CASCADE',
+  })
+  anneeAcademique!:IdentifiedReference<AnneeAccademique>|null
+
   @ManyToOne(() => Tranche ,{
     nullable:false,
     onDelete:'CASCADE'
@@ -74,4 +87,5 @@ export class AvanceTranche {
   get trancheid() {
     return `${this.tranche.id}`;
   }
+
 }

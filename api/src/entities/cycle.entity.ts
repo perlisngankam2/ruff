@@ -16,6 +16,7 @@ import { PrimaryKeyUuid } from '../decorators/PrimaryKeyUuid.decorator';
 import { NiveauEtude } from './niveau-etude.entity';
 import { SectionCycle } from './section-cycle.entity';
 import { Section } from './section.entity';
+import { Salle } from './salle.entity';
 
 
 @Entity()
@@ -34,6 +35,9 @@ export class Cycle{
 
     @OneToMany(() => NiveauEtude, (niveauEtude) => niveauEtude.cycle)
     niveauEtude = new Collection<NiveauEtude>(this); 
+
+    @OneToMany(() => Salle, (salle) => salle.cycle)
+    salle = new Collection<Salle>(this); 
 
     @ManyToOne(() => Section, {
       nullable: true,

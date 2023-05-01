@@ -66,6 +66,15 @@ export class RetenuPersonnelResolver {
  return await this.retenuPersonnelService.NomRetenuEtMontant(personnelid)
   }
 
+  @Query(()=> Number)
+  async getallretenupersonnelbymonth(@Args('personnelid') personnelid:string,@Args('month') month:string){
+  return await this.retenuPersonnelService.getallretenupersonnelbymonth(personnelid,month)
+  }
 
+  @Query(()=> [String])
+  async findIdRetenuByRetenuPersonnel(@Args('personnelid') personnelid:string,@Args('month') month:string){
+ return await this.retenuPersonnelService.findIdRetenuByRetenuPersonnel(personnelid,month)
+  }
 
+  
 }

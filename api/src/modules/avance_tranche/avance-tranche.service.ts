@@ -19,6 +19,8 @@ import { TrancheService } from '../tranche/tranche.service';
 import { AvanceTrancheCreateInput } from './dto/avance-tranche.input';
 import { AvanceTrancheUpdateInput } from './dto/avance-tranche.update';
 import { PensionService } from '../pension/pension.service';
+import { AnneeAccademiqueService } from '../anne_accademique/anne-accademique.service';
+import { ParameterService } from '../parameter/parameter.service';
 
 @Injectable()
 export class AvanceTrancheService {
@@ -31,7 +33,10 @@ export class AvanceTrancheService {
         private studentservice: StudentService,
         @Inject(forwardRef(() => TrancheService))
         private trancheservice: TrancheService,
+        // private anneeacademique: AnneeAccademiqueService,
+        @Inject(forwardRef(() => PensionService))
         private pensionservice:PensionService,
+        private parametreservice:ParameterService,
         private  em: EntityManager,
       ) {}
     
@@ -61,6 +66,9 @@ async createavancetranche(
         
         const tranche = await this.trancheservice.findByOne(input.trancheId)
 
+        // const year = await this.parametreservice.getAll()
+        // const annee = year[year.length-1].year
+
         if(!tranche && !student){
           throw Error("!!!!!!!!!!!!!!tranche and student not found!!!!!!!!!!!!!!!!!!!!!!")
         }
@@ -69,7 +77,8 @@ async createavancetranche(
           name: input.name,
           description: input.description,
           student: student.id,
-          tranche: tranche.id
+          tranche: tranche.id,
+          // year: annee
           
           },
           {
@@ -135,6 +144,7 @@ async createavancetranche(
         //     this.trancheStudentservice.saveTranche(student.id,tranche.id)
         //     return avanceTranche
         // }
+     
 
           if(input.montant < trancheamount){
               // create avance inscription
@@ -144,7 +154,8 @@ async createavancetranche(
               description: input.description,
               student: student.id,
               tranche: tranche.id,
-              complete: false
+              complete: false,
+              // year:annee
               },
               {
               em:this.em
@@ -183,13 +194,16 @@ getAllavancetranche(): Promise<AvanceTranche[]> {
 async update(id:string, input: AvanceTrancheUpdateInput): Promise<AvanceTranche> {
         const avance = await this.findByIdavancetranche(id)
   
+        const year = await this.parametreservice.getAll()
+        const annee = year[year.length-1].year
    
           wrap(avance).assign({
               name:input.name || avance.name,
               montant: input.montant || avance.montant,
               description: input.description || avance.description,
               tranche: input.trancheId,
-              student:input.studentId
+              student:input.studentId,
+              year:annee
           },
           { em: this.em },
           );
@@ -205,6 +219,16 @@ async deleteavancetranche(id:string):Promise<AvanceTranche>{
        throw console.error("not found");
       }
       return a
+    }
+
+async updatesaveAvanceTranche(input:string){
+      const parameter= await this.getAllavancetranche()
+      parameter.forEach((parameter) => {
+          parameter.year= input;
+          this.avanceTrancheRepository.persist(parameter);
+        });
+        
+        await this.avanceTrancheRepository.flush();
     }
 
 async SumAvanceTrancheByTranche(trancheid:string){

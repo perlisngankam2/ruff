@@ -12,7 +12,7 @@ import { EntityRepository } from '@mikro-orm/postgresql';
 import { Injectable } from '@nestjs/common';
 import { Field, ID, ObjectType } from '@nestjs/graphql';
 import { Pension } from 'src/entities/pension.entity';
-import { Student } from 'src/entities/student.entity';
+import { Regime, Student } from 'src/entities/student.entity';
 import { TrancheStudent } from 'src/entities/tranche-student.entity';
 import { CategorieEleveService } from '../categorie_eleve/categorie-eleve.service';
 import { InscriptionService } from '../inscription/inscription.service';
@@ -105,9 +105,31 @@ export class StudentService {
       findById(id:string){
         return this.studentRepository.findOne(id)
       }
+
+      async findAllStudentSpecialRegime(){
+        const a=await this.studentRepository.findAll()
+
+        return  a.filter(async a=>(await a.categorie.load()).description=='Special')
+      }
+
+      async findStudentTel(id:string){
+       return (await this.findByOne(id)).parentTel
+      }
+
+      async findStudentFirstNameById(id:string){
+        const a = await this.studentRepository.findOne(id)
+        return a.firstname
+      }
+
+      async findStudentLastNameById(id:string){
+        const a = await this.studentRepository.findOne(id)
+        return a.lastname
+      }
     
       getAll(): Promise<Student[]> {
-        return this.studentRepository.findAll()
+        return this.studentRepository.findAll({
+          populate:['salle','pension']
+        })
       }
       
       async update(id:string, input: StudentUpdateInput): Promise<Student> {

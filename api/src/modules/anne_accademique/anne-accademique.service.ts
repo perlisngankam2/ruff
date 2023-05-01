@@ -6,6 +6,11 @@ import { EntityRepository} from '@mikro-orm/postgresql';
 import { AnneeAccademique } from 'src/entities/annee-accademique.entity';
 import { AnneeAccademiqueCreateInput } from './dto/anne-accademique.update';
 import { AnneeAccademiqueUpdateInput } from './dto/anne-accadmique.input';
+import { ParameterService } from '../parameter/parameter.service';
+import { ParameterCreateInput } from '../parameter/dto/parameter.input';
+import { TrancheStudentService } from '../tranche-student/tranche-student.service';
+import { TrancheService } from '../tranche/tranche.service';
+import { PensionService } from '../pension/pension.service';
 
 
 @Injectable()
@@ -13,7 +18,11 @@ export class AnneeAccademiqueService {
   constructor(
     @InjectRepository(AnneeAccademique)
     private readonly anneAccademiquePrimeRepository : EntityRepository<AnneeAccademique>,
+    private parameterservice: ParameterService,
     private readonly em: EntityManager,
+    private tranchestudentservice: TrancheStudentService,
+    private trancheservice: TrancheService,
+    private pensionService: PensionService
   ) {}
 
 
@@ -33,7 +42,6 @@ export class AnneeAccademiqueService {
     wrap(annee).assign(
       {
         name: input.name,
-        // anneeAccademique:new Date(input.anneeAccademique),
         description: input.description
       },
       {
@@ -41,7 +49,10 @@ export class AnneeAccademiqueService {
       },
     );
 
+    const a = await this.getAll()
+    const year = a[a.length-1].name
     await this.anneAccademiquePrimeRepository.persistAndFlush(annee)
+    await this.parameterservice.saveParameter(year)
     return annee
   }
 
@@ -62,6 +73,10 @@ export class AnneeAccademiqueService {
     },
     );
 
+    await this.parameterservice.updatesaveParameter(input.name)
+    await this.tranchestudentservice.updatesaveTrancheStudent(input.name)
+    await this.trancheservice.updatesaveTranche(input.name)
+    await this.pensionService.updatesavePension(input.name)
     await this.anneAccademiquePrimeRepository.persistAndFlush(annee);
 
     return annee;

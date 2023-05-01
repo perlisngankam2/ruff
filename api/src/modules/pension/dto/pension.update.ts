@@ -17,6 +17,9 @@ export class PensionUpdateInput {
   name?: string;
 
   @Field({nullable:true})
+  year?: string;
+
+  @Field({nullable:true})
   description?: string;
 
   @Field(()=>Date,{nullable:true})

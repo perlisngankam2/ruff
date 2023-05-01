@@ -58,6 +58,10 @@ export class PrimePersonnelResolver {
  return await this.primePersonnelService.findnamesprimesbypersonnel(personnelid)
   }
 
+  @Query(()=> [String])
+  async findIdPrimeByPersonnel(@Args('personnelid') personnelid:string){
+ return await this.primePersonnelService.findIdPrimeByPersonnel(personnelid)
+  }
   @Query(()=> Number)
   async findsumallprimepersonnel(@Args('personnelid') personnelid:string){
  return await this.primePersonnelService.getallpersonnelprime(personnelid)
@@ -67,5 +71,16 @@ export class PrimePersonnelResolver {
   async primesETnomprimepersonnel(@Args('personnelid') personnelid:string){
  return await this.primePersonnelService.primesETnomprimepersonnel(personnelid)
   }
+
+  @Query(()=> [String])
+  async findIdPrimesByPrimesPersonnel(@Args('personnelid') personnelid:string,@Args('month') month:string){
+ return await this.primePersonnelService.findIdPrimesByPrimesPersonnel(personnelid,month)
+  }
+
+  @Query(()=> Number)
+  async getallpersonnelprimebymont(@Args('personnelid') personnelid:string,@Args('month') month:string){
+  return await this.primePersonnelService.getallpersonnelprimebymonth(personnelid,month)
+  }
+  
 
 }

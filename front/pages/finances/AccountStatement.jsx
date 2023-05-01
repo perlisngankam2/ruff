@@ -221,7 +221,7 @@ const AccountStatement = () => {
                             ref={componentRef}
                         >
                                 <Flex
-                                    gap={100}
+                                    gap={"110px"}
                                     p="5px"
                                     // width={"full"}
                                     fontWeight={"bold"}
@@ -236,21 +236,23 @@ const AccountStatement = () => {
                                     </Box>
                                     <Box 
                                         width='290px'
+                                        ml="15px"
                                     >
-                                        {t('pages.finances.accountStatement.description')}
-                                    </Box>
-                                    <Box 
-                                        width='160px'
-                                    >
-                                        Debit
+                                        description
+                                        {/* {t('pages.finances.accountStatement.description')} */}
                                     </Box>
                                     <Box 
                                         width='150px'
                                     >
-                                        Credit
+                                        Debit
                                     </Box>
                                     <Box 
                                         width='180px'
+                                    >
+                                        Credit
+                                    </Box>
+                                    <Box 
+                                        width='265px'
                                     >
                                         Net
                                     </Box>
@@ -260,7 +262,7 @@ const AccountStatement = () => {
                                      {dataExpensePersonnelStudent && 
                                         (dataExpensePersonnelStudent?.findallexpenses.map((expense, index) => ( 
                                     <Flex
-                                        gap={100}
+                                        gap={"80px"}
                                         p="5px"
                                         width={"full"}
                                         // fontWeight={"bold"}
@@ -269,19 +271,19 @@ const AccountStatement = () => {
                                         key={index}
                                     > 
                                     
-                                        <Box width='100px' 
-                                            flex={1}
+                                        <Box 
+                                            // width='95px' 
+                                            // flex={1}
                                         >
                                             <Box>
-                                                {((new Date(expense.createdOn)).toDateString())} 
-                                                {/* {/* {console.log(typeof(expense.createdOn))} */}
+                                                {/* {((new Date(expense.createdOn)).toDateString())}  */}
+                                                {((new Date(expense.createdOn)).toLocaleDateString('fr-FR', { day: 'numeric', month: 'numeric', year: 'numeric' }))} 
                                                 {console.log((date1).toDateString())}
-                                                {/* // {console.log((new Date(expense.createdOn)).toDateString())} */} 
 
                                             </Box>
                                         </Box>
                                         <Box 
-                                            width='290px'
+                                            width='260px'
                                         >
                                            {expense.studentFirstname}
                                            {expense.studentLastname}
@@ -290,7 +292,7 @@ const AccountStatement = () => {
                                            {expense.personnelFonction}
                                         </Box>
                                         <Box 
-                                            width='160px'
+                                            width='150px'
                                             display={{md:"flex"}}
                                         >
                                             <Flex 
@@ -315,7 +317,7 @@ const AccountStatement = () => {
                                             </Flex>
                                             <Box> {expense.debitamount}</Box>
                                         </Box>
-                                        <Box width='150px'
+                                        <Box width='180px'
                                             display={{md:"flex"}}
                                         >
                                             <Flex 
@@ -342,7 +344,7 @@ const AccountStatement = () => {
                                             </Flex>
                                             <Box>{expense.creditamount}</Box>
                                         </Box>
-                                        <Box width='180px'>
+                                        <Box width='200px'>
                                             Net
                                         </Box> 
                                     </Flex>

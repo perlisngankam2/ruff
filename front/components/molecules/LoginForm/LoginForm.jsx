@@ -51,8 +51,6 @@ const LoginForm = () => {
 
 console.log(dataUser)
 
-
- 
    const HandleClick = async (event) => {
         event.preventDefault();
         
@@ -73,13 +71,12 @@ console.log(dataUser)
                       onOpen()
 
                     } else {
-router.push('/dashboard')
+                    router.push('/dashboard')
                     }
                     
-                  }
        };
 
-
+      }
 
 
   return (

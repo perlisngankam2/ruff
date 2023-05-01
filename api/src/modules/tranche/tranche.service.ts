@@ -19,12 +19,14 @@ import { SalleService } from '../salle/salle.service';
 import { TrancheCreateInput } from './dto/tranche.input';
 import { TrancheUpdateInput } from './dto/tranche.update';
 import { format } from 'date-fns';
+import { ParameterService } from '../parameter/parameter.service';
 
 @Injectable()
 export class TrancheService {
     constructor(
         @InjectRepository(Tranche)
         private trancheRepository: EntityRepository<Tranche>,
+        private parameterservice: ParameterService,
         private  em: EntityManager,
       ) {}
     
@@ -37,6 +39,8 @@ export class TrancheService {
         // ? await this.pensionService.findByOne(input.pension_id)
         // : await this.pensionService.create(input.pension) 
 
+        const year = await this.parameterservice.getAll()
+        const annee = year[year.length-1].year
         wrap(tranche).assign(
           {
             montant: input.montant,
@@ -44,8 +48,9 @@ export class TrancheService {
             description: input.description,
             // dateLine:format(input.dateLine, 'dd/MM/yyyy'),
             dateLine:input.dateLine,
-            anneeAccademique: input.anneeAcademiqueId,
+            // anneeAccademique: input.anneeAcademiqueId,
             salle: input.salleId,
+            year: annee,
             priority: input.priority
 
             // tranchepriority: input.tranchePriorityId
@@ -78,6 +83,13 @@ export class TrancheService {
           populate:true
         })
       }
+
+      async getAllTranche(): Promise<Tranche[]> {
+        return await this.trancheRepository.findAll({
+          populate:['trancheStudent.tranche','trancheStudent.student']
+        })
+        // const b= a.map(a=>a.trancheStudent.l)
+      }
       
       async update(id:string, input: TrancheUpdateInput): Promise<Tranche> {
         const tranche= await this.findById(id)
@@ -92,11 +104,12 @@ export class TrancheService {
         //     this.pensionService.update(pension.id, input.pension);
         //   }
 
-         
+        const year = await this.parameterservice.getAll()
+        const annee = year[year.length-1].year
         wrap(tranche).assign({
             name:input.name || tranche.name,
             montant: input.montant || tranche.montant,
-            anneeAccademique:input.anneeAcademiqueId,
+            year: annee,
             description: input.description || tranche.description,
             dateLine:format(input.dateLine,'dd/MM/yyyy'),
             priority: input.priority || tranche.priority,
@@ -106,6 +119,16 @@ export class TrancheService {
     );
         await this.trancheRepository.persistAndFlush(tranche);
         return tranche;
+      }
+
+      async updatesaveTranche(input:string){
+        const parameter= await this.getAll()
+        parameter.forEach((parameter) => {
+            parameter.year= input;
+            this.trancheRepository.persist(parameter);
+          });
+          
+          await this.trancheRepository.flush();
       }
       async delete(id:string){
         const a = this.findById(id) 

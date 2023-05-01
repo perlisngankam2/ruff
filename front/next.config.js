@@ -26,6 +26,7 @@ const { resolve } = require('path');
 const { i18n } = require('./plugins/next-i18next.config');
 const localesDir = resolve('public/locales');
 
+
 module.exports = {
   i18n,
   webpack(config, context) {

@@ -25,6 +25,15 @@ import { AvanceTranche } from './avance-tranche.entity';
 import { Pension } from './pension.entity';
 import { Expense } from './expense.entity';
 
+export enum Regime{
+  SPECIAL='SPECIAL',
+  NORMAL='NORMAL'
+}
+
+registerEnumType(Regime, {
+  name: 'Regime',
+});
+
 @Entity()
 @ObjectType()
 export class Student {
@@ -47,6 +56,13 @@ export class Student {
   @Field(()=>Date)
   @Property({nullable:true})
   dateOfBirth!:Date;
+
+  // @Field({ nullable: true })
+  // @Enum({
+  //   items: () => Regime,
+  //   default: Regime.NORMAL,
+  // })
+  // Regime!: Regime;
 
   @Field({ nullable: true })
   @Property({ nullable: true })
@@ -199,5 +215,11 @@ export class Student {
   @Property({ persist: false })
   get categorieid() {
     return `${this.categorie.id}`;
+  }
+
+  @Field(() => String)
+  @Property({ persist: false })
+  get parentTel(): string|null {
+    return this.parentStudent?`${this.parentStudent.toArray().map(a=>a.parentTel)}`:null;
   }
 }

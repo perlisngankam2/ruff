@@ -18,7 +18,7 @@ import { PaySalaryModule } from '../paysalary/paysalary.module';
 @Module({
 imports:[MikroOrmModule.forFeature({ entities: [Salaire] }),
  RetenuPersonnelModule,
- PrimePersonnelModule,
+ forwardRef(() =>PrimePersonnelModule),
  PeriodeModule,
  PersonnelModule,
  PrimeModule,

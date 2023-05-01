@@ -1,28 +1,22 @@
 /* eslint-disable prettier/prettier */
 
 import { Module } from "@nestjs/common";
-import { ExpenseModule } from "../expenses/expense.module";
-import { InscriptionModule } from "../inscription/inscription.module";
-import { SalleModule } from "../salle/salle.module";
 import { TrancheStudentModule } from "../tranche-student/tranche-student.module";
 import { StatisticResolver } from "./statistics.resolver";
-import { StatisticService } from "./statistics.service";
-import { PensionModule } from "../pension/pension.module";
 import { TrancheModule } from "../tranche/tranche.module";
 import { StudentModule } from "../student/student.module";
+import { StatisticsService } from "./statistics.service";
+import { SectionModule } from "../section/section.module";
 
 
 @Module({
     imports:[
-        InscriptionModule,
-        TrancheStudentModule,
-        SalleModule,
-        ExpenseModule,
-        PensionModule,
+        StudentModule,
+        SectionModule,
         TrancheModule,
-        StudentModule
+        TrancheStudentModule
     ],
-    providers:[StatisticService,StatisticResolver],
-    exports:[StatisticService]
+    providers:[StatisticsService,StatisticResolver],
+    exports:[StatisticsService]
 })
 export class StatisticModule {}

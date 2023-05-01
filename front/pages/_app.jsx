@@ -54,3 +54,4 @@ function MyApp({ Component, pageProps}) {
 // export default appWithTranslation(MyApp)
 export default appWithTranslation(MyApp, i18nextConfig)
 // export default MyApp;
+

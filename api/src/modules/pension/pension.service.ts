@@ -21,6 +21,7 @@ import { format } from 'date-fns';
 import { StudentService } from '../student/student.service';
 import { TrancheStudentService } from '../tranche-student/tranche-student.service';
 import { ExpenseService } from '../expenses/expense.service';
+import { ParameterService } from '../parameter/parameter.service';
 
 @Injectable()
 export class PensionService {
@@ -30,9 +31,10 @@ export class PensionService {
         @Inject(forwardRef(() => StudentService))
         private studentservice: StudentService,
         @Inject(forwardRef(() => TrancheStudentService))
-        @Inject(forwardRef(() => TrancheStudentService))
         private trancheStudentservice: TrancheStudentService,
+        @Inject(forwardRef(() => ExpenseService))
         private expenseservice: ExpenseService,
+        private parameterservice: ParameterService,
         private  em: EntityManager,
       ) {}
     
@@ -48,6 +50,8 @@ export class PensionService {
         }
        
 
+        const year = await this.parameterservice.getAll()
+        const annee = year[year.length-1].year
         wrap(pension).assign(
           {
             montantPension:0.00000,
@@ -55,7 +59,8 @@ export class PensionService {
             description: input.description,
             // anneeAccademique: input.anneeAcademiqueId,
             dateLine: input.dateLine,
-            student: student.id
+            student: student.id,
+            year:annee
             
           },
           {
@@ -75,7 +80,9 @@ export class PensionService {
       }
     
       getAll(): Promise<Pension[]> {
-        return this.pensionRepository.findAll()
+        return this.pensionRepository.findAll({
+          populate:['student']
+        })
       }
     
 
@@ -89,9 +96,12 @@ export class PensionService {
   
           if(pension==null){
             const pension = new Pension()
+            const year = await this.parameterservice.getAll()
+            const annee = year[year.length-1].year
             wrap(pension).assign({
               montantPension:0.0000,
-              student: studentid
+              student: studentid,
+              year:annee
             },
             {
               em:this.em
@@ -153,7 +163,15 @@ export class PensionService {
       }
   }
   
-    
+  async updatesavePension(input:string){
+    const parameter= await this.getAll()
+    parameter.forEach((parameter) => {
+        parameter.year= input;
+        this.pensionRepository.persist(parameter);
+      });
+      
+      await this.pensionRepository.flush();
+  }
 
       async update(id:string, input: PensionUpdateInput): Promise<Pension> {
         const pension = await this.findById(id)
@@ -162,12 +180,15 @@ export class PensionService {
           throw Error('!!!!!!!!!!!!!!!!!STUDENT DOES NOT EXISTS!!!!!!!!!!!!!!!!!!')
         }
         const montant = (await this.trancheStudentservice.findByStudents(student.id)).map(a=>a.montant).reduce(function(a,b){return a+b})
+        const year = await this.parameterservice.getAll()
+        const annee = year[year.length-1].year
         wrap(pension).assign({
             name:input.name || pension.name,
             dateLine: input.dateLine,
             description: input.description || pension.description,
             montantPension:montant,
-            student:input.studentId||pension.student
+            student:input.studentId||pension.student,
+            year:annee
         },
         { em: this.em },
     );

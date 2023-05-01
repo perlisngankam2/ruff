@@ -17,6 +17,12 @@ export class AvanceTrancheUpdateInput {
 
   @Field(()=>ID,{nullable:true})
   studentId?:string
+  
+  @Field({nullable:true})
+  year?: string;
+
+  // @Field(()=>ID,{nullable:true})
+  // anneeAcademiqueId?:string
 
   @Field({nullable:true})
   name?: string;

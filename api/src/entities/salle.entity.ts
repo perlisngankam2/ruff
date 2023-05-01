@@ -91,6 +91,7 @@ export class Salle{
 
     @OneToMany(()=>PensionSalle, (pensionsalle) => pensionsalle.salle)
     pensionsalle = new Collection<PensionSalle>(this)
+  expectedAmount: any;
 
     @Field(() => ID)
     @Property({ persist: false })

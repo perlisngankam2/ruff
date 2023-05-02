@@ -172,6 +172,9 @@ import {
                         <Th>
                           {t('pages.level.listLevel.fees')}
                         </Th>
+                        <Th>
+                          Cyle
+                        </Th>
                         {/* <Th >section</Th> */}
                         <Th>
                           {t('pages.level.listLevel.Action')}
@@ -196,13 +199,19 @@ import {
                             p={0} 
                             pl={6}
                           >
-                            {niveauEtude.name}({niveauEtude.cyclename})
+                            {niveauEtude.name}
                           </Td>
                           <Td 
                             p={0} 
                             pl={6}
                           >
                             {niveauEtude.montantPension}
+                          </Td> 
+                          <Td 
+                            p={0} 
+                            pl={6}
+                          >
+                            {niveauEtude.cyclename}
                           </Td> 
                           <Td p={0} >
                             {/* <ButtonGroup 

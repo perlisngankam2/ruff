@@ -31,5 +31,4 @@ export class ParameterCreateInput {
   @Field({nullable:true})
   anneeAcademiqueId?: string;
 
-
 }

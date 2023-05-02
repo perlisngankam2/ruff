@@ -256,6 +256,8 @@ type Expense {
   id: ID!
   creditamount: Float
   debitamount: Float
+  debitTotal: Float
+  creditTotal: Float
   createdOn: String!
   personnelid: ID
   personnelFirstName: ID
@@ -336,7 +338,8 @@ type Salle {
   section: String
   montantPensionSalle: Float
   effectif: Float
-  niveauid: ID!
+  niveauid: ID
+  levelName: ID
 }
 
 type Personnel {
@@ -1010,6 +1013,8 @@ input ExpenseCreateInput {
   personnelId: ID
   debit: Float
   credit: Float
+  debitTotal: Float
+  creditTotal: Float
 }
 
 input ExpenseUpdateInput {
@@ -1018,6 +1023,8 @@ input ExpenseUpdateInput {
   personnelId: ID
   debit: Float
   credit: Float
+  debitTotal: Float
+  creditTotal: Float
 }
 
 input AnneeAccademiqueCreateInput {

@@ -140,10 +140,10 @@ const AccountStatement = () => {
                             ml={"420px"}
                         > 
                         <ReactToPrint
-               trigger={() => <Icon as={TfiPrinter} boxSize="42px" alignItems={"center"} p="3" />}
-               content={() => componentRef.current}
-                documentTitle= "Etat des entrees et sorties"
-                pageStyle="print"
+                            trigger={() => <Icon as={TfiPrinter} boxSize="42px" alignItems={"center"} p="3" />}
+                            content={() => componentRef.current}
+                                documentTitle= "Etat des entrees et sorties"
+                                pageStyle="print"
               />
                         {/* <Icon
                             alignItems={"center"}
@@ -221,21 +221,21 @@ const AccountStatement = () => {
                             ref={componentRef}
                         >
                                 <Flex
-                                    gap={"110px"}
+                                    gap={"120px"}
                                     p="5px"
                                     // width={"full"}
                                     fontWeight={"bold"}
                                     borderBottom={"1px"}
                                     background="colors.secondary"
                                 > 
-                                    <Box width='120px' 
+                                    <Box width='100px' 
                                         flex={1}
                                         // borderLeft={"1px"}
                                     >
                                         Date
                                     </Box>
                                     <Box 
-                                        width='290px'
+                                        width='300px'
                                         ml="15px"
                                     >
                                         description
@@ -252,7 +252,7 @@ const AccountStatement = () => {
                                         Credit
                                     </Box>
                                     <Box 
-                                        width='265px'
+                                        width='250px'
                                     >
                                         Net
                                     </Box>
@@ -410,6 +410,3 @@ export async function getStaticProps({ locale }) {
 
 
 export default AccountStatement;
-
-
-

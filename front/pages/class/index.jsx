@@ -514,6 +514,8 @@ const Class = () => {
                         {t('pages.class.classList.name')}
                       </Th>
                       <Th>Montant pension</Th>
+                      <Th>Niveau</Th>
+
                       {/* <Th >section</Th>  */}
                       <Th >
                         {t('pages.class.classList.Action')}
@@ -528,6 +530,8 @@ const Class = () => {
                       <Tr key={index}>
                          <Td >{salle.name}</Td> 
                          <Td>{salle.montantPensionSalle}</Td>
+                         <Td>{salle.levelName}</Td>
+
                          {/* <Td borderColor={'#C6B062'}>{salle.montantPensionSalle}</Td>   */}
                          {/* <Td borderColor={'#C6B062'}>{salle.section}</Td>  */}
                          {/* <Td borderColor={'#C6B062'}>{salle.montantPension}</Td>  */}

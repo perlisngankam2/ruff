@@ -4,8 +4,6 @@ import { Field, ID, ObjectType } from "@nestjs/graphql";
 import { PrimaryKeyUuid } from "src/decorators/PrimaryKeyUuid.decorator";
 import { AnneeAccademique } from "./annee-accademique.entity";
 
-
-
 @Entity()
 @ObjectType()
 export class Parameter {
@@ -46,4 +44,5 @@ export class Parameter {
     // onDelete: "CASCADE"
   })
   anneeacademique!: IdentifiedReference<AnneeAccademique> | null;
+ 
 }

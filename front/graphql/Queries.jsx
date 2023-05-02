@@ -58,7 +58,7 @@ export const GET_SALLE_BY_ID = gql `
             montantPensionSalle
             effectif
             niveauid
-            cycleid
+            levelName
         }
     }
 ` 
@@ -135,6 +135,7 @@ export const GET_ALL_CLASS = gql `
             montantPensionSalle
             effectif
             niveauid
+            levelName
         }
     }
 `;

@@ -25,6 +25,9 @@ export class AnneeAccademiqueService {
     // private tranchestudentservice: TrancheStudentService,
     // private trancheservice: TrancheService,
     // private pensionService: PensionService
+    // private tranchestudentservice: TrancheStudentService,
+    // private trancheservice: TrancheService,
+    // private pensionService: PensionService
   ) {}
 
 
@@ -51,10 +54,10 @@ export class AnneeAccademiqueService {
       },
     );
 
-    const a = await this.getAll()
-    const year = a[a.length-1].name
+    // const a = await this.getAll()
+    // const year = a[a.length-1].name
     await this.anneAccademiquePrimeRepository.persistAndFlush(annee)
-    await this.parameterservice.saveParameter(year)
+    // await this.parameterservice.saveParameter(year)
     return annee
   }
 

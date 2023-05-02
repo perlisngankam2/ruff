@@ -28,6 +28,14 @@ export class Expense {
     @Field({ nullable: true })
     @Property({ nullable: true })
     debitamount: number;
+
+    @Field({ nullable: true })
+    @Property({ nullable: true })
+    debitTotal: number;
+
+    @Field({ nullable: true })
+    @Property({ nullable: true })
+    creditTotal: number;
   
     @ManyToOne(() => Student ,{
       nullable:true,

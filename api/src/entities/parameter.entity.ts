@@ -19,6 +19,27 @@ export class Parameter {
 
   @Field({ nullable: true })
   @Property({ nullable: true })
+  postalBox!: string;
+
+  @Field({ nullable: true })
+  @Property({ nullable: true })
+  phoneNumber!: string;
+
+  @Field({ nullable: true })
+  @Property({ nullable: true })
+  emailAddress!: string;
+
+  @Field({ nullable: true })
+  @Property({ nullable: true })
+  contry!: string;
+
+  @Field({ nullable: true })
+  @Property({ nullable: true })
   year!: string;
  
+  @ManyToOne(() => AnneeAccademique, {
+    nullable: true,
+    // onDelete: "CASCADE"
+  })
+  anneeacademique!: IdentifiedReference<AnneeAccademique> | null;
 }

@@ -16,6 +16,7 @@ import { Parameter } from 'src/entities/parameter.entity';
 import { AnneeAccademiqueService } from '../anne_accademique/anne-accademique.service';
 import { ParameterCreateInput } from './dto/parameter.input';
 import { ParameterUpdateInput } from './dto/parameter.update';
+// import { AnneeAccademique } from 'src/entities/annee-accademique.entity';
 
 
 @Entity()
@@ -33,7 +34,14 @@ export class ParameterService {
       ): Promise<Parameter> {        
         const parameter = new Parameter()
         wrap(parameter).assign({
-            year: input.year
+            year: input.year,
+            name: input.name,
+            contry: input.contry,
+            phoneNumber: input.phoneNumber,
+            postalBox: input.postalBox,
+            emailAddress: input.emailAddress,
+            anneeacademique: input.anneeAcademique
+
         },
           {
             em:this.em
@@ -54,7 +62,12 @@ export class ParameterService {
         const paramter = new Parameter()
         wrap(paramter).assign(
             {
-              year: year
+              year: year,
+              // name: input.name,
+              // contry: input.contry,
+              // phoneNumber: input.phoneNumber,
+              // postalBox: input.postalBox,
+              // emailAddress: input.emailAddress
             },
             {
                 em: this.em
@@ -76,8 +89,13 @@ export class ParameterService {
       async update(id:string, input:ParameterUpdateInput): Promise<Parameter> {
         const parameter =await this.findById(id)
         wrap(parameter).assign({
-           year: input.year
-            },
+           year: input.year,
+           name: input.name,
+           contry: input.contry,
+           phoneNumber: input.phoneNumber,
+           postalBox: input.postalBox,
+           emailAddress: input.emailAddress
+        },
             { em: this.em },
     );
         await this.parameterRepository.persistAndFlush(parameter);

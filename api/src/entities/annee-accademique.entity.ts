@@ -66,7 +66,7 @@ export class AnneeAccademique {
   pensionsalle = new Collection<PensionSalle>(this)
 
   
-  // @OneToMany(()=> Parameter, (parameter) => parameter.anneeAccademique
-  //   )
-  // parameter = new Collection<Parameter>(this)
+  @OneToMany(()=> Parameter, (parameter) => parameter.anneeacademique
+    )
+  parameter = new Collection<Parameter>(this)
 }

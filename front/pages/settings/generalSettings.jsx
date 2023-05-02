@@ -203,7 +203,7 @@ const addAnneeAcademique = async () =>{
                                 mt="20px"
                                 fontSize={"xl"}
                             >
-                                Mettre a jour le nom de l'ecole
+                                Mettre à jour les informations de l'ecole
                             </CardHeader>
                             <CardBody>
                                 <FormControl >

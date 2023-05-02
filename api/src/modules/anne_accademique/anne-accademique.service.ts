@@ -1,8 +1,8 @@
 /* eslint-disable prettier/prettier */
 import { EntityManager, FilterQuery, wrap } from '@mikro-orm/core';
 import { InjectRepository } from '@mikro-orm/nestjs';
-import { Injectable } from '@nestjs/common';
 import { EntityRepository} from '@mikro-orm/postgresql';
+import { Inject, Injectable, forwardRef } from "@nestjs/common";
 import { AnneeAccademique } from 'src/entities/annee-accademique.entity';
 import { AnneeAccademiqueCreateInput } from './dto/anne-accademique.update';
 import { AnneeAccademiqueUpdateInput } from './dto/anne-accadmique.input';
@@ -18,11 +18,13 @@ export class AnneeAccademiqueService {
   constructor(
     @InjectRepository(AnneeAccademique)
     private readonly anneAccademiquePrimeRepository : EntityRepository<AnneeAccademique>,
+    @Inject(forwardRef(() =>ParameterService))
+
     private parameterservice: ParameterService,
     private readonly em: EntityManager,
-    private tranchestudentservice: TrancheStudentService,
-    private trancheservice: TrancheService,
-    private pensionService: PensionService
+    // private tranchestudentservice: TrancheStudentService,
+    // private trancheservice: TrancheService,
+    // private pensionService: PensionService
   ) {}
 
 
@@ -74,9 +76,9 @@ export class AnneeAccademiqueService {
     );
 
     await this.parameterservice.updatesaveParameter(input.name)
-    await this.tranchestudentservice.updatesaveTrancheStudent(input.name)
-    await this.trancheservice.updatesaveTranche(input.name)
-    await this.pensionService.updatesavePension(input.name)
+    // await this.tranchestudentservice.updatesaveTrancheStudent(input.name)
+    // await this.trancheservice.updatesaveTranche(input.name)
+    // await this.pensionService.updatesavePension(input.name)
     await this.anneAccademiquePrimeRepository.persistAndFlush(annee);
 
     return annee;

@@ -266,6 +266,16 @@ type Expense {
   studentLastname: ID
 }
 
+type Parameter {
+  id: ID!
+  name: String
+  postalBox: String
+  phoneNumber: String
+  emailAddress: String
+  contry: String
+  year: String
+}
+
 type AnneeAccademique {
   id: ID!
   name: String
@@ -366,12 +376,6 @@ enum Role {
   FONDATEUR
   PRINCIPAL
   GESTIONAIRE
-}
-
-type Parameter {
-  id: ID!
-  name: String
-  year: String
 }
 
 type SectionCycle {
@@ -818,7 +822,13 @@ input TrancheCreateInput {
 
 input ParameterCreateInput {
   ID: String
+  name: String
+  phoneNumber: String
+  emailAddress: String
+  contry: String
+  postalBox: String
   year: String
+  anneeAcademique: String
 }
 
 input PersonnelCreateInput {

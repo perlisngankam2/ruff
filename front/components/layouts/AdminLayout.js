@@ -264,7 +264,7 @@
               </Link>
             </AccordionPanel>
           </AccordionItem>
-          <AccordionItem  mt="60px" border="0px">
+          <AccordionItem  mt="30px" border="0px">
             <AccordionButton pl={0} >
               <Flex align="center" gap="1">
                 <Icon as={AiFillSetting} />

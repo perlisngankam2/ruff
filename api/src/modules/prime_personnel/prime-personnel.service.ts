@@ -29,8 +29,8 @@ export class PrimePersonnelService {
         private readonly em: EntityManager,
         private personnelService: PersonnelService,
         private primeService: PrimeService,
-        private salaireservice: SalaireService,
-        private paysalarie: PaySalaryService
+        // private salaireservice: SalaireService,
+        // private paysalarie: PaySalaryService
       ) {}
     
       async create(

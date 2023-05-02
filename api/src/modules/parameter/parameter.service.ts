@@ -33,7 +33,14 @@ export class ParameterService {
       ): Promise<Parameter> {        
         const parameter = new Parameter()
         wrap(parameter).assign({
-            year: input.year
+            year: input.year,
+            name: input.name,
+            country: input.country,
+            phoneNumber: input.phoneNumber,
+            postalBox: input.postalBox,
+            emailAddress: input.emailAddress,
+            anneeacademique: input.anneeAcademique
+
         },
           {
             em:this.em

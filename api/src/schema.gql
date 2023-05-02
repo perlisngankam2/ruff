@@ -255,6 +255,8 @@ type Expense {
   id: ID!
   creditamount: Float
   debitamount: Float
+  debitTotal: Float
+  creditTotal: Float
   studentid: ID!
   personnelid: ID
   personnelName: ID
@@ -996,6 +998,8 @@ input ExpenseCreateInput {
   personnelId: ID
   debit: Float
   credit: Float
+  debitTotal: Float
+  creditTotal: Float
 }
 
 input ExpenseUpdateInput {
@@ -1004,6 +1008,8 @@ input ExpenseUpdateInput {
   personnelId: ID
   debit: Float
   credit: Float
+  debitTotal: Float
+  creditTotal: Float
 }
 
 input AnneeAccademiqueCreateInput {

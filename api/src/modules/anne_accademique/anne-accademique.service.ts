@@ -20,9 +20,9 @@ export class AnneeAccademiqueService {
     private readonly anneAccademiquePrimeRepository : EntityRepository<AnneeAccademique>,
     private parameterservice: ParameterService,
     private readonly em: EntityManager,
-    private tranchestudentservice: TrancheStudentService,
-    private trancheservice: TrancheService,
-    private pensionService: PensionService
+    // private tranchestudentservice: TrancheStudentService,
+    // private trancheservice: TrancheService,
+    // private pensionService: PensionService
   ) {}
 
 
@@ -74,9 +74,6 @@ export class AnneeAccademiqueService {
     );
 
     await this.parameterservice.updatesaveParameter(input.name)
-    await this.tranchestudentservice.updatesaveTrancheStudent(input.name)
-    await this.trancheservice.updatesaveTranche(input.name)
-    await this.pensionService.updatesavePension(input.name)
     await this.anneAccademiquePrimeRepository.persistAndFlush(annee);
 
     return annee;

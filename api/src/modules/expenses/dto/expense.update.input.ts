@@ -20,5 +20,11 @@ export class ExpenseUpdateInput {
   @Field({nullable:true})
   credit!: number;
 
+  @Field({nullable:true})
+  debitTotal!: number;
+
+  @Field({nullable:true})
+  creditTotal!: number;
+
 
 }

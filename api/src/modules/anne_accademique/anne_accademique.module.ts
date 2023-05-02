@@ -12,10 +12,10 @@ import { TrancheStudentModule } from '../tranche-student/tranche-student.module'
 @Module({
     imports:[
         MikroOrmModule.forFeature({ entities: [AnneeAccademique] }),
-        ParamaterModule,
-        PensionModule,
-        TrancheModule,
-        TrancheStudentModule
+        // ParamaterModule,
+        // PensionModule,
+        // TrancheModule,
+        // TrancheStudentModule
     ],
     providers:[AnneeAccademiqueService,AnneeAccademiqueResolver],
     exports:[AnneeAccademiqueService]

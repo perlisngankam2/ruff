@@ -43,6 +43,8 @@ async findbyid(id:string){
   
 async create(input: ExpenseCreateInput){
     const expense = new Expense()
+
+
     wrap(expense).assign(
         {
          anneeAccademique: input.academicyearId,
@@ -105,24 +107,28 @@ async savePensionExpense(studentid: string){
         const montantpension = pension.montantPension
         const expense = new Expense()
 
+        const a= (await this.findall()).map(a=>a.creditamount)
         wrap(expense).assign({
             student: studentid,
             creditamount: montantpension,
+            creditTotal:  a.length>0 ? a.reduce(function(a,b){return a+b}) : 0
         },
         {
             em:this.em
         })
-        const depense = await this.findexpensebystudent(studentid)
-        if(depense){
-            await this.ExpenseRepository.removeAndFlush(depense)
-            console.log(depense)
-            await this.ExpenseRepository.persistAndFlush(expense)
-            return expense
-        }
-        if(!depense){
-        await this.ExpenseRepository.persistAndFlush(expense)
-        return expense
-        }
+        // const depense = await this.findexpensebystudent(studentid)
+        // if(depense){
+        //     await this.ExpenseRepository.removeAndFlush(depense)
+        //     console.log(depense)
+        //     await this.ExpenseRepository.persistAndFlush(expense)
+        //     return expense
+        // }
+        // if(!depense){
+        // await this.ExpenseRepository.persistAndFlush(expense)
+        // return expense
+        // }
+         await this.ExpenseRepository.persistAndFlush(expense)
+         return expense
     }
 
     if(!pension){
@@ -139,9 +145,13 @@ async saveSalaireExpenses(personnelid: string){
         const salairemontant = salaires.map(a=>a.montant).reduce(function(a,b){return a+b})
         const expense = new Expense()
 
+        
+    const a= (await this.findall()).map(a=>a.debitamount)
+
         wrap(expense).assign({
             personnel: personnelid,
             debitamount: salairemontant,
+            debitTotal: a.length>0 ? a.reduce(function(a,b){return a+b}) : 0
         },
         {
             em:this.em

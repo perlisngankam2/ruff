@@ -256,6 +256,8 @@ type Expense {
   id: ID!
   creditamount: Float
   debitamount: Float
+  debitTotal: Float
+  creditTotal: Float
   studentid: ID!
   personnelid: ID
   personnelName: ID
@@ -264,6 +266,16 @@ type Expense {
   studentLastname: ID!
   studentSurname: ID!
   createdOn: String!
+}
+
+type Parameter {
+  id: ID!
+  name: String
+  postalBox: String
+  phoneNumber: String
+  emailAddress: String
+  country: String
+  year: String
 }
 
 type AnneeAccademique {
@@ -368,12 +380,6 @@ enum Role {
   FONDATEUR
   PRINCIPAL
   GESTIONAIRE
-}
-
-type Parameter {
-  id: ID!
-  name: String
-  year: String
 }
 
 type SectionCycle {
@@ -819,7 +825,13 @@ input TrancheCreateInput {
 
 input ParameterCreateInput {
   ID: String
+  name: String
+  phoneNumber: String
+  emailAddress: String
+  country: String
+  postalBox: String
   year: String
+  anneeAcademiqueId: String
 }
 
 input PersonnelCreateInput {
@@ -999,6 +1011,8 @@ input ExpenseCreateInput {
   personnelId: ID
   debit: Float
   credit: Float
+  debitTotal: Float
+  creditTotal: Float
 }
 
 input ExpenseUpdateInput {
@@ -1007,6 +1021,8 @@ input ExpenseUpdateInput {
   personnelId: ID
   debit: Float
   credit: Float
+  debitTotal: Float
+  creditTotal: Float
 }
 
 input AnneeAccademiqueCreateInput {

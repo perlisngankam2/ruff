@@ -76,7 +76,7 @@ console.log(dataUser)
                     }
                     
        };
-
+      }
 
 
 
@@ -232,6 +232,6 @@ console.log(dataUser)
       </Box>
     </Flex>
   );
-}}
+}
 
 export default LoginForm;

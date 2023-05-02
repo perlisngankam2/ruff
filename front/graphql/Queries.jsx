@@ -137,7 +137,7 @@ export const GET_ALL_CLASS = gql `
             niveauid
         }
     }
-`
+`;
 
 //get al frais inscription
 export const GET_ALL_FRAIS_INSCRIPTION =  gql `
@@ -150,6 +150,21 @@ export const GET_ALL_FRAIS_INSCRIPTION =  gql `
     }
 `;
 
+
+//reguperation des information de l'etablissement
+export const GET_ALL_SCHOOL_PARAMETER = gql  `
+query findAllparameters {
+    findAllparameters {
+        id
+        name
+        postalBox
+        phoneNumber
+        emailAddress
+        contry
+        year
+    }
+}
+ `;
 
 // one Personnel
 export const GET_ALL_PERSONNEL_BY_ID = gql `

@@ -273,6 +273,7 @@ type Parameter {
   phoneNumber: String
   emailAddress: String
   contry: String
+  schoolCurrency: String
   year: String
 }
 
@@ -827,8 +828,9 @@ input ParameterCreateInput {
   emailAddress: String
   contry: String
   postalBox: String
+  schoolCurrency: String
   year: String
-  anneeAcademique: String
+  anneeAcademiqueId: String
 }
 
 input PersonnelCreateInput {

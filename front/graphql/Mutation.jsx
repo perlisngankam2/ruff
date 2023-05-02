@@ -281,6 +281,22 @@ mutation createParent ($parent: ParentCreateInput!) {
     }
 }`
 
+
+//Creation des nformations propre a chaque etablissement
+export const CREATE_SCHOOL_PARAMETERS = gql`
+mutation createParameter ($input: ParameterCreateInput!) {
+    createParameter (input: $input) {
+        id
+        name
+        postalBox
+        phoneNumber
+        emailAddress
+        schoolCurrency
+        contry
+        year
+    }
+}`
+
 export const AFFECTATION_PARENT_TO_STUDENT = gql `
 mutation createParentstudent ($input: ParentStudentCreateInput!) {
     createParentstudent (input: $input) {

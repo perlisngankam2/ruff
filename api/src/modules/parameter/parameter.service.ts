@@ -40,7 +40,8 @@ export class ParameterService {
             phoneNumber: input.phoneNumber,
             postalBox: input.postalBox,
             emailAddress: input.emailAddress,
-            anneeacademique: input.anneeAcademique
+            schoolCurrency: input.schoolCurrency,
+            anneeacademique: input.anneeAcademiqueId
 
         },
           {

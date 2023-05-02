@@ -23,10 +23,13 @@ export class ParameterCreateInput {
   postalBox?: string;
 
   @Field({nullable:true})
+  schoolCurrency?: string;
+
+  @Field({nullable:true})
   year?: string;
 
   @Field({nullable:true})
-  anneeAcademique?: string;
+  anneeAcademiqueId?: string;
 
 
 }

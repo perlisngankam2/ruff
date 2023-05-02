@@ -317,8 +317,8 @@ const monthOptions = useMemo(() => {
 // if (loading) return <Text>Chargement en cour...</Text>
 
     return ( 
-
-<>{!loading &&
+<>
+{!loading &&
 
             <DefaultLayout>
       <Box 
@@ -677,7 +677,11 @@ const monthOptions = useMemo(() => {
       </Box>
 
     </DefaultLayout>
-)};
+}
+</>
+
+)
+};
      
 
  

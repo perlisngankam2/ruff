@@ -41,11 +41,13 @@ import { useMutation, useQuery } from "@apollo/client";
 import { useRouter } from "next/router";
 
 import { 
-    CREATE_ANNEE_ACADEMIQUE 
+    CREATE_ANNEE_ACADEMIQUE,
+    CREATE_SCHOOL_PARAMETERS
 } 
 from "../../graphql/Mutation";
 import {
-    GET_ALL_ANNEE_ACADEMIQUE
+    GET_ALL_ANNEE_ACADEMIQUE,
+    GET_ALL_SCHOOL_PARAMETER
 }
 from "../../graphql/Queries";
 import { IoIosAdd } from "react-icons/io";
@@ -55,9 +57,10 @@ const generalSetting = () => {
     const [name, setName] = useState("");
     const [anneeAcademiqueId, setAnneeAcademiqueId] = useState("");
     const [phoneNumber, setPhoneNumber] = useState("");
-    const [email, setEmail] = useState("");
+    const [emailAddress, setEmailAddress] = useState("");
     const [contry, setContry] = useState("");
     const [postalBox, setPostalBox] = useState("");
+    const [schoolCurrency, setSchoolCurrency] = useState("")
     const [file, setFile] = useState([0]);
 
     const { isOpen: isOpenns, onOpen:onOpenns, onClose:onClosses } = useDisclosure();
@@ -67,10 +70,14 @@ const generalSetting = () => {
     const toast= useToast();
 
     const [createAnneeAccademique, {loading, error}] = useMutation(CREATE_ANNEE_ACADEMIQUE);
+    const [createSchoolParameters] = useMutation(CREATE_SCHOOL_PARAMETERS);
     const {data:dataAnneeAcademique, refetch} = useQuery(GET_ALL_ANNEE_ACADEMIQUE);
-// useEffect(()=>{
+    const {data:dataSchoolParameter} = useQuery(GET_ALL_SCHOOL_PARAMETER);
 
-// })
+
+    useEffect(()=>{
+        console.log(dataSchoolParameter?.findAllparameters)
+    })
 
 const addAnneeAcademique = async () =>{
     await createAnneeAccademique({
@@ -99,6 +106,34 @@ const addAnneeAcademique = async () =>{
     setFile(event.target.file)
   }
 
+  const addShoolParameters = async() => {
+    await createSchoolParameters ({
+        variables:{
+            input:{
+                name: name,
+                phoneNumber: phoneNumber,
+                emailAddress: emailAddress,
+                contry: contry,
+                postalBox: postalBox,
+                anneeAcademiqueId: anneeAcademiqueId,
+                schoolCurrency: schoolCurrency
+            }
+        }
+    })
+    toast({
+        title: "Enregistement des informations de l'etablissement.",
+        description: "Enregistre avec succes.",
+        status: "success",
+        duration: 3000,
+        isClosable: true,
+      });
+      setName("")
+      setContry("")
+      setPostalBox("")
+      setEmailAddress("")
+      setSchoolCurrency("")
+      
+  }
     return (
        
             <DefaultLayout>
@@ -152,6 +187,7 @@ const addAnneeAcademique = async () =>{
                     gap={20} 
                     display={{md:"flex"}}
                 > 
+                {/* FORMULAIRE DE CREATION ET DE MISE A JOUR DE L'ETABLISSEMENT  */}
                     <Box> 
                         <Card 
                             align='center' 
@@ -242,6 +278,9 @@ const addAnneeAcademique = async () =>{
                                     <Input
                                         type="text"
                                         width={"540px"}
+                                        value={emailAddress}
+                                        name="emailAddress"
+                                        onChange={(event) => setEmailAddress(event.target.value)}
                                     />
                                 </FormControl>
                                 <FormControl mt="17px">
@@ -263,15 +302,31 @@ const addAnneeAcademique = async () =>{
                                     </Select>
                                 </FormControl>
                                 <FormControl mt="17px">
-                                    <FormLabel fontSize={"lg"}>Pays</FormLabel>
+                                    <FormLabel fontSize={"lg"}>Localisation</FormLabel>
                                     <Input
                                         type="text"
                                         width={"540px"}
+                                        name="contry"
+                                        value={contry}
+                                        onChange={(event) => setContry(event.target.value)}
+                                    />
+                                </FormControl>
+                                <FormControl mt="17px">
+                                    <FormLabel fontSize={"lg"}>Devise</FormLabel>
+                                    <Input
+                                        type="text"
+                                        width={"540px"}
+                                        name= "schoolCurrency"
+                                        value={schoolCurrency}
+                                        onChange={(event) => setSchoolCurrency(event.target.value)}
                                     />
                                 </FormControl>
                             </CardBody>
                             <CardFooter mt="-20px" marginLeft={"400px"}>
-                                <Button colorScheme='blue'>
+                                <Button 
+                                    colorScheme='blue'
+                                    onClick={addShoolParameters}
+                                >
                                     Mettre à jour
                                 </Button>
                             </CardFooter>
@@ -304,38 +359,45 @@ const addAnneeAcademique = async () =>{
                                     >
                                         Logo
                                     </Box>
+                                {dataSchoolParameter &&  (
+                                     dataSchoolParameter?.findAllparameters.map((parameter, index) => ( 
                                 <Flex
                                     direction={"column"} 
                                     gap={5}
                                     mt={"20px"}
                                     ml={"10px"}
-
+                                    key={index}
                                 >  
-                                    <Box display={{md:"flex"}} gap={3}> 
+                                    <Box display={{md:"flex"}} gap={3} > 
                                         <Text fontWeight={"bold"}>Nom :</Text>
-                                        <Text >Nom</Text>
+                                        <Text >{parameter.name}</Text>
                                     </Box>
                                     <Box display={{md:"flex"}} gap={3}> 
                                         <Text fontWeight={"bold"}>Telephone :</Text>
-                                        <Text >Telephone</Text>
+                                    <Text >{parameter.phoneNumber}</Text>
                                     </Box>
                                     <Box display={{md:"flex"}} gap={3}>
                                         <Text fontWeight={"bold"}>Boite postale :</Text>
-                                        <Text>Boite postale</Text>
+                                        <Text>{parameter.postalBox}</Text>
                                     </Box>
                                     <Box display={{md:"flex"}} gap={3}> 
                                         <Text fontWeight={"bold"}>Adresse Mail :</Text>
-                                        <Text>Nom</Text>
+                                        <Text>{parameter.emailAddress}</Text>
                                     </Box>
                                     <Box display={{md:"flex"}} gap={3}> 
                                         <Text fontWeight={"bold"}>Annee academique :</Text>
                                         <Text>Nom</Text>
                                     </Box>
-                                </Flex>
-                                
+                                    <Box display={{md:"flex"}} gap={3}> 
+                                        <Text fontWeight={"bold"}>Pays :</Text>
+                                        <Text>{parameter.contry}</Text>
+                                    </Box>
+                                    </Flex>
+                                    )))}
+
                                 </CardBody>
                                 <CardFooter mt="-20px" marginLeft={"400px"}>
-                                    <Box>hhhh</Box>
+                                    <Box><Text textAlign={"center"}>Devise </Text></Box>
                                 </CardFooter>
                             </Card>
                         </Box>

@@ -35,6 +35,10 @@ export class Parameter {
 
   @Field({ nullable: true })
   @Property({ nullable: true })
+  schoolCurrency!: string;
+
+  @Field({ nullable: true })
+  @Property({ nullable: true })
   year!: string;
  
   @ManyToOne(() => AnneeAccademique, {

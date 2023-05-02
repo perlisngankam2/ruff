@@ -26,5 +26,8 @@ export class ParameterUpdateInput {
   year?: string;
 
   @Field({nullable:true})
-  anneeAcademique?: string;
+  schoolCurrency?: string;
+
+  @Field({nullable:true})
+  anneeAcademiqueId?: string;
 }

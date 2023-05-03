@@ -9,6 +9,7 @@ import { ExpenseUpdateInput } from "./dto/expense.update.input";
 import { PensionService } from "../pension/pension.service";
 import { SalaireService } from "../salaire/salaire.service";
 import { format } from "date-fns";
+import { AvanceTrancheService } from "../avance_tranche/avance-tranche.service";
 
 
 
@@ -21,7 +22,8 @@ export class ExpenseService {
     @Inject(forwardRef(() => PensionService))
     private pensionservice:PensionService,
     @Inject(forwardRef(() =>SalaireService))
-    private salaireservice: SalaireService
+    private salaireservice: SalaireService,
+    private avancetrancheservice: AvanceTrancheService,
   ) {}
 
 async findall(){
@@ -101,37 +103,30 @@ async delete(id:string){
 }
 
 async savePensionExpense(studentid: string){
-    const pension = await this.pensionservice.findpensionbystudent(studentid)
+    const avancetranches = await this.avancetrancheservice.findByStudent(studentid)
+    const a= avancetranches[avancetranches.length-1]
 
-    if(pension){
-        const montantpension = pension.montantPension
+    if(avancetranches.length>0){
+        const montantpension = a.montant
         const expense = new Expense()
 
-        const a= (await this.findall()).map(a=>a.creditamount)
+       
         wrap(expense).assign({
             student: studentid,
-            creditamount: montantpension,
-            creditTotal:  a.length>0 ? a.reduce(function(a,b){return a+b}) : 0
+            creditamount: montantpension
         },
         {
             em:this.em
         })
-        // const depense = await this.findexpensebystudent(studentid)
-        // if(depense){
-        //     await this.ExpenseRepository.removeAndFlush(depense)
-        //     console.log(depense)
-        //     await this.ExpenseRepository.persistAndFlush(expense)
-        //     return expense
-        // }
-        // if(!depense){
-        // await this.ExpenseRepository.persistAndFlush(expense)
-        // return expense
-        // }
          await this.ExpenseRepository.persistAndFlush(expense)
-         return expense
+         const b= (await this.findall()).map(a=>a.creditamount).reduce(function(a,b){return a+b})
+         const t=await this.findByOne(expense.id)
+         t.creditTotal = b
+         await this.ExpenseRepository.persistAndFlush(t)
+         return t
     }
 
-    if(!pension){
+    if(avancetranches.length==0){
         throw Error("!!!!!!!!!!!!!!!!pension for this student has not being found!!!!!!!!!!!!!!!!!!!!!!!")
     }
 }
@@ -140,26 +135,27 @@ async savePensionExpense(studentid: string){
 
 async saveSalaireExpenses(personnelid: string){
     const salaires =  await this.salaireservice.salairepersonnel(personnelid)
+    const a = salaires[salaires.length]
 
     if(salaires.length>0){
-        const salairemontant = salaires.map(a=>a.montant).reduce(function(a,b){return a+b})
+        const salairemontant = a.montant
         const expense = new Expense()
 
         
-    const a= (await this.findall()).map(a=>a.debitamount)
 
         wrap(expense).assign({
             personnel: personnelid,
             debitamount: salairemontant,
-            debitTotal: a.length>0 ? a.reduce(function(a,b){return a+b}) : 0
         },
         {
             em:this.em
         })
-   
         await this.ExpenseRepository.persistAndFlush(expense)
-        return expense
-
+        const b= (await this.findall()).map(a=>a.debitamount).reduce(function(a,b){return a+b})
+        const t=await this.findByOne(expense.id)
+        t.debitTotal = b
+        await this.ExpenseRepository.persistAndFlush(t)
+        return t
 
     }
     if(salaires.length==0){
@@ -172,3 +168,15 @@ async findexpensebystudent(studentid:string){
 }
   
 }
+
+       // const depense = await this.findexpensebystudent(studentid)
+        // if(depense){
+        //     await this.ExpenseRepository.removeAndFlush(depense)
+        //     console.log(depense)
+        //     await this.ExpenseRepository.persistAndFlush(expense)
+        //     return expense
+        // }
+        // if(!depense){
+        // await this.ExpenseRepository.persistAndFlush(expense)
+        // return expense
+        // }

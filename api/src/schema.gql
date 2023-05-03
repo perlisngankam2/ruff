@@ -514,14 +514,6 @@ type Query {
   findallexpenses: [Expense!]!
   findAllAnnerAccademique: [AnneeAccademique!]!
   anneeAccademique(id: String!): AnneeAccademique!
-  findAllpension: [Pension!]!
-  pension(id: String!): Pension!
-  findrestpensionbystudent(studentid: String!): Float!
-  findpensionbystudent(studentid: String!): Pension!
-  findAlltranchestudent: [TrancheStudent!]!
-  trancheStudent(id: String!): TrancheStudent!
-  getStudentByTrancheStudent(studentid: String!): TrancheStudent!
-  getrestTranchebystudent(studentid: String!): [[String!]!]!
   findavancetranchebyid(input: String!): AvanceTranche!
   findallavancetranche: [AvanceTranche!]!
   SumAvanceTrancheByTranche(trancheid: String!): Float!
@@ -532,6 +524,14 @@ type Query {
   getallfessalreadypayed(studentid: String!): [Tranche!]!
   getalltranchecompletedbystudent(studentid: String!): [Tranche!]!
   RestTuitionFeebystudent(studentid: String!): [Tranche!]!
+  findAlltranchestudent: [TrancheStudent!]!
+  trancheStudent(id: String!): TrancheStudent!
+  getStudentByTrancheStudent(studentid: String!): TrancheStudent!
+  getrestTranchebystudent(studentid: String!): [[String!]!]!
+  findAllpension: [Pension!]!
+  pension(id: String!): Pension!
+  findrestpensionbystudent(studentid: String!): Float!
+  findpensionbystudent(studentid: String!): Pension!
   findAllsection: [Section!]!
   findOnesection(id: String!): Section!
   findAllcycle: [Cycle!]!
@@ -630,14 +630,14 @@ type Mutation {
   createAnnerAccademique(anneeAccademique: AnneeAccademiqueCreateInput!): AnneeAccademique!
   updateanneeacademique(id: String!, input: AnneeAccademiqueUpdateInput!): AnneeAccademique!
   deleteanneeacademique(id: String!): AnneeAccademique!
-  createPension(pension: PensionCreateInput!): Pension!
-  updatePension(id: String!): PensionSalle!
-  deletepension(id: String!): PensionSalle!
+  createavancetranche(avancetranche: AvanceTrancheCreateInput!): AvanceTranche!
+  deleteavancetranche(id: String!): AvanceTranche!
   createTrancheStudent(trancheStudent: TrancheStudentCreateInput!): TrancheStudent!
   updateTrancheStudent(id: String!): TrancheStudent!
   deletetranchestudent(id: String!): TrancheStudent!
-  createavancetranche(avancetranche: AvanceTrancheCreateInput!): AvanceTranche!
-  deleteavancetranche(id: String!): AvanceTranche!
+  createPension(pension: PensionCreateInput!): Pension!
+  updatePension(id: String!): PensionSalle!
+  deletepension(id: String!): PensionSalle!
   createSection(section: SectionCreateInput!): Section!
   updatesection(id: String!, input: SectionUpdateInput!): Section!
   deletesection(id: String!): Section!
@@ -1037,13 +1037,16 @@ input AnneeAccademiqueUpdateInput {
   description: String
 }
 
-input PensionCreateInput {
+input AvanceTrancheCreateInput {
+  ID: String
+  trancheId: ID
   studentId: ID
-  anneeAcademiqueId: ID
-  name: String
   year: String
+  name: String
   description: String
-  dateLine: DateTime
+  montant: Float
+  reste: Float = 0
+  tranchestudentinput: TrancheStudentCreateInput
 }
 
 input TrancheStudentCreateInput {
@@ -1056,16 +1059,13 @@ input TrancheStudentCreateInput {
   tranche: TrancheCreateInput
 }
 
-input AvanceTrancheCreateInput {
-  ID: String
-  trancheId: ID
+input PensionCreateInput {
   studentId: ID
-  year: String
+  anneeAcademiqueId: ID
   name: String
+  year: String
   description: String
-  montant: Float
-  reste: Float = 0
-  tranchestudentinput: TrancheStudentCreateInput
+  dateLine: DateTime
 }
 
 input SectionUpdateInput {

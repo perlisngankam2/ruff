@@ -194,7 +194,9 @@ export class SalleService {
     }
 
     async findStudentBySalle(studentid:string){
-      return (await this.em.find(Salle,{student:studentid}))[0]
+      return (await this.em.find(Salle,{student:studentid},{
+        populate:['niveau','niveau.salle']
+      }))[0]
     }
 
 }

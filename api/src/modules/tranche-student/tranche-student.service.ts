@@ -125,7 +125,7 @@ async saveTranche(studentid:string,trancheid:string){
         // const anneAcademique =(await this.avance.findByStudent(studentid)).map(async a=>(await a.anneeAcademique.load()).id)[0]
  
 
-        if(tranchestudent!=null)
+      if(tranchestudent!=null)
         {
         const tranche = await this.trancheService.findByOne(trancheid)
         console.log("====================>"+tranchestudent)

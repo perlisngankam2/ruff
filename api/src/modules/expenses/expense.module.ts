@@ -7,12 +7,14 @@ import { ExpenseResolver } from "./expense.resolver";
 import { ExpenseService } from "./expense.service";
 import { PensionModule } from "../pension/pension.module";
 import { SalaireModule } from "../salaire/salaire.module";
+import { AvanceTrancheModule } from "../avance_tranche/avance_tranche.module";
 
 
 @Module({
     imports:[
         MikroOrmModule.forFeature({ entities: [Expense] }),
         AnneAccademiqueModule,
+        AvanceTrancheModule,
         forwardRef(() => PensionModule),
         forwardRef(() => SalaireModule)
     ],

@@ -65,7 +65,7 @@ export const GET_SALLE_BY_ID = gql `
 
 //student
 export const GET_ALL_STUDENT =  gql `
-query findAllstudents {
+    query findAllstudents {
         findAllstudents {
             id
             matricule
@@ -87,6 +87,11 @@ query findAllstudents {
             tutorLastName
             tutorPhoneNumber
             tutorProfession
+            salleid
+            salleName
+            categorieid
+            categoryName
+            parentTel
         }
     }
 `
@@ -210,6 +215,11 @@ export const GET_STUDENT_BY_ID =  gql `
             tutorLastName
             tutorPhoneNumber
             tutorProfession
+            salleid
+            salleName
+            categorieid
+            categoryName
+            parentTel
         }
     }
 `;
@@ -408,18 +418,18 @@ export const GET_ALL_USER = gql `
 `;
 
 //Tranche student by studentIf
-export const GET_TRANCHE_STUDENT_BY_STUDENT_ID = gql `
-    query getTrancheStudentByStudent ($studentid: String!) {
-        getTrancheStudentByStudent (studentid: $studentid) {
-            id
-            name
-            description
-            montant
-            complete
-            reste
-        }
-    }
-`;
+// export const GET_TRANCHE_STUDENT_BY_STUDENT_ID = gql `
+//     query getTrancheStudentByStudent ($studentid: String!) {
+//         getTrancheStudentByStudent (studentid: $studentid) {
+//             id
+//             name
+//             description
+//             montant
+//             complete
+//             reste
+//         }
+//     }
+// `;
 
 
 
@@ -543,19 +553,19 @@ query findAllparents {
 `
 
 //recuperation des infos de l'eleve a partir de tranche student
-export const GET_STUDENT_BY_TRANCHE_STUDENT = gql `
-query getTrancheStudentByStudent ($studentid: String!) {
-    getTrancheStudentByStudent (studentid: $studentid) {
-        id
-        name
-        description
-        montant
-        complete
-        reste
-        surplus
-    }
-}
-`; 
+// export const GET_STUDENT_BY_TRANCHE_STUDENT = gql `
+// query getTrancheStudentByStudent ($studentid: String!) {
+//     getTrancheStudentByStudent (studentid: $studentid) {
+//         id
+//         name
+//         description
+//         montant
+//         complete
+//         reste
+//         surplus
+//     }
+// }
+// `; 
 
 //recuperation de toutes informations des paiement des tranches dans tranche_student
 // export const GET_ALL_TRANCHE_STUDENT
@@ -568,9 +578,10 @@ export const GET_STUDENT_SALLE = gql `
             id
             name
             section
-            cycle
             montantPensionSalle
             effectif
+            niveauid
+            levelName
         }
     }
 `
@@ -589,11 +600,11 @@ export const GET_AVANCE_MONTANT_TRANCHE_BY_STUDENT = gql  `
     }
 `
 
-export const GET_RESTE_TRANCHE_BY_STUDENT = gql `
-    query RestTrancheByStudent ($studentid: String!, $trancheid: String!) {
-        RestTrancheByStudent (studentid: $studentid, trancheid: $trancheid)
-    }
-`;
+// export const GET_RESTE_TRANCHE_BY_STUDENT = gql `
+//     query RestTrancheByStudent ($studentid: String!, $trancheid: String!) {
+//         RestTrancheByStudent (studentid: $studentid, trancheid: $trancheid)
+//     }
+// `;
 
 export const GET_ALL_MONTANT_TRANCHE_BY_STUDENT = gql `
     query AmountrExpectedByTranche ($studentid: String!) {
@@ -621,11 +632,11 @@ query getpaysalairebypersonnel ($personnelid: String!) {
 }
 `
 
-export const GET_ALL_TRANCHE_DATE_LINE_BY_STUDENT = gql `
-    query TrancheDateLine ($studentid: String!) {
-        TrancheDateLine (studentid: $studentid)
-    }
-`
+// export const GET_ALL_TRANCHE_DATE_LINE_BY_STUDENT = gql `
+//     query TrancheDateLine ($studentid: String!) {
+//         TrancheDateLine (studentid: $studentid)
+//     }
+// `
 
 export const GET_ALL_TRANCHE_COMPLETE_BY_STUDENT = gql `
     query getalltranchecompletedbystudent ($studentid: String!) {

@@ -100,13 +100,13 @@ export class Salle{
     pensionsalle = new Collection<PensionSalle>(this)
   expectedAmount: any;
 
+
     @Field(() => ID, {nullable: true})
     @Property({ persist: false })
     get niveauid() {
       return `${this.niveau.id}`;
     }
 
-    
     @Field(() => ID, {nullable: true})
     @Property({ persist: false })
     get levelName() {

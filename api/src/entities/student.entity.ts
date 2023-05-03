@@ -24,6 +24,7 @@ import { User } from './user.entity';
 import { AvanceTranche } from './avance-tranche.entity';
 import { Pension } from './pension.entity';
 import { Expense } from './expense.entity';
+import { truncate } from 'fs/promises';
 
 export enum Regime{
   SPECIAL='SPECIAL',
@@ -211,10 +212,22 @@ export class Student {
     return `${this.salle.id}`;
   }
 
+  @Field(() => ID, { nullable: true })
+  @Property({ persist: false })
+  get salleName(): string | null {
+    return this.salle ? `${this.salle.getEntity().name}` : null;
+  }
+
   @Field(() => ID)
   @Property({ persist: false })
   get categorieid() {
     return `${this.categorie.id}`;
+  }
+
+  @Field(() => ID, { nullable: true })
+  @Property({ persist: false })
+  get categoryName(): string | null {
+    return this.salle ? `${this.categorie.getEntity().nom}` : null;
   }
 
   @Field(() => String)

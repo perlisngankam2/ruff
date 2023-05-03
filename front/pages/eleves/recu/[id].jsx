@@ -21,7 +21,7 @@ import { GiDivergence } from "react-icons/gi";
 // import Router from "next/router";
 import { useRouter } from "next/router";
 import { 
-    GET_STUDENT_BY_TRANCHE_STUDENT,
+    // GET_STUDENT_BY_TRANCHE_STUDENT,
     GET_STUDENT_BY_ID,
     GET_STUDENT_SALLE,
     GET_LAST_PAYMENT,
@@ -44,6 +44,7 @@ const receipt = () => {
 
    const {data:dataTranchePension} = useQuery(GET_ALL_TRANCHE_PENSION);
 
+   //Dernier paiement qu'a fait un eleve
    const {data:dataLastPayment} = useQuery(GET_LAST_PAYMENT,
         {
             variables: {studentid: router.query.id} 
@@ -56,11 +57,11 @@ const receipt = () => {
         }
     );
 
-    const {data:dataStudentByTrancheStudent} = useQuery(GET_STUDENT_BY_TRANCHE_STUDENT,
-        {
-            variables: {studentid: router.query.id} 
-        }
-    );
+    // const {data:dataStudentByTrancheStudent} = useQuery(GET_STUDENT_BY_TRANCHE_STUDENT,
+    //     {
+    //         variables: {studentid: router.query.id} 
+    //     }
+    // );
 
     const {data:dataStudentSalle} = useQuery(GET_STUDENT_SALLE,
         {
@@ -124,40 +125,40 @@ const receipt = () => {
     // )
     
     //RESTE DES PAIEMENT POUR CHAQUE TRANCHE
-    const {data:dataResteTrancheInscriptionByStudent} = useQuery(GET_RESTE_TRANCHE_BY_STUDENT,
-        {
-            variables:{
-                studentid: router.query.id,
-                trancheid: dataTranchePension?.findAlltranche[0].id
-            }   
+    // const {data:dataResteTrancheInscriptionByStudent} = useQuery(GET_RESTE_TRANCHE_BY_STUDENT,
+    //     {
+    //         variables:{
+    //             studentid: router.query.id,
+    //             trancheid: dataTranchePension?.findAlltranche[0].id
+    //         }   
      
-        } 
+    //     } 
     
-    )
+    // )
         //pour la tranche1
-    const {data:dataResteTrancheForTranche1ByStudent} = useQuery(GET_RESTE_TRANCHE_BY_STUDENT,
-        {
-            variables:{
-                studentid: router.query.id,
-                trancheid: dataTranchePension?.findAlltranche[1].id
-            }   
+    // const {data:dataResteTrancheForTranche1ByStudent} = useQuery(GET_RESTE_TRANCHE_BY_STUDENT,
+    //     {
+    //         variables:{
+    //             studentid: router.query.id,
+    //             trancheid: dataTranchePension?.findAlltranche[1].id
+    //         }   
      
-        } 
+    //     } 
     
-    )
+    // )
 
     
 
-    const {data:dataResteTrancheForTranche2ByStudent} = useQuery(GET_RESTE_TRANCHE_BY_STUDENT,
-        {
-            variables:{
-                studentid: router.query.id,
-                trancheid: dataTranchePension?.findAlltranche[2].id
-            }   
+    // const {data:dataResteTrancheForTranche2ByStudent} = useQuery(GET_RESTE_TRANCHE_BY_STUDENT,
+    //     {
+    //         variables:{
+    //             studentid: router.query.id,
+    //             trancheid: dataTranchePension?.findAlltranche[2].id
+    //         }   
      
-        } 
+    //     } 
     
-    )
+    // )
 
     const {data:dataMontantTrancheByStudent } = useQuery(GET_ALL_MONTANT_TRANCHE_BY_STUDENT,
         {
@@ -167,12 +168,12 @@ const receipt = () => {
         } 
     )
 
-    const {data:dataDateLineTrancheStudent } = useQuery(GET_ALL_TRANCHE_DATE_LINE_BY_STUDENT,
-        {
-            variables:{
-                studentid: router.query.id,
-        }   }   
-    )
+    // const {data:dataDateLineTrancheStudent } = useQuery(GET_ALL_TRANCHE_DATE_LINE_BY_STUDENT,
+    //     {
+    //         variables:{
+    //             studentid: router.query.id,
+    //     }   }   
+    // )
 
      //PENSION TOTALE DEJA PAYE PAR ELEVE 
     const {data:dataAlreadyPayBySudent} = useQuery(GET_PENSION_ALREADY_PAY_BY_STUDENT_ID,
@@ -187,7 +188,7 @@ const receipt = () => {
     // )
 
     useEffect(() =>{
-        console.log(dataStudentByTrancheStudent?.getTrancheStudentByStudent)
+        // console.log(dataStudentByTrancheStudent?.getTrancheStudentByStudent)
         console.log(dataStudentSalle?.dataStudentSalle)
         console.log(dataAvanceMontantInscriptionByStudent?.SumAvanceTrancheByStudent)
 
@@ -196,6 +197,45 @@ const receipt = () => {
     if (loading) return <Text>Chargement en cour...</Text>
     if (error) return <Text>Une erreur s'est produite!</Text>
     
+
+    const lastStudentPaiement = dataLastPayment?.AmountRecentAvanceTrancheByStudent
+
+function nombreEnLettres(montant) {
+    const chiffres = [
+      '', 'un', 'deux', 'trois', 'quatre', 'cinq', 'six', 'sept', 'huit', 'neuf', 'dix',
+      'onze', 'douze', 'treize', 'quatorze', 'quinze', 'seize', 'dix-sept', 'dix-huit', 'dix-neuf'
+    ];
+  
+    const dizaines = [
+      '', '', 'vingt', 'trente', 'quarante', 'cinquante', 'soixante', 'soixante-dix',
+      'quatre-vingt', 'quatre-vingt-dix'
+    ];
+  
+    const unite = montant % 10;
+    const dizaine = Math.floor(montant / 10) % 10;
+    const centaine = Math.floor(montant / 100) % 10;
+    const millier = Math.floor(montant / 1000);
+  
+    let resultat = '';
+  
+    if (millier > 0) {
+      resultat += nombreEnLettres(millier) + ' mille ';
+      const reste = montant % 1000;
+      if (reste > 0) {
+        resultat += nombreEnLettres(reste) + ' ';
+      }
+    }
+  
+    if (centaine > 0) {
+      if (centaine === 1) {
+        resultat += 'cent ';
+      } else {
+        resultat += chiffres[centaine] + ' cent ';
+      }
+    }
+}
+    const lettreLastStudentPaiement =nombreEnLettres(lastStudentPaiement)
+    console.log(lettreLastStudentPaiement)
     return ( 
         <DefaultLayout>
             <Center 
@@ -283,11 +323,20 @@ const receipt = () => {
                                 </Flex>
                                 <Flex ml='3' gap='1' mb='1'>
                                     <Text>Regime:</Text>
-                                    <Text></Text>
+                                    <Text>{dataStudentId.findOnestudent.categoryName} </Text>
+                                </Flex>
+                                <Flex ml='3' gap='1' mb='1'>
+                                    <Text>Niveau:</Text>
+                                    <Text>
+                                        {dataStudentSalle?.findSalleByStudent.levelName}
+                                    </Text>
                                 </Flex>
                                 <Flex ml='3' gap='1' mb='1'>
                                     <Text>Classe / Class:</Text>
-                                    <Text>{dataStudentSalle?.findSalleByStudent.name}</Text>
+                                    <Text>
+                                        {/* {dataStudentSalle?.findSalleByStudent.name} */}
+                                        {dataStudentId.findOnestudent.salleName}
+                                    </Text>
                                 </Flex>
                                 <Flex ml='3' gap='1' mb='1'>
                                     <Text>Matricule / Registration:</Text>
@@ -370,7 +419,8 @@ const receipt = () => {
                                                     fontSize='xl' 
                                                     fontWeight='bold'
                                                 >
-                                                    {dataLastPayment?.AmountRecentAvanceTrancheByStudent}
+                                                    {lastStudentPaiement}
+                                                    {/* {dataLastPayment?.AmountRecentAvanceTrancheByStudent} */}
                                                     {/* {dataStudentByTrancheStudent?.getStudentByTrancheStudent.montant} */}
                                                 </Text>
                                                 <Text 
@@ -381,11 +431,11 @@ const receipt = () => {
                                                 </Text>
                                             </Flex>
                                         </Center>
-                                        {/* <Text 
+                                        <Text 
                                         mt='-15px' 
                                         fontSize="sm">
-                                            (Cinq cent mille)
-                                        </Text> */}
+                                            {lettreLastStudentPaiement}jjjjj
+                                        </Text>
                                     </Box>
                                 </Flex>
                                 <Flex 
@@ -598,7 +648,7 @@ const receipt = () => {
                                                         <Th border='1px'>
                                                             <Box fontSize='8px'>
                                                                 <Text textAlign={"center"}>
-                                                                    {dataResteTrancheInscriptionByStudent?.RestTrancheByStudent}
+                                                                    {/* {dataResteTrancheInscriptionByStudent?.RestTrancheByStudent} */}
                                                                 </Text>
                                                             </Box>
                                                         </Th>
@@ -639,7 +689,7 @@ const receipt = () => {
                                                         <Th border='1px'>
                                                             <Box fontSize='8px'>
                                                                 <Text textAlign={"center"}>
-                                                                    {dataResteTrancheForTranche1ByStudent?.SumAvanceTrancheByStudent}
+                                                                    {/* {dataResteTrancheForTranche1ByStudent?.SumAvanceTrancheByStudent} */}
                                                                 </Text>
                                                             </Box>
                                                         </Th>
@@ -678,7 +728,7 @@ const receipt = () => {
                                                         <Th border='1px'>
                                                             <Box fontSize='8px'>
                                                                 <Text textAlign={"center"}>
-                                                                    {dataResteTrancheForTranche2ByStudent?.SumAvanceTrancheByStudent}
+                                                                    {/* {dataResteTrancheForTranche2ByStudent?.SumAvanceTrancheByStudent} */}
                                                                 </Text>
                                                             </Box>
                                                         </Th>

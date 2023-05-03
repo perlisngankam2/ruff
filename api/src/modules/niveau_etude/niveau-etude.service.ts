@@ -70,7 +70,7 @@ export class NiveauEtudeService {
       
       async getAll() {
         const niveaus= this.niveauEtudeRepository.findAll({
-          populate:['cycle']
+          populate:['cycle', 'salle.niveau']
         })
         return niveaus
   

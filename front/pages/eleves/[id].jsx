@@ -190,11 +190,11 @@ const DetailComponent = () => {
       }
   );
 
-  const {data:dataTrancheStudentBySudentId} = useQuery(GET_TRANCHE_STUDENT_BY_STUDENT_ID,
-    {
-      variables: {studentid: router.query.id} 
-    }
-  ); 
+  // const {data:dataTrancheStudentBySudentId} = useQuery(GET_TRANCHE_STUDENT_BY_STUDENT_ID,
+  //   {
+  //     variables: {studentid: router.query.id} 
+  //   }
+  // ); 
 
   //CLASSE DE CHAQUE ELEVE
   const {data:dataStudentSalle} = useQuery(GET_STUDENT_SALLE,
@@ -449,12 +449,12 @@ const {data:dataResteFeesToPayByStudent} = useQuery(GET_RESTE_PENSION_A_PAYER_BY
         })
 
     console.log(dataTranchePension?.findAlltranche)
-    const AllTranche = dataTranchePension?.findAlltranche.map((tranche) => {
-      const totalPension = dataTrancheStudentBySudentId?.getTrancheStudentByStudent.montant;
-      if (totalPension >= tranche.montant) {
-        return tranche;
-      }
-    });
+    // const AllTranche = dataTranchePension?.findAlltranche.map((tranche) => {
+    //   const totalPension = dataTrancheStudentBySudentId?.getTrancheStudentByStudent.montant;
+    //   if (totalPension >= tranche.montant) {
+    //     return tranche;
+    //   }
+    // });
 
         const [resteMontantTranche, setResteMontantTranche] = useState([])
         // const montantTranche = getTrancheById(tranche.value)?.montant
@@ -827,8 +827,11 @@ const {data:dataResteFeesToPayByStudent} = useQuery(GET_RESTE_PENSION_A_PAYER_BY
         <Text><Text as='b'>Sexe : </Text>
           {dataStudentId.findOnestudent.sex}
         </Text>
+        <Text><Text as='b'>Niveau : </Text>
+          {dataStudentSalle?.findSalleByStudent.levelName}
+        </Text>
         <Text><Text as='b'>Classe : </Text>
-          {dataStudentId.findOnestudent.classe}
+          {dataStudentId.findOnestudent.salleName}
         </Text>
         <Text><Text as='b'>Section : </Text> 
           {/* {dataStudentId.findOnestudent.section} */}

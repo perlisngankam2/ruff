@@ -24,6 +24,7 @@ import { StudentCreateInput } from './dto/student.input';
 import { StudentUpdateInput } from './dto/student.update';
 import { TrancheService } from '../tranche/tranche.service';
 import { addDays, format } from 'date-fns';
+import { CategorieEleve } from 'src/entities/categorie-eleve.entity';
 
 @Injectable()
 export class StudentService {
@@ -98,7 +99,9 @@ export class StudentService {
       }
     
       findByOne(filters: FilterQuery<Student>): Promise<Student | null> {
-        return this.studentRepository.findOne(filters);
+        return this.studentRepository.findOne(filters, 
+            {populate:['salle', 'categorie']}
+          );
       }
 
       
@@ -128,7 +131,7 @@ export class StudentService {
     
       getAll(): Promise<Student[]> {
         return this.studentRepository.findAll({
-          populate:['salle','pension']
+          populate:['salle','pension', 'categorie']
         })
       }
       

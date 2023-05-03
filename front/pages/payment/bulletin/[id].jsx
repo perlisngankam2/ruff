@@ -110,10 +110,6 @@ const Bulletin = () => {
         variables:{ personnelid: router.query.id}
     })
 
-
-
-
-
        const dernierIndice = dataSalaireNet?.PersonnelNetSalary.length - 1
        const dernierElement = dataSalaireNet?.PersonnelNetSalary[dernierIndice];
 

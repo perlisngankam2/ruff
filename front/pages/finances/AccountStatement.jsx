@@ -144,7 +144,7 @@ const AccountStatement = () => {
                             content={() => componentRef.current}
                                 documentTitle= "Etat des entrees et sorties"
                                 pageStyle="print"
-              />
+                        />
                         {/* <Icon
                             alignItems={"center"}
                             as={TfiPrinter}
@@ -194,8 +194,6 @@ const AccountStatement = () => {
                             <ReactToPdf targetRef={componentRef} filename="Etat des entrees et sorties" options={options} y={10} >
                                 {({toPdf}) => ( <Button bg={"blackAlpha.100"} onClick={toPdf} border="1px" width={"50px"} fontSize={"sm"}>PDF</Button>)}
                             </ReactToPdf>
-
-                        
                         </Box>
                         <Box width={"300px"} ml="700px">
                             <InputGroup >
@@ -285,11 +283,11 @@ const AccountStatement = () => {
                                         <Box 
                                             width='260px'
                                         >
-                                           {expense.studentFirstname}
+                                           {expense.studentFirstname}&nbsp;
                                            {expense.studentLastname}
-                                           {expense.personnelFirstName}
-                                           {expense.personnelLastName}
-                                           {expense.personnelFonction}
+                                            {expense.personnelFirstName} &nbsp;
+                                           {expense.personnelLastName}&nbsp;
+                                           ({expense.personnelFonction})
                                         </Box>
                                         <Box 
                                             width='150px'
@@ -320,45 +318,50 @@ const AccountStatement = () => {
                                         <Box width='180px'
                                             display={{md:"flex"}}
                                         >
-                                            <Flex 
-                                                flexDirection={"column"}
-                                                gap={0}
-                                            >
-                                                <Icon
-                                                    as={BiTrendingUp}
-                                                    boxSize="20px"
-                                                    // p="3"
-                                                    rounded="full"
-                                                    color="colors.greenColor400"
-                                                    mb={"-15px"}
-                                                />
-                                                <Icon
-                                                    as={HiOutlineMinus}
-                                                    boxSize="25px"
-                                                    ml={"-2px"}
-                                                    // p="3"
-                                                    rounded="full"
-                                                    color="colors.greenColor400"
-                                                
-                                                />
+                                                    <Flex 
+                                                        flexDirection={"column"}
+                                                        gap={0}
+                                                    >
+                                                        <Icon
+                                                            as={BiTrendingUp}
+                                                            boxSize="20px"
+                                                            // p="3"
+                                                            rounded="full"
+                                                            color="colors.greenColor400"
+                                                            mb={"-15px"}
+                                                        />
+                                                        <Icon
+                                                            as={HiOutlineMinus}
+                                                            boxSize="25px"
+                                                            ml={"-2px"}
+                                                            // p="3"
+                                                            rounded="full"
+                                                            color="colors.greenColor400"
+                                                        
+                                                        />
+                                                    </Flex>
+                                                    <Box>{expense.creditamount}</Box>
+                                                </Box>
+                                                <Box width='200px'>
+                                                    Net
+                                                </Box> 
                                             </Flex>
-                                            <Box>{expense.creditamount}</Box>
-                                        </Box>
-                                        <Box width='200px'>
-                                            Net
-                                        </Box> 
-                                    </Flex>
-                                     )) 
-                                     )} 
-                                </Box>
+                                            )) 
+                                            )} 
+                                         </Box>
                                 </>
+                                            
+                                {dataExpensePersonnelStudent && 
+                                    (dataExpensePersonnelStudent?.findallexpenses.map((expense, index) => ( 
                                 <Flex
                                     gap={100}
                                     p="5px"
                                     width={"full"}
                                     // fontWeight={"bold"}
                                     // mt="12px"
+                                    key={index}
                                 > 
+
                                     <Box
                                         flex={1}
                                         fontWeight={"bold"}
@@ -370,15 +373,17 @@ const AccountStatement = () => {
                                     <Box
                                      width='160px'
                                     >
-                                        350000
+                                    {expense.debitTotal}
+                                        
                                     </Box>
                                     <Box width='150px'>
-                                        500
+                                    {expense.creditTotal}
                                     </Box>
                                     <Box width='180px'>
                                         40000
                                     </Box>
                                 </Flex>
+                                    )))}
                             </Box >
                   
                 <Box mt={"15px"}> 

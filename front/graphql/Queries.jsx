@@ -337,6 +337,8 @@ export const GET_ALL_EXPENSE_PERSONNEL_STUDENT = gql `
             id
             creditamount
             debitamount
+            debitTotal
+            creditTotal
             createdOn
             personnelid
             personnelFirstName

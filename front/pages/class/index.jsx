@@ -90,6 +90,7 @@ const Class = () => {
   const [anneeAcademiqueId, setAnneeAcademiqueId] = useState("");
   const [courseId, setCourseId] = useState("");
   const [montantPension, setMontantPension] = useState();
+  const [selectClassSarch, setSelectClassSearch] = useState("")
   const itemsPerPage = 15;
   const [pageNumber, setPageNumber] = useState(0);
   const pagesVisited = pageNumber * itemsPerPage;
@@ -234,13 +235,14 @@ const Class = () => {
            width={"500px"}
            variant="flushed"
             placeholder="Selectionner la classe"
-            // onChange={e =>setQuery(e.target.value)}
+            onChange={e =>setSelectClassSearch(e.target.value)}
+            value={selectClassSarch}
           >
-            {/* {Classes.map((classe) => (
+            {dataClasse && dataClasse.findAllsalle.map((salle) => (
               <option 
-                key={classe.id}
-              >{classe.classe}</option>
-            ))} */}
+                key={salle.id}
+              >{salle.name}</option>
+            ))}
           </Select>
           <Box> 
             <Button
@@ -526,6 +528,12 @@ const Class = () => {
                     {dataClasse && ( 
                       dataClasse.findAllsalle
                       .slice(pagesVisited, pagesVisited + itemsPerPage)
+                      .filter((salle) =>{
+                        if(selectClassSarch== ""){
+                          return salle
+                        }else if(salle.name.toLowerCase().includes(selectClassSarch.toLowerCase()))
+                        return salle
+                      })
                       .map((salle, index) =>( 
                       <Tr key={index}>
                          <Td >{salle.name}</Td> 

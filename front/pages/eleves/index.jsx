@@ -51,6 +51,10 @@ import{ FiEdit, FiSearch} from 'react-icons/fi';
 import {MdDelete} from 'react-icons/md';
 import {useRouter } from "next/router";
 import {useTranslation} from "next-i18next";
+import ReactToPrint from 'react-to-print';
+import ReactToPdf from "react-to-pdf";
+import ReactPaginate from "react-paginate";
+
 import { getStaticPropsTranslations } from "../../types/staticProps";
 
 
@@ -61,7 +65,6 @@ import {
 } from "../../graphql/Queries";
 import { DELETE_STUDENT } from "../../graphql/Mutation";
 import { useMutation, useQuery } from "@apollo/client";
-import ReactPaginate from "react-paginate";
 
 // const VARIABLE = "pearl";
 
@@ -76,7 +79,7 @@ const Eleves = () => {
     const { isOpen, onToggle, onClose, onOpen } = useDisclosure();
     const [searchNameStudent, setSearchNameStudent] = useState("");
     const [searchClasseStudent, setSearchClasseStudent] = useState("");
-
+    
     const [deletestudent] = useMutation(DELETE_STUDENT);
     // const [currentPage, setCurrentPage] = useState(1);
     
@@ -143,6 +146,8 @@ const Eleves = () => {
       setPageNumber(page);
     };
 
+    
+
   return (
     <DefaultLayout>
       <Box p="3" pt={"70px"} w="full">
@@ -185,20 +190,13 @@ const Eleves = () => {
           <Select 
             placeholder="Selectionner la classe"
             variant="flushed"
-            onChange={handleChangeClasseStudent}
+            onChange={(event => setSearchClasseStudent(event.target.value))}
+            // value={""}
           > 
-          { dataClasse &&  
-            dataClasse.findAllsalle
-            .filter((classe) =>{
-              if(searchClasseStudent==""){
-                return classe
-              }else if(classe.name.toLowerCase().includes (searchClasseStudent.toLowerCase()))
-              return classe
-            })
-            .map((classe) => (
-            <option 
-              key={classe.id}>
-                {classe.name}
+
+           {dataClasse && dataClasse.findAllsalle.map((salle, index) => (
+            <option key={index}>
+                {salle.name}
             </option>
           ))}
           </Select>
@@ -210,7 +208,17 @@ const Eleves = () => {
                 Ajouter un élève
             </Button>
           </Box> 
+          {/* { dataStudent &&  
+            dataStudent.findAllstudents
+            .filter((student) =>{
+              if(searchClasseStudent==""){
+                return student
+              }else if(student.salleName.toLowerCase().includes (searchClasseStudent.toLowerCase()))
+              return student
+            })
+          } */}
         </Flex>
+           
         {/* <Box mt={10}>
           <PaiementTable data={search(Users)}/>
         </Box> */}
@@ -229,6 +237,7 @@ const Eleves = () => {
                   <Tr>
                     <Th>{t("pages.eleves.listeDesEleves.firstName")}</Th>
                     <Th>{t("pages.eleves.listeDesEleves.lastName")}</Th>
+                    <Th>classe</Th>
                     {/* <Th >classe</Th> */}
                     {/* <Th>sexe</Th> */}
                     {/* <Th>Photo</Th> */}
@@ -247,10 +256,18 @@ const Eleves = () => {
                        student.fatherFirstName.toLowerCase().includes (searchNameStudent.toLowerCase()))
                       return student;
                     })
+                    .filter((student) =>{
+                      if(searchClasseStudent == ""){
+                        return student;
+                      }else if (
+                       student.salleName.toLowerCase().includes (searchClasseStudent.toLowerCase()))
+                      return student;
+                    })
                     .map((student, index) =>(
                       <Tr key={index}>
                         <Td >{student.firstname}</Td>
                         <Td >{student.lastname}</Td>
+                        <Td >{student.salleName}</Td>
                         {/* <Td borderColor={'#C6B062'}>{student.classe}</Td> */}
                         {/* <Td borderColor={'#C6B062'}>{student.sex}</Td> */}
                         {/* <Td borderColor={'#C6B062'}>

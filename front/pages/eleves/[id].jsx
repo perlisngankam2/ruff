@@ -556,6 +556,7 @@ const {data:dataResteFeesToPayByStudent} = useQuery(GET_RESTE_PENSION_A_PAYER_BY
               }
             }
           })
+          onClose()
           
         } catch (error) {
           console.log(error.message)

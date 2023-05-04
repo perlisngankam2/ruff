@@ -166,8 +166,6 @@ async savePensionExpense(studentid: string){
     }
 }
 
-
-
 // async saveSalaireExpenses(personnelid: string){
 //     const salaires =  await this.salaireservice.salairepersonnel(personnelid)
 
@@ -205,7 +203,6 @@ async saveSalaireExpenses(personnelid: string){
         const salairemontant = a.montant
         const expense = new Expense()
 
-        
 
         wrap(expense).assign({
             personnel: personnelid,

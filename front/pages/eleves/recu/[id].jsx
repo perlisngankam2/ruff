@@ -40,7 +40,8 @@ import {
     GET_ALL_TRANCHE_DATE_LINE_BY_STUDENT,
     GET_CLASS_FEES_BY_STUDENT_ID,
     GET_PENSION_ALREADY_PAY_BY_STUDENT_ID,
-  GET_RESTE_PENSION_A_PAYER_BY_STUDENT_ID
+    GET_RESTE_PENSION_A_PAYER_BY_STUDENT_ID,
+    GET_SECTION_STUDENT_BY_ID
 
  } from "../../../graphql/Queries";
 import React, {useEffect,useRef } from "react";
@@ -121,6 +122,16 @@ const receipt = () => {
      
         } 
     )
+
+    //RECUPERATION DE LA SECTION DE L'ELEVE
+    const {data:dataSectionStudentById} = useQuery(GET_SECTION_STUDENT_BY_ID,
+        {
+            variables:{
+                studentid: router.query.id,
+            }   
+     
+        } 
+    );
 
     // const {data:dataAvanceTranche2ByStudent} = useQuery(GET_AVANCE_MONTANT_TRANCHE_BY_STUDENT,
     //     {
@@ -372,7 +383,7 @@ function nombreEnLettres(montant) {
                                     </Flex>
                                     <Flex ml='3' gap={3} mb='1'>
                                         <Text>Section:</Text>
-                                        <Text></Text>
+                                        <Text>{dataSectionStudentById?.findSectionByStudent[0].name}</Text>
                                     </Flex>
                                     <Flex ml='3' gap='1' mb='1'>
                                         <Text>Regime:</Text>

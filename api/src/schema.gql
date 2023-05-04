@@ -548,6 +548,7 @@ type Query {
   findOnesalle(id: String!): Salle!
   etatInscriptionSalle(id: String!): Salle!
   findSalleByStudent(studentid: String!): Salle!
+  findSectionByStudent(studentid: String!): [Section!]!
   findAllfraisexam: [FraisExamen!]!
   fraisExamen(id: String!): FraisExamen!
   findAll: [Inscription!]!

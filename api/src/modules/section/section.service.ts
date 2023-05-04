@@ -42,12 +42,13 @@ export class SectionService {
       findById(id:string){
         return this.sectionRepository.findOne(id)
       }
-    
+
       getAllForUse(): Promise<Section[]> {
         return this.sectionRepository.findAll({
-          populate: ['cycle','cycle.salle','cycle.salle.student','cycle.salle.student.pension']
+          populate: ['cycle', 'cycle.niveauEtude', 'cycle.niveauEtude.salle', 'cycle.niveauEtude.salle.student', 'cycle.niveauEtude.salle.student.pension']
         })
       }
+
 
       getAll(): Promise<Section[]> {
         return this.sectionRepository.findAll()

@@ -89,7 +89,8 @@ import {
   GET_ALL_TRANCHE_BY_STUDENT_ID,
   GET_PENSION_ALREADY_PAY_BY_STUDENT_ID,
   GET_RESTE_PENSION_A_PAYER_BY_STUDENT_ID,
-  GET_ALL_PARENT
+  GET_ALL_PARENT,
+  GET_SECTION_STUDENT_BY_ID
 
 } from "../../graphql/Queries";
 
@@ -196,7 +197,7 @@ const DetailComponent = () => {
   //   }
   // ); 
 
-  //CLASSE DE CHAQUE ELEVE
+  //Niveau DE CHAQUE ELEVE
   const {data:dataStudentSalle} = useQuery(GET_STUDENT_SALLE,
     {
       variables: {studentid: router.query.id} 
@@ -243,6 +244,15 @@ const {data:dataResteFeesToPayByStudent} = useQuery(GET_RESTE_PENSION_A_PAYER_BY
     }
   )
 
+    //RECUPERATION DE LA SECTION DE L'ELEVE
+    const {data:dataSectionStudentById} = useQuery(GET_SECTION_STUDENT_BY_ID,
+      {
+          variables:{
+              studentid: router.query.id,
+          }   
+   
+      } 
+  );
   
   // const {data:dataPensionSalleByStudent} = useQuery(GET_MONTANT_PENSION_SALLE_BY_STUDENT,
   //   {
@@ -433,6 +443,7 @@ const {data:dataResteFeesToPayByStudent} = useQuery(GET_RESTE_PENSION_A_PAYER_BY
         useEffect(() =>{
           loadTranches();
           loadParents();
+          console.log(dataSectionStudentById?.findSectionByStudent);
           // console.log(dataTranchePension?.findAlltranche.tranche.montant[0])
           // dataStudentId && console.log(dataStudentId.findOnestudent)
           // console.log(dataClass);
@@ -830,12 +841,13 @@ const {data:dataResteFeesToPayByStudent} = useQuery(GET_RESTE_PENSION_A_PAYER_BY
         </Text>
         <Text><Text as='b'>Niveau : </Text>
           {dataStudentSalle?.findSalleByStudent.levelName}
+
         </Text>
         <Text><Text as='b'>Classe : </Text>
           {dataStudentId.findOnestudent.salleName}
         </Text>
         <Text><Text as='b'>Section : </Text> 
-          {/* {dataStudentId.findOnestudent.section} */}
+          {dataSectionStudentById?.findSectionByStudent[0].name}
         </Text>
         <Text
          mt={"20px"} 

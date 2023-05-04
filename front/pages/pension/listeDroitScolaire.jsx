@@ -57,7 +57,6 @@ import {
    GET_ALL_TRANCHE, 
    GET_ALL_TRANCHE_PENSION,
    GET_ALL_CLASS,
-   GET_ALL_TRANCHE_PRIORITY
   } from "../../graphql/Queries";
 import { FiSearch } from "react-icons/fi";
 import ReactPaginate from "react-paginate";
@@ -109,7 +108,6 @@ const Pension = () => {
     const {data:dataFraisInscription} = useQuery(GET_ALL_FRAIS_INSCRIPTION);
     const {data:dataTranchePension} = useQuery(GET_ALL_TRANCHE_PENSION);
     const {data:dataClasse} = useQuery(GET_ALL_CLASS);
-    const {data:dataTranchePriority} = useQuery(GET_ALL_TRANCHE_PRIORITY)
     const [createdFraisInscription] = useMutation(CREATE_FRAIS_INSCRIPTION);
     const [createTranchePension] = useMutation(CREATE_TRANCHE_PENSION);
     const [createTranchePriority] = useMutation(CREATE_TRANCHE_PRIORITY);

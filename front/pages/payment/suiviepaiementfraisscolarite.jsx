@@ -45,9 +45,10 @@ const SuiviPaimentFraisScolarite = () => {
                         // display={{md:'flex'}}
                         // mb={'20px'}
                         border={'1px'}
-                        mt={'40px'}
+                        mt={'80px'}
                         width={'1200px'}
                         ml={'45px'}
+                        bg={"white"}
                     >
                         <Box mb={'2'} borderBottom={'1px'}>
                             <Heading textAlign={'center'}  fontSize={['2xl', '2xl', '2xl']}>
@@ -66,11 +67,11 @@ const SuiviPaimentFraisScolarite = () => {
                                 </Text>  
                             </Box>
                         </Box>
-                        <Box borderTop={'1px'} > 
-                            <TableContainer>
+                        <Box borderTop={'1px'}> 
+                            <TableContainer >
                                 <Table size='sm'>
-                                    <Thead >
-                                        <Tr>
+                                    <Thead borderBottom={"1px"}>
+                                        <Tr borderBottom={"1px"}>
                                             <Th>No</Th>
                                             <Th>Nom et prenom</Th>
                                             <Th>Matricule</Th>
@@ -82,10 +83,10 @@ const SuiviPaimentFraisScolarite = () => {
                                         </Tr>
                                     </Thead>
                                     <Tbody>
-                                        <Tr>
-                                            <Td>1</Td>
-                                            <Td>millimetres</Td>
-                                            <Td isNumeric>25.4</Td>
+                                        <Tr borderBottom={"1px"}>
+                                            <Td  borderBottom={"1px"}>1</Td>
+                                            <Td borderBottom={"1px"}>millimetres</Td>
+                                            <Td  borderBottom={"1px"}isNumeric>25.4</Td>
                                             <Td>millimetres</Td>
                                             <Td>millimetres</Td>
                                             <Td>10% </Td>

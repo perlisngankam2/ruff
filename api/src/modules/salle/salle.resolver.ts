@@ -14,7 +14,7 @@ import { Salle } from 'src/entities/salle.entity';
 import { SalleCreateInput } from './dto/salle.input';
 import { SalleUpdateInput } from './dto/salle.update';
 import { SalleService } from './salle.service';
-
+import { Section } from 'src/entities/section.entity';
 
 @Resolver(() => Salle)
 export class SalleResolver {
@@ -69,5 +69,10 @@ export class SalleResolver {
    }
    return a
   }
+
+  @Query(() => [Section])
+  async findSectionByStudent(@Args('studentid', { type: () => String }) studentid: string) {
+   return await this.salleService.findSectionByStudents(studentid)
+  }
 
 }

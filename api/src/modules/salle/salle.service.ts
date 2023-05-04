@@ -207,4 +207,12 @@ export class SalleService {
       
     }
 
+    async findSectionByStudents(studentid:string){
+      const a=(await this.em.find(Salle,{student:studentid},{
+        populate:['niveau','niveau.salle','niveau.salle.student']
+      })).map(async a=>((await (await a.niveau.load()).cycle.load()).section.load()))
+
+      return a
+    }
+
 }

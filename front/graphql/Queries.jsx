@@ -17,7 +17,7 @@ query findAllpersonnel {
         childNumber
     }
 }
-`;
+`
 
 //category personnel
 export const GET_ALL_Category_Personnel = gql ` 
@@ -117,6 +117,17 @@ export const GET_ALL_SECTION =  gql `
         }
     }
 `;
+
+//recuperation de la secrion de l'eleve
+export const GET_SECTION_STUDENT_BY_ID = gql `
+    query findSectionByStudent ($studentid: String!) {
+        findSectionByStudent (studentid: $studentid) {
+            id
+            name
+            description
+        }
+    }
+`
 
 //cycle 
 export const GET_ALL_CYCLE =  gql `
@@ -293,15 +304,6 @@ export const GET_ALL_TRANCHE_STUDENT = gql `
 }
 `;
 
-export const GET_ALL_TRANCHE_PRIORITY = gql `
-    query findAlltranchepriority {
-        findAlltranchepriority {
-            id
-            name
-            description
-        }
-    }
-`;
 
 //recuperation d'une tranche de pension
 export const GET_TRANCHE_PENSION_BY_ID = gql `

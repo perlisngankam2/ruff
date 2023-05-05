@@ -106,7 +106,7 @@ export class TrancheStudentService {
         orderBy: { id: 'ASC' },
       });
       
-      const b= a.map(async a=>a.tranche.load())
+      const b=  a.map(async a=>await a.tranche.load())
       return b
       
       }

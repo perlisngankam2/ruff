@@ -107,9 +107,19 @@ export class StudentService {
       }
 
       async findAllStudentSpecialRegime(){
-        const a=await this.studentRepository.findAll()
+        const a=await this.studentRepository.findAll({
+          populate:['salle','pension','trancheStudent','trancheStudent.tranche']
+        })
 
         return  a.filter(async a=>(await a.categorie.load()).description=='Special')
+      }
+
+      async findAllStudentNormalRegime(){
+        const a=await this.studentRepository.findAll({
+          populate:['salle','pension','trancheStudent','trancheStudent.tranche']
+        })
+
+        return  a.filter(async a=>(await a.categorie.load()).description=='Normal')
       }
 
       async findStudentTel(id:string){

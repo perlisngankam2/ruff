@@ -419,6 +419,8 @@ type StudentStatistics {
 type SpecialStudentStatistics {
   amountToPay: Float!
   dateLine: DateTime!
+  categorie: String!
+  nameTranche: String!
   restOfAmountToPay: Float!
   amountAlreadyPaid: Float!
   paymentDate: DateTime!
@@ -551,6 +553,7 @@ type Query {
   getSectionStatisticsFrancophoneFirstInstalment: [SectionStatistics!]!
   getSectionStatisticsFrancophoneSecondInstalment: [SectionStatistics!]!
   getGeneralSectionStatistics: [SectionStatistics!]!
+  getTrancheStatisticsForNormalStudents: [SpecialStudentStatistics!]!
   findAllpensionSalle: [PensionSalle!]!
   findOnepensionsalle(id: String!): PensionSalle!
   findAllCourse: [Course!]!

@@ -13,12 +13,15 @@ import { ClassStatistics } from "./classStatistics";
 import { SpecialStudentStatistics } from "./specialRegimeStudent";
 import { filter } from "rxjs";
 import { AvanceTrancheService } from "../avance_tranche/avance-tranche.service";
+import { Tranche } from "src/entities/tranche.entity";
 
 
 
 @Injectable()
 export class StatisticsService {
   constructor(
+    @InjectRepository(Tranche)
+    private trancheRepository: EntityRepository<Tranche>,
     private studentservice: StudentService,
     private sectionservice: SectionService,
     private trancheservice: TrancheService,
@@ -709,74 +712,49 @@ async getGeneralSectionStatistics(): Promise<SectionStatistics[]>{
 
 }
 
-// async getTrancheStatisticsForSpecialStudents(): Promise<SpecialStudentStatistics[]> {
-//   const tranches = await this.trancheservice.getAllTranche()
-
-//   return tranches
-//     // .filter((tranche) => tranche.trancheStudent.toArray().every((ts) => ts.student.regime === Regime.SPECIAL))
-//     .map((tranche) => {
-//       const amountToPay = tranche.montant;
-//       const dateLine = tranche.dateLine;
-//       const paymentPriority = tranche.priority;
-
-//        const studentData = tranche.trancheStudent.toArray().map( (ts) => {
-//        const amountAlreadyPaid = ts.montant;
-//         const paymentDate = ts.createdAt;
-//         const studentid = ts.student;
-//         const studentPhoneNumber = String(this.studentservice.findStudentTel(studentid))
-//         const studentFirstName = String(this.studentservice.findStudentFirstNameById(studentid))
-//         const studentLastName = String(this.studentservice.findStudentLastNameById(studentid))
-
-//         const  restOfAmountToPay = amountToPay - amountAlreadyPaid;
-//         return {
-          // studentFirstName,
-          // studentLastName,
-          // studentPhoneNumber,
-          // amountToPay,
-          // restOfAmountToPay,
-          // amountAlreadyPaid,
-          // paymentDate,
-          // paymentPriority,
-          // dateLine,
-//         };
-//       });
-
-//       return studentData;
-//     })
-//     .reduce((acc, cur) => [...acc, ...cur], []);
-// }
-
 
 async getTrancheStatisticsForSpecialStudents(): Promise<SpecialStudentStatistics[]> {
   const students = await this.studentservice.findAllStudentSpecialRegime();
   console.log('===============stud>'+students)
 
+  const Tranches = students.map((student) => student.trancheStudent.getItems().map((trancheStudent) => trancheStudent.tranche));
+
+  const tranches = await Promise.all(Tranches.flat().map((tranche) => this.trancheRepository.findOne(tranche.id, { populate: ['trancheStudent'] })));
+
+  console.log("==============>"+tranches)
+  
   const result: SpecialStudentStatistics[] = [];
 
   for (const student of students) {
-    for (const tranche of await this.trancheStudentservice.findTrancheByStudent(student.id)) {
+    for (const tranche of tranches) {
       const amountToPay = (await tranche).montant;
       const dateLine = (await tranche).dateLine;
       const paymentPriority = (await tranche).priority;
+      const nameTranche = tranche.name
+      
 
-      const trancheStudents = (await tranche).trancheStudent.toArray();
-      const trancheStudent = trancheStudents.find((t) => t.student === student.id);
+      const trancheStudent = tranche.trancheStudent.getItems()
+      .filter(async a=>(await a.tranche.load()).id===tranche.id);
       console.log('tranchestudent=======>'+trancheStudent)
-      if (!trancheStudent) break;
+      if (trancheStudent.length==0) break;
 
-      const amountAlreadyPaid = trancheStudent.montant;
-      const paymentDate = trancheStudent.createdAt;
+      for(const trancheStd of trancheStudent){
+      const amountAlreadyPaid = trancheStd.montant;
+      const paymentDate = trancheStd.createdAt;
 
       const studentFirstName = student.firstname;
       const studentLastName = student.lastname;
-      const studentPhoneNumber = student.parentTel;
+      const studentPhoneNumber = student.fatherPhoneNumber || student.motherPhoneNumber || student.tutorPhoneNumber;
 
       const restOfAmountToPay = amountToPay - amountAlreadyPaid;
       console.log('=================>'+restOfAmountToPay)
+      const categorie=((await student.categorie.load()).description)
 
       result.push({
         studentFirstName,
         studentLastName,
+        categorie,
+        nameTranche,
         studentPhoneNumber,
         amountToPay,
         restOfAmountToPay,
@@ -787,9 +765,68 @@ async getTrancheStatisticsForSpecialStudents(): Promise<SpecialStudentStatistics
       });
     }
   }
+  }
 
-  console.log('====================>'+result)
-  return result;
+  console.log('====================>'+result.filter(a=>a.categorie==='Special'))
+  return result.filter(a=>a.categorie==='Special');
+}
+
+async getTrancheStatisticsForNormalStudents(): Promise<SpecialStudentStatistics[]> {
+  const students = await this.studentservice.findAllStudentNormalRegime();
+  console.log('===============stud>'+students)
+
+  const Tranches = students.map((student) => student.trancheStudent.getItems().map((trancheStudent) => trancheStudent.tranche));
+
+  const tranches = await Promise.all(Tranches.flat().map((tranche) => this.trancheRepository.findOne(tranche.id, { populate: ['trancheStudent'] })));
+
+  console.log("==============>"+tranches)
+  
+  const result: SpecialStudentStatistics[] = [];
+
+  for (const student of students) {
+    for (const tranche of tranches) {
+      const amountToPay = (await tranche).montant;
+      const dateLine = (await tranche).dateLine;
+      const paymentPriority = (await tranche).priority;
+      const nameTranche = tranche.name
+      
+
+      const trancheStudent = tranche.trancheStudent.getItems()
+      .filter(async a=>(await a.tranche.load()).id===tranche.id);
+      console.log('tranchestudent=======>'+trancheStudent)
+      if (trancheStudent.length==0) break;
+
+      for(const trancheStd of trancheStudent){
+      const amountAlreadyPaid = trancheStd.montant;
+      const paymentDate = trancheStd.createdAt;
+
+      const studentFirstName = student.firstname;
+      const studentLastName = student.lastname;
+      const studentPhoneNumber = student.fatherPhoneNumber || student.motherPhoneNumber || student.tutorPhoneNumber;
+
+      const restOfAmountToPay = amountToPay - amountAlreadyPaid;
+      console.log('=================>'+restOfAmountToPay)
+      const categorie=((await student.categorie.load()).description)
+
+      result.push({
+        studentFirstName,
+        studentLastName,
+        categorie,
+        nameTranche,
+        studentPhoneNumber,
+        amountToPay,
+        restOfAmountToPay,
+        amountAlreadyPaid,
+        paymentDate,
+        paymentPriority,
+        dateLine,
+      });
+    }
+  }
+  }
+
+  console.log('====================>'+result.filter(a=>a.categorie==='Normal'))
+  return result.filter(a=>a.categorie==='Normal');
 }
 
 }

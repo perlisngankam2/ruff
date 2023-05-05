@@ -64,6 +64,11 @@ export class StatisticResolver {
     return this.statisticsService.getGeneralSectionStatistics()
   }
 
+  @Query(() => [SpecialStudentStatistics])
+  getTrancheStatisticsForNormalStudents(): Promise<SpecialStudentStatistics[]> {
+    return this.statisticsService.getTrancheStatisticsForNormalStudents();
+  }
+
 
 
 }

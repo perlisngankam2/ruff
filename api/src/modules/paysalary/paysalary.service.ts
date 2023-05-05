@@ -148,6 +148,10 @@ return paysalaire;
   
 }
 
+async findPaySalaryByPersonnel(personnelid:string){
+ return await this.paysalaryRepository.find({personnel:personnelid})
+}
+
 
 
 }

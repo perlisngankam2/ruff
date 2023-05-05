@@ -11,6 +11,8 @@ import { TrancheStudentService } from "../tranche-student/tranche-student.servic
 import { SectionStatistics } from "./sectionstatistics";
 import { ClassStatistics } from "./classStatistics";
 import { SpecialStudentStatistics } from "./specialRegimeStudent";
+import { filter } from "rxjs";
+import { AvanceTrancheService } from "../avance_tranche/avance-tranche.service";
 
 
 
@@ -21,9 +23,10 @@ export class StatisticsService {
     private sectionservice: SectionService,
     private trancheservice: TrancheService,
     private trancheStudentservice: TrancheStudentService,
+    private avancetrancheservice: AvanceTrancheService
   ) {}
 
-  async getStudentStatistics(): Promise<
+  async getStudentStatisticsAnglophone(): Promise<
     {
       name: string;
       matricle: string;
@@ -38,7 +41,7 @@ export class StatisticsService {
     //   relations: ['pensions', 'salle'],
     // });
 
-    const students = await this.studentservice.getAll()
+    const students = await this.studentservice.getAllForUseAnglophone()
 
 
 
@@ -66,91 +69,535 @@ export class StatisticsService {
     });
   }
 
+  async getStudentStatisticsFrancophone(): Promise<
+    {
+      name: string;
+      matricle: string;
+      amountExpected: number;
+      amountPaid: number;
+      collectionRate: number;
+      restToPay: number;
+      rateArrears: number;
+    }[]
+  > {
+    // const students = await this.studentRepository.find({
+    //   relations: ['pensions', 'salle'],
+    // });
+
+    const students = await this.studentservice.getAllForUseFrancophone()
+
+
+    return students.map(student => {
+      const pensions = student.pension.toArray();
+      const amountExpected =student.salle.getEntity().montantPensionSalle;
+      console.log('=============>'+amountExpected)
+      const amountPaid = pensions.reduce(
+        (sum, pension) => sum + pension.montantPension,
+        0,
+      );
+      const collectionRate = amountExpected === 0 ? 0 : (amountPaid / amountExpected) * 100;
+      const restToPay = amountExpected - amountPaid;
+      const rateArrears = amountExpected === 0 ? 0 : (restToPay / amountExpected) * 100;
+
+      return {
+        name: student.firstname,
+        matricle: student.matricule || null,
+        amountExpected,
+        amountPaid,
+        collectionRate,
+        restToPay,
+        rateArrears,
+      };
+    });
+  }
+
+
   async getallStudentswhohaveCompletedFirstInstalment(){
-  const tranche =  (await this.trancheservice.getAll()).filter(a=>a.priority==2)[0]
-  const student = (await this.trancheStudentservice.getAll()).filter(async a=>(await a.tranche.load()).id==tranche.id).filter(a=>a.montant==tranche.montant).map(a=>a.student.load())
+  const tranche =  (await this.trancheservice.getAll())
+  const student = (await this.trancheStudentservice.getAll())
+  .filter(a=>tranche.find(async b=>(await a.tranche.load()).id===b.id))
+  .filter(a=>tranche.find(async b=>(await a.tranche.load()).year===b.year))
+  .filter(a=>tranche.find(async b=>(await a.tranche.load()).montant===b.montant))
+  .filter(async a=>(await a.tranche.load()).name==='tranche 1')
+  .map(a=>a.student.load())
   return student
+
+
   }
 
   async getallStudentswhohaveCompletedAdmissionFee(){
-    const tranche =  (await this.trancheservice.getAll()).filter(a=>a.priority==1)[0]
-    const student = (await this.trancheStudentservice.getAll()).filter(async a=>(await a.tranche.load()).id==tranche.id).filter(a=>a.montant==tranche.montant).map(a=>a.student.load())
+    const tranche =  (await this.trancheservice.getAll())
+    const student = (await this.trancheStudentservice.getAll())
+    .filter(a=>tranche.find(async b=>(await a.tranche.load()).id===b.id))
+    .filter(a=>tranche.find(async b=>(await a.tranche.load()).year===b.year))
+    .filter(a=>tranche.find(async b=>(await a.tranche.load()).montant===b.montant))
+    .filter(async a=>(await a.tranche.load()).name==='inscription')
+    .map(a=>a.student.load())
     return student
     }
 
-async getSectionStatistics(): Promise<SectionStatistics[]> {
-  const sections = await this.sectionservice.getAllForUse()
-
-  const sectionStatistics: SectionStatistics[] = [];
-
-  for (const section of sections) {
-    for (const cycle of section.cycle.getItems()) {
-      for (const cycleClass of cycle.salle.getItems()) {
-        const numberOfStudents = cycleClass.student.count();
-        const expectedAmount = cycleClass.montantPensionSalle * numberOfStudents;
-        const numberOfStudentsCompletedFee = (await this.getallStudentswhohaveCompletedFirstInstalment()).length
-        const  TAUXA= numberOfStudentsCompletedFee / numberOfStudents * 100;
-        const a = cycleClass.student.getItems()
-        console.log('=============>'+a)
-        const c = a.map(a=>a.pension)
-        console.log("===========>"+c)
-        // const b = a.map(a => a.pension.toArray().reduce(
-        //   (sum, pension) => sum + pension.montantPension,
-        //   0,
-        // ));
-        // console.log("==========>"+b)
-        const b = a.map(a => {
-          const pensions = a.pension.getItems();
-          return pensions.reduce((sum, pension) => sum + pension.montantPension, 0);
-        });
-        console.log("===========>"+b)
-        
-        const sumAmountAlreadyPaid= b.reduce(
-          (sum, pension) => sum + pension,
-          0,
-        );
-        
-        const TAUXB = sumAmountAlreadyPaid / expectedAmount * 100;
-        const numberOfStudentsNotPaid = numberOfStudents - numberOfStudentsCompletedFee;
-        const TAUXC = numberOfStudentsNotPaid / numberOfStudents * 100;
-        const amountRest = expectedAmount - sumAmountAlreadyPaid;
-        const TAUXD = amountRest / expectedAmount * 100;
-
-        sectionStatistics.push({
-          sectionName: section.name,
-          className: cycleClass.name,
-          numberOfStudents,
-          expectedAmount,
-          numberOfStudentsCompletedFee,
-          TAUXA,
-          sumAmountAlreadyPaid,
-          TAUXB,
-          numberOfStudentsNotPaid,
-          TAUXC,
-          amountRest,
-          TAUXD,
-        });
+    async getallStudentswhohaveCompletedSecondInstalment(){
+      const tranche =  (await this.trancheservice.getAll())
+      const student = (await this.trancheStudentservice.getAll())
+      .filter(a=>tranche.find(async b=>(await a.tranche.load()).id===b.id))
+      .filter(a=>tranche.find(async b=>(await a.tranche.load()).year===b.year))
+      .filter(a=>tranche.find(async b=>(await a.tranche.load()).montant===b.montant))
+      .filter(async a=>(await a.tranche.load()).name==='tranche 2')
+      .map(a=>a.student.load())
+      return student
       }
-    }
+
+  async numberOfStudentsStartedPayingPension(){
+    const students = await this.studentservice.getAll()
+    const studentavancetranche = (await this.avancetrancheservice.getAllavancetranche()).map(async a=>(await a.student.load()))
+    .filter(a=>students.find(async b => (await a).id==b.id))
+    return Number(studentavancetranche.length)
   }
 
-  return sectionStatistics;
-}
+  async numberOfStudentsStartedPayingAdmissionFee(){
+    const studentTrancheStudent = ((await this.trancheStudentservice.getAll()).filter(async a=>(await a.tranche.load()).name==='inscription'))
+    return Number(studentTrancheStudent.length)
+  }
 
+  async numberOfStudentsStartedPayingFirstInstalment(){
+    const studentTrancheStudent = ((await this.trancheStudentservice.getAll()).filter(async a=>(await a.tranche.load()).name==='tranche 1'))
+    return Number(studentTrancheStudent.length)
+  }
+
+  async numberOfStudentsStartedPayingSecondInstalment(){
+    const studentTrancheStudent = ((await this.trancheStudentservice.getAll()).filter(async a=>(await a.tranche.load()).name==='tranche 2'))
+    return Number(studentTrancheStudent.length)
+  }
+
+  async TotalAmountFirstInstalment(){
+    const studentTrancheStudent = ((await this.trancheStudentservice.getAll()).filter(async a=>(await a.tranche.load()).name==='tranche 1'))
+    .map(a=>a.montant).reduce(function(a,b){return a+b})
+    return Number(studentTrancheStudent)
+  }
+
+  async TotalAmountSecondInstalment(){
+    const studentTrancheStudent = ((await this.trancheStudentservice.getAll()).filter(async a=>(await a.tranche.load()).name==='tranche 2'))
+    .map(a=>a.montant).reduce(function(a,b){return a+b})
+    return Number(studentTrancheStudent)
+  }
+
+  async TotalAmountAdmissionFee(){
+    const studentTrancheStudent = ((await this.trancheStudentservice.getAll()).filter(async a=>(await a.tranche.load()).name==='inscription'))
+    .map(a=>a.montant).reduce(function(a,b){return a+b})
+    return Number(studentTrancheStudent)
+  }
+
+  async getSectionStatisticsAnglophoneAdmissionFee(): Promise<SectionStatistics[]> {
+    const sections = await this.sectionservice.getAllForUseAnglophone()
+  
+    const sectionStatistics: SectionStatistics[] = [];
+  
+    for (const section of sections) {
+      for (const cycle of section.cycle.getItems()) {
+        for (const niveauclass of cycle.niveauEtude.getItems()){
+          for (const cycleClass of niveauclass.salle.getItems()) {
+            console.log("cycleClass", cycleClass);
+          const numberOfStudents = Number(this.numberOfStudentsStartedPayingAdmissionFee())
+          const expectedAmount = Number(this.TotalAmountAdmissionFee()) * numberOfStudents;
+          console.log("expectedAmount", expectedAmount);
+  
+          const numberOfStudentsCompletedFee = (this.getallStudentswhohaveCompletedAdmissionFee).length
+          const  TAUXA= numberOfStudentsCompletedFee >0? numberOfStudentsCompletedFee / numberOfStudents * 100 : 0
+          console.log("TAUXA", TAUXA);
+          
+          const a = cycleClass.student.getItems()
+          console.log('aaaaa'+a)
+          const c = a.map(a=>a.pension)
+          console.log("ccccc"+c)
+          // const b = a.map(a => a.pension.toArray().reduce(
+          //   (sum, pension) => sum + pension.montantPension,
+          //   0,
+          // ));
+          // console.log("==========>"+b)
+          const b = a.map(a => {
+            const pensions = a.pension.getItems();
+            return pensions.reduce((sum, pension) => sum + pension.montantPension, 0);
+          });
+          console.log("bbbb"+b)
+          
+          const sumAmountAlreadyPaid= b.reduce(
+            (sum, pension) => sum + pension,
+            0,
+          );
+          
+          const TAUXB = sumAmountAlreadyPaid>0? sumAmountAlreadyPaid / expectedAmount * 100:0;
+          const numberOfStudentsNotPaid = numberOfStudents - numberOfStudentsCompletedFee;
+          const TAUXC =  numberOfStudentsNotPaid>0? numberOfStudentsNotPaid / numberOfStudents * 100:0;
+          const amountRest = expectedAmount - sumAmountAlreadyPaid;
+          const TAUXD = amountRest>0? amountRest / expectedAmount * 100:0;
+  
+          sectionStatistics.push({
+            sectionName: section.name,
+            className: cycleClass.name,
+            numberOfStudents,
+            expectedAmount,
+            numberOfStudentsCompletedFee,
+            TAUXA,
+            sumAmountAlreadyPaid,
+            TAUXB,
+            numberOfStudentsNotPaid,
+            TAUXC,
+            amountRest,
+            TAUXD,
+          });
+        }
+      }
+      }
+    }
+  
+    return sectionStatistics;
+  }
+
+  async getSectionStatisticsAnglophoneFirstInstalment(): Promise<SectionStatistics[]> {
+    const sections = await this.sectionservice.getAllForUseAnglophone()
+  
+    const sectionStatistics: SectionStatistics[] = [];
+  
+    for (const section of sections) {
+      for (const cycle of section.cycle.getItems()) {
+        for (const niveauclass of cycle.niveauEtude.getItems()){
+          for (const cycleClass of niveauclass.salle.getItems()) {
+            console.log("cycleClass", cycleClass);
+          const numberOfStudents = Number(this.numberOfStudentsStartedPayingFirstInstalment())
+          const expectedAmount = Number(this.TotalAmountFirstInstalment()) * numberOfStudents;
+          console.log("expectedAmount", expectedAmount);
+  
+          const numberOfStudentsCompletedFee = (this.getallStudentswhohaveCompletedFirstInstalment).length
+          const  TAUXA= numberOfStudentsCompletedFee >0? numberOfStudentsCompletedFee / numberOfStudents * 100 : 0
+          console.log("TAUXA", TAUXA);
+          
+          const a = cycleClass.student.getItems()
+          console.log('aaaaa'+a)
+          const c = a.map(a=>a.pension)
+          console.log("ccccc"+c)
+          // const b = a.map(a => a.pension.toArray().reduce(
+          //   (sum, pension) => sum + pension.montantPension,
+          //   0,
+          // ));
+          // console.log("==========>"+b)
+          const b = a.map(a => {
+            const pensions = a.pension.getItems();
+            return pensions.reduce((sum, pension) => sum + pension.montantPension, 0);
+          });
+          console.log("bbbb"+b)
+          
+          const sumAmountAlreadyPaid= b.reduce(
+            (sum, pension) => sum + pension,
+            0,
+          );
+          
+          const TAUXB = sumAmountAlreadyPaid>0? sumAmountAlreadyPaid / expectedAmount * 100:0;
+          const numberOfStudentsNotPaid = numberOfStudents - numberOfStudentsCompletedFee;
+          const TAUXC =  numberOfStudentsNotPaid>0? numberOfStudentsNotPaid / numberOfStudents * 100:0;
+          const amountRest = expectedAmount - sumAmountAlreadyPaid;
+          const TAUXD = amountRest>0? amountRest / expectedAmount * 100:0;
+  
+          sectionStatistics.push({
+            sectionName: section.name,
+            className: cycleClass.name,
+            numberOfStudents,
+            expectedAmount,
+            numberOfStudentsCompletedFee,
+            TAUXA,
+            sumAmountAlreadyPaid,
+            TAUXB,
+            numberOfStudentsNotPaid,
+            TAUXC,
+            amountRest,
+            TAUXD,
+          });
+        }
+      }
+      }
+    }
+  
+    return sectionStatistics;
+  }
+
+  async getSectionStatisticsAnglophoneSecondInstalment(): Promise<SectionStatistics[]> {
+    const sections = await this.sectionservice.getAllForUseAnglophone()
+  
+    const sectionStatistics: SectionStatistics[] = [];
+  
+    for (const section of sections) {
+      for (const cycle of section.cycle.getItems()) {
+        for (const niveauclass of cycle.niveauEtude.getItems()){
+          for (const cycleClass of niveauclass.salle.getItems()) {
+            console.log("cycleClass", cycleClass);
+          const numberOfStudents = Number(this.numberOfStudentsStartedPayingSecondInstalment())
+          const expectedAmount = Number(this.TotalAmountSecondInstalment()) * numberOfStudents;
+          console.log("expectedAmount", expectedAmount);
+  
+          const numberOfStudentsCompletedFee = (this.getallStudentswhohaveCompletedSecondInstalment).length
+          const  TAUXA= numberOfStudentsCompletedFee >0? numberOfStudentsCompletedFee / numberOfStudents * 100 : 0
+          console.log("TAUXA", TAUXA);
+          
+          const a = cycleClass.student.getItems()
+          console.log('aaaaa'+a)
+          const c = a.map(a=>a.pension)
+          console.log("ccccc"+c)
+          // const b = a.map(a => a.pension.toArray().reduce(
+          //   (sum, pension) => sum + pension.montantPension,
+          //   0,
+          // ));
+          // console.log("==========>"+b)
+          const b = a.map(a => {
+            const pensions = a.pension.getItems();
+            return pensions.reduce((sum, pension) => sum + pension.montantPension, 0);
+          });
+          console.log("bbbb"+b)
+          
+          const sumAmountAlreadyPaid= b.reduce(
+            (sum, pension) => sum + pension,
+            0,
+          );
+          
+          const TAUXB = sumAmountAlreadyPaid>0? sumAmountAlreadyPaid / expectedAmount * 100:0;
+          const numberOfStudentsNotPaid = numberOfStudents - numberOfStudentsCompletedFee;
+          const TAUXC =  numberOfStudentsNotPaid>0? numberOfStudentsNotPaid / numberOfStudents * 100:0;
+          const amountRest = expectedAmount - sumAmountAlreadyPaid;
+          const TAUXD = amountRest>0? amountRest / expectedAmount * 100:0;
+  
+          sectionStatistics.push({
+            sectionName: section.name,
+            className: cycleClass.name,
+            numberOfStudents,
+            expectedAmount,
+            numberOfStudentsCompletedFee,
+            TAUXA,
+            sumAmountAlreadyPaid,
+            TAUXB,
+            numberOfStudentsNotPaid,
+            TAUXC,
+            amountRest,
+            TAUXD,
+          });
+        }
+      }
+      }
+    }
+  
+    return sectionStatistics;
+  }
+
+  async getSectionStatisticsFrancophoneAdmissionFee(): Promise<SectionStatistics[]> {
+    const sections = await this.sectionservice.getAllForUseFrancophone()
+  
+    const sectionStatistics: SectionStatistics[] = [];
+  
+    for (const section of sections) {
+      for (const cycle of section.cycle.getItems()) {
+        for (const niveauclass of cycle.niveauEtude.getItems()){
+          for (const cycleClass of niveauclass.salle.getItems()) {
+            console.log("cycleClass", cycleClass);
+          const numberOfStudents = Number(this.numberOfStudentsStartedPayingAdmissionFee())
+          const expectedAmount = Number(this.TotalAmountAdmissionFee()) * numberOfStudents;
+          console.log("expectedAmount", expectedAmount);
+  
+          const numberOfStudentsCompletedFee = (this.getallStudentswhohaveCompletedAdmissionFee).length
+          const  TAUXA= numberOfStudentsCompletedFee >0? numberOfStudentsCompletedFee / numberOfStudents * 100 : 0
+          console.log("TAUXA", TAUXA);
+          
+          const a = cycleClass.student.getItems()
+          console.log('aaaaa'+a)
+          const c = a.map(a=>a.pension)
+          console.log("ccccc"+c)
+          // const b = a.map(a => a.pension.toArray().reduce(
+          //   (sum, pension) => sum + pension.montantPension,
+          //   0,
+          // ));
+          // console.log("==========>"+b)
+          const b = a.map(a => {
+            const pensions = a.pension.getItems();
+            return pensions.reduce((sum, pension) => sum + pension.montantPension, 0);
+          });
+          console.log("bbbb"+b)
+          
+          const sumAmountAlreadyPaid= b.reduce(
+            (sum, pension) => sum + pension,
+            0,
+          );
+          
+          const TAUXB = sumAmountAlreadyPaid>0? sumAmountAlreadyPaid / expectedAmount * 100:0;
+          const numberOfStudentsNotPaid = numberOfStudents - numberOfStudentsCompletedFee;
+          const TAUXC =  numberOfStudentsNotPaid>0? numberOfStudentsNotPaid / numberOfStudents * 100:0;
+          const amountRest = expectedAmount - sumAmountAlreadyPaid;
+          const TAUXD = amountRest>0? amountRest / expectedAmount * 100:0;
+  
+          sectionStatistics.push({
+            sectionName: section.name,
+            className: cycleClass.name,
+            numberOfStudents,
+            expectedAmount,
+            numberOfStudentsCompletedFee,
+            TAUXA,
+            sumAmountAlreadyPaid,
+            TAUXB,
+            numberOfStudentsNotPaid,
+            TAUXC,
+            amountRest,
+            TAUXD,
+          });
+        }
+      }
+      }
+    }
+  
+    return sectionStatistics;
+  }
+
+  async getSectionStatisticsFrancophomeFirstInstalment(): Promise<SectionStatistics[]> {
+    const sections = await this.sectionservice.getAllForUseFrancophone()
+  
+    const sectionStatistics: SectionStatistics[] = [];
+  
+    for (const section of sections) {
+      for (const cycle of section.cycle.getItems()) {
+        for (const niveauclass of cycle.niveauEtude.getItems()){
+          for (const cycleClass of niveauclass.salle.getItems()) {
+            console.log("cycleClass", cycleClass);
+          const numberOfStudents = Number(this.numberOfStudentsStartedPayingFirstInstalment())
+          const expectedAmount = Number(this.TotalAmountFirstInstalment()) * numberOfStudents;
+          console.log("expectedAmount", expectedAmount);
+  
+          const numberOfStudentsCompletedFee = (this.getallStudentswhohaveCompletedFirstInstalment).length
+          const  TAUXA= numberOfStudentsCompletedFee >0? numberOfStudentsCompletedFee / numberOfStudents * 100 : 0
+          console.log("TAUXA", TAUXA);
+          
+          const a = cycleClass.student.getItems()
+          console.log('aaaaa'+a)
+          const c = a.map(a=>a.pension)
+          console.log("ccccc"+c)
+          // const b = a.map(a => a.pension.toArray().reduce(
+          //   (sum, pension) => sum + pension.montantPension,
+          //   0,
+          // ));
+          // console.log("==========>"+b)
+          const b = a.map(a => {
+            const pensions = a.pension.getItems();
+            return pensions.reduce((sum, pension) => sum + pension.montantPension, 0);
+          });
+          console.log("bbbb"+b)
+          
+          const sumAmountAlreadyPaid= b.reduce(
+            (sum, pension) => sum + pension,
+            0,
+          );
+          
+          const TAUXB = sumAmountAlreadyPaid>0? sumAmountAlreadyPaid / expectedAmount * 100:0;
+          const numberOfStudentsNotPaid = numberOfStudents - numberOfStudentsCompletedFee;
+          const TAUXC =  numberOfStudentsNotPaid>0? numberOfStudentsNotPaid / numberOfStudents * 100:0;
+          const amountRest = expectedAmount - sumAmountAlreadyPaid;
+          const TAUXD = amountRest>0? amountRest / expectedAmount * 100:0;
+  
+          sectionStatistics.push({
+            sectionName: section.name,
+            className: cycleClass.name,
+            numberOfStudents,
+            expectedAmount,
+            numberOfStudentsCompletedFee,
+            TAUXA,
+            sumAmountAlreadyPaid,
+            TAUXB,
+            numberOfStudentsNotPaid,
+            TAUXC,
+            amountRest,
+            TAUXD,
+          });
+        }
+      }
+      }
+    }
+  
+    return sectionStatistics;
+  }
+
+
+  async getSectionStatisticsFrancophoneSecondInstalment(): Promise<SectionStatistics[]> {
+    const sections = await this.sectionservice.getAllForUseFrancophone()
+  
+    const sectionStatistics: SectionStatistics[] = [];
+  
+    for (const section of sections) {
+      for (const cycle of section.cycle.getItems()) {
+        for (const niveauclass of cycle.niveauEtude.getItems()){
+          for (const cycleClass of niveauclass.salle.getItems()) {
+            console.log("cycleClass", cycleClass);
+          const numberOfStudents = Number(this.numberOfStudentsStartedPayingSecondInstalment())
+          const expectedAmount = Number(this.TotalAmountSecondInstalment()) * numberOfStudents;
+          console.log("expectedAmount", expectedAmount);
+  
+          const numberOfStudentsCompletedFee = (this.getallStudentswhohaveCompletedSecondInstalment).length
+          const  TAUXA= numberOfStudentsCompletedFee >0? numberOfStudentsCompletedFee / numberOfStudents * 100 : 0
+          console.log("TAUXA", TAUXA);
+          
+          const a = cycleClass.student.getItems()
+          console.log('aaaaa'+a)
+          const c = a.map(a=>a.pension)
+          console.log("ccccc"+c)
+          // const b = a.map(a => a.pension.toArray().reduce(
+          //   (sum, pension) => sum + pension.montantPension,
+          //   0,
+          // ));
+          // console.log("==========>"+b)
+          const b = a.map(a => {
+            const pensions = a.pension.getItems();
+            return pensions.reduce((sum, pension) => sum + pension.montantPension, 0);
+          });
+          console.log("bbbb"+b)
+          
+          const sumAmountAlreadyPaid= b.reduce(
+            (sum, pension) => sum + pension,
+            0,
+          );
+          
+          const TAUXB = sumAmountAlreadyPaid>0? sumAmountAlreadyPaid / expectedAmount * 100:0;
+          const numberOfStudentsNotPaid = numberOfStudents - numberOfStudentsCompletedFee;
+          const TAUXC =  numberOfStudentsNotPaid>0? numberOfStudentsNotPaid / numberOfStudents * 100:0;
+          const amountRest = expectedAmount - sumAmountAlreadyPaid;
+          const TAUXD = amountRest>0? amountRest / expectedAmount * 100:0;
+  
+          sectionStatistics.push({
+            sectionName: section.name,
+            className: cycleClass.name,
+            numberOfStudents,
+            expectedAmount,
+            numberOfStudentsCompletedFee,
+            TAUXA,
+            sumAmountAlreadyPaid,
+            TAUXB,
+            numberOfStudentsNotPaid,
+            TAUXC,
+            amountRest,
+            TAUXD,
+          });
+        }
+      }
+      }
+    }
+  
+    return sectionStatistics;
+  }
 
 async getClassStatistics(): Promise<ClassStatistics[]>{
 
-  const sections = await this.sectionservice.getAllForUse()
+  const sections = await this.sectionservice.getAllForUseAnglophone()
 
   const classStatistics: ClassStatistics[] = [];
 
   for (const section of sections) {
     for (const cycle of section.cycle.getItems()) {
-      for (const cycleClass of cycle.salle.getItems()) {
-        const numberOfStudents = cycleClass.student.count();
+      for (const niveauclass of cycle.niveauEtude.getItems()){
+        for (const cycleClass of niveauclass.salle.getItems()) {
+        const numberOfStudents = cycleClass.student.count()>0? cycleClass.student.count():0;
         const expectedAmount = cycleClass.montantPensionSalle * numberOfStudents;
         const numberOfStudentsCompletedFee = (this.getallStudentswhohaveCompletedAdmissionFee).length
-        const rateR = numberOfStudentsCompletedFee / numberOfStudents * 100;
+        const rateR = numberOfStudentsCompletedFee > 0 ? numberOfStudentsCompletedFee / numberOfStudents * 100 : 0;
         const a = cycleClass.student.getItems()
         console.log('=============>'+a)
         const c = a.map(a=>a.pension)
@@ -171,11 +618,11 @@ async getClassStatistics(): Promise<ClassStatistics[]>{
           0,
         );
         
-        const rateT = sumAmountAlreadyPaid / expectedAmount * 100;
+        const rateT =sumAmountAlreadyPaid>0? sumAmountAlreadyPaid / expectedAmount * 100:0;
         const numberOfStudentsNotPaid = numberOfStudents - numberOfStudentsCompletedFee;
-        const rateS = numberOfStudentsNotPaid / numberOfStudents * 100;
+        const rateS = numberOfStudentsNotPaid>0?numberOfStudentsNotPaid / numberOfStudents * 100:0;
         const amountRest = expectedAmount - sumAmountAlreadyPaid;
-        const rateZ = amountRest / expectedAmount * 100;
+        const rateZ = amountRest>0? amountRest / expectedAmount * 100:0;
 
         classStatistics.push({
           className: cycleClass.name,
@@ -192,9 +639,73 @@ async getClassStatistics(): Promise<ClassStatistics[]>{
         });
       }
     }
+    }
   }
 
   return classStatistics;
+
+}
+
+async getGeneralSectionStatistics(): Promise<SectionStatistics[]>{
+
+  const sections = await this.sectionservice.getAllForUse()
+
+  const sectionStatistics: SectionStatistics[] = [];
+
+  for (const section of sections) {
+    for (const cycle of section.cycle.getItems()) {
+      for (const niveauclass of cycle.niveauEtude.getItems()){
+        for (const cycleClass of niveauclass.salle.getItems()) {
+        const numberOfStudents = Number(this.numberOfStudentsStartedPayingPension())
+        const expectedAmount = cycleClass.montantPensionSalle * numberOfStudents;
+        const numberOfStudentsCompletedFee = (this.getallStudentswhohaveCompletedAdmissionFee).length
+        const  TAUXA= numberOfStudentsCompletedFee >0? numberOfStudentsCompletedFee / numberOfStudents * 100 : 0
+        const a = cycleClass.student.getItems()
+        console.log('=============>'+a)
+        const c = a.map(a=>a.pension)
+        console.log("===========>"+c)
+        // const b = a.map(a => a.pension.toArray().reduce(
+        //   (sum, pension) => sum + pension.montantPension,
+        //   0,
+        // ));
+        // console.log("==========>"+b)
+        const b = a.map(a => {
+          const pensions = a.pension.getItems();
+          return pensions.reduce((sum, pension) => sum + pension.montantPension, 0);
+        });
+        console.log("===========>"+b)
+        
+        const sumAmountAlreadyPaid= b.reduce(
+          (sum, pension) => sum + pension,
+          0,
+        );
+        
+        const TAUXB = sumAmountAlreadyPaid>0? sumAmountAlreadyPaid / expectedAmount * 100:0;
+          const numberOfStudentsNotPaid = numberOfStudents - numberOfStudentsCompletedFee;
+          const TAUXC =  numberOfStudentsNotPaid>0? numberOfStudentsNotPaid / numberOfStudents * 100:0;
+          const amountRest = expectedAmount - sumAmountAlreadyPaid;
+          const TAUXD = amountRest>0? amountRest / expectedAmount * 100:0;
+  
+          sectionStatistics.push({
+            sectionName: section.name,
+            className: cycleClass.name,
+            numberOfStudents,
+            expectedAmount,
+            numberOfStudentsCompletedFee,
+            TAUXA,
+            sumAmountAlreadyPaid,
+            TAUXB,
+            numberOfStudentsNotPaid,
+            TAUXC,
+            amountRest,
+            TAUXD,
+        });
+      }
+    }
+    }
+  }
+
+  return sectionStatistics;
 
 }
 
@@ -243,10 +754,7 @@ async getTrancheStatisticsForSpecialStudents(): Promise<SpecialStudentStatistics
   const result: SpecialStudentStatistics[] = [];
 
   for (const student of students) {
-    const tranches = await this.trancheStudentservice.findTrancheByStudent(student.id);
-    console.log('=======================tranche>'+tranches)
-
-    for (const tranche of tranches) {
+    for (const tranche of await this.trancheStudentservice.findTrancheByStudent(student.id)) {
       const amountToPay = (await tranche).montant;
       const dateLine = (await tranche).dateLine;
       const paymentPriority = (await tranche).priority;

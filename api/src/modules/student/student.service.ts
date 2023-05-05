@@ -131,6 +131,21 @@ export class StudentService {
           populate:['salle','pension']
         })
       }
+
+      async getAllForUseAnglophone(): Promise<Student[]> {
+        const a= await this.studentRepository.findAll({
+          populate: ['salle','pension']
+        })
+        return a.filter(async a=>(await (await (await (await a.salle.load()).niveau.load()).cycle.load()).section.load()).name==='Anglophone')
+      }
+
+      
+      async getAllForUseFrancophone(): Promise<Student[]> {
+        const a= await this.studentRepository.findAll({
+          populate: ['salle','pension']
+        })
+        return a.filter(async a=>(await (await (await (await a.salle.load()).niveau.load()).cycle.load()).section.load()).name=='Francophone')
+      }
       
       async update(id:string, input: StudentUpdateInput): Promise<Student> {
         const student = await this.findById(id)

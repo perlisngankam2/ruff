@@ -7,6 +7,7 @@ import { TrancheModule } from "../tranche/tranche.module";
 import { StudentModule } from "../student/student.module";
 import { StatisticsService } from "./statistics.service";
 import { SectionModule } from "../section/section.module";
+import { AvanceTrancheModule } from "../avance_tranche/avance_tranche.module";
 
 
 @Module({
@@ -14,7 +15,8 @@ import { SectionModule } from "../section/section.module";
         StudentModule,
         SectionModule,
         TrancheModule,
-        TrancheStudentModule
+        TrancheStudentModule,
+        AvanceTrancheModule
     ],
     providers:[StatisticsService,StatisticResolver],
     exports:[StatisticsService]

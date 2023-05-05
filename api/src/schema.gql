@@ -226,7 +226,7 @@ type TrancheStudent {
   trancheid: ID!
 }
 
-type Student { 
+type Student {
   id: ID!
   matricule: String
   firstname: String

@@ -421,23 +421,11 @@ type StudentStatistics {
   rateArrears: Float!
 }
 
-type ClassStatistics {
-  className: String!
-  numberOfStudents: Float!
-  expectedAmount: Float!
-  numberOfStudentsCompletedFee: Float!
-  rateR: Float!
-  sumAmountAlreadyPaid: Float!
-  rateT: Float!
-  numberOfStudentsNotPaid: Float!
-  rateS: Float!
-  amountRest: Float!
-  rateZ: Float!
-}
-
 type SpecialStudentStatistics {
   amountToPay: Float!
   dateLine: DateTime!
+  categorie: String!
+  nameTranche: String!
   restOfAmountToPay: Float!
   amountAlreadyPaid: Float!
   paymentDate: DateTime!
@@ -536,6 +524,7 @@ type Query {
   findpensionbystudent(studentid: String!): Pension!
   findAllsection: [Section!]!
   findOnesection(id: String!): Section!
+  getAllForUseSection: [Section!]!
   findAllcycle: [Cycle!]!
   findOnecycle(id: String!): Cycle!
   findAllNiveauEtude: [NiveauEtude!]!
@@ -560,10 +549,17 @@ type Query {
   findOnefraisincription(id: String!): FraisInscription!
   findAllparents: [Parent!]!
   parent(id: String!): Parent!
-  studentStatistics: [StudentStatistics!]!
-  sectionStatistics: [SectionStatistics!]!
-  classStatistics: [ClassStatistics!]!
+  getStudentStatisticsAnglophone: [StudentStatistics!]!
+  getStudentStatisticsFrancophone: [StudentStatistics!]!
+  getSectionStatisticsAnglophoneAdmissionFee: [SectionStatistics!]!
+  getSectionStatisticsAnglophoneFirstInstalment: [SectionStatistics!]!
   getTrancheStatisticsForSpecialStudents: [SpecialStudentStatistics!]!
+  getSectionStatisticsAnglophoneSecondInstalment: [SectionStatistics!]!
+  getSectionStatisticsFrancophoneAdmissionFee: [SectionStatistics!]!
+  getSectionStatisticsFrancophoneFirstInstalment: [SectionStatistics!]!
+  getSectionStatisticsFrancophoneSecondInstalment: [SectionStatistics!]!
+  getGeneralSectionStatistics: [SectionStatistics!]!
+  getTrancheStatisticsForNormalStudents: [SpecialStudentStatistics!]!
   findAllpensionSalle: [PensionSalle!]!
   findOnepensionsalle(id: String!): PensionSalle!
   findAllCourse: [Course!]!

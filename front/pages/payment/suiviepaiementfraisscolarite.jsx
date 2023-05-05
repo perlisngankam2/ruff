@@ -31,11 +31,18 @@ import { Box,
 // import { useTranslation} from 'next-i18next';
 import {CiSearch} from 'react-icons/ci'
 import DefaultLayout from '../../components/layouts/DefaultLayout';
-
+import { useQuery, useMutation } from "@apollo/client"
+import { GET_STUDENT_STATISTICS_ANGLOPHONE_SECTION } from '../../graphql/Queries';
+import { useEffect } from 'react';
 const SuiviPaimentFraisScolarite = () => {
 
     // const {t} = useTranslation();
 
+    const {data:dataStudentStatisticsAnglophoneSection} = useQuery( GET_STUDENT_STATISTICS_ANGLOPHONE_SECTION)
+    
+    useEffect(() => {
+        console.log(dataStudentStatisticsAnglophoneSection);
+    })
     return (
         <DefaultLayout> 
             <Center>
@@ -52,13 +59,13 @@ const SuiviPaimentFraisScolarite = () => {
                     >
                         <Box mb={'2'} borderBottom={'1px'}>
                             <Heading textAlign={'center'}  fontSize={['2xl', '2xl', '2xl']}>
-                                GROUPE SCOLAIE BILINGUE AWONO BILOGUE
+                                GROUPE SCOLAIRE BILINGUE AWONO BILONGUE
                             </Heading>
                         </Box>
                         <Box display={'flex'} ml={'50px'} > 
                             <Box   mt={'30px'}>
                                 <Heading textAlign={'center'} fontSize={['sm', 'sm', 'sm']} >
-                                    TABLEAU DE SUIVI GENERAL  DU PAIEMENT DES FRAIS DE SCOLARITE: CLASSE: CM2/ SECTION FRANCOPHONE         
+                                    TABLEAU DE SUIVI GENERAL  DU PAIEMENT DES FRAIS DE SCOLARITE: CLASSE: CM2/ SECTION ANGLOPHONE         
                                 </Heading>
                             </Box>
                             <Box mt={'30px'} ml={'40px'}>
@@ -82,102 +89,23 @@ const SuiviPaimentFraisScolarite = () => {
                                             <Th>taux rar</Th>
                                         </Tr>
                                     </Thead>
+                                    {dataStudentStatisticsAnglophoneSection && 
                                     <Tbody>
-                                        <Tr borderBottom={"1px"}>
+                                        {dataStudentStatisticsAnglophoneSection?.getStudentStatisticsAnglophone
+                                        .map((anglophoneStudent, index) => ( 
+                                        <Tr borderBottom={"1px"} key={index}>
                                             <Td  borderBottom={"1px"}>1</Td>
-                                            <Td borderBottom={"1px"}>millimetres</Td>
-                                            <Td  borderBottom={"1px"}isNumeric>25.4</Td>
-                                            <Td>millimetres</Td>
-                                            <Td>millimetres</Td>
-                                            <Td>10% </Td>
-                                            <Td>100000</Td>
-                                            <Td>2% </Td>
-                                        </Tr>
-                                        <Tr>
-                                            <Td>2</Td>
-                                            <Td></Td>
-                                            <Td></Td>
-                                            <Td></Td>
-                                            <Td> </Td>
-                                            <Td></Td>
-                                            <Td></Td>
-                                            <Td></Td>
-                                        </Tr>
-                                        <Tr>
-                                            <Td>3</Td>
-                                            <Td></Td>
-                                            <Td></Td>
-                                            <Td></Td>
-                                            <Td></Td>
-                                            <Td></Td>
-                                            <Td></Td>
-                                            <Td></Td>
-                                        </Tr>
-                                        <Tr>
-                                            <Td>4</Td>
-                                            <Td></Td>
-                                            <Td></Td>
-                                            <Td></Td>
-                                            <Td></Td>
-                                            <Td></Td>
-                                            <Td></Td>
-                                            <Td></Td>
-                                        </Tr>  <Tr>
-                                            <Td>5</Td>
-                                            <Td></Td>
-                                            <Td></Td>
-                                            <Td></Td>
-                                            <Td></Td>
-                                            <Td></Td>
-                                            <Td></Td>
-                                            <Td></Td>
-                                        </Tr>  <Tr>
-                                            <Td>6</Td>
-                                            <Td></Td>
-                                            <Td></Td>
-                                            <Td></Td>
-                                            <Td></Td>
-                                            <Td></Td>
-                                            <Td></Td>
-                                            <Td></Td>
-                                        </Tr>  <Tr>
-                                            <Td>7</Td>
-                                            <Td></Td>
-                                            <Td></Td>
-                                            <Td></Td>
-                                            <Td></Td>
-                                            <Td></Td>
-                                            <Td></Td>
-                                            <Td></Td>
-                                        </Tr>  <Tr>
-                                            <Td>8</Td>
-                                            <Td></Td>
-                                            <Td></Td>
-                                            <Td></Td>
-                                            <Td></Td>
-                                            <Td></Td>
-                                            <Td></Td>
-                                            <Td></Td>
-                                        </Tr>  <Tr>
-                                            <Td>9</Td>
-                                            <Td></Td>
-                                            <Td></Td>
-                                            <Td></Td>
-                                            <Td></Td>
-                                            <Td></Td>
-                                            <Td></Td>
-                                            <Td></Td>
-                                        </Tr>  <Tr>
-                                            <Td>10</Td>
-                                            <Td></Td>
-                                            <Td></Td>
-                                            <Td></Td>
-                                            <Td></Td>
-                                            <Td></Td>
-                                            <Td></Td>
-                                            <Td></Td>
-                                        </Tr>
+                                            <Td borderBottom={"1px"}>{anglophoneStudent.name}</Td>
+                                            <Td >{anglophoneStudent.matricle}</Td>
+                                            <Td>{anglophoneStudent.amountExpected}</Td>
+                                            <Td>{anglophoneStudent.amountPaid}</Td>
+                                            <Td>{anglophoneStudent.collectionRate}%</Td>
+                                            <Td>{anglophoneStudent.restToPay}</Td>
+                                            <Td>{anglophoneStudent.rateArrears}%</Td>
+                                        </Tr> 
+                                    ))}                                    
                                     </Tbody>
+                                    }
                                     <Tfoot>
                                         <Tr>
                                             <Th>Total</Th>

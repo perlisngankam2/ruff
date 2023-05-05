@@ -42,13 +42,27 @@ export class SectionService {
       findById(id:string){
         return this.sectionRepository.findOne(id)
       }
-
-      getAllForUse(): Promise<Section[]> {
-        return this.sectionRepository.findAll({
-          populate: ['cycle', 'cycle.niveauEtude', 'cycle.niveauEtude.salle', 'cycle.niveauEtude.salle.student', 'cycle.niveauEtude.salle.student.pension']
+    
+      async getAllForUseAnglophone(): Promise<Section[]> {
+        const a= await this.sectionRepository.findAll({
+          populate: true
         })
+        return a.filter(a=>a.name===' section anglophone')
       }
 
+      async getAllForUseFrancophone(): Promise<Section[]> {
+        const a= await this.sectionRepository.findAll({
+          populate: ['cycle','cycle.niveauEtude','cycle.niveauEtude.salle','cycle.niveauEtude.salle.student','cycle.niveauEtude.salle.student.pension']
+        })
+        return a.filter(a=>a.name==='section francophone')
+      }
+
+      async getAllForUse(): Promise<Section[]> {
+        return await this.sectionRepository.findAll({
+          populate: ['cycle','cycle.niveauEtude','cycle.niveauEtude.salle','cycle.niveauEtude.salle.student','cycle.niveauEtude.salle.student.pension']
+
+        })
+      }
 
       getAll(): Promise<Section[]> {
         return this.sectionRepository.findAll()

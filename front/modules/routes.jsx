@@ -171,11 +171,18 @@ const RouteName = {
     ClasseEdit: {
       path: '/class/addclass'
     },
-   
     levelEdit: {
       path: '/level/addLevel',
       // type: AuthRoute.Public,
       // platforms: [Platform.Main]
+    },
+    FeesByStudentRegime: {
+      path: '/statistics/feesByStudentRegime',
+      // type: AuthRoute.Public,
+      // platforms: [Platform.Main]
+    },
+    ParentStudentClassInfos: {
+      path: '/statistics/parentStudentClassInfos'
     },
     Cycle: {
       path: '/cycle',

@@ -241,8 +241,8 @@
               </Link>
             </AccordionPanel>
             <AccordionPanel pb={1} _hover={{background:"rgba(0,0,0,0.16)"}}>
-              <Link href="/statistiques">
-                <Box as="span">Statistiques 2</Box>
+              <Link href="/statistics/feesByStudent">
+                <Box as="span">Paiement par eleve</Box>
               </Link>
             </AccordionPanel>
           </AccordionItem>

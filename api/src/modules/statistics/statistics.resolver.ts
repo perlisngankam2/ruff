@@ -14,18 +14,24 @@ export class StatisticResolver {
 
 
   @Query(() => [StudentStatistics])
-  async studentStatistics(): Promise<StudentStatistics[]> {
-    return this.statisticsService.getStudentStatistics();
+  async getStudentStatisticsAnglophone(): Promise<StudentStatistics[]> {
+    return this.statisticsService.getStudentStatisticsAnglophone();
+  }
+
+  @Query(() => [StudentStatistics])
+  async getStudentStatisticsFrancophone(): Promise<StudentStatistics[]> {
+    return this.statisticsService.getStudentStatisticsFrancophone();
+  }
+  
+
+  @Query(() => [SectionStatistics])
+  async getSectionStatisticsAnglophoneAdmissionFee(): Promise<SectionStatistics[]> {
+    return this.statisticsService.getSectionStatisticsAnglophoneAdmissionFee();
   }
 
   @Query(() => [SectionStatistics])
-  async sectionStatistics(): Promise<SectionStatistics[]> {
-    return this.statisticsService.getSectionStatistics();
-  }
-
-  @Query(() => [ClassStatistics])
-  async classStatistics(): Promise<ClassStatistics[]> {
-    return this.statisticsService.getClassStatistics();
+  async getSectionStatisticsAnglophoneFirstInstalment(): Promise<SectionStatistics[]> {
+    return this.statisticsService.getSectionStatisticsAnglophoneFirstInstalment();
   }
 
   @Query(() => [SpecialStudentStatistics])
@@ -33,7 +39,36 @@ export class StatisticResolver {
     return this.statisticsService.getTrancheStatisticsForSpecialStudents();
   }
 
+  @Query(() => [SectionStatistics])
+  getSectionStatisticsAnglophoneSecondInstalment(): Promise<SectionStatistics[]> {
+    return this.statisticsService.getSectionStatisticsAnglophoneSecondInstalment();
+  }
   
+  @Query(() => [SectionStatistics])
+  getSectionStatisticsFrancophoneAdmissionFee(): Promise<SectionStatistics[]> {
+    return this.statisticsService.getSectionStatisticsFrancophoneAdmissionFee();
+  }
+
+  @Query(() => [SectionStatistics])
+  getSectionStatisticsFrancophoneFirstInstalment(): Promise<SectionStatistics[]> {
+    return this.statisticsService.getSectionStatisticsFrancophomeFirstInstalment();
+  }
+
+  @Query(() => [SectionStatistics])
+  getSectionStatisticsFrancophoneSecondInstalment(): Promise<SectionStatistics[]> {
+    return this.statisticsService.getSectionStatisticsFrancophoneSecondInstalment();
+  }
+
+  @Query(() => [SectionStatistics])
+  getGeneralSectionStatistics(): Promise<SectionStatistics[]> {
+    return this.statisticsService.getGeneralSectionStatistics()
+  }
+
+  @Query(() => [SpecialStudentStatistics])
+  getTrancheStatisticsForNormalStudents(): Promise<SpecialStudentStatistics[]> {
+    return this.statisticsService.getTrancheStatisticsForNormalStudents();
+  }
+
 
 
 }

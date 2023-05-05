@@ -21,14 +21,14 @@ query findAllpersonnel {
 
 //category personnel
 export const GET_ALL_Category_Personnel = gql ` 
-query findAllcategoriepersonnel {
-    findAllcategoriepersonnel {
-        id
-        nom
-        description
-        montant
+    query findAllcategoriepersonnel {
+        findAllcategoriepersonnel {
+            id
+            nom
+            description
+            montant
+        }
     }
-}
 `;
 
 
@@ -304,6 +304,20 @@ export const GET_ALL_TRANCHE_STUDENT = gql `
 }
 `;
 
+//stattistique des eleves de la section anglophone 
+export const GET_STUDENT_STATISTICS_ANGLOPHONE_SECTION = gql `
+    query getStudentStatisticsAnglophone {
+        getStudentStatisticsAnglophone {
+            name
+            matricle
+            amountExpected
+            amountPaid
+            collectionRate
+            restToPay
+            rateArrears
+        }
+    }
+`
 
 //recuperation d'une tranche de pension
 export const GET_TRANCHE_PENSION_BY_ID = gql `

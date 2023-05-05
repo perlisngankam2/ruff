@@ -72,7 +72,7 @@ export class SalleService {
 
       getAll(): Promise<Salle[]> {
         const salles= this.salleRepository.findAll({
-          populate:['cycle','niveau']
+          populate:['cycle','niveau','student']
         })
         return salles
       }

@@ -34,9 +34,7 @@ const SuiviPaimenetPrEleve = () => {
                         // mt={'10'} 
                         // display={{md:'flex'}}
                         // mb={'20px'}
-                    >
-
-                        
+                    >   
                     </Box>
                     
                 </Box>

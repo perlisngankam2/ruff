@@ -198,7 +198,7 @@ const DetailComponent = () => {
   // ); 
 
   //Niveau DE CHAQUE ELEVE
-  const {data:dataStudentSalle} = useQuery(GET_STUDENT_SALLE,
+  const {data:dataStudentLevel} = useQuery(GET_STUDENT_SALLE,
     {
       variables: {studentid: router.query.id} 
     }
@@ -840,8 +840,7 @@ const {data:dataResteFeesToPayByStudent} = useQuery(GET_RESTE_PENSION_A_PAYER_BY
           {dataStudentId.findOnestudent.sex}
         </Text>
         <Text><Text as='b'>Niveau : </Text>
-          {dataStudentSalle?.findSalleByStudent.levelName}
-
+          {dataStudentLevel?.findSalleByStudent.levelName}
         </Text>
         <Text><Text as='b'>Classe : </Text>
           {dataStudentId.findOnestudent.salleName}

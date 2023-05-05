@@ -34,6 +34,7 @@ export class StatisticsService {
       name: string;
       matricle: string;
       amountExpected: number;
+      section:string;
       amountPaid: number;
       collectionRate: number;
       restToPay: number;
@@ -51,6 +52,7 @@ export class StatisticsService {
     return students.map(student => {
       const pensions = student.pension.toArray();
       const amountExpected =student.salle.getEntity().montantPensionSalle;
+      const section = student.salle.getEntity().niveau.getEntity().cycle.getEntity().section.getEntity().name
       console.log('=============>'+amountExpected)
       const amountPaid = pensions.reduce(
         (sum, pension) => sum + pension.montantPension,
@@ -64,23 +66,26 @@ export class StatisticsService {
         name: student.firstname,
         matricle: student.matricule || null,
         amountExpected,
+        section,
         amountPaid,
         collectionRate,
         restToPay,
         rateArrears,
       };
-    });
+    }).filter(a=>a.section==='Anglophone');
   }
 
   async getStudentStatisticsFrancophone(): Promise<
     {
       name: string;
       matricle: string;
+      section:string;
       amountExpected: number;
       amountPaid: number;
       collectionRate: number;
       restToPay: number;
       rateArrears: number;
+      
     }[]
   > {
     // const students = await this.studentRepository.find({
@@ -94,6 +99,7 @@ export class StatisticsService {
       const pensions = student.pension.toArray();
       const amountExpected =student.salle.getEntity().montantPensionSalle;
       console.log('=============>'+amountExpected)
+      const section = student.salle.getEntity().niveau.getEntity().cycle.getEntity().section.getEntity().name
       const amountPaid = pensions.reduce(
         (sum, pension) => sum + pension.montantPension,
         0,
@@ -106,12 +112,13 @@ export class StatisticsService {
         name: student.firstname,
         matricle: student.matricule || null,
         amountExpected,
+        section,
         amountPaid,
         collectionRate,
         restToPay,
         rateArrears,
       };
-    });
+    }).filter(a=>a.section==='Francophone');
   }
 
 

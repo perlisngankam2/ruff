@@ -409,6 +409,7 @@ type SectionStatistics {
 type StudentStatistics {
   name: String!
   matricle: String!
+  section: String!
   amountExpected: Float!
   amountPaid: Float!
   collectionRate: Float!

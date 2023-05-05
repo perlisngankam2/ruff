@@ -10,6 +10,7 @@ import { PensionService } from "../pension/pension.service";
 import { SalaireService } from "../salaire/salaire.service";
 import { format } from "date-fns";
 import { AvanceTrancheService } from "../avance_tranche/avance-tranche.service";
+import { PaySalaryService } from "../paysalary/paysalary.service";
 
 
 
@@ -23,6 +24,7 @@ export class ExpenseService {
     private pensionservice:PensionService,
     @Inject(forwardRef(() =>SalaireService))
     private salaireservice: SalaireService,
+    private paysalaryservice: PaySalaryService,
     private avancetrancheservice: AvanceTrancheService,
   ) {}
 
@@ -135,7 +137,7 @@ async savePensionExpense(studentid: string){
 
 async saveSalaireExpenses(personnelid: string){
     const salaires =  await this.salaireservice.salairepersonnel(personnelid)
-    const a = salaires[salaires.length]
+    const a = salaires[salaires.length-1]
 
     if(salaires.length>0){
         const salairemontant = a.montant

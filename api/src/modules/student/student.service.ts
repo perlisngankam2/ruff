@@ -107,9 +107,19 @@ export class StudentService {
       }
 
       async findAllStudentSpecialRegime(){
-        const a=await this.studentRepository.findAll()
+        const a=await this.studentRepository.findAll({
+          populate:['salle','pension','trancheStudent','trancheStudent.tranche']
+        })
 
         return  a.filter(async a=>(await a.categorie.load()).description=='Special')
+      }
+
+      async findAllStudentNormalRegime(){
+        const a=await this.studentRepository.findAll({
+          populate:['salle','pension','trancheStudent','trancheStudent.tranche']
+        })
+
+        return  a.filter(async a=>(await a.categorie.load()).description=='Normal')
       }
 
       async findStudentTel(id:string){
@@ -130,6 +140,21 @@ export class StudentService {
         return this.studentRepository.findAll({
           populate:['salle','pension']
         })
+      }
+
+      async getAllForUseAnglophone(): Promise<Student[]> {
+        const a= await this.studentRepository.findAll({
+          populate: ['salle','pension']
+        })
+        return a.filter(async a=>(await (await (await (await a.salle.load()).niveau.load()).cycle.load()).section.load()).name==='Anglophone')
+      }
+
+      
+      async getAllForUseFrancophone(): Promise<Student[]> {
+        const a= await this.studentRepository.findAll({
+          populate: ['salle','pension']
+        })
+        return a.filter(async a=>(await (await (await (await a.salle.load()).niveau.load()).cycle.load()).section.load()).name=='Francophone')
       }
       
       async update(id:string, input: StudentUpdateInput): Promise<Student> {

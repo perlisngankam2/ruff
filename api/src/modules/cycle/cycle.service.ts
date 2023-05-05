@@ -63,7 +63,7 @@ export class CycleService {
     
       getAll(): Promise<Cycle[]> {
         const cycle= this.cycleRepository.findAll({
-          populate:['section']
+          populate:['section','niveauEtude','niveauEtude.salle']
         })
         return cycle
       }

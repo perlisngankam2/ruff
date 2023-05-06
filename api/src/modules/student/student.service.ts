@@ -108,7 +108,7 @@ export class StudentService {
 
       async findAllStudentSpecialRegime(){
         const a=await this.studentRepository.findAll({
-          populate:['salle','pension','trancheStudent','trancheStudent.tranche']
+          populate:['salle','pension','salle.niveau','salle.niveau.cycle','salle.niveau.cycle.section','trancheStudent','trancheStudent.tranche']
         })
 
         return  a.filter(async a=>(await a.categorie.load()).description=='Special')
@@ -138,7 +138,7 @@ export class StudentService {
     
       getAll(): Promise<Student[]> {
         return this.studentRepository.findAll({
-          populate:['salle','pension']
+          populate:['salle','pension','salle.niveau.cycle','salle.niveau.cycle.section']
         })
       }
 

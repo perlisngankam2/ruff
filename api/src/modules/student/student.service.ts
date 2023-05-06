@@ -68,6 +68,7 @@ export class StudentService {
             // classe : input.classe,
             sex: input.sex,
             dateOfBirth:format(input.dateOfBirth, 'dd/MM/yyyy'),
+            birthPlace: input.birthPlace,
             adress:input.adress,
             transport:input.transport,
             categorie : input.categoryStudentId,

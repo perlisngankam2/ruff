@@ -41,7 +41,7 @@ const AjouterEleve = () => {
   const toast = useToast();
   const router = useRouter();
   const {t} = useTranslation();
-  const [matricule, setMatricule] = useState("");
+  // const [matricule, setMatricule] = useState("");
   const [firstname, setFirstname] = useState("");
   const [lastname, setLastname] = useState("");
   // const [classe, setClass] = useState("");
@@ -82,14 +82,18 @@ const AjouterEleve = () => {
       variables:{id: router.query.id}
     }
   );
-  
+
+  // const InitialAndYear = "GBA23";
+
+
   // findAllstudents
 const [student, setStudent] = useState({
   salleId: "",
-  matricule: "",
+  birthPlace: "",
   firstname: "",
   lastname: "",
-  dateOfBirth: "",
+  dateOfBirth: 0,
+  birthPlace: "",
   sex: "",
   adress: "",
   transport: "",
@@ -144,18 +148,24 @@ useEffect(() => {
   // console.log(dataCycle?.findAllcycle)
 }, [dataStudentById])
 
+const randomString = Math.random().toString(36).substring(10).toUpperCase();
+const matricule = `GSBAB23${randomString}`;
 
   const HandleClick = async (event) => {
+    console.log(student.birthPlace);
+    // console.log(typeof(student.dateOfBirth));
+    
     event.preventDefault();
     if(!router.query.id){
     await createStudent({ 
       variables:{
         student: { 
-          matricule: student.matricule,
+          matricule: matricule,
           firstname: student.firstname,
           lastname: student.lastname,
           // classe: classe,
-          dateOfBirth: student.dateOfBirth,
+          dateOfBirth: new Date(student.dateOfBirth),
+          birthPlace: student.birthPlace,
           sex: student.sex,
           adress: student.adress,
           transport: student.transport,
@@ -196,6 +206,7 @@ useEffect(() => {
           lastname: student.lastname,
           // classe: classe,
           dateOfBirth: student.dateOfBirth,
+          birthPlace: student.birthPlace,
           sex: student.sex,
           adress: student.adress,
           transport: student.transport,
@@ -229,7 +240,7 @@ useEffect(() => {
   }
     router.push("/eleves")
     
-    setMatricule("");
+    // setMatricule("");
     setFirstname("");
     setLastname("");
    // const [classe, setClass] = useState("");
@@ -385,18 +396,16 @@ useEffect(() => {
                       variant="flushed"
                     />
                   </FormControl>
-                  <FormControl>
-                    <FormLabel>Sexe</FormLabel>
-                    <Select
-                      name="sex"
-                      value={student.sex}
-                      onChange={(e) => setStudent({...student, sex:e.target.value})}
-                      variant="flushed"
-                    >
-                      <option>Masculin</option>
-                      <option>Feminin</option>
-                    </Select>
-                  </FormControl>
+                   <FormControl>
+                      <FormLabel mb="-5px">Lieu de naissaonce</FormLabel>
+                      <Input
+                        type="text"
+                        name="birthPlace"
+                        value={student.birthPlace}
+                        onChange={(e) => setStudent({...student, birthPlace:e.target.value})}
+                        variant="flushed"
+                      />
+                    </FormControl>
                
                 </Flex>
                 <Flex 
@@ -414,15 +423,18 @@ useEffect(() => {
                     />
                   </FormControl>
                   <FormControl>
-                      <FormLabel mb="-5px">Matricule</FormLabel>
-                      <Input
-                        type="text"
-                        name="matricule"
-                        value={student.matricule}
-                        onChange={(e) => setStudent({...student, matricule:e.target.value})}
-                        variant="flushed"
-                      />
-                    </FormControl>
+                    <FormLabel>Sexe</FormLabel>
+                    <Select
+                      name="sex"
+                      value={student.sex}
+                      onChange={(e) => setStudent({...student, sex:e.target.value})}
+                      variant="flushed"
+                    >
+                      <option>Masculin</option>
+                      <option>Feminin</option>
+                    </Select>
+                  </FormControl>
+                
                 </Flex>
                 <Flex 
                   gap={5} 

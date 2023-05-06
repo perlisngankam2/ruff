@@ -58,6 +58,10 @@ export class Student {
   @Property({nullable:true})
   dateOfBirth!:Date;
 
+  @Field({ nullable: true })
+  @Property({nullable:true})
+  birthPlace!: string;
+
   // @Field({ nullable: true })
   // @Enum({
   //   items: () => Regime,

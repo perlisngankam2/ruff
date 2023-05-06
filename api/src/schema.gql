@@ -232,6 +232,7 @@ type Student {
   firstname: String
   lastname: String
   dateOfBirth: DateTime!
+  birthPlace: String
   sex: String
   adress: String
   transport: String
@@ -708,6 +709,7 @@ input StudentCreateInput {
   firstname: String
   lastname: String
   dateOfBirth: DateTime
+  birthPlace: String
   sex: String
   adress: String
   transport: String

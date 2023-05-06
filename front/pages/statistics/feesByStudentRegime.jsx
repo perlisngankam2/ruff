@@ -43,17 +43,23 @@ const Paiement = () => {
           variables: {studentid: router.query.id} 
         }
       )
-  
+//   affichage de la date d'aaujourd'hui
+      const today = new Date();
     return (
         <DefaultLayout> 
         <Flex p='3em' minH='100vh' direction ='column' flexWrap='wrap' mt={"50px"} >
-            <Box bg={"colors.whiteColor"} border='1px'> 
-            <Box borderBottom='3px' borderWidth='1px'   >
+            <Box 
+            bg={"colors.whiteColor"} 
+            border='1px'
+            w={"810px"}
+            ml={"90px"}
+            > 
+            <Box borderBottom='1px'  >
                 <Heading fontSize='xl' textAlign={'center'} mt='20px'>
                     GROUPE SCOLAIRE BILINGUE AWONO BILOGUE
                 </Heading>
             </Box>
-            <Box borderWidth='1px' borderBottom='3px' > 
+            <Box  borderBottom='1px' > 
                 <Heading fontSize='md' textAlign={'center'} mt='20px'>
                     FICHE DE PAIEMENT
                 </Heading>
@@ -63,7 +69,10 @@ const Paiement = () => {
                 <Flex justify='space-between'>
                     <Box display='flex' mt='20px' gap={'1'}>
                         <Text fontWeight={"bold"}>Date : </Text>
-                        <Text>............./............./.............</Text>
+                        <Text>
+                            {/* {today.toLocaleDateString()} */}
+                            {(new Date).toLocaleDateString()}
+                        </Text>
                     </Box>
                     <Box display='flex' mt='20px' mr='150px'gap={'1'}>
                         <Text fontWeight={"bold"}>No Reçu : </Text>
@@ -116,7 +125,7 @@ const Paiement = () => {
                         </Text>
                         <Text fontWeight={"bold"}>à</Text>
                         <Text>
-                            ......................................................................................................
+                          .......................
                         </Text>
                     </Box>
                     <Box display='flex' mt='20px' gap={1}>
@@ -134,11 +143,11 @@ const Paiement = () => {
                             </Text>
                         <Text>
            
-                            ...............................................................................................................................
+                            .............................
                         </Text>
                         <Text fontWeight={"bold"}>tel : </Text>
                         <Text>
-                            ...................................................................................
+                           ....................
                         </Text>
                     </Box>
                     <Box display='flex' mt='20px' gap={50}>
@@ -151,8 +160,7 @@ const Paiement = () => {
                                 type="checkbox"
                                 placeholder='Here is a sample placeholder'
                                 size='sm'
-                                width='70px'
-                                h='25px'
+                                width='40px'
                             />
                         </Box>
                         <Box display='flex' gap='2'>
@@ -161,8 +169,7 @@ const Paiement = () => {
                                 type="checkbox"
                                 placeholder='Here is a sample placeholder'
                                 size='sm'
-                                width='70px'
-                                h='25px'
+                                width='40px'
                             />
                         </Box>
                     
@@ -172,8 +179,7 @@ const Paiement = () => {
                                 type="checkbox"
                                 placeholder='Here is a sample placeholder'
                                 size='sm'
-                                width='70px'
-                                h='25px'
+                                width='40px'
                             />
                         </Box>
                     
@@ -183,8 +189,7 @@ const Paiement = () => {
                                 type="checkbox"
                                 placeholder='Here is a sample placeholder'
                                 size='sm'
-                                width='70px'
-                                h='25px'
+                                width='40px'
                             />
                         </Box>
                     
@@ -194,8 +199,8 @@ const Paiement = () => {
                                 type="checkbox"
                                 placeholder='Here is a sample placeholder'
                                 size='sm'
-                                width='70px'
-                                h='25px'
+                                width='40px'
+                                
                             />
                         </Box>
                     
@@ -213,8 +218,8 @@ const Paiement = () => {
                             type="checkbox"
                             placeholder='Here is a sample placeholder'
                             size='sm'
-                            width='70px'
-                            h='25px'
+                            width='40px'
+                            
                         />
                     </Box>
                     <Box display='flex' gap='2'>
@@ -223,8 +228,7 @@ const Paiement = () => {
                             type="checkbox"
                             placeholder='Here is a sample placeholder'
                             size='sm'
-                            width='70px'
-                            h='25px'
+                            width='40px'
                         />
                     </Box>
 
@@ -245,8 +249,7 @@ const Paiement = () => {
                             type="checkbox"
                             placeholder='Here is a sample placeholder'
                             size='sm'
-                            width='70px'
-                            h='25px'
+                            width='40px'
                         />
                     </Box>
 
@@ -256,8 +259,7 @@ const Paiement = () => {
                             type="checkbox"
                             placeholder='Here is a sample placeholder'
                             size='sm'
-                            width='70px'
-                            h='25px'
+                            width='40px'
                         />
                     </Box>
                 </Box>

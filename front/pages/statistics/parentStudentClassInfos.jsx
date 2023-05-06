@@ -69,7 +69,9 @@ const ParentStudentClass = () => {
                 <Flex justify='space-between'>
                     <Box display='flex' mt='20px' gap={'1'}>
                         <Text fontWeight={"bold"}>Date : </Text>
-                        <Text>............./............./.............</Text>
+                        <Text>
+                            {(new Date).toLocaleDateString()}
+                        </Text>
                     </Box>
                     <Box display='flex' mt='20px' mr='150px'gap={'1'}>
                         <Text fontWeight={"bold"}>No Reçu : </Text>

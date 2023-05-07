@@ -335,7 +335,6 @@ type Salle {
   montantPensionSalle: Float
   effectif: Float
   niveauid: ID!
-  cycleid: ID!
 }
 
 type Personnel {
@@ -520,6 +519,8 @@ type Query {
   findpensionbystudent(studentid: String!): Pension!
   findAllsection: [Section!]!
   findOnesection(id: String!): Section!
+  getAllForUseAnglophone: [Section!]!
+  getAllForUseFrancophone: [Section!]!
   findAllcycle: [Cycle!]!
   findOnecycle(id: String!): Cycle!
   findAllNiveauEtude: [NiveauEtude!]!
@@ -553,7 +554,10 @@ type Query {
   getSectionStatisticsFrancophoneAdmissionFee: [SectionStatistics!]!
   getSectionStatisticsFrancophoneFirstInstalment: [SectionStatistics!]!
   getSectionStatisticsFrancophoneSecondInstalment: [SectionStatistics!]!
+  numberOfStudentsStartedPayingPension: Float!
   getGeneralSectionStatistics: [SectionStatistics!]!
+  getGeneralAnglophoneSectionStatistics: [SectionStatistics!]!
+  getGeneralFrancophoneSectionStatistics: [SectionStatistics!]!
   getTrancheStatisticsForNormalStudents: [SpecialStudentStatistics!]!
   findAllpensionSalle: [PensionSalle!]!
   findOnepensionsalle(id: String!): PensionSalle!

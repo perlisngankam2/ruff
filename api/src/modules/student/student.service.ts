@@ -107,19 +107,21 @@ export class StudentService {
       }
 
       async findAllStudentSpecialRegime(){
+        const cat = (await this.categorieService.getAll()).filter(a=>a.nom=='Candidat special').map(a=>a.id)[0]
         const a=await this.studentRepository.findAll({
           populate:['salle','pension','salle.niveau','salle.niveau.cycle','salle.niveau.cycle.section','trancheStudent','trancheStudent.tranche']
         })
 
-        return  a.filter(async a=>(await a.categorie.load()).description=='Special')
+        return  a.filter(async a=>(a.categorie.id)==cat)
       }
 
       async findAllStudentNormalRegime(){
+        const cat = (await this.categorieService.getAll()).filter(a=>a.nom=='Candidat libre').map(a=>a.id)[0]
         const a=await this.studentRepository.findAll({
           populate:['salle','pension','trancheStudent','trancheStudent.tranche']
         })
 
-        return  a.filter(async a=>(await a.categorie.load()).description=='Normal')
+        return   a.filter(async a=>(a.categorie.id)==cat)
       }
 
       async findStudentTel(id:string){
@@ -144,7 +146,7 @@ export class StudentService {
 
       async getAllForUseAnglophone(): Promise<Student[]> {
         const a= await this.studentRepository.findAll({
-          populate: ['salle','pension']
+          populate: ['salle','pension','salle.niveau','salle.niveau.cycle','salle.niveau.cycle.section']
         })
         return a.filter(async a=>(await (await (await (await a.salle.load()).niveau.load()).cycle.load()).section.load()).name==='Anglophone')
       }
@@ -152,7 +154,7 @@ export class StudentService {
       
       async getAllForUseFrancophone(): Promise<Student[]> {
         const a= await this.studentRepository.findAll({
-          populate: ['salle','pension']
+          populate: ['salle','pension','salle.niveau','salle.niveau.cycle','salle.niveau.cycle.section']
         })
         return a.filter(async a=>(await (await (await (await a.salle.load()).niveau.load()).cycle.load()).section.load()).name=='Francophone')
       }

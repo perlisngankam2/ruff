@@ -45,14 +45,14 @@ export class SectionService {
     
       async getAllForUseAnglophone(): Promise<Section[]> {
         const a= await this.sectionRepository.findAll({
-          populate: ['cycle','cycle.niveauEtude','cycle.niveauEtude.salle','cycle.niveauEtude.salle.student','cycle.niveauEtude.salle.student.pension']
+          populate: true
         })
         return a.filter(a=>a.name==='Anglophone')
       }
 
       async getAllForUseFrancophone(): Promise<Section[]> {
         const a= await this.sectionRepository.findAll({
-          populate: ['cycle','cycle.niveauEtude','cycle.niveauEtude.salle','cycle.niveauEtude.salle.student','cycle.niveauEtude.salle.student.pension']
+          populate:true
         })
         return a.filter(a=>a.name==='Francophone')
       }

@@ -11,6 +11,7 @@ import { AvanceTrancheModule } from "../avance_tranche/avance_tranche.module";
 import { MikroOrmModule } from "@mikro-orm/nestjs";
 import { Tranche } from "src/entities/tranche.entity";
 import { Student } from "src/entities/student.entity";
+import { PensionModule } from "../pension/pension.module";
 
 
 @Module({
@@ -20,7 +21,8 @@ import { Student } from "src/entities/student.entity";
         TrancheModule,
         TrancheStudentModule,
         AvanceTrancheModule,
-        StudentModule
+        StudentModule,
+        PensionModule
     ],
     providers:[StatisticsService,StatisticResolver],
     exports:[StatisticsService]

@@ -91,7 +91,7 @@ export class Salle{
 
     @OneToMany(()=>PensionSalle, (pensionsalle) => pensionsalle.salle)
     pensionsalle = new Collection<PensionSalle>(this)
-  expectedAmount: any;
+ 
 
     @Field(() => ID)
     @Property({ persist: false })
@@ -99,10 +99,10 @@ export class Salle{
       return `${this.niveau.id}`;
     }
 
-    @Field(() => ID)
-    @Property({ persist: false })
-    get cycleid() {
-      return `${this.cycle.id}`;
-    }
+    // @Field(() => ID)
+    // @Property({ persist: false })
+    // get cycleid() {
+    //   return `${this.cycle.id}`;
+    // }
 
 }

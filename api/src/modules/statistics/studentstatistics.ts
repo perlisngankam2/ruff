@@ -10,6 +10,10 @@ export class StudentStatistics {
   @Field()
   matricle: string;
 
+  
+  @Field()
+  section: string;
+
   @Field(() => Float)
   amountExpected: number;
 

@@ -20,23 +20,23 @@ export class SectionStatistics {
   numberOfStudentsCompletedFee: number;
 
   @Field()
-  rateR: number;
+  TAUXA: number;
 
   @Field()
   sumAmountAlreadyPaid: number;
 
   @Field()
-  rateT: number;
+  TAUXB: number;
 
   @Field()
   numberOfStudentsNotPaid: number;
 
   @Field()
-  rateS: number;
+  TAUXC: number;
 
   @Field()
   amountRest: number;
 
   @Field()
-  rateZ: number;
+  TAUXD: number;
 }

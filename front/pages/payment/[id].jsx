@@ -690,9 +690,9 @@ const monthOptions = useMemo(() => {
       </Box>
 
     </DefaultLayout>
-}</>
-     );
-}
+)};
+     
+
  
 export default PaySlip; 
 

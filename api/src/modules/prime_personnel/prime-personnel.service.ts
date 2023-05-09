@@ -237,15 +237,7 @@ async findIdPrimeByPersonnel(personnelid:string){
   return (await this.primePersonnelRepository.find({personnel:personnelid})).map(async a=>(await a.prime.load()).id)
 }
 
-async findIdPrimesByPrimesPersonnel(personnelid:string){
-  const monthsalary = (await this.paysalarie.salairepersonnel(personnelid)).map(a=>a.moisPaie)
-  const a = (await this.primePersonnelRepository.find({personnel:personnelid}))
-  for (let i = 0; i < monthsalary.length; i++) {
-    for (let j = 0; j < monthsalary[i].length; j++) {
-      if (monthsalary[i][j] == a.map(a=>a.startMonth)[i][j]) {
-        return a.map(async a=>(await a.prime.load()).id)
-      }
-    }
-  }
+async findIdPrimesByPrimesPersonnel(personnelid:string,month:string){
+  return (await this.primePersonnelRepository.find({personnel:personnelid})).filter(async a=>(await a.paysalary.load()).moisPaie===month).map(async a=>(await a.prime.load()).id)
 }
 }

@@ -8,6 +8,12 @@ export class SpecialStudentStatistics {
 
     @Field()
     dateLine: Date;
+ 
+    @Field()
+    categorie: string;
+
+    @Field()
+    nameTranche: string;
 
     @Field()
     restOfAmountToPay: number;

@@ -73,8 +73,8 @@ export class PrimePersonnelResolver {
   }
 
   @Query(()=> [String])
-  async findIdPrimesByPrimesPersonnel(@Args('personnelid') personnelid:string){
- return await this.primePersonnelService.findIdPrimesByPrimesPersonnel(personnelid)
+  async findIdPrimesByPrimesPersonnel(@Args('personnelid') personnelid:string,@Args('month') month:string){
+ return await this.primePersonnelService.findIdPrimesByPrimesPersonnel(personnelid,month)
   }
 
   @Query(()=> Number)

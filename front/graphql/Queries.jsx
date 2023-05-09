@@ -255,7 +255,7 @@ export const GET_ALL_STUDY_LEVEL = gql `
             description
             montantPension
             cycleid
-            cyclename
+            cycleName
         }
     }
 `
@@ -318,6 +318,141 @@ export const GET_STUDENT_STATISTICS_ANGLOPHONE_SECTION = gql `
         }
     }
 `
+//stattistique des eleves de la section francophone
+export const GET_STUDENT_STATISTICS_FRANCOPHONE_SECTION = gql `
+query getStudentStatisticsFrancophone {
+    getStudentStatisticsFrancophone {
+        name
+        matricle
+        section
+        amountExpected
+        amountPaid
+        collectionRate
+        restToPay
+        rateArrears
+    }
+}`
+
+// grand tableau des stattistique To des eleves par sections et par classe section anglophone
+export const GET_GENERAL_FEES_STATISTICS_PER_CLASS_ANGLOPHONE_SECTION = gql`
+    query getGeneralAnglophoneSectionStatistics {
+        getGeneralAnglophoneSectionStatistics {
+            sectionName
+            className
+            numberOfStudents
+            expectedAmount
+            numberOfStudentsCompletedFee
+            TAUXA
+            sumAmountAlreadyPaid
+            TAUXB
+            numberOfStudentsNotPaid
+            TAUXC
+            amountRest
+            TAUXD
+        }
+    }
+`
+
+// grand tableau des stattistique To des eleves par sections et par classe section anglophone
+export const GET_GENERAL_FEES_STATISTICS_PER_CLASS_FRANCOPHONE_SECTION = gql`
+query getGeneralFrancophoneSectionStatistics {
+    getGeneralFrancophoneSectionStatistics {
+        sectionName
+        className
+        numberOfStudents
+        expectedAmount
+        numberOfStudentsCompletedFee
+        TAUXA
+        sumAmountAlreadyPaid
+        TAUXB
+        numberOfStudentsNotPaid
+        TAUXC
+        amountRest
+        TAUXD
+    }
+}
+`
+
+//Le vrai To pour la section francophone 
+// TABLEAU DE SUIVI GENERAL  DU PAIEMENT DES FRAIS DE SCOLARITE
+export const GET_GENERAL_FEES_STATISTICS_PER_CLASS_FRANCOPHONE_SECTIONSS = gql `
+query getGeneralFrancophoneSectionStatistics {
+    getGeneralFrancophoneSectionStatistics {
+        sectionName
+        className
+        numberOfStudents
+        expectedAmount
+        numberOfStudentsCompletedFee
+        TAUXA
+        sumAmountAlreadyPaid
+        TAUXB
+        numberOfStudentsNotPaid
+        TAUXC
+        amountRest
+        TAUXD
+    }
+}
+`
+
+//Statistique de l'inscription pour la section anglphone 
+export const GET_STATISTICS_PRIMAIRE_ANGLOPHONE_CLASS = gql`
+query getSectionStatisticsAnglophoneAdmissionFee {
+    getSectionStatisticsAnglophoneAdmissionFee {
+        sectionName
+        className
+        numberOfStudents
+        expectedAmount
+        numberOfStudentsCompletedFee
+        TAUXA
+        sumAmountAlreadyPaid
+        TAUXB
+        numberOfStudentsNotPaid
+        TAUXC
+        amountRest
+        TAUXD
+    }
+}
+`
+//Statistique de l'inscription pour la section francophone 
+export const GET_STATISTICS_PRIMAIRE_FRANCOPHONE_CLASS = gql `
+query getSectionStatisticsFrancophoneAdmissionFee {
+    getSectionStatisticsFrancophoneAdmissionFee {
+        sectionName
+        className
+        numberOfStudents
+        expectedAmount
+        numberOfStudentsCompletedFee
+        TAUXA
+        sumAmountAlreadyPaid
+        TAUXB
+        numberOfStudentsNotPaid
+        TAUXC
+        amountRest
+        TAUXD
+    }
+}`
+
+//Statistique de PREMIERERE TRANCHE pour la section anglphone 
+
+export const GET_STATISTICS_TRANCHE1_PRIMAIRE_ANGLOPHONE_SECTION = gql`
+    query getSectionStatisticsAnglophoneFirstInstalment {
+        getSectionStatisticsAnglophoneFirstInstalment {
+            sectionName
+            className
+            numberOfStudents
+            expectedAmount
+            numberOfStudentsCompletedFee
+            TAUXA
+            sumAmountAlreadyPaid
+            TAUXB
+            numberOfStudentsNotPaid
+            TAUXC
+            amountRest
+            TAUXD
+        }
+    }
+`;
+
 
 //recuperation d'une tranche de pension
 export const GET_TRANCHE_PENSION_BY_ID = gql `
@@ -396,6 +531,7 @@ export const GET_LEVEL_BY_ID = gql`
             description
             montantPension
             cycleid
+            cycleName
         }
     }
 `

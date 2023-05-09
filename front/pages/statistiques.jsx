@@ -16,7 +16,15 @@ const Stastistiques = () => {
             }}
             colorScheme="blue"
           >
-            Frais scolarité par élève
+            Frais scolarité section anglophone
+          </Button>
+          <Button
+            onClick={() => {
+              router.push("/payment/suiviePaiementSectionFrancophone");
+            }}
+            colorScheme="blue"
+          >
+            Frais scolarité section francophone
           </Button>
           <Button
             onClick={() => {

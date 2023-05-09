@@ -54,9 +54,9 @@ export class Student {
   @Property({ nullable: true })
   lastname!: string;
 
-  @Field(()=>Date)
+  @Field({ nullable: true })
   @Property({nullable:true})
-  dateOfBirth!:Date;
+  dateOfBirth!:string;
 
   @Field({ nullable: true })
   @Property({nullable:true})

@@ -231,7 +231,7 @@ type Student {
   matricule: String
   firstname: String
   lastname: String
-  dateOfBirth: DateTime!
+  dateOfBirth: String
   birthPlace: String
   sex: String
   adress: String
@@ -313,8 +313,8 @@ type NiveauEtude {
   name: String
   description: String
   montantPension: Float
-  cycleid: ID!
-  cyclename: ID!
+  cycleid: ID
+  cycleName: ID
 }
 
 type Course {
@@ -415,6 +415,7 @@ type SectionStatistics {
 type StudentStatistics {
   name: String!
   matricle: String!
+  section: String!
   amountExpected: Float!
   amountPaid: Float!
   collectionRate: Float!
@@ -447,6 +448,7 @@ type Query {
   AmountrExpectedByTranche(studentid: String!): [Float!]!
   getClassfeebyStudent(studentid: String!): Float!
   getClassfeeofStudent(studentid: String!): [Tranche!]!
+  getAllForUseAnglophoneStudent: [Student!]!
   findAlllocalistaion: [Localisation!]!
   localisation(id: String!): Localisation!
   findAllcategorieeleve: [CategorieEleve!]!
@@ -525,7 +527,8 @@ type Query {
   findpensionbystudent(studentid: String!): Pension!
   findAllsection: [Section!]!
   findOnesection(id: String!): Section!
-  getAllForUseSection: [Section!]!
+  getAllForUseAnglophone: [Section!]!
+  getAllForUseFrancophone: [Section!]!
   findAllcycle: [Cycle!]!
   findOnecycle(id: String!): Cycle!
   findAllNiveauEtude: [NiveauEtude!]!
@@ -559,7 +562,10 @@ type Query {
   getSectionStatisticsFrancophoneAdmissionFee: [SectionStatistics!]!
   getSectionStatisticsFrancophoneFirstInstalment: [SectionStatistics!]!
   getSectionStatisticsFrancophoneSecondInstalment: [SectionStatistics!]!
+  numberOfStudentsStartedPayingPension: Float!
   getGeneralSectionStatistics: [SectionStatistics!]!
+  getGeneralAnglophoneSectionStatistics: [SectionStatistics!]!
+  getGeneralFrancophoneSectionStatistics: [SectionStatistics!]!
   getTrancheStatisticsForNormalStudents: [SpecialStudentStatistics!]!
   findAllpensionSalle: [PensionSalle!]!
   findOnepensionsalle(id: String!): PensionSalle!
@@ -708,7 +714,7 @@ input StudentCreateInput {
   matricule: String
   firstname: String
   lastname: String
-  dateOfBirth: DateTime
+  dateOfBirth: String
   birthPlace: String
   sex: String
   adress: String
@@ -816,6 +822,8 @@ input SectionCreateInput {
 }
 
 input TrancheCreateInput {
+  ID: String
+  anneeAcademiqueId: ID
   salleId: ID
   year: String
   name: String

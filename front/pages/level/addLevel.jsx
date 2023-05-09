@@ -211,7 +211,7 @@ import { getStaticPropsTranslations } from "../../types/staticProps";
                          {dataCycle &&(
                                 dataCycle.findAllcycle.map((cycle, index) => ( 
                                     <option selected={level.cycleId == cycle.id ? "selected": ''} value={cycle.id}  key={index}>
-                                        {cycle.name} { console.log(level.cycleId + " -- " +cycle.id) }
+                                        {cycle.name} { console.log(level.cycleId + " -- " +cycle.id) }({cycle.sectionName})
                                     </option>
                                 ))
                             )} 

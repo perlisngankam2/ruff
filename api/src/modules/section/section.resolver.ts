@@ -47,7 +47,12 @@ export class SectionResolver {
   }
 
   @Query(() => [Section])
-  getAllForUseSection(): Promise<Section[]> {
-    return this.sectionService.getAllForUseAnglophone();
+  async getAllForUseAnglophone(){
+   return await this.sectionService.getAllForUseAnglophone()
+  }
+
+  @Query(() => [Section])
+  async getAllForUseFrancophone(){
+   return await this.sectionService.getAllForUseFrancophone()
   }
 }

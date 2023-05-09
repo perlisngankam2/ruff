@@ -30,10 +30,14 @@ import { Box,
 } from '@chakra-ui/react';
 // import { useTranslation} from 'next-i18next';
 import {CiSearch} from 'react-icons/ci'
+import { useQuery } from '@apollo/client';
+import { GET_STATISTICS_TRANCHE1_PRIMAIRE_ANGLOPHONE_SECTION} from '../../graphql/Queries';
+
 import DefaultLayout from '../../components/layouts/DefaultLayout';
 
 const SuiviPaiementPremiereTranche = () => {
 
+    const {data:dataTranche1StatisticsClassAnglophoneSection} = useQuery(GET_STATISTICS_TRANCHE1_PRIMAIRE_ANGLOPHONE_SECTION);
     // const {t} = useTranslation();
 
     return (
@@ -62,18 +66,7 @@ const SuiviPaiementPremiereTranche = () => {
                         <Box> 
                             <TableContainer>
                                 <Table size='sm'>
-                                    {/* <Thead>
-                                        <Tr ml={'100px'}>
-                                            <Th></Th>
-                                            <Th></Th>
-                                            <Th></Th>
-                                            <Th></Th>
-                                            <Th  borderLeft={'1px'}></Th>
-                                            <Th colSpan={'2'} >Paiement</Th>
-                                            <Th colSpan={'3'} borderLeft={'1px'}>Remettant(e)</Th>
-                                        </Tr>
-                                    </Thead> */}
-                                    <Tbody>
+                                    <Thead>
                                         <Tr ml={'100px'}>
                                             <Th rowSpan={2} border={'1px'}>SECTIONS</Th>
                                             <Th rowSpan={2} border={'1px'}>CLASSES</Th>
@@ -93,250 +86,34 @@ const SuiviPaiementPremiereTranche = () => {
                                             <Th textAlign={'center'} border={'1px'} >TAUX</Th>
 
                                         </Tr>
-                                        <Tr border={'1px'}>
-                                            <Td border={'1px'} rowSpan={4}>MB</Td>
-                                            <Td border={'1px'}>PM</Td>
-                                            <Td border={'1px'}>multiply by</Td>
-                                            <Td border={'1px'}>into</Td>
-                                            <Td border={'1px'}>inches</Td>
-                                            <Td border={'1px'}>millimetres</Td>
+                                    </Thead> 
+                                    <Tbody>
+                                        {dataTranche1StatisticsClassAnglophoneSection &&
+                                            dataTranche1StatisticsClassAnglophoneSection.getSectionStatisticsAnglophoneFirstInstalment
+                                            .map((anglophoneclasse, index) => ( 
+                                        <Tr border={'1px'} key={index}>
+                                            <Td border={'1px'} rowSpan={1}>MB</Td>
+                                            <Td border={'1px'}>{anglophoneclasse.className}</Td>
+                                            <Td border={'1px'}>{anglophoneclasse.numberOfStudents}</Td>
+                                            <Td border={'1px'}>{anglophoneclasse.expectedAmount}</Td>
+                                            <Td border={'1px'}>{anglophoneclasse.sumAmountAlreadyPaid}</Td>
+                                            <Td border={'1px'}>{anglophoneclasse.className}</Td>
+                                            <Td border={'1px'}>{anglophoneclasse.className}</Td>
+                                            <Td border={'1px'}>{anglophoneclasse.className}</Td>
+                                            <Td border={'1px'}>{anglophoneclasse.className}</Td>
                                             <Td border={'1px'}>millim</Td>
-                                            <Td border={'1px'}>mill</Td>
-                                            <Td border={'1px'}>millimetres</Td>
-                                            <Td border={'1px'}>millim</Td>
-                                            <Td border={'1px'}>millim</Td>
-                                            <Td border={'1px'}>millim</Td>
-
-                                        </Tr>
-                                        <Tr>
-                                            <Td border={'1px'} >PM</Td>
-                                            <Td border={'1px'}>millimetres</Td>
-                                            <Td border={'1px'}>millimetres </Td>
-                                            <Td border={'1px'}>mill </Td>
-                                            <Td border={'1px'}>millim</Td>
-                                            <Td border={'1px'}>mill</Td>
-                                            <Td border={'1px'}>millim</Td>
-                                            <Td border={'1px'}>mill</Td>
-                                            <Td border={'1px'}>millimetres</Td>
-                                            <Td border={'1px'}>millim</Td>
-                                            <Td border={'1px'}>millim</Td>
-
-                                            
-
-                                        </Tr>
-                                        <Tr>
-                                            <Td border={'1px'}>inches</Td>
-                                            <Td border={'1px'}>millimetres (mm)</Td>
-                                            <Td border={'1px'}>25.4</Td>
-                                            <Td border={'1px'}>milli</Td>
-                                            <Td border={'1px'}>milli</Td>
-                                            <Td border={'1px'}>millimetres</Td>
-                                            <Td border={'1px'}>millimetres</Td>
-                                            <Td border={'1px'}>milli</Td>
-                                            <Td border={'1px'}>millimetres</Td>
                                             <Td border={'1px'}>millim</Td>
                                             <Td border={'1px'}>millim</Td>
 
                                         </Tr>
-                                        <Tr >
-                                            <Td borderColor={'#C6B062'} border={'1px'}>inches</Td>
-                                            <Td border={'1px'}>millimet</Td>
-                                            <Td border={'1px'}>25.4</Td>
-                                            <Td border={'1px'}>millimetres</Td>
-                                            <Td border={'1px'}>millimetres </Td>
-                                            <Td border={'1px'}>millimetres</Td>
-                                            <Td border={'1px'}>millimetres</Td>
-                                            <Td border={'1px'}>milli</Td>
-                                            <Td border={'1px'}>millimetres</Td>
-                                            <Td border={'1px'}>millim</Td>
-                                            <Td border={'1px'}>millim</Td>
-                                            
-
-                                        </Tr>
-                                        <Tr >
-                                            <Td border={'1px'}>Total</Td>
-                                            <Td border={'1px'}>millimet</Td>
-                                            <Td border={'1px'}>25.4</Td>
-                                            <Td border={'1px'}>millimetres</Td>
-                                            <Td border={'1px'}>millimetres </Td>
-                                            <Td border={'1px'}>millimetres</Td>
-                                            <Td border={'1px'}>millimetres</Td>
-                                            <Td border={'1px'}>milli</Td>
-                                            <Td border={'1px'}>millimetres</Td>
-                                            <Td border={'1px'}>millim</Td>
-                                            <Td border={'1px'}>mill</Td>
-                                            <Td border={'1px'}>mill</Td>
-
-                                        </Tr>
-                                        <Tr >
-                                            <Td border={'1px'} rowSpan={6}>PF</Td>
-                                            <Td border={'1px'}>millimet</Td>
-                                            <Td border={'1px'} >25.4</Td>
-                                            <Td border={'1px'}>millimetres</Td>
-                                            <Td border={'1px'}>millimetres </Td>
-                                            <Td border={'1px'}>millimetres</Td>
-                                            <Td border={'1px'}>millimetres</Td>
-                                            <Td border={'1px'}>milli</Td>
-                                            <Td border={'1px'}>millimetres</Td>
-                                            <Td border={'1px'}>millim</Td>
-                                            <Td border={'1px'}>mill</Td>
-                                            <Td border={'1px'}>mill</Td>
-
-                                        </Tr>
-                                        <Tr >
+                                    ))}
+                                    </Tbody>
+                                    <Tbody>
+                                        
+                                    <Tr >
                                             <Td border={'1px'}>inches</Td>
                                             <Td border={'1px'}>millimet</Td>
                                             <Td border={'1px'}>25.4</Td>
-                                            <Td border={'1px'}>millimetres</Td>
-                                            <Td border={'1px'}>millimetres </Td>
-                                            <Td border={'1px'}>millimetres</Td>
-                                            <Td border={'1px'}>millimetres</Td>
-                                            <Td border={'1px'}>milli</Td>
-                                            <Td border={'1px'}>millimetres</Td>
-                                            <Td border={'1px'}>millim</Td>
-                                            <Td border={'1px'}>mill</Td>
-                                            
-                                        </Tr>
-                                        <Tr >
-                                            <Td border={'1px'}>inches</Td>
-                                            <Td border={'1px'}>millimet</Td>
-                                            <Td border={'1px'}>25.4</Td>
-                                            <Td border={'1px'}>millimetres</Td>
-                                            <Td border={'1px'}>millimetres </Td>
-                                            <Td border={'1px'}>millimetres</Td>
-                                            <Td border={'1px'}>millimetres</Td>
-                                            <Td border={'1px'}>milli</Td>
-                                            <Td border={'1px'}>millimetres</Td>
-                                            <Td border={'1px'}>millim</Td>
-                                            <Td border={'1px'}>mill</Td>
-                                        </Tr>
-                                        <Tr >
-                                            <Td border={'1px'}>inches</Td>
-                                            <Td border={'1px'}>millimet</Td>
-                                            <Td border={'1px'} >25.4</Td>
-                                            <Td border={'1px'}>millimetres</Td>
-                                            <Td border={'1px'}>millimetres </Td>
-                                            <Td border={'1px'}>millimetres</Td>
-                                            <Td border={'1px'}>millimetres</Td>
-                                            <Td border={'1px'}>milli</Td>
-                                            <Td border={'1px'}>millimetres</Td>
-                                            <Td border={'1px'}>millim</Td>
-                                            <Td border={'1px'}>mill</Td>
-                                            
-                                        </Tr>
-                                        <Tr >
-                                            <Td border={'1px'}>inches</Td>
-                                            <Td border={'1px'}>millimet</Td>
-                                            <Td border={'1px'}>25.4</Td>
-                                            <Td border={'1px'}>millimetres</Td>
-                                            <Td border={'1px'}>millimetres </Td>
-                                            <Td border={'1px'}>millimetres</Td>
-                                            <Td border={'1px'}>millimetres</Td>
-                                            <Td border={'1px'}>milli</Td>
-                                            <Td border={'1px'}>millimetres</Td>
-                                            <Td border={'1px'}>millim</Td>
-                                            <Td border={'1px'}>mill</Td>
-                                        </Tr>
-                                        <Tr >
-                                            <Td border={'1px'}>inches</Td>
-                                            <Td border={'1px'}>millimet</Td>
-                                            <Td border={'1px'}>25.4</Td>
-                                            <Td border={'1px'}>millimetres</Td>
-                                            <Td border={'1px'}>millimetres </Td>
-                                            <Td border={'1px'}>millimetres</Td>
-                                            <Td border={'1px'}>millimetres</Td>
-                                            <Td border={'1px'}>milli</Td>
-                                            <Td border={'1px'}>millimetres</Td>
-                                            <Td border={'1px'}>millim</Td>
-                                            <Td border={'1px'}>mill</Td>
-
-                                        </Tr>
-                                        <Tr >
-                                            <Td border={'1px'}>Total</Td>
-                                            <Td border={'1px'}>millimet</Td>
-                                            <Td border={'1px'}>25.4</Td>
-                                            <Td border={'1px'}>millimetres</Td>
-                                            <Td border={'1px'}>millimetres </Td>
-                                            <Td border={'1px'}>millimetres</Td>
-                                            <Td border={'1px'}>millimetres</Td>
-                                            <Td border={'1px'}>milli</Td>
-                                            <Td border={'1px'}>millimetres</Td>
-                                            <Td border={'1px'}>millim</Td>
-                                            <Td border={'1px'}>mill</Td>
-                                            <Td border={'1px'}>mill</Td>
-
-                                        </Tr>
-                                        <Tr >
-                                            <Td border={'1px'} rowSpan={6}>PA</Td>
-                                            <Td border={'1px'}>millimet</Td>
-                                            <Td  border={'1px'}>25.4</Td>
-                                            <Td border={'1px'}>millimetres</Td>
-                                            <Td border={'1px'}>millimetres </Td>
-                                            <Td border={'1px'}>millimetres</Td>
-                                            <Td border={'1px'}>millimetres</Td>
-                                            <Td border={'1px'}>milli</Td>
-                                            <Td border={'1px'}>millimetres</Td>
-                                            <Td border={'1px'}>millim</Td>
-                                            <Td border={'1px'}>mill</Td>
-                                            <Td border={'1px'}>mill</Td>
-
-                                        </Tr>
-                                        <Tr >
-                                            <Td border={'1px'}>inches</Td>
-                                            <Td border={'1px'}>millimet</Td>
-                                            <Td border={'1px'}>25.4</Td>
-                                            <Td border={'1px'}>millimetres</Td>
-                                            <Td border={'1px'}>millimetres </Td>
-                                            <Td border={'1px'}>millimetres</Td>
-                                            <Td border={'1px'}>millimetres</Td>
-                                            <Td border={'1px'}>milli</Td>
-                                            <Td border={'1px'}>millimetres</Td>
-                                            <Td border={'1px'}>millim</Td>
-                                            <Td border={'1px'}>mill</Td>
-                                        </Tr>
-                                        <Tr >
-                                            <Td border={'1px'}>inches</Td>
-                                            <Td border={'1px'}>millimet</Td>
-                                            <Td border={'1px'}>25.4</Td>
-                                            <Td border={'1px'}>millimetres</Td>
-                                            <Td border={'1px'}>millimetres </Td>
-                                            <Td border={'1px'}>millimetres</Td>
-                                            <Td border={'1px'}>millimetres</Td>
-                                            <Td border={'1px'}>milli</Td>
-                                            <Td border={'1px'}>millimetres</Td>
-                                            <Td border={'1px'}>millim</Td>
-                                            <Td border={'1px'}>mill</Td>
-                                        </Tr>
-                                        <Tr >
-                                            <Td border={'1px'}>inches</Td>
-                                            <Td border={'1px'}>millimet</Td>
-                                            <Td border={'1px'}>25.4</Td>
-                                            <Td border={'1px'}>millimetres</Td>
-                                            <Td border={'1px'}>millimetres </Td>
-                                            <Td border={'1px'}>millimetres</Td>
-                                            <Td border={'1px'}>millimetres</Td>
-                                            <Td border={'1px'}>milli</Td>
-                                            <Td border={'1px'}>millimetres</Td>
-                                            <Td border={'1px'}>millim</Td>
-                                            <Td border={'1px'}>mill</Td>
-                                        </Tr>
-                                        <Tr >
-                                            <Td border={'1px'}>inches</Td>
-                                            <Td border={'1px'}>millimet</Td>
-                                            <Td border={'1px'} >25.4</Td>
-                                            <Td border={'1px'}>millimetres</Td>
-                                            <Td border={'1px'}>millimetres </Td>
-                                            <Td border={'1px'}>millimetres</Td>
-                                            <Td border={'1px'}>millimetres</Td>
-                                            <Td border={'1px'}>milli</Td>
-                                            <Td border={'1px'}>millimetres</Td>
-                                            <Td border={'1px'}>millim</Td>
-                                            <Td border={'1px'}>mill</Td>
-                                        </Tr>
-                                        <Tr>
-                                            <Td border={'1px'}>inches</Td>
-                                            <Td border={'1px'}>millimet</Td>
-                                            <Td border={'1px'} >25.4</Td>
                                             <Td border={'1px'}>millimetres</Td>
                                             <Td border={'1px'}>millimetres </Td>
                                             <Td border={'1px'}>millimetres</Td>
@@ -347,6 +124,7 @@ const SuiviPaiementPremiereTranche = () => {
                                             <Td border={'1px'}>mill</Td>
                                         </Tr>
                                     </Tbody>
+
                                 </Table>
                             </TableContainer>
                         </Box>

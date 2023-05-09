@@ -61,7 +61,6 @@ export class Salle{
       onDelete: 'CASCADE',
     })
     cycle!: IdentifiedReference<Cycle> | null;
-
     @ManyToOne(() => AnneeAccademique, {
       nullable: true,
       onDelete: 'CASCADE',
@@ -98,19 +97,19 @@ export class Salle{
 
     @OneToMany(()=>PensionSalle, (pensionsalle) => pensionsalle.salle)
     pensionsalle = new Collection<PensionSalle>(this)
-  expectedAmount: any;
+    expectedAmount: any;
 
 
     @Field(() => ID, {nullable: true})
     @Property({ persist: false })
     get niveauid() {
-      return `${this.niveau.id}`;
+      return this.niveau? `${this.niveau.id}` : null;
     }
 
     @Field(() => ID, {nullable: true})
     @Property({ persist: false })
     get levelName() {
-    return `${this.niveau.getEntity().name}`;
+    return this.niveau.getEntity? `${this.niveau.getEntity().name}` : null;
   }
 
     // @Field(() => ID)

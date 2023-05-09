@@ -73,4 +73,10 @@ export class StudentResolver {
   async getClassfeeofStudent(@Args('studentid') studentid:string){
     return await this.studentService.findlistfees(studentid)
   }
+
+@Query(()=>[Student])
+  async getAllForUseAnglophoneStudent(){
+    return await this.studentService.getAllForUseAnglophone()
+  }
+
 }

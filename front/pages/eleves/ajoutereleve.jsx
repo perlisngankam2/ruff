@@ -153,7 +153,8 @@ const matricule = `GSBAB23${randomString}`;
 
   const HandleClick = async (event) => {
     console.log(student.birthPlace);
-    // console.log(typeof(student.dateOfBirth));
+    
+    console.log(typeof(student.dateOfBirth));
     
     event.preventDefault();
     if(!router.query.id){
@@ -164,7 +165,7 @@ const matricule = `GSBAB23${randomString}`;
           firstname: student.firstname,
           lastname: student.lastname,
           // classe: classe,
-          dateOfBirth: new Date(student.dateOfBirth),
+          dateOfBirth: student.dateOfBirth,
           birthPlace: student.birthPlace,
           sex: student.sex,
           adress: student.adress,

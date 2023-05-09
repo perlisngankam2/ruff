@@ -211,7 +211,7 @@ import {
                             p={0} 
                             pl={6}
                           >
-                            {niveauEtude.cyclename}
+                            {niveauEtude.cycleName}
                           </Td> 
                           <Td p={0} >
                             {/* <ButtonGroup 

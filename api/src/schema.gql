@@ -438,6 +438,7 @@ type Query {
   findbyCoursePersonnelSalle(personnelid: String!, salleid: String!, courseid: String!): [[String!]!]!
   findAllstudents: [Student!]!
   findOnestudent(id: String!): Student!
+  getAllStudentsForUseAnglophone: [Student!]!
   AmountrExpectedByTranche(studentid: String!): [Float!]!
   getClassfeebyStudent(studentid: String!): Float!
   getClassfeeofStudent(studentid: String!): [Tranche!]!
@@ -533,6 +534,7 @@ type Query {
   findOnesalle(id: String!): Salle!
   etatInscriptionSalle(id: String!): Salle!
   findSalleByStudent(studentid: String!): Salle!
+  salleAnglophoneSection: [Salle!]!
   findSectionByStudent(studentid: String!): [Section!]!
   findAllfraisexam: [FraisExamen!]!
   fraisExamen(id: String!): FraisExamen!

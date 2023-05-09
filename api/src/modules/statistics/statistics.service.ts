@@ -55,6 +55,7 @@ export class StatisticsService {
       const pensions = student.pension.toArray();
       const amountExpected =student.salle.getEntity().montantPensionSalle;
       const section = student.salle.getEntity().niveau.getEntity().cycle.getEntity().section.getEntity().name
+      console.log('=========================>'+section)
       console.log('=============>'+amountExpected)
       const amountPaid = pensions.reduce(
         (sum, pension) => sum + pension.montantPension,

@@ -65,11 +65,19 @@ export class SalleService {
         return this.salleRepository.findOne(id)
       }
     
-      getAll(): Promise<Salle[]> {
+     async  getAll(): Promise<Salle[]> {
+      const salles= this.salleRepository.findAll({
+        populate:['cycle','niveau','niveau.cycle.section']
+      })
+      return salles
+
+      }
+
+      async salleAnglophoneSection(){
         const salles= this.salleRepository.findAll({
-          populate:['cycle','niveau','student']
+          populate:['cycle','niveau','niveau.cycle.section']
         })
-        return salles
+        return (await salles).filter(a=> a.niveau.getEntity().cycle.getEntity().section.getEntity().name==='Anglophone')
       }
 
       async deleteSalle(id:string){

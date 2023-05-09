@@ -118,7 +118,7 @@ function creerRetenue() {
                         Ajouter une retenue                              
                 </Button> 
           </Box>
-            <Box as={"form"}  onSubmit={() => router.push("/class/cyclesection")}> 
+            <Box as={"form"}  onSubmit={() => router.push("/class/cyclesection")} > 
                 <AlertDialog
                     isOpen={isOpen}
                     leastDestructiveRef={cancelRef}
@@ -133,7 +133,7 @@ function creerRetenue() {
           <Heading p="1em" textAlign="center" bgGradient='linear(to-r, teal.500, green.500)' bgClip='text' fontSize={'30px'}>
             Ajouter une retenue
           </Heading>
-        <Box mx='400px' pb={'15px'}>
+        <Box mx='30px' pb={'15px'}>
           <Divider />
         </Box>
         <Box w="300px" margin="0 auto" textAlign="center" gap={200} >
@@ -219,11 +219,11 @@ function creerRetenue() {
 
         </Box>
 
-         <Box mx='400px' pt='0px' pb={'15px'}>
+         <Box mx='30px' pt='0px' pb={'15px'}>
           <Divider />
           
         </Box>
-        <Center>
+        <Center mb='6'>
           <Button type="submit" leftIcon={<CheckIcon />} colorScheme='teal' variant='solid' mx='auto' my='auto'>
                 Soumettre
            </Button>

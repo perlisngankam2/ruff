@@ -1,7 +1,9 @@
-import { FormControl, FormLabel, Grid, Input, Select, Text } from "@chakra-ui/react";
+import { Button, FormControl, FormLabel, Grid, Input, Select, Text } from "@chakra-ui/react";
 import { useAccount } from "../../../contexts/account/Account";
 import { GET_PERSONNEL_BY_USERID } from "../../../graphql/Queries";
 import { useMutation, useQuery } from '@apollo/client'; 
+import Link from "next/link";
+import Routes from "../../../modules/routes";
 
 function AccountSetting(){
 
@@ -68,7 +70,13 @@ function AccountSetting(){
                 </Select>
             </FormControl>
 
-
+                  <Button w='250px' mt='5' background="colors.primary" color='white'>
+                            <Link href= {{
+                                    pathname: Routes.ResetPassword?.path || '',
+                                    query: {id: account.id }
+                                }}>Modifier votre mot de passe
+                            </Link>
+                  </Button>
         </Grid>
     )
 }

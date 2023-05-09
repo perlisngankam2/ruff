@@ -374,20 +374,23 @@ query user ($id: String!) {
 
 
 export const GET_ALL_USER = gql `
-    query findAlluser {
-        findAlluser {
-            id
-            email
-            password
-            firstName
-            lastName
-            name
-            role
-            phoneNumber
-            active
-            deactivatedAt
-        }
+   query findAlluser {
+    findAlluser {
+        id
+        email
+        password
+        firstName
+        lastName
+        name
+        role
+        phoneNumber
+        active
+        lastConnection
+        deactivatedAt
+        personnelid
+        studentid
     }
+}
 `;
 
 //Tranche student by studentIf
@@ -734,6 +737,22 @@ query findallsalaire {
 }
 `;
 export const FIND_BY_ID_SALAIRE = gql `
+query getonesalaire ($id: String!) {
+    getonesalaire (id: $id) {
+        id
+        jourPaie
+        moisPaie
+        payer
+        montant
+        personnelid
+        personnelFirstName
+        personnelLastName
+        personnelFonction
+    }
+}
+`;
+
+export const FIND_ID_PRIME = gql `
 query getonesalaire ($id: String!) {
     getonesalaire (id: $id) {
         id

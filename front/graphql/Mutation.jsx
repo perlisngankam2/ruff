@@ -662,7 +662,27 @@ mutation deletePaysalire ($id: String!) {
         personnelid
     }
 }
-`
+`;
+
+export const UPDATE_LOGIN = gql `
+mutation loginUpdate ($loginInput: LoginUpdate!) {
+    loginUpdate (loginInput: $loginInput) {
+        id
+        email
+        password
+        firstName
+        lastName
+        name
+        role
+        phoneNumber
+        active
+        lastConnection
+        deactivatedAt
+        personnelid
+        studentid
+    }
+}
+`;
 
 
 

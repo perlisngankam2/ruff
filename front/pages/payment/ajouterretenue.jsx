@@ -48,7 +48,7 @@ import {MdDelete} from 'react-icons/md';
 import ReactPaginate from "react-paginate";
 import {useTranslation} from "next-i18next";
 import { getStaticPropsTranslations } from "../../types/staticProps";
-import creerRetenue from './creerRetenue';
+import CreerRetenue from './creerRetenue';
 
 
 
@@ -131,10 +131,10 @@ function ajouterRetenue() {
           </Hide>
         </Flex>
         <Flex 
-          gap={10} 
+          gap={8} 
           mt={7}
         >
-          <InputGroup  width="600px">
+          <InputGroup >
           {/* <InputRightElement
               children={<Icon as={FiSearch} />}
               cursor="pointer"
@@ -159,7 +159,7 @@ function ajouterRetenue() {
             onChange={e =>setQuery(e.target.value)}
           >
           </Select> */}
-          <creerRetenue />
+          <CreerRetenue />
         </Flex>
 
          

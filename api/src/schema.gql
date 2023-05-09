@@ -212,8 +212,6 @@ type Tranche {
   year: String
   salleid: ID
   pensionid: ID
-  yearid: ID!
-  salleid: ID!
 }
 
 type TrancheStudent {
@@ -490,9 +488,6 @@ type Query {
   PersonnelMonthSalary(personnelid: String!): [String!]!
   PersonnelNetSalary(personnelid: String!): [Float!]!
   personnelsalairenetbymonth(personnelid: String!, month: String!): Float!
-  getallpersonnelprimebymont(personnelid: String!, month: String!): Float!
-  findAllperiod: [Periode!]!
-  periode(id: String!): Periode!
   findAllretenupersonnel: [RetenuPersonnel!]!
   retenuPersonnel(id: String!): RetenuPersonnel!
   findmontantretenubypersonnel(personnelid: String!): [Float!]!
@@ -528,7 +523,6 @@ type Query {
   getallfessalreadypayed(studentid: String!): [Tranche!]!
   getalltranchecompletedbystudent(studentid: String!): [Tranche!]!
   RestTuitionFeebystudent(studentid: String!): [Tranche!]!
-  getallretenupersonnelbymonth(personnelid: String!, month: String!): Float!
   findAllsection: [Section!]!
   findOnesection(id: String!): Section!
   findAllcycle: [Cycle!]!
@@ -545,36 +539,6 @@ type Query {
   findSalleByStudent(studentid: String!): Salle!
   findAllfraisexam: [FraisExamen!]!
   fraisExamen(id: String!): FraisExamen!
-  findallpaysalaire: [PaySalary!]!
-  getonepaysalaire(id: String!): PaySalary!
-  getpaysalairebypersonnel(personnelid: String!): [PaySalary!]!
-  PersonnelMonthPaySalary(personnelid: String!): [String!]!
-  findavancetranchebyid(input: String!): AvanceTranche!
-  findallavancetranche: [AvanceTranche!]!
-  SumAvanceTrancheByTranche(trancheid: String!): Float!
-  AmountMostRecentAvanceTranche(trancheid: String!): Float!
-  MostRecentAvanceTranche: Float!
-  AmountRecentAvanceTrancheByStudent(studentid: String!): Float!
-  SumAvanceTrancheByStudent(studentid: String!, trancheid: String!): Float!
-  getallfessalreadypayed(studentid: String!): [Tranche!]!
-  getalltranchecompletedbystudent(studentid: String!): [Tranche!]!
-  RestTuitionFeebystudent(studentid: String!): [Tranche!]!
-  findAlltranchestudent: [TrancheStudent!]!
-  trancheStudent(id: String!): TrancheStudent!
-  getStudentByTrancheStudent(studentid: String!): TrancheStudent!
-  getrestTranchebystudent(studentid: String!): [[String!]!]!
-  findAllpension: [Pension!]!
-  pension(id: String!): Pension!
-  findrestpensionbystudent(studentid: String!): Float!
-  findpensionbystudent(studentid: String!): Pension!
-  findoneexpense(id: String!): Expense!
-  findallexpenses: [Expense!]!
-  findallsalaire: [Salaire!]!
-  getonesalaire(id: String!): Salaire!
-  getsalairebypersonnel(personnelid: String!): [Salaire!]!
-  PersonnelMonthSalary(personnelid: String!): [String!]!
-  PersonnelNetSalary(personnelid: String!): [Float!]!
-  personnelsalairenetbymonth(personnelid: String!, month: String!): Float!
   findAll: [Inscription!]!
   findOne(id: String!): Inscription!
   findAllavanceinscription: [AvanceInscription!]!
@@ -683,21 +647,6 @@ type Mutation {
   createFraisExamen(fraisExamen: FraisExamentInput!): FraisExamen!
   updatefraisexam(id: String!, input: UpdateFraisExamentInput!): FraisExamen!
   deletefraisfraisexam(id: String!): FraisExamen!
-  createpaysalaire(input: PaySalaryCreateInput!): PaySalary!
-  updatepaysalire(id: String!, input: PaySalaryUpdateInput!): PaySalary!
-  deletePaysalire(id: String!): PaySalary!
-  createavancetranche(avancetranche: AvanceTrancheCreateInput!): AvanceTranche!
-  deleteavancetranche(id: String!): AvanceTranche!
-  createTrancheStudent(trancheStudent: TrancheStudentCreateInput!): TrancheStudent!
-  updateTrancheStudent(id: String!): TrancheStudent!
-  deletetranchestudent(id: String!): TrancheStudent!
-  createPension(pension: PensionCreateInput!): Pension!
-  updatePension(id: String!): PensionSalle!
-  deletepension(id: String!): PensionSalle!
-  createExpense(input: ExpenseCreateInput!): Expense!
-  updateExpense(id: String!, input: ExpenseUpdateInput!): Expense!
-  deleteExpense(id: String!): Expense!
-  createsalaire(input: SalaireCreateInput!): Salaire!
   createInscription(inscription: InscriptionInput!): Inscription!
   update(inscription: InscriptionInput!, id: String!): Inscription!
   createAvanceInscription(avanceInscription: AvanceInscriptionCreateInput!): AvanceInscription!

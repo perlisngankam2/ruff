@@ -101,7 +101,7 @@ console.log(dernierElementGenererSalaire)
   const montantSalaire = dernierElementGenererSalaire?.montant;
 
   const [moisPaie, setMoisPaie] = useState("");
-  const [jourPaie , setJourPaie] = useState("");
+  const [jourPaie , setJourPaie] = useState(new Date().toISOString().slice(0, 10));
 const [isMonthUnavailable, setIsMonthUnavailable] = useState(false);
 
 
@@ -665,7 +665,6 @@ const monthOptions = useMemo(() => {
                     // mt={'8px'}
                     onChange={(event) => setJourPaie(event.target.value)}
                     value={jourPaie}
-                    defaultValue={new Date().toISOString().slice(0, 10)}
                   />
                   
                    {console.log(jourPaie)}

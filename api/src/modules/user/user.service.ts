@@ -116,4 +116,9 @@ export class UserService {
 
   }
 
+  async getAllEmails(){
+    const a= (await this.getAll()).map(a=>a.email)
+    return a
+  }
+
 }

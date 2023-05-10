@@ -50,4 +50,9 @@ export class UserResolver {
   async deleteuser(@Args('id') id:string){
  return await this.userService.delete(id)
   }
+
+  @Query(()=>[String])
+  async getAllEmails(){
+  return await this.userService.getAllEmails()
+  }
 }

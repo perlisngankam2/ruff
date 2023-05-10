@@ -76,6 +76,11 @@ export class SalleResolver {
     return await this.salleService.salleAnglophoneSection()
   }
 
+  @Query(() => Number)
+  async NumberofStudentsSalleAnglophoneSection(){
+    return await this.salleService.NumberofStudentsSalleAnglophoneSection()
+  }
+
   @Query(() => [Section])
   async findSectionByStudent(@Args('studentid', { type: () => String }) studentid: string) {
    return await this.salleService.findSectionByStudent(studentid)

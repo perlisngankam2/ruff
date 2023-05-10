@@ -14,6 +14,9 @@ export class SectionStatistics {
   numberOfStudents: number;
 
   @Field()
+  numberOfStudentsStartedPaying:number;
+
+  @Field()
   expectedAmount: number;
 
   @Field()

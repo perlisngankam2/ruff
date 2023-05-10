@@ -12,12 +12,14 @@ import { MikroOrmModule } from "@mikro-orm/nestjs";
 import { Tranche } from "src/entities/tranche.entity";
 import { Student } from "src/entities/student.entity";
 import { PensionModule } from "../pension/pension.module";
+import { SalleModule } from "../salle/salle.module";
 
 
 @Module({
     imports:[
         MikroOrmModule.forFeature({ entities: [Tranche] }),
         SectionModule,
+        SalleModule,
         TrancheModule,
         TrancheStudentModule,
         AvanceTrancheModule,

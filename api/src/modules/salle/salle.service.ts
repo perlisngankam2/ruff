@@ -80,6 +80,13 @@ export class SalleService {
         return (await salles).filter(a=> a.niveau.getEntity().cycle.getEntity().section.getEntity().name==='Anglophone')
       }
 
+      async NumberofStudentsSalleAnglophoneSection(){
+        const salles= this.salleRepository.findAll({
+          populate:['student','cycle','niveau','niveau.cycle.section']
+        })
+        return (await salles).filter(a=> a.niveau.getEntity().cycle.getEntity().section.getEntity().name==='Anglophone').map(a=>a.student.count()).reduce(function(a,b){return a+b})
+      }
+
       async deleteSalle(id:string){
         const a = this.findById(id)
         await this.salleRepository.nativeDelete(await a)

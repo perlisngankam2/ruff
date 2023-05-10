@@ -4,6 +4,9 @@ import { Field, ObjectType } from "@nestjs/graphql";
 @ObjectType()
 export class ClassStatistics {
   @Field()
+  sectionName: string;
+
+  @Field()
   className: string;
 
   @Field()
@@ -12,11 +15,11 @@ export class ClassStatistics {
   @Field()
   expectedAmount: number;
 
-  @Field()
-  numberOfStudentsCompletedFee: number;
+  // @Field()
+  // numberOfStudentsCompletedFee: number;
 
-  @Field()
-  rateR: number;
+  // @Field()
+  // rateR: number;
 
   @Field()
   sumAmountAlreadyPaid: number;
@@ -24,11 +27,11 @@ export class ClassStatistics {
   @Field()
   rateT: number;
 
-  @Field()
-  numberOfStudentsNotPaid: number;
+  // @Field()
+  // numberOfStudentsNotPaid: number;
 
-  @Field()
-  rateS: number;
+  // @Field()
+  // rateS: number;
 
   @Field()
   amountRest: number;

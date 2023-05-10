@@ -46,7 +46,6 @@ type RetenuPersonnel {
   startMonth: String
   retenueid: ID!
   personnelid: ID!
-  salaireid: ID!
 }
 
 type Salaire {
@@ -56,6 +55,9 @@ type Salaire {
   payer: Boolean!
   montant: Float!
   personnelid: ID!
+  personnelFirstName: ID
+  personnelLastName: ID
+  personnelFonction: ID
 }
 
 type PrimePersonnel {
@@ -63,7 +65,6 @@ type PrimePersonnel {
   startMonth: String
   primeid: ID!
   personnelid: ID!
-  salaireid: ID!
 }
 
 type Prime {
@@ -196,6 +197,7 @@ type PensionSalle {
   montantPension: Float!
   dateLine: DateTime
   yearid: ID!
+  yearName: ID!
   salleId: ID!
   salleName: ID
 }
@@ -257,14 +259,14 @@ type Expense {
   debitamount: Float
   debitTotal: Float
   creditTotal: Float
-  studentid: ID!
-  personnelid: ID
-  personnelName: ID
-  personnelSurName: ID
-  personnelFunction: ID
-  studentLastname: ID!
-  studentSurname: ID!
   createdOn: String!
+  personnelid: ID
+  personnelFirstName: ID
+  personnelLastName: ID
+  personnelFonction: ID
+  studentid: ID
+  studentFirstname: ID
+  studentLastname: ID
 }
 
 type Parameter {
@@ -321,7 +323,9 @@ type Course {
 type PersonnelSalle {
   id: ID!
   personnelId: ID
-  personnelName: ID
+  personnelFirstName: ID
+  personnelLastName: ID
+  personnelFunction: ID
   salleId: ID!
   salleName: ID
   courseId: ID!
@@ -349,8 +353,6 @@ type Personnel {
   dateOfStartWork: String!
   dateOfBirth: String!
   childNumber: Float
-  userid: ID!
-  categorieid: ID!
 }
 
 type User {
@@ -777,6 +779,7 @@ input SalleUpdateInput {
   cycleId: String
   montantPensionSalle: Float
   niveauEtudeId: ID
+  anneeAcademiqueId: String
   effectif: Float = 0
   niveau: NiveauEtudeCreateInput
 }
@@ -1098,6 +1101,7 @@ input SectionCycleUpdateInput {
 input SalleCreateInput {
   ID: ID
   name: String
+  anneeAcademiqueId: String
   sectionId: ID
   cycleId: String
   montantPensionSalle: Float

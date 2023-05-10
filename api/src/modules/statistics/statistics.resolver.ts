@@ -64,18 +64,18 @@ export class StatisticResolver {
     return await this.statisticsService.numberOfStudentsStartedPayingPension();
   }
 
-  @Query(() => [SectionStatistics])
-  getGeneralSectionStatistics(): Promise<SectionStatistics[]> {
-    return this.statisticsService.getGeneralSectionStatistics()
-  }
+  // @Query(() => [SectionStatistics])
+  // getGeneralSectionStatistics(): Promise<SectionStatistics[]> {
+  //   return this.statisticsService.getGeneralSectionStatistics()
+  // }
 
-  @Query(() => [SectionStatistics])
-  getGeneralAnglophoneSectionStatistics(): Promise<SectionStatistics[]> {
-    return this.statisticsService.getGeneralAnglophoneSectionStatistics()
+  @Query(() => [ClassStatistics])
+  getGeneralAnglophoneSectionStatistics(): Promise<ClassStatistics[]> {
+    return this.statisticsService.getGeneralAnglophoneClassStatistics()
   }
-  @Query(() => [SectionStatistics])
-  getGeneralFrancophoneSectionStatistics(): Promise<SectionStatistics[]> {
-    return this.statisticsService.getGeneralFrancophoneSectionStatistics()
+  @Query(() => [ClassStatistics])
+  getGeneralFrancophoneSectionStatistics(): Promise<ClassStatistics[]> {
+    return this.statisticsService.getGeneralFrancophoneClassStatistics()
   }
 
 

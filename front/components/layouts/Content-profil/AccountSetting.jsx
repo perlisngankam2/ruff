@@ -20,32 +20,55 @@ function AccountSetting(){
             gap={6}
         >
             <FormControl id='nom'>
-                <FormLabel>Noms</FormLabel>
+                <FormLabel fontWeight={"bold"}>Noms</FormLabel>
                 {account?.firstName === null?
-                <Text>{personnelData?.getpersonnelbyaccount.firstName} </Text>
+                <Input
+                value={personnelData?.getpersonnelbyaccount.firstName}
+                bg='gray.100'
+                />
                 :
-                <Text>{account?.firstName} </Text>
+                <Input
+                value={account?.firstName}
+                bg='gray.100'
+                />
+            
                 }
             </FormControl>
             <FormControl id='prenom'>
-                <FormLabel>Prenoms</FormLabel>
+                <FormLabel fontWeight={"bold"}>Prenoms</FormLabel>
                 {account?.lastName === null?
-                <Text>{personnelData?.getpersonnelbyaccount.lastName} </Text>
+                <Input
+                value={personnelData?.getpersonnelbyaccount.lastName}
+                bg='gray.100'
+                />
                 :
-                <Text>{account?.lastName} </Text>
+                <Input
+                value={account?.lastName}
+                bg='gray.100'
+                />
+               
                 }
             </FormControl>
             <FormControl id='telephone'>
-                <FormLabel>Telephone</FormLabel>
+                <FormLabel fontWeight={"bold"}>Telephone</FormLabel>
                   {account?.phoneNumber === null?
-                <Text>{personnelData?.getpersonnelbyaccount.phoneNumber} </Text>
+ <Input
+                value={personnelData?.getpersonnelbyaccount.phoneNumber}
+                bg='gray.100'
+                />
                 :
-                <Text>{account?.phoneNumber} </Text>
+                <Input
+                value={account?.phoneNumber}
+                bg='gray.100'
+                />
                 }
             </FormControl>
             <FormControl id='adressemail'>
-                <FormLabel>Adresse Mail</FormLabel>
-                <Text>{account?.email} </Text>
+                <FormLabel fontWeight={"bold"}>Adresse Mail</FormLabel>
+                 <Input
+                value={account?.email}
+                bg='gray.100'
+                />
             </FormControl>
             <FormControl id='pays'>
                 <FormLabel>Pays</FormLabel>
@@ -70,13 +93,13 @@ function AccountSetting(){
                 </Select>
             </FormControl>
 
-                  <Button w='250px' mt='5' background="colors.primary" color='white'>
+                  {/* <Button w='250px' mt='5' background="colors.primary" color='white'>
                             <Link href= {{
                                     pathname: Routes.ResetPassword?.path || '',
-                                    query: {id: account.id }
+                                    query: {id: account?.id }
                                 }}>Modifier votre mot de passe
                             </Link>
-                  </Button>
+                  </Button> */}
         </Grid>
     )
 }

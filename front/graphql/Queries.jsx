@@ -753,17 +753,7 @@ query getonesalaire ($id: String!) {
 `;
 
 export const FIND_ID_PRIME = gql `
-query getonesalaire ($id: String!) {
-    getonesalaire (id: $id) {
-        id
-        jourPaie
-        moisPaie
-        payer
-        montant
-        personnelid
-        personnelFirstName
-        personnelLastName
-        personnelFonction
-    }
+query findIdPrimesByPrimesPersonnel ($personnelid: String!, $month: String!) {
+    findIdPrimesByPrimesPersonnel (personnelid: $personnelid, month: $month)
 }
 `;

@@ -27,7 +27,8 @@ import { GET_ALL_PERSONNEL_BY_ID,
          GET_SALARY_NET,
          GET_Category_Personnel_BY_ID, 
          GET_Category_Personnel_ID,
-        FIND_BY_ID_SALAIRE } from "../../../graphql/Queries";
+        FIND_BY_ID_SALAIRE,
+      FIND_ID_PRIME } from "../../../graphql/Queries";
 import { useRouter } from "next/router";
 import { useQuery } from "@apollo/client";
 import React, { useRef, useEffect }  from "react";
@@ -80,11 +81,31 @@ const BulletinLastPayment = () => {
         variables:{ id: dataCategorieId?.findCategoriepersonnelbypersonnel}
     })
 
-  //prime et retenues
-//  const {data:dataRetenueNoms} = useQuery(GET_ALL_NAME_RETENU_PERSONNEL,
+ // Id de la prime affectee a un personnel
+//  const {data:primeId} = useQuery(FIND_ID_PRIME,
 //     {
-//         variables:{ personnelid: router.query.id}
+//         variables:{ personnelid: dataSalaireId?.getonesalaire.personnelid,
+//                     month: dataSalaireId?.getonesalaire.moisPaie
+//         }
 //     })
+
+
+    const {data:dataPrimeTotal} = useQuery(GET_SUM_AMOUNT_PRIME_PERSONNEL,
+    {
+        variables:{ personnelid: dataSalaireId?.getonesalaire.personnelid,
+                    month: dataSalaireId?.getonesalaire.moisPaie
+        }
+    })
+
+        const {data:dataRetenueTotal} = useQuery(GET_SUM_AMOUNT_RETENU_PERSONNEL,
+    {
+        variables:{ personnelid: dataSalaireId?.getonesalaire.personnelid,
+                    month: dataSalaireId?.getonesalaire.moisPaie
+        }
+    })
+
+//     console.log('prime id')
+//     console.log(dataSalaireId?.getonesalaire.personnelid)
 
 //     const {data:dataRetenueMontant} = useQuery(GET_ALL_AMOUNT_RETENU_PERSONNEL,
 //     {
@@ -379,7 +400,7 @@ const options = {
                     <Box w='300px' borderLeft={'1px'}   py='6px' ><Heading fontSize={'md'} fontWeight={'bold'} color='black' ml='6px'>TOTAL PRIMES</Heading></Box>
                     <Box  w='180px'  borderLeft={'1px'} py='6px' ></Box>
                     <Box w='100px'  borderLeft={'1px'} py='6px'  ></Box>
-                    <Box w='160px'  borderLeft={'1px'} py='6px' ><Text textAlign={"right"} mr='6px' fontWeight={'bold'}></Text></Box>
+                    <Box w='160px'  borderLeft={'1px'} py='6px' ><Text textAlign={"right"} mr='6px' fontWeight={'bold'}>{dataPrimeTotal?.getallpersonnelprimebymont}</Text></Box>
                     <Box  w='160px' borderLeft={'1px'} borderRight={'1px'} py='6px'  ></Box>
 
                   </Flex>
@@ -389,9 +410,7 @@ const options = {
                     <Box  w='180px'  borderLeft={'1px'} borderBottom={'1px'} py='6px' ></Box>
                     <Box w='100px'  borderLeft={'1px'} borderBottom={'1px'} py='6px'  ></Box>
                     <Box w='160px'  borderLeft={'1px'} borderBottom={'1px'} py='6px' ></Box>
-                    <Box  w='160px' borderLeft={'1px'}borderBottom={'1px'} borderRight={'1px'} py='6px'  ><Text textAlign={"right"} mr='6px' fontWeight={'bold'}>
-                  
-                      </Text></Box>
+                    <Box  w='160px' borderLeft={'1px'}borderBottom={'1px'} borderRight={'1px'} py='6px'  ><Text textAlign={"right"} mr='6px' fontWeight={'bold'}>{dataRetenueTotal?.getallretenupersonnelbymonth}</Text></Box>
 
                   </Flex>
 

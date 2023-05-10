@@ -148,10 +148,10 @@ const unavailableMonths = useMemo(
   const HandleClickGenererSalaire = async (event) => {
     event.preventDefault();
 
-    router.push({
-                  pathname: Routes.Bulletin?.path || '',
-                  query: {id: router.query.id}
-                })
+    // router.push({
+    //               pathname: Routes.Bulletin?.path || '',
+    //               query: {id: router.query.id}
+    //             })
 
     const genererSalaireData = await genererSalaire({
           variables:{
@@ -432,6 +432,7 @@ const monthOptions = useMemo(() => {
         name="moisPaie"
         value={moisPaie}
         onChange={handleMonthChange}
+        isRequired
       >
         <option value="">Sélectionnez un mois</option>
         {monthOptions}
@@ -665,6 +666,7 @@ const monthOptions = useMemo(() => {
                     // mt={'8px'}
                     onChange={(event) => setJourPaie(event.target.value)}
                     value={jourPaie}
+                    isRequired
                   />
                   
                    {console.log(jourPaie)}

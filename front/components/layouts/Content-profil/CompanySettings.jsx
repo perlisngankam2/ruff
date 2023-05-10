@@ -11,17 +11,29 @@ import{
     NumberInputField,
     NumberInputStepper,
     InputLeftAddon,
+    Button
 } 
-from '@chakra-ui/react'
+from '@chakra-ui/react';
+import { useAccount } from "../../../contexts/account/Account";
+import Link from "next/link";
+import Routes from "../../../modules/routes";
 
 function CompanySettings(){
+        const { account ,loaded } = useAccount();
 
     return(
         <Grid
         templateColumns={{base: 'repeat(1, 1fr)', md: 'repeat(2, 1fr)'}}
         gap={6}
         >
-            <FormControl id='Matricule'>
+              <Button w='250px' mt='5' background="colors.primary" color='white'>
+                            <Link href= {{
+                                    pathname: Routes.ResetPassword?.path || '',
+                                    query: {id: account?.id }
+                                }}>Modifier votre mot de passe
+                            </Link>
+                  </Button>
+            {/* <FormControl id='Matricule'>
                 <FormLabel>Code secret</FormLabel>
                 <InputGroup>
                     <InputLeftAddon color={"gray.500"}>
@@ -59,7 +71,7 @@ function CompanySettings(){
                         <NumberDecrementStepper/>
                     </NumberInputStepper>
                 </NumberInput>
-            </FormControl>
+            </FormControl> */}
         </Grid>
     )
 }

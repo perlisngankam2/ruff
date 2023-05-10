@@ -73,6 +73,7 @@ export class NiveauEtude{
   @ManyToOne(() => Cycle, {
     nullable: true,
     onDelete: 'CASCADE',
+    eager:true
   })
   cycle!: IdentifiedReference<Cycle> | null;
 
@@ -90,6 +91,7 @@ export class NiveauEtude{
   @Field(() => ID)
   @Property({ persist: false })
   get cycleName() {
-  return this.cycle.getEntity()?`${this.cycle.getEntity().name}`:null;
+  return this.cycle?`${this.cycle.getEntity().name}`:null;
 }
+
 }

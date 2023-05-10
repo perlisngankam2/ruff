@@ -397,6 +397,7 @@ type SectionStatistics {
   sectionName: String!
   className: String!
   numberOfStudents: Float!
+  numberOfStudentsStartedPaying: Float!
   expectedAmount: Float!
   numberOfStudentsCompletedFee: Float!
   TAUXA: Float!
@@ -419,6 +420,17 @@ type StudentStatistics {
   rateArrears: Float!
 }
 
+type ClassStatistics {
+  sectionName: String!
+  className: String!
+  numberOfStudents: Float!
+  expectedAmount: Float!
+  sumAmountAlreadyPaid: Float!
+  rateT: Float!
+  amountRest: Float!
+  rateZ: Float!
+}
+
 type SpecialStudentStatistics {
   amountToPay: Float!
   dateLine: DateTime!
@@ -436,11 +448,13 @@ type SpecialStudentStatistics {
 type Query {
   findAlluser: [User!]!
   user(id: String!): User!
+  getAllEmails: [String!]!
   findAllPersonnelSalle: [PersonnelSalle!]!
   findOnePersonnelSalle(id: String!): PersonnelSalle!
   findbyCoursePersonnelSalle(personnelid: String!, salleid: String!, courseid: String!): [[String!]!]!
   findAllstudents: [Student!]!
   findOnestudent(id: String!): Student!
+  getAllStudentsForUseAnglophone: [Student!]!
   AmountrExpectedByTranche(studentid: String!): [Float!]!
   getClassfeebyStudent(studentid: String!): Float!
   getClassfeeofStudent(studentid: String!): [Tranche!]!
@@ -478,6 +492,7 @@ type Query {
   primesETnomprimepersonnel(personnelid: String!): [[String!]!]!
   findIdPrimesByPrimesPersonnel(personnelid: String!, month: String!): [String!]!
   getallpersonnelprimebymont(personnelid: String!, month: String!): Float!
+  allMonthAffectedPrimeToPersonnel(personnelid: String!, primeid: String!): [String!]!
   findallsalaire: [Salaire!]!
   getonesalaire(id: String!): Salaire!
   getsalairebypersonnel(personnelid: String!): [Salaire!]!
@@ -536,6 +551,8 @@ type Query {
   findOnesalle(id: String!): Salle!
   etatInscriptionSalle(id: String!): Salle!
   findSalleByStudent(studentid: String!): Salle!
+  salleAnglophoneSection: [Salle!]!
+  NumberofStudentsSalleAnglophoneSection: Float!
   findSectionByStudent(studentid: String!): [Section!]!
   findAllfraisexam: [FraisExamen!]!
   fraisExamen(id: String!): FraisExamen!
@@ -558,9 +575,8 @@ type Query {
   getSectionStatisticsFrancophoneFirstInstalment: [SectionStatistics!]!
   getSectionStatisticsFrancophoneSecondInstalment: [SectionStatistics!]!
   numberOfStudentsStartedPayingPension: Float!
-  getGeneralSectionStatistics: [SectionStatistics!]!
-  getGeneralAnglophoneSectionStatistics: [SectionStatistics!]!
-  getGeneralFrancophoneSectionStatistics: [SectionStatistics!]!
+  getGeneralAnglophoneSectionStatistics: [ClassStatistics!]!
+  getGeneralFrancophoneSectionStatistics: [ClassStatistics!]!
   getTrancheStatisticsForNormalStudents: [SpecialStudentStatistics!]!
   findAllpensionSalle: [PensionSalle!]!
   findOnepensionsalle(id: String!): PensionSalle!

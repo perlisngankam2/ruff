@@ -22,6 +22,7 @@ import { TrancheService } from '../tranche/tranche.service';
 import { TrancheStudentCreateInput } from './dto/tranche-student.input';
 import { TrancheStudentUpdateInput } from './dto/tranche-student.update';
 import { ParameterService } from '../parameter/parameter.service';
+import { TrancheStat } from '../statistics/classStatistics';
 
 @Injectable()
 export class TrancheStudentService {
@@ -251,6 +252,13 @@ async saveTranche(studentid:string,trancheid:string){
         
     // }
 
+    async findRestByTrancheAndStudent(studentid:string, trancheid:string){
+      return await this.trancheStudentRepository.findOne({
+        student:studentid,
+        tranche: trancheid
+      })
+    }
+
     async delete(id:string){
     const a = this.findById(id)
     await this.trancheStudentRepository.removeAndFlush(await a)
@@ -264,12 +272,22 @@ async saveTranche(studentid:string,trancheid:string){
         return (await this.em.find(TrancheStudent,{student:studentid}))[0].student.load()
       } 
 
-      async findbystudentresttranche(studentid:string){
-        const a= (await this.findByStudents(studentid)).map(async a=>(await a.tranche.load()).name)
-        const b= (await this.findByStudents(studentid)).map(async a=> (await a.tranche.load()).priority)
-        const c= (await this.findByStudents(studentid)).map(a=>a.reste)
-        return [a,b,c]
-      }
+    async getTrancheDateLineByStudent(studentid:string,trancheid:string){
+      const a= await this.trancheStudentRepository.findOne({
+        student:studentid,
+        tranche:trancheid
+      })
+      return (await a.tranche.load()).dateLine
+    }
+
+    async getTranchestudentPaymentDate(studentid:string,trancheid:string){
+      const a = await this.trancheStudentRepository.findOne({
+        student:studentid,
+        tranche:trancheid
+      })
+      return a.createdAt
+    }
+    
  
 }
 

@@ -58,8 +58,14 @@ export class TrancheStudentResolver {
     return student
   }
 
-  @Query(()=> [[String],[Number],[Number]])
-  async getrestTranchebystudent(@Args('studentid') studentid:string){
-   return await this.trancheService.findbystudentresttranche(studentid)
-  }
+  @Query(()=>Date)
+  async getTranchestudentPaymentDate(@Args('studentid') studentid:string,@Args('trancheid') trancheid:string){
+    return await this.trancheService.getTranchestudentPaymentDate(studentid,trancheid)
+  }
+
+  @Query(()=>Date)
+  async getTrancheDateLineByStudent(@Args('studentid') studentid:string,@Args('trancheid') trancheid:string){
+  return await this.trancheService.getTrancheDateLineByStudent(studentid,trancheid)
+  }
+
 }

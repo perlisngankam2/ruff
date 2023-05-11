@@ -94,3 +94,18 @@ TOTAL_FIRST_TAUX_RECOUVRIR:number
 @Field()
 TOTAL_SECOND_TAUX_RECOUVRIR:number
 }
+
+@ObjectType()
+export class TrancheStat{
+@Field()
+studentid:string
+
+@Field()
+Nom:string
+
+@Field()
+Priority:number
+
+@Field()
+Rest:number
+}

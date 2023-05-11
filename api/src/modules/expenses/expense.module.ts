@@ -15,7 +15,7 @@ import { PaySalaryModule } from "../paysalary/paysalary.module";
     imports:[
         MikroOrmModule.forFeature({ entities: [Expense] }),
         AnneAccademiqueModule,
-        AvanceTrancheModule,
+        forwardRef(()=>AvanceTrancheModule),
         PaySalaryModule,
         forwardRef(() => PensionModule),
         forwardRef(() => SalaireModule)

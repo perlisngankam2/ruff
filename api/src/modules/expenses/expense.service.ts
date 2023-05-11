@@ -25,6 +25,7 @@ export class ExpenseService {
     @Inject(forwardRef(() =>SalaireService))
     private salaireservice: SalaireService,
     private paysalaryservice: PaySalaryService,
+    @Inject(forwardRef(() =>AvanceTrancheService))
     private avancetrancheservice: AvanceTrancheService,
   ) {}
 

@@ -159,63 +159,65 @@ const Paiement = () => {
                             Régime de paiement: Normal
                         </Text>
                         <Box display='flex' gap='2'>
-                            <Text mb='8px'>I</Text>
-                            <Checkbox isChecked={dataStudentId?.findOnestudent.categoryName === "Candidat regulier"}></Checkbox>
+                            <Text>I</Text>
+                            <Checkbox
+                                isChecked={dataStudentId?.findOnestudent.categoryName === "Candidat regulier"}
+                            >
+                            </Checkbox>
                         </Box>
                         <Box display='flex' gap='2'>
-                            <Text mb='8px'>T1</Text>
+                            <Text >T1</Text>
                             <Checkbox></Checkbox>
                         </Box>
                     
                         <Box display='flex' gap='2'>
-                            <Text mb='8px'>T2</Text>
-                            <Checkbox></Checkbox>
+                            <Text>T2</Text>
+                            <Checkbox ></Checkbox>
                         </Box>
                     
                         <Box display='flex' gap='2'>
-                            <Text mb='8px'>T3</Text>
-                            <Checkbox></Checkbox>
+                            <Text>T3</Text>
+                            <Checkbox ></Checkbox>
                         </Box>
                     
                         <Box display='flex' gap='2'>
-                            <Text mb='8px'>T4</Text>
+                            <Text >T4</Text>
                             <Checkbox></Checkbox>
                             
                         </Box>
-                    
-                    
-
-                        
                     </Box>
                 <Box display='flex' mt='20px' gap={50}>
                     <Text fontWeight={"bold"}>
                         Régime de paiement: Spécial
                     </Text>
                     <Box display='flex' gap='2'>
-                        <Text mb='8px'>I</Text>
-                        <Checkbox isChecked={dataStudentId?.findOnestudent.categoryName === "Candidat libre"}></Checkbox>
+                        <Text >I</Text>
+                        <Checkbox 
+                            size={"xl"}
+                            isChecked={dataStudentId?.findOnestudent.categoryName === "Candidat libre"}>
+
+                        </Checkbox>
                         
                     </Box>
                     <Box display='flex' gap='2'>
-                        <Text mb='8px'>T1</Text>
+                        <Text>T1</Text>
+                        <Checkbox></Checkbox>
+                    </Box>
+
+                    <Box display='flex' gap='2'>
+                        <Text >T2</Text>
                         <Checkbox></Checkbox>
                         
                     </Box>
 
                     <Box display='flex' gap='2'>
-                        <Text mb='8px'>T2</Text>
-                        <Checkbox></Checkbox>
-                        
-                    </Box>
-
-                    <Box display='flex' gap='2'>
-                        <Text mb='8px'>T3</Text>
+                        <Text>T3</Text>
                         <Checkbox></Checkbox>
                     </Box>
 
                     <Box display='flex' gap='2'>
-                        <Text mb='8px'>T4</Text>
-                        <Checkbox mt="-2px"></Checkbox>
+                        <Text>T4</Text>
+                        <Checkbox ></Checkbox>
                         
                     </Box>
                 </Box>

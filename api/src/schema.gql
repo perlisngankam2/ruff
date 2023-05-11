@@ -428,6 +428,28 @@ type ClassStatistics {
   rateZ: Float!
 }
 
+type TOTAL {
+  TOTAL_EFFECTIFS_ENREGISTRES: Float!
+  TOTAL_MONTANT_ATTENDU: Float!
+  TOTAL_MONTANT_EN_CAISSE: Float!
+  TOTAL_TAUX_ENCAISSEMENT: Float!
+  TOTAL_RESTE_A_RECOUVRER: Float!
+  TAUX_RAR: Float!
+}
+
+type TOTALTABLEONE {
+  TOTAL_EFFECTIFS_ENREGISTRES: Float!
+  TOTAL_MONTANT_ATTENDU: Float!
+  TOTAL_NOMBRE_ENCAISSEMENT: Float!
+  TOTAL_NOMBRE_SANS_ENCAISSEMENT: Float!
+  TOTAL_MONTANT_EN_CAISSE: Float!
+  TOTAL_FIRST_TAUX_ENCAISSEMENT: Float!
+  TOTAL_SECOND_TAUX_ENCAISSEMENT: Float!
+  TOTAL_RESTE_A_RECOUVRER: Float!
+  TOTAL_FIRST_TAUX_RECOUVRIR: Float!
+  TOTAL_SECOND_TAUX_RECOUVRIR: Float!
+}
+
 type SpecialStudentStatistics {
   amountToPay: Float!
   dateLine: DateTime!
@@ -564,16 +586,29 @@ type Query {
   parent(id: String!): Parent!
   getStudentStatisticsAnglophone: [StudentStatistics!]!
   getStudentStatisticsFrancophone: [StudentStatistics!]!
-  getSectionStatisticsAnglophoneAdmissionFee: [SectionStatistics!]!
-  getSectionStatisticsAnglophoneFirstInstalment: [SectionStatistics!]!
   getTrancheStatisticsForSpecialStudents: [SpecialStudentStatistics!]!
-  getSectionStatisticsAnglophoneSecondInstalment: [SectionStatistics!]!
-  getSectionStatisticsFrancophoneAdmissionFee: [SectionStatistics!]!
-  getSectionStatisticsFrancophoneFirstInstalment: [SectionStatistics!]!
-  getSectionStatisticsFrancophoneSecondInstalment: [SectionStatistics!]!
+  numberOfStudentsStartedPayingAdmissionFeeSalleAnglophone(sallename: String!): Float!
   numberOfStudentsStartedPayingPension: Float!
+  getSectionStatisticsAnglophoneSecondInstalment: [SectionStatistics!]!
+  getSectionStatisticsFrancophoneSecondInstalment: [SectionStatistics!]!
+  TotalSectionStatisticsFrancophoneSecondInstalmentFee: [TOTALTABLEONE!]!
+  TotalSectionStatisticsAnglophoneSecondInstalmentFee: [TOTALTABLEONE!]!
+  TotalMAX_T_ONE_SecondInstalmentFee: [TOTALTABLEONE!]!
+  getSectionStatisticsAnglophoneFirstInstalment: [SectionStatistics!]!
+  getSectionStatisticsFrancophoneFirstInstalment: [SectionStatistics!]!
+  TotalSectionStatisticsFrancophoneFirstInstalmentFee: [TOTALTABLEONE!]!
+  TotalSectionStatisticsAnglophoneFirstInstalmentFee: [TOTALTABLEONE!]!
+  TotalMAX_T_ONE_FirstInstalmentFee: [TOTALTABLEONE!]!
+  getSectionStatisticsAnglophoneAdmissionFee: [SectionStatistics!]!
+  getSectionStatisticsFrancophoneAdmissionFee: [SectionStatistics!]!
+  TotalSectionStatisticsFrancophoneAdmissionFee: [TOTALTABLEONE!]!
+  TotalSectionStatisticsAnglophoneAdmissionFee: [TOTALTABLEONE!]!
+  TotalMAX_T_ONE_Admission: [TOTALTABLEONE!]!
   getGeneralAnglophoneSectionStatistics: [ClassStatistics!]!
   getGeneralFrancophoneSectionStatistics: [ClassStatistics!]!
+  TotalGeneralFrancophoneSectionStatistics: [TOTAL!]!
+  TotalGeneralAnglophoneSectionStatistics: [TOTAL!]!
+  TotalMAX_T_ZERO: [TOTAL!]!
   getTrancheStatisticsForNormalStudents: [SpecialStudentStatistics!]!
   findAllpensionSalle: [PensionSalle!]!
   findOnepensionsalle(id: String!): PensionSalle!

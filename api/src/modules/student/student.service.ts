@@ -144,7 +144,7 @@ export class StudentService {
     
       getAll(): Promise<Student[]> {
         return this.studentRepository.findAll({
-          populate:['salle','pension', 'categorie']
+          populate:['salle','pension', 'categorie', 'trancheStudent']
         })
       }
 

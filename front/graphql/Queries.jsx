@@ -706,10 +706,23 @@ export const GET_CLASS_FEES_BY_STUDENT_ID = gql `
     }
 `
 
+//reste a payer a le penion totale de chque eleve
 export const GET_RESTE_PENSION_A_PAYER_BY_STUDENT_ID = gql `
     query findrestpensionbystudent ($studentid: String!) {
         findrestpensionbystudent (studentid: $studentid)
     }
+`
+
+//reste a peyer des tranches pour chaque eleve
+export const GET_RESTE_MONTANT_TRANCHE_BY_STUDENT_ID = gql `
+query findByStudentRestTranche ($studentid: String!) {
+    findByStudentRestTranche (studentid: $studentid) {
+        studentid
+        Nom
+        Priority
+        Rest
+    }
+}
 `
 
  export const GET_ALL_MONTANT_PENSION_CLASS = gql`
@@ -848,11 +861,12 @@ export const GET_AVANCE_MONTANT_TRANCHE_BY_STUDENT = gql  `
     }
 `
 
-// export const GET_RESTE_TRANCHE_BY_STUDENT = gql `
-//     query RestTrancheByStudent ($studentid: String!, $trancheid: String!) {
-//         RestTrancheByStudent (studentid: $studentid, trancheid: $trancheid)
-//     }
-// `;
+//RECUPERATION DE LA DATE LIMITE DE PAIEMENT PAR TRANCHE POUR CHQUE ELEVE
+export const GET_DATELINE_TRANCHE_BY_STUDENT = gql `
+query getTrancheDateLineByStudent ($studentid: String!, $trancheid: String!) {
+    getTrancheDateLineByStudent (studentid: $studentid, trancheid: $trancheid)
+}
+`;
 
 export const GET_ALL_MONTANT_TRANCHE_BY_STUDENT = gql `
     query AmountrExpectedByTranche ($studentid: String!) {

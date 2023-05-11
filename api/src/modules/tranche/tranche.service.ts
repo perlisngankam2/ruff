@@ -9,7 +9,7 @@ import {
   } from '@mikro-orm/core';
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { EntityRepository } from '@mikro-orm/postgresql';
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable, forwardRef } from '@nestjs/common';
 import { Field, ID, ObjectType } from '@nestjs/graphql';
 import { Pension } from 'src/entities/pension.entity';
 import { Tranche } from 'src/entities/tranche.entity';
@@ -20,6 +20,10 @@ import { TrancheCreateInput } from './dto/tranche.input';
 import { TrancheUpdateInput } from './dto/tranche.update';
 import { format } from 'date-fns';
 import { ParameterService } from '../parameter/parameter.service';
+import { StudentService } from '../student/student.service';
+import { TrancheStudentService } from '../tranche-student/tranche-student.service';
+import { TrancheStat } from '../statistics/classStatistics';
+
 
 @Injectable()
 export class TrancheService {
@@ -27,6 +31,9 @@ export class TrancheService {
         @InjectRepository(Tranche)
         private trancheRepository: EntityRepository<Tranche>,
         private parameterservice: ParameterService,
+        @Inject(forwardRef(()=>StudentService))
+        private studentservice: StudentService,
+        private tranchestudentservice: TrancheStudentService,
         private  em: EntityManager,
       ) {}
     
@@ -138,4 +145,40 @@ export class TrancheService {
       }
         return a 
       }   
+
+      async findByStudentRestTranche(studentid:string){
+        const students = await this.studentservice.getAll()
+        const Tranches = students.map((student) => student.trancheStudent.getItems().map((trancheStudent) => trancheStudent.tranche));
+
+        const tranches = await Promise.all(Tranches.flat().map((tranche) => this.trancheRepository.findOne(tranche.id, { populate: ['trancheStudent'] })));
+      
+        console.log("==============>"+tranches)
+        
+        const result: TrancheStat[] = [];
+      
+        for (const student of students) {
+          const studentid = student.id
+          for (const tranche of tranches) {
+            const Nom = tranche.name;
+            const Priority = tranche.priority;
+            const trancheStudent = tranche.trancheStudent.getItems()
+            .filter(async a=>(await a.tranche.load()).id===tranche.id);
+            console.log('tranchestudent=======>'+trancheStudent)
+            if (trancheStudent.length==0) break;
+      
+            for(const trancheStd of trancheStudent){
+            const Rest= (await this.tranchestudentservice.findRestByTrancheAndStudent(trancheStd.student.id, trancheStd.tranche.id)).reste
+      
+            result.push({
+              studentid,
+              Nom,
+              Priority,
+              Rest
+            });
+          }
+        }
+        }
+        return result.filter(a=>a.studentid===studentid);
+
+      }
 }

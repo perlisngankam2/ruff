@@ -430,6 +430,7 @@ const matricule = `GSBAB23${randomString}`;
                       value={student.sex}
                       onChange={(e) => setStudent({...student, sex:e.target.value})}
                       variant="flushed"
+                      placeholder="Sexe"
                     >
                       <option>Masculin</option>
                       <option>Feminin</option>

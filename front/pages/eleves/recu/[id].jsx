@@ -34,14 +34,17 @@ import {
     GET_STUDENT_SALLE,
     GET_LAST_PAYMENT,
     GET_AVANCE_MONTANT_TRANCHE_BY_STUDENT,
-    GET_ALL_TRANCHE_PENSION,
-    GET_RESTE_TRANCHE_BY_STUDENT,
+    // GGET_RESTE_TRANCHE_BY_STUDENT,
+    GET_DATELINE_TRANCHE_BY_STUDENT,
     GET_ALL_MONTANT_TRANCHE_BY_STUDENT,
     GET_ALL_TRANCHE_DATE_LINE_BY_STUDENT,
     GET_CLASS_FEES_BY_STUDENT_ID,
+    GET_ALL_TRANCHE_PENSION,
     GET_PENSION_ALREADY_PAY_BY_STUDENT_ID,
     GET_RESTE_PENSION_A_PAYER_BY_STUDENT_ID,
-    GET_SECTION_STUDENT_BY_ID
+    GET_SECTION_STUDENT_BY_ID,
+    GET_RESTE_MONTANT_TRANCHE_BY_STUDENT_ID,
+    GET_ALL_TRANCHE_BY_STUDENT_ID
 
  } from "../../../graphql/Queries";
 import React, {useEffect,useRef } from "react";
@@ -92,6 +95,19 @@ const receipt = () => {
     }
   )
 
+  //RESTE DU MONTANT DES TRANCHES PAR ELEVE
+    const {data:dataResteTrancheByStudentId} = useQuery(GET_RESTE_MONTANT_TRANCHE_BY_STUDENT_ID,
+        {
+            variables: {studentid: router.query.id} 
+        }
+    );
+
+    //dateline trache
+    const {data:dataTrancheByStudentId} = useQuery(GET_ALL_TRANCHE_BY_STUDENT_ID,
+        {
+              variables: {studentid: router.query.id} 
+        }
+      );
     //MONTANT DES TRANCHES PAYE EN FONCTION DE CHAQUE ELEVE
     const {data:dataAvanceMontantInscriptionByStudent} = useQuery(GET_AVANCE_MONTANT_TRANCHE_BY_STUDENT,
         {
@@ -121,6 +137,32 @@ const receipt = () => {
             }   
      
         } 
+    )
+
+    //RECUPERATION DES DATELINE PAR TRANCHE POUR CHQUE ELEVE
+     const {data:dataDateLineTrancheStudentInscription } = useQuery(GET_DATELINE_TRANCHE_BY_STUDENT,
+        {
+            variables:{
+                studentid: router.query.id,
+                trancheid: dataTranchePension?.findAlltranche[0].id
+        }   }   
+    )
+
+
+    const {data:dataDateLineTrancheStudentTranche1 } = useQuery(GET_DATELINE_TRANCHE_BY_STUDENT,
+        {
+            variables:{
+                studentid: router.query.id,
+                trancheid: dataTranchePension?.findAlltranche[1].id
+        }   }   
+    )
+
+    const {data:dataDateLineTrancheStudentTranche2 } = useQuery(GET_DATELINE_TRANCHE_BY_STUDENT,
+        {
+            variables:{
+                studentid: router.query.id,
+                trancheid: dataTranchePension?.findAlltranche[2].id
+        }   }   
     )
 
     //RECUPERATION DE LA SECTION DE L'ELEVE
@@ -187,12 +229,7 @@ const receipt = () => {
         } 
     )
 
-    // const {data:dataDateLineTrancheStudent } = useQuery(GET_ALL_TRANCHE_DATE_LINE_BY_STUDENT,
-    //     {
-    //         variables:{
-    //             studentid: router.query.id,
-    //     }   }   
-    // )
+   
 
      //PENSION TOTALE DEJA PAYE PAR ELEVE 
     const {data:dataAlreadyPayBySudent} = useQuery(GET_PENSION_ALREADY_PAY_BY_STUDENT_ID,
@@ -724,14 +761,16 @@ function nombreEnLettres(montant) {
                                                             <Th border='1px'>
                                                                 <Box fontSize='10px'>
                                                                     <Text textAlign={"center"}>
-                                                                        {/* {dataResteTrancheInscriptionByStudent?.RestTrancheByStudent} */}
+                                                                        {dataResteTrancheByStudentId?.findByStudentRestTranche[0].Rest}
                                                                     </Text>
                                                                 </Box>
                                                             </Th>
                                                             <Th border='1px'>
                                                                 <Box fontSize='10px'>
                                                                     <Text textAlign={"center"}>
-                                                                        rrr
+                                                                       {/* {(new Date(dataDateLineTrancheStudentInscription?.getTrancheDateLineByStudent)).toLocaleDateString()}
+                                                                        */}
+                                                                        {(new Date(dataTrancheByStudentId?.getClassfeeofStudent[0].dateLine)).toLocaleDateString()}
                                                                     </Text>
                                                                 </Box>
                                                             </Th>
@@ -775,21 +814,22 @@ function nombreEnLettres(montant) {
                                                             <Th border='1px'>
                                                                 <Box fontSize='10px'>
                                                                     <Text textAlign={"center"}>
-                                                                        {/* {dataResteTrancheForTranche1ByStudent?.SumAvanceTrancheByStudent} */}
+                                                                         {dataResteTrancheByStudentId?.findByStudentRestTranche[1].Rest}
                                                                     </Text>
                                                                 </Box>
                                                             </Th>
                                                             <Th border='1px'>
                                                                 <Box fontSize='10px'>
                                                                     <Text textAlign={"center"}>
-
+                                                                {/* {((new Date(expense.createdOn)).toLocaleDateString('fr-FR', { day: 'numeric', month: 'numeric', year: 'numeric' }))}  */}
+                                                                    {(new Date(dataTrancheByStudentId?.getClassfeeofStudent[1].dateLine)).toLocaleDateString()}
+                                                                    {/* {(new Date(dataDateLineTrancheStudentTranche1?.getTrancheDateLineByStudent)).toLocaleDateString()} */}
                                                                     </Text>
                                                                 </Box>
                                                             </Th>
                                                             <Th border='1px'>
                                                                 <Box fontSize='8px'>
                                                                     <Text textAlign={"center"}>
-
                                                                     </Text>
                                                                 </Box>
                                                             </Th>
@@ -825,14 +865,18 @@ function nombreEnLettres(montant) {
                                                             <Th border='1px'>
                                                                 <Box fontSize='10px'>
                                                                     <Text textAlign={"center"}>
-                                                                        {/* {dataResteTrancheForTranche2ByStudent?.SumAvanceTrancheByStudent} */}
+                                                                        {/* {dataResteTrancheByStudentId?.findByStudentRestTranche? dataResteTrancheByStudentId?.findByStudentRestTranche[2].Rest : 50000} */}
                                                                     </Text>
                                                                 </Box>
                                                             </Th>
                                                             <Th border='1px'>
                                                                 <Box fontSize='10px'>
                                                                     <Text textAlign={"center"}>
-
+                                                                {/* {((new Date(expense.createdOn)).toLocaleDateString('fr-FR', { day: 'numeric', month: 'numeric', year: 'numeric' }))}  */}
+                                                                    {/* {dataDateLineTrancheStudentTranche2?.getTrancheDateLineByStudent}  */}
+                                                                    {/* {console.log(dataDateLineTrancheStudentTranche2?.getTrancheDateLineByStudent)} */}
+                                                                    {(new Date(dataTrancheByStudentId?.getClassfeeofStudent[2].dateLine)).toLocaleDateString()}
+                                                                    
                                                                     </Text>
                                                                 </Box>
                                                             </Th>
@@ -845,7 +889,7 @@ function nombreEnLettres(montant) {
                                                             </Th>
                                                         </Tr>
 
-                                                    </Tbody>
+                                                    </Tbody>    
                                                 </Table>
                                             </TableContainer>
                                             <Box 

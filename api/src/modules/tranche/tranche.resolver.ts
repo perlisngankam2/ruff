@@ -13,6 +13,7 @@ import { Tranche } from 'src/entities/tranche.entity';
 import { TrancheCreateInput } from './dto/tranche.input';
 import { TrancheUpdateInput } from './dto/tranche.update';
 import { TrancheService } from './tranche.service';
+import { TrancheStat } from '../statistics/classStatistics';
 
 
 @Resolver(() => Tranche)
@@ -42,5 +43,10 @@ export class TrancheResolver {
   @Mutation(()=> Tranche)
   async deleteprimepersonnel(@Args('id') id:string){
  return await this.trancheService.delete(id)
+  }
+
+  @Query(()=>[TrancheStat])
+  async findByStudentRestTranche(@Args('studentid') studentid:string){
+   return await this.trancheService.findByStudentRestTranche(studentid)
   }
 }

@@ -9,7 +9,7 @@ import {
   } from '@mikro-orm/core';
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { EntityRepository } from '@mikro-orm/postgresql';
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable, forwardRef } from '@nestjs/common';
   import { Field, ID, ObjectType } from '@nestjs/graphql';
 import { PrimePersonnel } from 'src/entities/prime-personnel.entity';
 import { Prime } from 'src/entities/prime.entity';
@@ -29,7 +29,9 @@ export class PrimePersonnelService {
         private readonly em: EntityManager,
         private personnelService: PersonnelService,
         private primeService: PrimeService,
+        @Inject(forwardRef(() =>SalaireService))
         private salaireservice: SalaireService,
+        @Inject(forwardRef(() =>PaySalaryService))
         private paysalarie: PaySalaryService
       ) {}
     

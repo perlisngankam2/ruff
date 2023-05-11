@@ -31,7 +31,9 @@ import { Box,
 // import { useTranslation} from 'next-i18next';
 import { useQuery } from '@apollo/client';
 import {GET_GENERAL_FEES_STATISTICS_PER_CLASS_ANGLOPHONE_SECTION,
-    GET_GENERAL_FEES_STATISTICS_PER_CLASS_FRANCOPHONE_SECTION
+    GET_GENERAL_FEES_STATISTICS_PER_CLASS_FRANCOPHONE_SECTION,
+    GET_TOTAL_GENERAL_FEES_STATISTICS_PER_CLASS_FRANCOPHONE_SECTION,
+    GET_TOTAL_GENERAL_FEES_STATISTICS_PER_CLASS_ANGLOPHONE_SECTION 
 } from '../../graphql/Queries'
 import {CiSearch} from 'react-icons/ci'
 import DefaultLayout from '../../components/layouts/DefaultLayout';
@@ -41,6 +43,10 @@ const SuiviPaiementParEleveReNormal = () => {
 
     const {data:dataStudentStatisticsFeesPerClassAndSection} = useQuery(GET_GENERAL_FEES_STATISTICS_PER_CLASS_ANGLOPHONE_SECTION)
     const {data:dataGeneralClassStatisticsFrancophoneSection} = useQuery(GET_GENERAL_FEES_STATISTICS_PER_CLASS_FRANCOPHONE_SECTION)
+    
+    const {data:dataTotalGeneralClassStatisticsFrancophoneSection} = useQuery(GET_TOTAL_GENERAL_FEES_STATISTICS_PER_CLASS_FRANCOPHONE_SECTION);
+    const {data:dataTotalGeneralClassStatisticsAnglophoneSection} = useQuery(GET_TOTAL_GENERAL_FEES_STATISTICS_PER_CLASS_ANGLOPHONE_SECTION);
+    
     // const {t} = useTranslation();
 
     // useEffect(()=>{
@@ -91,56 +97,6 @@ const SuiviPaiementParEleveReNormal = () => {
                                         </Tr>
                                     </Thead>
                                     <Tbody>
-                                        {dataStudentStatisticsFeesPerClassAndSection &&
-                                            dataStudentStatisticsFeesPerClassAndSection.getGeneralAnglophoneSectionStatistics
-                                            .map((classe, index)=> ( 
-                                        <Tr border={'1px'} key={index}>
-                                            <Td rowSpan={1} borderBottom={"1px"} fontWeight={"bold"}>
-                                                {classe.sectionName}
-                                            </Td>
-                                            <Td border={'1px'}>{classe.className}</Td>
-                                            {/* <Td border={'1px'} rowSpan={4}>MB</Td> */}
-                                            <Td border={'1px'}>{classe.numberOfStudents}</Td>
-                                            <Td border={'1px'}>{classe.expectedAmount}</Td>
-                                            <Td border={'1px'}>{classe.sumAmountAlreadyPaid}</Td>
-                                            <Td border={'1px'}>{classe.rateT}%</Td>
-                                            <Td border={'1px'}>{classe.amountRest}</Td>
-                                            <Td border={'1px'}>{classe.rateZ}%</Td>
-                                        </Tr> 
-                                    ))}
-                                     <Tr>
-                                        <Td border={'1px'}>ToTal</Td>
-                                        <Td border={'1px'}>ToTal</Td>
-                                        <Td border={'1px'}>ToTal</Td>
-                                        <Td border={'1px'}>ToTal</Td>
-                                        <Td border={'1px'}>ToTal</Td>
-                                        <Td border={'1px'}>ToTal</Td>
-                                        <Td border={'1px'}>ToTal</Td>
-
-                                     </Tr>
-{/*                                        
-                                        <Tr >
-                                            <Td borderColor={'#C6B062'} border={'1px'}>inches</Td>
-                                            <Td border={'1px'}>millimet</Td>
-                                            <Td border={'1px'}>25.4</Td>
-                                            <Td border={'1px'}>millimetres</Td>
-                                            <Td border={'1px'}>millimetres </Td>
-                                            <Td border={'1px'}>millimetres</Td>
-                                            <Td border={'1px'}>millimetres</Td>
-                                        </Tr>
-                                        <Tr >
-                                            <Td border={'1px'}>Total</Td>
-                                            <Td border={'1px'}>millimet</Td>
-                                            <Td border={'1px'}>25.4</Td>
-                                            <Td border={'1px'}>millimetres</Td>
-                                            <Td border={'1px'}>millimetres </Td>
-                                            <Td border={'1px'}>millimetres</Td>
-                                            <Td border={'1px'}>millimetres</Td>
-                                            <Td border={'1px'}>millimetres</Td>
-
-                                        </Tr>  */}
-                                    </Tbody>
-                                    <Tbody>
                                         {dataGeneralClassStatisticsFrancophoneSection &&
                                             dataGeneralClassStatisticsFrancophoneSection.getGeneralFrancophoneSectionStatistics
                                             .map((francophoneclasse, index) => ( 
@@ -158,11 +114,61 @@ const SuiviPaiementParEleveReNormal = () => {
                                         </Tr>
                                         ))}
                                     </Tbody>
-                                    <Tfoot border={'1px'} >
-                                        <Tr borderBottom={'1px'}>
-                                            <Th borderBottom={'1px'}>Total</Th>
+                                    <Tbody>
+                                        {dataTotalGeneralClassStatisticsFrancophoneSection && 
+                                            dataTotalGeneralClassStatisticsFrancophoneSection.TotalGeneralFrancophoneSectionStatistics
+                                            .map((totalFrancophoneclasse, index) =>( 
+                                        <Tr borderBottom={'1px'} key={index}>
+                                            <Td border={'1px'}>Total</Td>
+                                            <Td border={'1px'}></Td>
+                                            <Td border={'1px'}>{totalFrancophoneclasse.TOTAL_EFFECTIFS_ENREGISTRES}</Td>
+                                            <Td border={'1px'}>{totalFrancophoneclasse.TOTAL_MONTANT_ATTENDU}</Td>
+                                            <Td border={'1px'}>{totalFrancophoneclasse.TOTAL_MONTANT_EN_CAISSE}</Td>
+                                            <Td border={'1px'}>{totalFrancophoneclasse.TOTAL_TAUX_ENCAISSEMENT}</Td>
+                                            <Td border={'1px'}>{totalFrancophoneclasse.TOTAL_RESTE_A_RECOUVRER}</Td>
+                                            <Td border={'1px'}>{totalFrancophoneclasse.TAUX_RAR}</Td>
                                         </Tr>
-                                    </Tfoot>
+                                            ))
+                                            }
+                                        </Tbody>
+
+
+                                    <Tbody>
+                                        {dataStudentStatisticsFeesPerClassAndSection &&
+                                            dataStudentStatisticsFeesPerClassAndSection.getGeneralAnglophoneSectionStatistics
+                                            .map((classe, index)=> ( 
+                                        <Tr border={'1px'} key={index}>
+                                            <Td rowSpan={1} borderBottom={"1px"} fontWeight={"bold"}>
+                                                {classe.sectionName}
+                                            </Td>
+                                            <Td border={'1px'}>{classe.className}</Td>
+                                            {/* <Td border={'1px'} rowSpan={4}>MB</Td> */}
+                                            <Td border={'1px'}>{classe.numberOfStudents}</Td>
+                                            <Td border={'1px'}>{classe.expectedAmount}</Td>
+                                            <Td border={'1px'}>{classe.sumAmountAlreadyPaid}</Td>
+                                            <Td border={'1px'}>{classe.rateT}%</Td>
+                                            <Td border={'1px'}>{classe.amountRest}</Td>
+                                            <Td border={'1px'} borderBottom={"1px"}>{classe.rateZ}%</Td>
+                                        </Tr> 
+                                    ))}
+                                    {dataTotalGeneralClassStatisticsAnglophoneSection &&
+                                      dataTotalGeneralClassStatisticsAnglophoneSection.TotalGeneralAnglophoneSectionStatistics
+                                      .map((totalAnglophoneclasse, index ) => ( 
+                                     <Tr key={index}>
+                                        <Td border={'1px'} >ToTal</Td>
+                                        <Td border={'1px'}>ToTal</Td>
+                                        <Td border={'1px'}>{totalAnglophoneclasse.TOTAL_EFFECTIFS_ENREGISTRES}</Td>
+                                        <Td border={'1px'}>{totalAnglophoneclasse.TOTAL_MONTANT_ATTENDU}</Td>
+                                        <Td border={'1px'}>{totalAnglophoneclasse.TOTAL_MONTANT_EN_CAISSE}</Td>
+                                        <Td border={'1px'}>{totalAnglophoneclasse.TOTAL_TAUX_ENCAISSEMENT}%</Td>
+                                        <Td border={'1px'}>{totalAnglophoneclasse.TOTAL_RESTE_A_RECOUVRER}</Td>
+                                        <Td border={'1px'}>{totalAnglophoneclasse.TAUX_RAR}%</Td>
+
+                                     </Tr>
+                                     ))
+                                    }
+                                    </Tbody>
+                                   
                                 </Table>
                             </TableContainer>
                         </Box>

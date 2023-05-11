@@ -22,7 +22,9 @@ import { useQuery, useMutation } from "@apollo/client";
 import { useRouter } from 'next/router';
 
 const Paiement = () => {
+
     const router = useRouter()
+
     const {data:dataStudentId, loading, error} = useQuery(GET_STUDENT_BY_ID,
         {
           variables: {id: router.query.id}
@@ -115,26 +117,28 @@ const Paiement = () => {
                             </Text>
                         </Box>
                     </Box>
-                    <Box display='flex' mt='20px' gap={1}>
-                        <Text fontWeight={"bold"}>
-                            Né (e) le :
+                    <Box display='flex' mt='20px' gap={8}>
+                        <Box display={{md:"flex"}} gap={1}>
+                            <Text fontWeight={"bold"}>
+                                Né (e) le :
+                                </Text>
+                            <Text>
+                            {(new Date(dataStudentId.findOnestudent.dateOfBirth)).toLocaleDateString('fr-FR', { day: 'numeric', month: 'numeric', year: 'numeric' })}
                             </Text>
-                        <Text>
-                        {(new Date(dataStudentId.findOnestudent.dateOfBirth)).toLocaleDateString('fr-FR', { day: 'numeric', month: 'numeric', year: 'numeric' })}
-
-                        </Text>
-                        <Text fontWeight={"bold"}>à</Text>
-                        <Text>
-                          .......................
-                        </Text>
+                        </Box>
+                        <Box  display={{md:"flex"}} gap={2}>
+                            <Text fontWeight={"bold"}>à:</Text>
+                            <Text>
+                                {dataStudentId.findOnestudent.birthPlace}
+                            </Text>
+                        </Box>
                     </Box>
                     <Box display='flex' mt='20px' gap={1}>
                         <Text fontWeight={"bold"}>
                             Sexe :
-                            </Text>
+                        </Text>
                         <Text>
-                        {dataStudentId.findOnestudent.sex}
-                           
+                            {dataStudentId.findOnestudent.sex}
                         </Text>
                     </Box>
                     <Box display='flex' mt='20px' gap={1} flexWrap='wrap'>
@@ -156,52 +160,27 @@ const Paiement = () => {
                         </Text>
                         <Box display='flex' gap='2'>
                             <Text mb='8px'>I</Text>
-                            <Input
-                                type="checkbox"
-                                placeholder='Here is a sample placeholder'
-                                size='sm'
-                                width='40px'
-                            />
+                            <Checkbox isChecked={dataStudentId?.findOnestudent.categoryName === "Candidat regulier"}></Checkbox>
                         </Box>
                         <Box display='flex' gap='2'>
                             <Text mb='8px'>T1</Text>
-                            <Input
-                                type="checkbox"
-                                placeholder='Here is a sample placeholder'
-                                size='sm'
-                                width='40px'
-                            />
+                            <Checkbox></Checkbox>
                         </Box>
                     
                         <Box display='flex' gap='2'>
                             <Text mb='8px'>T2</Text>
-                            <Input
-                                type="checkbox"
-                                placeholder='Here is a sample placeholder'
-                                size='sm'
-                                width='40px'
-                            />
+                            <Checkbox></Checkbox>
                         </Box>
                     
                         <Box display='flex' gap='2'>
                             <Text mb='8px'>T3</Text>
-                            <Input
-                                type="checkbox"
-                                placeholder='Here is a sample placeholder'
-                                size='sm'
-                                width='40px'
-                            />
+                            <Checkbox></Checkbox>
                         </Box>
                     
                         <Box display='flex' gap='2'>
                             <Text mb='8px'>T4</Text>
-                            <Input
-                                type="checkbox"
-                                placeholder='Here is a sample placeholder'
-                                size='sm'
-                                width='40px'
-                                
-                            />
+                            <Checkbox></Checkbox>
+                            
                         </Box>
                     
                     
@@ -214,53 +193,30 @@ const Paiement = () => {
                     </Text>
                     <Box display='flex' gap='2'>
                         <Text mb='8px'>I</Text>
-                        <Input
-                            type="checkbox"
-                            placeholder='Here is a sample placeholder'
-                            size='sm'
-                            width='40px'
-                            
-                        />
+                        <Checkbox isChecked={dataStudentId?.findOnestudent.categoryName === "Candidat libre"}></Checkbox>
+                        
                     </Box>
                     <Box display='flex' gap='2'>
                         <Text mb='8px'>T1</Text>
-                        <Input
-                            type="checkbox"
-                            placeholder='Here is a sample placeholder'
-                            size='sm'
-                            width='40px'
-                        />
+                        <Checkbox></Checkbox>
+                        
                     </Box>
 
                     <Box display='flex' gap='2'>
                         <Text mb='8px'>T2</Text>
-                        <Input
-                            type="checkbox"
-                            placeholder='Here is a sample placeholder'
-                            size='sm'
-                            width='70px'
-                            h='25px'
-                        />
+                        <Checkbox></Checkbox>
+                        
                     </Box>
 
                     <Box display='flex' gap='2'>
                         <Text mb='8px'>T3</Text>
-                        <Input
-                            type="checkbox"
-                            placeholder='Here is a sample placeholder'
-                            size='sm'
-                            width='40px'
-                        />
+                        <Checkbox></Checkbox>
                     </Box>
 
                     <Box display='flex' gap='2'>
                         <Text mb='8px'>T4</Text>
-                        <Input
-                            type="checkbox"
-                            placeholder='Here is a sample placeholder'
-                            size='sm'
-                            width='40px'
-                        />
+                        <Checkbox mt="-2px"></Checkbox>
+                        
                     </Box>
                 </Box>
             </Box>

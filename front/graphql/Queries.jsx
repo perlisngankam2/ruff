@@ -211,6 +211,7 @@ export const GET_STUDENT_BY_ID =  gql `
             firstname
             lastname
             dateOfBirth
+            birthPlace
             sex
             adress
             transport
@@ -348,8 +349,18 @@ query getGeneralAnglophoneSectionStatistics {
     }
 }
 `
-
-
+export const GET_TOTAL_GENERAL_FEES_STATISTICS_PER_CLASS_ANGLOPHONE_SECTION = gql `
+query TotalGeneralAnglophoneSectionStatistics {
+    TotalGeneralAnglophoneSectionStatistics {
+        TOTAL_EFFECTIFS_ENREGISTRES
+        TOTAL_MONTANT_ATTENDU
+        TOTAL_MONTANT_EN_CAISSE
+        TOTAL_TAUX_ENCAISSEMENT
+        TOTAL_RESTE_A_RECOUVRER
+        TAUX_RAR
+    }
+}
+`
 
 //Le vrai To pour la section francophone 
 // TABLEAU DE SUIVI GENERAL  DU PAIEMENT DES FRAIS DE SCOLARITE
@@ -366,6 +377,22 @@ export const GET_GENERAL_FEES_STATISTICS_PER_CLASS_FRANCOPHONE_SECTION = gql `
             rateZ
         }
     }
+`
+
+
+
+//total de suivie generala de paiement des vrai de scolarite section francophone
+export const GET_TOTAL_GENERAL_FEES_STATISTICS_PER_CLASS_FRANCOPHONE_SECTION = gql `
+query TotalGeneralFrancophoneSectionStatistics {
+    TotalGeneralFrancophoneSectionStatistics {
+        TOTAL_EFFECTIFS_ENREGISTRES
+        TOTAL_MONTANT_ATTENDU
+        TOTAL_MONTANT_EN_CAISSE
+        TOTAL_TAUX_ENCAISSEMENT
+        TOTAL_RESTE_A_RECOUVRER
+        TAUX_RAR
+    }
+}
 `
 
 //Statistique de l'inscription pour la section anglphone 
@@ -388,6 +415,24 @@ query getSectionStatisticsAnglophoneAdmissionFee {
     }
 }
 `
+
+export const GET_TOTAL_STATISTICS_PRIMAIRE_ANGLOPHONE_CLASS = gql`
+    query TotalSectionStatisticsAnglophoneAdmissionFee {
+        TotalSectionStatisticsAnglophoneAdmissionFee {
+            TOTAL_EFFECTIFS_ENREGISTRES
+            TOTAL_MONTANT_ATTENDU
+            TOTAL_NOMBRE_ENCAISSEMENT
+            TOTAL_NOMBRE_SANS_ENCAISSEMENT
+            TOTAL_MONTANT_EN_CAISSE
+            TOTAL_FIRST_TAUX_ENCAISSEMENT
+            TOTAL_SECOND_TAUX_ENCAISSEMENT
+            TOTAL_RESTE_A_RECOUVRER
+            TOTAL_FIRST_TAUX_RECOUVRIR
+            TOTAL_SECOND_TAUX_RECOUVRIR
+        }
+    }
+`
+
 //Statistique de l'inscription pour la section francophone 
 export const GET_STATISTICS_PRIMAIRE_FRANCOPHONE_CLASS = gql `
 query getSectionStatisticsFrancophoneAdmissionFee {
@@ -405,6 +450,23 @@ query getSectionStatisticsFrancophoneAdmissionFee {
         TAUXC
         amountRest
         TAUXD
+    }
+}
+`
+
+export const GET_TOTAL_STATISTICS_PRIMAIRE_FRANCOPHONE_CLASS = gql`
+query TotalSectionStatisticsFrancophoneAdmissionFee {
+    TotalSectionStatisticsFrancophoneAdmissionFee {
+        TOTAL_EFFECTIFS_ENREGISTRES
+        TOTAL_MONTANT_ATTENDU
+        TOTAL_NOMBRE_ENCAISSEMENT
+        TOTAL_NOMBRE_SANS_ENCAISSEMENT
+        TOTAL_MONTANT_EN_CAISSE
+        TOTAL_FIRST_TAUX_ENCAISSEMENT
+        TOTAL_SECOND_TAUX_ENCAISSEMENT
+        TOTAL_RESTE_A_RECOUVRER
+        TOTAL_FIRST_TAUX_RECOUVRIR
+        TOTAL_SECOND_TAUX_RECOUVRIR
     }
 }
 `
@@ -430,6 +492,24 @@ export const GET_STATISTICS_TRANCHE1_PRIMAIRE_ANGLOPHONE_SECTION = gql`
     }
 `;
 
+export const GET_TOTAL_STATISTICS_TRANCHE1_PRIMAIRE_ANGLOPHONE_SECTION = gql`
+query TotalSectionStatisticsAnglophoneFirstInstalmentFee {
+        TotalSectionStatisticsAnglophoneFirstInstalmentFee {
+            TOTAL_EFFECTIFS_ENREGISTRES
+            TOTAL_MONTANT_ATTENDU
+            TOTAL_NOMBRE_ENCAISSEMENT
+            TOTAL_NOMBRE_SANS_ENCAISSEMENT
+            TOTAL_MONTANT_EN_CAISSE
+            TOTAL_FIRST_TAUX_ENCAISSEMENT
+            TOTAL_SECOND_TAUX_ENCAISSEMENT
+            TOTAL_RESTE_A_RECOUVRER
+            TOTAL_FIRST_TAUX_RECOUVRIR
+            TOTAL_SECOND_TAUX_RECOUVRIR
+        }
+    }
+`;
+
+
 //Statistique de PREMIERE TRANCHE POUR LA SECTION FRANCOPHONE
 export const GET_STATISTICS_TRANCHE1_PRIMAIRE_FRANCOPHONE_SECTION = gql`
 query getSectionStatisticsFrancophoneFirstInstalment {
@@ -449,6 +529,24 @@ query getSectionStatisticsFrancophoneFirstInstalment {
         TAUXD
     }
 }`
+
+export const GET_TOTAL_STATISTICS_TRANCHE1_PRIMAIRE_FRANCOPHONE_SECTION = gql`
+    query TotalSectionStatisticsFrancophoneFirstInstalmentFee {
+        TotalSectionStatisticsFrancophoneFirstInstalmentFee {
+            TOTAL_EFFECTIFS_ENREGISTRES
+            TOTAL_MONTANT_ATTENDU
+            TOTAL_NOMBRE_ENCAISSEMENT
+            TOTAL_NOMBRE_SANS_ENCAISSEMENT
+            TOTAL_MONTANT_EN_CAISSE
+            TOTAL_FIRST_TAUX_ENCAISSEMENT
+            TOTAL_SECOND_TAUX_ENCAISSEMENT
+            TOTAL_RESTE_A_RECOUVRER
+            TOTAL_FIRST_TAUX_RECOUVRIR
+            TOTAL_SECOND_TAUX_RECOUVRIR
+        }
+    }
+`
+
 
 //recuperation d'une tranche de pension
 export const GET_TRANCHE_PENSION_BY_ID = gql `

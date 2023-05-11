@@ -33,7 +33,9 @@ import {CiSearch} from 'react-icons/ci'
 import { useQuery } from '@apollo/client';
 import { 
     GET_STATISTICS_TRANCHE1_PRIMAIRE_ANGLOPHONE_SECTION,
-    GET_STATISTICS_TRANCHE1_PRIMAIRE_FRANCOPHONE_SECTION
+    GET_TOTAL_STATISTICS_TRANCHE1_PRIMAIRE_ANGLOPHONE_SECTION,
+    GET_STATISTICS_TRANCHE1_PRIMAIRE_FRANCOPHONE_SECTION,
+    GET_TOTAL_STATISTICS_TRANCHE1_PRIMAIRE_FRANCOPHONE_SECTION
 } from '../../graphql/Queries';
 
 import DefaultLayout from '../../components/layouts/DefaultLayout';
@@ -41,8 +43,10 @@ import DefaultLayout from '../../components/layouts/DefaultLayout';
 const SuiviPaiementPremiereTranche = () => {
 
     const {data:dataTranche1StatisticsClassAnglophoneSection} = useQuery(GET_STATISTICS_TRANCHE1_PRIMAIRE_ANGLOPHONE_SECTION);
-    const {data:dataTranche1StatisticsClassFrancophoneSection} = useQuery(GET_STATISTICS_TRANCHE1_PRIMAIRE_FRANCOPHONE_SECTION);
+    const {data:dataTotalTranche1StatisticsClassAnglophoneSection} = useQuery(GET_TOTAL_STATISTICS_TRANCHE1_PRIMAIRE_ANGLOPHONE_SECTION);
 
+    const {data:dataTranche1StatisticsClassFrancophoneSection} = useQuery(GET_STATISTICS_TRANCHE1_PRIMAIRE_FRANCOPHONE_SECTION);
+    const {data:dataTotalTranche1StatisticsClassFrancophoneSection} = useQuery(GET_TOTAL_STATISTICS_TRANCHE1_PRIMAIRE_FRANCOPHONE_SECTION)
     // const {t} = useTranslation();
 
     return (
@@ -114,6 +118,27 @@ const SuiviPaiementPremiereTranche = () => {
                                         ))}
                                     </Tbody> 
                                     <Tbody>
+                                        {dataTotalTranche1StatisticsClassFrancophoneSection && 
+                                        dataTotalTranche1StatisticsClassFrancophoneSection.TotalSectionStatisticsFrancophoneFirstInstalmentFee 
+                                         .map((totalFrancophoneClasse, index) => (  
+                                            <Tr key={index}>
+                                                <Td border={'1px'} fontWeight={"bold"}>Total</Td>
+                                                <Td border={'1px'}></Td>
+                                                <Td border={'1px'}>{totalFrancophoneClasse.TOTAL_EFFECTIFS_ENREGISTRES}</Td>
+                                                <Td border={'1px'}>{totalFrancophoneClasse.TOTAL_MONTANT_ATTENDU}</Td>
+                                                <Td border={'1px'}>{totalFrancophoneClasse.TOTAL_NOMBRE_ENCAISSEMENT}</Td>
+                                                <Td border={'1px'}>{totalFrancophoneClasse.TOTAL_FIRST_TAUX_ENCAISSEMENT}</Td>
+                                                <Td border={'1px'}>{totalFrancophoneClasse.TOTAL_MONTANT_EN_CAISSE}</Td>
+                                                <Td border={'1px'}>{totalFrancophoneClasse.TOTAL_SECOND_TAUX_ENCAISSEMENT}</Td>
+                                                <Td border={'1px'}>{totalFrancophoneClasse.TOTAL_NOMBRE_SANS_ENCAISSEMENT}</Td>
+                                                <Td border={'1px'}>{totalFrancophoneClasse.TOTAL_FIRST_TAUX_RECOUVRIR}</Td>
+                                                <Td border={'1px'}>{totalFrancophoneClasse.TOTAL_RESTE_A_RECOUVRER}</Td>
+                                                <Td border={'1px'}>{totalFrancophoneClasse.TOTAL_SECOND_TAUX_RECOUVRIR}</Td>
+
+                                            </Tr>
+                                         ))} 
+                                    </Tbody>
+                                    <Tbody>
                                         {dataTranche1StatisticsClassAnglophoneSection &&
                                             dataTranche1StatisticsClassAnglophoneSection.getSectionStatisticsAnglophoneFirstInstalment
                                             .map((anglophoneclasse, index) => ( 
@@ -134,7 +159,27 @@ const SuiviPaiementPremiereTranche = () => {
                                         </Tr>
                                     ))}
                                     </Tbody>
-                                   
+                                    <Tbody>
+                                        {dataTotalTranche1StatisticsClassAnglophoneSection && 
+                                        dataTotalTranche1StatisticsClassAnglophoneSection.TotalSectionStatisticsAnglophoneFirstInstalmentFee 
+                                         .map((totalAnglophoneclasse, index) => (  
+                                            <Tr key={index}>
+                                                <Td border={'1px'} fontWeight={"bold"}>Total</Td>
+                                                <Td border={'1px'}></Td>
+                                                <Td border={'1px'}>{totalAnglophoneclasse.TOTAL_EFFECTIFS_ENREGISTRES}</Td>
+                                                <Td border={'1px'}>{totalAnglophoneclasse.TOTAL_MONTANT_ATTENDU}</Td>
+                                                <Td border={'1px'}>{totalAnglophoneclasse.TOTAL_NOMBRE_ENCAISSEMENT}</Td>
+                                                <Td border={'1px'}>{totalAnglophoneclasse.TOTAL_FIRST_TAUX_ENCAISSEMENT}%</Td>
+                                                <Td border={'1px'}>{totalAnglophoneclasse.TOTAL_MONTANT_EN_CAISSE}</Td>
+                                                <Td border={'1px'}>{totalAnglophoneclasse.TOTAL_SECOND_TAUX_ENCAISSEMENT}%</Td>
+                                                <Td border={'1px'}>{totalAnglophoneclasse.TOTAL_NOMBRE_SANS_ENCAISSEMENT}</Td>
+                                                <Td border={'1px'}>{totalAnglophoneclasse.TOTAL_FIRST_TAUX_RECOUVRIR}%</Td>
+                                                <Td border={'1px'}>{totalAnglophoneclasse.TOTAL_RESTE_A_RECOUVRER}</Td>
+                                                <Td border={'1px'}>{totalAnglophoneclasse.TOTAL_SECOND_TAUX_RECOUVRIR}%</Td>
+
+                                            </Tr>
+                                         ))} 
+                                    </Tbody>
 
                                 </Table>
                             </TableContainer>

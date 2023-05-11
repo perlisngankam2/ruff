@@ -63,6 +63,7 @@ export class StudentResolver {
   async getAllStudentsForUseAnglophone(){
     return await this.studentService.getAllForUseAnglophone()
   }
+  
   @Query(()=>[Number])
   async AmountrExpectedByTranche(@Args('studentid') studentid:string){
     return await this.studentService.findlisttranche(studentid)

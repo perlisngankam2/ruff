@@ -219,6 +219,7 @@ const receipt = () => {
         // console.log(dataStudentByTrancheStudent?.getTrancheStudentByStudent)
         console.log(dataStudentSalle?.dataStudentSalle)
         console.log(dataAvanceMontantInscriptionByStudent?.SumAvanceTrancheByStudent)
+        console.log(dataMontantTrancheByStudent)
 
     })
 
@@ -308,7 +309,7 @@ function nombreEnLettres(montant) {
                     <Box 
                         borderWidth='1px' 
                         borderRadius='25px' 
-                        borderColor='black'  w='1000px' 
+                        borderColor='black'  w='1020px' 
                         ml={"50px"}
                     >
                         <Center 
@@ -365,84 +366,84 @@ function nombreEnLettres(montant) {
                                     borderColor='black' 
                                     bg='gray.50' 
                                     gap='8' 
-                                    w='600px' 
+                                    w='740px' 
                                     mt='15px'
                                 >
-                                <Box my='20px'>
-                                    <Flex 
-                                        mt='3' 
-                                        ml='3' 
-                                        gap={2} 
-                                        mb='1'
-                                    >
-                                        <Text>Nom / Name:</Text>
-                                        <Box display={"flex"}gap={3}>
-                                            <Text> {dataStudentId.findOnestudent.firstname.toUpperCase()}</Text>
-                                            <Text>{dataStudentId.findOnestudent.lastname}  </Text>
-                                        </Box>
-                                    </Flex>
-                                    <Flex ml='3' gap={3} mb='1'>
-                                        <Text>Section:</Text>
-                                        <Text>{dataSectionStudentById?.findSectionByStudent[0].name}</Text>
-                                    </Flex>
-                                    <Flex ml='3' gap='1' mb='1'>
-                                        <Text>Regime:</Text>
-                                        <Text>{dataStudentId.findOnestudent.categoryName} </Text>
-                                    </Flex>
-                                    <Flex ml='3' gap='1' mb='1'>
-                                        <Text>Niveau:</Text>
-                                        <Text>
-                                            {dataStudentSalle?.findSalleByStudent.levelName}
-                                        </Text>
-                                    </Flex>
-                                    <Flex ml='3' gap='1' mb='1'>
-                                        <Text>Classe / Class:</Text>
-                                        <Text>
-                                            {/* {dataStudentSalle?.findSalleByStudent.name} */}
-                                            {dataStudentId.findOnestudent.salleName}
-                                        </Text>
-                                    </Flex>
-                                    <Flex ml='3' gap='1' mb='1'>
-                                        <Text>Matricule / Registration:</Text>
-                                        <Text>{dataStudentId.findOnestudent.matricule}</Text>
-                                    </Flex>
-                                    <Flex mb='1' justify='space-between' >
-                                        <Flex ml='3' gap='1' >
-                                            <Text>Annee Academique / Academic year:</Text>
-                                            <Text></Text>
-                                        </Flex>
-                                        {/* <Flex ml='3' gap='1' mr='140px'>
-                                            <Text>à/at:</Text>
-                                            <Text></Text>
-                                        </Flex> */}
-                                    </Flex>
-                                    <Flex 
-                                        ml='3' 
-                                        gap='3' 
-                                        mb='1' 
-                                        justify='space-between'
-                                    >
-                                        <Flex gap='1'>
-                                            <Box 
-                                                display={"flex"}
-                                                gap={2}
-                                            > 
-                                                <Text>Remettant / Renderer:</Text>
-                                                <Text> {dataStudentId.findOnestudent.fatherFirstName}</Text>
+                                    <Box my='20px'>
+                                        <Flex 
+                                            mt='3' 
+                                            ml='3' 
+                                            gap={2} 
+                                            mb='1'
+                                        >
+                                            <Text>Nom / Name:</Text>
+                                            <Box display={"flex"}gap={3}>
+                                                <Text> {dataStudentId.findOnestudent.firstname.toUpperCase()}</Text>
+                                                <Text>{dataStudentId.findOnestudent.lastname}  </Text>
                                             </Box>
                                         </Flex>
-                                        <Flex gap='1' mr='130px'>
-                                            <Box 
-                                                display={"flex"}
-                                                gap={"2"}
-                                            > 
-                                                <Text>Tel:</Text>
-                                                <Text>{dataStudentId.findOnestudent.fatherPhoneNumber}</Text>
-                                            </Box>
+                                        <Flex ml='3' gap={3} mb='1'>
+                                            <Text>Section:</Text>
+                                            <Text>{dataSectionStudentById?.findSectionByStudent[0].name}</Text>
                                         </Flex>
+                                        <Flex ml='3' gap='1' mb='1'>
+                                            <Text>Regime:</Text>
+                                            <Text>{dataStudentId.findOnestudent.categoryName} </Text>
+                                        </Flex>
+                                        <Flex ml='3' gap='1' mb='1'>
+                                            <Text>Niveau:</Text>
+                                            <Text>
+                                                {dataStudentSalle?.findSalleByStudent.levelName}
+                                            </Text>
+                                        </Flex>
+                                        <Flex ml='3' gap='1' mb='1'>
+                                            <Text>Classe / Class:</Text>
+                                            <Text>
+                                                {/* {dataStudentSalle?.findSalleByStudent.name} */}
+                                                {dataStudentId.findOnestudent.salleName}
+                                            </Text>
+                                        </Flex>
+                                        <Flex ml='3' gap='1' mb='1'>
+                                            <Text>Matricule / Registration:</Text>
+                                            <Text>{dataStudentId.findOnestudent.matricule}</Text>
+                                        </Flex>
+                                        <Flex mb='1' justify='space-between' >
+                                            <Flex ml='3' gap='1' >
+                                                <Text>Annee Academique / Academic year:</Text>
+                                                <Text></Text>
+                                            </Flex>
+                                            {/* <Flex ml='3' gap='1' mr='140px'>
+                                                <Text>à/at:</Text>
+                                                <Text></Text>
+                                            </Flex> */}
+                                        </Flex>
+                                        <Flex 
+                                            ml='3' 
+                                            gap='3' 
+                                            mb='1' 
+                                            justify='space-between'
+                                        >
+                                            <Flex gap='1'>
+                                                <Box 
+                                                    display={"flex"}
+                                                    gap={2}
+                                                > 
+                                                    <Text>Remettant / Renderer:</Text>
+                                                    <Text> {dataStudentId.findOnestudent.fatherFirstName}</Text>
+                                                </Box>
+                                            </Flex>
+                                            <Flex gap='1' mr='130px'>
+                                                <Box 
+                                                    display={"flex"}
+                                                    gap={"2"}
+                                                > 
+                                                    <Text>Tel:</Text>
+                                                    <Text>{dataStudentId.findOnestudent.fatherPhoneNumber}</Text>
+                                                </Box>
+                                            </Flex>
 
-                                    </Flex>
-                                </Box>
+                                        </Flex>
+                                    </Box>
                                 
                                 </Box>
 
@@ -507,7 +508,7 @@ function nombreEnLettres(montant) {
                                         w='360px'
                                     >
                                         <Text 
-                                            fontSize='12px' 
+                                            fontSize='14px' 
                                             fontWeight='bold' 
                                             ml='10px'
                                         >
@@ -515,25 +516,25 @@ function nombreEnLettres(montant) {
                                         </Text>
                                         <Box >
                                         <TableContainer>
-                                                    <Table 
-                                                        variant='simple' 
-                                                        size='20px'
-                                                        borderCollapse='collapse'
-                                                    >
+                                            <Table 
+                                                variant='simple' 
+                                                size='20px'
+                                                borderCollapse='collapse'
+                                            >
                                                 <Thead>
                                                     <Tr 
                                                         gap='1' 
                                                         bg="blackAlpha.300"
                                                     >
                                                         <Th border='1px'>
-                                                            <Box fontSize='8px' textAlign='center'>
+                                                            <Box fontSize='10px' textAlign='center'>
                                                                 <Text>Net Attendu</Text>
                                                                 <Text>Net Excepted</Text>
                                                             </Box>
                                                         </Th>
                                                             <Th border='1px'>
                                                             <Box 
-                                                                fontSize='8px' 
+                                                                fontSize='10px' 
                                                                 textAlign='center'
                                                             >
                                                                 <Text>Net Versé</Text>
@@ -547,7 +548,7 @@ function nombreEnLettres(montant) {
                                                             </Box>
                                                         </Th> */}
                                                         <Th border='1px'>
-                                                            <Box fontSize='8px' textAlign='center'>
+                                                            <Box fontSize='10px' textAlign='center'>
                                                                 <Text>Reste à Payer</Text>
                                                                 <Text>Left to Paid</Text>
                                                             </Box>
@@ -557,12 +558,12 @@ function nombreEnLettres(montant) {
                                                 <Tbody>
                                                     <Tr gap='1'>
                                                         <Th border='1px'>
-                                                            <Box h='13px' fontSize='8px'>
+                                                            <Box h='13px' fontSize='10px'>
                                                                 <Text textAlign={"center"}>{dataClassFeesByStudentId?.getClassfeebyStudent}</Text>
                                                             </Box>
                                                         </Th>
                                                         <Th border='1px'>
-                                                            <Box fontSize='8px'>
+                                                            <Box fontSize='10px'>
                                                                 <Text textAlign={"center"}> 
                                                                     {/* {dataStudentByTrancheStudent?.getTrancheStudentByStudent.montant} */}
                                                                     {dataAlreadyPayBySudent?.findpensionbystudent.montantPension}
@@ -577,7 +578,7 @@ function nombreEnLettres(montant) {
                                                             </Box>
                                                         </Th> */}
                                                         <Th border='1px'>
-                                                            <Box fontSize='8px'>
+                                                            <Box fontSize='10px'>
                                                             <Text textAlign={"center"}>
                                                                 {dataResteFeesToPayByStudent?.findrestpensionbystudent} FCFA
                                                             </Text>
@@ -608,7 +609,7 @@ function nombreEnLettres(montant) {
                                             >
                                                 DETAILS / DETAILS
                                             </Text>
-                                            <Box w='500px' mb='2'>
+                                            <Box w='600px' mb='2'>
                                             <TableContainer>
                                                 <Table 
                                                     variant='simple' 
@@ -656,6 +657,13 @@ function nombreEnLettres(montant) {
                                                                         <Text>Deadline</Text>
                                                                 </Box>
                                                             </Th>
+
+                                                            <Th border='1px'>
+                                                                    <Box fontSize='10px' textAlign='center'>
+                                                                        <Text>Date </Text>
+                                                                        <Text>Date</Text>
+                                                                </Box>
+                                                            </Th>
                                                         </Tr>
                                                 </Thead>
                                                     <Tbody>
@@ -691,33 +699,44 @@ function nombreEnLettres(montant) {
                                                                     textAlign='center' 
                                                                     fontWeight='bold' 
                                                                     fontSize='10px'
+                                                                    display={"flex"}
+                                                                    flexDirection={"column"}
                                                                 >
                                                                     <Text>Inscription</Text>
+                                                                    <Text>Reg. Fees</Text>
+
                                                                 </Box>
                                                             </Th>
                                                             <Th border='1px'>
-                                                                <Box fontSize='8px'>
+                                                                <Box fontSize='10px'>
                                                                     <Text textAlign={"center"}>
                                                                         {dataMontantTrancheByStudent?.AmountrExpectedByTranche[0]}
                                                                     </Text>
                                                                 </Box>
                                                             </Th>
                                                             <Th border='1px'>
-                                                                <Box fontSize='8px'>
+                                                                <Box fontSize='10px'>
                                                                     <Text textAlign={"center"}>
                                                                         {dataAvanceMontantInscriptionByStudent?.SumAvanceTrancheByStudent ? dataAvanceMontantInscriptionByStudent?.SumAvanceTrancheByStudent : "0"}
                                                                     </Text>
                                                                 </Box>
                                                             </Th>
                                                             <Th border='1px'>
-                                                                <Box fontSize='8px'>
+                                                                <Box fontSize='10px'>
                                                                     <Text textAlign={"center"}>
                                                                         {/* {dataResteTrancheInscriptionByStudent?.RestTrancheByStudent} */}
                                                                     </Text>
                                                                 </Box>
                                                             </Th>
                                                             <Th border='1px'>
-                                                                <Box fontSize='8px'>
+                                                                <Box fontSize='10px'>
+                                                                    <Text textAlign={"center"}>
+                                                                        rrr
+                                                                    </Text>
+                                                                </Box>
+                                                            </Th>
+                                                            <Th border='1px'>
+                                                                <Box fontSize='10px'>
                                                                     <Text textAlign={"center"}>
                                                                         rrr
                                                                     </Text>
@@ -732,28 +751,38 @@ function nombreEnLettres(montant) {
                                                                         textAlign='center' 
                                                                         fontSize='10px' 
                                                                         fontWeight='bold'
+                                                                        display={"flex"}
+                                                                        flexDirection={"column"}
                                                                     >
                                                                         <Text>Tranche 1</Text>
+                                                                        <Text>First Part</Text>
                                                                     </Box>
                                                                 </Th>
                                                             <Th border='1px'>
-                                                                <Box fontSize='8px'>
+                                                                <Box fontSize='10px'>
                                                                     <Text textAlign={"center"}>
                                                                         {dataMontantTrancheByStudent?.AmountrExpectedByTranche[1]}
                                                                     </Text>
                                                                 </Box>
                                                             </Th>
                                                             <Th border='1px'>
-                                                                <Box fontSize='8px'>
+                                                                <Box fontSize='10px'>
                                                                 <Text textAlign={"center"}>
                                                                     {dataAvanceMontantTranche1ByStudent?.SumAvanceTrancheByStudent}
                                                                 </Text>
                                                                 </Box>
                                                             </Th>
                                                             <Th border='1px'>
-                                                                <Box fontSize='8px'>
+                                                                <Box fontSize='10px'>
                                                                     <Text textAlign={"center"}>
                                                                         {/* {dataResteTrancheForTranche1ByStudent?.SumAvanceTrancheByStudent} */}
+                                                                    </Text>
+                                                                </Box>
+                                                            </Th>
+                                                            <Th border='1px'>
+                                                                <Box fontSize='10px'>
+                                                                    <Text textAlign={"center"}>
+
                                                                     </Text>
                                                                 </Box>
                                                             </Th>
@@ -771,33 +800,44 @@ function nombreEnLettres(montant) {
                                                                         textAlign='center' 
                                                                         fontSize='10px' 
                                                                         fontWeight='bold'
+                                                                        display={"flex"}
+                                                                        flexDirection={"column"}
                                                                     >
                                                                         <Text textAlign={"center"}>Tranche 2</Text>
+                                                                        <Text textAlign={"center"}>Second part</Text>
+
                                                                     </Box>
                                                             </Th>
                                                             <Th border='1px'>
-                                                                <Box fontSize='8px'>
+                                                                <Box fontSize='10px'>
                                                                     <Text textAlign={"center"}>
                                                                         {dataMontantTrancheByStudent?.AmountrExpectedByTranche[2]}
                                                                     </Text>
                                                                 </Box>
                                                             </Th>
                                                             <Th border='1px'>
-                                                                <Box fontSize='8px'>
+                                                                <Box fontSize='10px'>
                                                                     <Text textAlign={"center"}>
                                                                         {dataAvanceMontantTranche2ByStudent?.SumAvanceTrancheByStudent}
                                                                     </Text>
                                                                 </Box>
                                                             </Th>
                                                             <Th border='1px'>
-                                                                <Box fontSize='8px'>
+                                                                <Box fontSize='10px'>
                                                                     <Text textAlign={"center"}>
                                                                         {/* {dataResteTrancheForTranche2ByStudent?.SumAvanceTrancheByStudent} */}
                                                                     </Text>
                                                                 </Box>
                                                             </Th>
                                                             <Th border='1px'>
-                                                                <Box fontSize='8px'>
+                                                                <Box fontSize='10px'>
+                                                                    <Text textAlign={"center"}>
+
+                                                                    </Text>
+                                                                </Box>
+                                                            </Th>
+                                                            <Th border='1px'>
+                                                                <Box fontSize='10px'>
                                                                     <Text textAlign={"center"}>
 
                                                                     </Text>
@@ -838,7 +878,7 @@ function nombreEnLettres(montant) {
                                             </Center>
                                         </Box>
                                         </Box>
-                                            <Box fontSize='11px' mt={"-5px"}>
+                                            <Box fontSize='13px' mt={"-5px"}>
                                                 <Text>Les frais de scolarite ne sont ni remboursables, ni cessibles, ni transferables</Text>
                                                 <Text>Tuition fees are neither refundable no transferable</Text>
                                             </Box>

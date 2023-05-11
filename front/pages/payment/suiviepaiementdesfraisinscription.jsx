@@ -33,7 +33,9 @@ import {CiSearch} from 'react-icons/ci'
 import { useQuery } from '@apollo/client';
 import {
     GET_STATISTICS_PRIMAIRE_ANGLOPHONE_CLASS,
-    GET_STATISTICS_PRIMAIRE_FRANCOPHONE_CLASS
+    GET_STATISTICS_PRIMAIRE_FRANCOPHONE_CLASS,
+    GET_TOTAL_STATISTICS_PRIMAIRE_FRANCOPHONE_CLASS,
+    GET_TOTAL_STATISTICS_PRIMAIRE_ANGLOPHONE_CLASS
 } from '../../graphql/Queries'
 
 import DefaultLayout from '../../components/layouts/DefaultLayout';
@@ -43,7 +45,13 @@ const SuiviPaiementFraisInscription = () => {
 
     // const {t} = useTranslation();
     const {data:dataInscriptionStatisticsAnglophoneSection} = useQuery(GET_STATISTICS_PRIMAIRE_ANGLOPHONE_CLASS);
+    const {data:dataTotalInscriptionStatisticsAnglophoneSection} = useQuery(GET_TOTAL_STATISTICS_PRIMAIRE_ANGLOPHONE_CLASS);
+
     const {data:dataInscriptionStatisticsFrancophoneSection} = useQuery(GET_STATISTICS_PRIMAIRE_FRANCOPHONE_CLASS)
+    const {data:dataTotalInscriptionStatisticsFrancophoneSection} = useQuery(GET_TOTAL_STATISTICS_PRIMAIRE_FRANCOPHONE_CLASS)
+
+
+
     useEffect(() => {
         console.log(dataInscriptionStatisticsAnglophoneSection);
     })
@@ -95,6 +103,49 @@ const SuiviPaiementFraisInscription = () => {
                                         </Tr>
                                     </Thead>
                                     <Tbody>
+                                        {dataInscriptionStatisticsFrancophoneSection && 
+                                            dataInscriptionStatisticsFrancophoneSection.getSectionStatisticsFrancophoneAdmissionFee
+                                            .map((francophoneClass) => (
+                                        <Tr >
+                                            <Td border={'1px'} rowSpan={6}>{francophoneClass.sectionName}</Td>
+                                            <Td border={'1px'}>{francophoneClass.className}</Td>
+                                            <Td  border={'1px'}>{francophoneClass.numberOfStudents}</Td>
+                                            <Td border={'1px'}>{francophoneClass.expectedAmount}</Td>
+                                            <Td border={'1px'}>{francophoneClass.numberOfStudentsStartedPaying} </Td>
+                                            <Td border={'1px'}>{francophoneClass.TAUXA}%</Td>
+                                            <Td border={'1px'}>{francophoneClass.sumAmountAlreadyPaid}</Td>
+                                            <Td border={'1px'}>{francophoneClass.TAUXB}%</Td>
+                                            <Td border={'1px'}>{francophoneClass.numberOfStudentsNotPaid}</Td>
+                                            <Td border={'1px'}>{francophoneClass.TAUXC}%</Td>
+                                            <Td border={'1px'}>{francophoneClass.amountRest}</Td>
+                                            <Td border={'1px'}>{francophoneClass.TAUXD}%</Td>
+                                        </Tr>
+                                         ))
+                                        }
+                                    </Tbody>
+                                    {dataTotalInscriptionStatisticsFrancophoneSection &&
+                                        dataTotalInscriptionStatisticsFrancophoneSection.TotalSectionStatisticsFrancophoneAdmissionFee
+                                        .map((totalFrancophoneClass, index) => ( 
+                                        <Tr key={index}>
+                                            <Td border={'1px'} rowSpan={6} fontWeight={"bold"}>Total</Td>
+                                            <Td border={'1px'}></Td>
+                                            <Td  border={'1px'}>{totalFrancophoneClass.TOTAL_EFFECTIFS_ENREGISTRES}</Td>
+                                            <Td border={'1px'}>{totalFrancophoneClass.TOTAL_MONTANT_ATTENDU}</Td>
+                                            <Td border={'1px'}>{totalFrancophoneClass.TOTAL_NOMBRE_ENCAISSEMENT}</Td>
+                                            <Td border={'1px'}>{totalFrancophoneClass.TOTAL_FIRST_TAUX_ENCAISSEMENT}%</Td>
+                                            <Td border={'1px'}>{totalFrancophoneClass.TOTAL_MONTANT_EN_CAISSE}</Td>
+                                            <Td border={'1px'}>{totalFrancophoneClass.TOTAL_SECOND_TAUX_ENCAISSEMENT}%</Td>
+                                            <Td border={'1px'}>{totalFrancophoneClass.TOTAL_NOMBRE_SANS_ENCAISSEMENT}</Td>
+                                            <Td border={'1px'}>{totalFrancophoneClass.TOTAL_FIRST_TAUX_RECOUVRIR}%</Td>
+                                            <Td border={'1px'}>{totalFrancophoneClass.TOTAL_RESTE_A_RECOUVRER}</Td>
+                                            <Td border={'1px'}>{totalFrancophoneClass.TOTAL_SECOND_TAUX_RECOUVRIR}%</Td>
+                                      
+                                        </Tr>
+                                        ))
+                                    }
+                                    <Tbody>
+                                    </Tbody>
+                                    <Tbody>
                                      {dataInscriptionStatisticsAnglophoneSection &&
                                         dataInscriptionStatisticsAnglophoneSection?.getSectionStatisticsAnglophoneAdmissionFee
                                         .map((anglophoneclasse, index) =>( 
@@ -113,59 +164,29 @@ const SuiviPaiementFraisInscription = () => {
                                             <Td border={'1px'}>{anglophoneclasse.TAUXD}%</Td>
                                         </Tr>
                                       )) }
-                                        {/* <Tr >
-                                            <Td border={'1px'}>Total</Td>
-                                            <Td border={'1px'}>millimet</Td>
-                                            <Td border={'1px'}>25.4</Td>
-                                            <Td border={'1px'}>millimetres</Td>
-                                            <Td border={'1px'}>millimetres </Td>
-                                            <Td border={'1px'}>millimetres</Td>
-                                            <Td border={'1px'}>millimetres</Td>
-                                            <Td border={'1px'}>milli</Td>
-                                            <Td border={'1px'}>millimetres</Td>
-                                            <Td border={'1px'}>millim</Td>
-                                            <Td border={'1px'}>mill</Td>
-                                            <Td border={'1px'}>mill</Td>
-                                        </Tr>
-                                        <Tr >
-                                            <Td border={'1px'}>Total</Td>
-                                            <Td border={'1px'}>millimet</Td>
-                                            <Td border={'1px'}>25.4</Td>
-                                            <Td border={'1px'}>millimetres</Td>
-                                            <Td border={'1px'}>millimetres </Td>
-                                            <Td border={'1px'}>millimetres</Td>
-                                            <Td border={'1px'}>millimetres</Td>
-                                            <Td border={'1px'}>milli</Td>
-                                            <Td border={'1px'}>millimetres</Td>
-                                            <Td border={'1px'}>millim</Td>
-                                            <Td border={'1px'}>mill</Td>
-                                            <Td border={'1px'}>mill</Td>
-                                        </Tr> */}
-                                  
                                     </Tbody>
                                     <Tbody>
-                                        {dataInscriptionStatisticsFrancophoneSection && 
-                                            dataInscriptionStatisticsFrancophoneSection.getSectionStatisticsFrancophoneAdmissionFee
-                                            .map((francophoneClass) => (
-                                        <Tr >
-                                            <Td border={'1px'} rowSpan={6}>{francophoneClass.sectionName}</Td>
-                                            <Td border={'1px'}>{francophoneClass.className}</Td>
-                                            <Td  border={'1px'}>{francophoneClass.numberOfStudents}</Td>
-                                            <Td border={'1px'}>{francophoneClass.expectedAmount}</Td>
-                                            <Td border={'1px'}>{francophoneClass.numberOfStudentsStartedPaying} </Td>
-                                            <Td border={'1px'}>{francophoneClass.TAUXA}%</Td>
-                                            <Td border={'1px'}>{francophoneClass.sumAmountAlreadyPaid}</Td>
-                                            <Td border={'1px'}>{francophoneClass.TAUXB}%</Td>
-                                            <Td border={'1px'}>{francophoneClass.numberOfStudentsNotPaid}</Td>
-                                            <Td border={'1px'}>{francophoneClass.TAUXC}%</Td>
-                                            <Td border={'1px'}>{francophoneClass.amountRest}</Td>
-                                            <Td border={'1px'}>{francophoneClass.TAUXD}%</Td>
-
+                                        { dataTotalInscriptionStatisticsAnglophoneSection &&
+                                        dataTotalInscriptionStatisticsAnglophoneSection.TotalSectionStatisticsAnglophoneAdmissionFee
+                                        .map((totalAnglophoneclasse, index) => ( 
+                                    <Tr key={index}>
+                                            <Td border={'1px'} rowSpan={6} fontWeight={"bold"}>Total</Td>
+                                            <Td border={'1px'}></Td>
+                                            <Td  border={'1px'}>{totalAnglophoneclasse.TOTAL_EFFECTIFS_ENREGISTRES}</Td>
+                                            <Td border={'1px'}>{totalAnglophoneclasse.TOTAL_MONTANT_ATTENDU}</Td>
+                                            <Td border={'1px'}>{totalAnglophoneclasse.TOTAL_NOMBRE_ENCAISSEMENT}</Td>
+                                            <Td border={'1px'}>{totalAnglophoneclasse.TOTAL_FIRST_TAUX_ENCAISSEMENT}%</Td>
+                                            <Td border={'1px'}>{totalAnglophoneclasse.TOTAL_MONTANT_EN_CAISSE}</Td>
+                                            <Td border={'1px'}>{totalAnglophoneclasse.TOTAL_SECOND_TAUX_ENCAISSEMENT}%</Td>
+                                            <Td border={'1px'}>{totalAnglophoneclasse.TOTAL_NOMBRE_SANS_ENCAISSEMENT}</Td>
+                                            <Td border={'1px'}>{totalAnglophoneclasse.TOTAL_FIRST_TAUX_RECOUVRIR}%</Td>
+                                            <Td border={'1px'}>{totalAnglophoneclasse.TOTAL_RESTE_A_RECOUVRER}</Td>
+                                            <Td border={'1px'}>{totalAnglophoneclasse.TOTAL_SECOND_TAUX_RECOUVRIR}%</Td>
+                                      
                                         </Tr>
-                                         ))
-                                        }
+                                        ))
+                                     }
                                     </Tbody>
-
                                 </Table>
                             </TableContainer>
                         </Box>

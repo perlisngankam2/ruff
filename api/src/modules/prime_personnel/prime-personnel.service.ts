@@ -238,6 +238,18 @@ async findIdPrimeByPersonnel(personnelid:string){
 }
 
 async findIdPrimesByPrimesPersonnel(personnelid:string,month:string){
-  return (await this.primePersonnelRepository.find({personnel:personnelid})).filter(async a=>(await a.paysalary.load()).moisPaie===month).map(async a=>(await a.prime.load()).id)
+  const a=(await this.primePersonnelRepository.find({personnel:personnelid})).filter(async a=>( a.paysalary.getEntity()).moisPaie===month)
+  if(a.length>0){
+    return a.map(async a=>(a.prime.getEntity().id))
+  }
+  throw Error('!!!!!!!!!!!!!Ce personnel nas pas ete payer ce mois!!!!!!!!')
+}
+
+async allMonthAffectedPrimeToPersonnel(personnelid:string,primeid:string){
+  const a=(await this.primePersonnelRepository.find({personnel:personnelid}))
+  if(a.length>0){
+    return a.filter(a=>a.prime.getEntity().id===primeid).map(a=>a.paysalary.getEntity().moisPaie)
+  }
+  throw Error("il n'existe aucun mois d affectation de prime a ce personnel")
 }
 }

@@ -1,5 +1,5 @@
 /* eslint-disable prettier/prettier */
-import {Query, Resolver } from "@nestjs/graphql";
+import {Query, Resolver, Args} from "@nestjs/graphql";
 import { StatisticsService } from "./statistics.service";
 import { SectionStatistics } from "src/modules/statistics/sectionstatistics";
 import { StudentStatistics } from "./studentstatistics";
@@ -64,18 +64,18 @@ export class StatisticResolver {
     return await this.statisticsService.numberOfStudentsStartedPayingPension();
   }
 
-  @Query(() => [SectionStatistics])
-  getGeneralSectionStatistics(): Promise<SectionStatistics[]> {
-    return this.statisticsService.getGeneralSectionStatistics()
-  }
+  // @Query(() => [SectionStatistics])
+  // getGeneralSectionStatistics(): Promise<SectionStatistics[]> {
+  //   return this.statisticsService.getGeneralSectionStatistics()
+  // }
 
-  @Query(() => [SectionStatistics])
-  getGeneralAnglophoneSectionStatistics(): Promise<SectionStatistics[]> {
-    return this.statisticsService.getGeneralAnglophoneSectionStatistics()
+  @Query(() => [ClassStatistics])
+  getGeneralAnglophoneSectionStatistics(): Promise<ClassStatistics[]> {
+    return this.statisticsService.getGeneralAnglophoneClassStatistics()
   }
-  @Query(() => [SectionStatistics])
-  getGeneralFrancophoneSectionStatistics(): Promise<SectionStatistics[]> {
-    return this.statisticsService.getGeneralFrancophoneSectionStatistics()
+  @Query(() => [ClassStatistics])
+  getGeneralFrancophoneSectionStatistics(): Promise<ClassStatistics[]> {
+    return this.statisticsService.getGeneralFrancophoneClassStatistics()
   }
 
 
@@ -84,6 +84,9 @@ export class StatisticResolver {
     return this.statisticsService.getTrancheStatisticsForNormalStudents();
   }
 
-
+  @Query(() => Number)
+  async getNumberOfStudentsStartedPayingAdmissionFeeSalle(@Args("sallename") sallename:string) {
+    return await this.statisticsService.numberOfStudentsStartedPayingAdmissionFeeSalle((sallename));
+  }
 
 }

@@ -103,9 +103,9 @@ const SuiviPaiementParEleveReNormal = () => {
                                             <Td border={'1px'}>{classe.numberOfStudents}</Td>
                                             <Td border={'1px'}>{classe.expectedAmount}</Td>
                                             <Td border={'1px'}>{classe.sumAmountAlreadyPaid}</Td>
-                                            <Td border={'1px'}>{classe.TAUXB}%</Td>
+                                            <Td border={'1px'}>{classe.rateT}%</Td>
                                             <Td border={'1px'}>{classe.amountRest}</Td>
-                                            <Td border={'1px'}>{classe.TAUXD}%</Td>
+                                            <Td border={'1px'}>{classe.rateZ}%</Td>
                                         </Tr> 
                                     ))}
                                      <Tr>
@@ -152,9 +152,9 @@ const SuiviPaiementParEleveReNormal = () => {
                                             <Td border={'1px'}>{francophoneclasse.numberOfStudents}</Td>
                                             <Td border={'1px'} >{francophoneclasse.expectedAmount}</Td>
                                             <Td border={'1px'}>{francophoneclasse.sumAmountAlreadyPaid}</Td>
-                                            <Td border={'1px'}>{francophoneclasse.TAUXB}%</Td>
+                                            <Td border={'1px'}>{francophoneclasse.rateT}%</Td>
                                             <Td border={'1px'}>{francophoneclasse.amountRest}</Td>
-                                            <Td border={'1px'}>{francophoneclasse.TAUXD}%</Td>
+                                            <Td border={'1px'}>{francophoneclasse.rateZ}%</Td>
                                         </Tr>
                                         ))}
                                     </Tbody>

@@ -82,6 +82,11 @@ export class PrimePersonnelResolver {
   async getallpersonnelprimebymont(@Args('personnelid') personnelid:string,@Args('month') month:string){
   return await this.primePersonnelService.getallpersonnelprimebymonth(personnelid,month)
   }
+
+  @Query(()=>[String])
+  async allMonthAffectedPrimeToPersonnel(@Args('personnelid') personnelid:string,@Args('primeid') primeid:string){
+  return await this.primePersonnelService.allMonthAffectedPrimeToPersonnel(personnelid,primeid)
+  }
   
 
 }

@@ -89,7 +89,7 @@ const SuiviPaiementFraisInscription = () => {
                                             <Th border={'1px'}>TAUX</Th>
                                             <Th textAlign={'center'} border={'1px'} >NOMBRE</Th>
                                             <Th textAlign={'center'} border={'1px'} >TAUX</Th>
-                                            <Th textAlign={'center'} border={'1px'} >MONTANT EN CAISSE</Th>
+                                            <Th textAlign={'center'} border={'1px'} >MONTANT</Th>
                                             <Th textAlign={'center'} border={'1px'} >TAUX</Th>
 
                                         </Tr>
@@ -103,14 +103,14 @@ const SuiviPaiementFraisInscription = () => {
                                             <Td border={'1px'}>{anglophoneclasse.className}</Td>
                                             <Td border={'1px'}>{anglophoneclasse.numberOfStudents}</Td>
                                             <Td border={'1px'}>{anglophoneclasse.expectedAmount}</Td>
-                                            <Td border={'1px'}>{anglophoneclasse.className}</Td>
-                                            <Td border={'1px'}>{anglophoneclasse.className}</Td>
+                                            <Td border={'1px'}>{anglophoneclasse.numberOfStudentsStartedPaying}</Td>
+                                            <Td border={'1px'}>{anglophoneclasse.TAUXA}%</Td>
                                             <Td border={'1px'}>{anglophoneclasse.sumAmountAlreadyPaid}</Td>
-                                            <Td border={'1px'}>mill</Td>
-                                            <Td border={'1px'}>millimetres</Td>
-                                            <Td border={'1px'}>millim</Td>
-                                            <Td border={'1px'}>millim</Td>
-                                            <Td border={'1px'}>millim</Td>
+                                            <Td border={'1px'}>{anglophoneclasse.TAUXB}%</Td>
+                                            <Td border={'1px'}>{anglophoneclasse.numberOfStudentsNotPaid}</Td>
+                                            <Td border={'1px'}>{anglophoneclasse.TAUXC}%</Td>
+                                            <Td border={'1px'}>{anglophoneclasse.amountRest}</Td>
+                                            <Td border={'1px'}>{anglophoneclasse.TAUXD}%</Td>
                                         </Tr>
                                       )) }
                                         {/* <Tr >
@@ -152,14 +152,14 @@ const SuiviPaiementFraisInscription = () => {
                                             <Td border={'1px'}>{francophoneClass.className}</Td>
                                             <Td  border={'1px'}>{francophoneClass.numberOfStudents}</Td>
                                             <Td border={'1px'}>{francophoneClass.expectedAmount}</Td>
-                                            <Td border={'1px'}>{francophoneClass.className} </Td>
-                                            <Td border={'1px'}>{francophoneClass.className}</Td>
-                                            <Td border={'1px'}>millimetres</Td>
-                                            <Td border={'1px'}>milli</Td>
-                                            <Td border={'1px'}>millimetres</Td>
-                                            <Td border={'1px'}>millim</Td>
-                                            <Td border={'1px'}>mill</Td>
-                                            <Td border={'1px'}>mill</Td>
+                                            <Td border={'1px'}>{francophoneClass.numberOfStudentsStartedPaying} </Td>
+                                            <Td border={'1px'}>{francophoneClass.TAUXA}%</Td>
+                                            <Td border={'1px'}>{francophoneClass.sumAmountAlreadyPaid}</Td>
+                                            <Td border={'1px'}>{francophoneClass.TAUXB}%</Td>
+                                            <Td border={'1px'}>{francophoneClass.numberOfStudentsNotPaid}</Td>
+                                            <Td border={'1px'}>{francophoneClass.TAUXC}%</Td>
+                                            <Td border={'1px'}>{francophoneClass.amountRest}</Td>
+                                            <Td border={'1px'}>{francophoneClass.TAUXD}%</Td>
 
                                         </Tr>
                                          ))

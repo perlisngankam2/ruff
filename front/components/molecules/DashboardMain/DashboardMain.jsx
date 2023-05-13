@@ -50,7 +50,7 @@ import { GoBriefcase } from "react-icons/go";
   const { account } =  useAccount();
   const {t} = useTranslation()
   //debug
-      console.log(  account?.id );
+      // console.log(  account?.id );
 
   const { data: personnelData, called, loading } = useQuery(GET_PERSONNEL_BY_USERID,
     {
@@ -62,7 +62,7 @@ import { GoBriefcase } from "react-icons/go";
   //  const { authToken } = useAuth();
 
   const router = useRouter();
-  console.log(personnelData?.getpersonnelbyaccount);
+  // console.log(personnelData?.getpersonnelbyaccount);
 
   //   useEffect(() => {
     

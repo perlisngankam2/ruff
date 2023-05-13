@@ -145,10 +145,10 @@ const RouteName = {
       // type: AuthRoute.Public,
       // platforms: [Platform.Main]
     },
-    // Dashboard:{
-    // path: '/dashboard'
+    ResetPassword:{
+    path: '/resetPassword'
 
-    // },
+    },
 
     Bulletin: {
       path: '/payment/bulletin/[id]'

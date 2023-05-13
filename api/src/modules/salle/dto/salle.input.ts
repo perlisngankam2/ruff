@@ -10,6 +10,9 @@ export class SalleCreateInput {
   @Field({nullable:true})
   name?: string;
 
+  @Field({nullable:true})
+  anneeAcademiqueId?: string;
+
   @Field(()=>ID,{nullable:true})
   sectionId?: string;
 

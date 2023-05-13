@@ -37,9 +37,8 @@ import { GET_ALL_PERSONNELS } from "../../graphql/Queries";
 import { DELETE_PERSONNEL } from "../../graphql/Mutation";
 import Category from "./categorypersonnel";
 import ReactPaginate from "react-paginate";
-import { UseTranslation, useTranslation } from "next-i18next";
+import { useTranslation } from "next-i18next";
 import { getStaticPropsTranslations } from "../../types/staticProps";
-
 
 
 const Personnel = () => {
@@ -58,7 +57,6 @@ const Personnel = () => {
 
 
   const {t} = useTranslation()
-
 
   const employees = [
     { id: 1, name: "DON WILFRIED", function: "Directeur" },

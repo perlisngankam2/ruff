@@ -1,73 +1,89 @@
 /* eslint-disable prettier/prettier */
-import { Args, Query, Resolver } from "@nestjs/graphql";
-import { StatisticService } from "./statistics.service";
-import { Student } from "src/entities/student.entity";
+import {Query, Resolver } from "@nestjs/graphql";
+import { StatisticsService } from "./statistics.service";
+import { SectionStatistics } from "src/modules/statistics/sectionstatistics";
+import { StudentStatistics } from "./studentstatistics";
+import { ClassStatistics } from "./classStatistics";
+import { SpecialStudentStatistics } from "./specialRegimeStudent";
+
 
 
 @Resolver()
 export class StatisticResolver {
-  constructor(private readonly statisticService: StatisticService) {}
+  constructor(private readonly statisticsService: StatisticsService) {}
 
-   @Query(()=>Number)
-   async totalNumberofStudentsinClass(@Args('id') id:string){
-    return this.statisticService.totalNumberofStudentsinClass(id)
-   }
 
-   @Query(()=>[Student])
-   async getallStudentswhoCompletedAdmissionfees(){
-    return await this.statisticService.getallStudentswhoCompletedAdmissionfees()
-   }
+  @Query(() => [StudentStatistics])
+  async getStudentStatisticsAnglophone(): Promise<StudentStatistics[]> {
+    return this.statisticsService.getStudentStatisticsAnglophone();
+  }
 
-   @Query(()=>[Student])
-   async getallStudentswhohaveCompletedTuitionfee(){
-    return await this.statisticService.getallStudentswhohaveCompletedTuitionfee()
-   }
+  @Query(() => [StudentStatistics])
+  async getStudentStatisticsFrancophone(): Promise<StudentStatistics[]> {
+    return this.statisticsService.getStudentStatisticsFrancophone();
+  }
+  
 
-   @Query(()=>[Student])
-   async getallStudentswhohavenotCompletedAdmissionfee(){
-    return await this.statisticService.getallStudentswhohavenotCompletedAdmissionfee()
-   }
+  @Query(() => [SectionStatistics])
+  async getSectionStatisticsAnglophoneAdmissionFee(): Promise<SectionStatistics[]> {
+    return this.statisticsService.getSectionStatisticsAnglophoneAdmissionFee();
+  }
 
-   @Query(()=>[Student])
-   async numberStudentswhohavenotCompletedTuitionfee(){
-    return await this.statisticService.numberStudentswhohavenotCompletedTuitionfee()
-   }
+  @Query(() => [SectionStatistics])
+  async getSectionStatisticsAnglophoneFirstInstalment(): Promise<SectionStatistics[]> {
+    return this.statisticsService.getSectionStatisticsAnglophoneFirstInstalment();
+  }
 
-   @Query(()=> Number)
-   async totalAmountofEntries(){
-    return await this.statisticService.totalAmountofEntries()
-   }
+  @Query(() => [SpecialStudentStatistics])
+  async getTrancheStatisticsForSpecialStudents(): Promise<SpecialStudentStatistics[]> {
+    return this.statisticsService.getTrancheStatisticsForSpecialStudents();
+  }
 
-   @Query(()=> Number)
-   async balanceeExpected(@Args('salleid') salleid:string){
-    return await this.statisticService.balanceeExpected(salleid)
-   }
+  @Query(() => [SectionStatistics])
+  getSectionStatisticsAnglophoneSecondInstalment(): Promise<SectionStatistics[]> {
+    return this.statisticsService.getSectionStatisticsAnglophoneSecondInstalment();
+  }
+  
+  @Query(() => [SectionStatistics])
+  getSectionStatisticsFrancophoneAdmissionFee(): Promise<SectionStatistics[]> {
+    return this.statisticsService.getSectionStatisticsFrancophoneAdmissionFee();
+  }
 
-   @Query(()=> Number)
-   async balanceInquierybyclass(@Args('salleid') salleid:string){
-    return await this.statisticService.balanceInquierybyclass(salleid)
-   }
+  @Query(() => [SectionStatistics])
+  getSectionStatisticsFrancophoneFirstInstalment(): Promise<SectionStatistics[]> {
+    return this.statisticsService.getSectionStatisticsFrancophomeFirstInstalment();
+  }
 
-   @Query(()=> Number)
-   async totalAmountofExpenses(){
-    return await this.statisticService.totalAmountofExpenses()
-   }
+  @Query(() => [SectionStatistics])
+  getSectionStatisticsFrancophoneSecondInstalment(): Promise<SectionStatistics[]> {
+    return this.statisticsService.getSectionStatisticsFrancophoneSecondInstalment();
+  }
 
-   
-   @Query(()=> Number)
-   async AmountRemaining(@Args('salleid') salleid:string){
-    return await this.statisticService.AmountRemaining(salleid)
-   }
+  @Query(() => Number)
+  async numberOfStudentsStartedPayingPension() {
+    return await this.statisticsService.numberOfStudentsStartedPayingPension();
+  }
 
-   @Query(()=> Number)
-   async CollectionRate(@Args('salleid') salleid:string){
-    return await this.statisticService.CollectionRate(salleid)
-   }
+  @Query(() => [SectionStatistics])
+  getGeneralSectionStatistics(): Promise<SectionStatistics[]> {
+    return this.statisticsService.getGeneralSectionStatistics()
+  }
 
-   @Query(()=> Number)
-   async RARrate(@Args('salleid') salleid:string){
-    return await this.statisticService.RARrate(salleid)
-   }
+  @Query(() => [SectionStatistics])
+  getGeneralAnglophoneSectionStatistics(): Promise<SectionStatistics[]> {
+    return this.statisticsService.getGeneralAnglophoneSectionStatistics()
+  }
+  @Query(() => [SectionStatistics])
+  getGeneralFrancophoneSectionStatistics(): Promise<SectionStatistics[]> {
+    return this.statisticsService.getGeneralFrancophoneSectionStatistics()
+  }
+
+
+  @Query(() => [SpecialStudentStatistics])
+  getTrancheStatisticsForNormalStudents(): Promise<SpecialStudentStatistics[]> {
+    return this.statisticsService.getTrancheStatisticsForNormalStudents();
+  }
+
 
 
 }

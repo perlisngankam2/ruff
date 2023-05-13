@@ -45,4 +45,14 @@ export class SectionResolver {
   async deletesection(@Args('id') id:string){
  return await this.sectionService.delete(id)
   }
+
+  @Query(() => [Section])
+  async getAllForUseAnglophone(){
+   return await this.sectionService.getAllForUseAnglophone()
+  }
+
+  @Query(() => [Section])
+  async getAllForUseFrancophone(){
+   return await this.sectionService.getAllForUseFrancophone()
+  }
 }

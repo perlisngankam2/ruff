@@ -54,7 +54,9 @@ export class ParentStudentService {
       }
     
       getAll(): Promise<ParentStudent[]> {
-        return this.parentstudentRepository.findAll()
+        return this.parentstudentRepository.findAll({
+          populate: ['parent','student']
+        })
       }
       
       async update(id:string, input: ParentStudentUpdateInput): Promise<ParentStudent> {

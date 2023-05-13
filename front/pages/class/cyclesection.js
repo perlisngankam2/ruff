@@ -58,8 +58,9 @@ import { useMutation, useQuery } from "@apollo/client";
 import SectionCreate from "./SectionCreate";
 import CycleCreate from "./CycleCreate";
 import ReactPaginate from "react-paginate";
-import Routes from "../../modules/routes";
-
+// import Routes from "../../modules/routes";
+import { useTranslation } from "next-i18next";
+// import { getStaticPropsTranslations } from "../../types/staticProps";
 
 const cyclesection = () => {
 
@@ -341,9 +342,11 @@ const CycleElement = ({cycle, index}) =>{
     })
     onClose();
   } 
+
+  
   return (
       <Tr key={index}>
-        <Td p={0} pl={6}>{cycle.name}({cycle.sectionname})</Td>
+        <Td p={0} pl={6}>{cycle.name}({cycle.sectionName})</Td>
         
         {/* <Td  borderColor={'#C6B062'}>{cycle.section_id}</Td> */}
         <Td p={0} pl={6}>pppp</Td>
@@ -415,87 +418,8 @@ const CycleElement = ({cycle, index}) =>{
                   </AlertDialogOverlay>
               </AlertDialog>
             </Box>
-            {/* <Box as={"form"}  
-              // onSubmit={updateCycle}
-            >  
-              <AlertDialog
-                isOpen={isOpen}
-                leastDestructiveRef={cancelRef}
-                onClose={onClose}
-                size='xl'
-              >
-                <AlertDialogOverlay>
-                    <AlertDialogContent>
-                        <AlertDialogHeader 
-                            fontSize='sm' 
-                            fontWeight='base' 
-                            mt='0'
-                        >
-                          <Box>
-                            <Heading 
-                                textAlign={'center'} 
-                                fontSize={['15px','20px','26px']} 
-                                p='2' 
-                            >
-                                Modifier le cycle
-                            </Heading>
-                          </Box>
-                        </AlertDialogHeader>
-                        <AlertDialogBody>
-                        <Box> */}
-                          {/* <FormControl>
-                              <FormLabel>Nom</FormLabel>
-                            <Input 
-                                id="name"
-                                type={'text'} 
-                                name="name"
-                                placeholder="nom"
-                                onChange = {() => setName("")}
-                                value={cycle.name}
-                            />
-                          </FormControl>
-                          <FormControl mt="15px">
-                              <FormLabel>Section</FormLabel>
-                              <Select 
-                                  id="section"
-                                  name="section"
-                                  placeholder="Section"
-                                  onChange = {() => setSection("")}
-                                  value={cycle.section}
-                              >
-                                  {data &&(
-                                      data.findAllsection.map((section, index) => ( 
-                                          <option key={index}>
-                                              <option>{section.name}</option>
-                                          </option>
-                                      ))
-                                  )}
-                              </Select>
-                          </FormControl>
-                        </Box>
-                        </AlertDialogBody> */}
-                        {/* <AlertDialogFooter>
-                          <Button 
-                              ref={cancelRef} 
-                              onClick={onClose} 
-                              colorScheme='red' 
-                          >
-                              annuler 
-                          </Button>
-                            <Link href={'/personnel/ajoutercategorypersonnel'}> 
-                              <Button 
-                              colorScheme='green'  
-                              ml={3}
-                              onClick={updateCycle}
-                            >
-                              Enregistrer
-                            </Button>
-                            </Link>  
-                          </AlertDialogFooter>
-                    </AlertDialogContent>
-                </AlertDialogOverlay>
-            </AlertDialog>  
-            </Box>   */}
+                   
+             
         </Box>
         </Td>
       </Tr>

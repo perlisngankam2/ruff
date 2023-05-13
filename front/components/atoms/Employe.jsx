@@ -48,6 +48,16 @@ const Employee = (props) => {
     setPersonnel(dataPersonnel)
     console.log(dataPersonnel) 
 }, [dataPersonnel])
+
+  const removePersonnel = async(id) => {
+    await deletePersonnel({
+        variables: {id},
+        refetchQueries:[{
+          query: GET_ALL_PERSONNELS
+        }]
+    })
+    onClose();
+  }
  
   if (loading) return <Text>Chargement en cour...</Text>
   if (error) return <Text>Une erreur s'est produite!</Text>

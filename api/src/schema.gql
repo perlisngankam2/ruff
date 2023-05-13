@@ -475,12 +475,13 @@ type Query {
   findAllsalaire: [SalaireBase!]!
   salaireBase(id: String!): SalaireBase!
   findAllprime: [Prime!]!
-  prime(id: String!): Retenue!
+  findOnePrime(id: String!): Prime!
   findAllcategorieprime: [CategoriePrime!]!
   categoriePrime(id: String!): CategoriePrime!
   findAllcategoriepersonnel: [CategoriePersonnel!]!
   findOneCategoriepersonnel(id: String!): CategoriePersonnel!
   findAllretenusalarial: [Retenue!]!
+  prime(id: String!): Retenue!
   findAllcategorieretenu: [CategorieRetenu!]!
   categorieRetenu(id: String!): CategorieRetenu!
   findAllprimepersonnel: [PrimePersonnel!]!

@@ -88,6 +88,7 @@ const PaySlip = () => {
     fetchPolicy: 'network-only',  
   });
 
+  console.log('datagenerer salaire',dataGenererSalaire)
   //recupere le dernier indice et le dernier element de generer salaire
          const dernierIndiceGenererSalaire = dataGenererSalaire?.getpaysalairebypersonnel.length - 1
        const dernierElementGenererSalaire = dataGenererSalaire?.getpaysalairebypersonnel[dernierIndiceGenererSalaire];
@@ -184,7 +185,7 @@ const unavailableMonths = useMemo(
           input: { 
             ID: "",
             personnelId: personnelId,
-            montant: parseInt(montantSalaire),
+            montant: montantSalaire,
             moisPaie: moisSalaire, 
             jourPaie: jourPaie,
           }

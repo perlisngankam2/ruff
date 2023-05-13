@@ -673,8 +673,13 @@ query PersonnelNetSalary ($personnelid: String!) {
 
 //NOMS DE TOUTES LES PRIMES ATTRIBUES A UN PERSONNEL
 export const GET_ALL_NAME_PRIME_PERSONNEL = gql `
-query findnamesprimebypersonnel ($personnelid: String!) {
-    findnamesprimebypersonnel (personnelid: $personnelid)
+query findOnePrime ($id: String!) {
+    findOnePrime (id: $id) {
+        id
+        nom
+        description
+        montant
+    }
 }
 `;
 //MONTANT DE TOUTES LES PRIMES ATTRIBUES A UN PERSONNEL

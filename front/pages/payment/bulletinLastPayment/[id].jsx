@@ -81,13 +81,13 @@ const BulletinLastPayment = () => {
         variables:{ id: dataCategorieId?.findCategoriepersonnelbypersonnel}
     })
 
- // Id de la prime affectee a un personnel
-//  const {data:primeId} = useQuery(FIND_ID_PRIME,
-//     {
-//         variables:{ personnelid: dataSalaireId?.getonesalaire.personnelid,
-//                     month: dataSalaireId?.getonesalaire.moisPaie
-//         }
-//     })
+ //Id de la prime affectee a un personnel
+ const {data:primeId} = useQuery(FIND_ID_PRIME,
+    {
+        variables:{ personnelid: dataSalaireId?.getonesalaire.personnelid,
+                    month: dataSalaireId?.getonesalaire.moisPaie
+        }
+    })
 
 
     const {data:dataPrimeTotal} = useQuery(GET_SUM_AMOUNT_PRIME_PERSONNEL,
@@ -104,8 +104,28 @@ const BulletinLastPayment = () => {
         }
     })
 
-//     console.log('prime id')
-//     console.log(dataSalaireId?.getonesalaire.personnelid)
+    console.log('prime id')
+    
+
+    const {data:dataPrimeNoms,refetch} = useQuery(GET_ALL_NAME_PRIME_PERSONNEL,
+    {
+        variables:{ id: "e48ea429-457a-4c51-80b4-85062e28e032" },
+    })
+    useEffect(()=>{
+      if(primeId){
+        const primes = []
+        primeId?.findIdPrimesByPrimesPersonnel.map(primeId=>{
+          console.log(primeId)
+          const a = refetch({id:primeId})
+          console.log("aaaaaaaaaa=>",a)
+        // console.log(dataPrimeNoms)
+        })
+      }
+    },[primeId])
+
+
+    console.log(dataPrimeNoms
+)
 
 //     const {data:dataRetenueMontant} = useQuery(GET_ALL_AMOUNT_RETENU_PERSONNEL,
 //     {
@@ -118,11 +138,21 @@ const BulletinLastPayment = () => {
 //     })
 
     //
-
+// primeId?.findIdPrimesByPrimesPersonnel.map((prime, index) => {
 //    const {data:dataPrimeNoms} = useQuery(GET_ALL_NAME_PRIME_PERSONNEL,
 //     {
-//         variables:{ personnelid: router.query.id}
+//         variables:{ id: prime },
+//       skip: primeId?.findIdPrimesByPrimesPersonnel.length === 0,
 //     })
+
+//   })
+
+
+  // const {data:dataPrimeNoms} = useQuery(GET_ALL_NAME_PRIME_PERSONNEL,
+  //   {
+  //       variables:{ id: prime },
+  //     skip: primeId?.findIdPrimesByPrimesPersonnel.length === 0,
+  //   })
 
 //     const {data:dataPrimeMontant} = useQuery(GET_ALL_AMOUNT_PRIME_PERSONNEL,
 //     {
@@ -140,7 +170,7 @@ const BulletinLastPayment = () => {
 console.log(dataSalaireId?.getonesalaire)
 
 // console.log("dataRetenue")
-console.log(dataCategorie)
+// console.log(dataPrimeNoms)
 // console.log(dataRetenueMontant?.findmontantretenubypersonnel)
 // console.log(dataRetenueTotal?.findsumallretenupersonnel
 // )
@@ -166,15 +196,22 @@ function nombreEnLettres(montant) {
   const unite = montant % 10;
   const dizaine = Math.floor(montant / 10) % 10;
   const centaine = Math.floor(montant / 100) % 10;
-  const millier = Math.floor(montant / 1000);
+  const millier = Math.floor(montant / 1000) % 1000;
+  const million = Math.floor(montant / 1000000);
 
   let resultat = '';
 
+  if (million > 0) {
+    resultat += nombreEnLettres(million) + ' million ';
+    montant %= 1000000;
+  }
+
   if (millier > 0) {
     resultat += nombreEnLettres(millier) + ' mille ';
-    const reste = montant % 1000;
-    if (reste > 0) {
-      resultat += nombreEnLettres(reste) + ' ';
+    montant %= 1000;
+    // La correction est ici
+    if (montant === 0) {
+      resultat += ' ';
     }
   }
 
@@ -201,8 +238,12 @@ function nombreEnLettres(montant) {
 
 
 
+
+
+
 // const lettre =nombreEnLettres(dernierElement)
-// console.log(lettre)
+console.log(nombreEnLettres(dataSalaireId?.getonesalaire.montant))
+console.log(dataSalaireId?.getonesalaire.montant)
 
 const componentRef = useRef();
 const ref = React.createRef();
@@ -325,8 +366,8 @@ const options = {
 
                        <Heading fontSize={'md'} fontWeight={'bold'} color='black'ml='6px'>PRIMES SALARIALES</Heading>
                           {/* { 
-                      dataPrimeNoms && (
-                        dataPrimeNoms?.findnamesprimebypersonnel.map((prime) => (
+                      primeId && (
+                        primeId?.findIdPrimesByPrimesPersonnel.map((prime) => (
                             <Text ml='20px'>
                               {prime}
                             </Text>

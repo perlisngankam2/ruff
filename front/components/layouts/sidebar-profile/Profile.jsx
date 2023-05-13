@@ -17,6 +17,11 @@ import {
     useDisclosure,
     VStack,
 } from '@chakra-ui/react'
+import { useAccount } from "../../../contexts/account/Account";
+import { GET_PERSONNEL_BY_USERID } from "../../../graphql/Queries";
+import { useMutation, useQuery } from '@apollo/client'; 
+import Link from "next/link";
+import Routes from "../../../modules/routes";
 
 function Profile(){
     const [userProfile, setUserProfile]= useState(null)
@@ -27,6 +32,11 @@ function Profile(){
     const openChooseImage =()=>{
         profileImage.current.click()
     }
+    const { account ,loaded } = useAccount();
+    const { data: personnelData, called, loading } = useQuery(GET_PERSONNEL_BY_USERID,
+     {
+    variables:{ userid: account?.id }
+  })
 
     const changeProfileImage = event =>{
         const ALLOWED_TYPES= ['image/png', 'image/jpeg', 'image/jpg']
@@ -94,15 +104,32 @@ function Profile(){
 
             </Modal>
             <VStack spacing={1}>
-                <Heading as="h3" fontSize="xl" color="brand.dark">
+                {/* <Heading as="h3" fontSize="xl" color="brand.dark">
                     Don WILLFRIED
 
-                </Heading>
+                </Heading> */}
+                  {account?.firstName === null && account?.lastName === null?
+                 <Heading as="h3" fontSize="xl" color="brand.dark">
+                   {personnelData?.getpersonnelbyaccount.firstName+" "+personnelData?.getpersonnelbyaccount.lastName}
+
+                </Heading> 
+                :
+                 <Heading as="h3" fontSize="xl" color="brand.dark">
+                   {account?.firstName+" "+account?.lastName}
+
+                </Heading> 
+            
+                }
+               {account?.role === null?
                 <Text color="brand.gray" fontSize="sm">
-                    Econome
+                    {personnelData?.getpersonnelbyaccount.fonction}
+
+                </Text>:
+                <Text color="brand.gray" fontSize="sm">
+                    {account?.role}
 
                 </Text>
-
+ } 
             </VStack>
 
         </VStack>

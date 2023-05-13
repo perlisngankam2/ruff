@@ -65,7 +65,6 @@ const ContentProfile =() =>{
                 </TabPanels>
             </Tabs>
             {/* <Actions/> */}
-
         </Box>
 
     )

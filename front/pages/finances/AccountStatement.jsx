@@ -67,13 +67,16 @@ import {
 import { DELETE_STUDENT } from "../../graphql/Mutation";
 import { useMutation, useQuery } from "@apollo/client";
 import ReactPaginate from "react-paginate";
+
 import { CSVLink, CSVDownload } from "react-csv";
 
 const AccountStatement = () => {
 
     const {t} = useTranslation();
+    const [searchExpense, setSearchExpense] = useState("");
     const {data:dataExpensePersonnelStudent} = useQuery(GET_ALL_EXPENSE_PERSONNEL_STUDENT)
     const date1 = new Date('December 17, 1995 03:24:00')
+    
 
 
     const componentRef = useRef();
@@ -139,39 +142,38 @@ const AccountStatement = () => {
                             borderRadius={"lg"}
                             ml={"420px"}
                         > 
-                        <ReactToPrint
-                            trigger={() => <Icon as={TfiPrinter} boxSize="42px" alignItems={"center"} p="3" />}
-                            content={() => componentRef.current}
-                                documentTitle= "Etat des entrees et sorties"
-                                pageStyle="print"
-                        />
-                        {/* <Icon
-                            alignItems={"center"}
-                            as={TfiPrinter}
-                            boxSize="42px"
-                            p="3"
-                            // bg="blue.100"
-                            // rounded="full"
-                        /> */}
-                        <Icon
-                            as={RiDeleteBin5Line}
-                            boxSize="42px"
-                            p="3"
-                            rounded="full"
-                            // color="colors.quaternary"
-                            // _hover={{background:"blue.100"}}
-                            // onClick={onToggle}
-                        />
-                        <Icon
-                            as={TfiFilter}
-                            boxSize="42px"
-                            p="3"
-                            rounded="full"
-                            // color="colors.quaternary"
+                            <ReactToPrint
+                                trigger={() => <Icon as={TfiPrinter} boxSize="42px" alignItems={"center"} p="3" />}
+                                content={() => componentRef.current}
+                                    documentTitle= "Etat des entrees et sorties"
+                                    pageStyle="print"
+                            />
+                            {/* <Icon
+                                alignItems={"center"}
+                                as={TfiPrinter}
+                                boxSize="42px"
+                                p="3"
+                                // bg="blue.100"
+                                // rounded="full"
+                            /> */}
+                            <Icon
+                                as={RiDeleteBin5Line}
+                                boxSize="42px"
+                                p="3"
+                                rounded="full"
+                                // color="colors.quaternary"
                                 // _hover={{background:"blue.100"}}
                                 // onClick={onToggle}
                             />
-                            
+                            <Icon
+                                as={TfiFilter}
+                                boxSize="42px"
+                                p="3"
+                                rounded="full"
+                                // color="colors.quaternary"
+                                    // _hover={{background:"blue.100"}}
+                                    // onClick={onToggle}
+                            />
                         </Flex>
                     </Flex> 
                     <Flex 
@@ -191,11 +193,18 @@ const AccountStatement = () => {
                                 {/* <CSVLink data={} filename={"my-file.csv"} > EXPORT</CSVLink> */}
                             </Button>
                             
-                            <ReactToPdf targetRef={componentRef} filename="Etat des entrees et sorties" options={options} y={10} >
+                            <ReactToPdf 
+                                targetRef={componentRef} 
+                                filename="Etat des entrees et sorties" 
+                                options={options} y={10} 
+                            >
                                 {({toPdf}) => ( <Button bg={"blackAlpha.100"} onClick={toPdf} border="1px" width={"50px"} fontSize={"sm"}>PDF</Button>)}
                             </ReactToPdf>
                         </Box>
-                        <Box width={"300px"} ml="700px">
+                        <Box 
+                            width={"300px"} 
+                            ml="700px"
+                        >
                             <InputGroup >
                                 <InputRightElement
                                     children={<Icon as={FiSearch} />}
@@ -204,8 +213,8 @@ const AccountStatement = () => {
                                 <Input
                                     placeholder="Recherchez un niveau..."
                                     //value={recherche}
-                                    // onChange={e => setQuery(e.target.value)}
-                                    // onChange={handleChange}
+                                    onChange={e => setSearchExpense(e.target.value)}
+                                    // value={searchExpense}
                                     variant="flushed"
                                 />
                             </InputGroup>
@@ -219,38 +228,39 @@ const AccountStatement = () => {
                             ref={componentRef}
                         >
                                 <Flex
-                                    gap={"120px"}
+                                    gap={"230px"}
                                     p="5px"
                                     // width={"full"}
                                     fontWeight={"bold"}
                                     borderBottom={"1px"}
                                     background="colors.secondary"
                                 > 
-                                    <Box width='100px' 
-                                        flex={1}
+                                    <Box 
+                                        // width='100px' 
+                                        // flex={1}
                                         // borderLeft={"1px"}
                                     >
                                         Date
                                     </Box>
                                     <Box 
-                                        width='300px'
-                                        ml="15px"
+                                        // width='300px'
+                                        // ml="15px"
                                     >
                                         description
                                         {/* {t('pages.finances.accountStatement.description')} */}
                                     </Box>
                                     <Box 
-                                        width='150px'
+                                        // width='150px'
                                     >
                                         Debit
                                     </Box>
                                     <Box 
-                                        width='180px'
+                                        // width='180px'
                                     >
                                         Credit
                                     </Box>
                                     <Box 
-                                        width='250px'
+                                        // width='250px'
                                     >
                                         Net
                                     </Box>
@@ -258,9 +268,21 @@ const AccountStatement = () => {
                                 <>
                                 <Box>  
                                      {dataExpensePersonnelStudent && 
-                                        (dataExpensePersonnelStudent?.findallexpenses.map((expense, index) => ( 
+                                        (dataExpensePersonnelStudent?.findallexpenses
+                                        .filter((expense) =>{
+                                            if(searchExpense == ""){
+                                                return expense;
+                                            }else if(expense.studentFirstname.toLowerCase().includes(searchExpense.toLowerCase()) ||
+                                                expense.studentLastname.toLowerCase().includes(searchExpense.toLowerCase())
+                                                // expense.personnelFirstName.toLowerCase().includes(searchExpense.toLowerCase()) ||
+                                                // expense.personnelLastName.toLowerCase().includes(searchExpense.toLowerCase()) ||
+                                                // expense.personnelFonction.toLowerCase().includes(searchExpense.toLowerCase())
+                                                )
+                                            return expense
+                                        })
+                                        .map((expense, index) => ( 
                                     <Flex
-                                        gap={"80px"}
+                                        gap={"180px"}
                                         p="5px"
                                         width={"full"}
                                         // fontWeight={"bold"}
@@ -270,7 +292,7 @@ const AccountStatement = () => {
                                     > 
                                     
                                         <Box 
-                                            // width='95px' 
+                                            //  width='100px' 
                                             // flex={1}
                                         >
                                             <Box>
@@ -281,7 +303,7 @@ const AccountStatement = () => {
                                             </Box>
                                         </Box>
                                         <Box 
-                                            width='260px'
+                                            // width='330px'
                                         >
                                            {expense.studentFirstname}&nbsp;
                                            {expense.studentLastname}
@@ -290,7 +312,7 @@ const AccountStatement = () => {
                                            ({expense.personnelFonction})
                                         </Box>
                                         <Box 
-                                            width='150px'
+                                            // width='150px'
                                             display={{md:"flex"}}
                                         >
                                             <Flex 
@@ -315,8 +337,10 @@ const AccountStatement = () => {
                                             </Flex>
                                             <Box> {expense.debitamount}</Box>
                                         </Box>
-                                        <Box width='180px'
+                                        <Box 
+                                            // width='180px'
                                             display={{md:"flex"}}
+                                            ml={"73px"}
                                         >
                                                     <Flex 
                                                         flexDirection={"column"}
@@ -337,50 +361,59 @@ const AccountStatement = () => {
                                                             // p="3"
                                                             rounded="full"
                                                             color="colors.greenColor400"
-                                                        
                                                         />
                                                     </Flex>
                                                     <Box>{expense.creditamount}</Box>
                                                 </Box>
-                                                <Box width='200px'>
-                                                    Net
+                                                <Box 
+                                                    ml={"30px"}
+                                                    // width='200px'
+                                                >
+                                                    {expense.creditTotal ? expense.creditTotal  :-expense.beditTotal}
+                                                    {/* Net */}
                                                 </Box> 
                                             </Flex>
                                             )) 
                                             )} 
                                          </Box>
-                                </>
+                                    </>
                                             
                                 {dataExpensePersonnelStudent && 
                                     (dataExpensePersonnelStudent?.findallexpenses.map((expense, index) => ( 
                                 <Flex
-                                    gap={100}
+                                    gap={"100px"}
                                     p="5px"
                                     width={"full"}
                                     // fontWeight={"bold"}
                                     // mt="12px"
                                     key={index}
                                 > 
-
                                     <Box
-                                        flex={1}
+                                        // flex={1}
                                         fontWeight={"bold"}
-                                        ml="150px"
-
+                                        // ml="150px"
                                     >
                                         Total
                                     </Box>
                                     <Box
-                                     width='160px'
+                                        // width='160px'
                                     >
-                                    {expense.debitTotal}
+                                        {/* {expense.beditTotal} */}
+                                        {/* {[expense.length-1].debitTotal} */}
+                                    </Box>
+                                    <Box 
+                                    // width='150px'
+                                    >
+                                        {/* {expense.creditTotal} */}
                                         
+                                    {/* {[expense.length-1].creditTotal} */}
                                     </Box>
-                                    <Box width='150px'>
-                                    {expense.creditTotal}
-                                    </Box>
-                                    <Box width='180px'>
-                                        40000
+                                    <Box 
+                                    // width='180px'
+                                    >
+                                        {/* {expense.beditTotal}
+                                        {expense.creditTotal}
+                                       */}
                                     </Box>
                                 </Flex>
                                     )))}
@@ -398,7 +431,7 @@ const AccountStatement = () => {
                     disabledClassName={"paginationDisabled"}
                     activeClassName={"paginationActive"}
                   />
-              </Box>
+                </Box>
               </Box>
             </DefaultLayout>
     )

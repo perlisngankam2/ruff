@@ -395,7 +395,7 @@ function nombreEnLettres(montant) {
                                     </Heading>
                                 </Box>
                             </Center>
-                            <Flex>
+                            <Flex gap="10px">
                                 <Box 
                                     ml='3' 
                                     m='3' 
@@ -403,7 +403,7 @@ function nombreEnLettres(montant) {
                                     borderColor='black' 
                                     bg='gray.50' 
                                     gap='8' 
-                                    w='740px' 
+                                    w='600px' 
                                     mt='15px'
                                 >
                                     <Box my='20px'>
@@ -501,7 +501,7 @@ function nombreEnLettres(montant) {
                                     <Flex 
                                         direction='column' 
                                         border='1px' 
-                                        w='300px'
+                                        w='250px'
                                     >
                                         <Box textAlign='center' >
                                             <Text fontWeight='bold'>
@@ -542,7 +542,7 @@ function nombreEnLettres(montant) {
                                     </Flex>
                                     <Flex 
                                         direction='column' 
-                                        w='360px'
+                                        w='300px'
                                     >
                                         <Text 
                                             fontSize='14px' 
@@ -564,7 +564,11 @@ function nombreEnLettres(montant) {
                                                         bg="blackAlpha.300"
                                                     >
                                                         <Th border='1px'>
-                                                            <Box fontSize='10px' textAlign='center'>
+                                                            <Box 
+                                                                fontSize='10px' 
+                                                                textAlign='center'
+                                                                p="5px"
+                                                            >
                                                                 <Text>Net Attendu</Text>
                                                                 <Text>Net Excepted</Text>
                                                             </Box>
@@ -573,6 +577,7 @@ function nombreEnLettres(montant) {
                                                             <Box 
                                                                 fontSize='10px' 
                                                                 textAlign='center'
+                                                                p="5px"
                                                             >
                                                                 <Text>Net Versé</Text>
                                                                 <Text>Net Paid</Text>
@@ -585,7 +590,11 @@ function nombreEnLettres(montant) {
                                                             </Box>
                                                         </Th> */}
                                                         <Th border='1px'>
-                                                            <Box fontSize='10px' textAlign='center'>
+                                                            <Box 
+                                                                fontSize='10px' 
+                                                                textAlign='center'
+                                                                p="5px"
+                                                            >
                                                                 <Text>Reste à Payer</Text>
                                                                 <Text>Left to Paid</Text>
                                                             </Box>
@@ -646,7 +655,7 @@ function nombreEnLettres(montant) {
                                             >
                                                 DETAILS / DETAILS
                                             </Text>
-                                            <Box w='600px' mb='2'>
+                                            <Box w='550px' mb='2'>
                                             <TableContainer>
                                                 <Table 
                                                     variant='simple' 
@@ -677,26 +686,39 @@ function nombreEnLettres(montant) {
                                                                 <Box 
                                                                     fontSize='10px' 
                                                                     textAlign='center'
+                                                                    p="5px"
                                                                 >
                                                                     <Text>Percu</Text>
                                                                     <Text>Received</Text>
                                                                 </Box>
                                                             </Th>
                                                             <Th border='1px' >
-                                                                <Box fontSize='10px' textAlign='center'>
+                                                                <Box 
+                                                                    fontSize='10px' 
+                                                                    textAlign='center'
+                                                                    p="5px"
+                                                                >
                                                                     <Text>Reste</Text>
                                                                     <Text>Remainder</Text>
                                                                 </Box>
                                                             </Th>
                                                             <Th border='1px'>
-                                                                    <Box fontSize='10px' textAlign='center'>
+                                                                    <Box 
+                                                                        fontSize='10px'
+                                                                        textAlign='center'
+                                                                        p="5px"
+                                                                     >
                                                                         <Text>Délai</Text>
                                                                         <Text>Deadline</Text>
                                                                 </Box>
                                                             </Th>
 
                                                             <Th border='1px'>
-                                                                    <Box fontSize='10px' textAlign='center'>
+                                                                    <Box 
+                                                                        fontSize='10px' 
+                                                                        textAlign='center'
+                                                                        p="5px"
+                                                                    >
                                                                         <Text>Date </Text>
                                                                         <Text>Date</Text>
                                                                 </Box>
@@ -738,6 +760,7 @@ function nombreEnLettres(montant) {
                                                                     fontSize='10px'
                                                                     display={"flex"}
                                                                     flexDirection={"column"}
+                                                                    p="5px"
                                                                 >
                                                                     <Text>Inscription</Text>
                                                                     <Text>Reg. Fees</Text>
@@ -792,6 +815,7 @@ function nombreEnLettres(montant) {
                                                                         fontWeight='bold'
                                                                         display={"flex"}
                                                                         flexDirection={"column"}
+                                                                        p="5px"
                                                                     >
                                                                         <Text>Tranche 1</Text>
                                                                         <Text>First Part</Text>
@@ -842,6 +866,7 @@ function nombreEnLettres(montant) {
                                                                         fontWeight='bold'
                                                                         display={"flex"}
                                                                         flexDirection={"column"}
+                                                                        p="5px"
                                                                     >
                                                                         <Text textAlign={"center"}>Tranche 2</Text>
                                                                         <Text textAlign={"center"}>Second part</Text>

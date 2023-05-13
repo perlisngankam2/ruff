@@ -21,7 +21,7 @@
 
   const AdminLayout = ({ children }) => {
     return (
-     <Box h="100%"> 
+      <Box h="100%"> 
         <Accordion allowToggle>
           <AccordionItem>
             <AccordionButton pl={0} >

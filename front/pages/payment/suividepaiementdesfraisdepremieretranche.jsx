@@ -79,15 +79,15 @@ const SuiviPaiementPremiereTranche = () => {
                                         <Tr ml={'100px'}>
                                             <Th rowSpan={2} border={'1px'}>SECTIONS</Th>
                                             <Th rowSpan={2} border={'1px'}>CLASSES</Th>
-                                            <Th rowSpan={2} border={'1px'}>EFFECTIFS ENREGISTRES (1)</Th>
-                                            <Th rowSpan={2} border={'1px'}>MONTANT ATTENDU (2)</Th>
+                                            <Th rowSpan={2} border={'1px'}>EFFECTIFS ENREGISTRES</Th>
+                                            <Th rowSpan={2} border={'1px'}>MONTANT ATTENDU</Th>
                                             <Th colSpan={4} textAlign={'center'} border={'1px'} >ENCAISSEMENT</Th>
                                             <Th colSpan={4} textAlign={'center'}  border={'1px'}>RESTE A RECOUVRIR</Th>
                                         </Tr>
                                         <Tr ml={'100px'}>
                                             <Th border={'1px'}>NOMBRE</Th>
                                             <Th border={'1px'}>TAUX</Th>
-                                            <Th border={'1px'}>MONTANT ENCAISSE</Th>
+                                            <Th border={'1px'}>MONTANT EN CAISSE</Th>
                                             <Th border={'1px'}>TAUX</Th>
                                             <Th textAlign={'center'} border={'1px'} >NOMBRE</Th>
                                             <Th textAlign={'center'} border={'1px'} >TAUX</Th>

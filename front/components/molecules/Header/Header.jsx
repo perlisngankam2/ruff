@@ -94,7 +94,6 @@ const Header = () => {
                     </Link>
                   </AccordionPanel>
                 </AccordionItem>
-
                 <AccordionItem pl={5}>
                   <AccordionButton pl={0} my={2}>
                     <Flex align="center" gap="1">
@@ -154,7 +153,6 @@ const Header = () => {
               </Accordion>
             </DrawerContent>
           </Drawer>
-
           <Image 
             src="/logo_blanc.png" 
             w="150px" 

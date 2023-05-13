@@ -87,12 +87,12 @@ const SuiviPaiementParEleveReNormal = () => {
                                         <Tr ml={'100px'}>
                                             <Th border={'1px'}>SECTIONS</Th>
                                             <Th border={'1px'}>CLASSES</Th>
-                                            <Th border={'1px'}>EFFECTIFS ENREGISTRES (1)</Th>
-                                            <Th border={'1px'}>MONTANT ATTENDU (2)</Th>
-                                            <Th  border={'1px'}>MONTANT EN CAISSE (3)</Th>
-                                            <Th border={'1px'}>TAUX D'ENCAISSEMENT=(4)=3/2*(100)</Th>
-                                            <Th border={'1px'}>RESTE A RECOUVRER(5)=2-3</Th>
-                                            <Th border={'1px'}>TAUX RAR(6) =5/2*100</Th>
+                                            <Th border={'1px'}>EFFECTIFS ENREGISTRES</Th>
+                                            <Th border={'1px'}>MONTANT ATTENDU</Th>
+                                            <Th  border={'1px'}>MONTANT EN CAISSE</Th>
+                                            <Th border={'1px'}>TAUX D'ENCAISSEMENT</Th>
+                                            <Th border={'1px'}>RESTE A RECOUVRER</Th>
+                                            <Th border={'1px'}>TAUX RAR</Th>
 
                                         </Tr>
                                     </Thead>

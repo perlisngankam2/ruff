@@ -251,8 +251,8 @@ const Eleves = () => {
                     .filter((student) =>{
                       if(searchNameStudent == ""){
                         return student;
-                      }else if (student.firstname.toLowerCase().includes (searchNameStudent.toLowerCase()) || 
-                      student.lastname.toLowerCase().includes (searchNameStudent.toLowerCase()) ||
+                      }else if (student.firstname.toLowerCase().includes(searchNameStudent.toLowerCase()) || 
+                      student.lastname.toLowerCase().includes(searchNameStudent.toLowerCase()) ||
                        student.fatherFirstName.toLowerCase().includes (searchNameStudent.toLowerCase()))
                       return student;
                     })

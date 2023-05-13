@@ -170,6 +170,13 @@ async findexpensebystudent(studentid:string){
  return await this.ExpenseRepository.findOne({student:studentid})
 }
   
+async getallcredit(){
+ return (await this.findall()).map(a=>a.creditamount)
+}
+
+async getalldebit(){
+return (await this.findall()).map(a=>a.debitamount)  
+}
 }
 
        // const depense = await this.findexpensebystudent(studentid)

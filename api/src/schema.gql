@@ -418,6 +418,14 @@ type TrancheStat {
   Rest: Float!
 }
 
+type TOTALTABLETWO {
+  MONTANT_ATTENDU: Float!
+  MONTANT_EN_CAISSE: Float!
+  TAUX_ENCAISSEMENT: Float!
+  RESTE_RECOUVRER: Float!
+  TAUX_RAR: Float!
+}
+
 type SectionCycle {
   id: ID!
   description: String
@@ -547,7 +555,7 @@ type Query {
   primesETnomprimepersonnel(personnelid: String!): [[String!]!]!
   findIdPrimesByPrimesPersonnel(personnelid: String!, month: String!): [String!]!
   getallpersonnelprimebymont(personnelid: String!, month: String!): Float!
-  allMonthAffectedPrimeToPersonnel(personnelid: String!, primeid: String!): [String!]!
+  allMonthAffectedPrimeToPersonnel(personnelid: String!, primeid: String!): [Prime!]!
   findAllprime: [Prime!]!
   findAllcategorieprime: [CategoriePrime!]!
   categoriePrime(id: String!): CategoriePrime!
@@ -595,6 +603,9 @@ type Query {
   parent(id: String!): Parent!
   getStudentStatisticsAnglophone: [StudentStatistics!]!
   getStudentStatisticsFrancophone: [StudentStatistics!]!
+  getTotalStudentStatisticsFrancophone: [TOTALTABLETWO!]!
+  getTotalStudentStatisticsAnglophone: [TOTALTABLETWO!]!
+  getTotalMaxStudentStatistics: [TOTALTABLETWO!]!
   getTrancheStatisticsForSpecialStudents: [SpecialStudentStatistics!]!
   numberOfStudentsStartedPayingAdmissionFeeSalleAnglophone(sallename: String!): Float!
   numberOfStudentsStartedPayingPension: Float!

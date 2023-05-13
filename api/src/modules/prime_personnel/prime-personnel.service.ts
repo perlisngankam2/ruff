@@ -242,7 +242,7 @@ async findIdPrimeByPersonnel(personnelid:string){
 async findIdPrimesByPrimesPersonnel(personnelid:string, month:string) {
   const primesPersonnel = await this.primePersonnelRepository.find({personnel:personnelid});
   if(primesPersonnel.length>0){
-    return primesPersonnel.filter(a=>a.startMonth===month).map(a=>a.prime.id)
+    return primesPersonnel.filter(a=>a.startMonth===month).map(a=>a.prime.load())
   }
   throw Error("!!!!!!!!!Aucune prime n'as ete attribuer a ce personnel pour ce mois!!!!!!!!")
 }

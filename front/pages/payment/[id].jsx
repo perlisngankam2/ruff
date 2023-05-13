@@ -19,7 +19,7 @@ import { useQuery, useMutation } from "@apollo/client";
 import { GET_ALL_PERSONNEL_BY_ID, GET_PRIME_PERSONNEL, GET_ALL_PAYSALAIRE_BY_ID, GET_RETENUE_PERSONNEL, GET_Category_Personnel_BY_ID, GET_Category_Personnel_ID, GET_ALL_SALAIRE_BY_ID, GET_ALL_MONTH_SALARY, GET_SALARY_NET} from "../../graphql/Queries";
 import React,  { useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import { CREATE_SALAIRE, PAY_SALAIRE } from "../../graphql/Mutation";
+import { CREATE_SALAIRE, PAY_SALAIRE,DELETE_PAYSALAIRE } from "../../graphql/Mutation";
 import { useToast } from "@chakra-ui/react";
 import Routes from "../../modules/routes";
 import Link from "next/link";
@@ -32,7 +32,7 @@ const PaySlip = () => {
 
     const [genererSalaire] = useMutation(PAY_SALAIRE);
   const [createSalaire] = useMutation(CREATE_SALAIRE);
-
+  const [deletepaysalaire] = useMutation(DELETE_PAYSALAIRE);
 
 
   //information du personnel par son ID
@@ -101,7 +101,7 @@ console.log(dernierElementGenererSalaire)
   const montantSalaire = dernierElementGenererSalaire?.montant;
 
   const [moisPaie, setMoisPaie] = useState("");
-  const [jourPaie , setJourPaie] = useState("");
+  const [jourPaie , setJourPaie] = useState(new Date().toISOString().slice(0, 10));
 const [isMonthUnavailable, setIsMonthUnavailable] = useState(false);
 
 
@@ -148,6 +148,10 @@ const unavailableMonths = useMemo(
   const HandleClickGenererSalaire = async (event) => {
     event.preventDefault();
 
+    // router.push({
+    //               pathname: Routes.Bulletin?.path || '',
+    //               query: {id: router.query.id}
+    //             })
 
     const genererSalaireData = await genererSalaire({
           variables:{
@@ -316,9 +320,19 @@ const monthOptions = useMemo(() => {
 
 // if (loading) return <Text>Chargement en cour...</Text>
 
+ const removePaySalaire = async(id) => {
+      await deletepaysalaire({
+        variables: {id},
+        refetchQueries: [{
+          query: GET_ALL_PAYSALAIRE_BY_ID
+        }]
+      })
+      onClose();
+    }
+
     return ( 
-<>
-{!loading &&
+
+<>{!loading &&
 
             <DefaultLayout>
       <Box 
@@ -418,6 +432,7 @@ const monthOptions = useMemo(() => {
         name="moisPaie"
         value={moisPaie}
         onChange={handleMonthChange}
+        isRequired
       >
         <option value="">Sélectionnez un mois</option>
         {monthOptions}
@@ -651,7 +666,7 @@ const monthOptions = useMemo(() => {
                     // mt={'8px'}
                     onChange={(event) => setJourPaie(event.target.value)}
                     value={jourPaie}
-                    defaultValue={new Date().toISOString().slice(0, 10)}
+                    isRequired
                   />
                   
                    {console.log(jourPaie)}
@@ -663,7 +678,7 @@ const monthOptions = useMemo(() => {
             </Box>
             </AlertDialogBody>
             <AlertDialogFooter>
-              <Button ref={cancelRef} onClick={onClose} colorScheme='red' >
+              <Button onClick={() => removePaySalaire(dernierElementGenererSalaire.id)} colorScheme='red' >
                 annuler
               </Button>
                 <Button colorScheme='green'  ml={3} type='submit' onClick={HandleClickPayerSalaire}>
@@ -677,11 +692,8 @@ const monthOptions = useMemo(() => {
       </Box>
 
     </DefaultLayout>
-}
-</>
-
-)
-};
+}</>
+)};
      
 
  

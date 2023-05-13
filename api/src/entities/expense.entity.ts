@@ -22,6 +22,7 @@ export class Expense {
     @Property({ nullable: true })
     creditamount: number;
 
+
     @Property({ onCreate: () => new Date() })
     createdAt = new Date();
   
@@ -86,11 +87,13 @@ export class Expense {
     }
 
     @Field(() => ID, { nullable: true })
+    @Field(() => ID, { nullable: true })
     @Property({ persist: false })
     get studentid() : string | null{
       return this.student ? `${this.student.id}` : null;
     }
 
+    @Field(() => ID, { nullable: true })
     @Field(() => ID, { nullable: true })
     @Property({ persist: false })
     get studentFirstname(): string | null {
@@ -100,6 +103,7 @@ export class Expense {
     @Field(() => ID, { nullable: true }) 
     @Property({ persist: false })
     get studentLastname(): string | null  {
+      return this.student ? `${this.student.getEntity().lastname}` : null;
       return this.student ? `${this.student.getEntity().lastname}` : null;
     }
   

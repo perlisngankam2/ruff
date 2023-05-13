@@ -54,9 +54,7 @@ import {BiTrendingDown, BiTrendingUp} from "react-icons/bi"
 import {MdDelete, MdOutlineHorizontalRule} from 'react-icons/md';
 import {HiOutlineMinus} from "react-icons/hi"
 import {useRouter } from "next/router";
-import { useTranslation } from "next-i18next";
 import { GlobalContext } from "../../contexts/cyclesection/AppContext";
-import { getStaticPropsTranslations } from "../../types/staticProps";
 
 import {  
   GET_ALL_STUDENT, 
@@ -69,6 +67,8 @@ import { useMutation, useQuery } from "@apollo/client";
 import ReactPaginate from "react-paginate";
 
 import { CSVLink, CSVDownload } from "react-csv";
+import { useTranslation } from "next-i18next";
+import { getStaticPropsTranslations } from "../../types/staticProps";
 
 const AccountStatement = () => {
 

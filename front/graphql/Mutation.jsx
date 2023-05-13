@@ -665,17 +665,57 @@ mutation createpaysalaire ($input: PaySalaryCreateInput!) {
 `;
 
 export const UPDATE_LEVEL = gql `
-    mutation updateNiveauEtude ($id: String!, $input: NiveauEtudeUpdateInput!) {
-        updateNiveauEtude (id: $id, input: $input) {
-            id
-            name
-            description
-            montantPension
-            cycleid
-            cycleName
-        }
+mutation updateNiveauEtude ($id: String!, $input: NiveauEtudeUpdateInput!) {
+    updateNiveauEtude (id: $id, input: $input) {
+        id
+        name
+        description
+        montantPension
     }
-`
+}
+`;
+
+export const DELETE_PAYSALAIRE = gql `
+mutation deletePaysalire ($id: String!) {
+    deletePaysalire (id: $id) {
+        id
+        moisPaie
+        montant
+        personnelid
+    }
+}
+`;
+
+export const UPDATE_LOGIN = gql `
+mutation loginUpdate ($loginInput: LoginUpdate!) {
+    loginUpdate (loginInput: $loginInput) {
+        id
+        email
+        password
+        firstName
+        lastName
+        name
+        role
+        phoneNumber
+        active
+        lastConnection
+        deactivatedAt
+        personnelid
+        studentid
+    }
+}
+`;
+//     mutation updateNiveauEtude ($id: String!, $input: NiveauEtudeUpdateInput!) {
+//         updateNiveauEtude (id: $id, input: $input) {
+//             id
+//             name
+//             description
+//             montantPension
+//             cycleid
+//             cycleName
+//         }
+//     }
+// `
 
 
 

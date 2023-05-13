@@ -357,7 +357,6 @@ type Personnel {
   dateOfStartWork: String!
   dateOfBirth: String!
   childNumber: Float
-  categorieid: ID!
 }
 
 type User {

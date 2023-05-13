@@ -1,3 +1,4 @@
+import React from 'react'
 import { Center, Heading, Divider, Input, NumberInput,
   Box,
   Button,
@@ -32,14 +33,13 @@ import { Center, Heading, Divider, Input, NumberInput,
   AlertDialogBody,
   AlertDialogFooter,
   InputRightElement,
-  AlertDialogCloseButton, } from '@chakra-ui/react'
-import React from 'react'
-import DefaultLayout from '../../components/layouts/DefaultLayout';
+  AlertDialogCloseButton, } from '@chakra-ui/react';
+  import DefaultLayout from '../../components/layouts/DefaultLayout';
 import { useRouter } from "next/router";
 import { useEffect ,useState } from "react";
 import { useMutation, useQuery } from "@apollo/client";
-import { CREATE_RETENUE } from "../../graphql/Mutation";
-import { GET_ALL_RETENUE } from "../../graphql/Queries";
+import { CREATE_PRIME } from "../../graphql/Mutation";
+import { GET_PRIME, GET_ALL_Category_Personnel } from "../../graphql/Queries";
 import { CheckIcon } from '@chakra-ui/icons'
 import { useToast } from "@chakra-ui/react";
 import { IoIosAdd } from "react-icons/io";
@@ -50,36 +50,36 @@ import {useTranslation} from "next-i18next";
 import { getStaticPropsTranslations } from "../../types/staticProps";
 
 
-function creerRetenue() {
+function creerPrime() {
 
-   const { isOpen, onToggle, onClose, onOpen } = useDisclosure();
+  const { isOpen, onToggle, onClose, onOpen } = useDisclosure();
   const [Nom , setNom] = useState("");
   const [Description , setDescription] = useState("");
   const [Montant, setMontant] = useState("");
   const [categoryPersonnelId, setCategoryPersonnelId] = useState("");
-  const [createRetenue, error] = useMutation(CREATE_RETENUE);
+  const [createPrime, error] = useMutation(CREATE_PRIME);
   
-  // const {data:dataCategoryPersonnel} = useQuery(GET_ALL_Category_Personnel);
+  const {data:dataCategoryPersonnel} = useQuery(GET_ALL_Category_Personnel);
   const toast = useToast()
   const router = useRouter()
-   const {data:dataRetenue, refetch} = useQuery(GET_ALL_RETENUE)
+   const {data:dataPrime, refetch} = useQuery(GET_PRIME);
+    //  const {data:dataRetenue, refetch} = useQuery(GET_ALL_RETENUE)
     const itemsPerPage = 15;
     const [pageNumber, setPageNumber] = useState(0);
     const pagesVisited = pageNumber * itemsPerPage;
-      const pageCountRetenue = Math.ceil(dataRetenue?.findAllretenusalarial.length / itemsPerPage);
+    //   const pageCountRetenue = Math.ceil(dataRetenue?.findAllretenusalarial.length / itemsPerPage);
     const cancelRef = React.useRef();
     const {t} = useTranslation();
     const changePage = ({ page }) => {
       setPageNumber(page);
     };
 
-
     const HandleClick = async (event) => {
   event.preventDefault();
 
-  const primeData = await createRetenue({
+  const primeData = await createPrime({
         variables:{
-        retenue: { 
+        prime: { 
           nom: Nom,
           description: Description, 
           montant: parseInt(Montant),
@@ -87,12 +87,13 @@ function creerRetenue() {
         }
       }
     })
-    refetch();
+     refetch();
     // console.log(userData)
     onClose();
+  
     toast({
       title: "Succès.",
-      description: "La retenue a été crée .",
+      description: "La prime a été crée .",
       status: "success",
       duration: 3000,
       isClosable: true,
@@ -101,17 +102,9 @@ function creerRetenue() {
     setDescription("");
     setMontant("");
   }
-//     const today = new Date();
-//     const day = today.getDate().toString().padStart(2, '0');
-//     const month = (today.getMonth() + 1).toString().padStart(2, '0');
-//     const year = today.getFullYear();
-//     const formattedDate = `${day}/${month}/${year}`;
-// console.log(formattedDate)
 
   return (
-
-     
-            <Center>
+        <Center>
         <Box> 
             <Box> 
                 <Button
@@ -119,7 +112,7 @@ function creerRetenue() {
                     rightIcon={<Icon as={IoIosAdd} boxSize="20px" />}
                     onClick={onOpen}
                 >
-                        Ajouter une retenue                              
+                        Ajouter une prime                              
                 </Button> 
           </Box>
             <Box as={"form"} > 
@@ -135,7 +128,7 @@ function creerRetenue() {
              onSubmit={HandleClick}>
 
           <Heading p="1em" textAlign="center" bgGradient='linear(to-r, teal.500, green.500)' bgClip='text' fontSize={'30px'}>
-            Ajouter une retenue
+            Ajouter une prime
           </Heading>
         <Box mx='30px' pb={'15px'}>
           <Divider />
@@ -148,7 +141,7 @@ function creerRetenue() {
                     value={Nom}
                     onChange={(e) => setNom(e.target.value)}
                     name="Nom"
-                    placeholder="nom retenue"
+                    placeholder="nom prime"
                     bg='white'
                     // type="date"
                     // id="dateOfPrime"
@@ -170,7 +163,7 @@ function creerRetenue() {
                    value={Description}
                     onChange={(e) => setDescription(e.target.value)}
                     name="Description"
-                    placeholder="description retenue"
+                    placeholder="description prime"
                     bg='white'
                     // borderColor="purple.100"
                     // onChange={e => setLastName(e.target.value)}
@@ -209,7 +202,6 @@ function creerRetenue() {
                     type="text"
                    value={Montant} 
                    onChange={(e) => setMontant(e.target.value)}
-                    name="Description"
                     placeholder="--montant--"
                     bg='white'
                     // borderColor="purple.100"
@@ -240,12 +232,7 @@ function creerRetenue() {
         </Box>
 
     </Center>
-        
-
-
-   
-  );
- 
+  )
 }
  export async function getStaticProps({ locale }) {
   return {
@@ -255,4 +242,5 @@ function creerRetenue() {
     },
   };
 }
-export default creerRetenue;
+
+export default creerPrime

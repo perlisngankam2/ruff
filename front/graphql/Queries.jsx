@@ -649,20 +649,23 @@ query user ($id: String!) {
 
 
 export const GET_ALL_USER = gql `
-    query findAlluser {
-        findAlluser {
-            id
-            email
-            password
-            firstName
-            lastName
-            name
-            role
-            phoneNumber
-            active
-            deactivatedAt
-        }
+   query findAlluser {
+    findAlluser {
+        id
+        email
+        password
+        firstName
+        lastName
+        name
+        role
+        phoneNumber
+        active
+        lastConnection
+        deactivatedAt
+        personnelid
+        studentid
     }
+}
 `;
 
 //Tranche student by studentIf
@@ -683,21 +686,21 @@ export const GET_ALL_USER = gql `
 
 //personnel by userid
 export const GET_PERSONNEL_BY_USERID= gql `
-    query getpersonnelbyaccount ($userid: String!) {
-        getpersonnelbyaccount (userid: $userid) {
-            id
-            firstName
-            lastName
-            phoneNumber
-            situationMatrimonial
-            sexe
-            fonction
-            status
-            dateOfStartWork
-            dateOfBirth
-            childNumber
-        }
+query getpersonnelbyaccount ($userid: String!) {
+    getpersonnelbyaccount (userid: $userid) {
+        id
+        firstName
+        lastName
+        phoneNumber
+        situationMatrimonial
+        sexe
+        fonction
+        status
+        dateOfStartWork
+        dateOfBirth
+        childNumber
     }
+}
 `;
 
 export const GET_CLASS_FEES_BY_STUDENT_ID = gql `
@@ -978,8 +981,8 @@ query findmontantprimebypersonnel ($personnelid: String!) {
 `;
 //MONTANT TOTAL DE TOUTES LES PRIMES ATTRIBUES A UN PERSONNEL
 export const GET_SUM_AMOUNT_PRIME_PERSONNEL = gql `
-query findsumallprimepersonnel ($personnelid: String!) {
-    findsumallprimepersonnel (personnelid: $personnelid)
+query getallpersonnelprimebymont ($personnelid: String!, $month: String!) {
+    getallpersonnelprimebymont (personnelid: $personnelid, month: $month)
 }
 `;
 
@@ -997,8 +1000,8 @@ query findmontantretenubypersonnel ($personnelid: String!) {
 `;
 //MONTANT TOTAL DE TOUTES LES RETENUES ATTRIBUES A UN PERSONNEL
 export const GET_SUM_AMOUNT_RETENU_PERSONNEL = gql `
-query findsumallretenupersonnel ($personnelid: String!) {
-    findsumallretenupersonnel (personnelid: $personnelid)
+query getallretenupersonnelbymonth ($personnelid: String!, $month: String!) {
+    getallretenupersonnelbymonth (personnelid: $personnelid, month: $month)
 }
 `;
 //noms et montant des primes d'un personnel
@@ -1042,5 +1045,11 @@ query getonesalaire ($id: String!) {
         personnelLastName
         personnelFonction
     }
+}
+`;
+
+export const FIND_ID_PRIME = gql `
+query findIdPrimesByPrimesPersonnel ($personnelid: String!, $month: String!) {
+    findIdPrimesByPrimesPersonnel (personnelid: $personnelid, month: $month)
 }
 `;

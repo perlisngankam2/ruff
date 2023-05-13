@@ -48,6 +48,7 @@ function Profile(){
             cursor="pointer"
             onClick={openChooseImage}
             src={userProfile ? userProfile: 'img/tim-cook.jpg'}
+            // src="https://img.freepik.com/vecteurs-premium/profil-avatar-homme-icone-ronde_24640-14044.jpg?w=2000"
             >
 
                 <AvatarBadge bg="brand.blue" boxSize="1em">

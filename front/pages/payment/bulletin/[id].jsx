@@ -88,10 +88,7 @@ const Bulletin = () => {
         variables:{ personnelid: router.query.id}
     })
 
-    const {data:dataRetenueTotal} = useQuery(GET_SUM_AMOUNT_RETENU_PERSONNEL,
-    {
-        variables:{ personnelid: router.query.id}
-    })
+
 
     //
 
@@ -105,10 +102,6 @@ const Bulletin = () => {
         variables:{ personnelid: router.query.id}
     })
 
-    const {data:dataPrimeTotal} = useQuery(GET_SUM_AMOUNT_PRIME_PERSONNEL,
-    {
-        variables:{ personnelid: router.query.id}
-    })
 
        const dernierIndice = dataSalaireNet?.PersonnelNetSalary.length - 1
        const dernierElement = dataSalaireNet?.PersonnelNetSalary[dernierIndice];
@@ -117,6 +110,20 @@ const Bulletin = () => {
        const dernierIndiceSalaire = dataSalaireId?.getsalairebypersonnel.length - 1
        const dernierElementSalaire = dataSalaireId?.getsalairebypersonnel[dernierIndice];
 
+    const {data:dataPrimeTotal} = useQuery(GET_SUM_AMOUNT_PRIME_PERSONNEL,
+    {
+        variables:{ personnelid: router.query.id,
+                    month: dernierElementSalaire?.moisPaie
+        }
+    })
+
+        const {data:dataRetenueTotal} = useQuery(GET_SUM_AMOUNT_RETENU_PERSONNEL,
+    {
+        variables:{ personnelid: router.query.id,
+                    month: dernierElementSalaire?.moisPaie
+        }
+    })
+
 
 console.log(dataSalaireNet?.PersonnelNetSalary)
 console.log(dataSalaireId?.getsalairebypersonnel)
@@ -124,12 +131,12 @@ console.log(dataSalaireId?.getsalairebypersonnel)
 console.log("dataRetenue")
 console.log(dataRetenueNoms?.findnamesretenubypersonnel)
 console.log(dataRetenueMontant?.findmontantretenubypersonnel)
-console.log(dataRetenueTotal?.findsumallretenupersonnel
+console.log(dataRetenueTotal
 )
 console.log("dataPrime")
 console.log(dataPrimeNoms?.findnamesprimebypersonnel)
 console.log(dataPrimeMontant?.findmontantprimebypersonnel)
-console.log(dataPrimeTotal?.findsumallprimepersonnel
+console.log(dataPrimeTotal
 )
 
 
@@ -382,7 +389,7 @@ const options = {
                     <Box w='300px' borderLeft={'1px'}   py='6px' ><Heading fontSize={'md'} fontWeight={'bold'} color='black' ml='6px'>TOTAL PRIMES</Heading></Box>
                     <Box  w='180px'  borderLeft={'1px'} py='6px' ></Box>
                     <Box w='100px'  borderLeft={'1px'} py='6px'  ></Box>
-                    <Box w='160px'  borderLeft={'1px'} py='6px' ><Text textAlign={"right"} mr='6px' fontWeight={'bold'}>{dataPrimeTotal?.findsumallprimepersonnel}</Text></Box>
+                    <Box w='160px'  borderLeft={'1px'} py='6px' ><Text textAlign={"right"} mr='6px' fontWeight={'bold'}>{dataPrimeTotal?.getallpersonnelprimebymont}</Text></Box>
                     <Box  w='160px' borderLeft={'1px'} borderRight={'1px'} py='6px'  ></Box>
 
                   </Flex>
@@ -392,7 +399,7 @@ const options = {
                     <Box  w='180px'  borderLeft={'1px'} borderBottom={'1px'} py='6px' ></Box>
                     <Box w='100px'  borderLeft={'1px'} borderBottom={'1px'} py='6px'  ></Box>
                     <Box w='160px'  borderLeft={'1px'} borderBottom={'1px'} py='6px' ></Box>
-                    <Box  w='160px' borderLeft={'1px'}borderBottom={'1px'} borderRight={'1px'} py='6px'  ><Text textAlign={"right"} mr='6px' fontWeight={'bold'}>{dataRetenueTotal?.findsumallretenupersonnel}</Text></Box>
+                    <Box  w='160px' borderLeft={'1px'}borderBottom={'1px'} borderRight={'1px'} py='6px'  ><Text textAlign={"right"} mr='6px' fontWeight={'bold'}>{dataRetenueTotal?.getallretenupersonnelbymonth}</Text></Box>
 
                   </Flex>
 

@@ -3,7 +3,7 @@ import {Args, Query, Resolver } from "@nestjs/graphql";
 import { StatisticsService } from "./statistics.service";
 import { SectionStatistics } from "src/modules/statistics/sectionstatistics";
 import { StudentStatistics } from "./studentstatistics";
-import { ClassStatistics, TOTAL, TOTALTABLEONE } from "./classStatistics";
+import { ClassStatistics, TOTAL, TOTALTABLEONE, TOTALTABLETWO } from "./classStatistics";
 import { SpecialStudentStatistics } from "./specialRegimeStudent";
 
 
@@ -21,6 +21,96 @@ export class StatisticResolver {
   @Query(() => [StudentStatistics])
   async getStudentStatisticsFrancophone(): Promise<StudentStatistics[]> {
     return this.statisticsService.getStudentStatisticsFrancophone();
+  }
+
+  @Query(()=>[TOTALTABLETWO])
+  async getTotalStudentStatisticsFrancophone(){
+     
+    const MONTANT_ATTENDU=(await this.getStudentStatisticsFrancophone())
+    .map(a=>a.amountExpected).length>0?(await this.getStudentStatisticsFrancophone())
+    .map(a=>a.amountExpected).reduce(function(a,b){return a+b}):0
+    const MONTANT_EN_CAISSE=(await this.getStudentStatisticsFrancophone())
+    .map(a=>a.amountPaid).length>0?(await this.getStudentStatisticsFrancophone())
+    .map(a=>a.amountPaid).reduce(function(a,b){return a+b}):0
+    const TAUX_ENCAISSEMENT=(await this.getStudentStatisticsFrancophone())
+    .map(a=>a.collectionRate).length>0?(await this.getStudentStatisticsFrancophone())
+    .map(a=>a.collectionRate).reduce(function(a,b){return a+b}):0
+    const RESTE_RECOUVRER=(await this.getStudentStatisticsFrancophone())
+    .map(a=>a.restToPay).length>0?(await this.getStudentStatisticsFrancophone())
+    .map(a=>a.restToPay).reduce(function(a,b){return a+b}):0
+    const TAUX_RAR=(await this.getStudentStatisticsFrancophone())
+    .map(a=>a.rateArrears).length>0?(await this.getStudentStatisticsFrancophone())
+    .map(a=>a.rateArrears).reduce(function(a,b){return a+b}):0
+
+    const T: TOTALTABLETWO[] = [];
+    T.push({
+      MONTANT_ATTENDU,
+      MONTANT_EN_CAISSE,
+      TAUX_ENCAISSEMENT,
+      RESTE_RECOUVRER,
+      TAUX_RAR 
+    })
+    return T
+  }
+
+  @Query(()=>[TOTALTABLETWO])
+  async getTotalStudentStatisticsAnglophone(){
+     
+    const MONTANT_ATTENDU=(await this.getStudentStatisticsAnglophone())
+    .map(a=>a.amountExpected).length>0?(await this.getStudentStatisticsAnglophone())
+    .map(a=>a.amountExpected).reduce(function(a,b){return a+b}):0
+    const MONTANT_EN_CAISSE=(await this.getStudentStatisticsAnglophone())
+    .map(a=>a.amountPaid).length>0?(await this.getStudentStatisticsAnglophone())
+    .map(a=>a.amountPaid).reduce(function(a,b){return a+b}):0
+    const TAUX_ENCAISSEMENT=(await this.getStudentStatisticsAnglophone())
+    .map(a=>a.collectionRate).length>0?(await this.getStudentStatisticsAnglophone())
+    .map(a=>a.collectionRate).reduce(function(a,b){return a+b}):0
+    const RESTE_RECOUVRER=(await this.getStudentStatisticsAnglophone())
+    .map(a=>a.restToPay).length>0?(await this.getStudentStatisticsAnglophone())
+    .map(a=>a.restToPay).reduce(function(a,b){return a+b}):0
+    const TAUX_RAR=(await this.getStudentStatisticsAnglophone())
+    .map(a=>a.rateArrears).length>0?(await this.getStudentStatisticsAnglophone())
+    .map(a=>a.rateArrears).reduce(function(a,b){return a+b}):0
+
+    const T: TOTALTABLETWO[] = [];
+    T.push({
+      MONTANT_ATTENDU,
+      MONTANT_EN_CAISSE,
+      TAUX_ENCAISSEMENT,
+      RESTE_RECOUVRER,
+      TAUX_RAR 
+    })
+    return T
+  }
+  
+
+  @Query(()=>[TOTALTABLETWO])
+  async getTotalMaxStudentStatistics(){
+     
+    const MONTANT_ATTENDU=(await this.getTotalStudentStatisticsAnglophone())
+    .map(a=>a.MONTANT_ATTENDU)[0] + (await this.getTotalStudentStatisticsFrancophone())
+    .map(a=>a.MONTANT_ATTENDU)[0]
+    const MONTANT_EN_CAISSE=(await this.getTotalStudentStatisticsAnglophone())
+    .map(a=>a.MONTANT_EN_CAISSE)[0] + (await this.getTotalStudentStatisticsFrancophone())
+    .map(a=>a.MONTANT_EN_CAISSE)[0]
+    const TAUX_ENCAISSEMENT=(await this.getTotalStudentStatisticsAnglophone())
+    .map(a=>a.TAUX_ENCAISSEMENT)[0] + (await this.getTotalStudentStatisticsFrancophone())
+    .map(a=>a.TAUX_ENCAISSEMENT)[0]
+    const RESTE_RECOUVRER=(await this.getTotalStudentStatisticsAnglophone())
+    .map(a=>a.RESTE_RECOUVRER)[0] + (await this.getTotalStudentStatisticsFrancophone())
+    .map(a=>a.RESTE_RECOUVRER)[0]
+    const TAUX_RAR=(await this.getTotalStudentStatisticsAnglophone())
+    .map(a=>a.TAUX_RAR)[0] + (await this.getTotalStudentStatisticsFrancophone())
+    .map(a=>a.TAUX_RAR)[0]
+    const T: TOTALTABLETWO[] = [];
+    T.push({
+      MONTANT_ATTENDU,
+      MONTANT_EN_CAISSE,
+      TAUX_ENCAISSEMENT,
+      RESTE_RECOUVRER,
+      TAUX_RAR 
+    })
+    return T
   }
 
  

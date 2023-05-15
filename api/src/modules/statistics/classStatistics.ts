@@ -109,3 +109,21 @@ Priority:number
 @Field()
 Rest:number
 }
+
+@ObjectType()
+export class TOTALTABLETWO{
+@Field()
+MONTANT_ATTENDU:number
+
+@Field()
+MONTANT_EN_CAISSE: number
+
+@Field()
+TAUX_ENCAISSEMENT:number
+
+@Field()
+RESTE_RECOUVRER:number
+
+@Field()
+TAUX_RAR:number
+}

@@ -21,8 +21,10 @@ import {
   Show,
   useDisclosure,
   Image,
+  Button
 } from "@chakra-ui/react";
 import Link from "next/link";
+import React, {useEffect, useState, useMemo, useContext, use} from "react";
 import { HiOutlineHome, HiUserGroup } from "react-icons/hi";
 import { IoMdSchool, IoIosStats, IoIosArrowDown } from "react-icons/io";
 import { GiTakeMyMoney } from "react-icons/gi";
@@ -31,10 +33,11 @@ import { useAuth } from "../../../contexts/account/Auth/Auth";
 import { useAccount } from "../../../contexts/account/Account";
 import { GET_PERSONNEL_BY_USERID } from "../../../graphql/Queries";
 import { useMutation, useQuery } from '@apollo/client'; 
-
+import ContentProfilePopop from '../../layouts/Content-profil/ContentProfilePopop'
 
 const Header = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const { isOpen:isOpenPopop, onOpen:onOpenPopop, onClose:onClosePopop} = useDisclosure();
   const { removeAuthToken } = useAuth()
   const { account } = useAccount()
      const { data: personnelData, called, loading } = useQuery(GET_PERSONNEL_BY_USERID,
@@ -60,7 +63,6 @@ const Header = () => {
               <HamburgerIcon boxSize="6" />
             </Box>
           </Show>
-
           {/* DRAWER */}
           <Drawer isOpen={isOpen} onClose={onClose} placement={"left"}>
             <DrawerOverlay />
@@ -178,11 +180,13 @@ const Header = () => {
                 </Flex>
               </MenuButton>
               <MenuList color="black" background="white">
-                <Link href="/profil">
+                {/* <Link href="/profil">
                   <MenuItem>Profil</MenuItem>
-                </Link>
+                </Link> */}
+                  <MenuItem onClick={onOpenPopop} >Profil</MenuItem>
                 <Link href="#">
-                  <MenuItem>Paramètres</MenuItem>
+                  <ContentProfilePopop isOpen={isOpenPopop} onOpen={onOpenPopop} onClose={onClosePopop}/>
+                <MenuItem >Paramètres</MenuItem>
                 </Link>
                 <Link href="/" onClick={removeAuthToken}>
                   <MenuItem>Se Déconnecter</MenuItem>

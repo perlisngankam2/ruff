@@ -130,6 +130,7 @@ function creerRetenue() {
                     size='xl'
                 >
                     <AlertDialogOverlay>
+                    <AlertDialogCloseButton />
                         <AlertDialogContent width={"400px"} >
                             <Box as={"form"} 
              onSubmit={HandleClick}>

@@ -154,7 +154,7 @@ console.log(dataPrime)
               cursor="pointer"
             />
             <Input
-              placeholder="Recherchez une section..."
+              placeholder="Recherchez une retenue..."
               //value={recherche}
               variant="flushed"
               onChange={handleChangeRetenue}
@@ -184,7 +184,7 @@ console.log(dataPrime)
                 <Thead background="colors.secondary">
                 <Tr>
                     <Th>Nom</Th>
-                    <Th>Description</Th>
+                    <Th>Valeur</Th>
                     <Th>Actions</Th>
                 </Tr>
                 </Thead>
@@ -212,7 +212,7 @@ console.log(dataPrime)
             p="3"
             // bg="blue.100"
             rounded="full"
-            onClick={onOpen}
+            // onClick={onOpen}
             _hover={{background:"red.100"}}
           />
           <Icon

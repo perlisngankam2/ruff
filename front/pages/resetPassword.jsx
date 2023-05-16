@@ -86,11 +86,11 @@ console.log(dataUser?.user)
               >
                 REINITIALISER VOTRE MOT DE PASSE
               </Heading>
-             <Flex>Hello  {dataUser?.user.firstName === null?
+             {/* <Flex>Hello  {dataUser?.user.firstName === null?
                 <Text ml='3'>{personnelData?.getpersonnelbyaccount.firstName} </Text>
                 :
                 <Text ml='3'>{dataUser?.user.firstName} </Text>
-                }</Flex>
+                }</Flex> */}
               <Stack
                 gap={2}
                 align="start"
@@ -146,6 +146,12 @@ console.log(dataUser?.user)
                       onClick={HandleClick}
                     >
                         Reinitialiser
+                    </Button>
+                     <Button
+                      colorScheme="red"
+                      onClick={HandleClick}
+                    >
+                        Retour
                     </Button>
                   </Flex>
               </Stack>

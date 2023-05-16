@@ -68,7 +68,7 @@ import { useMutation, useQuery } from "@apollo/client";
 
 // const VARIABLE = "pearl";
 
-const Eleves = () => {
+const feesByStudent = () => {
 
     const cancelRef = React.useRef()
     const router = useRouter();
@@ -200,14 +200,6 @@ const Eleves = () => {
             </option>
           ))}
           </Select>
-          <Box> 
-            <Button
-                rightIcon={<Icon as={IoIosAdd} boxSize="20px" />}
-                onClick={() => router.push("/eleves/ajoutereleve")}
-              >
-                Ajouter un élève
-            </Button>
-          </Box> 
           {/* { dataStudent &&  
             dataStudent.findAllstudents
             .filter((student) =>{
@@ -251,8 +243,8 @@ const Eleves = () => {
                     .filter((student) =>{
                       if(searchNameStudent == ""){
                         return student;
-                      }else if (student.firstname.toLowerCase().includes(searchNameStudent.toLowerCase()) || 
-                      student.lastname.toLowerCase().includes(searchNameStudent.toLowerCase()) ||
+                      }else if (student.firstname.toLowerCase().includes (searchNameStudent.toLowerCase()) || 
+                      student.lastname.toLowerCase().includes (searchNameStudent.toLowerCase()) ||
                        student.fatherFirstName.toLowerCase().includes (searchNameStudent.toLowerCase()))
                       return student;
                     })
@@ -288,92 +280,29 @@ const Eleves = () => {
                               >
                                 <Link
                                  href= {{
-                                  pathname: Routes.EleveDetails?.path || '',
+                                  pathname: Routes.FeesByStudentRegime.path || '',
                                   query: {id: student.id}
                                   }}
                                 >
-                                 {t("pages.eleves.listeDesEleves.details")}
+                                 {/* {t("pages.eleves.listeDesEleves.details")} */}
+                                 fiche de paiement
                                 </Link>
                               </Button>
                             </ButtonGroup> 
-                          </Td>
-                            <Box 
-                              display={"flex"}
-                              ml={['-105px', '-105px', '-105px', '-105px']} 
-                              mt={['8px', '8px', '8px', '8px']}
-                            >
-                              <Link 
-                                href={{
-                                  pathname: Routes.EleveEdit?.path || '',
-                                  query:{id: student.id}
-                                }}
+                            <ButtonGroup>
+                           
+                                <Link
+                                 href= {{
+                                  pathname: Routes.ParentStudentClassInfos.path || '',
+                                  query: {id: student.id}
+                                  }}
                                 >
-                                  <Icon
-                                  as={FiEdit}
-                                  boxSize="40px"
-                                  p="3"
-                                  // bg="blue.100"
-                                  rounded="full"
-                                  _hover={{background:"red.100"}}
-                                />
-                              </Link>
-                              <Box href="#" mt="-3px">
-                                <Icon
-                                  as={MdDelete}
-                                  boxSize="42px"
-                                  p="3"
-                                  rounded="full"
-                                  color="colors.quaternary"
-                                  _hover={{background:"blue.100"}}
-                                  onClick={onToggle}
-                                />
-                                <Box> 
-                                  <AlertDialog
-                                    isOpen={isOpen}
-                                    leastDestructiveRef={cancelRef}
-                                    onClose={onClose}
-                                    isCentered
-                                  >
-                                    <AlertDialogOverlay
-                                      // alignSelf={"center"}
-                                    >
-                                      <AlertDialogContent
-                                        width={"380px"}
-                                      >
-                                        <AlertDialogHeader 
-                                          fontSize='lg' 
-                                          fontWeight='bold'
-                                          textAlign={"center"}
-                                          >
-                                            {t("pages.eleves.listeDesEleves.confirmDeletingPassword")}
-                                        </AlertDialogHeader>
-                                        <AlertDialogCloseButton/>
-                                        <AlertDialogBody textAlign={"center"}>
-                                          {t("pages.eleves.listeDesEleves.wouldYouWantToDeleteStudent")}
-                                        </AlertDialogBody>
-
-                                        <AlertDialogFooter>
-                                          <Button 
-                                            ref={cancelRef} 
-                                            onClick={onClose}
-                                            colorScheme="red"
-                                          >
-                                            {t("pages.eleves.listeDesEleves.cancel")}
-                                          </Button>
-                                          <Button 
-                                            colorScheme='green' 
-                                            onClick={() => removeStudent(student.id)}
-                                            ml={3}
-                                          >
-                                            {t("pages.eleves.listeDesEleves.delete")}
-                                          </Button>
-                                        </AlertDialogFooter>
-                                      </AlertDialogContent>
-                                    </AlertDialogOverlay>
-                                  </AlertDialog>
-                                </Box>
-                              </Box>
-                            </Box> 
+                                 {/* {t("pages.eleves.listeDesEleves.details")} */}
+                                 details 
+                                </Link>
+                            </ButtonGroup>
+                          </Td>
+                            
                         </Tr>
                       // </Link>
                   ))
@@ -426,7 +355,7 @@ export async function getStaticProps({ locale }) {
   };
 }
 
-export default Eleves;
+export default feesByStudent;
 
 // export  const  getStaticProps = async() => {
 //   const apolloClient = initializeApollo();

@@ -1,3 +1,4 @@
+
 import { Box, 
     Card, 
     CardHeader, 
@@ -32,16 +33,20 @@ import { Box,
 import {CiSearch} from 'react-icons/ci'
 import DefaultLayout from '../../components/layouts/DefaultLayout';
 import { useQuery, useMutation } from "@apollo/client"
-import { GET_STUDENT_STATISTICS_ANGLOPHONE_SECTION } from '../../graphql/Queries';
+import { GET_STUDENT_STATISTICS_ANGLOPHONE_SECTION,
+    GET_STUDENT_STATISTICS_FRANCOPHONE_SECTION
+} from '../../graphql/Queries';
 import { useEffect } from 'react';
-const SuiviPaimentFraisScolarite = () => {
+
+
+const SuiviePaiementSectionFrancophone = () => {
 
     // const {t} = useTranslation();
 
-    const {data:dataStudentStatisticsAnglophoneSection} = useQuery( GET_STUDENT_STATISTICS_ANGLOPHONE_SECTION)
+    const {data:dataStudentStatisticsFrancophoneSection} = useQuery(GET_STUDENT_STATISTICS_FRANCOPHONE_SECTION);
     
     useEffect(() => {
-        console.log(dataStudentStatisticsAnglophoneSection);
+        console.log(dataStudentStatisticsFrancophoneSection);
     })
     return (
         <DefaultLayout> 
@@ -65,7 +70,7 @@ const SuiviPaimentFraisScolarite = () => {
                         <Box display={'flex'} ml={'50px'} > 
                             <Box   mt={'30px'}>
                                 <Heading textAlign={'center'} fontSize={['sm', 'sm', 'sm']} >
-                                    TABLEAU DE SUIVI GENERAL  DU PAIEMENT DES FRAIS DE SCOLARITE: CLASSE: CM2/ SECTION ANGLOPHONE         
+                                    TABLEAU DE SUIVI GENERAL  DU PAIEMENT DES FRAIS DE SCOLARITE: CLASSE: CM2/ SECTION FRANCOPHONE         
                                 </Heading>
                             </Box>
                             <Box mt={'30px'} ml={'40px'}>
@@ -89,19 +94,19 @@ const SuiviPaimentFraisScolarite = () => {
                                             <Th>taux rar</Th>
                                         </Tr>
                                     </Thead>
-                                    {dataStudentStatisticsAnglophoneSection && 
+                                    {dataStudentStatisticsFrancophoneSection && 
                                     <Tbody>
-                                        {dataStudentStatisticsAnglophoneSection?.getStudentStatisticsAnglophone
-                                        .map((anglophoneStudent, index) => ( 
+                                        {dataStudentStatisticsFrancophoneSection?.getStudentStatisticsFrancophone
+                                        .map((francophoneStudent, index) => ( 
                                         <Tr borderBottom={"1px"} key={index}>
                                             <Td  borderBottom={"1px"}>1</Td>
-                                            <Td borderBottom={"1px"}>{anglophoneStudent.name}</Td>
-                                            <Td >{anglophoneStudent.matricle}</Td>
-                                            <Td>{anglophoneStudent.amountExpected}</Td>
-                                            <Td>{anglophoneStudent.amountPaid}</Td>
-                                            <Td>{anglophoneStudent.collectionRate}%</Td>
-                                            <Td>{anglophoneStudent.restToPay}</Td>
-                                            <Td>{anglophoneStudent.rateArrears}%</Td>
+                                            <Td borderBottom={"1px"}>{francophoneStudent.name}</Td>
+                                            <Td >{francophoneStudent.matricle}</Td>
+                                            <Td>{francophoneStudent.amountExpected}</Td>
+                                            <Td>{francophoneStudent.amountPaid}</Td>
+                                            <Td>{francophoneStudent.collectionRate}%</Td>
+                                            <Td>{francophoneStudent.restToPay}</Td>
+                                            <Td>{francophoneStudent.rateArrears}%</Td>
                                         </Tr> 
                                     ))}                                    
                                     </Tbody>
@@ -121,4 +126,4 @@ const SuiviPaimentFraisScolarite = () => {
     );
 }
 
-export default SuiviPaimentFraisScolarite;
+export default SuiviePaiementSectionFrancophone;

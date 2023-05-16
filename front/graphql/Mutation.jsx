@@ -86,6 +86,7 @@ export const CREATE_SALLE = gql `
             montantPensionSalle
             effectif
             niveauid
+            levelName
         }
     }
 `;
@@ -114,11 +115,13 @@ export const CREATE_CYCLE = gql `
 
 export const CREATE_STUDY_LEVEL = gql `
     mutation createNiveauEtude ($niveauEtude: NiveauEtudeCreateInput!) {
-        createNiveauEtude (niveauEtude: $niveauEtude){
+        createNiveauEtude (niveauEtude: $niveauEtude) {
             id
             name
             description
             montantPension
+            cycleid
+            cycleName
         }
     }
 `;
@@ -281,6 +284,22 @@ mutation createParent ($parent: ParentCreateInput!) {
     }
 }`
 
+
+//Creation des nformations propre a chaque etablissement
+export const CREATE_SCHOOL_PARAMETERS = gql`
+mutation createParameter ($input: ParameterCreateInput!) {
+    createParameter (input: $input) {
+        id
+        name
+        postalBox
+        phoneNumber
+        emailAddress
+        schoolCurrency
+        contry
+        year
+    }
+}`
+
 export const AFFECTATION_PARENT_TO_STUDENT = gql `
 mutation createParentstudent ($input: ParentStudentCreateInput!) {
     createParentstudent (input: $input) {
@@ -360,20 +379,23 @@ export const DELETE_SALLE = gql `
             montantPensionSalle
             effectif
             niveauid
-            cycleid
+            levelName
         }
     }
 `;
 
 export const DELETE_STUDY_LEVEL = gql `
-mutation deleteNiveauEtude ($id: String!) {
-    deleteNiveauEtude (id: $id) {
-        id
-        name
-        description
-        montantPension
+    mutation deleteNiveauEtude ($id: String!) {
+        deleteNiveauEtude (id: $id) {
+            id
+            name
+            description
+            montantPension
+            cycleid
+            cycleName
+        }
     }
-}`
+`
 
 
 export const DELETE_STUDENT = gql `
@@ -451,7 +473,7 @@ export const UPDATE_SALLE = gql `
             montantPensionSalle
             effectif
             niveauid
-            cycleid
+            levelName
         }
     }
 `;
@@ -683,6 +705,17 @@ mutation loginUpdate ($loginInput: LoginUpdate!) {
     }
 }
 `;
+//     mutation updateNiveauEtude ($id: String!, $input: NiveauEtudeUpdateInput!) {
+//         updateNiveauEtude (id: $id, input: $input) {
+//             id
+//             name
+//             description
+//             montantPension
+//             cycleid
+//             cycleName
+//         }
+//     }
+// `
 
 
 

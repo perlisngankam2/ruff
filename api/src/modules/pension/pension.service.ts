@@ -50,8 +50,8 @@ export class PensionService {
         }
        
 
-        const year = await this.parameterservice.getAll()
-        const annee = year[year.length-1].year
+        // const year = await this.parameterservice.getAll()
+        // const annee = year[year.length-1].year
         wrap(pension).assign(
           {
             montantPension:0.00000,
@@ -60,7 +60,7 @@ export class PensionService {
             // anneeAccademique: input.anneeAcademiqueId,
             dateLine: input.dateLine,
             student: student.id,
-            year:annee
+            // year:annee
             
           },
           {
@@ -96,12 +96,12 @@ export class PensionService {
   
           if(pension==null){
             const pension = new Pension()
-            const year = await this.parameterservice.getAll()
-            const annee = year[year.length-1].year
+            // const year = await this.parameterservice.getAll()
+            // const annee = year[year.length-1].year
             wrap(pension).assign({
               montantPension:0.0000,
               student: studentid,
-              year:annee
+              // year:annee
             },
             {
               em:this.em
@@ -159,7 +159,8 @@ export class PensionService {
           }
       } catch (error) {
           console.error(error)
-          throw new Error('Error in savePension function')
+          // throw new Error('Error in savePension function')
+          
       }
   }
   

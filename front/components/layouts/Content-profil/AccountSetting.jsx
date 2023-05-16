@@ -18,6 +18,7 @@ function AccountSetting(){
         <Grid
             templateColumns={{base:'repeat(1, 1fr)', md: 'repeat(2, 1fr)' }}
             gap={6}
+            w={"603px"}
         >
             <FormControl id='nom'>
                 <FormLabel fontWeight={"bold"}>Noms</FormLabel>
@@ -52,7 +53,7 @@ function AccountSetting(){
             <FormControl id='telephone'>
                 <FormLabel fontWeight={"bold"}>Telephone</FormLabel>
                   {account?.phoneNumber === null?
- <Input
+            <Input
                 value={personnelData?.getpersonnelbyaccount.phoneNumber}
                 bg='gray.100'
                 />

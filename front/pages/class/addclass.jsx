@@ -104,8 +104,8 @@ const AddClass = () => {
     console.log(name);
     console.log(section);
     // console.log(cycleId);
-    console.log(montantPensionSalle);
-    console.log(niveauEtudeId);
+    console.log(salle.montantPensionSalle);
+    console.log(salle.niveauEtudeId);
 
 
     // const cycleData =
@@ -230,7 +230,7 @@ const AddClass = () => {
                                     selected={salle.niveauEtudeId == niveauEtude.id? "selected": ''}
                                     value={niveauEtude.id} key={index}
                                   >
-                                    {niveauEtude.name}({niveauEtude.cyclename})
+                                    {niveauEtude.name}({niveauEtude.cycleName})
                                   </option>
                               ))
                           )}

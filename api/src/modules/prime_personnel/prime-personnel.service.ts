@@ -9,7 +9,7 @@ import {
   } from '@mikro-orm/core';
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { EntityRepository } from '@mikro-orm/postgresql';
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable, forwardRef } from '@nestjs/common';
   import { Field, ID, ObjectType } from '@nestjs/graphql';
 import { PrimePersonnel } from 'src/entities/prime-personnel.entity';
 import { Prime } from 'src/entities/prime.entity';
@@ -29,7 +29,9 @@ export class PrimePersonnelService {
         private readonly em: EntityManager,
         private personnelService: PersonnelService,
         private primeService: PrimeService,
+        @Inject(forwardRef(() =>SalaireService))
         private salaireservice: SalaireService,
+        @Inject(forwardRef(() =>PaySalaryService))
         private paysalarie: PaySalaryService
       ) {}
     
@@ -240,7 +242,7 @@ async findIdPrimeByPersonnel(personnelid:string){
 async findIdPrimesByPrimesPersonnel(personnelid:string, month:string) {
   const primesPersonnel = await this.primePersonnelRepository.find({personnel:personnelid});
   if(primesPersonnel.length>0){
-    return primesPersonnel.filter(a=>a.startMonth===month).map(a=>a.prime.id)
+    return primesPersonnel.filter(a=>a.startMonth===month).map(a=>a.prime.load())
   }
   throw Error("!!!!!!!!!Aucune prime n'as ete attribuer a ce personnel pour ce mois!!!!!!!!")
 }

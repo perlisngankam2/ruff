@@ -55,8 +55,6 @@ const LoginForm = () => {
 
 console.log(dataUser)
 
-
- 
    const HandleClick = async (event) => {
         event.preventDefault();
         
@@ -80,10 +78,8 @@ console.log(dataUser)
 router.push('/dashboard')
                     // }
                     
-                  }
-       };
-
-
+                  };
+      }
 
 
   return (
@@ -253,5 +249,6 @@ router.push('/dashboard')
     </Flex>
   );
 }
+
 
 export default LoginForm;

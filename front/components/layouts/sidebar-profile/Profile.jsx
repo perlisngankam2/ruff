@@ -51,7 +51,7 @@ function Profile(){
     }
     
     return(
-        <VStack spacing={3} py={5} borderBottomWidth={1} borderColor="brand.light">
+        <VStack spacing={3} py={5} borderBottomWidth={1} borderColor="brand.light" w={"290px"}>
             <Avatar
             size="2xl"
             name="Don willfried"

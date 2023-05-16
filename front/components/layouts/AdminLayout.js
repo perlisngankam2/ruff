@@ -21,7 +21,7 @@
 
   const AdminLayout = ({ children }) => {
     return (
-     <Box h="100%"> 
+      <Box h="100%"> 
         <Accordion allowToggle>
           <AccordionItem>
             <AccordionButton pl={0} >
@@ -151,7 +151,7 @@
               </Flex>
             </AccordionButton>
             <AccordionPanel pb={1} _hover={{background:"rgba(0,0,0,0.16)"}}>
-              <Link href="pension/listeDroitScolaire">
+              <Link href="/pension/listeDroitScolaire">
                 <Box as="span">Pension</Box>
               </Link>
             </AccordionPanel>
@@ -177,7 +177,7 @@
               </Flex>
             </AccordionButton>
             <AccordionPanel _hover={{background:"rgba(0,0,0,0.16)"}}>
-              <Link href="parents/listOfParents">
+              <Link href="/parents/listOfParents">
                 <Box as="span">Tout les parents</Box>
               </Link>
             </AccordionPanel>
@@ -241,8 +241,8 @@
               </Link>
             </AccordionPanel>
             <AccordionPanel pb={1} _hover={{background:"rgba(0,0,0,0.16)"}}>
-              <Link href="/statistiques">
-                <Box as="span">Statistiques 2</Box>
+              <Link href="/statistics/feesByStudent">
+                <Box as="span">Paiement par eleve</Box>
               </Link>
             </AccordionPanel>
           </AccordionItem>
@@ -263,13 +263,8 @@
                 <Box as="span">Créer un message</Box>
               </Link>
             </AccordionPanel>
-            {/* <AccordionPanel>
-              <Link href="/mail/mail">
-                <Box as="span">Mail</Box>
-              </Link>
-            </AccordionPanel> */}
           </AccordionItem>
-          <AccordionItem  mt="95px">
+          <AccordionItem  mt="30px" border="0px">
             <AccordionButton pl={0} >
               <Flex align="center" gap="1">
                 <Icon as={AiFillSetting} />
@@ -277,7 +272,7 @@
               </Flex>
             </AccordionButton>
             <AccordionPanel pb={1} _hover={{background:"rgba(0,0,0,0.16)"}}>
-              <Link href="settings/generalSettings">
+              <Link href="/settings/generalSettings">
                 <Box as="span">Paramètre généraux</Box>
               </Link>
             </AccordionPanel>

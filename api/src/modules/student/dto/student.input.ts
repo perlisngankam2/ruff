@@ -24,7 +24,10 @@ export class StudentCreateInput {
   lastname!: string;
 
   @Field({ nullable:true })
-  dateOfBirth!: Date;
+  dateOfBirth!: string;
+
+  @Field({ nullable: true })
+  birthPlace!: string;
 
   @Field({ nullable: true })
   sex!: string;

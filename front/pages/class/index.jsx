@@ -41,7 +41,8 @@ import {
   FormLabel,
   useToast,
   AlertDialogHeader,
-  InputRightElement
+  InputRightElement,
+  Card
   
 } from "@chakra-ui/react";
 
@@ -89,6 +90,7 @@ const Class = () => {
   const [anneeAcademiqueId, setAnneeAcademiqueId] = useState("");
   const [courseId, setCourseId] = useState("");
   const [montantPension, setMontantPension] = useState();
+  const [selectClassSarch, setSelectClassSearch] = useState("")
   const itemsPerPage = 15;
   const [pageNumber, setPageNumber] = useState(0);
   const pagesVisited = pageNumber * itemsPerPage;
@@ -233,13 +235,14 @@ const Class = () => {
            width={"500px"}
            variant="flushed"
             placeholder="Selectionner la classe"
-            // onChange={e =>setQuery(e.target.value)}
+            onChange={e =>setSelectClassSearch(e.target.value)}
+            value={selectClassSarch}
           >
-            {/* {Classes.map((classe) => (
+            {dataClasse && dataClasse.findAllsalle.map((salle) => (
               <option 
-                key={classe.id}
-              >{classe.classe}</option>
-            ))} */}
+                key={salle.id}
+              >{salle.name}</option>
+            ))}
           </Select>
           <Box> 
             <Button
@@ -253,40 +256,47 @@ const Class = () => {
 
         {/* FORMULAIRE D'AFFECTATION D'UN PROFESSEUR A UNE CLASSE */}
         <Box> 
-            <Flex 
-              direction={["column", "column", "column"]}
-              mt={"15px"}
-              flexWrap={["wrap", "wrap", "wrap"]}
-              pl={["500px", "100px", "200px", "1050px"]}
+            <Box 
+              display={{md:"flex"}}
+              mt={"30px"}
+              // flexWrap={["wrap", "wrap", "wrap"]}
+              ml={["300px", "400px", "700px", "1020px"]}
+              gap={1}
+              flexDirection={"column"}
+              // align={"rigth"}
             > 
               <Flex gap={1}> 
-                <Text 
+                <Button 
                   mb={5}
                   fontSize="14px"
                   color = "colors.quinzaine"
-                  >
+                  onClick={onOpenn}
+                >
                   Affecter un enseignant
-                </Text>
-                <Icon 
+                </Button>
+                {/* <Icon 
                   as={IoIosAdd} 
                   boxSize="30px"
-                  color={"colors.greencolor"}
+                  color={"white"}
                   rounded="full"
                   // ml={["5px", "5px", "5px" ]}
                   mt={["-3px"]}
                   _hover={{background:"colors.bluecolor"}}
                   onClick={onOpenn}
-                  />
+                  bg={"colors.greencolor"}
+                  /> */}
               </Flex>
-              <Flex > 
-                <Text 
+              <Flex gap={1}> 
+                <Button 
                   mb={5}
                   fontSize="14px"
                   color = "colors.quinzaine"
+                  onClick={onOpennes}
+
                 >
                   Fixer une pension
-                </Text>
-                <Icon 
+                </Button>
+                {/* <Icon 
                   as={IoIosAdd} 
                   boxSize="30px"
                   color={"colors.greencolor"}
@@ -295,9 +305,9 @@ const Class = () => {
                   mt={["-3px"]}
                   _hover={{background:"colors.bluecolor"}}
                   onClick={onOpennes}
-                  />
+                  /> */}
               </Flex>
-            </Flex>
+            </Box>
           <AlertDialog
             isOpen={isOpenn}
             leastDestructiveRef={cancelRef}
@@ -506,6 +516,8 @@ const Class = () => {
                         {t('pages.class.classList.name')}
                       </Th>
                       <Th>Montant pension</Th>
+                      <Th>Niveau</Th>
+
                       {/* <Th >section</Th>  */}
                       <Th >
                         {t('pages.class.classList.Action')}
@@ -516,10 +528,18 @@ const Class = () => {
                     {dataClasse && ( 
                       dataClasse.findAllsalle
                       .slice(pagesVisited, pagesVisited + itemsPerPage)
+                      .filter((salle) =>{
+                        if(selectClassSarch== ""){
+                          return salle
+                        }else if(salle.name.toLowerCase().includes(selectClassSarch.toLowerCase()))
+                        return salle
+                      })
                       .map((salle, index) =>( 
                       <Tr key={index}>
                          <Td >{salle.name}</Td> 
                          <Td>{salle.montantPensionSalle}</Td>
+                         <Td>{salle.levelName}</Td>
+
                          {/* <Td borderColor={'#C6B062'}>{salle.montantPensionSalle}</Td>   */}
                          {/* <Td borderColor={'#C6B062'}>{salle.section}</Td>  */}
                          {/* <Td borderColor={'#C6B062'}>{salle.montantPension}</Td>  */}

@@ -19,6 +19,7 @@ import { AnneeAccademiqueUpdateInput } from './dto/anne-accadmique.input';
 
 
 
+
 @Resolver(() => AnneeAccademique)
 export class AnneeAccademiqueResolver {
   constructor(private readonly anneeService: AnneeAccademiqueService) {}

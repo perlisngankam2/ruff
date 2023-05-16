@@ -150,7 +150,7 @@ function ajouterprime() {
               cursor="pointer"
             />
             <Input
-              placeholder="Recherchez une section..."
+              placeholder="Recherchez une prime..."
               //value={recherche}
               variant="flushed"
               onChange={handleChangePrime}
@@ -180,7 +180,7 @@ function ajouterprime() {
                 <Thead background="colors.secondary">
                 <Tr>
                     <Th>Nom</Th>
-                    <Th>Description</Th>
+                    <Th>Valeur</Th>
                     <Th>Actions</Th>
                 </Tr>
                 </Thead>
@@ -208,7 +208,7 @@ function ajouterprime() {
             p="3"
             // bg="blue.100"
             rounded="full"
-            onClick={onOpen}
+            // onClick={onOpen}
             _hover={{background:"red.100"}}
           />
           <Icon

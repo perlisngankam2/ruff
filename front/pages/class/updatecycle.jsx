@@ -187,3 +187,9 @@ const  UpdateCycle =  () => {
 
 
 export default UpdateCycle;
+
+// ce que j'enleve du code
+
+// trancheDateline by student
+
+// getTrancheStudentByStudent

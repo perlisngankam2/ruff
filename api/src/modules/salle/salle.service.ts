@@ -210,17 +210,20 @@ export class SalleService {
     }
 
     async findStudentBySalle(studentid:string){
-      return (await this.em.find(Salle,{student:studentid},{
-        populate:['niveau','niveau.salle']
-      }))[0]
+      return (await this.em.find(Salle,{student:studentid},
+        {
+          populate:['niveau','niveau.salle']
+        }
+      ))[0]
+      
     }
 
-    async findSectionByStudent(studentid:string){
+    async findSectionByStudents(studentid:string){
       const a=(await this.em.find(Salle,{student:studentid},{
         populate:['niveau','niveau.salle','niveau.salle.student']
       })).map(async a=>((await (await a.niveau.load()).cycle.load()).section.load()))
 
-      return a
-    }
+      return a
+    }
 
 }

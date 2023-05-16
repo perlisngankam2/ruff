@@ -191,8 +191,8 @@ const Personnel = () => {
                   lastName={personnel.lastName}
                   fonction={personnel.fonction}
                   situationMatrimonial={personnel.situationMatrimonial}
-                  id={personnel.id}
                   sexe={personnel.sexe}
+                  id={personnel.id}
 
                 /> 
               {/* <Box

@@ -29,7 +29,11 @@ export class Parameter {
 
   @Field({ nullable: true })
   @Property({ nullable: true })
-  country!: string;
+  contry!: string;
+
+  @Field({ nullable: true })
+  @Property({ nullable: true })
+  schoolCurrency!: string;
 
   @Field({ nullable: true })
   @Property({ nullable: true })
@@ -40,4 +44,5 @@ export class Parameter {
     // onDelete: "CASCADE"
   })
   anneeacademique!: IdentifiedReference<AnneeAccademique> | null;
+ 
 }

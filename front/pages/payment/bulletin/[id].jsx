@@ -103,10 +103,6 @@ const Bulletin = () => {
     })
 
 
-
-
-
-
        const dernierIndice = dataSalaireNet?.PersonnelNetSalary.length - 1
        const dernierElement = dataSalaireNet?.PersonnelNetSalary[dernierIndice];
 

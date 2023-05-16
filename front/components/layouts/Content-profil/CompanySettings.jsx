@@ -23,15 +23,15 @@ function CompanySettings(){
 
     return(
         <Grid
-        templateColumns={{base: 'repeat(1, 1fr)', md: 'repeat(2, 1fr)'}}
-        gap={6}
+            templateColumns={{base: 'repeat(1, 1fr)', md: 'repeat(2, 1fr)'}}
+    
         >
-              <Button w='250px' mt='5' background="colors.primary" color='white'>
-                            <Link href= {{
-                                    pathname: Routes.ResetPassword?.path || '',
-                                    query: {id: account?.id }
-                                }}>Modifier votre mot de passe
-                            </Link>
+              <Button  mt='5' background="colors.primary" color='white'>
+                    <Link href= {{
+                            pathname: Routes.ResetPassword?.path || '',
+                            query: {id: account?.id }
+                        }}>Modifier votre mot de passe
+                    </Link>
                   </Button>
             {/* <FormControl id='Matricule'>
                 <FormLabel>Code secret</FormLabel>

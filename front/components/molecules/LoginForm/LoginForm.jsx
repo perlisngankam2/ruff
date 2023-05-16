@@ -66,12 +66,12 @@ console.log(dataUser)
                 console.log(login.data.login.user)
                   if (login.data.login) {
                     setAuthToken?.(login.data.login.access_token , login.data.login.user.id);
-                    if(login.data.login.user.deactivatedAt === null && login.data.login.user.role !== 'ADMIN'){
-                      // router.push('/resetPassword')
-                        onOpen()
-                    } else {
+                    // if(login.data.login.user.deactivatedAt === null && login.data.login.user.role !== 'ADMIN'){
+                    //   // router.push('/resetPassword')
+                    //     onOpen()
+                    // } else {
                       router.push('/dashboard')
-                    }
+                    // }
                     
                   };
       }

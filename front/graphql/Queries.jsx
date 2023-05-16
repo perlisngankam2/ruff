@@ -177,8 +177,11 @@ query findAllparameters {
         postalBox
         phoneNumber
         emailAddress
+        schoolCurrency
         contry
         year
+        anneeAcademiqueName
+        anneeAcademiqueId
     }
 }
  `;
@@ -319,20 +322,48 @@ export const GET_STUDENT_STATISTICS_ANGLOPHONE_SECTION = gql `
         }
     }
 `
+
+//TOTal stattistique des eleves de la section anglophone
+export const GET_TOTAL_STUDENT_STATISTICS_ANGLOPHONE_SECTION = gql `
+    query getTotalStudentStatisticsAnglophone {
+        getTotalStudentStatisticsAnglophone {
+            MONTANT_ATTENDU
+            MONTANT_EN_CAISSE
+            TAUX_ENCAISSEMENT
+            RESTE_RECOUVRER
+            TAUX_RAR
+        }
+    }
+`
+
 //stattistique des eleves de la section francophone
 export const GET_STUDENT_STATISTICS_FRANCOPHONE_SECTION = gql `
-query getStudentStatisticsFrancophone {
-    getStudentStatisticsFrancophone {
-        name
-        matricle
-        section
-        amountExpected
-        amountPaid
-        collectionRate
-        restToPay
-        rateArrears
+    query getStudentStatisticsFrancophone {
+        getStudentStatisticsFrancophone {
+            name
+            matricle
+            section
+            amountExpected
+            amountPaid
+            collectionRate
+            restToPay
+            rateArrears
+        }
     }
-}`
+`
+  // //total stattistique des eleves de la section francophone
+export const GET_TOTAL_STUDENT_STATISTICS_FRANCOPHONE_SECTION = gql `
+    query getTotalStudentStatisticsFrancophone {
+        getTotalStudentStatisticsFrancophone {
+            MONTANT_ATTENDU
+            MONTANT_EN_CAISSE
+            TAUX_ENCAISSEMENT
+            RESTE_RECOUVRER
+            TAUX_RAR
+        }
+    }
+`
+
 
 // grand tableau des stattistique To des eleves par sections et par classe section anglophone
 export const GET_GENERAL_FEES_STATISTICS_PER_CLASS_ANGLOPHONE_SECTION = gql`
@@ -749,7 +780,7 @@ query findByStudentRestTranche ($studentid: String!) {
         }
     }
  `;
-export const GET_ALL_PERSONNEL_SALLE = gql`
+export const GET_ALL_PERSONNEL_SALLE = gql `
     query findAllPersonnelSalle {
         findAllPersonnelSalle {
             id

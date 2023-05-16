@@ -57,7 +57,6 @@ import ReactPaginate from "react-paginate";
 
 import { getStaticPropsTranslations } from "../../types/staticProps";
 
-
 import { 
   GET_ALL_STUDENT, 
   GET_STUDENT_BY_ID,

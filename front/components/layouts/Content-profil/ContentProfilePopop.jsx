@@ -74,7 +74,7 @@ const ContentProfilePopop = ({isOpen, onOpen, onClose}) =>{
                     onClose={onClose}
                 >
                     <AlertDialogContent 
-                        maxWidth={"62%"}
+                        maxWidth={"69%"}
                         ml={"150px"}
                         // mt={"-5px"}
                     >

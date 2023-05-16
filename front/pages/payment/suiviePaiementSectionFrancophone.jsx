@@ -34,7 +34,8 @@ import {CiSearch} from 'react-icons/ci'
 import DefaultLayout from '../../components/layouts/DefaultLayout';
 import { useQuery, useMutation } from "@apollo/client"
 import { GET_STUDENT_STATISTICS_ANGLOPHONE_SECTION,
-    GET_STUDENT_STATISTICS_FRANCOPHONE_SECTION
+    GET_STUDENT_STATISTICS_FRANCOPHONE_SECTION,
+    GET_TOTAL_STUDENT_STATISTICS_FRANCOPHONE_SECTION
 } from '../../graphql/Queries';
 import { useEffect } from 'react';
 
@@ -44,7 +45,9 @@ const SuiviePaiementSectionFrancophone = () => {
     // const {t} = useTranslation();
 
     const {data:dataStudentStatisticsFrancophoneSection} = useQuery(GET_STUDENT_STATISTICS_FRANCOPHONE_SECTION);
+    const {data:dataTotalStudentStatisticsFrancophoneSection} = useQuery(GET_TOTAL_STUDENT_STATISTICS_FRANCOPHONE_SECTION);
     
+
     useEffect(() => {
         console.log(dataStudentStatisticsFrancophoneSection);
     })
@@ -111,12 +114,23 @@ const SuiviePaiementSectionFrancophone = () => {
                                     ))}                                    
                                     </Tbody>
                                     }
-                                    <Tfoot>
-                                        <Tr>
-                                            <Th>Total</Th>
-                                        </Tr>
-                                    
-                                    </Tfoot>
+
+                                    <Tbody>
+                                    {dataTotalStudentStatisticsFrancophoneSection && (
+                                        dataTotalStudentStatisticsFrancophoneSection?.getTotalStudentStatisticsFrancophone
+                                        .map((totalFrancophoneStudent, index) => ( 
+                                        <Tr borderBottom={"1px"} key={index}>
+                                            <Td  borderBottom={"1px"}>TotalL</Td>
+                                            <Td borderBottom={"1px"}></Td>
+                                            <Td ></Td>
+                                            <Td>{totalFrancophoneStudent.MONTANT_ATTENDU}</Td>
+                                            <Td>{totalFrancophoneStudent.MONTANT_EN_CAISSE}</Td>
+                                            <Td>{totalFrancophoneStudent.TAUX_ENCAISSEMENT}%</Td>
+                                            <Td>{totalFrancophoneStudent.RESTE_RECOUVRER}</Td>
+                                            <Td>{totalFrancophoneStudent. TAUX_RAR}%</Td>
+                                        </Tr> 
+                                    )))}                                    
+                                    </Tbody>
                                 </Table>
                             </TableContainer>
                         </Box>

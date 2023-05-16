@@ -9,7 +9,9 @@ import {
   FormLabel,
   Heading,
   Hide,
+  InputGroup,
   HStack,
+  InputRightElement,
   Image,
   Select,
   Input,
@@ -34,6 +36,7 @@ import { GET_USER_CONNECTED} from  "../../../graphql/Queries"
 import dashboard from "../../../pages/dashboard.jsx";
 import { useAuth } from '../../../contexts/account/Auth/Auth'
 import { useTranslation } from "next-i18next";
+import { ViewIcon, ViewOffIcon } from '@chakra-ui/icons';
 
 const LoginForm = () => {
 
@@ -47,6 +50,7 @@ const LoginForm = () => {
   const { setAuthToken } = useAuth();
   const { dataUser, called, loading } = useQuery(GET_USER_CONNECTED);
   const {t} = useTranslation();
+  const [showPassword, setShowPassword] = useState(false);
 //  console.log(setAuthToken.isLogged)
 
 console.log(dataUser)
@@ -146,13 +150,27 @@ router.push('/dashboard')
                   <FormLabel>
                     {t('molecules.LoginForm.motDePasse')}
                   </FormLabel>
-                  <Input
-                    id="password"
-                    type="password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    name="password"
-                  />
+                   <InputGroup>
+                          <Input 
+                      type={showPassword ? 'text' : 'password'}
+                      placeholder="********"
+                      // maxW="300px"
+                      name="password"
+                      value={password}
+                      onChange = {(event) => setPassword(event.target.value)}
+                      required
+      />
+                {/* <Input type={showPassword ? 'text' : 'password'} /> */}
+                <InputRightElement h={'full'}>
+                  <Button
+                    variant={'ghost'}
+                    onClick={() =>
+                      setShowPassword((showPassword) => !showPassword)
+                    }>
+                    {showPassword ? <ViewIcon /> : <ViewOffIcon />}
+                  </Button>
+                </InputRightElement>
+              </InputGroup>
                 </FormControl>
 
 

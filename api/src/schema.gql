@@ -248,9 +248,9 @@ type Student {
   tutorLastName: String
   tutorPhoneNumber: String
   tutorProfession: String
-  salleid: ID!
+  salleid: ID
   salleName: ID
-  categorieid: ID!
+  categorieid: ID
   categoryName: ID
   parentTel: String!
 }
@@ -546,7 +546,7 @@ type Query {
   getallretenupersonnelbymonth(personnelid: String!, month: String!): Float!
   findIdRetenuByRetenuPersonnel(personnelid: String!, month: String!): [String!]!
   findAllretenusalarial: [Retenue!]!
-  prime(id: String!): Prime!
+  prime(id: String!): Retenue!
   findAllcategorieretenu: [CategorieRetenu!]!
   categorieRetenu(id: String!): CategorieRetenu!
   findAllpersonnel: [Personnel!]!
@@ -554,18 +554,6 @@ type Query {
   getpersonnelaccount(id: String!): User!
   getpersonnelbyaccount(userid: String!): Personnel!
   findCategoriepersonnelbypersonnel(personnelid: String!): String!
-  findAllsalaire: [SalaireBase!]!
-  salaireBase(id: String!): SalaireBase!
-  findAllprime: [Prime!]!
-  findOnePrime(id: String!): Prime!
-  findAllcategorieprime: [CategoriePrime!]!
-  categoriePrime(id: String!): CategoriePrime!
-  findAllcategoriepersonnel: [CategoriePersonnel!]!
-  findOneCategoriepersonnel(id: String!): CategoriePersonnel!
-  findAllretenusalarial: [Retenue!]!
-  prime(id: String!): Retenue!
-  findAllcategorieretenu: [CategorieRetenu!]!
-  categorieRetenu(id: String!): CategorieRetenu!
   findAllprimepersonnel: [PrimePersonnel!]!
   findmontantprimebypersonnel(personnelid: String!): [Float!]!
   findnamesprimebypersonnel(personnelid: String!): [String!]!
@@ -576,6 +564,7 @@ type Query {
   getallpersonnelprimebymont(personnelid: String!, month: String!): Float!
   allMonthAffectedPrimeToPersonnel(personnelid: String!, primeid: String!): [Prime!]!
   findAllprime: [Prime!]!
+  findOnePrime(id: String!): Prime!
   findAllcategorieprime: [CategoriePrime!]!
   categoriePrime(id: String!): CategoriePrime!
   findallsalaire: [Salaire!]!

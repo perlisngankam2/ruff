@@ -56,8 +56,6 @@ import {HiOutlineMinus} from "react-icons/hi"
 import {useRouter } from "next/router";
 import { GlobalContext } from "../../contexts/cyclesection/AppContext";
 
-import { GlobalContext } from "../../contexts/cyclesection/AppContext";
-
 import {  
   GET_ALL_STUDENT, 
   GET_STUDENT_BY_ID,
@@ -68,7 +66,6 @@ import { DELETE_STUDENT } from "../../graphql/Mutation";
 import { useMutation, useQuery } from "@apollo/client";
 import ReactPaginate from "react-paginate";
 
-
 import { CSVLink, CSVDownload } from "react-csv";
 import { useTranslation } from "next-i18next";
 import { getStaticPropsTranslations } from "../../types/staticProps";
@@ -77,12 +74,8 @@ const AccountStatement = () => {
 
     const {t} = useTranslation();
     const [searchExpense, setSearchExpense] = useState("");
-    const {t} = useTranslation();
-    const [searchExpense, setSearchExpense] = useState("");
     const {data:dataExpensePersonnelStudent} = useQuery(GET_ALL_EXPENSE_PERSONNEL_STUDENT)
     const date1 = new Date('December 17, 1995 03:24:00')
-    
-
     
 
 
@@ -180,37 +173,6 @@ const AccountStatement = () => {
                                 // color="colors.quaternary"
                                     // _hover={{background:"blue.100"}}
                                     // onClick={onToggle}
-                            <ReactToPrint
-                                trigger={() => <Icon as={TfiPrinter} boxSize="42px" alignItems={"center"} p="3" />}
-                                content={() => componentRef.current}
-                                    documentTitle= "Etat des entrees et sorties"
-                                    pageStyle="print"
-                            />
-                            {/* <Icon
-                                alignItems={"center"}
-                                as={TfiPrinter}
-                                boxSize="42px"
-                                p="3"
-                                // bg="blue.100"
-                                // rounded="full"
-                            /> */}
-                            <Icon
-                                as={RiDeleteBin5Line}
-                                boxSize="42px"
-                                p="3"
-                                rounded="full"
-                                // color="colors.quaternary"
-                                // _hover={{background:"blue.100"}}
-                                // onClick={onToggle}
-                            />
-                            <Icon
-                                as={TfiFilter}
-                                boxSize="42px"
-                                p="3"
-                                rounded="full"
-                                // color="colors.quaternary"
-                                    // _hover={{background:"blue.100"}}
-                                    // onClick={onToggle}
                             />
                         </Flex>
                     </Flex> 
@@ -236,18 +198,9 @@ const AccountStatement = () => {
                                 filename="Etat des entrees et sorties" 
                                 options={options} y={10} 
                             >
-                            <ReactToPdf 
-                                targetRef={componentRef} 
-                                filename="Etat des entrees et sorties" 
-                                options={options} y={10} 
-                            >
                                 {({toPdf}) => ( <Button bg={"blackAlpha.100"} onClick={toPdf} border="1px" width={"50px"} fontSize={"sm"}>PDF</Button>)}
                             </ReactToPdf>
                         </Box>
-                        <Box 
-                            width={"300px"} 
-                            ml="700px"
-                        >
                         <Box 
                             width={"300px"} 
                             ml="700px"
@@ -260,8 +213,6 @@ const AccountStatement = () => {
                                 <Input
                                     placeholder="Recherchez un niveau..."
                                     //value={recherche}
-                                    onChange={e => setSearchExpense(e.target.value)}
-                                    // value={searchExpense}
                                     onChange={e => setSearchExpense(e.target.value)}
                                     // value={searchExpense}
                                     variant="flushed"
@@ -297,8 +248,6 @@ const AccountStatement = () => {
                                         // textAlign={'center'}
                                         // ml="15px"
                                     >
-                                        description
-                                        {/* {t('pages.finances.accountStatement.description')} */}
                                         description
                                         {/* {t('pages.finances.accountStatement.description')} */}
                                     </Box>
@@ -337,19 +286,6 @@ const AccountStatement = () => {
                                             return expense
                                         })
                                         .map((expense, index) => ( 
-                                        (dataExpensePersonnelStudent?.findallexpenses
-                                        .filter((expense) =>{
-                                            if(searchExpense == ""){
-                                                return expense;
-                                            }else if(expense.studentFirstname.toLowerCase().includes(searchExpense.toLowerCase()) ||
-                                                expense.studentLastname.toLowerCase().includes(searchExpense.toLowerCase())
-                                                // expense.personnelFirstName.toLowerCase().includes(searchExpense.toLowerCase()) ||
-                                                // expense.personnelLastName.toLowerCase().includes(searchExpense.toLowerCase()) ||
-                                                // expense.personnelFonction.toLowerCase().includes(searchExpense.toLowerCase())
-                                                )
-                                            return expense
-                                        })
-                                        .map((expense, index) => ( 
                                     <Flex
                                         // gap={"180px"}
                                         p="5px"
@@ -372,11 +308,7 @@ const AccountStatement = () => {
                                             // flex='1'
                                         >
                                            {expense.studentFirstname}&nbsp;
-                                           {expense.studentFirstname}&nbsp;
                                            {expense.studentLastname}
-                                            {expense.personnelFirstName} &nbsp;
-                                           {expense.personnelLastName}&nbsp;
-                                           ({expense.personnelFonction})
                                             {expense.personnelFirstName} &nbsp;
                                            {expense.personnelLastName}&nbsp;
                                            ({expense.personnelFonction})
@@ -459,29 +391,22 @@ const AccountStatement = () => {
                                     (dataExpensePersonnelStudent?.findallexpenses.map((expense, index) => ( 
                                 <Flex
                                     gap={"100px"}
-                                    gap={"100px"}
                                     p="5px"
                                     width={"full"}
                                     // fontWeight={"bold"}
                                     // mt="12px"
                                     key={index}
-                                    key={index}
                                 > 
                                     <Box
                                         // flex={1}
-                                        // flex={1}
                                         fontWeight={"bold"}
-                                        // ml="150px"
                                         // ml="150px"
                                     >
                                         Total
                                     </Box>
                                     <Box
                                         // width='160px'
-                                        // width='160px'
                                     >
-                                        {/* {expense.beditTotal} */}
-                                        {/* {[expense.length-1].debitTotal} */}
                                         {/* {expense.beditTotal} */}
                                         {/* {[expense.length-1].debitTotal} */}
                                     </Box>
@@ -491,19 +416,7 @@ const AccountStatement = () => {
                                         {/* {expense.creditTotal} */}
                                         
                                     {/* {[expense.length-1].creditTotal} */}
-                                    <Box 
-                                    // width='150px'
-                                    >
-                                        {/* {expense.creditTotal} */}
-                                        
-                                    {/* {[expense.length-1].creditTotal} */}
                                     </Box>
-                                    <Box 
-                                    // width='180px'
-                                    >
-                                        {/* {expense.beditTotal}
-                                        {expense.creditTotal}
-                                       */}
                                     <Box 
                                     // width='180px'
                                     >
@@ -512,7 +425,6 @@ const AccountStatement = () => {
                                        */}
                                     </Box>
                                 </Flex>
-                                    )))}
                                     )))}
                             </Box >
                   
@@ -529,12 +441,10 @@ const AccountStatement = () => {
                     activeClassName={"paginationActive"}
                   />
                 </Box>
-                </Box>
               </Box>
             </DefaultLayout>
     )
 }
-
 
 export async function getStaticProps({ locale }) {
     return {

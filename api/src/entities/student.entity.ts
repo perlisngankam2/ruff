@@ -210,10 +210,10 @@ export class Student {
   //   return `${this.user.id}`;
   // }
 
-  @Field(() => ID)
+  @Field(() => ID,{ nullable: true })
   @Property({ persist: false })
   get salleid() {
-    return `${this.salle.id}`;
+    return this.salle? `${this.salle.id}` : null;
   }
 
   @Field(() => ID, { nullable: true })
@@ -222,16 +222,16 @@ export class Student {
     return this.salle ? `${this.salle.getEntity().name}` : null;
   }
 
-  @Field(() => ID)
+  @Field(() => ID, { nullable: true })
   @Property({ persist: false })
   get categorieid() {
-    return `${this.categorie.id}`;
+    return this.categorie? `${this.categorie.id}` : null;
   }
 
   @Field(() => ID, { nullable: true })
   @Property({ persist: false })
   get categoryName(): string | null {
-    return this.salle ? `${this.categorie.getEntity().nom}` : null;
+    return this.categorie? `${this.categorie.getEntity().nom}` : null;
   }
 
   @Field(() => String)

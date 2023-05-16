@@ -65,35 +65,36 @@ export const GET_SALLE_BY_ID = gql `
 
 //student
 export const GET_ALL_STUDENT =  gql `
-    query findAllstudents {
-        findAllstudents {
-            id
-            matricule
-            firstname
-            lastname
-            dateOfBirth
-            sex
-            adress
-            transport
-            fatherFirstName
-            fatherLastName
-            fatherPhoneNumber
-            fatherProfession
-            motherFirstName
-            motherLastName
-            motherPhoneNumber
-            motherProfession
-            tutorFirstName
-            tutorLastName
-            tutorPhoneNumber
-            tutorProfession
-            salleid
-            salleName
-            categorieid
-            categoryName
-            parentTel
-        }
+  query findAllstudents {
+    findAllstudents {
+        id
+        matricule
+        firstname
+        lastname
+        dateOfBirth
+        birthPlace
+        sex
+        adress
+        transport
+        fatherFirstName
+        fatherLastName
+        fatherPhoneNumber
+        fatherProfession
+        motherFirstName
+        motherLastName
+        motherPhoneNumber
+        motherProfession
+        tutorFirstName
+        tutorLastName
+        tutorPhoneNumber
+        tutorProfession
+        salleid
+        salleName
+        categorieid
+        categoryName
+        parentTel
     }
+}
 `
 
 //categorie eleve

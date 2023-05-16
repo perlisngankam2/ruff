@@ -35,7 +35,7 @@ export const AccountProvider  = ({ children }) => {
 
       return (
         <AccountContext.Provider
-          value={{ account: dataUser?.user, loaded: !loading && called }}
+          value={{ account: dataUser?.user, loaded: !loading && called}}
         >
           {children}
         </AccountContext.Provider>

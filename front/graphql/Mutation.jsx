@@ -297,6 +297,8 @@ mutation createParameter ($input: ParameterCreateInput!) {
         schoolCurrency
         contry
         year
+        anneeAcademiqueName
+        anneeAcademiqueId
     }
 }`
 

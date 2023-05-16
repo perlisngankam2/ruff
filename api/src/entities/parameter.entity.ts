@@ -45,4 +45,17 @@ export class Parameter {
   })
   anneeacademique!: IdentifiedReference<AnneeAccademique> | null;
  
+
+  @Field(() => ID, {nullable: true})
+  @Property({ persist: false })
+    get anneeAcademiqueId() {
+    return this.anneeacademique?`${this.anneeacademique.id}`:null;
+  }
+
+  @Field(() => ID, {nullable: true})
+  @Property({ persist: false })
+    get anneeAcademiqueName() {
+    return this.anneeacademique?`${this.anneeacademique.getEntity().name}`:null;
+  }
+
 }

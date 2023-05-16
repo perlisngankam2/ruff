@@ -11,7 +11,7 @@
                 "salary": "Salaire",
                 "status":"Status",
                 "childNumber":"Nombre d'enfant",
-                "vaccataireStatusOption":"PERMANENT",
+                "vaccataireStatusOption":"VACCATAIRE",
                 "permanentStatusOption":"PERMANENT",
                 "fonction": "Fonction",
                 "fondatorFonctionOption": "fondateur",

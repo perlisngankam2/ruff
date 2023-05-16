@@ -84,7 +84,9 @@ export class ParameterService {
       }
     
       getAll(): Promise<Parameter[]> {
-        return this.parameterRepository.findAll()
+        return this.parameterRepository.findAll({
+          populate:['anneeacademique']
+        })
       }
       
       async update(id:string, input:ParameterUpdateInput): Promise<Parameter> {

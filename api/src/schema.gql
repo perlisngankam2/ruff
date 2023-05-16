@@ -280,6 +280,8 @@ type Parameter {
   contry: String
   schoolCurrency: String
   year: String
+  anneeAcademiqueId: ID
+  anneeAcademiqueName: ID
 }
 
 type AnneeAccademique {
@@ -329,9 +331,9 @@ type PersonnelSalle {
   personnelFirstName: ID
   personnelLastName: ID
   personnelFunction: ID
-  salleId: ID!
+  salleId: ID
   salleName: ID
-  courseId: ID!
+  courseId: ID
   courseName: ID
 }
 

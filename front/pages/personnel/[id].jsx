@@ -43,6 +43,7 @@ import {
 // import { getStaticPropsTranslations } from "../../types/staticProps";
 import {useTranslation } from "next-i18next";
 import { MinusIcon } from "@chakra-ui/icons";
+// import { getStaticPropsTranslations } from "../../types/staticProps";
 
 export const colorOptions = [ 
   { value: "blue", label: "Blue", color: "#0052CC" },
@@ -201,8 +202,16 @@ const Profil = () => {
       <Box p="3" pt="70px" w="100%" background="colors.tertiary">
       {dataPersonnelId && (
         <Box>
+      <Center>
         <Flex gap="5" pb={'7px'}>
-          <Box rounded="md" p="5" boxShadow="md" w="40%" background="white">
+          <Box
+           rounded="md" 
+           p="5" 
+           boxShadow="md"
+            // w="60%" 
+            background="white" 
+            w={"800px"}
+            >
             <Center>
               <Avatar
                 src="https://img.freepik.com/vecteurs-premium/profil-avatar-homme-icone-ronde_24640-14044.jpg?w=2000"
@@ -240,7 +249,7 @@ const Profil = () => {
               <Text> Classe: CM1</Text> */}
             </Box>
           </Box>
-          <Box rounded="md" p="5" boxShadow="md" background="white" w="60%">
+          {/* <Box rounded="md" p="5" boxShadow="md" background="white" w="60%">
             <Text fontSize="2xl" fontWeight="bold" mb={3}>
               Dossier de salaire
             </Text>
@@ -288,8 +297,9 @@ const Profil = () => {
                 </Tbody>
               </Table>
             </TableContainer>
-          </Box>
+          </Box> */}
         </Flex>
+      </Center>
     <Flex gap={3} >
       <Box>
                  
@@ -743,6 +753,9 @@ const Profil = () => {
     </DefaultLayout>
   );
 };
+
+
+export default Profil;
 // export async function getStaticProps({ locale }) {
 //   return {
 //     props: {
@@ -751,4 +764,3 @@ const Profil = () => {
 //     },
 //   };
 // }
-export default Profil;

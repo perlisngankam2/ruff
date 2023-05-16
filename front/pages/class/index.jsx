@@ -206,7 +206,6 @@ const Class = () => {
             textColor="pink.300"
           >
             {t('pages.class.classList.heading')}
-            Liste des classes
           </Heading>
           <Hide below="sm">
             <Text>Dashboad / Classes / Liste classes</Text>

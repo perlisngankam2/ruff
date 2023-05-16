@@ -184,14 +184,14 @@ const addAnneeAcademique = async () =>{
                 </Box> */}
                 </Center>
                 <Box 
-                    gap={20} 
+                    gap={"110px"} 
                     display={{md:"flex"}}
                 > 
                 {/* FORMULAIRE DE CREATION ET DE MISE A JOUR DE L'ETABLISSEMENT  */}
                     <Box> 
                         <Card 
                             align='center' 
-                            width={"600px"}
+                            width={"500px"}
                             bg="white"
                             mt="40px"
                             ml="50px"
@@ -199,7 +199,7 @@ const addAnneeAcademique = async () =>{
                         >
                             <CardHeader 
                                 fontWeight={"bold"}
-                                ml="-240px"
+                                // ml="-240px"
                                 p="0px"
                                 mt="20px"
                                 fontSize={"xl"}
@@ -213,13 +213,13 @@ const addAnneeAcademique = async () =>{
                                         // mt="5px"
                                         size={"lg"}
                                         type="file"
-                                        width={"540px"}
+                                        // width={"540px"}
                                         textAlign={"center"}
                                         onChange={handleFileChange}
                                     />
                                 </FormControl>
                             </CardBody>
-                            <CardFooter mt="-20px" marginLeft={"400px"}>
+                            <CardFooter mt="-20px" ml="auto">
                                 <Button colorScheme='blue'>
                                     Mettre à jour
                                 </Button>
@@ -227,14 +227,14 @@ const addAnneeAcademique = async () =>{
                         </Card>
                         <Card 
                             align='center' 
-                            width={"600px"}
+                            width={"500px"}
                             bg="white"
                             mt="40px"
                             ml="50px"
                         >
                             <CardHeader 
                                 fontWeight={"bold"}
-                                ml="-240px"
+                                // ml="-240px"
                                 p="0px"
                                 mt="20px"
                                 fontSize={"xl"}
@@ -247,7 +247,7 @@ const addAnneeAcademique = async () =>{
                                     <Input
                                         // size={"lg"}
                                         type="text"
-                                        width={"540px"}
+                                        width={"400px"}
                                         value={name}
                                         name="name"
                                         onChange={(event)=>setName(event.target.value)}
@@ -260,14 +260,14 @@ const addAnneeAcademique = async () =>{
                                     <Input
                                         // size={"lg"}
                                         type="text"
-                                        width={"540px"}
+                                        width={"400px"}
                                     />
                                 </FormControl>
                                 <FormControl mt="17px">
                                     <FormLabel fontSize={"lg"}>Telephone</FormLabel>
                                     <Input
                                         type="phone"
-                                        width={"540px"}
+                                        width={"400px"}
                                         value={phoneNumber}
                                         name="phoneNumber"
                                         onChange={(event)=>setPhoneNumber(event.target.value)}
@@ -277,7 +277,7 @@ const addAnneeAcademique = async () =>{
                                     <FormLabel fontSize={"lg"}>Adresse mail</FormLabel>
                                     <Input
                                         type="text"
-                                        width={"540px"}
+                                        width={"400px"}
                                         value={emailAddress}
                                         name="emailAddress"
                                         onChange={(event) => setEmailAddress(event.target.value)}
@@ -305,7 +305,7 @@ const addAnneeAcademique = async () =>{
                                     <FormLabel fontSize={"lg"}>Localisation</FormLabel>
                                     <Input
                                         type="text"
-                                        width={"540px"}
+                                        width={"400px"}
                                         name="contry"
                                         value={contry}
                                         onChange={(event) => setContry(event.target.value)}
@@ -315,14 +315,14 @@ const addAnneeAcademique = async () =>{
                                     <FormLabel fontSize={"lg"}>Devise</FormLabel>
                                     <Input
                                         type="text"
-                                        width={"540px"}
+                                        width={"400px"}
                                         name= "schoolCurrency"
                                         value={schoolCurrency}
                                         onChange={(event) => setSchoolCurrency(event.target.value)}
                                     />
                                 </FormControl>
                             </CardBody>
-                            <CardFooter mt="-20px" marginLeft={"400px"}>
+                            <CardFooter mt="-20px" marginLeft={"auto"}>
                                 <Button 
                                     colorScheme='blue'
                                     onClick={addShoolParameters}
@@ -339,7 +339,7 @@ const addAnneeAcademique = async () =>{
                         <Box> 
                             <Card 
                                 // align='center' 
-                                width={"600px"}
+                                width={"500px"}
                                 bg="white"
                                 mt="40px"
                             >
@@ -386,19 +386,26 @@ const addAnneeAcademique = async () =>{
                                     </Box>
                                     <Box display={{md:"flex"}} gap={3}> 
                                         <Text fontWeight={"bold"}>Annee academique :</Text>
-                                        <Text>Nom</Text>
+                                        <Text>{parameter.anneeAcademiqueName}</Text>
                                     </Box>
                                     <Box display={{md:"flex"}} gap={3}> 
-                                        <Text fontWeight={"bold"}>Pays :</Text>
+                                        <Text fontWeight={"bold"}>Localisaton:</Text>
                                         <Text>{parameter.contry}</Text>
                                     </Box>
+                                    <Box display={{md:'flex'}} flexDirection={'column'} gap={2}>
+                                        <Text fontWeight={'bold'} textAlign={"center"}>Devise </Text>
+                                        <Text  textAlign={"center"}>
+                                            {parameter.schoolCurrency} 
+                                        </Text>
+                                    </Box>
+
                                     </Flex>
                                     )))}
 
                                 </CardBody>
-                                <CardFooter mt="-20px" marginLeft={"400px"}>
+                                {/* <CardFooter mt="-20px" marginLeft={"400px"}>
                                     <Box><Text textAlign={"center"}>Devise </Text></Box>
-                                </CardFooter>
+                                </CardFooter> */}
                             </Card>
                         </Box>
                         {/* Bouton d'ajout de l'annee acADEMIQUE */}

@@ -238,9 +238,6 @@ if(/^[^\s][a-zA-Z\s]*[^\s]$/.test(firstName) && /^[^\s][a-zA-Z\s]*[^\s]$/.test(l
                       )}
                   </Box>
                 </FormControl>
-
-            
-
                  <FormControl>
                   <FormLabel fontWeight={"normal"}>
                     {t('pages.personnel.ajouterpersonnel.lastName')}
@@ -516,9 +513,9 @@ if(/^[^\s][a-zA-Z\s]*[^\s]$/.test(firstName) && /^[^\s][a-zA-Z\s]*[^\s]$/.test(l
                     <option>
                       {t('pages.personnel.ajouterpersonnel.singleMaritalStatusOption')}
                     </option>
-                    <option>
+                    {/* <option>
                       {t('pages.personnel.ajouterpersonnel.mariedMaritalStatusOption')}
-                    </option>
+                    </option> */}
                     <option>
                       {t('pages.personnel.ajouterpersonnel.mariedMaritalWomanStatusOption')}
                     </option>

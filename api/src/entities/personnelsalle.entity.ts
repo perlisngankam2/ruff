@@ -51,15 +51,15 @@ export class PersonnelSalle {
     @Property({ persist: false })
     get personnelLastName(): string | null {
       return this.personnel? `${this.personnel.getEntity().lastName}` : null;
-  }
+    }
 
   @Field(() => ID, { nullable: true })
     @Property({ persist: false })
     get personnelFunction(): string | null {
       return this.personnel? `${this.personnel.getEntity().fonction}` : null;
-    }
+  }
 
-  @Field(() => ID)
+  @Field(() => ID, { nullable: true })
   @Property({ persist: false })
   get salleId(): string | null {
     return  this.salle? `${this.salle.id}`:null;
@@ -90,7 +90,7 @@ export class PersonnelSalle {
   //   return this.personnel ? `${this.personnel.getEntity().fonction}` : null;
   // }
 
-  @Field(() => ID)
+  @Field(() => ID, { nullable: true })
   @Property({ persist: false })
   get courseId(): string|null {
     return this.course? `${this.course.id}`:null;
@@ -101,7 +101,7 @@ export class PersonnelSalle {
   get courseName(): string | null {
     return this.course? `${this.course.getEntity().title}` : null;
 
-}
+  }
 
 
 }

@@ -70,7 +70,7 @@ const Employee = (props) => {
             rounded="md"
           > 
               <Center>
-                {props.sexe.toLowerCase() === "homme" ? 
+                {props.sexe.toLowerCase() === "masculin" ? 
                  <Avatar
                   size="lg"
                   mt={["10px","10px", "10px" ]}

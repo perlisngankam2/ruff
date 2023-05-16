@@ -12,8 +12,13 @@ import {
   } from "@chakra-ui/react";
   import Link from "next/link";
   import { HiOutlineHome, HiUserGroup } from "react-icons/hi";
-  import { IoMdSchool, IoIosStats, IoIosArrowDown } from "react-icons/io";
-  
+  import { IoMdSchool, IoIosStats, IoIosArrowDown, IoBookSharp } from "react-icons/io";
+  import { GiTakeMyMoney, GiPayMoney } from "react-icons/gi";
+  import { MdOutlineClass, MdLibraryBooks, MdOutlineLibraryBooks, MdOutlinePayments } from "react-icons/md";
+  import {MdOutlineSms} from "react-icons/md";
+  import {FaLevelUpAlt} from "react-icons/fa"
+  import {MdOutlineFamilyRestroom} from "react-icons/md"
+  import {AiFillSetting} from "react-icons/ai"
 
   const PrincipalSidebarLayout = ({ children }) => {
     return (

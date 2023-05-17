@@ -342,7 +342,7 @@ type Salle {
   section: String
   montantPensionSalle: Float
   effectif: Float
-  niveauid: ID
+  levelId: ID
   levelName: ID
 }
 

@@ -41,7 +41,7 @@ function ajoutercategorypersonnel  () {
     const [montant, setMontant] = useState("");
     const { isOpen, onOpen, onClose } = useDisclosure();
     const cancelRef = React.useRef();
-    const [createCategoryPersonnel, {error}] = useMutation(CREATE_CATEGORY_PERSONNEL);
+    const [createCategoryPersonnel, {error}, refetch] = useMutation(CREATE_CATEGORY_PERSONNEL);
     
     const toast = useToast();
     const router = useRouter()
@@ -84,6 +84,7 @@ function ajoutercategorypersonnel  () {
                 query: GET_ALL_Category_Personnel
             }]
         })
+        refetch()
         onClose();
         console.log(catPerData)
         // input.value = '';

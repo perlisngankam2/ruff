@@ -54,6 +54,7 @@ function AjouterCours () {
     const [SubmitCategoryEleve, {error}] = useMutation(CREATE_CATEGORY_ELEVE);
     const {data:dataReductionScolarite, loading} = useQuery(GET_ALL_REDUCTION_SCOLARITE);
     const [createCourse] = useMutation(CREATE_COURSE);
+    const {data:dataCourse, refetch} = useQuery(GET_ALL_COURSES);
 
     // const  addCategoryEleve = async (event, value) => {
     //     event.preventDefault();
@@ -101,6 +102,7 @@ function AjouterCours () {
                 query: GET_ALL_COURSES
             }]
         })
+        refetch()
         onClose();
         toast({
             title: "Ajout d'un cours.",

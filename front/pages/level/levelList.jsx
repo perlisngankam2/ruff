@@ -39,7 +39,7 @@ import {
   import StudentBox from "../../components/atoms/StudentBox";
   import DefaultLayout from "../../components/layouts/DefaultLayout";
   import { GET_ALL_STUDY_LEVEL } from "../../graphql/Queries";
-  import  {DELETE_STUDY_LEVEL} from '../../graphql/Mutation'
+  import  {DELETE_STUDY_LEVEL} from '../../graphql/Mutation';
   import { useMutation, useQuery } from "@apollo/client";
   import {IoIosAdd} from 'react-icons/io';
   import{ FiEdit, FiSearch} from 'react-icons/fi';
@@ -53,7 +53,7 @@ import {
   
     const {data:dataStudyLevel, loading, error} = useQuery(GET_ALL_STUDY_LEVEL);
     const router = useRouter();
-    const cancelRef = React.useRef()
+    const cancelRef = React.useRef();
     const {t} = useTranslation();
     const { isOpen, onToggle, onClose } = useDisclosure();
     const [searchStudyLevel, setSearchStudyLevel] = useState("");

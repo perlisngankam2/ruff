@@ -251,19 +251,20 @@ const Class = () => {
             </Button>
           </Box> 
         </Flex>
-
         {/* FORMULAIRE D'AFFECTATION D'UN PROFESSEUR A UNE CLASSE */}
-        <Box> 
+          <Box> 
             <Box 
               display={{md:"flex"}}
               mt={"30px"}
-              // flexWrap={["wrap", "wrap", "wrap"]}
-              ml={["300px", "400px", "700px", "1020px"]}
-              gap={1}
+              ml={"auto"}
               flexDirection={"column"}
-              // align={"rigth"}
+              // flexWrap={["wrap", "wrap", "wrap"]}
             > 
-              <Flex gap={1}> 
+              <Flex 
+                gap={1} 
+                ml={'auto'} 
+              // w={"full"}
+              > 
                 <Button 
                   mb={5}
                   fontSize="14px"
@@ -284,13 +285,15 @@ const Class = () => {
                   bg={"colors.greencolor"}
                   /> */}
               </Flex>
-              <Flex gap={1}> 
+              <Flex 
+                gap={1}
+                ml={'auto'}
+               > 
                 <Button 
                   mb={5}
                   fontSize="14px"
                   color = "colors.quinzaine"
                   onClick={onOpennes}
-
                 >
                   Fixer une pension
                 </Button>

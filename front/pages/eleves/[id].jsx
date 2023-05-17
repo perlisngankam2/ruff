@@ -234,7 +234,7 @@ const {data:dataResteFeesToPayByStudent} = useQuery(GET_RESTE_PENSION_A_PAYER_BY
   // );
 
   //LISTE DES TRANCHES QUI ONT DEJA ETE SOLDE PAR CHAQUE ELEVE
-  const {data:dataTrancheCompleteByStudent} = useQuery(GET_ALL_TRANCHE_COMPLETE_BY_STUDENT,
+  const {data:dataTrancheCompleteByStudent, refetch} = useQuery(GET_ALL_TRANCHE_COMPLETE_BY_STUDENT,
     {
       variables: {studentid: router.query.id} 
     }
@@ -280,16 +280,6 @@ const {data:dataResteFeesToPayByStudent} = useQuery(GET_RESTE_PENSION_A_PAYER_BY
     const {data:dataTrancheById} = useQuery(GET_TRANCHE_PENSION_BY_ID);
     const [createTrancheStudent] = useMutation(CREATE_TRANCHE_STUDENT);
     const [createFeesAvanceTranche] = useMutation(CREATE_AVANCE_TRANCHE
-    
-    //  { 
-    //   onCompleted: (data) => {
-    //     console.log(data);
-    //   },
-    //   onError: (error) =>{
-    //     console.log(error);
-    //   }
-
-    //  }
     );
 //     const [paySchoolFees] = useMutation(CREATE_SCOLARITE_TRANCHE_STUDENT);
        
@@ -506,6 +496,7 @@ const {data:dataResteFeesToPayByStudent} = useQuery(GET_RESTE_PENSION_A_PAYER_BY
                       }
                     }
                   })
+                  refetch()
                   toast({
                     title: `Tranche : ${ tranche.label } partiellement soldé, reste a payer : ${ (reste - montantSaisie) } `,
                     description: " paye avec succes.",
@@ -524,6 +515,7 @@ const {data:dataResteFeesToPayByStudent} = useQuery(GET_RESTE_PENSION_A_PAYER_BY
                       }
                     }
                   })
+                  refetch()
                   toast({
                     title: `Tranche : ${ tranche.label } soldé `,
                     description: " paye avec succes.",
@@ -545,6 +537,7 @@ const {data:dataResteFeesToPayByStudent} = useQuery(GET_RESTE_PENSION_A_PAYER_BY
                       }
                     }
                   })
+                  refetch()
                   toast({
                     title: `Tranche : ${ tranche.label } partiellement soldé, reste a payer : ${ (trancheMontant - montantSaisie) } `,
                     description: " paye avec succes.",
@@ -564,6 +557,7 @@ const {data:dataResteFeesToPayByStudent} = useQuery(GET_RESTE_PENSION_A_PAYER_BY
                       }
                     }
                   })
+                  refetch()
                   toast({
                     title: `Tranche : ${ tranche.label } soldé,  `,
                     description: " paye avec succes.",
@@ -653,6 +647,7 @@ const {data:dataResteFeesToPayByStudent} = useQuery(GET_RESTE_PENSION_A_PAYER_BY
                   }
                 })
               })
+              refetch()
               onClosseParent();
               toast({
                 title: `Vous avez affecte un parent a cet eleve`,
@@ -725,7 +720,7 @@ const {data:dataResteFeesToPayByStudent} = useQuery(GET_RESTE_PENSION_A_PAYER_BY
             >
               Payer la Scolarite
             </Button>
-            }
+           } 
           </Center>
           <Center>
             <Button

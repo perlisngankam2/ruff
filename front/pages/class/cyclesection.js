@@ -220,7 +220,7 @@ const cyclesection = () => {
                 <Thead background="colors.secondary">
                 <Tr>
                     <Th>Nom</Th>
-                    <Th>Description</Th>
+                    {/* <Th>Description</Th> */}
                     <Th>Actions</Th>
                 </Tr>
                 </Thead>
@@ -343,7 +343,6 @@ const CycleElement = ({cycle, index}) =>{
     onClose();
   } 
 
-  
   return (
       <Tr key={index}>
         <Td p={0} pl={6}>{cycle.name}</Td>
@@ -449,7 +448,7 @@ const SectionElement = ({section, index}) =>{
   return(
     <Tr key={index}>
       <Td p={0} pl={6}>{section.name}</Td>
-      <Td p={0} pl={6}>{section.description}</Td>
+      {/* <Td p={0} pl={6}>{section.description}</Td> */}
       <Td p={0} pl={3}>
       <Box display="flex">
         {/* <Link 

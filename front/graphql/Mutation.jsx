@@ -84,7 +84,7 @@ export const CREATE_SALLE = gql `
             section
             montantPensionSalle
             effectif
-            niveauid
+            levelId
             levelName
         }
     }
@@ -379,7 +379,7 @@ export const DELETE_SALLE = gql `
             section
             montantPensionSalle
             effectif
-            niveauid
+            levelId
             levelName
         }
     }
@@ -472,7 +472,7 @@ export const UPDATE_SALLE = gql `
             section
             montantPensionSalle
             effectif
-            niveauid
+            levelId
             levelName
         }
     }

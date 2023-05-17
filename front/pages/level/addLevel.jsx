@@ -47,7 +47,7 @@ import { getStaticPropsTranslations } from "../../types/staticProps";
     const {data:dataCycle} = useQuery(GET_ALL_CYCLE);
     const [updateStudyLevel] = useMutation(UPDATE_LEVEL)
 
-    const {data:dataLevelById} = useQuery(GET_LEVEL_BY_ID, {
+    const {data:dataLevelById, refetch} = useQuery(GET_LEVEL_BY_ID, {
       variables: {
         id: router.query.id
       }
@@ -99,7 +99,8 @@ import { getStaticPropsTranslations } from "../../types/staticProps";
            refetchQueries:[{
              query: GET_ALL_STUDY_LEVEL
            }]
-       })
+       }), 
+       refetch()
        toast({
          title: "Creation d'un niveau d'etude.",
          description: "Le niveau a ete créée avec succes.",

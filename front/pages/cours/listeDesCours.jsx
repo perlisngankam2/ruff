@@ -74,7 +74,7 @@ import { getStaticPropsTranslations } from "../../types/staticProps";
   
     //  const {data:dataCategoryEleve} = useQuery(GET_ALL_Category_Eleve);
     //  const [deleteCategoryStudent] = useMutation(DELETE_CATEGORY_STUDENT);
-    const {data:dataCourse} = useQuery(GET_ALL_COURSES);
+    const {data:dataCourse, refetch} = useQuery(GET_ALL_COURSES);
     const [deleteCourse] = useMutation(DELETE_COURSE);
 
       useEffect (() => {
@@ -88,6 +88,7 @@ import { getStaticPropsTranslations } from "../../types/staticProps";
            query: GET_ALL_COURSES
          }]
        })
+       refetch();
        onClose();
      }
   

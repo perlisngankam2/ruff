@@ -54,7 +54,6 @@ export class SalleService {
           }
         )
       
-        
         await this.salleRepository.persistAndFlush(salle)
         return salle
       }
@@ -62,16 +61,16 @@ export class SalleService {
       findByOne(filters: FilterQuery<Salle>): Promise<Salle | null> {
         return this.salleRepository.findOne(filters);
       }
+
       findById(id:string){
         return this.salleRepository.findOne(id)
       }
     
-     async  getAll(): Promise<Salle[]> {
-      const salles= this.salleRepository.findAll({
-        populate:['cycle','niveau','niveau.cycle.section']
-      })
-      return salles
-
+      async  getAll(): Promise<Salle[]> {
+        const salles= this.salleRepository.findAll({
+          populate:['cycle','niveau','niveau.cycle.section']
+        })
+        return salles
       }
 
       async salleAnglophoneSection(){

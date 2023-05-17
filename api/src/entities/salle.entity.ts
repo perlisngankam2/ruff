@@ -1,15 +1,15 @@
 /* eslint-disable prettier/prettier */
 import {
-    Collection,
-    Entity,
-    Enum,
-    IdentifiedReference,
-    ManyToOne,
-    OneToMany,
-    OneToOne,
-    PrimaryKeyType,
-    Property,
-  } from '@mikro-orm/core';
+  Collection,
+  Entity,
+  Enum,
+  IdentifiedReference,
+  ManyToOne,
+  OneToMany,
+  OneToOne,
+  PrimaryKeyType,
+  Property,
+} from '@mikro-orm/core';
 import { Field, ID, ObjectType, registerEnumType } from '@nestjs/graphql';
 import { PrimaryKeyUuid } from '../decorators/PrimaryKeyUuid.decorator';
 import { FraisExamen } from './frais-exament.entity';
@@ -19,103 +19,105 @@ import { Pension } from './pension.entity';
 import { PersonnelSalle } from './personnelsalle.entity';
 import { Personnel } from './pesonnel.entity';
 import { Student } from './student.entity';
-import { Cycle } from './cycle.entity'; 
+import { Cycle } from './cycle.entity';
 import { PensionSalle } from './pensionsalle.entity';
 import { AnneeAccademique } from './annee-accademique.entity';
 
 @Entity()
 @ObjectType()
-export class Salle{
-    @Field(() => ID)
-    @PrimaryKeyUuid()
-    id!: string;
-  
-    @Field({ nullable: true })
-    @Property({nullable:true})
-    name!: string;
+export class Salle {
+  @Field(() => ID)
+  @PrimaryKeyUuid()
+  id!: string;
 
-    @Field({ nullable: true })
-    @Property({nullable:true})
-    section!: string;
+  @Field({ nullable: true })
+  @Property({ nullable: true })
+  name!: string;
 
-    @Field({nullable: true})
-    @Property({nullable: true})
-    montantPensionSalle!: number;
+  @Field({ nullable: true })
+  @Property({ nullable: true })
+  section!: string;
 
-    @Field({ nullable: true })
-    @Property({nullable:true})
-    effectif!: number;
+  @Field({ nullable: true })
+  @Property({ nullable: true })
+  montantPensionSalle!: number;
 
-    @Property({ onCreate: () => new Date() })
-    createdAt = new Date();
+  @Field({ nullable: true })
+  @Property({ nullable: true })
+  effectif!: number;
 
-// elation entities 
-    @ManyToOne(() => NiveauEtude, {
-        nullable: true,
-        onDelete: 'CASCADE',
-      })
-    niveau!: IdentifiedReference<NiveauEtude> | null;
+  @Property({ onCreate: () => new Date() })
+  createdAt = new Date();
 
-    @ManyToOne(() => Cycle, {
+  // elation entities
+  @ManyToOne(() => NiveauEtude, {
+    nullable: true,
+    onDelete: 'CASCADE',
+  })
+  niveau!: IdentifiedReference<NiveauEtude> | null;
+
+  @ManyToOne(() => Cycle, {
+    nullable: true,
+    onDelete: 'CASCADE',
+  })
+  cycle!: IdentifiedReference<Cycle> | null;
+
+  @ManyToOne(() => AnneeAccademique, {
+    nullable: true,
+    onDelete: 'CASCADE',
+  })
+  anneeAcademique!: IdentifiedReference<AnneeAccademique> | null;
+
+  // @OneToOne(() => Pension, (pension) => pension.salle, {
+  //     owner: false,
+  //     nullable: true,
+  //   })
+  // pension!: IdentifiedReference<Pension> | null;
+
+  @OneToOne(() => FraisExamen, (fraisExamen) => fraisExamen.salle, {
+    owner: false,
+    nullable: true,
+  })
+  fraisExamen!: IdentifiedReference<FraisExamen> | null;
+
+  @OneToOne(
+    () => FraisInscription,
+    (fraisInscription) => fraisInscription.salle,
+    {
+      owner: false,
       nullable: true,
-      onDelete: 'CASCADE',
-    })
-    cycle!: IdentifiedReference<Cycle> | null;
-    @ManyToOne(() => AnneeAccademique, {
-      nullable: true,
-      onDelete: 'CASCADE',
-    })
-    anneeAcademique!: IdentifiedReference<AnneeAccademique> | null;
+    },
+  )
+  fraisInscription!: IdentifiedReference<FraisInscription> | null;
 
-    
-    // @OneToOne(() => Pension, (pension) => pension.salle, {
-    //     owner: false,
-    //     nullable: true,
-    //   })
-    // pension!: IdentifiedReference<Pension> | null;
+  @OneToMany(() => Personnel, (teacher) => teacher.salle)
+  teacher = new Collection<Personnel>(this);
 
-    @OneToOne(() => FraisExamen, (fraisExamen) => fraisExamen.salle, {
-        owner: false,
-        nullable: true,
-      })
-    fraisExamen!: IdentifiedReference<FraisExamen> | null;
+  @OneToMany(() => Student, (student) => student.salle)
+  student = new Collection<Student>(this);
 
-    @OneToOne(() => FraisInscription, (fraisInscription) => fraisInscription.salle, {
-        owner: false,
-        nullable: true,
-      })
-    fraisInscription!: IdentifiedReference<FraisInscription> | null;
+  @OneToMany(() => PersonnelSalle, (personnelsalle) => personnelsalle.salle)
+  personnelsalle = new Collection<PersonnelSalle>(this);
 
-    @OneToMany(()=>Personnel, (teacher) => teacher.salle)
-    teacher = new Collection<Personnel>(this)
+  @OneToMany(() => PensionSalle, (pensionsalle) => pensionsalle.salle)
+  pensionsalle = new Collection<PensionSalle>(this);
+  expectedAmount: any;
 
-    @OneToMany(()=>Student, (student) => student.salle)
-    student = new Collection<Student>(this)
+  @Field(() => ID, { nullable: true })
+  @Property({ persist: false })
+  get levelId() {
+    return this.niveau? `${this.niveau.id}` : null;
+  }
 
-    @OneToMany(()=>PersonnelSalle, (personnelsalle) => personnelsalle.salle)
-    personnelsalle = new Collection<PersonnelSalle>(this)
-
-    @OneToMany(()=>PensionSalle, (pensionsalle) => pensionsalle.salle)
-    pensionsalle = new Collection<PensionSalle>(this)
-    expectedAmount: any;
-
-
-    @Field(() => ID, {nullable: true})
-    @Property({ persist: false })
-    get niveauid() {
-      return this.niveau? `${this.niveau.id}` : null;
-    }
-
-    @Field(() => ID, {nullable: true})
-    @Property({ persist: false })
-    get levelName() {
+  @Field(() => ID, { nullable: true })
+  @Property({ persist: false })
+  get levelName() {
     return this.niveau.getEntity? `${this.niveau.getEntity().name}` : null;
   }
 
-    // @Field(() => ID)
-    // @Property({ persist: false })
-    // get cycleid() {
-    //   return `${this.cycle.id}`;
-    // }
-
+  // @Field(() => ID)
+  // @Property({ persist: false })
+  // get cycleid() {
+  //   return `${this.cycle.id}`;
+  // }
 }

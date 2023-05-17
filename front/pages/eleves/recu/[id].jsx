@@ -312,8 +312,6 @@ function nombreEnLettres(montant) {
     const lettreLastStudentPaiement =nombreEnLettres(lastStudentPaiement)
     console.log(lettreLastStudentPaiement)
 
-
-   
     return ( 
         <DefaultLayout>
             

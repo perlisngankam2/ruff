@@ -56,7 +56,7 @@ const AjouterPersonnel = () => {
   const toast = useToast();
   const { t } = useTranslation();
   const router = useRouter();
-  const {data} = useQuery(GET_ALL_USER);
+  const {data, refetch} = useQuery(GET_ALL_USER);
 
 //propriete manquante//
   // firstName
@@ -131,10 +131,7 @@ const AjouterPersonnel = () => {
      console.log(situationMatrimonial);
      console.log(childNumber);
      console.log(userID)
-
-     
   setIsInvalidNom(firstName !== "" && !/^[^\s][a-zA-Z\s]*[^\s]$/.test(firstName))
-
   setIsInvalidPrenom(lastName !== "" && !/^[^\s][a-zA-Z\s]*[^\s]$/.test(lastName))
 
 if(/^[^\s][a-zA-Z\s]*[^\s]$/.test(firstName) && /^[^\s][a-zA-Z\s]*[^\s]$/.test(lastName)){
@@ -160,8 +157,10 @@ if(/^[^\s][a-zA-Z\s]*[^\s]$/.test(firstName) && /^[^\s][a-zA-Z\s]*[^\s]$/.test(l
           query: GET_ALL_PERSONNELS
         }]
       }}, 
+
       console.log('hh')
       ) 
+      refetch();
       console.log(data)
       toast({
         title: "Creation d'un personnel.",

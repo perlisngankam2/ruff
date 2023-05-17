@@ -124,11 +124,11 @@
                 <Box as="span">Categorie élèves</Box>
               </Link>
             </AccordionPanel>
-            <AccordionPanel pb={1} _hover={{background:"rgba(0,0,0,0.16)"}}>
+            {/* <AccordionPanel pb={1} _hover={{background:"rgba(0,0,0,0.16)"}}>
               <Link href="/eleves/reduction/reductionStudent">
                 <Box as="span">Reduction scolarite</Box>
               </Link>
-            </AccordionPanel>
+            </AccordionPanel> */}
           </AccordionItem>
           <AccordionItem> 
             <AccordionButton pl={0} >

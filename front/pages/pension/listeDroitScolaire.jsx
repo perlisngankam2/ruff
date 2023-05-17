@@ -106,7 +106,7 @@ const Pension = () => {
     const [createAnneeAccademique, {loading, error}] = useMutation(CREATE_ANNEE_ACADEMIQUE);
     const {data:dataAnneeAcademique} = useQuery(GET_ALL_ANNEE_ACADEMIQUE);
     const {data:dataFraisInscription} = useQuery(GET_ALL_FRAIS_INSCRIPTION);
-    const {data:dataTranchePension} = useQuery(GET_ALL_TRANCHE_PENSION);
+    const {data:dataTranchePension, refetch} = useQuery(GET_ALL_TRANCHE_PENSION);
     const {data:dataClasse} = useQuery(GET_ALL_CLASS);
     const [createdFraisInscription] = useMutation(CREATE_FRAIS_INSCRIPTION);
     const [createTranchePension] = useMutation(CREATE_TRANCHE_PENSION);
@@ -156,6 +156,7 @@ const Pension = () => {
           }]
         }
       })
+      refetch()
       onClose();
       toast({
         title: "Creation frais inscription.",

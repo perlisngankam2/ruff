@@ -80,7 +80,7 @@ const  SectionCreate =  () => {
             variables: {
                 section: {
                     name: name,
-                    description: description
+                    // description: description
                 }
             },
             refetchQueries:[{
@@ -156,7 +156,7 @@ const  SectionCreate =  () => {
                                         value={name}
                                      />
                                 </FormControl>
-                                <FormControl mt="15px">
+                                {/* <FormControl mt="15px">
                                     <FormLabel>
                                     {t('pages.class.sectionCreate.description')} 
                                     </FormLabel>
@@ -169,7 +169,7 @@ const  SectionCreate =  () => {
                                         ref={node => {input = node;}}
                                         value={description}
                                     />
-                                </FormControl>
+                                </FormControl> */}
                             </Box>
                             </AlertDialogBody>
                             <AlertDialogFooter>

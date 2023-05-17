@@ -36,7 +36,8 @@ import {
   AlertDialogBody,
   AlertDialogFooter,
   InputRightElement,
-  AlertDialogCloseButton
+  AlertDialogCloseButton,
+  Show
 } from "@chakra-ui/react";
 // import Link from "../../components/atoms/Link"
 import React from "react";
@@ -61,10 +62,13 @@ import { getStaticPropsTranslations } from "../../types/staticProps";
 import { 
   GET_ALL_STUDENT, 
   GET_STUDENT_BY_ID,
-  GET_ALL_CLASS
+  GET_ALL_CLASS,
+  GET_PERSONNEL_BY_USERID
+
 } from "../../graphql/Queries";
 import { DELETE_STUDENT } from "../../graphql/Mutation";
 import { useMutation, useQuery } from "@apollo/client";
+import { useAccount } from "../../contexts/account/Account";
 
 // const VARIABLE = "pearl";
 
@@ -93,7 +97,14 @@ const Eleves = () => {
       //   offset: (currentPage - 1) * itemsPerPage,
       // },}
     );
+    const { account, loaded } = useAccount();
 
+    //infos du personnel connete
+    const { data: personnelData, called} = useQuery(GET_PERSONNEL_BY_USERID,
+       {
+          variables:{ userid: account?.id }
+      }
+    )
     const {data:dataClasse} = useQuery(GET_ALL_CLASS);
   
     const search = (data) => {
@@ -265,69 +276,92 @@ const Eleves = () => {
                     })
                     .map((student, index) =>(
                       <Tr key={index}>
-                        <Td >{student.firstname}</Td>
-                        <Td >{student.lastname}</Td>
-                        <Td >{student.salleName}</Td>
+                        <Td p={0} pl={3}>{student.firstname}</Td>
+                        <Td p={0} pl={6} >{student.lastname}</Td>
+                        <Td p={0} pl={6}>{student.salleName}</Td>
                         {/* <Td borderColor={'#C6B062'}>{student.classe}</Td> */}
                         {/* <Td borderColor={'#C6B062'}>{student.sex}</Td> */}
-                        {/* <Td borderColor={'#C6B062'}>
-                            <Avatar 
-                                size='xs' 
-                                name='Dan Abrahmov' 
-                                src='https://bit.ly/dan-abramov'
-                            /> 
-                        </Td> */}
-                        <Td >
-                          <ButtonGroup 
-                            size='sm' 
-                            isAttached 
-                            variant='link' 
-                            colorScheme={'teal'}
+                        <Td p={0} pl={6}>
+                          <Box display={{md:'flex'}} gap={3}> 
+                            <ButtonGroup 
+                              size='sm' 
+                              isAttached 
+                              variant='link' 
+                              colorScheme={'teal'}
                             >
-                              <Button
-                              >
-                                <Link
-                                 href= {{
-                                  pathname: Routes.EleveDetails?.path || '',
-                                  query: {id: student.id}
-                                  }}
+                                <Button
                                 >
-                                 {t("pages.eleves.listeDesEleves.details")}
-                                </Link>
-                              </Button>
-                            </ButtonGroup> 
+                                  <Link
+                                  href= {{
+                                    pathname: Routes.EleveDetails?.path || '',
+                                    query: {id: student.id}
+                                    }}
+                                  >
+                                  {t("pages.eleves.listeDesEleves.details")}
+                                  </Link>
+                                </Button>
+                              </ButtonGroup> 
+                           <Box> 
+                           {/* { 
+                            (personnelData?.getpersonnelbyaccount.fonction==="econome") || 
+                            (account?.role==="ADMIN") || 
+                            (personnelData?.getpersonnelbyaccount.fonction==="manager") &&  */}
+                              <Box> 
+                                <Link 
+                                    href={{
+                                      pathname: Routes.EleveEdit?.path || '',
+                                      query:{id: student.id}
+                                    }}
+                                    >
+                                      <Icon
+                                      as={FiEdit}
+                                      boxSize="40px"
+                                      p="3"
+                                      // bg="blue.100"
+                                      rounded="full"
+                                      _hover={{background:"red.100"}}
+                                    />
+                                  </Link>
+                                    {/* {
+                                      (account?.role==="ADMIN")||
+                                      (personnelData?.getpersonnelbyaccount.fonction==="econome") ||
+                                      (personnelData?.getpersonnelbyaccount.fonction==="fondateur")
+                                        && */}
+                                    { 
+                                      personnelData?.getpersonnelbyaccount.fonction==="principal"?
+                                      <Hide> 
+                                        <Icon
+                                          as={MdDelete}
+                                          boxSize="42px"
+                                          p="3"
+                                          rounded="full"
+                                          color="colors.quaternary"
+                                          _hover={{background:"blue.100"}}
+                                          onClick={onToggle}
+                                        />
+                                      </Hide>
+                                      :
+                                      <Show> 
+                                        <Icon
+                                          as={MdDelete}
+                                          boxSize="42px"
+                                          p="3"
+                                          rounded="full"
+                                          color="colors.quaternary"
+                                          _hover={{background:"blue.100"}}
+                                          onClick={onToggle}
+                                        />
+                                      </Show>
+                                      }
+
+
+                                    {/* } */}
+                            </Box> 
+                              {/* } */}
+                              </Box>
+                            </Box>
                           </Td>
-                            <Box 
-                              display={"flex"}
-                              ml={['-105px', '-105px', '-105px', '-105px']} 
-                              mt={['8px', '8px', '8px', '8px']}
-                            >
-                              <Link 
-                                href={{
-                                  pathname: Routes.EleveEdit?.path || '',
-                                  query:{id: student.id}
-                                }}
-                                >
-                                  <Icon
-                                  as={FiEdit}
-                                  boxSize="40px"
-                                  p="3"
-                                  // bg="blue.100"
-                                  rounded="full"
-                                  _hover={{background:"red.100"}}
-                                />
-                              </Link>
-                              <Box href="#" mt="-3px">
-                                <Icon
-                                  as={MdDelete}
-                                  boxSize="42px"
-                                  p="3"
-                                  rounded="full"
-                                  color="colors.quaternary"
-                                  _hover={{background:"blue.100"}}
-                                  onClick={onToggle}
-                                />
-                                <Box> 
+                             <Box> 
                                   <AlertDialog
                                     isOpen={isOpen}
                                     leastDestructiveRef={cancelRef}
@@ -371,8 +405,8 @@ const Eleves = () => {
                                       </AlertDialogContent>
                                     </AlertDialogOverlay>
                                   </AlertDialog>
-                                </Box>
-                              </Box>
+                                {/* </Box> */}
+                              {/* </Box> */}
                             </Box> 
                         </Tr>
                       // </Link>

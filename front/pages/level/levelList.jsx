@@ -213,7 +213,8 @@ import {
                           >
                             {niveauEtude.cycleName}
                           </Td> 
-                          <Td p={0} >
+                          <Td p={0} pl={3}>
+
                             {/* <ButtonGroup 
                               size='sm' 
                               isAttached 
@@ -226,11 +227,9 @@ import {
                                   >Details</Links>
                                 </Button>
                               </ButtonGroup>  */}
-                            </Td>
-                              <Box 
+                                 <Box 
                                 display="flex"
-                                ml={['-140px', '-140px', '-140px', '-140px']} 
-                                 mt={['8px', '8px', '8px', '8px']}
+                               
                                >
                                   <Link 
                                     href= {{
@@ -300,6 +299,8 @@ import {
                                     </Box>
                                     </Box>
                               </Box> 
+                            </Td>
+                           
                           </Tr>
                     ))
                   )} 

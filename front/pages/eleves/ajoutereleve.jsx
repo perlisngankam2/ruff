@@ -19,6 +19,8 @@ import DefaultLayout from "../../components/layouts/DefaultLayout";
 import { useMutation, useQuery } from "@apollo/client";
 import { getStaticPropsTranslations } from "../../types/staticProps";
 import { useTranslation } from "next-i18next";
+import { GET_PERSONNEL_BY_USERID } from "../../graphql/Queries";
+import { useAccount } from "../../contexts/account/Account";
 
 
 import { 
@@ -77,6 +79,13 @@ const AjouterEleve = () => {
   const [ createStudent, error] = useMutation(CREATE_STUDENT)
   const [updateStudent] = useMutation(UPDATE_STUDENT);
   const {data:dataSection} = useQuery(GET_ALL_SECTION);
+
+  const { account, loaded } = useAccount();
+  const { data: personnelData, called, loading } = useQuery(GET_PERSONNEL_BY_USERID,
+     {
+        variables:{ userid: account?.id }
+    }
+  )
   const {data:dataStudentById} = useQuery(GET_STUDENT_BY_ID,
     {
       variables:{id: router.query.id}
@@ -96,7 +105,7 @@ const [student, setStudent] = useState({
   birthPlace: "",
   sex: "",
   adress: "",
-  transport: "",
+  // transport: "",
   categoryStudentId: "",
   fatherFirstName: "",
   fatherLastName: "",
@@ -127,7 +136,6 @@ useEffect(() => {
       dateOfBirth: dataStudentEdit.dateOfBirth,
       sex: dataStudentEdit.sex,
       adress: dataStudentEdit.adress,
-      transport: dataStudentEdit.transport,
       categoryStudentId: dataStudentEdit.categoryStudentId,
       fatherFirstName: dataStudentEdit.fatherFirstName,
       fatherLastName: dataStudentEdit.fatherLastName,
@@ -169,7 +177,6 @@ const matricule = `GSBAB23${randomString}`;
           birthPlace: student.birthPlace,
           sex: student.sex,
           adress: student.adress,
-          transport: student.transport,
           categoryStudentId: student.categoryStudentId,
           salleId: student.salleId,
           fatherFirstName: student.fatherFirstName,
@@ -210,7 +217,6 @@ const matricule = `GSBAB23${randomString}`;
           birthPlace: student.birthPlace,
           sex: student.sex,
           adress: student.adress,
-          transport: student.transport,
           categoryStudentId: student.categoryStudentId,
           salleId: student.salleId,
           fatherFirstName: student.fatherFirstName,
@@ -248,7 +254,6 @@ const matricule = `GSBAB23${randomString}`;
     setDateOfBirth("");
     setSex("");
     setAdress("");
-    setTransport("");
     // categoryStudentId("");
     setSalleId("");
     setFatherFirstName("");
@@ -346,6 +351,7 @@ const matricule = `GSBAB23${randomString}`;
                       <FormLabel mb="-5px">Nom</FormLabel>
                     <Input
                       // placeholder="Nom de l'élève"
+                      isRequired
                       value={student.firstname}
                       onChange={(e) => setStudent({...student, firstname:e.target.value})}
                       name="firstname"
@@ -357,10 +363,12 @@ const matricule = `GSBAB23${randomString}`;
                       <FormLabel mb="-5px">Prenom</FormLabel>
                     <Input
                       // placeholder="Prenom"
+                      isRequired
                       name="firstname"
                       value={student.lastname}
                       onChange={(e) => setStudent({...student, lastname:e.target.value})}
                       variant="flushed"
+
                     />
                   </FormControl>
                   {/* <Select
@@ -395,6 +403,7 @@ const matricule = `GSBAB23${randomString}`;
                       value={student.dateOfBirth}
                       onChange={(e) => setStudent({...student, dateOfBirth:e.target.value})}
                       variant="flushed"
+                      isRequired
                     />
                   </FormControl>
                    <FormControl>
@@ -405,6 +414,7 @@ const matricule = `GSBAB23${randomString}`;
                         value={student.birthPlace}
                         onChange={(e) => setStudent({...student, birthPlace:e.target.value})}
                         variant="flushed"
+                        isRequired
                       />
                     </FormControl>
                
@@ -414,7 +424,7 @@ const matricule = `GSBAB23${randomString}`;
                 mt="8"
                 >
                 <FormControl>
-                    <FormLabel mb="-5px">Adresse</FormLabel>
+                    <FormLabel >Adresse</FormLabel>
                     <Input
                       type="text"
                       name="adress"
@@ -431,6 +441,7 @@ const matricule = `GSBAB23${randomString}`;
                       onChange={(e) => setStudent({...student, sex:e.target.value})}
                       variant="flushed"
                       placeholder="Sexe"
+                      isRequired
                     >
                       <option>Masculin</option>
                       <option>Feminin</option>
@@ -442,7 +453,7 @@ const matricule = `GSBAB23${randomString}`;
                   gap={5} 
                   mt="8"
                  >
-                  <FormControl>
+                  {/* <FormControl>
                         <FormLabel>Transport</FormLabel>
                         <Select
                           placeholder="Transport"
@@ -454,7 +465,30 @@ const matricule = `GSBAB23${randomString}`;
                       <option>Oui</option>
                       <option>Non</option>
                     </Select>
-                  </FormControl>
+                  </FormControl> */}
+                    <FormControl>
+                  <FormLabel>Classe</FormLabel>
+                  <Select
+                    placeholder="Classe"
+                    name="salleId"
+                    value={student.salleId}
+                    onChange={(e) => setStudent({...student, salleId:e.target.value})}
+                    variant="flushed"
+                    isRequired
+                  >
+                    { 
+                      dataClass && (
+                        dataClass.findAllsalle.map((classe, index) => (
+                            <option 
+                              selected={student.salleId == classe.id? "selected": ""}
+                             value={classe.id} key={index}
+                            >
+                              {classe.name}
+                            </option>
+                        ))
+                    )}
+                  </Select>
+                </FormControl>
                   <FormControl>
                       <FormLabel>Categrorie</FormLabel>
                       <Select
@@ -477,30 +511,9 @@ const matricule = `GSBAB23${randomString}`;
                         )}
                       </Select>
                     </FormControl>
-                </Flex>
+                {/* </Flex>
                 <Flex mt={"20px"}>
-                <FormControl>
-                  <FormLabel>Classe</FormLabel>
-                  <Select
-                    placeholder="Classe"
-                    name="salleId"
-                    value={student.salleId}
-                    onChange={(e) => setStudent({...student, salleId:e.target.value})}
-                    variant="flushed"
-                  >
-                    { 
-                      dataClass && (
-                        dataClass.findAllsalle.map((classe, index) => (
-                            <option 
-                              selected={student.salleId == classe.id? "selected": ""}
-                             value={classe.id} key={index}
-                            >
-                              {classe.name}
-                            </option>
-                        ))
-                    )}
-                  </Select>
-                </FormControl>
+               */}
                 </Flex>
                 {/* <Flex>
                     <FormControl>
@@ -801,8 +814,11 @@ const matricule = `GSBAB23${randomString}`;
                   variant="solid"
                   type="submit"
                   onClick={HandleClick}
+                  isDisabled={personnelData?.getpersonnelbyaccount.fonction==="principal" || 
+                  personnelData?.getpersonnelbyaccount.fonction==="manager"
+                  }
                 >
-                  Submit
+                  Enregistrer
                 </Button>
               ) : null}
             </Flex>

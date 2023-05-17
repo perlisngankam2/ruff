@@ -74,7 +74,6 @@ export const GET_ALL_STUDENT =  gql `
             dateOfBirth
             sex
             adress
-            transport
             fatherFirstName
             fatherLastName
             fatherPhoneNumber
@@ -217,7 +216,6 @@ export const GET_STUDENT_BY_ID =  gql `
             birthPlace
             sex
             adress
-            transport
             fatherFirstName
             fatherLastName
             fatherPhoneNumber

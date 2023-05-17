@@ -58,7 +58,7 @@ import {
    GET_ALL_TRANCHE_PENSION,
    GET_ALL_CLASS,
   } from "../../graphql/Queries";
-import { FiSearch } from "react-icons/fi";
+import { FiEdit, FiSearch } from "react-icons/fi";
 import ReactPaginate from "react-paginate";
 import { setPriority } from "os";
 
@@ -433,8 +433,8 @@ const Pension = () => {
                         <Td p={0} pl={4}>{tranche.priority}</Td>
                         <Td p={0} pl={4}>{tranche.dateLine}</Td>
                         {/* <Td >Monntant</Td>  */}
-                        <Td p={0}>
-                            <ButtonGroup 
+                        <Td p={0} pl={2}>
+                            {/* <ButtonGroup 
                               size='sm' 
                               isAttached 
                               variant='link' 
@@ -445,13 +445,22 @@ const Pension = () => {
                                     href='/eleves/details'
                                   >Details</Link>
                                 </Button>
-                              </ButtonGroup>  
-                            </Td>
+                              </ButtonGroup>   */}
                               <Box 
                                 display="flex"
-                                ml={['-140px', '-140px', '-140px', '-140px']} 
-                                 mt={['8px', '8px', '8px', '8px']}
                                >
+                                <Link 
+                                // href="/class/updateclass"
+                                  href= {'#'}
+                                >
+                                  <Icon
+                                    as={FiEdit}
+                                    boxSize="40px"
+                                    p="3"
+                                    rounded="full"
+                                    _hover={{background:"red.100"}}
+                                  />
+                                </Link>
                                   <Box href="#" mt="-3px">
                                     <Icon
                                       as={MdDelete}
@@ -508,6 +517,8 @@ const Pension = () => {
                                     </Box>
                                     </Box>
                               </Box> 
+                            </Td>
+                              
                             </Tr>
 
 

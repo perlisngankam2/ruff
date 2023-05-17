@@ -10,7 +10,8 @@ import {
   import Link from "next/link";
   import { HiOutlineHome, HiUserGroup } from "react-icons/hi";
   import { IoMdSchool, IoIosStats, IoIosArrowDown } from "react-icons/io";
-  import { GiTakeMyMoney } from "react-icons/gi";
+  import { GiPayMoney, GiTakeMyMoney } from "react-icons/gi";
+import { MdOutlineClass } from "react-icons/md";
 
   const EconomeSidebarLayout = ({ children }) => {
     return (

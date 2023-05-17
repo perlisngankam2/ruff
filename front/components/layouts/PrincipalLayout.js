@@ -198,19 +198,6 @@ import {
           </Link>
         </AccordionPanel>
       </AccordionItem  >
-      <AccordionItem>
-        <AccordionButton  pl={0}>
-          <Flex align="center" gap="1">
-            <Icon as={MdOutlineClass} />
-            <Box as="span">Parents</Box>
-          </Flex>
-        </AccordionButton>
-        <AccordionPanel _hover={{background:"rgba(0,0,0,0.16)"}}>
-          <Link href="reduction/reductionStudent">
-            <Box as="span">Reduction scolarite</Box>
-          </Link>
-        </AccordionPanel>
-      </AccordionItem>
        <AccordionItem>
         <AccordionButton  pl={0}>
           <Flex align="center" gap="1">

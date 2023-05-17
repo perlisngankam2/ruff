@@ -201,7 +201,7 @@ import { getStaticPropsTranslations } from "../../types/staticProps";
                                </Td>
                                <Td 
                                 p={0} 
-                                pl={6}
+                                pl={3}
                                >
                                <Box display="flex">
                                   <Link 

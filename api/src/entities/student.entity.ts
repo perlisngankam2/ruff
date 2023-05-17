@@ -81,9 +81,9 @@ export class Student {
   @Property({ nullable: true })
   adress!: string;
 
-  @Field({ nullable: true })
-  @Property({ nullable: true })
-  transport!: string;
+  // @Field({ nullable: true })
+  // @Property({ nullable: true })
+  // transport!: string;
 
   // @Field({ defaultValue: false })
   // @Property({ default:false })

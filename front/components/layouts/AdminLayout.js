@@ -201,7 +201,7 @@
             </AccordionPanel>
           </AccordionItem>
           <AccordionItem>
-            <AccordionButton pl={0} >
+            <AccordionButton pl={0}>
               <Flex align="center" gap="1">
                 <Icon as={GiPayMoney}/>
                 <Box as="span">Salaires</Box>

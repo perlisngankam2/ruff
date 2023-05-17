@@ -47,7 +47,6 @@ export const CREATE_STUDENT = gql`
             dateOfBirth
             sex
             adress
-            transport
             fatherFirstName
             fatherLastName
             fatherPhoneNumber
@@ -410,7 +409,6 @@ export const DELETE_STUDENT = gql `
             dateOfBirth
             sex
             adress
-            transport
             fatherFirstName
             fatherLastName
             fatherPhoneNumber
@@ -532,7 +530,6 @@ mutation updateStudent ($id: String!, $input: StudentCreateInput!) {
         dateOfBirth
         sex
         adress
-        transport
         fatherFirstName
         fatherLastName
         fatherPhoneNumber

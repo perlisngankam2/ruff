@@ -235,7 +235,6 @@ type Student {
   birthPlace: String
   sex: String
   adress: String
-  transport: String
   fatherFirstName: String
   fatherLastName: String
   fatherPhoneNumber: String
@@ -790,7 +789,6 @@ input StudentCreateInput {
   birthPlace: String
   sex: String
   adress: String
-  transport: String
   categoryStudentId: String
   inscription: ID
   fatherFirstName: String

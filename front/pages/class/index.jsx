@@ -156,7 +156,6 @@ const Class = () => {
           anneeAcademiqueId: anneeAcademiqueId,
           montantPension: parseInt(montantPension)
         }
-
       }
     })
       onClosses();
@@ -535,15 +534,17 @@ const Class = () => {
                       })
                       .map((salle, index) =>( 
                       <Tr key={index}>
-                         <Td >{salle.name}</Td> 
-                         <Td>{salle.montantPensionSalle}</Td>
-                         <Td>{salle.levelName}</Td>
+                         <Td p={0} pl={3} >{salle.name}</Td> 
+                         <Td p={0} pl={6}>{salle.montantPensionSalle}</Td>
+                         <Td  p={0} pl={6}>{salle.levelName}</Td>
 
                          {/* <Td borderColor={'#C6B062'}>{salle.montantPensionSalle}</Td>   */}
                          {/* <Td borderColor={'#C6B062'}>{salle.section}</Td>  */}
                          {/* <Td borderColor={'#C6B062'}>{salle.montantPension}</Td>  */}
                         
-                        <Td >
+                        <Td  p={0} pl={6} >
+                        <Box display={{md:'flex'}} gap={3}> 
+
                           <ButtonGroup 
                             size='sm' 
                             isAttached 
@@ -557,14 +558,9 @@ const Class = () => {
                                   {t('pages.class.classList.details')}
                                 </Links>
                               </Button>
-                            </ButtonGroup> 
-                          </Td>
-                            <Box 
-                              display="flex"
-                              ml={['-140px', '-140px', '-140px', '-140px']} 
-                               mt={['8px', '8px', '8px', '8px']}
-                             >
-                                <Link 
+                            </ButtonGroup>
+                            <Box> 
+                              <Link 
                                 // href="/class/updateclass"
                                   href= {{
                                   pathname: Routes.ClasseEdit?.path || '',
@@ -578,9 +574,8 @@ const Class = () => {
                                     rounded="full"
                                     _hover={{background:"red.100"}}
                                   />
-                                </Link>
-                                <Box href="#" mt="-3px">
-                                  <Icon
+                                </Link> 
+                                <Icon
                                     as={MdDelete}
                                     boxSize="44px"
                                     p="3"
@@ -589,6 +584,11 @@ const Class = () => {
                                     onClick={onToggle}
                                     _hover={{background:"blue.100"}}
                                   />
+                              </Box> 
+                              </Box> 
+                          </Td>
+                                <Box href="#">
+                                 
                                   <Box> 
                                     <AlertDialog
                                       isOpen={isOpen}
@@ -631,7 +631,6 @@ const Class = () => {
                                           </AlertDialogContent>
                                         </AlertDialogOverlay>
                                     </AlertDialog>
-                                  </Box>
                                   </Box>
                             </Box> 
                         </Tr>
@@ -685,99 +684,96 @@ const Class = () => {
                       // .slice(pagesVisited, pagesVisited + itemsPerPage)
                       .map((personnelSalle, index) =>(  
                         <Tr key={index}>
-                         <Td >{personnelSalle.salleName}</Td> 
-                         <Td >{personnelSalle.personnelFirstName} {personnelSalle.personnelLastName } ({personnelSalle.personnelFunction})</Td> 
-                         <Td >{personnelSalle.courseName}</Td> 
+                         <Td p={0} pl={3}>{personnelSalle.salleName}</Td> 
+                         <Td p={0} pl={6}>{personnelSalle.personnelFirstName} {personnelSalle.personnelLastName } ({personnelSalle.personnelFunction})</Td> 
+                         <Td p={0} pl={6}>{personnelSalle.courseName}</Td> 
 
                          {/* <Td borderColor={'#C6B062'}>{salle.montantPensionSalle}</Td>   */}
                          {/* <Td borderColor={'#C6B062'}>{salle.section}</Td>  */}
                          {/* <Td borderColor={'#C6B062'}>{salle.montantPension}</Td>  */}
                          
-                        <Td >
-                          <ButtonGroup 
-                            size='sm' 
-                            isAttached 
-                            variant='link' 
-                            colorScheme={'teal'}
-                            >
-                              <Button>
-                                <Link 
-                                  href='/eleves/details'
-                                >Details</Link>
-                              </Button>
-                          </ButtonGroup> 
-                        </Td>
-                            <Box 
-                              display="flex"
-                              ml={['-140px', '-140px', '-140px', '-140px']} 
-                               mt={['8px', '8px', '8px', '8px']}
-                             >
-                                <Link 
-                                href="/class/updateclass">
-                                  <Icon
-                                    as={FiEdit}
-                                    boxSize="40px"
-                                    p="3"
-                                    rounded="full"
-                                    _hover={{background:"red.100"}}
+                        <Td p={0} pl={6}>
+                          <Box display={{md:'flex'}} gap={3}> 
+                            <ButtonGroup 
+                              size='sm' 
+                              isAttached 
+                              variant='link' 
+                              colorScheme={'teal'}
+                              >
+                                <Button>
+                                  <Link 
+                                    href='/eleves/details'
+                                  >Details</Link>
+                                </Button>
+                            </ButtonGroup>
+                            <Box>
+                              <Link 
+                                href="/class/updateclass"
+                              >
+                                <Icon
+                                  as={FiEdit}
+                                  boxSize="40px"
+                                  p="3"
+                                  rounded="full"
+                                  _hover={{background:"red.100"}}
+                              />
+                              </Link>
+                                <Icon
+                                  as={MdDelete}
+                                  boxSize="44px"
+                                  p="3"
+                                  rounded="full"
+                                  color="colors.quaternary"
+                                  onClick={onToggle}
+                                  _hover={{background:"blue.100"}}
                                 />
-                                </Link>
-                                <Box href="#" mt="-3px">
-                                  <Icon
-                                    as={MdDelete}
-                                    boxSize="44px"
-                                    p="3"
-                                    rounded="full"
-                                    color="colors.quaternary"
-                                    onClick={onToggle}
-                                    _hover={{background:"blue.100"}}
-                                  />
-                                  <Box> 
-                                    <AlertDialog
-                                      isOpen={isOpen}
-                                      leastDestructiveRef={cancelRef}
-                                      onClose={onClose}
-                                      isCentered
-                                    >
-                                        <AlertDialogOverlay
-                                          // alignSelf={"center"}
-                                        >
-                                          <AlertDialogContent
-                                          width={"380px"}
-                                          >
-                                            <AlertDialogHeader 
-                                              fontSize='lg' 
-                                              fontWeight='bold'
-                                              textAlign={"center"}
-                                              >
-                                              Confirmation de suppression
-                                            </AlertDialogHeader>
-                                            <AlertDialogBody textAlign={"center"}>
-                                            Voulez-vous supprimer cette classe?
-                                            </AlertDialogBody>
-
-                                            <AlertDialogFooter>
-                                              <Button 
-                                                ref={cancelRef} 
-                                                onClick={onClose}
-                                                colorScheme="red"
-                                              >
-                                                Annuler 
-                                              </Button>
-                                              <Button 
-                                                colorScheme='green' 
-                                                // onClick={() => {removeClass(salle.id)}}
-                                                ml={3}
-                                              >
-                                                Supprimer
-                                              </Button>
-                                            </AlertDialogFooter>
-                                          </AlertDialogContent>
-                                        </AlertDialogOverlay>
-                                    </AlertDialog>
-                                  </Box>
-                                  </Box>
                             </Box> 
+                          </Box>
+                        </Td>
+                            <Box> 
+                              <AlertDialog
+                                isOpen={isOpen}
+                                leastDestructiveRef={cancelRef}
+                                onClose={onClose}
+                                isCentered
+                              >
+                                  <AlertDialogOverlay
+                                    // alignSelf={"center"}
+                                  >
+                                    <AlertDialogContent
+                                    width={"380px"}
+                                    >
+                                      <AlertDialogHeader 
+                                        fontSize='lg' 
+                                        fontWeight='bold'
+                                        textAlign={"center"}
+                                        >
+                                        Confirmation de suppression
+                                      </AlertDialogHeader>
+                                      <AlertDialogBody textAlign={"center"}>
+                                      Voulez-vous supprimer cette classe?
+                                      </AlertDialogBody>
+
+                                      <AlertDialogFooter>
+                                        <Button 
+                                          ref={cancelRef} 
+                                          onClick={onClose}
+                                          colorScheme="red"
+                                        >
+                                          Annuler 
+                                        </Button>
+                                        <Button 
+                                          colorScheme='green' 
+                                          // onClick={() => {removeClass(salle.id)}}
+                                          ml={3}
+                                        >
+                                          Supprimer
+                                        </Button>
+                                      </AlertDialogFooter>
+                                    </AlertDialogContent>
+                                  </AlertDialogOverlay>
+                              </AlertDialog>
+                            </Box>
                         </Tr>
                        )) 
                      )} 

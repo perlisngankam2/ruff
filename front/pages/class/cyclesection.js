@@ -350,7 +350,7 @@ const CycleElement = ({cycle, index}) =>{
         <Td>{cycle.sectionName}</Td>
         
         {/* <Td  borderColor={'#C6B062'}>{cycle.section_id}</Td> */}
-        <Td p={0} pl={6}>pppp</Td>
+        {/* <Td p={0} pl={6}>pppp</Td> */}
         <Td p={0} pl={3}>
         <Box display="flex">
           <Icon

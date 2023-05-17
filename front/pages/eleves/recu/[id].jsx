@@ -44,18 +44,27 @@ import {
     GET_RESTE_PENSION_A_PAYER_BY_STUDENT_ID,
     GET_SECTION_STUDENT_BY_ID,
     GET_RESTE_MONTANT_TRANCHE_BY_STUDENT_ID,
-    GET_ALL_TRANCHE_BY_STUDENT_ID
+    GET_ALL_TRANCHE_BY_STUDENT_ID,
+    GET_PERSONNEL_BY_USERID
 
  } from "../../../graphql/Queries";
 import React, {useEffect,useRef } from "react";
 import { useQuery } from "@apollo/client";
+import { useAccount } from "../../../contexts/account/Account";
 
 const receipt = () => {
 
     const router = useRouter();
-
+    const { account, loaded } = useAccount();
+    
    const {data:dataTranchePension} = useQuery(GET_ALL_TRANCHE_PENSION);
 
+   //Compte personnel de la'pplication
+   const { data: personnelData, called} = useQuery(GET_PERSONNEL_BY_USERID,
+        {
+        variables:{ userid: account?.id }
+        }
+    )
    //Dernier paiement qu'a fait un eleve
    const {data:dataLastPayment} = useQuery(GET_LAST_PAYMENT,
         {
@@ -466,7 +475,10 @@ function nombreEnLettres(montant) {
                                                     gap={2}
                                                 > 
                                                     <Text>Remettant / Renderer:</Text>
-                                                    <Text> {dataStudentId.findOnestudent.fatherFirstName}</Text>
+                                                    {
+                                                        (personnelData?.getpersonnelbyaccount.fonction==="econome") &&
+                                                        <Text>{personnelData?.getpersonnelbyaccount.firstName +' '+ personnelData?.getpersonnelbyaccount.lastName}</Text>
+                                                    }
                                                 </Box>
                                             </Flex>
                                             <Flex gap='1' mr='130px'>
@@ -475,7 +487,10 @@ function nombreEnLettres(montant) {
                                                     gap={"2"}
                                                 > 
                                                     <Text>Tel:</Text>
-                                                    <Text>{dataStudentId.findOnestudent.fatherPhoneNumber}</Text>
+                                                    {
+                                                        (personnelData?.getpersonnelbyaccount.fonction==="econome") &&
+                                                        <Text> {personnelData?.getpersonnelbyaccount.phoneNumber}</Text>
+                                                    }
                                                 </Box>
                                             </Flex>
 

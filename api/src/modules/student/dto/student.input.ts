@@ -38,8 +38,8 @@ export class StudentCreateInput {
   @Field({ nullable: true })
   adress!: string;
 
-  @Field({ nullable: true })
-  transport!: string;
+  // @Field({ nullable: true })
+  // transport!: string;
 
   // @Field({defaultValue:true})
   // old!: boolean;

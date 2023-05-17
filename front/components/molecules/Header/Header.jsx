@@ -178,7 +178,7 @@ const Header = () => {
               <Menu>
                 <MenuButton mr="12px">
                   <Flex align="center" gap="1">
-                    {account?.firstName === null && account?.firstName === null ?
+                  {account?.firstName === null && account?.firstName === null ?
                     <Avatar
                       name={ personnelData?.getpersonnelbyaccount.firstName + ' ' + personnelData?.getpersonnelbyaccount.lastName } 
                       size="md"

@@ -117,6 +117,7 @@ const Employee = (props) => {
                     p="3"
                     bg="purple.100"
                     rounded="full"
+                    _hover={{background:"green.300"}}
                   />
                 </Link>
                 <Link href="/personnel/modifierpersonnel">
@@ -126,6 +127,8 @@ const Employee = (props) => {
                     p="3"
                     bg="blue.100"
                     rounded="full"
+                    _hover={{background:"blue.300"}}
+
                   />
                 </Link>
                 <Box href="#">
@@ -134,9 +137,12 @@ const Employee = (props) => {
                     boxSize="40px"
                     p="3"
                     bg="red.500"
+
                     rounded="full"
                     color="white"
                     onClick={onToggle}
+                    _hover={{background:"red"}}
+
                   />
                     <Box> 
                       <AlertDialog

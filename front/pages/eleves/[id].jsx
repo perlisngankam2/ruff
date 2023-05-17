@@ -90,7 +90,8 @@ import {
   GET_PENSION_ALREADY_PAY_BY_STUDENT_ID,
   GET_RESTE_PENSION_A_PAYER_BY_STUDENT_ID,
   GET_ALL_PARENT,
-  GET_SECTION_STUDENT_BY_ID
+  GET_SECTION_STUDENT_BY_ID,
+  GET_PERSONNEL_BY_USERID
 
 } from "../../graphql/Queries";
 
@@ -100,6 +101,7 @@ import {
   CREATE_SCOLARITE_TRANCHE_STUDENT,
   AFFECTATION_PARENT_TO_STUDENT 
 } from "../../graphql/Mutation"
+import { useAccount } from "../../contexts/account/Account";
 
 // export const getStaticPath = async() => {
 //   // const apolloClient = initializeApollo();
@@ -181,6 +183,14 @@ const DetailComponent = () => {
   // const {data:singleStudent} = useQuery(GET_STUDENT_BY_ID);
 
   //RECUPERATION DE TOUT LES ELEVES
+  const { account, loaded } = useAccount();
+
+  //information de l'utilisateur connecte
+  const { data: personnelData, called} = useQuery(GET_PERSONNEL_BY_USERID,
+     {
+        variables:{ userid: account?.id }
+    }
+  )
   const {data: dataStudent} = useQuery (GET_ALL_STUDENT);
   const {data:dataClasse} = useQuery(GET_ALL_CLASS);
   
@@ -703,7 +713,9 @@ const {data:dataResteFeesToPayByStudent} = useQuery(GET_RESTE_PENSION_A_PAYER_BY
         >
 
  {/* FORMULAIRE DE PAIEMENT DE SCOLARITE */}
+
           <Center >
+            { (account?.role==="ADMIN") || (personnelData?.getpersonnelbyaccount.fonction==="econome") &&
             <Button 
               bg='colors.primary' 
               height='40px' 
@@ -713,6 +725,7 @@ const {data:dataResteFeesToPayByStudent} = useQuery(GET_RESTE_PENSION_A_PAYER_BY
             >
               Payer la Scolarite
             </Button>
+            }
           </Center>
           <Center>
             <Button

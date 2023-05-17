@@ -47,37 +47,37 @@ async update(
   await this.personnelsalleRepository.persistAndFlush(personnelsalle)
   return personnelsalle
 
-}
-
-async findall(){
-    return await this.personnelsalleRepository.findAll({
-      populate:['course','personnel','salle']
-    })
-}
-
-findByOne(filters: FilterQuery<PersonnelSalle>): Promise<PersonnelSalle | null> {
-    return this.personnelsalleRepository.findOne(filters);
   }
 
-findById(id:string){
-    return this.personnelsalleRepository.findOne(id)
-}
+  async findall(){
+      return await this.personnelsalleRepository.findAll({
+        populate:['course','personnel','salle']
+      })
+  }
 
-async delete(id:string){
+  findByOne(filters: FilterQuery<PersonnelSalle>): Promise<PersonnelSalle | null> {
+      return this.personnelsalleRepository.findOne(filters);
+  }
+
+  findById(id:string){
+      return this.personnelsalleRepository.findOne(id)
+  }
+
+  async delete(id:string){
     const a = this.findById(id)
     await this.personnelsalleRepository.nativeDelete(await a)
     if(!a){
     throw Error("not found")
     }
     return a
-    }
+  }
 
-async findbyCoursePersonnelSalle(salleId:string, personnelId: string, courseId: string){
-  const a=(await this.em.find(PersonnelSalle,{salle: salleId, personnel:personnelId, course:courseId})).map(async a=>(await a.personnel.load()).firstName)
-  const b = (await this.em.find(PersonnelSalle,{salle: salleId, personnel:personnelId, course:courseId})).map(async a=>((await a.course.load()).title))
-  const c= (await this.em.find(PersonnelSalle,{salle: salleId, personnel:personnelId, course:courseId})).map(async a=>((await a.salle.load()).name))[0]
-  return {a, c, b}
-  
-}
+  async findbyCoursePersonnelSalle(salleId:string, personnelId: string, courseId: string){
+    const a=(await this.em.find(PersonnelSalle,{salle: salleId, personnel:personnelId, course:courseId})).map(async a=>(await a.personnel.load()).firstName)
+    const b = (await this.em.find(PersonnelSalle,{salle: salleId, personnel:personnelId, course:courseId})).map(async a=>((await a.course.load()).title))
+    const c= (await this.em.find(PersonnelSalle,{salle: salleId, personnel:personnelId, course:courseId})).map(async a=>((await a.salle.load()).name))[0]
+    return {a, c, b}
+    
+  }
 
 }

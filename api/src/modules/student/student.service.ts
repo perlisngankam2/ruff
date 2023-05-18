@@ -104,7 +104,6 @@ export class StudentService {
             {populate:['salle', 'categorie']}
           );
       }
-
       
       findById(id:string){
         return this.studentRepository.findOne(id)

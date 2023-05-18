@@ -119,7 +119,7 @@ export const CREATE_STUDY_LEVEL = gql `
             name
             description
             montantPension
-            cycleid
+            cycleId
             cycleName
         }
     }
@@ -392,7 +392,7 @@ export const DELETE_STUDY_LEVEL = gql `
             name
             description
             montantPension
-            cycleid
+            cycleId
             cycleName
         }
     }

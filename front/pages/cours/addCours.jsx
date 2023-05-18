@@ -56,39 +56,6 @@ function AjouterCours () {
     const [createCourse] = useMutation(CREATE_COURSE);
     const {data:dataCourse, refetch} = useQuery(GET_ALL_COURSES);
 
-    // const  addCategoryEleve = async (event, value) => {
-    //     event.preventDefault();
-    //     console.log('cccc');
-   
-    //     console.log(nom);
-    //     console.log(description);
-
-    //     const categorieEleveData =  await SubmitCategoryEleve({
-    //         variables: {
-    //             createCategorieEleve: {
-    //                 nom: nom,
-    //                 description: description,
-    //                 reductionScolariteId: reductionScolariteId
-    //             }
-    //         },
-    //         refetchQueries: [{
-    //             query: GET_ALL_Category_Eleve
-    //         }]
-    //     })
-    //     // console.log(categorieEleveData)
-    //     onClose()
-    //     toast({
-    //          title: "Creation d'une categorie d'élève.",
-    //          description: "La categorie a ete créée avec succes.",
-    //          status: "success",
-    //          duration: 3000,
-    //          isClosable: true,
-    //        });
-    //        router.push("/eleves/categoryeleve");
-    //     setNom("");
-    //     setDescription("");
-    // }
-
     const addCourse = async () =>{
         console.log(time)
         await createCourse({
@@ -115,18 +82,12 @@ function AjouterCours () {
         setTime("")
     }
 
-    // useEffect(() => {
-    //     console.log(dataReductionScolarite?.findAllreductionscolarite)
-    // })
-
-
   return (
     <Center>
         <Box> 
             <Box> 
                 <Button
                     rightIcon={<Icon as={IoIosAdd} boxSize="20px" />}
-                    // borderRadius={'md'} 
                     ml={["20px","50px","100px","600px"]}
                     onClick={onOpen}
                     // onClick = {() => router.push(personnel/AjouterCategoryPersonnel)} 

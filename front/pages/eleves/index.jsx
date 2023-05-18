@@ -143,21 +143,11 @@ const Eleves = () => {
       setSearchClasseStudent(e.target.value);
     };
 
-    // const handlePageChange = (page) => {
-    //   setCurrentPage(page);
-    // };
-    
-    // const getPageCount = () => {
-    //   // return Math.ceil(dataStudent && dataStudent.dataStudentCount / itemsPerPage);
-    //   return Math.ceil(dataStudent?.findAllstudents.length / itemsPerPage);
-    // };
     const pageCountStudent = Math.ceil(dataStudent?.findAllstudents.length / itemsPerPage);
 
     const changePage = ({ page }) => {
       setPageNumber(page);
     };
-
-    
 
   return (
     <DefaultLayout>
@@ -249,9 +239,7 @@ const Eleves = () => {
                     <Th>{t("pages.eleves.listeDesEleves.firstName")}</Th>
                     <Th>{t("pages.eleves.listeDesEleves.lastName")}</Th>
                     <Th>classe</Th>
-                    {/* <Th >classe</Th> */}
                     {/* <Th>sexe</Th> */}
-                    {/* <Th>Photo</Th> */}
                     <Th>{t("pages.eleves.listeDesEleves.actions")}</Th>
                   </Tr>
                   </Thead>
@@ -302,10 +290,6 @@ const Eleves = () => {
                                 </Button>
                               </ButtonGroup> 
                            <Box> 
-                           {/* { 
-                            (personnelData?.getpersonnelbyaccount.fonction==="econome") || 
-                            (account?.role==="ADMIN") || 
-                            (personnelData?.getpersonnelbyaccount.fonction==="manager") &&  */}
                               <Box> 
                                 <Link 
                                     href={{
@@ -413,26 +397,8 @@ const Eleves = () => {
                   ))
                 )}
                 </Tbody>
-                  {/* <Tfoot>
-                  <Tr>
-                      <Th>To convert</Th>
-                      <Th>into</Th>
-                      <Th isNumeric>multiply by</Th>
-                  </Tr>
-                  </Tfoot> */}
               </Table>
             </TableContainer>
-            {/* <Box as="nav">
-              <Box as="ul" className="pagination">
-                {[...Array(getPageCount()).keys()].map((page) => (
-                  <Box as="li" className="page-item" key={page}>
-                    <Button className="page-link" onClick={() => handlePageChange(page + 1)}>
-                      {page + 1}
-                    </Button>
-                  </Box>
-              ))}
-              </Box>
-           </Box> */}
         </Box>
         <Box mt={"15px"}> 
           <ReactPaginate 

@@ -20,7 +20,7 @@ import {
 } from '@chakra-ui/react';
 import React from "react";
 import { IoIosAdd } from "react-icons/io";
-import {useMutation } from '@apollo/client';
+import {useMutation, useQuery } from '@apollo/client';
 import { CREATE_SECTION, UPDATA_SECTION, CREATE_PARENT} from "../../graphql/Mutation";
 import { GET_ALL_PARENT, GET_ALL_SECTION } from "../../graphql/Queries";
 import { useState } from "react";
@@ -36,6 +36,7 @@ const  addParents =  () => {
     const [updateSection] = useMutation(UPDATA_SECTION);
     const router = useRouter()
     const toast = useToast();
+    const {data:dataparents, refetch} = useQuery(GET_ALL_PARENT);
 
     const [parent, setParent] = useState({
         firstname: "",
@@ -46,41 +47,13 @@ const  addParents =  () => {
         parentStatus:"",
         childNumber: 0
     })
-    // const addCategoryPersonnel = async (event, value) => {
-    //     console.log("value")
-    //     event.preventDefault();
-       
-    //     console.log(event.target.name.value);
-    //     console.log(event.target.description.value);
-
-    //     // const categoryData = await createCategoryPersonnel({
-    //             // variables: {
-    //         //     createcategoriepersonnnel: { 
-    //         //         
-    //         //             nom : event.target.value,
-    //         //             description: event.target.value
-    //         //     }
-    //         //   }
-    //     // })
-    //     // console.log(categoryData)
-    // }
 
     let input
     const  addParent = async (event, value) => {
         event.preventDefault();
         console.log('cccc');
    
-    
-        // if(id){
-        //     updateSection({
-        //         variables:{
-        //             section:{
-        //                 name: name,
-        //                 section: description
-        //             }
-        //         }
-        //     })
-        // }else{
+
          await createParent({
             variables: {
                 parent: {
@@ -97,9 +70,8 @@ const  addParents =  () => {
                 query: GET_ALL_PARENT
             }]
         })
-    // }
+        refetch()
         onClose();
-        // console.log(sectionData)
         toast({
             title: "Creation d'une section.",
             description: "La classe a été créée avec succes.",

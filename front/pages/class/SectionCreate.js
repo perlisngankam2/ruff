@@ -122,11 +122,11 @@ const  SectionCreate =  () => {
                     size='xl'
                 >
                     <AlertDialogOverlay>
-                        <AlertDialogContent width={"400px"} >
+                        <AlertDialogContent width={"440px"} >
                             <AlertDialogHeader 
                                 fontSize='sm' 
                                 fontWeight='base' 
-                                mt='0'
+                                mt='9px'
                             >
                                 <Box>
                                     <Heading 
@@ -134,7 +134,7 @@ const  SectionCreate =  () => {
                                         fontSize={['15px','20px','24px']} 
                                         p='2' 
                                     >
-                                   {t('pages.class.sectionCreate.heading')}
+                                        {t('pages.section.sectionCreate.heading')}
                                     </Heading>
                                 </Box>
                             </AlertDialogHeader>
@@ -144,7 +144,7 @@ const  SectionCreate =  () => {
                             <Box>
                                 <FormControl>
                                     <FormLabel>
-                                        {t('pages.class.sectionCreate.name')} 
+                                        {t('pages.section.sectionCreate.name')} 
                                     </FormLabel>
                                     <Input 
                                         id="name"
@@ -178,15 +178,15 @@ const  SectionCreate =  () => {
                                     onClick={onClose} 
                                     colorScheme='red' 
                                 >
-                                    {t('pages.class.sectionCreate.cancelButton')} 
+                                    {t('pages.section.sectionCreate.cancelButton')} 
                                 </Button>
                                 {/* <Link href={'/personnel/ajoutercategorypersonnel'}> */}
                                     <Button 
-                                    colorScheme='green'  
-                                    ml={3}
-                                    onClick={addSection}
+                                        colorScheme='green'  
+                                        ml={3}
+                                        onClick={addSection}
                                     >
-                                    {t('pages.class.sectionCreate.submitButton')} 
+                                    {t('pages.section.sectionCreate.submitButton')} 
                                     </Button>
                                 {/* </Link>  */}
                             </AlertDialogFooter>

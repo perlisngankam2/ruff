@@ -28,7 +28,7 @@ import { GET_ALL_SECTION, GET_ONE_CYCLE, GET_ALL_CYCLE } from "../../graphql/Que
 import { useRouter } from "next/router";
 import { useTranslation } from "next-i18next";
 import { GlobalContext } from "../../contexts/cyclesection/AppContext";
-import { getStaticPropsTranslations } from "../../types/staticProps";
+// import { getStaticPropsTranslations } from "../../types/staticProps";
 
 // const CycleSchema = {
 //     name: "pearl",
@@ -119,40 +119,7 @@ const  CycleCreate =  () => {
     //           }
     //         });
     //       }
-   
 
-    // const handleSubmit = {
-    //     defaultValues: {
-    //         name: "",
-    //         section: "",
-    //         ...defaultValues
-    //     }
-    // }
-
-    // const _cycleOnSubmit =  handleSubmit (async(values) => {    
-    //     try{
-    //        await onSubmit?.(values);
-    //         toast({
-    //             title: "Creation d'un cyle.",
-    //             description: "Le cylce a éte crée avec succes.",
-    //             status: "success",
-    //             duration: 3000,
-    //             isClosable: true,
-    //         });
-    //     }catch{
-    //         toast({
-    //             title: "Creation d'un cyle.",
-    //             description: "$mess.",
-    //             status: "error",
-    //             duration: 3000,
-    //             isClosable: true,
-    //         });
-    //     }
-    // })
-
-    // let input
-   
-  
     const  addCycle = async (event) => {
         event.preventDefault();
         console.log('cccc');
@@ -205,7 +172,6 @@ const  CycleCreate =  () => {
             Ajouter un Cycle                              
         </Button>
         </Box> 
-          {/* {isformOpen?   } */}
         <Box> 
             <Box as={"form"} 
             > 
@@ -216,11 +182,11 @@ const  CycleCreate =  () => {
                     size='xl'
                 >
                     <AlertDialogOverlay>
-                        <AlertDialogContent width={"400px"}>
+                        <AlertDialogContent width={"440px"}>
                             <AlertDialogHeader 
                                 fontSize='sm' 
                                 fontWeight='base' 
-                                mt='0'
+                                mt='9px'
                             >
                                 <Box>
                                     <Heading 
@@ -228,7 +194,7 @@ const  CycleCreate =  () => {
                                         fontSize={['15px','20px','24px']} 
                                         p='2' 
                                     >
-                                        {t('pages.class.cycleCreate.heading')}
+                                        {t('pages.cycle.cycleCreate.heading')}
                                     </Heading>
                                 </Box>
                             </AlertDialogHeader>
@@ -238,7 +204,7 @@ const  CycleCreate =  () => {
                             <Box>
                                 <FormControl>
                                     <FormLabel>
-                                        {t('pages.class.cycleCreate.name')}
+                                        {t('pages.cycle.cycleCreate.name')}
                                     </FormLabel>
                                     <Input 
                                         type={'text'} 
@@ -250,7 +216,7 @@ const  CycleCreate =  () => {
                                 </FormControl>
                                 <FormControl mt="15px">
                                     <FormLabel>
-                                         {t('pages.class.cycleCreate.sectionName')}
+                                         {t('pages.cycle.cycleCreate.sectionName')}
                                     </FormLabel>
                                     <Select 
                                         name="sectionId"
@@ -277,7 +243,7 @@ const  CycleCreate =  () => {
                                     onClick={onClose} 
                                     colorScheme='red' 
                                 >
-                                    {t('pages.class.cycleCreate.cancelButton')}
+                                    {t('pages.cycle.cycleCreate.cancelButton')}
                                 </Button>
                                 {/* <Link href={'/personnel/ajoutercategorypersonnel'}> */}
                                         <Button 
@@ -285,7 +251,7 @@ const  CycleCreate =  () => {
                                         ml={3}
                                         onClick={addCycle}
                                     >
-                                        {t('pages.class.cycleCreate.submitButton')}
+                                        {t('pages.cycle.cycleCreate.submitButton')}
                                 </Button>
                                 {/* </Link>  */}
                             </AlertDialogFooter>
@@ -299,13 +265,13 @@ const  CycleCreate =  () => {
     );
 }
 
-export async function getStaticProps({ locale }) {
-    return {
-      props: {
-        ...(await getStaticPropsTranslations(locale)),
-        // Will be passed to the page component as props
-      },
-    };
-  }
+// export async function getStaticProps({ locale }) {
+//     return {
+//       props: {
+//         ...(await getStaticPropsTranslations(locale)),
+//         // Will be passed to the page component as props
+//       },
+//     };
+//   }
 
 export default CycleCreate;

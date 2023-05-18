@@ -92,7 +92,6 @@ const AjouterEleve = () => {
     }
   );
 
-  // const InitialAndYear = "GBA23";
 
 
   // findAllstudents
@@ -511,31 +510,7 @@ const matricule = `GSBAB23${randomString}`;
                         )}
                       </Select>
                     </FormControl>
-                {/* </Flex>
-                <Flex mt={"20px"}>
-               */}
                 </Flex>
-                {/* <Flex>
-                    <FormControl>
-                      <FormLabel>Section</FormLabel>
-                      <Select
-                        placeholder="Section"
-                        name="section"
-                        value={section}
-                        onChange={(e) => setSection(e.target.value)}
-                        variant="flushed"
-                      >
-                        { 
-                          dataSection && (
-                            dataSection.findAllsection.map((section, index) => (
-                                <option key={index}>
-                                  <option>{section.name}</option>
-                                </option>
-                            ))
-                        )}
-                      </Select>
-                    </FormControl>
-                </Flex> */}
               </Box>
             </Box>
           ) : step === 2 ? (

@@ -175,7 +175,7 @@ const Category = () => {
                         <Th>{t('pages.personnel.categorypersonnel.name')}</Th>
                         <Th>{t('pages.personnel.categorypersonnel.description')}</Th>
                         <Th>{t('pages.personnel.categorypersonnel.salaireDebase')}</Th>
-                        <Th>{t('pages.personnel.categorypersonnel.action')}</Th>
+                        <Th>{t('pages.personnel.categorypersonnel.actions')}</Th>
                     </Tr>
                     </Thead>
                     {data && ( 

@@ -66,7 +66,6 @@ function AjouterCategoryEleve  () {
                 query: GET_ALL_Category_Eleve
             }]
         })
-        // console.log(categorieEleveData)
         onClose()
         toast({
              title: "Creation d'une categorie d'élève.",
@@ -94,11 +93,8 @@ function AjouterCategoryEleve  () {
                     // borderRadius={'md'} 
                     onClick={onOpen}
                     ml={["20px","50px","100px","600px"]}
-                    // onClick = {() => router.push(personnel/AjouterCategoryPersonnel)} 
                 >
-                    {/* <Link href={'/personnel/ajoutercategorypersonnel'}>                                 */}
                         Ajouter une categorie d'élève                                
-                    {/* </Link>               */}
                 </Button>
           </Box>
             <Box as={"form"}  > 
@@ -184,7 +180,6 @@ function AjouterCategoryEleve  () {
                                 >
                                     annuler 
                                 </Button>
-                                {/* <Link href={'/personnel/ajoutercategorypersonnel'}> */}
                                     <Button 
                                     colorScheme='green'  
                                     ml={3}
@@ -192,7 +187,6 @@ function AjouterCategoryEleve  () {
                                     >
                                     Creer
                                     </Button>
-                                {/* </Link>  */}
                             </AlertDialogFooter>
                         </AlertDialogContent>
                     </AlertDialogOverlay>

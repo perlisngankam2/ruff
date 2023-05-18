@@ -71,13 +71,7 @@ const AddClass = () => {
   // console.log(typeof bb)
   
   let input;
-  // const addSalle = (event) => {
-  // console.log('vdw')
-  // }
-
-  // if (loading) return "creation en cour..."
-  // if(error)  return "erreur! ${error.message}";
-  
+ 
   useEffect(() => {
     // console.log(dataSection?.findAllsection)
     console.log("j")
@@ -285,7 +279,6 @@ const AddClass = () => {
                       onClick={addClasse}
                     >
                       {t('pages.class.classAdd.submitButton')}
-                      {/* Creer */}
                     </Button>
                   </Flex>
               </Stack>

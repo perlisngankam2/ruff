@@ -61,6 +61,7 @@ import {
      
      const {data:dataCategoryEleve, loading, error} = useQuery(GET_ALL_Category_Eleve);
      const {data:dataParents} = useQuery(GET_ALL_PARENT);
+     
     //  const [deleteCategoryStudent] = useMutation(DELETE_CATEGORY_STUDENT);
     const [deleteParent] = useMutation(DELETE_PARENT);
      const { isOpen, onToggle, onClose, onOpen } = useDisclosure();

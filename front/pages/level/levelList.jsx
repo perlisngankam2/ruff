@@ -133,7 +133,7 @@ import {
                 variant="flushed"
               />
             </InputGroup>
-            <Select 
+            {/* <Select 
               variant="flushed"
               placeholder="Selectionner la classe"
               // onChange={e =>setQuery(e.target.value)}
@@ -143,7 +143,7 @@ import {
                   key={classe.id}
                 >{classe.classe}</option>
               ))} */}
-            </Select>
+            {/* </Select> */}
             <Box> 
               <Button
                   rightIcon={<Icon as={IoIosAdd} boxSize="20px"/>}

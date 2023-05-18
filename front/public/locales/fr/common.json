@@ -52,7 +52,7 @@
                 "description": "Description:",
                 "salaireDebase": "Salaire de base",
                 "cancelButton": "Annuler",
-                "submitButton": "Créer",
+                "submitButton": "Enregistrer",
                 "valueSalaireDebase":"montant"
             },
             "PersonnelAccountForm":{
@@ -62,7 +62,7 @@
                 "confirmPassWord": "confirmer le mot de passe",
                 "passWordsDoNotCorresponding":"Les mots de passe ne correspondent pas.",
                 "annuler": "Annuler",
-                "createBotton":"Créez"
+                "createBotton":"Enregistrer"
             }
         },
         "class":{
@@ -77,7 +77,7 @@
                 "cancelButton": "Annuler",
                 "deleteButton": "Supprimer"
             },
-            "classAdd":{
+            "classAdd":{ 
                 "heading":"Créer une classe",
                 "name": "Nom de la classe:",
                 "feesAmount": "Valeur de la pension",
@@ -85,8 +85,10 @@
                 "academicYear": "Anneé académique",
                 "cycleName": "Cycle:",
                 "cancelButton": "Annuler",
-                "submitButton":"Créer"
-            },
+                "submitButton":"Enregistrer"
+            }
+        },
+        "section":{
             "sectionCreate":{
                 "heading":"Ajouter une section",
                 "addButton":"Ajouter une section",
@@ -94,8 +96,10 @@
                 "section": "Section",
                 "description": "Description",
                 "cancelButton": "Annuler",
-                "submitButton": "Créer"
-            },
+                "submitButton": "Enregistrer"
+            }
+        },
+        "cycle":{
             "cycleCreate":{
                 "heading":"Ajouter un cyle",
                 "addButton":"Ajouter un cyle",
@@ -103,9 +107,11 @@
                 "description": "Description",
                 "sectionName": "Section",
                 "cancelButton": "Annuler",
-                "submitButton": "Créer"
+                "submitButton": "Enregistrer"
               
-            },
+            }
+        },
+        "listeCycle":{
             "listSectionCycle": {
                 "heading":"Cycles et sections",
                 "headingSection":"Sections",
@@ -126,7 +132,7 @@
                 "name": "Nom",
                 "courseHours": "Taux horaire",
                 "cancelButton": "Annuler",
-                "submitButton": "Ajouter"
+                "submitButton": "Enregistrer"
             },
             "courseList":{
                 "heading":"Matière",
@@ -146,7 +152,7 @@
                 "fees": "Pension",
                 "nameCycle": "Cycle",
                 "cancelButton": "Annuler",
-                "submitButton": "Ajouter"
+                "submitButton": "Enregistrer"
             },
             "listLevel":{
                 "addButton":"Ajouter un niveau",
@@ -170,7 +176,7 @@
                 "total": "Total",
                 "childNumber": "Enfant",
                 "cancelButton": "Annuler",
-                "submitButton": "Créer"
+                "submitButton": "Enregistrer"
             }
         },
         "parent":{
@@ -183,8 +189,6 @@
                 "Proféssion": "Proféssion",
                 "phoneNumber": "Téléphone",
                 "status": "Statut"
-
-                
             }
 
         },
@@ -242,7 +246,7 @@
                 "nextButton": "Annuler",
                 "backButton": "Annuler",
                 "cancelButton": "Annuler",
-                "submitButton": "Créer"
+                "submitButton": "Enregistrer"
             },
             "addStudentCategory":{
                 "addButton": "Ajouter une categorie d'élève ",
@@ -251,7 +255,7 @@
                 "description": "Description",
                 "reduction": "Réduction",
                 "cancelButton": "Annuler",
-                "submitButton": "Créer"
+                "submitButton": "Enregistrer"
             },
             "studentCategory": {
                 "Heading": "Catégories des élèves",
@@ -262,9 +266,9 @@
                 "wouldYouWantToDeleteStudent": "Voulez-vous supprimer cet élève?",
                 "cancelButton": "Annuler",
                 "deleteButton": "Supprimer"
-            }
-        }  
-    } , 
+            }  
+        }
+    }, 
     "molecules":{
         "LoginForm":{
             "email": "Email",
@@ -273,7 +277,7 @@
             "motDePasseOublie": "Mot de passe oublié?",
             "seConnecter": "Se connecter",
             "vousNavezPasDeCompte": "Vous n'avez pas encore de compte ?",
-            "creezLeCompte": "creez le"
+            "creezLeCompte": "Enregistrer"
         },
         "RegisterForm":{
             "heading": "Créez votre compte",
@@ -303,7 +307,5 @@
             "titleLatePayment":"Retard de paiement"
         }
     }
-
-
    
 }

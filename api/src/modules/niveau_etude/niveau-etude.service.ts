@@ -58,15 +58,20 @@ export class NiveauEtudeService {
       }
     
       findByOne(filters: FilterQuery<NiveauEtude>): Promise<NiveauEtude | null> {
-        return this.niveauEtudeRepository.findOne(filters);
+        return this.niveauEtudeRepository.findOne(filters,
+          {
+            populate:['cycle']
+          });
       }
       findById(id:string){
-        return this.niveauEtudeRepository.findOne(id)
+        return this.niveauEtudeRepository.findOne(id, {
+          populate:['cycle']
+        })
       }
 
       async findcyclebyniveau(niveauid:string){
         return (await this.findByOne(niveauid)).cycle.load()
-       }
+      }
       
       async getAll() {
         const niveaus= this.niveauEtudeRepository.findAll({

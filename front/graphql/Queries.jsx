@@ -256,7 +256,7 @@ export const GET_ALL_STUDY_LEVEL = gql `
             name
             description
             montantPension
-            cycleid
+            cycleId
             cycleName
         }
     }
@@ -653,7 +653,7 @@ export const GET_LEVEL_BY_ID = gql`
             name
             description
             montantPension
-            cycleid
+            cycleId
             cycleName
         }
     }

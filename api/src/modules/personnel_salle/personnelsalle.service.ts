@@ -1,83 +1,115 @@
 /* eslint-disable prettier/prettier */
-import {  EntityManager, EntityRepository, FilterQuery, wrap } from "@mikro-orm/core";
-import { InjectRepository } from "@mikro-orm/nestjs";
-import { Injectable } from "@nestjs/common";
-import { PersonnelSalle } from "src/entities/personnelsalle.entity";
-import { PersonnelSalleCreateInput } from "./dto/personnelsalle.create.input";
+import {
+  EntityManager,
+  EntityRepository,
+  FilterQuery,
+  wrap,
+} from '@mikro-orm/core';
+import { InjectRepository } from '@mikro-orm/nestjs';
+import { Injectable } from '@nestjs/common';
+import { PersonnelSalle } from 'src/entities/personnelsalle.entity';
+import { PersonnelSalleCreateInput } from './dto/personnelsalle.create.input';
 
 @Injectable()
 export class PersonnelSalleService {
-    constructor(
-        @InjectRepository(PersonnelSalle)
-        private personnelsalleRepository: EntityRepository<PersonnelSalle>,
-        private  em: EntityManager,
-      ) {}
-    
-    async create(
-        input: PersonnelSalleCreateInput,
-      ): Promise<PersonnelSalle> {  
-        const personnelsalle = new PersonnelSalle()
-        wrap(personnelsalle).assign({
-          salle: input.salleId,
-          personnel: input.personnelId,
-          course: input.courseId
-        },
-        {
-            em: this.em
-        })
+  constructor(
+    @InjectRepository(PersonnelSalle)
+    private personnelsalleRepository: EntityRepository<PersonnelSalle>,
+    private em: EntityManager,
+  ) {}
 
-        await this.personnelsalleRepository.persistAndFlush(personnelsalle)
-        return personnelsalle
+  async create(input: PersonnelSalleCreateInput): Promise<PersonnelSalle> {
+    const personnelsalle = new PersonnelSalle();
+    wrap(personnelsalle).assign(
+      {
+        salle: input.salleId,
+        personnel: input.personnelId,
+        course: input.courseId,
+      },
+      {
+        em: this.em,
+      },
+    );
 
-}
-
-async update(
-  id:string,input: PersonnelSalleCreateInput,
-): Promise<PersonnelSalle> {  
-  const personnelsalle = this.findByOne(id)
-  wrap(personnelsalle).assign({
-    salle: input.salleId,
-    personnel: input.personnelId,
-    course: input.courseId
-  },
-  {
-      em: this.em
-  })
-
-  await this.personnelsalleRepository.persistAndFlush(personnelsalle)
-  return personnelsalle
-
+    await this.personnelsalleRepository.persistAndFlush(personnelsalle);
+    return personnelsalle;
   }
 
-  async findall(){
-      return await this.personnelsalleRepository.findAll({
-        populate:['course','personnel','salle']
-      })
+  async update(
+    id: string,
+    input: PersonnelSalleCreateInput,
+  ): Promise<PersonnelSalle> {
+    const personnelsalle = this.findByOne(id);
+    wrap(personnelsalle).assign(
+      {
+        salle: input.salleId,
+        personnel: input.personnelId,
+        course: input.courseId,
+      },
+      {
+        em: this.em,
+      },
+    );
+
+    await this.personnelsalleRepository.persistAndFlush(personnelsalle);
+    return personnelsalle;
   }
 
-  findByOne(filters: FilterQuery<PersonnelSalle>): Promise<PersonnelSalle | null> {
-      return this.personnelsalleRepository.findOne(filters);
+  async findall() {
+    return await this.personnelsalleRepository.findAll({
+      populate: ['course', 'personnel', 'salle'],
+    });
   }
 
-  findById(id:string){
-      return this.personnelsalleRepository.findOne(id)
+  findByOne(
+    filters: FilterQuery<PersonnelSalle>,
+  ): Promise<PersonnelSalle | null> {
+    return this.personnelsalleRepository.findOne(filters, {
+      populate: ['course', 'personnel', 'salle'],
+    });
   }
 
-  async delete(id:string){
-    const a = this.findById(id)
-    await this.personnelsalleRepository.nativeDelete(await a)
-    if(!a){
-    throw Error("not found")
+  findById(id: string) {
+    return this.personnelsalleRepository.findOne(id, {
+      populate: ['course', 'personnel', 'salle'],
+    });
+  }
+
+  async delete(id: string) {
+    const a = this.findById(id);
+    await this.personnelsalleRepository.nativeDelete(await a);
+    if (!a) {
+      throw Error('not found');
     }
-    return a
+    return a;
   }
 
-  async findbyCoursePersonnelSalle(salleId:string, personnelId: string, courseId: string){
-    const a=(await this.em.find(PersonnelSalle,{salle: salleId, personnel:personnelId, course:courseId})).map(async a=>(await a.personnel.load()).firstName)
-    const b = (await this.em.find(PersonnelSalle,{salle: salleId, personnel:personnelId, course:courseId})).map(async a=>((await a.course.load()).title))
-    const c= (await this.em.find(PersonnelSalle,{salle: salleId, personnel:personnelId, course:courseId})).map(async a=>((await a.salle.load()).name))[0]
-    return {a, c, b}
-    
+  async findbyCoursePersonnelSalle(
+    salleId: string,
+    personnelId: string,
+    courseId: string,
+  ) {
+    const a = (
+      await this.em.find(PersonnelSalle, {
+        salle: salleId,
+        personnel: personnelId,
+        course: courseId,
+      })
+    ).map(async (a) => (await a.personnel.load()).firstName);
+    const b = (
+      await this.em.find(PersonnelSalle, {
+        salle: salleId,
+        personnel: personnelId,
+        course: courseId,
+      })
+    ).map(async (a) => (await a.course.load()).title);
+    const c = (
+      await this.em.find(PersonnelSalle, {
+        salle: salleId,
+        personnel: personnelId,
+        course: courseId,
+      })
+    ).map(async (a) => (await a.salle.load()).name)[0];
+    return { a, c, b };
   }
-
 }

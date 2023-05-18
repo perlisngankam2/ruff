@@ -314,7 +314,7 @@ type NiveauEtude {
   name: String
   description: String
   montantPension: Float
-  cycleid: ID
+  cycleId: ID
   cycleName: ID
 }
 

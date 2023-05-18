@@ -60,7 +60,7 @@ import CycleCreate from "./CycleCreate";
 import ReactPaginate from "react-paginate";
 // import Routes from "../../modules/routes";
 import { useTranslation } from "next-i18next";
-// import { getStaticPropsTranslations } from "../../types/staticProps";
+import { getStaticPropsTranslations } from "../../types/staticProps";
 
 const cyclesection = () => {
 
@@ -139,7 +139,6 @@ const cyclesection = () => {
   // };
 
     const handleShowUpdateCycle = (cycle) => {
-      // setId(cycle.id)
     }
 
   return (
@@ -189,11 +188,6 @@ const cyclesection = () => {
               children={<SearchIcon variant="flushed"/>} 
             /> */}
           </InputGroup>
-          {/* <Select 
-            placeholder="Selectionner la classe"
-            onChange={e =>setQuery(e.target.value)}
-          >
-          </Select> */}
           <SectionCreate/>
         </Flex>
         <Box mt={10}>
@@ -318,6 +312,14 @@ const cyclesection = () => {
     </DefaultLayout>
   );
 };
+export async function getStaticProps({ locale }) {
+    return {
+      props: {
+        ...(await getStaticPropsTranslations(locale)),
+        // Will be passed to the page component as props
+      },
+    };
+  }
 
 export default cyclesection;
 

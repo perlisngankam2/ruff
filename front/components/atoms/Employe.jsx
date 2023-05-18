@@ -137,7 +137,6 @@ const Employee = (props) => {
                     boxSize="40px"
                     p="3"
                     bg="red.500"
-
                     rounded="full"
                     color="white"
                     onClick={onToggle}

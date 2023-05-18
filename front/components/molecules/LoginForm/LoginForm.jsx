@@ -50,6 +50,7 @@ const LoginForm = () => {
 
   console.log(dataUser);
   const [isLoading, setIsLoading] = useState(false);
+  
   const HandleClick = async (event) => {
     event.preventDefault();
     setIsLoading(true);
@@ -72,6 +73,9 @@ const LoginForm = () => {
       // } else {
       router.push("/dashboard");
       // }
+    }else if(!login.data.login){
+      setAuthToken(0)
+      router.push("/")
     }
     setIsLoading(false);
   };
@@ -127,7 +131,6 @@ const LoginForm = () => {
                     name="password"
                   />
                 </FormControl>
-
                 <HStack mb={5} spacing={{ base: "10px", lg: "60px" }}>
                   <Checkbox
                     id="remember"

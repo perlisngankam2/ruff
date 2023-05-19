@@ -371,7 +371,6 @@ const PaySlip = () => {
                 <Text>Dashboad / Salaires / Paiement</Text>
               </Hide>
             </Flex>
-
             <Box
               bg={"gray.200"}
               width="500px"
@@ -728,7 +727,6 @@ const PaySlip = () => {
                         type="submit"
                         onClick={HandleClickPayerSalaire}
                         isLoading={isLoading}
-
                       >
                         ajouter
                       </Button>

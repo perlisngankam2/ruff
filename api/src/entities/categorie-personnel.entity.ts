@@ -29,11 +29,11 @@ export class CategoriePersonnel {
   id!: string;
 
   @Field({ nullable: true })
-  @Property({ nullable: true })
+  @Property({ unique:true})
   nom!: string;
 
   @Field({ nullable: true })
-  @Property({ nullable: true })
+  @Property({ nullable: true})
   description!: string;
 
   @Field({nullable:false})

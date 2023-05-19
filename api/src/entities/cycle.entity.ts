@@ -27,7 +27,7 @@ export class Cycle{
     id!: string;
   
     @Field({ nullable: true })
-    @Property({nullable:true})
+    @Property({unique:true})
     name!: string;
 
     @Property({ onCreate: () => new Date() })

@@ -43,7 +43,7 @@ export class Student {
   id!: string;
 
   @Field({ nullable: true })
-  @Property({ unique:false })
+  @Property({unique: true})
   matricule!: string;
 
   @Field({ nullable: true })

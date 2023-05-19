@@ -54,7 +54,7 @@ export class Personnel {
   lastName!: string;
   
   @Field({ nullable: true })
-  @Property({ nullable: true })
+  @Property({unique:true})
   phoneNumber!: string;
   
   // @Field({ nullable: true })

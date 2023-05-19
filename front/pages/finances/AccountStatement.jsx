@@ -69,9 +69,13 @@ import ReactPaginate from "react-paginate";
 import { CSVLink, CSVDownload } from "react-csv";
 import { useTranslation } from "next-i18next";
 import { getStaticPropsTranslations } from "../../types/staticProps";
+import { useAuth } from "../../contexts/account/Auth/Auth";
+
 
 const AccountStatement = () => {
   const { t } = useTranslation();
+  const router = useRouter();
+  const {setAuthToken, authToken } = useAuth();
   const [searchExpense, setSearchExpense] = useState("");
   const { data: dataExpensePersonnelStudent } = useQuery(
     GET_ALL_EXPENSE_PERSONNEL_STUDENT
@@ -97,6 +101,13 @@ const AccountStatement = () => {
       (acc, curr) => acc + curr.creditamount,
       0
     );
+
+    useEffect(()=>{
+        if(!authToken){
+          router.back()
+        }
+        
+      },[authToken])
 
   useEffect(() => {
     console.log(dataExpensePersonnelStudent?.findallexpenses);

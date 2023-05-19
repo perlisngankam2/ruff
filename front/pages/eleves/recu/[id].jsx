@@ -26,7 +26,7 @@ import ReactToPrint from 'react-to-print';
 import ReactToPdf from "react-to-pdf";
 import ReactPaginate from "react-paginate";
 import {TfiFilter, TfiPrinter} from "react-icons/tfi"
-
+import { useAuth } from "../../../contexts/account/Auth/Auth";
 
 import { 
     // GET_STUDENT_BY_TRANCHE_STUDENT,
@@ -56,6 +56,7 @@ const receipt = () => {
 
     const router = useRouter();
     const { account, loaded } = useAccount();
+  const { setAuthToken,authToken } = useAuth();
     
    const {data:dataTranchePension} = useQuery(GET_ALL_TRANCHE_PENSION);
 
@@ -260,6 +261,13 @@ const receipt = () => {
         // unit: 'mm',
         // format: 'a4',
     };
+
+    useEffect(()=>{
+        if(!authToken){
+          router.back()
+        }
+    },[authToken])
+
 
     useEffect(() =>{
         // console.log(dataStudentByTrancheStudent?.getTrancheStudentByStudent)

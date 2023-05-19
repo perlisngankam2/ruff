@@ -31,6 +31,8 @@ import { Box,
 // import { useTranslation} from 'next-i18next';
 import {CiSearch} from 'react-icons/ci'
 import { useQuery } from '@apollo/client';
+import { useState, useEffect } from "react";
+import { useRouter } from "next/router";
 import {
     GET_STATISTICS_PRIMAIRE_ANGLOPHONE_CLASS,
     GET_STATISTICS_PRIMAIRE_FRANCOPHONE_CLASS,
@@ -40,9 +42,13 @@ import {
 
 import DefaultLayout from '../../components/layouts/DefaultLayout';
 import { useEffect } from 'react';
+import { useAuth } from '../../contexts/account/Auth/Auth';
+
+
 
 const SuiviPaiementFraisInscription = () => {
-
+    const { setAuthToken, authToken } = useAuth();
+    const router = useRouter();
     // const {t} = useTranslation();
     const {data:dataInscriptionStatisticsAnglophoneSection} = useQuery(GET_STATISTICS_PRIMAIRE_ANGLOPHONE_CLASS);
     const {data:dataTotalInscriptionStatisticsAnglophoneSection} = useQuery(GET_TOTAL_STATISTICS_PRIMAIRE_ANGLOPHONE_CLASS);
@@ -50,7 +56,11 @@ const SuiviPaiementFraisInscription = () => {
     const {data:dataInscriptionStatisticsFrancophoneSection} = useQuery(GET_STATISTICS_PRIMAIRE_FRANCOPHONE_CLASS)
     const {data:dataTotalInscriptionStatisticsFrancophoneSection} = useQuery(GET_TOTAL_STATISTICS_PRIMAIRE_FRANCOPHONE_CLASS)
 
-
+    useEffect(() => {
+        if (!authToken) {
+          router.back();
+        }
+      }, [authToken]);
 
     useEffect(() => {
         console.log(dataInscriptionStatisticsAnglophoneSection);

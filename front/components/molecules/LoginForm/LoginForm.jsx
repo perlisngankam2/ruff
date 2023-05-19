@@ -43,10 +43,17 @@ const LoginForm = () => {
   const [loginInput, error] = useMutation(LOGIN_USER);
   const [user, setUser] = useState(null);
   const router = useRouter();
-  const { setAuthToken } = useAuth();
+  const { setAuthToken,authToken } = useAuth();
   const { dataUser, called, loading } = useQuery(GET_USER_CONNECTED);
   const { t } = useTranslation();
   //  console.log(setAuthToken.isLogged)
+
+  console.log(authToken)
+  useEffect(()=>{
+    if(authToken){
+      router.back()
+    }
+  },[authToken])
 
   console.log(dataUser);
   const [isLoading, setIsLoading] = useState(false);

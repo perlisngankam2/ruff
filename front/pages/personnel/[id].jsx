@@ -49,6 +49,7 @@ import {
 import { useTranslation } from "next-i18next";
 import { MinusIcon } from "@chakra-ui/icons";
 // import { getStaticPropsTranslations } from "../../types/staticProps";
+import { useAuth } from "../../contexts/account/Auth/Auth";
 
 export const colorOptions = [
   { value: "blue", label: "Blue", color: "#0052CC" },
@@ -68,6 +69,7 @@ export const groupedOptions = [
 
 const Profil = () => {
   const toast = useToast();
+  const { setAuthToken, authToken } = useAuth();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const {
     isOpen: isOpenns,
@@ -202,6 +204,13 @@ const Profil = () => {
   };
 
   console.log(moisPayes);
+
+  useEffect(()=>{
+    if(!authToken){
+      router.back()
+    }
+  },[authToken])
+
 
   useEffect(() => {
     console.log(dataPersonnelId);

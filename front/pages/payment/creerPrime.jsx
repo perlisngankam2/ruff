@@ -48,10 +48,12 @@ import {MdDelete} from 'react-icons/md';
 import ReactPaginate from "react-paginate";
 import {useTranslation} from "next-i18next";
 import { getStaticPropsTranslations } from "../../types/staticProps";
+import { useAuth } from "../../contexts/account/Auth/Auth";
 
 
 function creerPrime() {
 
+  const { setAuthToken, authToken } = useAuth();
   const { isOpen, onToggle, onClose, onOpen } = useDisclosure();
   const [Nom , setNom] = useState("");
   const [Description , setDescription] = useState("");
@@ -73,6 +75,14 @@ function creerPrime() {
     const changePage = ({ page }) => {
       setPageNumber(page);
     };
+
+
+    useEffect(()=>{
+      if(!authToken){
+        router.back()
+      }
+      
+    },[authToken])
 
     const HandleClick = async (event) => {
   event.preventDefault();

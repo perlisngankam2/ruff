@@ -3,7 +3,7 @@ import {
   Box,
   Button,
   ButtonGroup,
-  IconButton ,
+  IconButton,
   Center,
   Flex,
   Heading,
@@ -32,100 +32,110 @@ import {
   FormControl,
   FormLabel,
   InputRightElement,
-  AlertDialogCloseButton
+  AlertDialogCloseButton,
 } from "@chakra-ui/react";
 
 import DefaultLayout from "../../components/layouts/DefaultLayout";
 import React, { useEffect, useState, useContext } from "react";
 import { IoIosAdd } from "react-icons/io";
 import { Router, useRouter } from "next/router";
-import {FiEdit, FiSearch} from 'react-icons/fi';
-import {MdDelete} from 'react-icons/md';
-import { 
+import { FiEdit, FiSearch } from "react-icons/fi";
+import { MdDelete } from "react-icons/md";
+import {
   GET_ALL_SECTION,
-  GET_ONE_SECTION, 
-  GET_ONE_CYCLE, 
-  GET_ALL_CYCLE
+  GET_ONE_SECTION,
+  GET_ONE_CYCLE,
+  GET_ALL_CYCLE,
 } from "../../graphql/Queries";
-import { 
-  DELETE_SECTION, 
-  DELETE_CYCLE, 
-  UPDATE_CYCLE, 
-  CREATE_CYCLE
+import {
+  DELETE_SECTION,
+  DELETE_CYCLE,
+  UPDATE_CYCLE,
+  CREATE_CYCLE,
 } from "../../graphql/Mutation";
-import {UpdateCycle} from './updatecycle';
-import { useMutation, useQuery } from "@apollo/client"; 
+import { UpdateCycle } from "./updatecycle";
+import { useMutation, useQuery } from "@apollo/client";
 import SectionCreate from "./SectionCreate";
 import CycleCreate from "./CycleCreate";
 import ReactPaginate from "react-paginate";
 // import Routes from "../../modules/routes";
 import { useTranslation } from "next-i18next";
 import { getStaticPropsTranslations } from "../../types/staticProps";
+import { useAuth } from "../../contexts/account/Auth/Auth";
 
 const cyclesection = () => {
+  // const router = useRouter();
+  const [query, setQuery] = useState("");
+  const [cycle, setCycle] = useState();
+  const [name, setName] = useState("");
+  const [section, setSection] = useState("");
+  // const search = (data) => {
+  //   let datas = data.filter((item) => keys.some((key) => (
+  //     item[key].toUpperCase().includes(query)
+  //     )
+  //   ));
+  //   console.log("datas :" , datas)
+  //   return query ? datas.slice(0,5) : Users.slice(0,5)
+  // };
 
-    // const router = useRouter();
-    const [query , setQuery] = useState("");
-    const [cycle, setCycle] = useState();
-    const [name, setName] = useState("");
-    const [section, setSection] = useState("");
-    // const search = (data) => {
-    //   let datas = data.filter((item) => keys.some((key) => (
-    //     item[key].toUpperCase().includes(query) 
-    //     )
-    //   ));
-    //   console.log("datas :" , datas)
-    //   return query ? datas.slice(0,5) : Users.slice(0,5)
-    // };
-   
-    const {data} = useQuery(GET_ALL_SECTION);
-    const {data:dataCycle} = useQuery(GET_ALL_CYCLE);
-    const [id, setId] = useState(null)
-    const [deleteSection ]= useMutation(DELETE_SECTION);
-  
-    const { isOpen, onOpen, onClose, onToggle} = useDisclosure();
-    const { isOpen:isOpennns, onOpen:onOpennns, onClose:onClossses, onToggle:onToggles} = useDisclosure();
+  const { data } = useQuery(GET_ALL_SECTION);
+  const { setAuthToken, authToken } = useAuth();
+  const { data: dataCycle } = useQuery(GET_ALL_CYCLE);
+  const [id, setId] = useState(null);
+  const [deleteSection] = useMutation(DELETE_SECTION);
 
-    const [isformOpen, setIsFormOpen] = useState(false)
-    const router = useRouter();
-    const [pageNumber, setPageNumber] = useState(0);
-    const usersPerPage = 15;
-    const pagesVisited = pageNumber * usersPerPage;
+  const { isOpen, onOpen, onClose, onToggle } = useDisclosure();
+  const {
+    isOpen: isOpennns,
+    onOpen: onOpennns,
+    onClose: onClossses,
+    onToggle: onToggles,
+  } = useDisclosure();
 
-    const [pageNumberCycle, setPageNumberCycle] = useState(0);
-    const itemPerPageCycle = 10;
-    const pagesVisitedCycle = pageNumberCycle * itemPerPageCycle;
-    const [searchSection, setSearchSection] = useState("");
+  const [isformOpen, setIsFormOpen] = useState(false);
+  const router = useRouter();
+  const [pageNumber, setPageNumber] = useState(0);
+  const usersPerPage = 15;
+  const pagesVisited = pageNumber * usersPerPage;
 
-    
+  const [pageNumberCycle, setPageNumberCycle] = useState(0);
+  const itemPerPageCycle = 10;
+  const pagesVisitedCycle = pageNumberCycle * itemPerPageCycle;
+  const [searchSection, setSearchSection] = useState("");
 
-    const handleChangeSection = (event) =>{
-      setSearchSection(event.target.value)
+  const handleChangeSection = (event) => {
+    setSearchSection(event.target.value);
+  };
+
+  const pageCount = Math.ceil(data?.findAllsection.length / usersPerPage);
+
+  const changePage = ({ selected }) => {
+    setPageNumber(selected);
+  };
+
+  const pageCountCycle = Math.ceil(
+    dataCycle?.findAllcycle.length / itemPerPageCycle
+  );
+  const changePageCycle = ({ page }) => {
+    setPageNumberCycle(page);
+  };
+
+  useEffect(()=>{
+    if(!authToken){
+      router.back()
     }
+    
+  },[authToken])
 
-    const pageCount = Math.ceil(data?.findAllsection.length / usersPerPage);
+  useEffect(() => {
+    console.log(data?.findAllsection);
+    setSection(data);
+    console.log(dataCycle?.findAllcycle);
+    console.log("hh");
+  });
 
-    const changePage = ({ selected }) => {
-      setPageNumber(selected);
-    };
+  // const displayUsers =
 
-    const pageCountCycle = Math.ceil(dataCycle?.findAllcycle.length / itemPerPageCycle);
-    const changePageCycle = ({ page }) => {
-      setPageNumberCycle(page);
-    };
-
-    useEffect (() => {
-      console.log(data?.findAllsection);
-      setSection(data);
-      console.log(dataCycle?.findAllcycle) 
-      console.log("hh")
-    });
-
-   
-
-    // const displayUsers = 
-
-  
   // const updateCycle = async(value) => {
   //       await editCycle({
   //         variables:{
@@ -138,8 +148,7 @@ const cyclesection = () => {
   //       });
   // };
 
-    const handleShowUpdateCycle = (cycle) => {
-    }
+  const handleShowUpdateCycle = (cycle) => {};
 
   return (
     <DefaultLayout>
@@ -164,16 +173,13 @@ const cyclesection = () => {
             <Text>Dashboad / classe/Cycle & section</Text>
           </Hide>
         </Flex>
-        <Flex 
-          gap={10} 
-          mt={7}
-        >
-          <InputGroup  width="600px">
-          {/* <InputRightElement
+        <Flex gap={10} mt={7}>
+          <InputGroup width="600px">
+            {/* <InputRightElement
               children={<Icon as={FiSearch} />}
               cursor="pointer"
             /> */}
-             <InputRightElement
+            <InputRightElement
               children={<Icon as={FiSearch} />}
               cursor="pointer"
             />
@@ -188,115 +194,104 @@ const cyclesection = () => {
               children={<SearchIcon variant="flushed"/>} 
             /> */}
           </InputGroup>
-          <SectionCreate/>
+          <SectionCreate />
         </Flex>
         <Box mt={10}>
-          <Box> 
-            <Heading 
-               mb={5}
+          <Box>
+            <Heading
+              mb={5}
               size="lg"
               textAlign={"center"}
-              color = "colors.quinzaine"
-              >
-                Sections
+              color="colors.quinzaine"
+            >
+              Sections
             </Heading>
           </Box>
           <Box mb={5}>
-          <TableContainer
-            border={"1px"} 
-            rounded={"md"}
-          >
-            <Table 
-              variant='striped' 
-              colorScheme={"white"}
-              bg={"white"}
-            >
+            <TableContainer border={"1px"} rounded={"md"}>
+              <Table variant="striped" colorScheme={"white"} bg={"white"}>
                 <Thead background="colors.secondary">
-                <Tr>
+                  <Tr>
                     <Th>Nom</Th>
                     {/* <Th>Description</Th> */}
                     <Th>Actions</Th>
-                </Tr>
+                  </Tr>
                 </Thead>
-                {data && ( 
+                {data && (
+                  <Tbody>
+                    {data?.findAllsection
+                      .slice(pagesVisited, pagesVisited + usersPerPage)
+                      .filter((section) => {
+                        if (searchSection == "") {
+                          return section;
+                        } else if (
+                          section.name
+                            .toLowerCase()
+                            .includes(searchSection.toLowerCase())
+                        )
+                          return section;
+                      })
+                      .map((section, index) => (
+                        <SectionElement section={section} index={index} />
+                      ))}
+                  </Tbody>
+                )}
+              </Table>
+            </TableContainer>
+          </Box>
+          <Box>
+            <ReactPaginate
+              previousLabel={"<<"}
+              nextLabel={">>"}
+              pageCount={pageCount}
+              onPageChange={changePage}
+              containerClassName={"paginationBttns"}
+              previousLinkClassName={"previousBttn"}
+              nextLinkClassName={"nextBttn"}
+              disabledClassName={"paginationDisabled"}
+              activeClassName={"paginationActive"}
+            />
+          </Box>
+        </Box>
+        <Box mt={50}>
+          <Box>
+            <Heading
+              mt={2}
+              size="lg"
+              textAlign={"center"}
+              color="colors.quinzaine"
+            >
+              Cycles
+            </Heading>
+          </Box>
+          <CycleCreate
+          // defaultValues={defaultValues}
+          // {...onSubmit ? updateCycle: addCycle}
+          // update={true}
+          />
+          <TableContainer border={"1px"} rounded={"md"}>
+            <Table variant="striped" colorScheme={"white"} bg={"white"}>
+              <Thead background="colors.secondary">
+                <Tr>
+                  <Th>Nom</Th>
+                  <Th>Setion</Th>
+                  <Th>Actions</Th>
+                </Tr>
+              </Thead>
+              {dataCycle && (
                 <Tbody>
-                {data?.findAllsection
-                  .slice(pagesVisited, pagesVisited + usersPerPage)
-                  .filter((section) =>{
-                    if(searchSection==""){
-                      return section
-                    }else if(section.name.toLowerCase().includes(searchSection.toLowerCase()))
-                      return section;
-                  })
-                  .map((section, index) => ( 
-                    <SectionElement section={section} index={index}/>
-                  ))}                       
+                  {dataCycle.findAllcycle
+                    // .slice(pagesVisitedCycle, pagesVisitedCycle + itemPerPageCycle)
+                    .map((cycle, index) => (
+                      <CycleElement cycle={cycle} index={index} />
+                    ))}
                 </Tbody>
               )}
             </Table>
-        </TableContainer> 
-      </Box>
-      <Box> 
-        <ReactPaginate 
-          previousLabel={"<<"}
-          nextLabel={">>"}
-          pageCount={pageCount}
-          onPageChange={changePage}
-          containerClassName={"paginationBttns"}
-          previousLinkClassName={"previousBttn"}
-          nextLinkClassName={"nextBttn"}
-          disabledClassName={"paginationDisabled"}
-          activeClassName={"paginationActive"}
-        />
-      </Box>
-</Box>
-    <Box mt={50}>
-      <Box> 
-          <Heading 
-          mt={2}
-            size="lg"
-            textAlign={"center"}
-            color = "colors.quinzaine"
-            >
-              Cycles
-          </Heading>
-      </Box>
-      <CycleCreate
-        // defaultValues={defaultValues}
-        // {...onSubmit ? updateCycle: addCycle}
-        // update={true}
-      />
-        <TableContainer
-          border={"1px"} 
-          rounded={"md"}
-        >
-            <Table 
-              variant='striped' 
-              colorScheme={"white"}
-              bg={"white"}
-            >
-                <Thead background="colors.secondary">
-                <Tr>
-                    <Th>Nom</Th>
-                    <Th>Setion</Th>
-                    <Th>Actions</Th>
-                </Tr>
-                </Thead>
-                  {dataCycle && ( 
-                <Tbody>
-                  {
-                    dataCycle.findAllcycle
-                    // .slice(pagesVisitedCycle, pagesVisitedCycle + itemPerPageCycle)
-                    .map((cycle, index) => ( 
-                      <CycleElement cycle={cycle} index={index}/>
-                    ))}
-                </Tbody>
-                  )}
-            </Table>
-        </TableContainer>
-      </Box>
-      <Box mt="15px"> 
-        {/* <ReactPaginate 
+          </TableContainer>
+        </Box>
+        <Box mt="15px">
+          {/* <ReactPaginate 
           previousLabel={"<<"}
           nextLabel={">>"}
           pageCount={pageCountCycle}
@@ -307,52 +302,58 @@ const cyclesection = () => {
           disabledClassName={"paginationDisabled"}
           activeClassName={"paginationActive"}
         /> */}
-      </Box>
+        </Box>
       </Box>
     </DefaultLayout>
   );
 };
 export async function getStaticProps({ locale }) {
-    return {
-      props: {
-        ...(await getStaticPropsTranslations(locale)),
-        // Will be passed to the page component as props
-      },
-    };
-  }
+  return {
+    props: {
+      ...(await getStaticPropsTranslations(locale)),
+      // Will be passed to the page component as props
+    },
+  };
+}
 
 export default cyclesection;
 
-
-const CycleElement = ({cycle, index}) =>{
-  const { isOpen, onOpen, onClose, onToggle} = useDisclosure();
-  const { isOpen:isOpenEditSeection, onOpen:OnOpenEditSection, onClose:OnCloseEditSection} = useDisclosure();
+const CycleElement = ({ cycle, index }) => {
+  const { isOpen, onOpen, onClose, onToggle } = useDisclosure();
+  const {
+    isOpen: isOpenEditSeection,
+    onOpen: OnOpenEditSection,
+    onClose: OnCloseEditSection,
+  } = useDisclosure();
   const cancelRef = React.useRef();
 
   const [deleteCycle] = useMutation(DELETE_CYCLE);
-  const{ data:dataDetailsCycle} = useQuery(GET_ONE_CYCLE);
+  const { data: dataDetailsCycle } = useQuery(GET_ONE_CYCLE);
   const [editCycle] = useMutation(UPDATE_CYCLE);
-  const [createCycle, {error}] = useMutation(CREATE_CYCLE);
+  const [createCycle, { error }] = useMutation(CREATE_CYCLE);
 
- 
   const removeCycle = async (id) => {
     await deleteCycle({
-      variables: {id},
-      refetchQueries: [{
-        query: GET_ALL_CYCLE
-      }]
-    })
+      variables: { id },
+      refetchQueries: [
+        {
+          query: GET_ALL_CYCLE,
+        },
+      ],
+    });
     onClose();
-  } 
+  };
 
   return (
-      <Tr key={index}>
-        <Td p={0} pl={6}>{cycle.name}</Td>
-        <Td>{cycle.sectionName}</Td>
-        
-        {/* <Td  borderColor={'#C6B062'}>{cycle.section_id}</Td> */}
-        {/* <Td p={0} pl={6}>pppp</Td> */}
-        <Td p={0} pl={3}>
+    <Tr key={index}>
+      <Td p={0} pl={6}>
+        {cycle.name}
+      </Td>
+      <Td>{cycle.sectionName}</Td>
+
+      {/* <Td  borderColor={'#C6B062'}>{cycle.section_id}</Td> */}
+      {/* <Td p={0} pl={6}>pppp</Td> */}
+      <Td p={0} pl={3}>
         <Box display="flex">
           <Icon
             as={FiEdit}
@@ -361,7 +362,7 @@ const CycleElement = ({cycle, index}) =>{
             // bg="blue.100"
             rounded="full"
             onClick={onOpen}
-            _hover={{background:"red.100"}}
+            _hover={{ background: "red.100" }}
           />
           <Icon
             as={MdDelete}
@@ -369,150 +370,146 @@ const CycleElement = ({cycle, index}) =>{
             p="3"
             rounded="full"
             color="colors.quaternary"
-            _hover={{background:"blue.100"}}
+            _hover={{ background: "blue.100" }}
             onClick={onToggle}
-            />
+          />
 
-            <Box> 
-              <AlertDialog
-                isOpen={isOpen}
-                leastDestructiveRef={cancelRef}
-                onClose={onClose}
-                isCentered
+          <Box>
+            <AlertDialog
+              isOpen={isOpen}
+              leastDestructiveRef={cancelRef}
+              onClose={onClose}
+              isCentered
+            >
+              <AlertDialogOverlay
+              // alignSelf={"center"}
               >
-                  <AlertDialogOverlay
-                    // alignSelf={"center"}
+                <AlertDialogContent width={"380px"}>
+                  <AlertDialogHeader
+                    fontSize="lg"
+                    fontWeight="bold"
+                    textAlign={"center"}
+                    mt="5px"
                   >
-                    <AlertDialogContent
-                    width={"380px"}
+                    Confirmation de suppression
+                  </AlertDialogHeader>
+                  <AlertDialogCloseButton />
+
+                  <AlertDialogBody textAlign={"center"}>
+                    Voulez-vous supprimer cette ce cycle?
+                  </AlertDialogBody>
+
+                  <AlertDialogFooter>
+                    <Button ref={cancelRef} onClick={onClose} colorScheme="red">
+                      Annuler
+                    </Button>
+                    <Button
+                      colorScheme="green"
+                      onClick={() => removeCycle(cycle.id)}
+                      ml={3}
                     >
-                      <AlertDialogHeader 
-                        fontSize='lg' 
-                        fontWeight='bold'
-                        textAlign={"center"}
-                        mt="5px"
-                        >
-                        Confirmation de suppression
-                      </AlertDialogHeader>
-                    <AlertDialogCloseButton/>
-
-                      <AlertDialogBody textAlign={"center"}>
-                      Voulez-vous supprimer cette ce cycle?
-                      </AlertDialogBody>
-
-                      <AlertDialogFooter>
-                        <Button 
-                          ref={cancelRef} 
-                          onClick={onClose}
-                          colorScheme="red"
-                        >
-                          Annuler 
-                        </Button>
-                        <Button 
-                          colorScheme='green' 
-                          onClick={() => removeCycle(cycle.id)}
-                          ml={3}
-                        >
-                          Supprimer
-                        </Button>
-                      </AlertDialogFooter>
-                    </AlertDialogContent>
-                  </AlertDialogOverlay>
-              </AlertDialog>
-            </Box>
-                   
-             
+                      Supprimer
+                    </Button>
+                  </AlertDialogFooter>
+                </AlertDialogContent>
+              </AlertDialogOverlay>
+            </AlertDialog>
+          </Box>
         </Box>
-        </Td>
-      </Tr>
-  )
-}
+      </Td>
+    </Tr>
+  );
+};
 
-const SectionElement = ({section, index}) =>{
-  const { isOpen:isOpennns, onOpen:onOpennns, onClose:onClossses, onToggle:onToggles} = useDisclosure();
-    const [deleteSection ]= useMutation(DELETE_SECTION);
-    const cancelRef = React.useRef();
-    const updateSection = (id) => {
+const SectionElement = ({ section, index }) => {
+  const {
+    isOpen: isOpennns,
+    onOpen: onOpennns,
+    onClose: onClossses,
+    onToggle: onToggles,
+  } = useDisclosure();
+  const [deleteSection] = useMutation(DELETE_SECTION);
+  const cancelRef = React.useRef();
+  const updateSection = (id) => {};
 
-    }
-  
   const removeSection = async (id) => {
-      await deleteSection({
-        variables: {
-          id
+    await deleteSection({
+      variables: {
+        id,
+      },
+      refetchQueries: [
+        {
+          query: GET_ALL_SECTION,
         },
-        refetchQueries:[{
-          query: GET_ALL_SECTION
-        }]
-      })
-      onClossses();
-    }
-  return(
+      ],
+    });
+    onClossses();
+  };
+  return (
     <Tr key={index}>
-      <Td p={0} pl={6}>{section.name}</Td>
+      <Td p={0} pl={6}>
+        {section.name}
+      </Td>
       {/* <Td p={0} pl={6}>{section.description}</Td> */}
       <Td p={0} pl={3}>
-      <Box display="flex">
-        {/* <Link 
+        <Box display="flex">
+          {/* <Link 
           href="/eleves/modifiereleve"
         > */}
-            <Icon
+          <Icon
             as={FiEdit}
             onClick={() => updateSection(section.id)}
             boxSize="40px"
             p="3"
             // bg="blue.100"
             rounded="full"
-          _hover={{background:"red.100"}}
-            />
-        {/* </Link> */}
-        <Box href="#" mt="-3px"
-        >
-          <Icon
-            as={MdDelete}
-            boxSize="44px"
-            p="3"
-            rounded="full"
-            color="colors.quaternary"
-            _hover={{background:"blue.100"}}
-            onClick={onOpennns}
+            _hover={{ background: "red.100" }}
           />
-          <Box> 
-            <AlertDialog 
-              isOpen={isOpennns}
-              leastDestructiveRef={cancelRef}
-              onClose={onClossses}
-              isCentered
-            >
+          {/* </Link> */}
+          <Box href="#" mt="-3px">
+            <Icon
+              as={MdDelete}
+              boxSize="44px"
+              p="3"
+              rounded="full"
+              color="colors.quaternary"
+              _hover={{ background: "blue.100" }}
+              onClick={onOpennns}
+            />
+            <Box>
+              <AlertDialog
+                isOpen={isOpennns}
+                leastDestructiveRef={cancelRef}
+                onClose={onClossses}
+                isCentered
+              >
                 <AlertDialogOverlay
-                  // alignSelf={"center"}
+                // alignSelf={"center"}
                 >
-                  <AlertDialogContent
-                  width={"380px"}
-                  >
-                    <AlertDialogHeader 
-                      fontSize='lg' 
-                      fontWeight='bold'
+                  <AlertDialogContent width={"380px"}>
+                    <AlertDialogHeader
+                      fontSize="lg"
+                      fontWeight="bold"
                       textAlign={"center"}
                       mt="5px"
-                      >
+                    >
                       Confirmation de suppression
                     </AlertDialogHeader>
-                    <AlertDialogCloseButton/>
+                    <AlertDialogCloseButton />
                     <AlertDialogBody textAlign={"center"}>
-                    Voulez-vous supprimer cette cette section?
+                      Voulez-vous supprimer cette cette section?
                     </AlertDialogBody>
 
                     <AlertDialogFooter>
-                      <Button 
-                        ref={cancelRef} 
+                      <Button
+                        ref={cancelRef}
                         onClick={onClossses}
                         colorScheme="red"
                       >
-                        Annuler 
+                        Annuler
                       </Button>
-                      <Button 
-                        colorScheme='green' 
+                      <Button
+                        colorScheme="green"
                         onClick={() => removeSection(section.id)}
                         ml={3}
                       >
@@ -521,11 +518,11 @@ const SectionElement = ({section, index}) =>{
                     </AlertDialogFooter>
                   </AlertDialogContent>
                 </AlertDialogOverlay>
-            </AlertDialog>
+              </AlertDialog>
+            </Box>
           </Box>
-      </Box>
-      </Box>
+        </Box>
       </Td>
-  </Tr>
-  )
-}
+    </Tr>
+  );
+};

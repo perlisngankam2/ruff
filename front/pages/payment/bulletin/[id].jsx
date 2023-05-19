@@ -16,6 +16,7 @@ import PaySlipFolderSalaryBox from "../../../components/atoms/PaySlipFolderSalar
 import PaySlipLogoBox from "../../../components/atoms/PaySlipLogoBox";
 import PaySlipInformationEmployeeBox from "../../../components/atoms/PaySlipInformationEmployeeBox";
 import DefaultLayout from "../../../components/layouts/DefaultLayout";
+import { useAuth } from "../../../contexts/account/Auth/Auth";
 import { GET_ALL_PERSONNEL_BY_ID,
          GET_ALL_NAME_PRIME_PERSONNEL, 
          GET_ALL_AMOUNT_PRIME_PERSONNEL, 
@@ -40,6 +41,7 @@ import ReactToPdf from "react-to-pdf";
 // import 'pdfmake';
 
 const Bulletin = () => {
+  const { setAuthToken, authToken } = useAuth();
 
   const router = useRouter();
   // const tableRef = useRef();
@@ -208,6 +210,12 @@ const options = {
 //       ]
 //     });}
 
+useEffect(()=>{
+  if(!authToken){
+    router.back()
+  }
+  
+},[authToken])
 
     if (loading) return <Text>Chargement en cour...</Text>
     if (error) return <Text>Une erreur s'est produite!</Text>

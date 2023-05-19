@@ -28,10 +28,13 @@ import { useRouter } from "next/router";
 import DefaultLayout from "../../components/layouts/DefaultLayout";
 import { useTranslation } from 'next-i18next';
 import { ViewIcon, ViewOffIcon } from '@chakra-ui/icons';
+import { useAuth } from "../../contexts/account/Auth/Auth";
 
 
 function PersonnelAccountForm() {
 
+
+  const { setAuthToken, authToken } = useAuth();
   const [Nom , setNom] = useState("");
   const [Prenom , setPrenom] = useState("");
   const [PhoneNumber, setPhoneNumber] = useState("");
@@ -88,7 +91,12 @@ function PersonnelAccountForm() {
   }
 
   }
-
+  useEffect(()=>{
+    if(!authToken){
+      router.back()
+    }
+    
+  },[authToken])
 
   return (
     // <DefaultLayout>

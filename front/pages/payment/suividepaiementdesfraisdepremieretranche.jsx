@@ -31,16 +31,21 @@ import { Box,
 // import { useTranslation} from 'next-i18next';
 import {CiSearch} from 'react-icons/ci'
 import { useQuery } from '@apollo/client';
+import { useState, useEffect } from "react";
+import { useRouter } from "next/router";
 import { 
     GET_STATISTICS_TRANCHE1_PRIMAIRE_ANGLOPHONE_SECTION,
     GET_TOTAL_STATISTICS_TRANCHE1_PRIMAIRE_ANGLOPHONE_SECTION,
     GET_STATISTICS_TRANCHE1_PRIMAIRE_FRANCOPHONE_SECTION,
     GET_TOTAL_STATISTICS_TRANCHE1_PRIMAIRE_FRANCOPHONE_SECTION
 } from '../../graphql/Queries';
+import { useAuth } from "../../contexts/account/Auth/Auth";
 
 import DefaultLayout from '../../components/layouts/DefaultLayout';
 
 const SuiviPaiementPremiereTranche = () => {
+    const { setAuthToken, authToken } = useAuth();
+    const router = useRouter();
 
     const {data:dataTranche1StatisticsClassAnglophoneSection} = useQuery(GET_STATISTICS_TRANCHE1_PRIMAIRE_ANGLOPHONE_SECTION);
     const {data:dataTotalTranche1StatisticsClassAnglophoneSection} = useQuery(GET_TOTAL_STATISTICS_TRANCHE1_PRIMAIRE_ANGLOPHONE_SECTION);
@@ -48,6 +53,12 @@ const SuiviPaiementPremiereTranche = () => {
     const {data:dataTranche1StatisticsClassFrancophoneSection} = useQuery(GET_STATISTICS_TRANCHE1_PRIMAIRE_FRANCOPHONE_SECTION);
     const {data:dataTotalTranche1StatisticsClassFrancophoneSection} = useQuery(GET_TOTAL_STATISTICS_TRANCHE1_PRIMAIRE_FRANCOPHONE_SECTION)
     // const {t} = useTranslation();
+    useEffect(() => {
+        if (!authToken) {
+          router.back();
+        }
+      }, [authToken]);
+
 
     return (
         <DefaultLayout>

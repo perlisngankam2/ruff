@@ -64,6 +64,7 @@ import {
 } from "../../graphql/Queries";
 import { DELETE_STUDENT } from "../../graphql/Mutation";
 import { useMutation, useQuery } from "@apollo/client";
+import { useAuth } from "../../contexts/account/Auth/Auth";
 
 // const VARIABLE = "pearl";
 
@@ -72,6 +73,7 @@ const feesByStudent = () => {
     const cancelRef = React.useRef()
     const router = useRouter();
     const {t} = useTranslation();
+  const { setAuthToken, authToken } = useAuth();
     const [query , setQuery] = useState("");
     const [data, setData] = useState([]);
     const keys = ["first_name", "last_name", "email", "classe"];
@@ -104,6 +106,13 @@ const feesByStudent = () => {
       console.log("datas :" , datas)
       return query ? datas.slice(0,5) : Users.slice(0,5)
     }; 
+
+    useEffect(()=>{
+      if(!authToken){
+        router.back()
+      }
+      
+    },[authToken])
 
 
     useEffect(() => {

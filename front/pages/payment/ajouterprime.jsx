@@ -48,9 +48,11 @@ import ReactPaginate from "react-paginate";
 import {useTranslation} from "next-i18next";
 import { getStaticPropsTranslations } from "../../types/staticProps";
 import CreerPrime from './creerPrime';
+import { useAuth } from '../../contexts/account/Auth/Auth';
 
 function ajouterprime() {
 
+  const { setAuthToken, authToken } = useAuth();
   const { isOpen, onToggle, onClose, onOpen } = useDisclosure();
   const [Nom , setNom] = useState("");
   const [Description , setDescription] = useState("");
@@ -105,6 +107,12 @@ function ajouterprime() {
     setMontant("");
   }
 
+  useEffect(()=>{
+    if(!authToken){
+      router.back()
+    }
+    
+  },[authToken])
 //     const today = new Date();
 //     const day = today.getDate().toString().padStart(2, '0');
 //     const month = (today.getMonth() + 1).toString().padStart(2, '0');

@@ -69,6 +69,7 @@ import {
 import { DELETE_STUDENT } from "../../graphql/Mutation";
 import { useMutation, useQuery } from "@apollo/client";
 import { useAccount } from "../../contexts/account/Account";
+import { useAuth } from "../../contexts/account/Auth/Auth";
 
 // const VARIABLE = "pearl";
 
@@ -79,6 +80,7 @@ const Eleves = () => {
     const {t} = useTranslation();
     const [query , setQuery] = useState("");
     const [data, setData] = useState([]);
+  const { setAuthToken, authToken } = useAuth();
     const keys = ["first_name", "last_name", "email", "classe"];
     const { isOpen, onToggle, onClose, onOpen } = useDisclosure();
     const [searchNameStudent, setSearchNameStudent] = useState("");
@@ -116,7 +118,13 @@ const Eleves = () => {
       console.log("datas :" , datas)
       return query ? datas.slice(0,5) : Users.slice(0,5)
     }; 
-
+    
+    useEffect(()=>{
+      if(!authToken){
+        router.back()
+      }
+      
+    },[authToken])
 
     useEffect(() => {
       console.log(dataStudent?.findAllstudents);

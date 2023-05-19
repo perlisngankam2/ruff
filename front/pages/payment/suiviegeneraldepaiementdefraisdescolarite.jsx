@@ -34,12 +34,20 @@ import {GET_GENERAL_FEES_STATISTICS_PER_CLASS_ANGLOPHONE_SECTION,
     GET_GENERAL_FEES_STATISTICS_PER_CLASS_FRANCOPHONE_SECTION,
     GET_TOTAL_GENERAL_FEES_STATISTICS_PER_CLASS_FRANCOPHONE_SECTION,
     GET_TOTAL_GENERAL_FEES_STATISTICS_PER_CLASS_ANGLOPHONE_SECTION 
-} from '../../graphql/Queries'
+} from '../../graphql/Queries';
+import { useState, useEffect } from "react";
+import { useRouter } from "next/router";
 import {CiSearch} from 'react-icons/ci'
 import DefaultLayout from '../../components/layouts/DefaultLayout';
 import { useEffect } from 'react';
+import { useAuth } from '../../contexts/account/Auth/Auth';
+
 
 const SuiviPaiementParEleveReNormal = () => {
+
+    const { setAuthToken, authToken } = useAuth();
+  const router = useRouter();
+
 
     const {data:dataStudentStatisticsFeesPerClassAndSection} = useQuery(GET_GENERAL_FEES_STATISTICS_PER_CLASS_ANGLOPHONE_SECTION)
     const {data:dataGeneralClassStatisticsFrancophoneSection} = useQuery(GET_GENERAL_FEES_STATISTICS_PER_CLASS_FRANCOPHONE_SECTION)
@@ -47,6 +55,11 @@ const SuiviPaiementParEleveReNormal = () => {
     const {data:dataTotalGeneralClassStatisticsFrancophoneSection} = useQuery(GET_TOTAL_GENERAL_FEES_STATISTICS_PER_CLASS_FRANCOPHONE_SECTION);
     const {data:dataTotalGeneralClassStatisticsAnglophoneSection} = useQuery(GET_TOTAL_GENERAL_FEES_STATISTICS_PER_CLASS_ANGLOPHONE_SECTION);
     
+    useEffect(() => {
+        if (!authToken) {
+          router.back();
+        }
+      }, [authToken]);
     // const {t} = useTranslation();
 
     // useEffect(()=>{

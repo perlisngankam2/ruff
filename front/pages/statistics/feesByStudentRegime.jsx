@@ -12,6 +12,7 @@ import {
     from '@chakra-ui/react';
 import DefaultLayout from '../../components/layouts/DefaultLayout';
 import { useQuery, useMutation } from "@apollo/client";
+import { useAuth } from "../../contexts/account/Auth/Auth";
 
   import {
     GET_STUDENT_BY_ID,
@@ -24,6 +25,8 @@ import { useRouter } from 'next/router';
 const Paiement = () => {
 
     const router = useRouter()
+    const { setAuthToken, authToken } = useAuth();
+
 
     const {data:dataStudentId, loading, error} = useQuery(GET_STUDENT_BY_ID,
         {
@@ -47,6 +50,14 @@ const Paiement = () => {
       )
 //   affichage de la date d'aaujourd'hui
       const today = new Date();
+      useEffect(()=>{
+        if(!authToken){
+          router.back()
+        }
+        
+      },[authToken])
+
+      
     return (
         <DefaultLayout> 
         <Flex p='3em' minH='100vh' direction ='column' flexWrap='wrap' mt={"50px"} >

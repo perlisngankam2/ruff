@@ -32,9 +32,22 @@ import {
 // import { useTranslation} from 'next-i18next';
 import { CiSearch } from "react-icons/ci";
 import DefaultLayout from "../../components/layouts/DefaultLayout";
+import { useEffect } from 'react';
+import { useAuth } from '../../contexts/account/Auth/Auth';
+import { useRouter } from "next/router";
+
+
 
 const SuiviPaiementParEleveReSpecial = () => {
   // const {t} = useTranslation();
+  const { setAuthToken, authToken } = useAuth();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (!authToken) {
+      router.back();
+    }
+  }, [authToken]);
 
   return (
     <DefaultLayout>

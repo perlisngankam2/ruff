@@ -39,11 +39,13 @@ import Category from "./categorypersonnel";
 import ReactPaginate from "react-paginate";
 import { useTranslation } from "next-i18next";
 import { getStaticPropsTranslations } from "../../types/staticProps";
+import { useAuth } from "../../contexts/account/Auth/Auth";
 
 
 const Personnel = () => {
 
   const [searchName, setSearchName] = useState("");
+  const { setAuthToken, authToken } = useAuth();
   console.log(searchName);
   const {data:dataPersonnel, loading, error} = useQuery(GET_ALL_PERSONNELS)
   const [deletePersonnel] = useMutation(DELETE_PERSONNEL);
@@ -69,7 +71,13 @@ const Personnel = () => {
     { id: 8, name: "HALAN JAMES", function: "Enseignant" },
   ];
 
-
+  useEffect(()=>{
+    if(!authToken){
+      router.back()
+    }
+    
+  },[authToken])
+  
   useEffect (() => {
     setPersonnel(dataPersonnel)
     console.log(dataPersonnel) 

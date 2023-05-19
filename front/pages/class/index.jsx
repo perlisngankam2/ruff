@@ -74,7 +74,7 @@ import Link  from "next/link"
 import Routes from "../../modules/routes";
 import { useTranslation } from "next-i18next";
 import { getStaticPropsTranslations } from "../../types/staticProps";
-
+import { useAuth } from "../../contexts/account/Auth/Auth";
 
 const Class = () => {
 
@@ -82,6 +82,7 @@ const Class = () => {
   const cancelRef = React.useRef()
   const toast = useToast();
   const {t} = useTranslation();
+  const { setAuthToken,authToken } = useAuth();
   const { isOpen, onToggle, onClose, onOpen } = useDisclosure();
   const { isOpen:isOpenn, onClose:onClosse, onOpen:onOpenn } = useDisclosure();
   const { isOpen:isOpennes, onClose:onClosses, onOpen:onOpennes } = useDisclosure();
@@ -96,7 +97,7 @@ const Class = () => {
   const pagesVisited = pageNumber * itemsPerPage;
 
   const [deleteClasse] = useMutation(DELETE_SALLE);
-  const {data:dataClasse} = useQuery(GET_ALL_CLASS);
+  const {data:dataClasse, refetch} = useQuery(GET_ALL_CLASS);
   const {data:dataEnseignant} = useQuery(GET_ALL_PERSONNELS);
   const {data:dataAnneeAcademique} = useQuery(GET_ALL_ANNEE_ACADEMIQUE);
   const {data:dataCourse} = useQuery(GET_ALL_COURSES);
@@ -112,6 +113,7 @@ const Class = () => {
         query: GET_ALL_CLASS
       }]
     })
+    refetch();
     onClose();
   }
 
@@ -122,6 +124,16 @@ const Class = () => {
   // const handleClose = () => {
   //   setShow(false)
   // }
+  
+  console.log(authToken)
+  useEffect(()=>{
+  console.log(authToken)
+
+    if(!authToken){
+      router.back()
+    }
+  },[authToken])
+
 
   const addPersonnelSalle = async () => {
     await createPersonnelSalle({
@@ -136,6 +148,7 @@ const Class = () => {
         query: GET_ALL_PERSONNEL_SALLE
       }]
     })
+    refetch();
     onClosse();
     toast({
       title: "Affection du personnel a la salle.",
@@ -158,6 +171,7 @@ const Class = () => {
         }
       }
     })
+    refetch()
       onClosses();
         // console.log(sectionData)
       toast({

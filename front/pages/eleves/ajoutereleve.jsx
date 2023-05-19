@@ -36,6 +36,7 @@ import {
   GET_STUDENT_BY_ID
 } 
   from "../../graphql/Queries";
+  import { useAuth } from "../../contexts/account/Auth/Auth";
 
 
 const AjouterEleve = () => {
@@ -43,6 +44,7 @@ const AjouterEleve = () => {
   const toast = useToast();
   const router = useRouter();
   const {t} = useTranslation();
+  const { setAuthToken, authToken } = useAuth();
   // const [matricule, setMatricule] = useState("");
   const [firstname, setFirstname] = useState("");
   const [lastname, setLastname] = useState("");
@@ -120,6 +122,12 @@ const [student, setStudent] = useState({
   tutorProfession: ""
 })
 
+useEffect(()=>{
+  if(!authToken){
+    router.back()
+  }
+  
+},[authToken])
 
 useEffect(() => {
   console.log(dataClass?.findAllsalle);

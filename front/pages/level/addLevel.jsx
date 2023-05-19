@@ -26,12 +26,17 @@ import {
 } from "../../graphql/Queries";
 import { useTranslation } from "next-i18next";
 import { getStaticPropsTranslations } from "../../types/staticProps";
+import { useAuth } from "../../contexts/account/Auth/Auth";
+
+
 
 const AddLevel = () => {
   const toast = useToast();
   const router = useRouter();
   const { t } = useTranslation();
   const teachers = ["Ryan Jones", "Illary Daenarys ", "Julian Clinton"];
+  const { setAuthToken, authToken } = useAuth();
+
   // const [name, setName] = useState();
   // const [montantPension, setMontantPension] = useState();
   // const [cycleId, setCycleId] = useState("");
@@ -52,6 +57,13 @@ const AddLevel = () => {
 
   let input;
 
+  useEffect(()=>{
+    if(!authToken){
+      router.back()
+    }
+    
+  },[authToken])
+  
   useEffect(() => {
     // console.log(dataSection?.findAllsection)
     console.log("j");

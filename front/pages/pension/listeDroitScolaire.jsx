@@ -61,11 +61,14 @@ import {
 import { FiEdit, FiSearch } from "react-icons/fi";
 import ReactPaginate from "react-paginate";
 import { setPriority } from "os";
+import { useAuth } from "../../contexts/account/Auth/Auth";
+
 
 const Pension = () => {
 
     // const router = useRouter();
     const [query , setQuery] = useState("");
+    const { setAuthToken, authToken } = useAuth();
     const [name, setName] = useState("");
     const [montant, setMontant] = useState();
     const [dateLine, setDateLine] = useState();
@@ -172,6 +175,13 @@ const Pension = () => {
 
     }
 
+    useEffect(()=>{
+      if(!authToken){
+        router.back()
+      }
+      
+    },[authToken])
+    
     useEffect(() => {
       console.log(dataAnneeAcademique)
       // console.log(dataFraisInscription?.findAllfraisinscription)

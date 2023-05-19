@@ -48,6 +48,7 @@ import {MdDelete} from 'react-icons/md';
 import ReactPaginate from "react-paginate";
 import {useTranslation} from "next-i18next";
 import { getStaticPropsTranslations } from "../../types/staticProps";
+import { useAuth } from "../../contexts/account/Auth/Auth";
 
 
 function creerRetenue() {
@@ -62,6 +63,7 @@ function creerRetenue() {
   // const {data:dataCategoryPersonnel} = useQuery(GET_ALL_Category_Personnel);
   const toast = useToast()
   const router = useRouter()
+  const { setAuthToken, authToken } = useAuth();
    const {data:dataRetenue, refetch} = useQuery(GET_ALL_RETENUE)
     const itemsPerPage = 15;
     const [pageNumber, setPageNumber] = useState(0);
@@ -73,6 +75,12 @@ function creerRetenue() {
       setPageNumber(page);
     };
 
+    useEffect(()=>{
+      if(!authToken){
+        router.back()
+      }
+      
+    },[authToken])
 
     const HandleClick = async (event) => {
   event.preventDefault();

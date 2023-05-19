@@ -32,12 +32,15 @@ import {
   GET_SALLE_BY_ID,
   GET_ALL_ANNEE_ACADEMIQUE
 }  from "../../graphql/Queries";
+import { useAuth } from "../../contexts/account/Auth/Auth";
+
 
 const AddClass = () => {
 
   const toast = useToast();
   const router = useRouter();
   const {t} = useTranslation();
+  const { setAuthToken, authToken } = useAuth();
   const teachers = ["Ryan Jones", "Illary Daenarys ", "Julian Clinton"];
   const [name, setName] = useState();
   const [section, setSection] = useState();
@@ -71,7 +74,13 @@ const AddClass = () => {
   // console.log(typeof bb)
   
   let input;
- 
+  useEffect(()=>{
+    if(!authToken){
+      router.back()
+    }
+    
+  },[authToken])
+
   useEffect(() => {
     // console.log(dataSection?.findAllsection)
     console.log("j")

@@ -38,16 +38,24 @@ import { GET_STUDENT_STATISTICS_ANGLOPHONE_SECTION,
     GET_TOTAL_STUDENT_STATISTICS_FRANCOPHONE_SECTION
 } from '../../graphql/Queries';
 import { useEffect } from 'react';
+import { useRouter } from "next/router";
+import { useAuth } from '../../contexts/account/Auth/Auth';
 
 
 const SuiviePaiementSectionFrancophone = () => {
-
+    const { setAuthToken, authToken } = useAuth();
+    const router = useRouter();
     // const {t} = useTranslation();
 
     const {data:dataStudentStatisticsFrancophoneSection} = useQuery(GET_STUDENT_STATISTICS_FRANCOPHONE_SECTION);
     const {data:dataTotalStudentStatisticsFrancophoneSection} = useQuery(GET_TOTAL_STUDENT_STATISTICS_FRANCOPHONE_SECTION);
     
-
+    useEffect(() => {
+        if (!authToken) {
+          router.back();
+        }
+      }, [authToken]);
+      
     useEffect(() => {
         console.log(dataStudentStatisticsFrancophoneSection);
     })

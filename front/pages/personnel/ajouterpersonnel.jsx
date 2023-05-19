@@ -10,61 +10,68 @@ import {
   Select,
   Text,
   Center,
-  useToast
+  useToast,
 } from "@chakra-ui/react";
 
 import DefaultLayout from "../../components/layouts/DefaultLayout";
 // import useTranslation from 'next-translate/useTranslation';
-import {useTranslation } from "next-i18next";
+import { useTranslation } from "next-i18next";
 import { useState, useRef, use, useEffect } from "react";
 import { useRouter } from "next/router";
-import {  useMutation, useQuery } from "@apollo/client";
-import {  CREATE_PERSONNEL} from "../../graphql/Mutation"; 
-import { GET_ALL_PERSONNELS, GET_ALL_Category_Personnel } from "../../graphql/Queries";
-import { GET_ALL_USER } from "../../graphql/Queries";
+import { useMutation, useQuery } from "@apollo/client";
+import { CREATE_PERSONNEL } from "../../graphql/Mutation";
+import {
+  GET_ALL_PERSONNELS,
+  GET_ALL_Category_Personnel,
+  GET_ALL_USER,
+} from "../../graphql/Queries";
 import { getStaticPropsTranslations } from "../../types/staticProps";
+import { useAuth } from "../../contexts/account/Auth/Auth";
+
 
 
 const AjouterPersonnel = () => {
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [dateOfBirth, setDateOfBirth] = useState("");
+  const [dateOfStartWork, setDateOfStartWork] = useState(
+    new Date().toISOString().slice(0, 10)
+  );
+  const [sexe, setSexe] = useState("");
+  const [status, setStatus] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
+  const [childNumber, setChildNumber] = useState("");
+  // const [salaire, setSalaire] = useState("");
+  const [situationMatrimonial, setSituationMatrimonial] = useState("");
+  // const [salaire, setSalaire] = useState("");
+  const [categoryPersonnelId, setCategoryPersonnelId] = useState("");
+  const [userID, setUserID] = useState("");
+  // const [matricule, setMatricule] = useState("");
+  const [fonction, setFonction] = useState("");
+  const [isInvalidNom, setIsInvalidNom] = useState();
+  const [isInvalidPrenom, setIsInvalidPrenom] = useState();
+  const [filteredData, setFilteredData] = useState([]);
+  // const [id, setMatricule] = useState("");
 
-   const [firstName, setFirstName] = useState("");
-    const [lastName, setLastName] = useState("");
-    const [dateOfBirth, setDateOfBirth] = useState("");
-    const [dateOfStartWork, setDateOfStartWork] = useState(new Date().toISOString().slice(0, 10));
-    const [sexe, setSexe]= useState("");
-    const [status, setStatus] = useState("");
-    const [phoneNumber, setPhoneNumber] = useState("")
-    const [childNumber, setChildNumber] = useState("");
-    // const [salaire, setSalaire] = useState("");
-    const [situationMatrimonial, setSituationMatrimonial] = useState("");
-    // const [salaire, setSalaire] = useState("");
-    const [categoryPersonnelId, setCategoryPersonnelId] = useState("");
-    const[userID, setUserID] = useState("");
-    // const [matricule, setMatricule] = useState("");
-    const [fonction, setFonction] = useState("");
-      const [isInvalidNom, setIsInvalidNom] = useState();
-        const [isInvalidPrenom, setIsInvalidPrenom] = useState();
-    const [ filteredData, setFilteredData]=useState([])
-    // const [id, setMatricule] = useState("");
-
-    // const dateOfBirthRef = useRef()
-    // const dateOfStartWorkRef = useRef()
-    // const sexeRef = useRef()
-    // const statusRef = useRef()
-    // const situationMatrimonialRef = useRef()
-    // const childNumberRef = useRef()
+  // const dateOfBirthRef = useRef()
+  // const dateOfStartWorkRef = useRef()
+  // const sexeRef = useRef()
+  // const statusRef = useRef()
+  // const situationMatrimonialRef = useRef()
+  // const childNumberRef = useRef()
   const toast = useToast();
   const { t } = useTranslation();
   const router = useRouter();
-  const {data, refetch} = useQuery(GET_ALL_USER);
+  const { setAuthToken, authToken } = useAuth();
+  const { data} = useQuery(GET_ALL_USER);
+  const {data:dataPersonnel, loading, error, refetch} = useQuery(GET_ALL_PERSONNELS)
 
-//propriete manquante//
+  //propriete manquante//
   // firstName
-// lastName
-// phoneNumber
-// teacherCategory
-// salaire
-
+  // lastName
+  // phoneNumber
+  // teacherCategory
+  // salaire
 
   // const [data, setData] = useState({
   //   firstName: "",
@@ -79,16 +86,15 @@ const AjouterPersonnel = () => {
   //   teacherCategory: "",
   //   childNumber: "",
   // });
-    console.log(isInvalidNom);
-  
+  console.log(isInvalidNom);
 
   const [isPermanent, setIsPermanent] = useState(false);
-  const [createPersonnel, {error}] = useMutation(CREATE_PERSONNEL);
-  const {data:dataCategoryPersonnel} = useQuery(GET_ALL_Category_Personnel);
+  const [createPersonnel] = useMutation(CREATE_PERSONNEL);
+  const { data: dataCategoryPersonnel } = useQuery(GET_ALL_Category_Personnel);
   // const handleSubmit = (event) => {
   //   event.preventDefault();
   //   // router.push("/personnel");
-  //   const data = { 
+  //   const data = {
   //     // firstName:firstName,
   //     // lastName:lastName,
   //    dateOfBirth:dateOfBirth,
@@ -106,62 +112,73 @@ const AjouterPersonnel = () => {
 
   let input;
   const handleChange = (e) => {
-    const newFilter =   dataPersonnel.findAllpersonnel
-        .filter((personnel) =>{
-        return  (personnel.firstName.toLowerCase().includes (searchName.toLowerCase()) 
-        || personnel.lastName.toLowerCase().includes (searchName.toLowerCase()) 
-        || personnel.fonction.toLowerCase().includes (searchName.toLowerCase()))
-        
+    const newFilter = dataPersonnel.findAllpersonnel.filter((personnel) => {
+      return (
+        personnel.firstName.toLowerCase().includes(searchName.toLowerCase()) ||
+        personnel.lastName.toLowerCase().includes(searchName.toLowerCase()) ||
+        personnel.fonction.toLowerCase().includes(searchName.toLowerCase())
+      );
     });
-        setFilteredData(newFilter);
+    setFilteredData(newFilter);
   };
 
-  const  handleSubmit = async (event, value) => {
-     event.preventDefault();
-     console.log('hh');
+  const handleSubmit = async (event, value) => {
+    event.preventDefault();
+    console.log("hh");
     console.log(firstName);
     console.log(lastName);
     console.log(phoneNumber);
     console.log(categoryPersonnelId);
     console.log(sexe);
-    console.log(status)
-     console.log(dateOfBirth);
-     console.log(dateOfStartWork);
-     console.log(fonction);
-     console.log(situationMatrimonial);
-     console.log(childNumber);
-     console.log(userID)
-  setIsInvalidNom(firstName !== "" && !/^[^\s][a-zA-Z\s]*[^\s]$/.test(firstName))
-  setIsInvalidPrenom(lastName !== "" && !/^[^\s][a-zA-Z\s]*[^\s]$/.test(lastName))
+    console.log(status);
+    console.log(dateOfBirth);
+    console.log(dateOfStartWork);
+    console.log(fonction);
+    console.log(situationMatrimonial);
+    console.log(childNumber);
+    console.log(userID);
+    setIsInvalidNom(
+      firstName !== "" && !/^[^\s][a-zA-Z\s]*[^\s]$/.test(firstName)
+    );
+    setIsInvalidPrenom(
+      lastName !== "" && !/^[^\s][a-zA-Z\s]*[^\s]$/.test(lastName)
+    );
 
-if(/^[^\s][a-zA-Z\s]*[^\s]$/.test(firstName) && /^[^\s][a-zA-Z\s]*[^\s]$/.test(lastName)){
-    const data = await createPersonnel({
-      variables: {
-        createPersonnelUser: {
-          id: "",
-          userID: userID,
-          firstName: firstName,
-          lastName : lastName,
-          phoneNumber: phoneNumber,
-          // salary: parseInt(salaire),
-          categoryPersonnelId: categoryPersonnelId,
-          status: status,
-          situationMatrimonial: situationMatrimonial,
-          sexe: sexe,
-          fonction: fonction,
-          childNumber: parseInt(childNumber),
-          dateOfBirth: dateOfBirth,
-          dateOfStartWork: dateOfStartWork,
+    if (
+      /^[^\s][a-zA-Z\s]*[^\s]$/.test(firstName) &&
+      /^[^\s][a-zA-Z\s]*[^\s]$/.test(lastName)
+    ) {
+      const data = await createPersonnel(
+        {
+          variables: {
+            createPersonnelUser: {
+              id: "",
+              userID: userID,
+              firstName: firstName,
+              lastName: lastName,
+              phoneNumber: phoneNumber,
+              // salary: parseInt(salaire),
+              categoryPersonnelId: categoryPersonnelId,
+              status: status,
+              situationMatrimonial: situationMatrimonial,
+              sexe: sexe,
+              fonction: fonction,
+              childNumber: parseInt(childNumber),
+              dateOfBirth: dateOfBirth,
+              dateOfStartWork: dateOfStartWork,
+            },
+            refetchQueries: [
+              {
+                query: GET_ALL_PERSONNELS,
+              },
+            ],
+          },
         },
-        refetchQueries:[{
-          query: GET_ALL_PERSONNELS
-        }]
-      }}, 
 
-      console.log('hh')
-      ) 
+        console.log("hh")
+      );
       refetch();
-      console.log(data)
+      console.log(data);
       toast({
         title: "Creation d'un personnel.",
         description: "Creation du personnel réussit.",
@@ -169,7 +186,7 @@ if(/^[^\s][a-zA-Z\s]*[^\s]$/.test(firstName) && /^[^\s][a-zA-Z\s]*[^\s]$/.test(l
         duration: 3000,
         isClosable: true,
       });
-      router.push("/personnel")
+      router.push("/personnel");
       setFirstName("");
       setLastName("");
       setDateOfBirth("");
@@ -182,12 +199,19 @@ if(/^[^\s][a-zA-Z\s]*[^\s]$/.test(firstName) && /^[^\s][a-zA-Z\s]*[^\s]$/.test(l
       setChildNumber("");
       setCategoryPersonnelId("");
       setUserID("");
-   }
-  }
+    }
+  };
 
-  useEffect(() =>{
+  useEffect(()=>{
+    if(!authToken){
+      router.back()
+    }
+    
+  },[authToken])
+
+  useEffect(() => {
     console.log(dataCategoryPersonnel?.findAllcategoriepersonnel);
-  })
+  });
 
   return (
     <DefaultLayout>
@@ -203,43 +227,42 @@ if(/^[^\s][a-zA-Z\s]*[^\s]$/.test(firstName) && /^[^\s][a-zA-Z\s]*[^\s]$/.test(l
             backgroundColor={"white"}
             rounded="md"
           >
-            <Box as={"form"} 
-             onSubmit={handleSubmit}
-            >
+            <Box as={"form"} onSubmit={handleSubmit}>
               <Box></Box>
               <Box>
                 <Heading textAlign={"center"} mb="30px">
-                  {t('pages.personnel.ajouterpersonnel.heading')}
+                  {t("pages.personnel.ajouterpersonnel.heading")}
                 </Heading>
               </Box>
-              <Box display={{md:"flex"}} >
+              <Box display={{ md: "flex" }}>
                 <FormControl mr="5%">
                   <FormLabel fontWeight={"normal"}>
-                    {t('pages.personnel.ajouterpersonnel.firstName')}
+                    {t("pages.personnel.ajouterpersonnel.firstName")}
                   </FormLabel>
-                  <Input 
+                  <Input
                     type="text"
                     id="firstName"
                     name="firstName"
                     placeholder="Nom"
                     borderColor="purple.100"
-                    onChange={e => setFirstName(e.target.value)}
+                    onChange={(e) => setFirstName(e.target.value)}
                     value={firstName}
                     pattern="^[^\s][a-zA-Z\s]*[^\s]$"
-                     errorBorderColor="crimson"
-                      required
-                  /> 
-                    <Box mt={1} color={"crimson"}>
-                      {isInvalidNom && (
-                        <Text>
-                          Le nom doit ni commencer par un vide ni etre separee par 2 espaces.
-                        </Text>
-                      )}
+                    errorBorderColor="crimson"
+                    isRequired
+                  />
+                  <Box mt={1} color={"crimson"}>
+                    {isInvalidNom && (
+                      <Text>
+                        Le nom doit ni commencer par un vide ni etre separee par
+                        2 espaces.
+                      </Text>
+                    )}
                   </Box>
                 </FormControl>
-                 <FormControl>
+                <FormControl>
                   <FormLabel fontWeight={"normal"}>
-                    {t('pages.personnel.ajouterpersonnel.lastName')}
+                    {t("pages.personnel.ajouterpersonnel.lastName")}
                   </FormLabel>
                   <Input
                     type="text"
@@ -247,49 +270,55 @@ if(/^[^\s][a-zA-Z\s]*[^\s]$/.test(firstName) && /^[^\s][a-zA-Z\s]*[^\s]$/.test(l
                     name="lastName"
                     placeholder="Prénom"
                     borderColor="purple.100"
-                    onChange={e => setLastName(e.target.value)}
+                    onChange={(e) => setLastName(e.target.value)}
                     value={lastName}
                     pattern="^[^\s][a-zA-Z\s]*[^\s]$"
-                  /> 
+                    isRequired
+                  />
                   <Box mt={1} color={"crimson"}>
-                      {isInvalidPrenom && (
-                        <Text>
-                          Le prenom doit ni commencer par un vide ni etre separee par 2 espaces.
-                        </Text>
-                      )}
+                    {isInvalidPrenom && (
+                      <Text>
+                        Le prenom doit ni commencer par un vide ni etre separee
+                        par 2 espaces.
+                      </Text>
+                    )}
                   </Box>
-               </FormControl>
-                    
-
-
+                </FormControl>
               </Box>
               <FormControl mt="2%">
                 <FormLabel fontWeight={"normal"}>
-                {t('pages.personnel.ajouterpersonnel.gender')}
+                  {t("pages.personnel.ajouterpersonnel.gender")}
                 </FormLabel>
                 <Select
                   id="sexe"
                   name="sexe"
                   placeholder="Sexe"
                   borderColor="purple.100"
-                  onChange={e => setSexe(e.target.value)}
+                  onChange={(e) => setSexe(e.target.value)}
                   value={sexe}
                   // ref={sexeRef}
-                  ref={node => {input = node;}}
+                  ref={(node) => {
+                    input = node;
+                  }}
+                  isRequired
                 >
-                  <option> 
-                    {t('pages.personnel.ajouterpersonnel.genderMenSelectOption')}
+                  <option>
+                    {t(
+                      "pages.personnel.ajouterpersonnel.genderMenSelectOption"
+                    )}
                   </option>
                   <option>
-                    {t('pages.personnel.ajouterpersonnel.genderWomanSelectOption')}
+                    {t(
+                      "pages.personnel.ajouterpersonnel.genderWomanSelectOption"
+                    )}
                   </option>
                   {/* <option>Autres</option> */}
                 </Select>
               </FormControl>
-              <Box display={{md:"flex"}} mt="2%">
+              <Box display={{ md: "flex" }} mt="2%">
                 <FormControl mr="5%">
                   <FormLabel fontWeight={"normal"}>
-                    {t('pages.personnel.ajouterpersonnel.birthDate')}
+                    {t("pages.personnel.ajouterpersonnel.birthDate")}
                   </FormLabel>
                   <Input
                     type="date"
@@ -297,17 +326,19 @@ if(/^[^\s][a-zA-Z\s]*[^\s]$/.test(firstName) && /^[^\s][a-zA-Z\s]*[^\s]$/.test(l
                     name="dateOfBirth"
                     placeholder="Date de naissance"
                     borderColor="purple.100"
-                    onChange={e => setDateOfBirth(e.target.value)}
+                    onChange={(e) => setDateOfBirth(e.target.value)}
                     value={dateOfBirth}
                     // ref={dateOfBirthRef}
-                    ref={node => {input = node;
-                  }}
+                    ref={(node) => {
+                      input = node;
+                    }}
+                    isRequired
                   />
                 </FormControl>
                 <FormControl>
                   <FormLabel fontWeight={"normal"}>
                     {/* {t('components.school.Register.institute')} */}
-                    {t('pages.personnel.ajouterpersonnel.startDateWork')}
+                    {t("pages.personnel.ajouterpersonnel.startDateWork")}
                   </FormLabel>
                   <Input
                     type="date"
@@ -315,14 +346,17 @@ if(/^[^\s][a-zA-Z\s]*[^\s]$/.test(firstName) && /^[^\s][a-zA-Z\s]*[^\s]$/.test(l
                     name="dateOfStartWork"
                     placeholder="Date de prise de fonction"
                     borderColor="purple.100"
-                    onChange={e => setDateOfStartWork(e.target.value)}
+                    onChange={(e) => setDateOfStartWork(e.target.value)}
                     value={dateOfStartWork}
                     // ref={dateOfStartWorkRef}
-                    ref={node => {input = node; }}
+                    ref={(node) => {
+                      input = node;
+                    }}
+                    isRequired
                   />
                 </FormControl>
               </Box>
-              <Box display={{md:"flex"}} mt="2%">
+              <Box display={{ md: "flex" }} mt="2%">
                 <FormControl mr="5%">
                   <FormLabel fontWeight={"normal"}>
                     {/* {t('components.school.Register.birthDate')} */}
@@ -333,132 +367,148 @@ if(/^[^\s][a-zA-Z\s]*[^\s]$/.test(firstName) && /^[^\s][a-zA-Z\s]*[^\s]$/.test(l
                     name="categoryPersonnelId"
                     placeholder="Categorie du personnel"
                     borderColor="purple.100"
-                    onChange={e => setCategoryPersonnelId(e.target.value)}
+                    onChange={(e) => setCategoryPersonnelId(e.target.value)}
                     value={categoryPersonnelId}
                     // ref={dateOfBirthRef}
-                    ref={node => {
+                    ref={(node) => {
                       input = node;
                     }}
+                    isRequired
                   >
-                    { 
-                      dataCategoryPersonnel && (
-                        dataCategoryPersonnel.findAllcategoriepersonnel.map((categoryPersonnel, index) => (
-                            <option value={categoryPersonnel.id} key={index}>
-                              {categoryPersonnel.nom}
-                            </option>
-                        ))
+                    {dataCategoryPersonnel &&
+                      dataCategoryPersonnel.findAllcategoriepersonnel.map(
+                        (categoryPersonnel, index) => (
+                          <option value={categoryPersonnel.id} key={index}>
+                            {categoryPersonnel.nom}
+                          </option>
+                        )
                       )}
-
                   </Select>
                 </FormControl>
                 <FormControl>
                   <FormLabel fontWeight={"normal"}>
                     {/* {t('components.school.Register.institute')} */}
-                   {t('pages.personnel.ajouterpersonnel.fonction')}
+                    {t("pages.personnel.ajouterpersonnel.fonction")}
                   </FormLabel>
                   <Select
                     name="fonction"
                     placeholder="Fonction"
                     borderColor="purple.100"
-                    onChange={e => setFonction(e.target.value)}
+                    onChange={(e) => setFonction(e.target.value)}
                     value={fonction}
                     // ref={dateOfStartWorkRef}
-                    ref={node => {
+                    ref={(node) => {
                       input = node;
                     }}
+                    isRequired
                   >
                     <option>
-                      {t('pages.personnel.ajouterpersonnel.fondatorFonctionOption')}
-                    </option>
-                    <option>     
-                      {t('pages.personnel.ajouterpersonnel.principalFonctionOption')}
-                    </option>
-                    <option>
-                     {t('pages.personnel.ajouterpersonnel.economeFonctionOption')}
-
+                      {t(
+                        "pages.personnel.ajouterpersonnel.fondatorFonctionOption"
+                      )}
                     </option>
                     <option>
-                      {t('pages.personnel.ajouterpersonnel.teacherFonctionOption')}
+                      {t(
+                        "pages.personnel.ajouterpersonnel.principalFonctionOption"
+                      )}
                     </option>
                     <option>
-                      {t('pages.personnel.ajouterpersonnel.gestionnaireFonctionOption')}
+                      {t(
+                        "pages.personnel.ajouterpersonnel.economeFonctionOption"
+                      )}
+                    </option>
+                    <option>
+                      {t(
+                        "pages.personnel.ajouterpersonnel.teacherFonctionOption"
+                      )}
+                    </option>
+                    <option>
+                      {t(
+                        "pages.personnel.ajouterpersonnel.gestionnaireFonctionOption"
+                      )}
                     </option>
                   </Select>
                 </FormControl>
               </Box>
               {/* <Flex mt="2%"> */}
-                {/* <FormControl>
+              {/* <FormControl>
                   <FormLabel> */}
-                    {/* {t('components.school.Register.gender')} */}
-                    {/* Category du personnel
+              {/* {t('components.school.Register.gender')} */}
+              {/* Category du personnel
                   </FormLabel> */}
-                  {/* <Select
+              {/* <Select
                     id="teacherCategory"
                     name="teacherCategory"
                     placeholder="Category du personnel"
                     borderColor="purple.100"
                     onChange={e => setTeacherCategory(e.target.value)}
                     value={teacherCategory} */}
-                    {/* // width={'403px'}
+              {/* // width={'403px'}
                   // >
                   //   <option>Principal</option>
                   //   <option>Econome</option>
                   //   <option>Enseignant</option>
                   //   <option>Surveillant</option>
                   // </Select> */}
-                {/* </FormControl>
+              {/* </FormControl>
               </Flex> */}
-              <Box  display={{md:"flex"}}mt="2%">
+              <Box display={{ md: "flex" }} mt="2%">
                 <FormControl mr="5%">
-                  <FormLabel fontWeight={"normal"}> 
-                     {/* {t('components.school.Register.maritalStatus')} */}
-                     {t('pages.personnel.ajouterpersonnel.status')}
+                  <FormLabel fontWeight={"normal"}>
+                    {/* {t('components.school.Register.maritalStatus')} */}
+                    {t("pages.personnel.ajouterpersonnel.status")}
                   </FormLabel>
-                    <Select
-                      id="status"
-                      name="status"
-                      placeholder="Status "
-                      borderColor="purple.100"
-                      onChange={e => setStatus(e.target.value)}
-                      value={status}
-                      width={["649px", "649px", "403px"]}
-                      // ref={statusRef}
-                      ref={node => {
-                        input = node;
-                      }}
-                    > 
-                      {/* {/* {statuses.map((status, index) => (
+                  <Select
+                    id="status"
+                    name="status"
+                    placeholder="Status "
+                    borderColor="purple.100"
+                    onChange={(e) => setStatus(e.target.value)}
+                    value={status}
+                    width={["649px", "649px", "403px"]}
+                    // ref={statusRef}
+                    ref={(node) => {
+                      input = node;
+                    }}
+                    isRequired
+                  >
+                    {/* {/* {statuses.map((status, index) => (
                         <option key={index}>{status}</option> */}
-                      <option>
-                      {t('pages.personnel.ajouterpersonnel.permanentStatusOption')}
-                      </option>
-                      <option>
-                      {t('pages.personnel.ajouterpersonnel.vaccataireStatusOption')}
-                      </option>
-                    </Select>
-                 </FormControl> 
+                    <option>
+                      {t(
+                        "pages.personnel.ajouterpersonnel.permanentStatusOption"
+                      )}
+                    </option>
+                    <option>
+                      {t(
+                        "pages.personnel.ajouterpersonnel.vaccataireStatusOption"
+                      )}
+                    </option>
+                  </Select>
+                </FormControl>
                 <FormControl>
-                  <FormLabel fontWeight={"normal"}> 
+                  <FormLabel fontWeight={"normal"}>
                     {/* {t('components.school.Register.phoneNumber')} */}
-                    {t('pages.personnel.ajouterpersonnel.phoneNumber')}
+                    {t("pages.personnel.ajouterpersonnel.phoneNumber")}
                   </FormLabel>
                   <Input
-                    type='tel'
+                    type="tel"
                     id="phoneNumber"
                     name="phoneNumber"
                     placeholder="Numero de téléphone"
                     borderColor="purple.100"
-                    onChange={e => setPhoneNumber(e.target.value)}
+                    onChange={(e) => setPhoneNumber(e.target.value)}
                     value={phoneNumber}
-                  /> 
-                 </FormControl> 
-              </Box> 
+                    isRequired
+                  />
+                </FormControl>
+              </Box>
               {/* <Box>
                 {isPermanent && (
                   <FormControl mt="2%">
                     <FormLabel fontWeight={"normal"}> */}
-                      {/* {t('components.school.Register.salary')} */}
-                      {/* Salaire
+              {/* {t('components.school.Register.salary')} */}
+              {/* Salaire
                     </FormLabel>
                     <Input
                       id="salaire"
@@ -470,15 +520,14 @@ if(/^[^\s][a-zA-Z\s]*[^\s]$/.test(firstName) && /^[^\s][a-zA-Z\s]*[^\s]$/.test(l
 
                       value={salaire}
                     /> */}
-                  {/* </FormControl>
+              {/* </FormControl>
                 )}
               </Box> */}
-              <Box display={{md:"flex"}} mt="2%">
-
+              <Box display={{ md: "flex" }} mt="2%">
                 <FormControl mr="5%">
                   <FormLabel fontWeight={"normal"}>
                     {/* {t('components.school.Register.birthDate')} */}
-                    {t('pages.personnel.ajouterpersonnel.childNumber')}
+                    {t("pages.personnel.ajouterpersonnel.childNumber")}
                   </FormLabel>
                   <Input
                     type="text"
@@ -486,8 +535,9 @@ if(/^[^\s][a-zA-Z\s]*[^\s]$/.test(firstName) && /^[^\s][a-zA-Z\s]*[^\s]$/.test(l
                     name="childNumber"
                     placeholder="Nomber d'enfant"
                     borderColor="purple.100"
-                    onChange={e => setChildNumber(e.target.value)}
+                    onChange={(e) => setChildNumber(e.target.value)}
                     value={childNumber}
+                    isRequired={false}
                     // ref={dateOfBirthRef}
                     // ref={node => {input = node;
                     // }}
@@ -496,52 +546,59 @@ if(/^[^\s][a-zA-Z\s]*[^\s]$/.test(firstName) && /^[^\s][a-zA-Z\s]*[^\s]$/.test(l
                 <FormControl>
                   <FormLabel fontWeight={"normal"}>
                     {/* {t('components.school.Register.maritalStatus')} */}
-                    {t('pages.personnel.ajouterpersonnel.maritalStatus')}
+                    {t("pages.personnel.ajouterpersonnel.maritalStatus")}
                   </FormLabel>
                   <Select
                     id="situationMatrimonial"
                     name="situationMatrimonial"
                     placeholder="Status matrimonial"
                     borderColor="purple.100"
-                    onChange={e => setSituationMatrimonial(e.target.value)}
+                    onChange={(e) => setSituationMatrimonial(e.target.value)}
                     value={situationMatrimonial}
                     width={["649px", "649px", "403px"]}
                     // ref={situationMatrimonialRef}
-                    ref={node => {input = node;}}
+                    ref={(node) => {
+                      input = node;
+                    }}
+                    isRequired
                   >
                     <option>
-                      {t('pages.personnel.ajouterpersonnel.singleMaritalStatusOption')}
+                      {t(
+                        "pages.personnel.ajouterpersonnel.singleMaritalStatusOption"
+                      )}
                     </option>
                     {/* <option>
                       {t('pages.personnel.ajouterpersonnel.mariedMaritalStatusOption')}
                     </option> */}
                     <option>
-                      {t('pages.personnel.ajouterpersonnel.mariedMaritalWomanStatusOption')}
+                      {t(
+                        "pages.personnel.ajouterpersonnel.mariedMaritalWomanStatusOption"
+                      )}
                     </option>
                   </Select>
                 </FormControl>
               </Box>
-              <Box display={{md:"flex"}} mt="2%">
+              <Box display={{ md: "flex" }} mt="2%">
                 <FormControl>
-                    <FormLabel fontWeight={"normal"}>
-                    {t('pages.personnel.ajouterpersonnel.associateAccount')}
-                    </FormLabel>
-                    <Select 
-                        name="userID"
-                        placeholder="Compte"
-                        onChange = {(event) => setUserID(event.target.value)}
-                        value={userID}
-                    >
-                        {data && (
-                            data.findAlluser.map((user, index) => ( 
-                                <option value={user?.id} key={index}>
-                                    {user.email}
-                                    {/* {console.log(section.id)} */}
-                                </option>
-                            ))
-                        )}
-                    </Select>
-                  </FormControl>
+                  <FormLabel fontWeight={"normal"}>
+                    {t("pages.personnel.ajouterpersonnel.associateAccount")}
+                  </FormLabel>
+                  <Select
+                    name="userID"
+                    placeholder="Compte"
+                    onChange={(event) => setUserID(event.target.value)}
+                    value={userID}
+                    isRequired={false}
+                  >
+                    {data &&
+                      data.findAlluser.map((user, index) => (
+                        <option value={user?.id} key={index}>
+                          {user.email}
+                          {/* {console.log(section.id)} */}
+                        </option>
+                      ))}
+                  </Select>
+                </FormControl>
               </Box>
               <ButtonGroup mt="3%" w="100%">
                 <Flex w="100%" justifyContent="space-between">
@@ -553,8 +610,7 @@ if(/^[^\s][a-zA-Z\s]*[^\s]$/.test(firstName) && /^[^\s][a-zA-Z\s]*[^\s]$/.test(l
                     variant="solid"
                     color="white"
                   >
-                    {t('pages.personnel.ajouterpersonnel.submitButton')}
-                    
+                    {t("pages.personnel.ajouterpersonnel.submitButton")}
                   </Button>
                 </Flex>
               </ButtonGroup>

@@ -2,9 +2,20 @@ import { Box, Button, Flex, Heading } from "@chakra-ui/react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import DefaultLayout from "../components/layouts/DefaultLayout";
+import { useAuth } from "../contexts/account/Auth/Auth";
+import { useEffect } from 'react';
+
 
 const Stastistiques = () => {
   const router = useRouter();
+  const { setAuthToken, authToken } = useAuth();
+
+  useEffect(() => {
+    if (!authToken) {
+      router.back();
+    }
+  }, [authToken]);
+  
   return (
     <DefaultLayout>
       <Box p="3" pt="70px">
@@ -42,14 +53,14 @@ const Stastistiques = () => {
           >
             Paiement par éleve Régime Special
           </Button>
-          <Button
+          {/* <Button
             onClick={() => {
               router.push("/payment/receipt");
             }}
             colorScheme="green"
           >
             Reçu de paiement
-          </Button>
+          </Button> */}
           <Button
             onClick={() => {
               router.push("/payment/suiviegeneraldepaiementdefraisdescolarite");

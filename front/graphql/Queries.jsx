@@ -65,36 +65,35 @@ export const GET_SALLE_BY_ID = gql `
 
 //student
 export const GET_ALL_STUDENT =  gql `
-  query findAllstudents {
-    findAllstudents {
-        id
-        matricule
-        firstname
-        lastname
-        dateOfBirth
-        birthPlace
-        sex
-        adress
-        transport
-        fatherFirstName
-        fatherLastName
-        fatherPhoneNumber
-        fatherProfession
-        motherFirstName
-        motherLastName
-        motherPhoneNumber
-        motherProfession
-        tutorFirstName
-        tutorLastName
-        tutorPhoneNumber
-        tutorProfession
-        salleid
-        salleName
-        categorieid
-        categoryName
-        parentTel
+    query findAllstudents {
+        findAllstudents {
+            id
+            matricule
+            firstname
+            lastname
+            dateOfBirth
+            sex
+            adress
+            transport
+            fatherFirstName
+            fatherLastName
+            fatherPhoneNumber
+            fatherProfession
+            motherFirstName
+            motherLastName
+            motherPhoneNumber
+            motherProfession
+            tutorFirstName
+            tutorLastName
+            tutorPhoneNumber
+            tutorProfession
+            salleid
+            salleName
+            categorieid
+            categoryName
+            parentTel
+        }
     }
-}
 `
 
 //categorie eleve
@@ -1001,13 +1000,8 @@ query PersonnelNetSalary ($personnelid: String!) {
 
 //NOMS DE TOUTES LES PRIMES ATTRIBUES A UN PERSONNEL
 export const GET_ALL_NAME_PRIME_PERSONNEL = gql `
-query findOnePrime ($id: String!) {
-    findOnePrime (id: $id) {
-        id
-        nom
-        description
-        montant
-    }
+query findnamesprimebypersonnel ($personnelid: String!) {
+    findnamesprimebypersonnel (personnelid: $personnelid)
 }
 `;
 //MONTANT DE TOUTES LES PRIMES ATTRIBUES A UN PERSONNEL

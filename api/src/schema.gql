@@ -248,9 +248,9 @@ type Student {
   tutorLastName: String
   tutorPhoneNumber: String
   tutorProfession: String
-  salleid: ID
+  salleid: ID!
   salleName: ID
-  categorieid: ID
+  categorieid: ID!
   categoryName: ID
   parentTel: String!
 }
@@ -548,7 +548,7 @@ type Query {
   getallretenupersonnelbymonth(personnelid: String!, month: String!): Float!
   findIdRetenuByRetenuPersonnel(personnelid: String!, month: String!): [String!]!
   findAllretenusalarial: [Retenue!]!
-  prime(id: String!): Retenue!
+  prime(id: String!): Prime!
   findAllcategorieretenu: [CategorieRetenu!]!
   categorieRetenu(id: String!): CategorieRetenu!
   findAllpersonnel: [Personnel!]!
@@ -566,7 +566,6 @@ type Query {
   getallpersonnelprimebymont(personnelid: String!, month: String!): Float!
   allMonthAffectedPrimeToPersonnel(personnelid: String!, primeid: String!): [Prime!]!
   findAllprime: [Prime!]!
-  findOnePrime(id: String!): Prime!
   findAllcategorieprime: [CategoriePrime!]!
   categoriePrime(id: String!): CategoriePrime!
   findallsalaire: [Salaire!]!

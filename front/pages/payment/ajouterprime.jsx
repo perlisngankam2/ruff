@@ -279,20 +279,6 @@ function ajouterprime() {
             </Table>
         </TableContainer> 
       </Box>
-
-          <Box> 
-        <ReactPaginate 
-          previousLabel={"<<"}
-          nextLabel={">>"}
-          pageCount={pageCountPrime}
-          onPageChange={changePage}
-          containerClassName={"paginationBttns"}
-          previousLinkClassName={"previousBttn"}
-          nextLinkClassName={"nextBttn"}
-          disabledClassName={"paginationDisabled"}
-          activeClassName={"paginationActive"}
-        />
-      </Box>
          
         </Box>
 

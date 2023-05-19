@@ -30,8 +30,8 @@ export class PrimeResolver {
     return this.primeService.getAll()
   }
   
-  @Query(() => Prime)
-  async findOnePrime(@Args('id', { type: () => String }) id: string) {
+  @Query(() => Prime, { name: 'prime' })
+  findOnePrime(@Args('id', { type: () => String }) id: string) {
     return this.primeService.findByOne(id);
   }
 

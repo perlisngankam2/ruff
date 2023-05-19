@@ -9,9 +9,7 @@ import {
   FormLabel,
   Heading,
   Hide,
-  InputGroup,
   HStack,
-  InputRightElement,
   Image,
   Select,
   Input,
@@ -36,7 +34,6 @@ import { GET_USER_CONNECTED} from  "../../../graphql/Queries"
 import dashboard from "../../../pages/dashboard.jsx";
 import { useAuth } from '../../../contexts/account/Auth/Auth'
 import { useTranslation } from "next-i18next";
-import { ViewIcon, ViewOffIcon } from '@chakra-ui/icons';
 
 const LoginForm = () => {
 
@@ -50,7 +47,6 @@ const LoginForm = () => {
   const { setAuthToken } = useAuth();
   const { dataUser, called, loading } = useQuery(GET_USER_CONNECTED);
   const {t} = useTranslation();
-  const [showPassword, setShowPassword] = useState(false);
 //  console.log(setAuthToken.isLogged)
 
 console.log(dataUser)
@@ -72,10 +68,9 @@ console.log(dataUser)
                     setAuthToken?.(login.data.login.access_token , login.data.login.user.id);
                     // if(login.data.login.user.deactivatedAt === null && login.data.login.user.role !== 'ADMIN'){
                     //   // router.push('/resetPassword')
-                    //   onOpen()
-
+                    //     onOpen()
                     // } else {
-router.push('/dashboard')
+                      router.push('/dashboard')
                     // }
                     
                   };
@@ -146,27 +141,13 @@ router.push('/dashboard')
                   <FormLabel>
                     {t('molecules.LoginForm.motDePasse')}
                   </FormLabel>
-                   <InputGroup>
-                          <Input 
-                      type={showPassword ? 'text' : 'password'}
-                      placeholder="********"
-                      // maxW="300px"
-                      name="password"
-                      value={password}
-                      onChange = {(event) => setPassword(event.target.value)}
-                      required
-      />
-                {/* <Input type={showPassword ? 'text' : 'password'} /> */}
-                <InputRightElement h={'full'}>
-                  <Button
-                    variant={'ghost'}
-                    onClick={() =>
-                      setShowPassword((showPassword) => !showPassword)
-                    }>
-                    {showPassword ? <ViewIcon /> : <ViewOffIcon />}
-                  </Button>
-                </InputRightElement>
-              </InputGroup>
+                  <Input
+                    id="password"
+                    type="password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    name="password"
+                  />
                 </FormControl>
 
 

@@ -255,5 +255,4 @@ async allMonthAffectedPrimeToPersonnel(personnelid:string,primeid:string){
   }
   throw Error("il n'existe aucun mois d affectation de prime a ce personnel")
 }
-
 }

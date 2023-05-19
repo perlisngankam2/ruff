@@ -250,5 +250,7 @@ router.push('/dashboard')
   );
 }
 
+}
+
 
 export default LoginForm;

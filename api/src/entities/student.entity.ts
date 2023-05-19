@@ -25,6 +25,7 @@ import { AvanceTranche } from './avance-tranche.entity';
 import { Pension } from './pension.entity';
 import { Expense } from './expense.entity';
 import { truncate } from 'fs/promises';
+import { truncate } from 'fs/promises';
 
 export enum Regime{
   SPECIAL='SPECIAL',
@@ -59,7 +60,13 @@ export class Student {
   dateOfBirth!:string;
 
   @Field({ nullable: true })
+  @Field({ nullable: true })
   @Property({nullable:true})
+  dateOfBirth!:string;
+
+  @Field({ nullable: true })
+  @Property({nullable:true})
+  birthPlace!: string;
   birthPlace!: string;
 
   // @Field({ nullable: true })

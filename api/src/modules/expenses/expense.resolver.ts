@@ -19,6 +19,11 @@ export class ExpenseResolver {
     return await this.expenseService.create(input)
   }
 
+  // @Query()
+  // async getMaxDebitEtCredit(){
+
+  // }
+
   @Mutation(()=>Expense)
   async updateExpense(@Args('id') id: string,@Args('input') input: ExpenseUpdateInput){
     return await this.expenseService.update(id,input)

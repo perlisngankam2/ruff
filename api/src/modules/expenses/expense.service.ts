@@ -25,6 +25,7 @@ export class ExpenseService {
     @Inject(forwardRef(() =>SalaireService))
     private salaireservice: SalaireService,
     private paysalaryservice: PaySalaryService,
+    @Inject(forwardRef(() =>AvanceTrancheService))
     private avancetrancheservice: AvanceTrancheService,
   ) {}
 
@@ -169,6 +170,13 @@ async findexpensebystudent(studentid:string){
  return await this.ExpenseRepository.findOne({student:studentid})
 }
   
+async getallcredit(){
+ return (await this.findall()).map(a=>a.creditamount)
+}
+
+async getalldebit(){
+return (await this.findall()).map(a=>a.debitamount)  
+}
 }
 
        // const depense = await this.findexpensebystudent(studentid)

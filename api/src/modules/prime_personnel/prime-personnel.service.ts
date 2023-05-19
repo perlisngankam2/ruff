@@ -9,7 +9,7 @@ import {
   } from '@mikro-orm/core';
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { EntityRepository } from '@mikro-orm/postgresql';
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable, forwardRef } from '@nestjs/common';
   import { Field, ID, ObjectType } from '@nestjs/graphql';
 import { PrimePersonnel } from 'src/entities/prime-personnel.entity';
 import { Prime } from 'src/entities/prime.entity';
@@ -29,7 +29,9 @@ export class PrimePersonnelService {
         private readonly em: EntityManager,
         private personnelService: PersonnelService,
         private primeService: PrimeService,
+        @Inject(forwardRef(() =>SalaireService))
         private salaireservice: SalaireService,
+        @Inject(forwardRef(() =>PaySalaryService))
         private paysalarie: PaySalaryService
       ) {}
     
@@ -237,18 +239,19 @@ async findIdPrimeByPersonnel(personnelid:string){
   return (await this.primePersonnelRepository.find({personnel:personnelid})).map(async a=>(await a.prime.load()).id)
 }
 
-async findIdPrimesByPrimesPersonnel(personnelid:string,month:string){
-  const a=(await this.primePersonnelRepository.find({personnel:personnelid})).filter(async a=>( a.paysalary.getEntity()).moisPaie===month)
-  if(a.length>0){
-    return a.map(async a=>(a.prime.getEntity().id))
+async findIdPrimesByPrimesPersonnel(personnelid:string, month:string) {
+  const primesPersonnel = await this.primePersonnelRepository.find({personnel:personnelid});
+  if(primesPersonnel.length>0){
+    return primesPersonnel.filter(a=>a.startMonth===month).map(a=>a.prime.load())
   }
-  throw Error('!!!!!!!!!!!!!Ce personnel nas pas ete payer ce mois!!!!!!!!')
+  throw Error("!!!!!!!!!Aucune prime n'as ete attribuer a ce personnel pour ce mois!!!!!!!!")
 }
+
 
 async allMonthAffectedPrimeToPersonnel(personnelid:string,primeid:string){
   const a=(await this.primePersonnelRepository.find({personnel:personnelid}))
   if(a.length>0){
-    return a.filter(a=>a.prime.getEntity().id===primeid).map(a=>a.paysalary.getEntity().moisPaie)
+    return a.filter(a=>a.prime.getEntity().id===primeid).map(a=>a.startMonth)
   }
   throw Error("il n'existe aucun mois d affectation de prime a ce personnel")
 }

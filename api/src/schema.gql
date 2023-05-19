@@ -380,6 +380,54 @@ enum Role {
   GESTIONAIRE
 }
 
+type ClassStatistics {
+  sectionName: String!
+  className: String!
+  numberOfStudents: Float!
+  expectedAmount: Float!
+  sumAmountAlreadyPaid: Float!
+  rateT: Float!
+  amountRest: Float!
+  rateZ: Float!
+}
+
+type TOTAL {
+  TOTAL_EFFECTIFS_ENREGISTRES: Float!
+  TOTAL_MONTANT_ATTENDU: Float!
+  TOTAL_MONTANT_EN_CAISSE: Float!
+  TOTAL_TAUX_ENCAISSEMENT: Float!
+  TOTAL_RESTE_A_RECOUVRER: Float!
+  TAUX_RAR: Float!
+}
+
+type TOTALTABLEONE {
+  TOTAL_EFFECTIFS_ENREGISTRES: Float!
+  TOTAL_MONTANT_ATTENDU: Float!
+  TOTAL_NOMBRE_ENCAISSEMENT: Float!
+  TOTAL_NOMBRE_SANS_ENCAISSEMENT: Float!
+  TOTAL_MONTANT_EN_CAISSE: Float!
+  TOTAL_FIRST_TAUX_ENCAISSEMENT: Float!
+  TOTAL_SECOND_TAUX_ENCAISSEMENT: Float!
+  TOTAL_RESTE_A_RECOUVRER: Float!
+  TOTAL_FIRST_TAUX_RECOUVRIR: Float!
+  TOTAL_SECOND_TAUX_RECOUVRIR: Float!
+}
+
+type TrancheStat {
+  studentid: String!
+  Nom: String!
+  Priority: Float!
+  Rest: Float!
+}
+
+type TOTALTABLETWO {
+  MONTANT_ATTENDU: Float!
+  MONTANT_EN_CAISSE: Float!
+  TAUX_ENCAISSEMENT: Float!
+  RESTE_RECOUVRER: Float!
+  TAUX_RAR: Float!
+}
+
 type SectionCycle {
   id: ID!
   description: String
@@ -419,17 +467,6 @@ type StudentStatistics {
   rateArrears: Float!
 }
 
-type ClassStatistics {
-  sectionName: String!
-  className: String!
-  numberOfStudents: Float!
-  expectedAmount: Float!
-  sumAmountAlreadyPaid: Float!
-  rateT: Float!
-  amountRest: Float!
-  rateZ: Float!
-}
-
 type SpecialStudentStatistics {
   amountToPay: Float!
   dateLine: DateTime!
@@ -465,57 +502,14 @@ type Query {
   primePersonnel(id: String!): PrimePersonnel!
   findAlltranche: [Tranche!]!
   tranche(id: String!): Tranche!
+  findByStudentRestTranche(studentid: String!): [TrancheStat!]!
   findAllparameters: [Parameter!]!
   findOneparameters(id: String!): Parameter!
-  findAllpersonnel: [Personnel!]!
-  findOnePersonnel(id: String!): Personnel!
-  getpersonnelaccount(id: String!): User!
-  getpersonnelbyaccount(userid: String!): Personnel!
-  findCategoriepersonnelbypersonnel(personnelid: String!): String!
-  findAllsalaire: [SalaireBase!]!
-  salaireBase(id: String!): SalaireBase!
-  findAllprime: [Prime!]!
-  prime(id: String!): Retenue!
-  findAllcategorieprime: [CategoriePrime!]!
-  categoriePrime(id: String!): CategoriePrime!
-  findAllcategoriepersonnel: [CategoriePersonnel!]!
-  findOneCategoriepersonnel(id: String!): CategoriePersonnel!
-  findAllretenusalarial: [Retenue!]!
-  findAllcategorieretenu: [CategorieRetenu!]!
-  categorieRetenu(id: String!): CategorieRetenu!
-  findAllprimepersonnel: [PrimePersonnel!]!
-  findmontantprimebypersonnel(personnelid: String!): [Float!]!
-  findnamesprimebypersonnel(personnelid: String!): [String!]!
-  findIdPrimeByPersonnel(personnelid: String!): [String!]!
-  findsumallprimepersonnel(personnelid: String!): Float!
-  primesETnomprimepersonnel(personnelid: String!): [[String!]!]!
-  findIdPrimesByPrimesPersonnel(personnelid: String!, month: String!): [String!]!
-  getallpersonnelprimebymont(personnelid: String!, month: String!): Float!
-  allMonthAffectedPrimeToPersonnel(personnelid: String!, primeid: String!): [String!]!
-  findallsalaire: [Salaire!]!
-  getonesalaire(id: String!): Salaire!
-  getsalairebypersonnel(personnelid: String!): [Salaire!]!
-  PersonnelMonthSalary(personnelid: String!): [String!]!
-  PersonnelNetSalary(personnelid: String!): [Float!]!
-  personnelsalairenetbymonth(personnelid: String!, month: String!): Float!
-  findAllretenupersonnel: [RetenuPersonnel!]!
-  retenuPersonnel(id: String!): RetenuPersonnel!
-  findmontantretenubypersonnel(personnelid: String!): [Float!]!
-  findnamesretenubypersonnel(personnelid: String!): [String!]!
-  findsumallretenupersonnel(personnelid: String!): Float!
-  getRetenuEtNom(personnelid: String!): [[String!]!]!
-  getallretenupersonnelbymonth(personnelid: String!, month: String!): Float!
-  findIdRetenuByRetenuPersonnel(personnelid: String!, month: String!): [String!]!
-  findallpaysalaire: [PaySalary!]!
-  getonepaysalaire(id: String!): PaySalary!
-  PersonnelMonthPaySalary(personnelid: String!): [String!]!
-  getpaysalairebypersonnel(personnelid: String!): [PaySalary!]!
-  findAllperiod: [Periode!]!
-  periode(id: String!): Periode!
-  findoneexpense(id: String!): Expense!
-  findallexpenses: [Expense!]!
-  findAllAnnerAccademique: [AnneeAccademique!]!
-  anneeAccademique(id: String!): AnneeAccademique!
+  findAlltranchestudent: [TrancheStudent!]!
+  trancheStudent(id: String!): TrancheStudent!
+  getStudentByTrancheStudent(studentid: String!): TrancheStudent!
+  getTranchestudentPaymentDate(studentid: String!, trancheid: String!): DateTime!
+  getTrancheDateLineByStudent(studentid: String!, trancheid: String!): DateTime!
   findavancetranchebyid(input: String!): AvanceTranche!
   findallavancetranche: [AvanceTranche!]!
   SumAvanceTrancheByTranche(trancheid: String!): Float!
@@ -526,14 +520,59 @@ type Query {
   getallfessalreadypayed(studentid: String!): [Tranche!]!
   getalltranchecompletedbystudent(studentid: String!): [Tranche!]!
   RestTuitionFeebystudent(studentid: String!): [Tranche!]!
-  findAlltranchestudent: [TrancheStudent!]!
-  trancheStudent(id: String!): TrancheStudent!
-  getStudentByTrancheStudent(studentid: String!): TrancheStudent!
-  getrestTranchebystudent(studentid: String!): [[String!]!]!
   findAllpension: [Pension!]!
   pension(id: String!): Pension!
   findrestpensionbystudent(studentid: String!): Float!
   findpensionbystudent(studentid: String!): Pension!
+  findoneexpense(id: String!): Expense!
+  findallexpenses: [Expense!]!
+  findAllAnnerAccademique: [AnneeAccademique!]!
+  anneeAccademique(id: String!): AnneeAccademique!
+  findallpaysalaire: [PaySalary!]!
+  getonepaysalaire(id: String!): PaySalary!
+  PersonnelMonthPaySalary(personnelid: String!): [String!]!
+  getpaysalairebypersonnel(personnelid: String!): [PaySalary!]!
+  findAllretenupersonnel: [RetenuPersonnel!]!
+  retenuPersonnel(id: String!): RetenuPersonnel!
+  findmontantretenubypersonnel(personnelid: String!): [Float!]!
+  findnamesretenubypersonnel(personnelid: String!): [String!]!
+  findsumallretenupersonnel(personnelid: String!): Float!
+  getRetenuEtNom(personnelid: String!): [[String!]!]!
+  getallretenupersonnelbymonth(personnelid: String!, month: String!): Float!
+  findIdRetenuByRetenuPersonnel(personnelid: String!, month: String!): [String!]!
+  findAllretenusalarial: [Retenue!]!
+  prime(id: String!): Prime!
+  findAllcategorieretenu: [CategorieRetenu!]!
+  categorieRetenu(id: String!): CategorieRetenu!
+  findAllpersonnel: [Personnel!]!
+  findOnePersonnel(id: String!): Personnel!
+  getpersonnelaccount(id: String!): User!
+  getpersonnelbyaccount(userid: String!): Personnel!
+  findCategoriepersonnelbypersonnel(personnelid: String!): String!
+  findAllprimepersonnel: [PrimePersonnel!]!
+  findmontantprimebypersonnel(personnelid: String!): [Float!]!
+  findnamesprimebypersonnel(personnelid: String!): [String!]!
+  findIdPrimeByPersonnel(personnelid: String!): [String!]!
+  findsumallprimepersonnel(personnelid: String!): Float!
+  primesETnomprimepersonnel(personnelid: String!): [[String!]!]!
+  findIdPrimesByPrimesPersonnel(personnelid: String!, month: String!): [String!]!
+  getallpersonnelprimebymont(personnelid: String!, month: String!): Float!
+  allMonthAffectedPrimeToPersonnel(personnelid: String!, primeid: String!): [Prime!]!
+  findAllprime: [Prime!]!
+  findAllcategorieprime: [CategoriePrime!]!
+  categoriePrime(id: String!): CategoriePrime!
+  findallsalaire: [Salaire!]!
+  getonesalaire(id: String!): Salaire!
+  getsalairebypersonnel(personnelid: String!): [Salaire!]!
+  PersonnelMonthSalary(personnelid: String!): [String!]!
+  PersonnelNetSalary(personnelid: String!): [Float!]!
+  personnelsalairenetbymonth(personnelid: String!, month: String!): Float!
+  findAllperiod: [Periode!]!
+  periode(id: String!): Periode!
+  findAllsalaire: [SalaireBase!]!
+  salaireBase(id: String!): SalaireBase!
+  findAllcategoriepersonnel: [CategoriePersonnel!]!
+  findOneCategoriepersonnel(id: String!): CategoriePersonnel!
   findAllsection: [Section!]!
   findOnesection(id: String!): Section!
   getAllForUseAnglophone: [Section!]!
@@ -566,16 +605,32 @@ type Query {
   parent(id: String!): Parent!
   getStudentStatisticsAnglophone: [StudentStatistics!]!
   getStudentStatisticsFrancophone: [StudentStatistics!]!
-  getSectionStatisticsAnglophoneAdmissionFee: [SectionStatistics!]!
-  getSectionStatisticsAnglophoneFirstInstalment: [SectionStatistics!]!
+  getTotalStudentStatisticsFrancophone: [TOTALTABLETWO!]!
+  getTotalStudentStatisticsAnglophone: [TOTALTABLETWO!]!
+  getTotalMaxStudentStatistics: [TOTALTABLETWO!]!
   getTrancheStatisticsForSpecialStudents: [SpecialStudentStatistics!]!
-  getSectionStatisticsAnglophoneSecondInstalment: [SectionStatistics!]!
-  getSectionStatisticsFrancophoneAdmissionFee: [SectionStatistics!]!
-  getSectionStatisticsFrancophoneFirstInstalment: [SectionStatistics!]!
-  getSectionStatisticsFrancophoneSecondInstalment: [SectionStatistics!]!
+  numberOfStudentsStartedPayingAdmissionFeeSalleAnglophone(sallename: String!): Float!
   numberOfStudentsStartedPayingPension: Float!
+  getSectionStatisticsAnglophoneSecondInstalment: [SectionStatistics!]!
+  getSectionStatisticsFrancophoneSecondInstalment: [SectionStatistics!]!
+  TotalSectionStatisticsFrancophoneSecondInstalmentFee: [TOTALTABLEONE!]!
+  TotalSectionStatisticsAnglophoneSecondInstalmentFee: [TOTALTABLEONE!]!
+  TotalMAX_T_ONE_SecondInstalmentFee: [TOTALTABLEONE!]!
+  getSectionStatisticsAnglophoneFirstInstalment: [SectionStatistics!]!
+  getSectionStatisticsFrancophoneFirstInstalment: [SectionStatistics!]!
+  TotalSectionStatisticsFrancophoneFirstInstalmentFee: [TOTALTABLEONE!]!
+  TotalSectionStatisticsAnglophoneFirstInstalmentFee: [TOTALTABLEONE!]!
+  TotalMAX_T_ONE_FirstInstalmentFee: [TOTALTABLEONE!]!
+  getSectionStatisticsAnglophoneAdmissionFee: [SectionStatistics!]!
+  getSectionStatisticsFrancophoneAdmissionFee: [SectionStatistics!]!
+  TotalSectionStatisticsFrancophoneAdmissionFee: [TOTALTABLEONE!]!
+  TotalSectionStatisticsAnglophoneAdmissionFee: [TOTALTABLEONE!]!
+  TotalMAX_T_ONE_Admission: [TOTALTABLEONE!]!
   getGeneralAnglophoneSectionStatistics: [ClassStatistics!]!
   getGeneralFrancophoneSectionStatistics: [ClassStatistics!]!
+  TotalGeneralFrancophoneSectionStatistics: [TOTAL!]!
+  TotalGeneralAnglophoneSectionStatistics: [TOTAL!]!
+  TotalMAX_T_ZERO: [TOTAL!]!
   getTrancheStatisticsForNormalStudents: [SpecialStudentStatistics!]!
   findAllpensionSalle: [PensionSalle!]!
   findOnepensionsalle(id: String!): PensionSalle!
@@ -609,51 +664,51 @@ type Mutation {
   createParameter(input: ParameterCreateInput!): Parameter!
   updateParameter(id: String!): Parameter!
   deleteparamaters(id: String!): Parameter!
-  createpersonnel(createPersonnelUser: PersonnelCreateInput!): Personnel!
-  updatepersonnel(id: String!, input: PersonnelUpdateInput!): Personnel!
-  deletepersonnel(id: String!): Personnel!
-  createsalairebase(salaireBase: SalaireBaseCreateInput!): SalaireBase!
-  updatesalairebase(id: String!, input: SalaireBaseUpdateInput!): SalaireBase!
-  deletesalairebase(id: String!): SalaireBase!
-  createprime(prime: PrimeCreateInput!): Prime!
-  updateprime(id: String!, input: PrimeUpdateInput!): Prime!
-  deleteprime(id: String!): Prime!
-  createcategorieprime(createCategoriePrime: CategoriePrimeCreateInput!): CategoriePrime!
-  updatecategorieprime(id: String!, input: CategoriePrimeUpdate!): CategoriePrime!
-  deletecategorieprime(id: String!): CategoriePrime!
-  createcategoriepersonnnel(createCategoriePersonnel: CategoriePersonnelCreateInput!): CategoriePersonnel!
-  updatecategoriepersonnel(id: String!, input: CategoriePersonnelUpdate!): CategoriePersonnel!
-  deletecategoriepersonnel(id: String!): CategoriePersonnel!
-  createretenuesalarial(retenue: RetenuCreateInput!): Retenue!
-  updateretenusalarial(id: String!, input: RetenuUpdateInput!): Retenue!
-  deleteretenusalarial(id: String!): Retenue!
-  createcategorieretenu(createCategorieRetenu: CategorieRetenuCreateInput!): CategorieRetenu!
-  updatecategorieretenu(id: String!, input: CategorieRetenuUpdateInput!): CategorieRetenu!
-  createprimepersonnel(primePersonnel: PrimePersonnelCreateInput!): PrimePersonnel!
-  createsalaire(input: SalaireCreateInput!): Salaire!
-  createretnupersonnel(retenuPersonnel: RetenuPersonnelCreateInput!): RetenuPersonnel!
-  updateretenupersonnel(id: String!, input: RetenuPersonnelUpdateInput!): RetenuPersonnel!
-  deleteretenupersonnel(id: String!): RetenuPersonnel!
-  createpaysalaire(input: PaySalaryCreateInput!): PaySalary!
-  updatepaysalire(id: String!, input: PaySalaryUpdateInput!): PaySalary!
-  deletePaysalire(id: String!): PaySalary!
-  createperiod(periode: PeriodeCreateInput!): Periode!
-  updateperiod(id: String!, input: PeriodeUpdateInput!): Periode!
-  deleteperiod(id: String!): Periode!
+  createTrancheStudent(trancheStudent: TrancheStudentCreateInput!): TrancheStudent!
+  updateTrancheStudent(id: String!): TrancheStudent!
+  deletetranchestudent(id: String!): TrancheStudent!
+  createavancetranche(avancetranche: AvanceTrancheCreateInput!): AvanceTranche!
+  deleteavancetranche(id: String!): AvanceTranche!
+  createPension(pension: PensionCreateInput!): Pension!
+  updatePension(id: String!): PensionSalle!
+  deletepension(id: String!): PensionSalle!
   createExpense(input: ExpenseCreateInput!): Expense!
   updateExpense(id: String!, input: ExpenseUpdateInput!): Expense!
   deleteExpense(id: String!): Expense!
   createAnnerAccademique(anneeAccademique: AnneeAccademiqueCreateInput!): AnneeAccademique!
   updateanneeacademique(id: String!, input: AnneeAccademiqueUpdateInput!): AnneeAccademique!
   deleteanneeacademique(id: String!): AnneeAccademique!
-  createavancetranche(avancetranche: AvanceTrancheCreateInput!): AvanceTranche!
-  deleteavancetranche(id: String!): AvanceTranche!
-  createTrancheStudent(trancheStudent: TrancheStudentCreateInput!): TrancheStudent!
-  updateTrancheStudent(id: String!): TrancheStudent!
-  deletetranchestudent(id: String!): TrancheStudent!
-  createPension(pension: PensionCreateInput!): Pension!
-  updatePension(id: String!): PensionSalle!
-  deletepension(id: String!): PensionSalle!
+  createpaysalaire(input: PaySalaryCreateInput!): PaySalary!
+  updatepaysalire(id: String!, input: PaySalaryUpdateInput!): PaySalary!
+  deletePaysalire(id: String!): PaySalary!
+  createretnupersonnel(retenuPersonnel: RetenuPersonnelCreateInput!): RetenuPersonnel!
+  updateretenupersonnel(id: String!, input: RetenuPersonnelUpdateInput!): RetenuPersonnel!
+  deleteretenupersonnel(id: String!): RetenuPersonnel!
+  createretenuesalarial(retenue: RetenuCreateInput!): Retenue!
+  updateretenusalarial(id: String!, input: RetenuUpdateInput!): Retenue!
+  deleteretenusalarial(id: String!): Retenue!
+  createcategorieretenu(createCategorieRetenu: CategorieRetenuCreateInput!): CategorieRetenu!
+  updatecategorieretenu(id: String!, input: CategorieRetenuUpdateInput!): CategorieRetenu!
+  createpersonnel(createPersonnelUser: PersonnelCreateInput!): Personnel!
+  updatepersonnel(id: String!, input: PersonnelUpdateInput!): Personnel!
+  deletepersonnel(id: String!): Personnel!
+  createprimepersonnel(primePersonnel: PrimePersonnelCreateInput!): PrimePersonnel!
+  createprime(prime: PrimeCreateInput!): Prime!
+  updateprime(id: String!, input: PrimeUpdateInput!): Prime!
+  deleteprime(id: String!): Prime!
+  createcategorieprime(createCategoriePrime: CategoriePrimeCreateInput!): CategoriePrime!
+  updatecategorieprime(id: String!, input: CategoriePrimeUpdate!): CategoriePrime!
+  deletecategorieprime(id: String!): CategoriePrime!
+  createsalaire(input: SalaireCreateInput!): Salaire!
+  createperiod(periode: PeriodeCreateInput!): Periode!
+  updateperiod(id: String!, input: PeriodeUpdateInput!): Periode!
+  deleteperiod(id: String!): Periode!
+  createsalairebase(salaireBase: SalaireBaseCreateInput!): SalaireBase!
+  updatesalairebase(id: String!, input: SalaireBaseUpdateInput!): SalaireBase!
+  deletesalairebase(id: String!): SalaireBase!
+  createcategoriepersonnnel(createCategoriePersonnel: CategoriePersonnelCreateInput!): CategoriePersonnel!
+  updatecategoriepersonnel(id: String!, input: CategoriePersonnelUpdate!): CategoriePersonnel!
+  deletecategoriepersonnel(id: String!): CategoriePersonnel!
   createSection(section: SectionCreateInput!): Section!
   updatesection(id: String!, input: SectionUpdateInput!): Section!
   deletesection(id: String!): Section!
@@ -851,175 +906,35 @@ input ParameterCreateInput {
   anneeAcademique: String
 }
 
-input PersonnelCreateInput {
-  id: ID!
-  userID: ID
-  categoryPersonnelId: ID
-  firstName: String
-  lastName: String
-  situationMatrimonial: String
-  sexe: String
-  phoneNumber: String
-  fonction: String
-  status: String
-  childNumber: Float
-  dateOfBirth: String
-  dateOfStartWork: String
-}
-
-input PersonnelUpdateInput {
-  id: ID!
-  userID: ID
-  categoryPersonnelId: ID
-  firstName: String
-  lastName: String
-  situationMatrimonial: String
-  sexe: String
-  phoneNumber: String
-  fonction: String
-  status: String
-  childNumber: Float
-  dateOfBirth: String
-  dateOfStartWork: String
-}
-
-input SalaireBaseCreateInput {
-  categoriepersonnelId: ID
+input TrancheStudentCreateInput {
+  studentId: ID
+  trancheid: ID
+  year: String
+  name: String
   description: String
-  montant: Float! = 0
-  categoriePersonnel: CategoriePersonnelCreateInput
+  montant: Float = 0
+  tranche: TrancheCreateInput
 }
 
-input CategoriePersonnelCreateInput {
-  primeID: ID
-  retenuID: ID
-  salaireID: ID
-  nom: String
+input AvanceTrancheCreateInput {
+  ID: String
+  trancheId: ID
+  studentId: ID
+  year: String
+  name: String
   description: String
   montant: Float
+  reste: Float = 0
+  tranchestudentinput: TrancheStudentCreateInput
 }
 
-input SalaireBaseUpdateInput {
-  categoriepersonnelId: ID
+input PensionCreateInput {
+  studentId: ID
+  anneeAcademiqueId: ID
+  name: String
+  year: String
   description: String
-  montant: Float! = 0
-  categoriePersonnel: CategoriePersonnelUpdate
-}
-
-input CategoriePersonnelUpdate {
-  primeID: ID
-  retenuID: ID
-  salaireID: ID
-  nom: String
-  description: String
-  montant: Float
-}
-
-input PrimeCreateInput {
-  nom: String
-  description: String
-  montant: Float! = 0
-}
-
-input PrimeUpdateInput {
-  nom: String
-  description: String
-  montant: Float! = 0
-}
-
-input CategoriePrimeCreateInput {
-  ID: String
-  nom: String
-  description: String
-}
-
-input CategoriePrimeUpdate {
-  ID: String
-  nom: String
-  description: String
-}
-
-input RetenuCreateInput {
-  nom: String
-  description: String
-  montant: Float! = 0
-}
-
-input RetenuUpdateInput {
-  categorieretenuId: String
-  nom: String
-  description: String
-  montant: Float! = 0
-  categorieRetenu: CategorieRetenuUpdateInput
-}
-
-input CategorieRetenuUpdateInput {
-  ID: String
-  nom: String
-  description: String
-  type: String
-}
-
-input CategorieRetenuCreateInput {
-  ID: String
-  nom: String
-  description: String
-  type: String
-}
-
-input PrimePersonnelCreateInput {
-  primeId: ID
-  personnelId: ID
-  startMonth: String
-}
-
-input SalaireCreateInput {
-  ID: String
-  personnelId: ID
-  primeId: ID
-  retenuId: ID
-  payer: Boolean! = false
-  montant: Float! = 0
-  jourPaie: String
-  moisPaie: String
-}
-
-input RetenuPersonnelCreateInput {
-  retenuId: ID
-  personnelId: ID
-  startMonth: String
-}
-
-input RetenuPersonnelUpdateInput {
-  retenuId: ID
-  personnelId: ID
-  startMonth: String
-}
-
-input PaySalaryCreateInput {
-  personnelId: ID
-  montant: Float! = 0
-  moisPaie: String
-}
-
-input PaySalaryUpdateInput {
-  personnelId: ID
-  montant: Float! = 0
-  moisPaie: String
-}
-
-input PeriodeCreateInput {
-  ID: String
-  nom: String
-  description: String
-  datePeriode: DateTime
-}
-
-input PeriodeUpdateInput {
-  ID: String
-  nom: String
-  description: String
-  datePeriode: DateTime
+  dateLine: DateTime
 }
 
 input ExpenseCreateInput {
@@ -1054,35 +969,175 @@ input AnneeAccademiqueUpdateInput {
   description: String
 }
 
-input AvanceTrancheCreateInput {
+input PaySalaryCreateInput {
+  personnelId: ID
+  montant: Float! = 0
+  moisPaie: String
+}
+
+input PaySalaryUpdateInput {
+  personnelId: ID
+  montant: Float! = 0
+  moisPaie: String
+}
+
+input RetenuPersonnelCreateInput {
+  retenuId: ID
+  personnelId: ID
+  startMonth: String
+}
+
+input RetenuPersonnelUpdateInput {
+  retenuId: ID
+  personnelId: ID
+  startMonth: String
+}
+
+input RetenuCreateInput {
+  nom: String
+  description: String
+  montant: Float! = 0
+}
+
+input RetenuUpdateInput {
+  categorieretenuId: String
+  nom: String
+  description: String
+  montant: Float! = 0
+  categorieRetenu: CategorieRetenuUpdateInput
+}
+
+input CategorieRetenuUpdateInput {
   ID: String
-  trancheId: ID
-  studentId: ID
-  year: String
-  name: String
+  nom: String
+  description: String
+  type: String
+}
+
+input CategorieRetenuCreateInput {
+  ID: String
+  nom: String
+  description: String
+  type: String
+}
+
+input PersonnelCreateInput {
+  id: ID!
+  userID: ID
+  categoryPersonnelId: ID
+  firstName: String
+  lastName: String
+  situationMatrimonial: String
+  sexe: String
+  phoneNumber: String
+  fonction: String
+  status: String
+  childNumber: Float
+  dateOfBirth: String
+  dateOfStartWork: String
+}
+
+input PersonnelUpdateInput {
+  id: ID!
+  userID: ID
+  categoryPersonnelId: ID
+  firstName: String
+  lastName: String
+  situationMatrimonial: String
+  sexe: String
+  phoneNumber: String
+  fonction: String
+  status: String
+  childNumber: Float
+  dateOfBirth: String
+  dateOfStartWork: String
+}
+
+input PrimePersonnelCreateInput {
+  primeId: ID
+  personnelId: ID
+  startMonth: String
+}
+
+input PrimeCreateInput {
+  nom: String
+  description: String
+  montant: Float! = 0
+}
+
+input PrimeUpdateInput {
+  nom: String
+  description: String
+  montant: Float! = 0
+}
+
+input CategoriePrimeCreateInput {
+  ID: String
+  nom: String
+  description: String
+}
+
+input CategoriePrimeUpdate {
+  ID: String
+  nom: String
+  description: String
+}
+
+input SalaireCreateInput {
+  ID: String
+  personnelId: ID
+  primeId: ID
+  retenuId: ID
+  payer: Boolean! = false
+  montant: Float! = 0
+  jourPaie: String
+  moisPaie: String
+}
+
+input PeriodeCreateInput {
+  ID: String
+  nom: String
+  description: String
+  datePeriode: DateTime
+}
+
+input PeriodeUpdateInput {
+  ID: String
+  nom: String
+  description: String
+  datePeriode: DateTime
+}
+
+input SalaireBaseCreateInput {
+  categoriepersonnelId: ID
+  description: String
+  montant: Float! = 0
+  categoriePersonnel: CategoriePersonnelCreateInput
+}
+
+input CategoriePersonnelCreateInput {
+  primeID: ID
+  retenuID: ID
+  salaireID: ID
+  nom: String
   description: String
   montant: Float
-  reste: Float = 0
-  tranchestudentinput: TrancheStudentCreateInput
 }
 
-input TrancheStudentCreateInput {
-  studentId: ID
-  trancheid: ID
-  year: String
-  name: String
+input SalaireBaseUpdateInput {
+  categoriepersonnelId: ID
   description: String
-  montant: Float = 0
-  tranche: TrancheCreateInput
+  montant: Float! = 0
+  categoriePersonnel: CategoriePersonnelUpdate
 }
 
-input PensionCreateInput {
-  studentId: ID
-  anneeAcademiqueId: ID
-  name: String
-  year: String
+input CategoriePersonnelUpdate {
+  primeID: ID
+  retenuID: ID
+  salaireID: ID
+  nom: String
   description: String
-  dateLine: DateTime
+  montant: Float
 }
 
 input SectionUpdateInput {

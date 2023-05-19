@@ -94,11 +94,11 @@ export class Tranche {
     return this.salle?`${this.salle.id}`:null;
   }
 
-  @Field(() => ID,{nullable:true})
-  @Property({ persist: false })
-  get pensionid():string|null {
-    return this.pension?`${this.pension.id}`:null;
-  }
+  // @Field(() => ID)
+  // @Property({ persist: false })
+  // get pensionid() {
+  //   return `${this.pension.id}`;
+  // }
 
   // @ManyToOne(() => TranchePriority ,{
   //   nullable:false,

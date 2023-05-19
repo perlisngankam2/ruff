@@ -50,7 +50,8 @@ export class StatisticsService {
     // });
 
     const students = await this.studentservice.getAllForUseAnglophone()
-
+    console.log(students);
+    
 
 
     return students.map(student => {
@@ -133,7 +134,7 @@ export class StatisticsService {
   .filter(a=>tranche.find(async b=>(await a.tranche.load()).id===b.id))
   .filter(a=>tranche.find(async b=>(await a.tranche.load()).year===b.year))
   .filter(a=>tranche.find(async b=>(await a.tranche.load()).montant===b.montant))
-  .filter(async a=>(await a.tranche.load()).name==='tranche 1')
+  .filter(async a=>(await a.tranche.load()).name==='Tranche 1')
   .map(a=>a.student.load())
   return student
   }
@@ -149,10 +150,10 @@ export class StatisticsService {
     .filter(a=>tranche.find(async b=>(await a.tranche.load()).id===b.id))
     .filter(a=>tranche.find(async b=>(await a.tranche.load()).year===b.year))
     .filter(a=>tranche.find(async b=>(await a.tranche.load()).montant===b.montant))
-    .filter(async a=>(await a.tranche.load()).name==='inscription')
+    .filter(async a=>(await a.tranche.load()).name==='Inscription')
     .map(a=>a.student.load())
     return student
-    }
+  }
 
     async getallStudentswhohaveCompletedSecondInstalment(){
       const tranche =  (await this.trancheservice.getAll())
@@ -160,10 +161,10 @@ export class StatisticsService {
       .filter(a=>tranche.find(async b=>(await a.tranche.load()).id===b.id))
       .filter(a=>tranche.find(async b=>(await a.tranche.load()).year===b.year))
       .filter(a=>tranche.find(async b=>(await a.tranche.load()).montant===b.montant))
-      .filter(async a=>(await a.tranche.load()).name==='tranche 2')
+      .filter(async a=>(await a.tranche.load()).name==='Tranche 2')
       .map(a=>a.student.load())
       return student
-      }
+    }
 
   async numberOfStudentsStartedPayingPension(){
     const students = await this.studentservice.getAll()
@@ -173,7 +174,7 @@ export class StatisticsService {
   }
 
   async numberOfStudentsStartedPayingAdmissionFee(){
-    const tranche = (await this.trancheservice.getAll()).filter(a=>a.name=='inscription').map(a=>a.id)[0]
+    const tranche = (await this.trancheservice.getAll()).filter(a=>a.name=='Inscription').map(a=>a.id)[0]
     console.log('=====>trancheid'+tranche)
     const studentTrancheStudent = (await this.trancheStudentservice.getAll()).filter( a=>a.tranche.id===tranche)
     console.log('does for admission'+studentTrancheStudent)
@@ -181,7 +182,7 @@ export class StatisticsService {
   }
 
   async numberOfStudentsStartedPayingAdmissionFeeSalleAnglophone(sallename:string){
-    const tranche = (await this.trancheservice.getAll()).filter(a=>a.name=='inscription').map(a=>a.id)[0]
+    const tranche = (await this.trancheservice.getAll()).filter(a=>a.name=='Inscription').map(a=>a.id)[0]
     console.log('=====>trancheid'+tranche)
     const studentTrancheStudent =  (await this.salleservice.getAll())
     .filter(a=>a.niveau.getEntity().cycle.getEntity().section.getEntity().name=='Anglophone')
@@ -193,7 +194,7 @@ export class StatisticsService {
 
 
   async numberOfStudentsStartedPayingAdmissionFeeSalleFrancophone(sallename:string){
-    const tranche = (await this.trancheservice.getAll()).filter(a=>a.name=='inscription').map(a=>a.id)[0]
+    const tranche = (await this.trancheservice.getAll()).filter(a=>a.name=='Inscription').map(a=>a.id)[0]
     console.log('=====>trancheid'+tranche)
     const studentTrancheStudent =  (await this.salleservice.getAll())
     .filter(a=>a.niveau.getEntity().cycle.getEntity().section.getEntity().name=='Francophone')
@@ -204,7 +205,7 @@ export class StatisticsService {
   }
 
   async numberOfStudentsStartedPayingFirstInstalmentFeeSalleAnglophone(sallename:string){
-    const tranche = (await this.trancheservice.getAll()).filter(a=>a.name=='tranche 1').map(a=>a.id)[0]
+    const tranche = (await this.trancheservice.getAll()).filter(a=>a.name=='Tranche 1').map(a=>a.id)[0]
     console.log('=====>trancheid'+tranche)
     const studentTrancheStudent =  (await this.salleservice.getAll())
     .filter(a=>a.niveau.getEntity().cycle.getEntity().section.getEntity().name=='Anglophone')
@@ -215,7 +216,7 @@ export class StatisticsService {
   }
 
   async numberOfStudentsStartedPayingFirstInstalmentFeeSalleFrancophone(sallename:string){
-    const tranche = (await this.trancheservice.getAll()).filter(a=>a.name=='tranche 1').map(a=>a.id)[0]
+    const tranche = (await this.trancheservice.getAll()).filter(a=>a.name=='Tranche 1').map(a=>a.id)[0]
     console.log('=====>trancheid'+tranche)
     const studentTrancheStudent =  (await this.salleservice.getAll())
     .filter(a=>a.niveau.getEntity().cycle.getEntity().section.getEntity().name=='Francophone')
@@ -226,7 +227,7 @@ export class StatisticsService {
   }
 
   async numberOfStudentsStartedPayingSecondInstalmentFeeSalleAnglophone(sallename:string){
-    const tranche = (await this.trancheservice.getAll()).filter(a=>a.name=='tranche 2').map(a=>a.id)[0]
+    const tranche = (await this.trancheservice.getAll()).filter(a=>a.name=='Tranche 2').map(a=>a.id)[0]
     console.log('=====>trancheid'+tranche)
     const studentTrancheStudent =  (await this.salleservice.getAll())
     .filter(a=>a.niveau.getEntity().cycle.getEntity().section.getEntity().name=='Anglophone')
@@ -237,7 +238,7 @@ export class StatisticsService {
   }
 
   async numberOfStudentsStartedPayingSecondInstalmentFeeSalleFrancophone(sallename:string){
-    const tranche = (await this.trancheservice.getAll()).filter(a=>a.name=='tranche 2').map(a=>a.id)[0]
+    const tranche = (await this.trancheservice.getAll()).filter(a=>a.name=='Tranche 2').map(a=>a.id)[0]
     console.log('=====>trancheid'+tranche)
     const studentTrancheStudent =  (await this.salleservice.getAll())
     .filter(a=>a.niveau.getEntity().cycle.getEntity().section.getEntity().name=='Francophone')
@@ -248,35 +249,35 @@ export class StatisticsService {
   }
 
   async numberOfStudentsStartedPayingFirstInstalment(){
-    const tranche = (await this.trancheservice.getAll()).filter(a=>a.name=='tranche 1').map(a=>a.id)[0]
+    const tranche = (await this.trancheservice.getAll()).filter(a=>a.name=='Tranche 1').map(a=>a.id)[0]
     const studentTrancheStudent = (await this.trancheStudentservice.getAll()).filter(a=>a.tranche.id==tranche)
     console.log('does for firstinstalment'+studentTrancheStudent)
     return Number(studentTrancheStudent.length)
   }
 
   async numberOfStudentsStartedPayingSecondInstalment(){
-    const tranche = (await this.trancheservice.getAll()).filter(a=>a.name=='tranche 2').map(a=>a.id)[0]
+    const tranche = (await this.trancheservice.getAll()).filter(a=>a.name=='Tranche 2').map(a=>a.id)[0]
     const studentTrancheStudent = (await this.trancheStudentservice.getAll()).filter(a=>a.tranche.id==tranche)
     console.log('does for firstinstalment'+studentTrancheStudent)
     return Number(studentTrancheStudent.length)
   }
 
   async TotalAmountFirstInstalment(){
-    return (await this.trancheservice.getAll()).filter(a=>a.name=='tranche 1').map(a=>a.montant)[0]
+    return (await this.trancheservice.getAll()).filter(a=>a.name=='Tranche 1').map(a=>a.montant)[0]
     // const studentTrancheStudent = (await this.trancheStudentservice.getAll()).filter(a=>a.tranche.id==tranche)
     // .map(a=>a.montant).reduce(function(a,b){return a+b})
     // return Number(studentTrancheStudent)
   }
 
   async TotalAmountSecondInstalment(){
-    return (await this.trancheservice.getAll()).filter(a=>a.name=='tranche 2').map(a=>a.montant)[0]
+    return (await this.trancheservice.getAll()).filter(a=>a.name=='Tranche 2').map(a=>a.montant)[0]
     // const studentTrancheStudent = (await this.trancheStudentservice.getAll()).filter(a=>a.tranche.id==tranche)
     // .map(a=>a.montant).reduce(function(a,b){return a+b})
     // return Number(studentTrancheStudent)
   }
 
   async TotalAmountAdmissionFee(){
-    return  (await this.trancheservice.getAll()).filter(a=>a.name=='inscription').map(a=>a.montant)[0]
+    return  (await this.trancheservice.getAll()).filter(a=>a.name=='Inscription').map(a=>a.montant)[0]
     // const studentTrancheStudent = (await this.trancheStudentservice.getAll()).filter(a=>a.tranche.id==tranche)
     // .map(a=>a.montant).reduce(function(a,b){return a+b})
     // return Number(studentTrancheStudent)
@@ -284,7 +285,8 @@ export class StatisticsService {
 
   async getSectionStatisticsAnglophoneAdmissionFee(): Promise<SectionStatistics[]> {
     const sections = await this.sectionservice.getAllForUseAnglophone()
-  
+    console.log("sections", sections);
+    
     const sectionStatistics: SectionStatistics[] = [];
   
     for (const section of sections) {
@@ -307,7 +309,7 @@ export class StatisticsService {
           const c = a.map(a=>a.trancheStudent)
           console.log("ccccc"+c)
           const b = a.map(a=>{
-            const tranchestudent = a.trancheStudent.getItems().filter(a=>a.tranche.getEntity().name=='inscription');
+            const tranchestudent = a.trancheStudent.getItems().filter(a=>a.tranche.getEntity().name=='Inscription');
             return tranchestudent.reduce((sum, tstd) => sum + tstd.montant,0)
           })
           
@@ -347,9 +349,9 @@ export class StatisticsService {
 
   async getSectionStatisticsAnglophoneFirstInstalment(): Promise<SectionStatistics[]> {
     const sections = await this.sectionservice.getAllForUseAnglophone()
-  
+
     const sectionStatistics: SectionStatistics[] = [];
-  
+ 
     for (const section of sections) {
       for (const cycle of section.cycle.getItems()) {
         for (const niveauclass of cycle.niveauEtude.getItems()){
@@ -370,7 +372,7 @@ export class StatisticsService {
           const c = a.map(a=>a.trancheStudent)
           console.log("ccccc"+c)
           const b = a.map(a=>{
-            const tranchestudent = a.trancheStudent.getItems().filter(a=>a.tranche.getEntity().name=='tranche 1');
+            const tranchestudent = a.trancheStudent.getItems().filter(a=>a.tranche.getEntity().name=='Tranche 1');
             return tranchestudent.reduce((sum, tstd) => sum + tstd.montant,0)
           })
           
@@ -432,7 +434,7 @@ export class StatisticsService {
           const c = a.map(a=>a.trancheStudent)
           console.log("ccccc"+c)
           const b = a.map(a=>{
-            const tranchestudent = a.trancheStudent.getItems().filter(a=>a.tranche.getEntity().name=='tranche 2');
+            const tranchestudent = a.trancheStudent.getItems().filter(a=>a.tranche.getEntity().name=='Tranche 2');
             return tranchestudent.reduce((sum, tstd) => sum + tstd.montant,0)
           })
           
@@ -472,7 +474,7 @@ export class StatisticsService {
 
   async getSectionStatisticsFrancophoneAdmissionFee(): Promise<SectionStatistics[]> {
     const sections = await this.sectionservice.getAllForUseFrancophone()
-  
+    
     const sectionStatistics: SectionStatistics[] = [];
   
     for (const section of sections) {
@@ -495,7 +497,7 @@ export class StatisticsService {
           const c = a.map(a=>a.trancheStudent)
           console.log("ccccc"+c)
           const b = a.map(a=>{
-            const tranchestudent = a.trancheStudent.getItems().filter(a=>a.tranche.getEntity().name=='inscription');
+            const tranchestudent = a.trancheStudent.getItems().filter(a=>a.tranche.getEntity().name=='Inscription');
             return tranchestudent.reduce((sum, tstd) => sum + tstd.montant,0)
           })
           
@@ -557,7 +559,7 @@ export class StatisticsService {
           const c = a.map(a=>a.trancheStudent)
           console.log("ccccc"+c)
           const b = a.map(a=>{
-            const tranchestudent = a.trancheStudent.getItems().filter(a=>a.tranche.getEntity().name=='tranche 1');
+            const tranchestudent = a.trancheStudent.getItems().filter(a=>a.tranche.getEntity().name=='Tranche 1');
             return tranchestudent.reduce((sum, tstd) => sum + tstd.montant,0)
           })
           
@@ -620,7 +622,7 @@ export class StatisticsService {
           const c = a.map(a=>a.trancheStudent)
           console.log("ccccc"+c)
           const b = a.map(a=>{
-            const tranchestudent = a.trancheStudent.getItems().filter(a=>a.tranche.getEntity().name=='tranche 2');
+            const tranchestudent = a.trancheStudent.getItems().filter(a=>a.tranche.getEntity().name=='Tranche 2');
             return tranchestudent.reduce((sum, tstd) => sum + tstd.montant,0)
           })
           
@@ -673,9 +675,11 @@ async getGeneralAnglophoneClassStatistics(): Promise<ClassStatistics[]>{
         // const numberOfStudentsCompletedFee = (this.getallStudentswhohaveCompletedAdmissionFee).length
         // const rateR = numberOfStudents > 0 ? numberOfStudentsCompletedFee / numberOfStudents * 100 : 0;
         const a = cycleClass.student.getItems()
-        console.log('=============>'+a)
+        console.log("aaa", a);
+        
+        // console.log('=============>'+a)
         const c = a.map(a=>a.pension)
-        console.log("===========>"+c)
+        console.log("cccccc"+c)
         // const b = a.map(a => a.pension.toArray().reduce(
         //   (sum, pension) => sum + pension.montantPension,
         //   0,
@@ -685,7 +689,7 @@ async getGeneralAnglophoneClassStatistics(): Promise<ClassStatistics[]>{
           const pensions = a.pension.getItems();
           return pensions.reduce((sum, pension) => sum + pension.montantPension, 0);
         });
-        console.log("===========>"+b)
+        console.log("bbbb"+b)
         
         const sumAmountAlreadyPaid= b.reduce(
           (sum, pension) => sum + pension,
@@ -812,7 +816,7 @@ async getTrancheStatisticsForSpecialStudents(): Promise<SpecialStudentStatistics
 
       const restOfAmountToPay = amountToPay - amountAlreadyPaid;
       console.log('=================>'+restOfAmountToPay)
-      const categorie=((await student.categorie.load()).description)
+      const categorie=((await student.categorie.load()).nom)
 
       result.push({
         studentFirstName,
@@ -831,8 +835,8 @@ async getTrancheStatisticsForSpecialStudents(): Promise<SpecialStudentStatistics
   }
   }
 
-  console.log('====================>'+result.filter(a=>a.categorie==='Candidat special'))
-  return result.filter(a=>a.categorie==='Candidat special');
+  console.log('====================>'+result.filter(a=>a.categorie==='Candidat regulier'))
+  return result.filter(a=>a.categorie==='Candidat regulier');
 }
 
 async getTrancheStatisticsForNormalStudents(): Promise<SpecialStudentStatistics[]> {
@@ -870,7 +874,7 @@ async getTrancheStatisticsForNormalStudents(): Promise<SpecialStudentStatistics[
 
       const restOfAmountToPay = amountToPay - amountAlreadyPaid;
       console.log('=================>'+restOfAmountToPay)
-      const categorie=((await student.categorie.load()).description)
+      const categorie=((await student.categorie.load()).nom)
 
       result.push({
         studentFirstName,
@@ -894,8 +898,6 @@ async getTrancheStatisticsForNormalStudents(): Promise<SpecialStudentStatistics[
 }
 
 }
-
-
 
 
 

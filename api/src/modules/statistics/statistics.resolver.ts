@@ -728,6 +728,9 @@ TOTAL_SECOND_TAUX_RECOUVRIR
     return this.statisticsService.getTrancheStatisticsForNormalStudents();
   }
 
-
+//   @Query(() => Number)
+//   async getNumberOfStudentsStartedPayingAdmissionFeeSalle(@Args("sallename") sallename:string) {
+//     return await this.statisticsService.numberOfStudentsStartedPayingAdmissionFeeSalle((sallename));
+//   }
 
 }

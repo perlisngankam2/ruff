@@ -1,23 +1,21 @@
-import {Box, Tab, TabList, Tablist, TabPanel, TabPanels,Tabs,Button, useDisclosure} from '@chakra-ui/react';
+import {Box, Tab, TabList, Tablist, TabPanel, TabPanels,Tabs,Button, useDisclosure, Icon} from '@chakra-ui/react';
 import { CloseIcon } from '@chakra-ui/icons'
 import Link from "next/link";
 import AccountSetting from './AccountSetting';
 import Actions from './Actions';
 import CompanySettings from './CompanySettings';
 import Notifications from './Notifications';
+import { FaUser } from "react-icons/fa";
 
 
 const ContentProfile =() =>{
 
     const { isOpen, onOpen, onClose } = useDisclosure();
 
-    const tabs = ['Paramètre Compte', 'Paramètre Compagnie', 'Notification']
+    const tabs = [' Mon Profil', 'Mot de passe']
     return(
         <Box
-          as='main'
           flex={3}
-          d="flex"
-          flexDir={"column"}
           justifyContent="space-between"
           pt={0}
           bg="white"
@@ -27,12 +25,21 @@ const ContentProfile =() =>{
           style={{transform: 'translateY(-100px)'}} 
          w='100%'
         >
-            <Button pt='-6' bg='red' color='white' size={'sm'}  ml={755} _hover={{background:"red.300"}}
+            <Box w="full" display="flex" justifyContent="flex-end">
+            <Button
+            pt='-6'
+            bg='red' 
+            color='white'
+            size={'sm'} 
+            mr="0"
+            mt="auto"
+            _hover={{background:"red.300"}} 
              >
                 <Link href='/dashboard'>
-                  <CloseIcon />
+                  <CloseIcon ml="auto" />
                 </Link>
             </Button>
+            </Box>
             <Tabs>
                 <TabList px={5}>
                     {tabs.map(tab =>(
@@ -45,8 +52,9 @@ const ContentProfile =() =>{
                         color="brand.cadet"
                         borderBottomWidth={1}
                         _active={{bg:'transparent'}}
-                        _selected={{color: 'brand.dark', borderColor:'brand.blue'}}
+                        _selected={{color: 'brand.dark', borderColor:'blue.100'}}
                         >
+                            {/* <FaUser /> */}
                             {tab}
 
                         </Tab>
@@ -56,16 +64,13 @@ const ContentProfile =() =>{
                     <TabPanel>
                         <AccountSetting/>
                     </TabPanel>
-                    <TabPanel>
+                     <TabPanel>
                         <CompanySettings/>
                     </TabPanel>
-                    <TabPanel>
-                        <Notifications/>
-                    </TabPanel>
+                    
                 </TabPanels>
             </Tabs>
             {/* <Actions/> */}
-
         </Box>
 
     )

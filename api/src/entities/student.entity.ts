@@ -24,6 +24,7 @@ import { User } from './user.entity';
 import { AvanceTranche } from './avance-tranche.entity';
 import { Pension } from './pension.entity';
 import { Expense } from './expense.entity';
+import { truncate } from 'fs/promises';
 
 export enum Regime{
   SPECIAL='SPECIAL',
@@ -53,9 +54,13 @@ export class Student {
   @Property({ nullable: true })
   lastname!: string;
 
-  @Field(()=>Date)
+  @Field({ nullable: true })
   @Property({nullable:true})
-  dateOfBirth!:Date;
+  dateOfBirth!:string;
+
+  @Field({ nullable: true })
+  @Property({nullable:true})
+  birthPlace!: string;
 
   // @Field({ nullable: true })
   // @Enum({
@@ -205,16 +210,28 @@ export class Student {
   //   return `${this.user.id}`;
   // }
 
-  @Field(() => ID)
+  @Field(() => ID,{ nullable: true })
   @Property({ persist: false })
   get salleid() {
-    return `${this.salle.id}`;
+    return this.salle? `${this.salle.id}` : null;
   }
 
-  @Field(() => ID)
+  @Field(() => ID, { nullable: true })
+  @Property({ persist: false })
+  get salleName(): string | null {
+    return this.salle ? `${this.salle.getEntity().name}` : null;
+  }
+
+  @Field(() => ID, { nullable: true })
   @Property({ persist: false })
   get categorieid() {
-    return `${this.categorie.id}`;
+    return this.categorie? `${this.categorie.id}` : null;
+  }
+
+  @Field(() => ID, { nullable: true })
+  @Property({ persist: false })
+  get categoryName(): string | null {
+    return this.categorie? `${this.categorie.getEntity().nom}` : null;
   }
 
   @Field(() => String)

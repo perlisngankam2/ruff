@@ -46,12 +46,15 @@ import {
   import {MdDelete} from 'react-icons/md';
   import ReactPaginate from "react-paginate";
   import Routes from "../../modules/routes";
-  
+  import {useTranslation } from "next-i18next";  
+  import { getStaticPropsTranslations } from "../../types/staticProps";
+
   const levelList = () => {
   
     const {data:dataStudyLevel, loading, error} = useQuery(GET_ALL_STUDY_LEVEL);
     const router = useRouter();
     const cancelRef = React.useRef()
+    const {t} = useTranslation();
     const { isOpen, onToggle, onClose } = useDisclosure();
     const [searchStudyLevel, setSearchStudyLevel] = useState("");
     const itemsPerPage = 2
@@ -110,7 +113,7 @@ import {
               size="lg"
               textColor="pink.300"
             >
-              Liste des niveaux
+              {t('pages.level.listLevel.heading')}
             </Heading>
             <Hide below="sm">
               <Text>Dashboad / Niveau / Liste des niveaux</Text>
@@ -146,7 +149,7 @@ import {
                   rightIcon={<Icon as={IoIosAdd} boxSize="20px"/>}
                   onClick={() => router.push("/level/addLevel")}
                 >
-                  Ajouter un niveau
+                  {t('pages.level.listLevel.addButton')}
               </Button>
             </Box> 
           </Flex>
@@ -163,10 +166,19 @@ import {
                 >
                     <Thead background="colors.secondary">
                       <Tr>
-                        <Th>Nom</Th>
-                        <Th>Pension</Th>
+                        <Th>
+                          {t('pages.level.listLevel.name')}
+                        </Th>
+                        <Th>
+                          {t('pages.level.listLevel.fees')}
+                        </Th>
+                        <Th>
+                          Cyle
+                        </Th>
                         {/* <Th >section</Th> */}
-                        <Th>Action</Th>
+                        <Th>
+                          {t('pages.level.listLevel.Action')}
+                        </Th>
                       </Tr>
                     </Thead>
                     <Tbody>
@@ -194,6 +206,12 @@ import {
                             pl={6}
                           >
                             {niveauEtude.montantPension}
+                          </Td> 
+                          <Td 
+                            p={0} 
+                            pl={6}
+                          >
+                            {niveauEtude.cycleName}
                           </Td> 
                           <Td p={0} >
                             {/* <ButtonGroup 
@@ -254,27 +272,26 @@ import {
                                               fontSize='lg' 
                                               fontWeight='bold'
                                               textAlign={"center"}
-                                              >
-                                              Confirmation de suppression
+                                            >
+                                                {t('pages.level.listLevel.confirmDeleting')}
                                             </AlertDialogHeader>
                                             <AlertDialogBody textAlign={"center"}>
-                                            Voulez-vous supprimer cet niveau?
                                             </AlertDialogBody>
-
+                                                {t('pages.level.listLevel.wouldYouWantToDeleteLevel')}
                                             <AlertDialogFooter>
                                               <Button 
                                                 ref={cancelRef} 
                                                 onClick={onClose}
                                                 colorScheme="red"
                                               >
-                                                Annuler 
+                                                {t('pages.level.listLevel.cancelButton')}
                                               </Button>
                                               <Button 
                                                 colorScheme='green' 
                                                 onClick={() => removeStudyLevel(niveauEtude.id)}
                                                 ml={3}
                                               >
-                                                Supprimer
+                                                {t('pages.level.listLevel.deleteButton')}
                                               </Button>
                                             </AlertDialogFooter>
                                           </AlertDialogContent>
@@ -309,5 +326,13 @@ import {
     );
   };
   
+  export async function getStaticProps({ locale }) {
+    return {
+      props: {
+        ...(await getStaticPropsTranslations(locale)),
+        // Will be passed to the page component as props
+      },
+    };
+  }
   export default levelList;
   

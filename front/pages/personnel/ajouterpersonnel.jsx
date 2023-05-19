@@ -30,7 +30,7 @@ const AjouterPersonnel = () => {
    const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
     const [dateOfBirth, setDateOfBirth] = useState("");
-    const [dateOfStartWork, setDateOfStartWork] = useState("");
+    const [dateOfStartWork, setDateOfStartWork] = useState(new Date().toISOString().slice(0, 10));
     const [sexe, setSexe]= useState("");
     const [status, setStatus] = useState("");
     const [phoneNumber, setPhoneNumber] = useState("")
@@ -42,6 +42,8 @@ const AjouterPersonnel = () => {
     const[userID, setUserID] = useState("");
     // const [matricule, setMatricule] = useState("");
     const [fonction, setFonction] = useState("");
+      const [isInvalidNom, setIsInvalidNom] = useState();
+        const [isInvalidPrenom, setIsInvalidPrenom] = useState();
     const [ filteredData, setFilteredData]=useState([])
     // const [id, setMatricule] = useState("");
 
@@ -77,7 +79,7 @@ const AjouterPersonnel = () => {
   //   teacherCategory: "",
   //   childNumber: "",
   // });
-
+    console.log(isInvalidNom);
   
 
   const [isPermanent, setIsPermanent] = useState(false);
@@ -130,6 +132,12 @@ const AjouterPersonnel = () => {
      console.log(childNumber);
      console.log(userID)
 
+     
+  setIsInvalidNom(firstName !== "" && !/^[^\s][a-zA-Z\s]*[^\s]$/.test(firstName))
+
+  setIsInvalidPrenom(lastName !== "" && !/^[^\s][a-zA-Z\s]*[^\s]$/.test(lastName))
+
+if(/^[^\s][a-zA-Z\s]*[^\s]$/.test(firstName) && /^[^\s][a-zA-Z\s]*[^\s]$/.test(lastName)){
     const data = await createPersonnel({
       variables: {
         createPersonnelUser: {
@@ -176,6 +184,7 @@ const AjouterPersonnel = () => {
       setCategoryPersonnelId("");
       setUserID("");
    }
+  }
 
   useEffect(() =>{
     console.log(dataCategoryPersonnel?.findAllcategoriepersonnel);
@@ -217,7 +226,17 @@ const AjouterPersonnel = () => {
                     borderColor="purple.100"
                     onChange={e => setFirstName(e.target.value)}
                     value={firstName}
+                    pattern="^[^\s][a-zA-Z\s]*[^\s]$"
+                     errorBorderColor="crimson"
+                      required
                   /> 
+                    <Box mt={1} color={"crimson"}>
+                      {isInvalidNom && (
+                        <Text>
+                          Le nom doit ni commencer par un vide ni etre separee par 2 espaces.
+                        </Text>
+                      )}
+                  </Box>
                 </FormControl>
                  <FormControl>
                   <FormLabel fontWeight={"normal"}>
@@ -231,8 +250,19 @@ const AjouterPersonnel = () => {
                     borderColor="purple.100"
                     onChange={e => setLastName(e.target.value)}
                     value={lastName}
+                    pattern="^[^\s][a-zA-Z\s]*[^\s]$"
                   /> 
+                  <Box mt={1} color={"crimson"}>
+                      {isInvalidPrenom && (
+                        <Text>
+                          Le prenom doit ni commencer par un vide ni etre separee par 2 espaces.
+                        </Text>
+                      )}
+                  </Box>
                </FormControl>
+                    
+
+
               </Box>
               <FormControl mt="2%">
                 <FormLabel fontWeight={"normal"}>
@@ -483,9 +513,9 @@ const AjouterPersonnel = () => {
                     <option>
                       {t('pages.personnel.ajouterpersonnel.singleMaritalStatusOption')}
                     </option>
-                    <option>
+                    {/* <option>
                       {t('pages.personnel.ajouterpersonnel.mariedMaritalStatusOption')}
-                    </option>
+                    </option> */}
                     <option>
                       {t('pages.personnel.ajouterpersonnel.mariedMaritalWomanStatusOption')}
                     </option>

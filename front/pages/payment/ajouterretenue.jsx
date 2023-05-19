@@ -1,32 +1,90 @@
-import { Center, Heading, Box, Divider, Input, NumberInput,
-  NumberInputField,
-  NumberInputStepper,
-  NumberIncrementStepper,
-  NumberDecrementStepper,
-  InputLeftAddon,
-  Button, } from '@chakra-ui/react'
+import { Center, Heading, Divider, Input, NumberInput,
+  Box,
+  Button,
+  ButtonGroup,
+  IconButton ,
+  Flex,
+  Hide,
+  InputGroup,
+  InputRightAddon,
+  Select,
+  Table,
+  TableContainer,
+  Tbody,
+  Td,
+  Text,
+  Th,
+  Thead,
+  Tr,
+  Avatar,
+  Icon,
+  Popover,
+  PopoverArrow,
+  PopoverBody,
+  PopoverCloseButton,
+  PopoverContent,
+  PopoverFooter,
+  useDisclosure,
+  AlertDialog,
+  AlertDialogOverlay,
+  AlertDialogContent,
+  AlertDialogHeader,
+  AlertDialogBody,
+  AlertDialogFooter,
+  InputRightElement,
+  AlertDialogCloseButton, } from '@chakra-ui/react'
 import React from 'react'
-import DefaultLayout from '../../components/layouts/DefaultLayout'
+import DefaultLayout from '../../components/layouts/DefaultLayout';
 import { useRouter } from "next/router";
+import { IoIosAdd } from "react-icons/io";
 import { useEffect ,useState } from "react";
 import { useMutation, useQuery } from "@apollo/client";
 import { CREATE_RETENUE } from "../../graphql/Mutation";
+import { GET_ALL_RETENUE, GET_PRIME } from "../../graphql/Queries";
 import { CheckIcon } from '@chakra-ui/icons'
 import { useToast } from "@chakra-ui/react";
+import{ FiEdit, FiSearch} from 'react-icons/fi';
+import {MdDelete} from 'react-icons/md';
+import ReactPaginate from "react-paginate";
+import {useTranslation} from "next-i18next";
+import { getStaticPropsTranslations } from "../../types/staticProps";
+import CreerRetenue from './creerRetenue';
 
 
-function ajouterretenue() {
 
+function ajouterRetenue() {
 
+   const { isOpen, onToggle, onClose, onOpen } = useDisclosure();
   const [Nom , setNom] = useState("");
   const [Description , setDescription] = useState("");
   const [Montant, setMontant] = useState("");
   const [categoryPersonnelId, setCategoryPersonnelId] = useState("");
   const [createRetenue, error] = useMutation(CREATE_RETENUE);
   
-  // const {data:dataCategoryPersonnel} = useQuery(GET_ALL_Category_Personnel);
+  const {data:dataPrime} = useQuery(GET_PRIME);
   const toast = useToast()
   const router = useRouter()
+   const {data:dataRetenue, refetch} = useQuery(GET_ALL_RETENUE)
+    const itemsPerPage = 15;
+    const [pageNumber, setPageNumber] = useState(0);
+    const pagesVisited = pageNumber * itemsPerPage;
+      const pageCountRetenue = Math.ceil(dataRetenue?.findAllretenusalarial.length / itemsPerPage);
+    const cancelRef = React.useRef();
+    const {t} = useTranslation();
+      const [searchRetenue, setSearchRetenue] = useState("");
+
+       const handleChangeRetenue = (event) =>{
+      setSearchRetenue(event.target.value)
+    }
+
+    const changePage = ({ page }) => {
+      setPageNumber(page);
+    };
+
+
+//debug
+console.log(dataPrime)
+
 
     const HandleClick = async (event) => {
   event.preventDefault();
@@ -41,6 +99,7 @@ function ajouterretenue() {
         }
       }
     })
+    refetch();
     // console.log(userData)
     toast({
       title: "Succès.",
@@ -59,115 +118,185 @@ function ajouterretenue() {
 
   return (
       <DefaultLayout>
-        <Box pt="70px" w="100%" bg={"#f6f7fb"}>
-          <Box as={"form"} 
-             onSubmit={HandleClick}>
-
-          <Heading p="1em" textAlign="center" bgGradient='linear(to-r, teal.500, green.500)' bgClip='text' fontSize={'30px'}>
-            Ajouter une retenue
+        
+        <Box p="3" pt="70px" w="100%" bg={"#f6f7fb"}>
+      <Flex
+          align="center"
+          justify="space-between"
+          boxShadow="md"
+          p="5"
+          rounded="lg"
+          background="white"
+        >
+          <Heading
+            textAlign="center"
+            color="WindowText"
+            size="lg"
+            textColor="pink.300"
+          >
+            Retenue
           </Heading>
-        <Box mx='400px' pb={'15px'}>
-          <Divider />
-        </Box>
-        <Box w="300px" margin="0 auto" textAlign="center" gap={200} >
-<Box pb={'10px'}>
- <Input
+          <Hide below="sm">
+            <Text>Dashboad / Salaire/Retenues Salariales</Text>
+          </Hide>
+        </Flex>
+        <Flex 
+          gap={8} 
+          mt={7}
+        >
+          <InputGroup >
+          {/* <InputRightElement
+              children={<Icon as={FiSearch} />}
+              cursor="pointer"
+            /> */}
+             <InputRightElement
+              children={<Icon as={FiSearch} />}
+              cursor="pointer"
+            />
+            <Input
+              placeholder="Recherchez une retenue..."
+              //value={recherche}
+              variant="flushed"
+              onChange={handleChangeRetenue}
+            />
+            {/* <InputRightAddon 
+              cursor="pointer"
+              children={<SearchIcon variant="flushed"/>} 
+            /> */}
+          </InputGroup>
+          {/* <Select 
+            placeholder="Selectionner la classe"
+            onChange={e =>setQuery(e.target.value)}
+          >
+          </Select> */}
+          <CreerRetenue />
+        </Flex>
+ <Box mb={5} mt='10'>
+          <TableContainer
+            border={"1px"} 
+            rounded={"md"}
+          >
+            <Table 
+              variant='striped' 
+              colorScheme={"white"}
+              bg={"white"}
+            >
+                <Thead background="colors.secondary">
+                <Tr>
+                    <Th>Nom</Th>
+                    <Th>Valeur</Th>
+                    <Th>Actions</Th>
+                </Tr>
+                </Thead>
+                {dataRetenue && ( 
+                <Tbody>
+                {dataRetenue?.findAllretenusalarial
+                  .slice(pagesVisited, pagesVisited + itemsPerPage)
+                  .filter((retenue) =>{
+                    if(searchRetenue==""){
+                      return retenue
+                    }else if(retenue.nom.toLowerCase().includes(searchRetenue.toLowerCase()))
+                      return retenue;
+                  })
+                  .map((retenue, index) => ( 
+                     <Tr key={index}>
+        <Td p={0} pl={6}>{retenue.nom}</Td>
+        
+        {/* <Td  borderColor={'#C6B062'}>{cycle.section_id}</Td> */}
+        <Td p={0} pl={6}>{retenue.montant}</Td>
+        <Td p={0} pl={3}>
+        <Box display="flex">
+          <Icon
+            as={FiEdit}
+            boxSize="40px"
+            p="3"
+            // bg="blue.100"
+            rounded="full"
+            // onClick={onOpen}
+            _hover={{background:"red.100"}}
+          />
+          <Icon
+            as={MdDelete}
+            boxSize="44px"
+            p="3"
+            rounded="full"
+            color="colors.quaternary"
+            _hover={{background:"blue.100"}}
+            onClick={onToggle}
+            />
 
-                    type="text"
-                    value={Nom}
-                    onChange={(e) => setNom(e.target.value)}
-                    name="Nom"
-                    placeholder="nom prime"
-                    bg='white'
-                    // type="date"
-                    // id="dateOfPrime"
-                    // name="dateOfPrime"
-                    // placeholder="{formattedDate}"
-                    // bg='white'
-              
-                    // borderColor="purple.100"
-                    // onChange={e => setDateOfStartWork(e.target.value)}
-                    // value={dateOfStartWork}
-                    // // ref={dateOfStartWorkRef}
-                    
-                  />
-</Box>
-          
-<Box pb={'10px'}>
- <Input
-                    type="text"
-                   value={Description}
-                    onChange={(e) => setDescription(e.target.value)}
-                    name="Description"
-                    placeholder="description retenue"
-                    bg='white'
-                    // borderColor="purple.100"
-                    // onChange={e => setLastName(e.target.value)}
-                    // value={lastName}
-                  /> 
-</Box>
-                  
-{/* <Box pb={'15px'}>
-   <Select
-                    type="text"
-                    name="categoryPersonnelId"
-                    placeholder="Categorie du personnel"
-                    onChange={e => setCategoryPersonnelId(e.target.value)}
-                    value={categoryPersonnelId}
-                    bg='white'
-                    // ref={dateOfBirthRef}
-                   
+            <Box> 
+              <AlertDialog
+                isOpen={isOpen}
+                leastDestructiveRef={cancelRef}
+                onClose={onClose}
+                isCentered
+              >
+                  <AlertDialogOverlay
+                    // alignSelf={"center"}
                   >
-                    { 
-                          dataCategoryPersonnel && (
-                            dataCategoryPersonnel.findAllcategoriepersonnel.map((categoryPersonnel, index) => (
-                                <option value={categoryPersonnel.id} key={index}>
-                                  {categoryPersonnel.nom}
-                                </option>
-                            ))
-                        )}
+                    <AlertDialogContent
+                    width={"380px"}
+                    >
+                      <AlertDialogHeader 
+                        fontSize='lg' 
+                        fontWeight='bold'
+                        textAlign={"center"}
+                        mt="5px"
+                        >
+                        Confirmation de suppression
+                      </AlertDialogHeader>
+                    <AlertDialogCloseButton/>
 
-                  </Select>
+                      <AlertDialogBody textAlign={"center"}>
+                      Voulez-vous supprimer cette ce cycle?
+                      </AlertDialogBody>
 
-  
+                      <AlertDialogFooter>
+                        <Button 
+                          ref={cancelRef} 
+                          onClick={onClose}
+                          colorScheme="red"
+                        >
+                          Annuler 
+                        </Button>
+                        <Button 
+                          colorScheme='green' 
+                          // onClick={() => removeCycle(cycle.id)}
+                          ml={3}
+                        >
+                          Supprimer
+                        </Button>
+                      </AlertDialogFooter>
+                    </AlertDialogContent>
+                  </AlertDialogOverlay>
+              </AlertDialog>
+            </Box>
                    
-</Box> */}
-
-             <Box pb={'15px'}>
-   <Input
-                    type="text"
-                   value={Montant} 
-                   onChange={(e) => setMontant(e.target.value)}
-                    name="Description"
-                    placeholder="--montant--"
-                    bg='white'
-                    // borderColor="purple.100"
-                    // onChange={e => setLastName(e.target.value)}
-                    // value={lastName}
-                  /> 
-
-  
-                   
-</Box>
-
+             
         </Box>
-
-         <Box mx='400px' pt='0px' pb={'15px'}>
-          <Divider />
-          
-        </Box>
-        <Center>
-          <Button type="submit" leftIcon={<CheckIcon />} colorScheme='teal' variant='solid' mx='auto' my='auto'>
-                Soumettre
-           </Button>
-        </Center>
-         </Box>
+        </Td>
+      </Tr>
+                  ))}                       
+                </Tbody>
+              )}
+            </Table>
+        </TableContainer> 
+      </Box>
          
         </Box>
 
 
     </DefaultLayout>
-  )
+  );
+ 
 }
-
-export default ajouterretenue
+ export async function getStaticProps({ locale }) {
+  return {
+    props: {
+      ...(await getStaticPropsTranslations(locale)),
+      // Will be passed to the page component as props
+    },
+  };
+}
+export default ajouterRetenue

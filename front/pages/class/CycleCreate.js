@@ -26,8 +26,9 @@ import {useMutation, useQuery } from '@apollo/client';
 import {CREATE_CYCLE, UPDATE_CYCLE } from "../../graphql/Mutation";
 import { GET_ALL_SECTION, GET_ONE_CYCLE, GET_ALL_CYCLE } from "../../graphql/Queries";
 import { useRouter } from "next/router";
+import { useTranslation } from "next-i18next";
 import { GlobalContext } from "../../contexts/cyclesection/AppContext";
-
+import { getStaticPropsTranslations } from "../../types/staticProps";
 
 // const CycleSchema = {
 //     name: "pearl",
@@ -47,13 +48,7 @@ import { GlobalContext } from "../../contexts/cyclesection/AppContext";
 //      onSubmit:(value = formData) => {}
 // }
 
-const  CycleCreate =  (
-    // { defaultValues,
-    //     onSubmit
-    // } =  CycleProps
-    ) => {
-
-
+const  CycleCreate =  () => {
 
     const [name, setName] = useState("");
     const[sectionId, setSectionId] = useState("");
@@ -66,6 +61,7 @@ const  CycleCreate =  (
     const {data} = useQuery(GET_ALL_SECTION);
     const router = useRouter();
     const toast = useToast();
+    const {t} = useTranslation();
     const [isformOpen, setIsFormOpen] = useState(false)
 
     // const cycleContext = useContext(GlobalContext);
@@ -196,18 +192,18 @@ const  CycleCreate =  (
    
   return (
     <Center>
-            <Box> 
-            <Button
-                rightIcon={<Icon as={IoIosAdd} boxSize="20px" />}
-                onClick={onOpen}
-                ml={["245px", "490px","909px"]}
-                width ={"200px"}
-                mb={"20px"}
-                mt={"10px"}
-                // onClick = {() => router.push(personnel/AjouterCategoryPersonnel)} 
-            >
-                    Ajouter un Cycle                              
-            </Button>
+        <Box> 
+        <Button
+            rightIcon={<Icon as={IoIosAdd} boxSize="20px" />}
+            onClick={onOpen}
+            ml={["245px", "490px","909px"]}
+            width ={"200px"}
+            mb={"20px"}
+            mt={"10px"}
+            // onClick = {() => router.push(personnel/AjouterCategoryPersonnel)} 
+        >
+            Ajouter un Cycle                              
+        </Button>
         </Box> 
           {/* {isformOpen?   } */}
         <Box> 
@@ -232,7 +228,7 @@ const  CycleCreate =  (
                                         fontSize={['15px','20px','24px']} 
                                         p='2' 
                                     >
-                                         Ajouter un cycle
+                                        {t('pages.class.cycleCreate.heading')}
                                     </Heading>
                                 </Box>
                             </AlertDialogHeader>
@@ -241,7 +237,9 @@ const  CycleCreate =  (
                             <AlertDialogBody>
                             <Box>
                                 <FormControl>
-                                    <FormLabel>Nom</FormLabel>
+                                    <FormLabel>
+                                        {t('pages.class.cycleCreate.name')}
+                                    </FormLabel>
                                     <Input 
                                         type={'text'} 
                                         name="name"
@@ -251,7 +249,9 @@ const  CycleCreate =  (
                                     />
                                 </FormControl>
                                 <FormControl mt="15px">
-                                    <FormLabel>Section</FormLabel>
+                                    <FormLabel>
+                                         {t('pages.class.cycleCreate.sectionName')}
+                                    </FormLabel>
                                     <Select 
                                         name="sectionId"
                                         placeholder="Section"
@@ -277,7 +277,7 @@ const  CycleCreate =  (
                                     onClick={onClose} 
                                     colorScheme='red' 
                                 >
-                                    annuler 
+                                    {t('pages.class.cycleCreate.cancelButton')}
                                 </Button>
                                 {/* <Link href={'/personnel/ajoutercategorypersonnel'}> */}
                                         <Button 
@@ -285,7 +285,7 @@ const  CycleCreate =  (
                                         ml={3}
                                         onClick={addCycle}
                                     >
-                                    Creer
+                                        {t('pages.class.cycleCreate.submitButton')}
                                 </Button>
                                 {/* </Link>  */}
                             </AlertDialogFooter>
@@ -298,4 +298,14 @@ const  CycleCreate =  (
     
     );
 }
+
+export async function getStaticProps({ locale }) {
+    return {
+      props: {
+        ...(await getStaticPropsTranslations(locale)),
+        // Will be passed to the page component as props
+      },
+    };
+  }
+
 export default CycleCreate;

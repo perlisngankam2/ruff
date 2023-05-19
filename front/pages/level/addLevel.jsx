@@ -24,11 +24,14 @@ import {
     } from "../../graphql/Mutation";
   import {GET_ALL_CYCLE, GET_ALL_STUDY_LEVEL, GET_LEVEL_BY_ID} from "../../graphql/Queries";
 //   import { GET_ALL_SECTION , GET_ALL_CYCLE} from "../../graphql/Queries";
-  
+import {useTranslation } from "next-i18next";  
+import { getStaticPropsTranslations } from "../../types/staticProps";
+
   const AddLevel = () => {
   
     const toast = useToast();
     const router = useRouter();
+    const {t} = useTranslation();
     const teachers = ["Ryan Jones", "Illary Daenarys ", "Julian Clinton"];
     // const [name, setName] = useState();
     // const [montantPension, setMontantPension] = useState();
@@ -67,13 +70,15 @@ import {
       // console.log(dataSection?.findAllsection)
       console.log("j")
       console.log(dataCycle?.findAllcycle)
+      console.log(dataLevelById)
+      
       if(router.query.id) {
-        const data = dataLevelById?.niveaEtude
+        const data = dataLevelById?.findOneNiveauEtude
         if(data) {
           setLevel({
             name: data.name,
             montantPension: data.montantPension,
-            cycleId: data.cycleId,
+            cycleId: data.cycleid,
           })
         }
       }
@@ -155,9 +160,10 @@ import {
                 as="form"
                 width="500px"
               > 
-              <Text>jj</Text>
+              {/* <Text>jj</Text> */}
                 <Heading color={"colors.primary"}>
-                  Creation d'un niveau d'etude
+                  {t('pages.level.addLevel.addButton')}
+                  {/* Creation d'un niveau d'etude */}
                 </Heading>
                 <Stack
                   gap={2}
@@ -166,9 +172,12 @@ import {
                   mt="25px"
                 >
                     <FormControl>
-                      <FormLabel>Nom du niveaux:</FormLabel>
+                      <FormLabel>
+                        {t('pages.level.addLevel.name')}
+                        {/* Nom du niveaux: */}
+                        </FormLabel>
                       <Input 
-                        placeholder="Nom du niveaux" 
+                        placeholder="Nom du niveau" 
                         type="text"
                         // maxW="300px"
                         name="name"
@@ -177,7 +186,9 @@ import {
                       />
                     </FormControl>
                     <FormControl mt="15px">
-                        <FormLabel>Pension</FormLabel>
+                        <FormLabel>
+                          {t('pages.level.addLevel.fees')}
+                        </FormLabel>
                        <Input
                          type={"number"}
                          name="montantPension"
@@ -187,7 +198,9 @@ import {
                        />
                     </FormControl>
                     <FormControl mt="15px">
-                        <FormLabel>Cycle</FormLabel>
+                        <FormLabel>
+                           {t('pages.level.addLevel.nameCycle')}
+                        </FormLabel>
                         <Select 
                           name="cycleId"
                           placeholder="Cycle"
@@ -198,21 +211,25 @@ import {
                          {dataCycle &&(
                                 dataCycle.findAllcycle.map((cycle, index) => ( 
                                     <option selected={level.cycleId == cycle.id ? "selected": ''} value={cycle.id}  key={index}>
-                                        {cycle.name} { console.log(level.cycleId + " -- " +cycle.id) }
+                                        {cycle.name} { console.log(level.cycleId + " -- " +cycle.id) }({cycle.sectionName})
                                     </option>
                                 ))
                             )} 
                         </Select>
                     </FormControl> 
                     <Flex gap={5} pt="30px">
-                      <Button colorScheme="red" onClick={() => router.back()}>
+                      <Button 
+                        colorScheme="red" 
+                        onClick={() => router.back()}
+                      >
+                           {t('pages.level.addLevel.Annuler')}
                         Annuler
                       </Button>
                       <Button
                         colorScheme="green"
                         onClick={addStudyLevel}
                       >
-                        Creer
+                         {t('pages.level.addLevel.Ajouter')}
                       </Button>
                     </Flex>
                 </Stack>
@@ -224,5 +241,13 @@ import {
     );
   };
   
+  export async function getStaticProps({ locale }) {
+    return {
+      props: {
+        ...(await getStaticPropsTranslations(locale)),
+        // Will be passed to the page component as props
+      },
+    };
+  }
   export default AddLevel;
   

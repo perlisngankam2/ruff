@@ -83,9 +83,10 @@ export const CREATE_SALLE = gql `
             id
             name
             section
-            cycle
             montantPensionSalle
             effectif
+            niveauid
+            levelName
         }
     }
 `;
@@ -119,6 +120,8 @@ export const CREATE_STUDY_LEVEL = gql `
             name
             description
             montantPension
+            cycleid
+            cycleName
         }
     }
 `;
@@ -169,6 +172,7 @@ export const CREATE_TRANCHE_PENSION = gql `
             dateLine
             montant
             priority
+            year
         }
     }
 `
@@ -234,6 +238,14 @@ export const CREATE_PERSONNEL_SALLE = gql `
     mutation createPersonnelSalle ($input: PersonnelSalleCreateInput!) {
         createPersonnelSalle (input: $input) {
             id
+            personnelId
+            personnelFirstName
+            personnelLastName
+            personnelFunction
+            salleId
+            salleName
+            courseId
+            courseName
         }
     }
 `;
@@ -270,6 +282,24 @@ mutation createParent ($parent: ParentCreateInput!) {
         gender
         parentStatus
         childNumber
+    }
+}`
+
+
+//Creation des nformations propre a chaque etablissement
+export const CREATE_SCHOOL_PARAMETERS = gql`
+mutation createParameter ($input: ParameterCreateInput!) {
+    createParameter (input: $input) {
+        id
+        name
+        postalBox
+        phoneNumber
+        emailAddress
+        schoolCurrency
+        contry
+        year
+        anneeAcademiqueName
+        anneeAcademiqueId
     }
 }`
 
@@ -349,22 +379,26 @@ export const DELETE_SALLE = gql `
             id
             name
             section
-            cycle
             montantPensionSalle
             effectif
+            niveauid
+            levelName
         }
     }
 `;
 
 export const DELETE_STUDY_LEVEL = gql `
-mutation deleteNiveauEtude ($id: String!) {
-    deleteNiveauEtude (id: $id) {
-        id
-        name
-        description
-        montantPension
+    mutation deleteNiveauEtude ($id: String!) {
+        deleteNiveauEtude (id: $id) {
+            id
+            name
+            description
+            montantPension
+            cycleid
+            cycleName
+        }
     }
-}`
+`
 
 
 export const DELETE_STUDENT = gql `
@@ -438,10 +472,11 @@ export const UPDATE_SALLE = gql `
         UpdateSalle (id: $id, input: $input) {
             id
             name
-            section 
-            cycle
+            section
             montantPensionSalle
             effectif
+            niveauid
+            levelName
         }
     }
 `;
@@ -566,7 +601,7 @@ mutation createprime ($prime: PrimeCreateInput!) {
 }
 `;
 
-// retenue
+//retenue
 
 export const CREATE_RETENUE = gql `
 mutation createretenuesalarial ($retenue: RetenuCreateInput!) {
@@ -579,6 +614,19 @@ mutation createretenuesalarial ($retenue: RetenuCreateInput!) {
 }
 `;
 
+// retenue
+
+export const CREATE_RETENUE_PERSONNEL = gql `
+mutation createretnupersonnel ($retenuPersonnel: RetenuPersonnelCreateInput!) {
+    createretnupersonnel (retenuPersonnel: $retenuPersonnel) {
+        id
+        startMonth
+        retenueid
+        personnelid
+    }
+}
+`;
+
 //prime personel
 
 export const CREATE_PRIME_PERSONNEL = gql `
@@ -586,6 +634,8 @@ mutation createprimepersonnel ($primePersonnel: PrimePersonnelCreateInput!) {
     createprimepersonnel (primePersonnel: $primePersonnel) {
         id
         startMonth
+        primeid
+        personnelid
     }
 }
 `;
@@ -598,6 +648,7 @@ mutation createsalaire ($input: SalaireCreateInput!) {
         id
         jourPaie
         moisPaie
+        payer
         montant
     }
 }
@@ -606,13 +657,12 @@ mutation createsalaire ($input: SalaireCreateInput!) {
 //payer salaire
 
 export const PAY_SALAIRE = gql `
-mutation createpaysalaire ($input: PaySalaireCreateInput!) {
+mutation createpaysalaire ($input: PaySalaryCreateInput!) {
     createpaysalaire (input: $input) {
         id
-        jourPaie
         moisPaie
-        payer
         montant
+        personnelid
     }
 }
 `;
@@ -626,7 +676,49 @@ mutation updateNiveauEtude ($id: String!, $input: NiveauEtudeUpdateInput!) {
         montantPension
     }
 }
-`
+`;
+
+export const DELETE_PAYSALAIRE = gql `
+mutation deletePaysalire ($id: String!) {
+    deletePaysalire (id: $id) {
+        id
+        moisPaie
+        montant
+        personnelid
+    }
+}
+`;
+
+export const UPDATE_LOGIN = gql `
+mutation loginUpdate ($loginInput: LoginUpdate!) {
+    loginUpdate (loginInput: $loginInput) {
+        id
+        email
+        password
+        firstName
+        lastName
+        name
+        role
+        phoneNumber
+        active
+        lastConnection
+        deactivatedAt
+        personnelid
+        studentid
+    }
+}
+`;
+//     mutation updateNiveauEtude ($id: String!, $input: NiveauEtudeUpdateInput!) {
+//         updateNiveauEtude (id: $id, input: $input) {
+//             id
+//             name
+//             description
+//             montantPension
+//             cycleid
+//             cycleName
+//         }
+//     }
+// `
 
 
 

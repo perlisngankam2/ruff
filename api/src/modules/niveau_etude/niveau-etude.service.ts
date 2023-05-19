@@ -67,20 +67,6 @@ export class NiveauEtudeService {
       async findcyclebyniveau(niveauid:string){
         return (await this.findByOne(niveauid)).cycle.load()
        }
-       
-    
-      // async getAll() {
-      //   const niveaus= this.niveauEtudeRepository.findAll({
-      //     populate:['cycle']
-      //   })
-      // const a= (await niveaus).map(a=>a.id)
-      // const d=(await niveaus).map(a=>a.name)
-      // const e =((await niveaus).map(a=>a.description))
-      // const f = (await niveaus).map(a=>a.montantPension)
-      // const b = (await niveaus).map(async (niveau) => (await niveau.cycle.load()).id);
-      // const c = await Promise.all(b);
-      // return [a,d,e,f,c]
-      // }
       
       async getAll() {
         const niveaus= this.niveauEtudeRepository.findAll({
@@ -90,8 +76,6 @@ export class NiveauEtudeService {
   
       }
 
-
-      
       async update(id:string, input: NiveauEtudeUpdateInput): Promise<NiveauEtude> {
         const niveau = await this.findById(id)
         const cycle = await this.cycleservice.findById(input.cycleId)

@@ -15,6 +15,7 @@ import { Prime } from 'src/entities/prime.entity';
 import { PrimePersonnelCreateInput } from './dto/prime-personnel.input';
 import { PrimePersonnelUpdateInput } from './dto/prime-personnel.update';
 import { PrimePersonnelService } from './prime-personnel.service';
+// import {prime}
 import e from 'express';
 
 

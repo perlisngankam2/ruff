@@ -44,13 +44,15 @@ import AjouterCours from "./addCours";
   import { GET_ALL_COURSES, loading, error } from "../../graphql/Queries";
   import { DELETE_COURSE } from "../../graphql/Mutation";
 import ReactPaginate from "react-paginate";
-
+import { useTranslation } from "next-i18next";
+import { getStaticPropsTranslations } from "../../types/staticProps";
 
   const ListeDesCours = () => {
   
      // const router = useRouter();
      const [query , setQuery] = useState("");
      const cancelRef = React.useRef();
+     const {t} = useTranslation();
      const { isOpen, onOpen, onClose } = useDisclosure();
      const [searchCourse, setSearchCourse] = useState("");
      const itemsPerPage = 15;
@@ -99,6 +101,7 @@ import ReactPaginate from "react-paginate";
       setPageNumber(page);
     };
 
+
    return (
      <DefaultLayout>
        <Box p="3" pt={"80px"} w="full">
@@ -115,8 +118,9 @@ import ReactPaginate from "react-paginate";
              color="WindowText"
              size="lg"
              textColor="pink.300"
-           >
-                Matiere
+            >
+              {t('pages.courses.courseList.heading')}
+              {/* Matière */}
            </Heading>
            <Hide below="sm">
              <Text>Dashboad/cours/liste des matiere </Text>
@@ -131,7 +135,6 @@ import ReactPaginate from "react-paginate";
              <Input
                placeholder="Recherchez une matiere..."
                variant="flushed"
-
                //value={recherche}
                onChange={handlechangeSearchCourse}
              />
@@ -149,16 +152,22 @@ import ReactPaginate from "react-paginate";
                 border={"1px"} 
                 rounded={"md"}
               >
-                 <Table 
-                  variant={"striped"} 
-                  colorScheme={"white"}
-                  bg={"white"}
-                 >
+                  <Table 
+                    variant={"striped"} 
+                    colorScheme={"white"}
+                    bg={"white"}
+                  >
                      <Thead background="colors.secondary">
                        <Tr>
-                         <Th >Nom</Th>
-                         <Th>Taux horaire</Th>
-                         <Th>Actions</Th>
+                         <Th >
+                          {t('pages.courses.courseList.name')}
+                          </Th>
+                         <Th>
+                           {t('pages.courses.courseList.courseHours')}
+                          </Th>
+                         <Th>
+                            {t('pages.courses.courseList.action')}
+                          </Th>
                        </Tr>
                      </Thead>
                      {dataCourse && ( 
@@ -233,26 +242,25 @@ import ReactPaginate from "react-paginate";
                                               fontWeight='bold'
                                               textAlign={"center"}
                                               >
-                                              Confirmation de suppression
+                                                {t('pages.courses.courseList.confirmDeleting')}
                                             </AlertDialogHeader>
                                             <AlertDialogBody textAlign={"center"}>
-                                            Voulez-vous supprimer cette matiere?
+                                              {t('pages.courses.courseList.wouldYouWantToDeleteCourse')}
                                             </AlertDialogBody>
-
                                             <AlertDialogFooter>
                                               <Button        
                                                 ref={cancelRef} 
                                                 onClick={onClose}
                                                 colorScheme="red"
                                               >
-                                                Annuler 
+                                                {t('pages.courses.courseList.cancelButton')}
                                               </Button>
                                               <Button 
                                                 colorScheme='green' 
                                                 onClick={() => removeCourse(course.id)}
                                                 ml={3}
                                               >
-                                                Supprimer
+                                                {t('pages.courses.courseList.Supprimer')}
                                               </Button>
                                             </AlertDialogFooter>
                                           </AlertDialogContent>
@@ -287,5 +295,13 @@ import ReactPaginate from "react-paginate";
    );
   };
   
+  export async function getStaticProps({ locale }) {
+    return {
+      props: {
+        ...(await getStaticPropsTranslations(locale)),
+        // Will be passed to the page component as props
+      },
+    };
+  }
   export default ListeDesCours;
   

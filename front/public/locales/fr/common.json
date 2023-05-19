@@ -11,7 +11,7 @@
                 "salary": "Salaire",
                 "status":"Status",
                 "childNumber":"Nombre d'enfant",
-                "vaccataireStatusOption":"PERMANENT",
+                "vaccataireStatusOption":"VACCATAIRE",
                 "permanentStatusOption":"PERMANENT",
                 "fonction": "Fonction",
                 "fondatorFonctionOption": "fondateur",
@@ -40,22 +40,20 @@
                 "confirmDeletingAlertDialogBody":"Voulez-vous supprimer cette categorie?",
                 "cancelAlertDialogButtonForDeleting": "Annuler",
                 "submitAlertDialogButtonForDeleting": "Supprimer",
-                "name": "Nom",
-                "description": "Description",
+                "name": "Nom:",
+                "description": "Description:",
                 "salaireDebase": "Salaire de base",
                 "actions": "Actions"
-
             },
             "AjouterCategoriePersonnel":{
                 "addButton":" Ajouter une categorie ",
                 "heading": "Ajouter une categorie de personnel",
-                "name": "Nom",
-                "description": "Description",
+                "name": "Nom:",
+                "description": "Description:",
                 "salaireDebase": "Salaire de base",
                 "cancelButton": "Annuler",
                 "submitButton": "Créer",
                 "valueSalaireDebase":"montant"
-                
             },
             "PersonnelAccountForm":{
                 "heading":"Créer un compte pour le personnel",
@@ -66,7 +64,206 @@
                 "annuler": "Annuler",
                 "createBotton":"Créez"
             }
-        }
+        },
+        "class":{
+            "classList":{
+                "heading":"Liste des classes",
+                "addButton":"Ajouter une classe",
+                "name": "Nom:",
+                "Action": "Actions",
+                "details": "Détails",
+                "confirmDeletingClass": " Confirmation de suppression",
+                "wouldYouWantToDeleteClass": "Voulez-vous supprimer cette classe?",
+                "cancelButton": "Annuler",
+                "deleteButton": "Supprimer"
+            },
+            "classAdd":{
+                "heading":"Créer une classe",
+                "name": "Nom de la classe:",
+                "feesAmount": "Valeur de la pension",
+                "studyLevel":"Niveau d'étude:",
+                "academicYear": "Anneé académique",
+                "cycleName": "Cycle:",
+                "cancelButton": "Annuler",
+                "submitButton":"Créer"
+            },
+            "sectionCreate":{
+                "heading":"Ajouter une section",
+                "addButton":"Ajouter une section",
+                "name": "Nom",
+                "section": "Section",
+                "description": "Description",
+                "cancelButton": "Annuler",
+                "submitButton": "Créer"
+            },
+            "cycleCreate":{
+                "heading":"Ajouter un cyle",
+                "addButton":"Ajouter un cyle",
+                "name": "Nom",
+                "description": "Description",
+                "sectionName": "Section",
+                "cancelButton": "Annuler",
+                "submitButton": "Créer"
+              
+            },
+            "listSectionCycle": {
+                "heading":"Cycles et sections",
+                "headingSection":"Sections",
+                "name": "Nom",
+                "Action": "Actions",
+                "sectionName": "Section",
+                "confirmDeleting": " Confirmation de suppression",
+                "wouldYouWantToDeleteCycle": "Voulez-vous supprimer ce cycle?",
+                "wouldYouWantToDeleteSection": "Voulez-vous supprimer cette section?",
+                "cancelButton": "Annuler",
+                "deleteButton": "Supprimer"
+            }
+        },
+        "courses":{
+            "addCourse": {
+                "addButton": "Ajouter une matière",
+                "heading":"Ajouter une matière ",
+                "name": "Nom",
+                "courseHours": "Taux horaire",
+                "cancelButton": "Annuler",
+                "submitButton": "Ajouter"
+            },
+            "courseList":{
+                "heading":"Matière",
+                "name": "Nom",
+                "courseHours": "Taux horaire",
+                "action": "Actions",
+                "confirmDeleting": " Confirmation de suppression",
+                "wouldYouWantToDeleteCourse": "Voulez-vous supprimer cette matière?",
+                "cancelButton": "Annuler",
+                "deleteButton": "Supprimer"
+            }
+        },
+        "level":{
+            "addLevel":{
+                "heading":" Création d'un niveau d'étude",
+                "name": "Nom du niveau",
+                "fees": "Pension",
+                "nameCycle": "Cycle",
+                "cancelButton": "Annuler",
+                "submitButton": "Ajouter"
+            },
+            "listLevel":{
+                "addButton":"Ajouter un niveau",
+                "heading": "Liste des niveaux",
+                "name": "Nom",
+                "fees": "Pension:",
+                "Action": "Actions",
+                "confirmDeleting": " Confirmation de suppression",
+                "wouldYouWantToDeleteLevel": "Voulez-vous supprimer ce niveau?",
+                "cancelButton": "Annuler",
+                "deleteButton": "Supprimer"
+            }
+        },
+        "finance":{
+            "accountStatement":{
+                "heading": "Etat des entrées et sorties",
+                "date": "Date",
+                "description": " Description", 
+                "debit": "Débit",
+                "credit": "Crédit",
+                "total": "Total",
+                "childNumber": "Enfant",
+                "cancelButton": "Annuler",
+                "submitButton": "Créer"
+            }
+        },
+        "parent":{
+            "addParent": {
+                "addButton": "Ajouter un parent",
+                "heading": " Ajouter un parent",
+                "firstName": "Nom:",
+                "lastName": "Prénom",
+                "gender": "Sexe",
+                "Proféssion": "Proféssion",
+                "phoneNumber": "Téléphone",
+                "status": "Statut"
+
+                
+            }
+
+        },
+        "trancheFees": {
+            "trancheList": {
+                "name": "Nom",
+                "amount": "Montant",
+                "priority": "Priority",
+                "dateLine": "Date limite",
+                "Action": "Actions",
+                "details": "Détails",
+                "confirmDeleting": " Confirmation de suppression",
+                "wouldYouWantToDeleteTrancheFees": "Voulez-vous supprimer cette tranche?",
+                "cancelButton": "Annuler",
+                "deleteButton": "Supprimer"
+
+            }
+        },
+        "eleves": {
+            "listeDesEleves": {
+                "firstName": "Nom",
+                "lastName": "Prénom",
+                "actions": "Actions",
+                "details": "Détails",
+                "listOfStudent": "Liste des élèves",
+                "confirmDeletingPassword": " Confirmation de suppression",
+                "wouldYouWantToDeleteStudent": "Voulez-vous supprimer cet élève?",
+                "cancel": "Annuler",
+                "delete": "Supprimer"
+            },
+            "addStudent":{
+                "Heading": "Ajouter un élève",
+                "StudentInformations": "Informations de l'élève",
+                "firstName": "Nom",
+                "lastName": "Prénom",
+                "birthDate": "Date de naissance",
+                "gender": "Sexe",
+                "address": "Adresse",
+                "matricul": "Matricule",
+                "category":"Catégrorie",
+                "class": "Classe",
+                "fatherInformations": "Informations du père",
+                "fatherFirstName": "Nom",
+                "fatherLastName": "Prénom",
+                "fatherProfession": "Proféssion",
+                "motherInformations": "Informations de la mère",
+                "motherFirstName": "Nom",
+                "motherLastName": "Prénom",
+                "motherProfession": "Proféssion",
+                "phoneNumber": "Numéro de téléphone",
+                "tutorInformations": "Informations du tuteur",
+                "tutorFirstName": "Nom",
+                "tutorLastName": "Prénom",
+                "tutorProfession": "Proféssion",
+                "nextButton": "Annuler",
+                "backButton": "Annuler",
+                "cancelButton": "Annuler",
+                "submitButton": "Créer"
+            },
+            "addStudentCategory":{
+                "addButton": "Ajouter une categorie d'élève ",
+                "Heading": " Ajouter une catégorie d'élève ",
+                "Name": "Nom",
+                "description": "Description",
+                "reduction": "Réduction",
+                "cancelButton": "Annuler",
+                "submitButton": "Créer"
+            },
+            "studentCategory": {
+                "Heading": "Catégories des élèves",
+                "firstName": "Nom",
+                "lastName": "Prénom",
+                "actions": "Actions",
+                "confirmDeletingStudentCategory": " Confirmation de suppression",
+                "wouldYouWantToDeleteStudent": "Voulez-vous supprimer cet élève?",
+                "cancelButton": "Annuler",
+                "deleteButton": "Supprimer"
+            }
+        }  
     } , 
     "molecules":{
         "LoginForm":{

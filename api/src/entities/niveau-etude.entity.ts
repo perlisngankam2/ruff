@@ -81,14 +81,13 @@ export class NiveauEtude{
   salle = new Collection<Salle>(this);
 
 
-    
-  @Field(() => ID)
+  @Field(() => ID, {nullable: true})
   @Property({ persist: false })
     get cycleid() {
     return this.cycle?`${this.cycle.id}`:null;
 }
 
-  @Field(() => ID)
+    @Field(() => ID, {nullable: true})
   @Property({ persist: false })
   get cycleName() {
   return this.cycle?`${this.cycle.getEntity().name}`:null;

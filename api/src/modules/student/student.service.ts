@@ -24,6 +24,7 @@ import { StudentCreateInput } from './dto/student.input';
 import { StudentUpdateInput } from './dto/student.update';
 import { TrancheService } from '../tranche/tranche.service';
 import { addDays, format } from 'date-fns';
+import { CategorieEleve } from 'src/entities/categorie-eleve.entity';
 
 @Injectable()
 export class StudentService {
@@ -66,7 +67,8 @@ export class StudentService {
             lastname: input.lastname,
             // classe : input.classe,
             sex: input.sex,
-            dateOfBirth:format(input.dateOfBirth, 'dd/MM/yyyy'),
+            dateOfBirth:input.dateOfBirth,
+            birthPlace: input.birthPlace,
             adress:input.adress,
             transport:input.transport,
             categorie : input.categoryStudentId,
@@ -98,7 +100,9 @@ export class StudentService {
       }
     
       findByOne(filters: FilterQuery<Student>): Promise<Student | null> {
-        return this.studentRepository.findOne(filters);
+        return this.studentRepository.findOne(filters, 
+            {populate:['salle', 'categorie']}
+          );
       }
 
       
@@ -140,7 +144,7 @@ export class StudentService {
     
       getAll(): Promise<Student[]> {
         return this.studentRepository.findAll({
-          populate:['salle','pension','salle.niveau.cycle','salle.niveau.cycle.section','trancheStudent']
+          populate:['salle','pension','salle.niveau.cycle','salle.niveau.cycle.section','trancheStudent','categorie']
         })
       }
 
@@ -150,7 +154,6 @@ export class StudentService {
         })
         return a.filter(async a=>(await (await (await (await a.salle.load()).niveau.load()).cycle.load()).section.load()).name==='Anglophone')
       }
-
       
       async getAllForUseFrancophone(): Promise<Student[]> {
         const a= await this.studentRepository.findAll({

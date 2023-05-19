@@ -50,6 +50,14 @@ import { IoIosAdd } from "react-icons/io";
 import{ FiEdit, FiSearch} from 'react-icons/fi';
 import {MdDelete} from 'react-icons/md';
 import {useRouter } from "next/router";
+import {useTranslation} from "next-i18next";
+import ReactToPrint from 'react-to-print';
+import ReactToPdf from "react-to-pdf";
+import ReactPaginate from "react-paginate";
+
+import { getStaticPropsTranslations } from "../../types/staticProps";
+
+
 import { 
   GET_ALL_STUDENT, 
   GET_STUDENT_BY_ID,
@@ -57,7 +65,6 @@ import {
 } from "../../graphql/Queries";
 import { DELETE_STUDENT } from "../../graphql/Mutation";
 import { useMutation, useQuery } from "@apollo/client";
-import ReactPaginate from "react-paginate";
 
 // const VARIABLE = "pearl";
 
@@ -65,13 +72,14 @@ const Eleves = () => {
 
     const cancelRef = React.useRef()
     const router = useRouter();
+    const {t} = useTranslation();
     const [query , setQuery] = useState("");
     const [data, setData] = useState([]);
     const keys = ["first_name", "last_name", "email", "classe"];
     const { isOpen, onToggle, onClose, onOpen } = useDisclosure();
     const [searchNameStudent, setSearchNameStudent] = useState("");
     const [searchClasseStudent, setSearchClasseStudent] = useState("");
-
+    
     const [deletestudent] = useMutation(DELETE_STUDENT);
     // const [currentPage, setCurrentPage] = useState(1);
     
@@ -138,6 +146,8 @@ const Eleves = () => {
       setPageNumber(page);
     };
 
+    
+
   return (
     <DefaultLayout>
       <Box p="3" pt={"70px"} w="full">
@@ -155,7 +165,7 @@ const Eleves = () => {
             size="lg"
             textColor="pink.300"
           >
-            Liste des élèves
+            {t("pages.eleves.listeDesEleves.listOfStudent")}
           </Heading>
           <Hide below="sm">
             <Text>Dashboad / Éleves / Liste Élèves</Text>
@@ -180,20 +190,13 @@ const Eleves = () => {
           <Select 
             placeholder="Selectionner la classe"
             variant="flushed"
-            onChange={handleChangeClasseStudent}
+            onChange={(event => setSearchClasseStudent(event.target.value))}
+            // value={""}
           > 
-          { dataClasse &&  
-            dataClasse.findAllsalle
-            .filter((classe) =>{
-              if(searchClasseStudent==""){
-                return classe
-              }else if(classe.name.toLowerCase().includes (searchClasseStudent.toLowerCase()))
-              return classe
-            })
-            .map((classe) => (
-            <option 
-              key={classe.id}>
-                {classe.name}
+
+           {dataClasse && dataClasse.findAllsalle.map((salle, index) => (
+            <option key={index}>
+                {salle.name}
             </option>
           ))}
           </Select>
@@ -205,7 +208,17 @@ const Eleves = () => {
                 Ajouter un élève
             </Button>
           </Box> 
+          {/* { dataStudent &&  
+            dataStudent.findAllstudents
+            .filter((student) =>{
+              if(searchClasseStudent==""){
+                return student
+              }else if(student.salleName.toLowerCase().includes (searchClasseStudent.toLowerCase()))
+              return student
+            })
+          } */}
         </Flex>
+           
         {/* <Box mt={10}>
           <PaiementTable data={search(Users)}/>
         </Box> */}
@@ -222,12 +235,13 @@ const Eleves = () => {
                   {/* <TableCaption>Liste des eleves</TableCaption> */}
                   <Thead background="colors.secondary">
                   <Tr>
-                    <Th>Nom</Th>
-                    <Th>Prenom</Th>
+                    <Th>{t("pages.eleves.listeDesEleves.firstName")}</Th>
+                    <Th>{t("pages.eleves.listeDesEleves.lastName")}</Th>
+                    <Th>classe</Th>
                     {/* <Th >classe</Th> */}
                     {/* <Th>sexe</Th> */}
                     {/* <Th>Photo</Th> */}
-                    <Th>Action</Th>
+                    <Th>{t("pages.eleves.listeDesEleves.actions")}</Th>
                   </Tr>
                   </Thead>
                   <Tbody>
@@ -237,15 +251,23 @@ const Eleves = () => {
                     .filter((student) =>{
                       if(searchNameStudent == ""){
                         return student;
-                      }else if (student.firstname.toLowerCase().includes (searchNameStudent.toLowerCase()) || 
-                      student.lastname.toLowerCase().includes (searchNameStudent.toLowerCase()) ||
+                      }else if (student.firstname.toLowerCase().includes(searchNameStudent.toLowerCase()) || 
+                      student.lastname.toLowerCase().includes(searchNameStudent.toLowerCase()) ||
                        student.fatherFirstName.toLowerCase().includes (searchNameStudent.toLowerCase()))
+                      return student;
+                    })
+                    .filter((student) =>{
+                      if(searchClasseStudent == ""){
+                        return student;
+                      }else if (
+                       student.salleName.toLowerCase().includes (searchClasseStudent.toLowerCase()))
                       return student;
                     })
                     .map((student, index) =>(
                       <Tr key={index}>
                         <Td >{student.firstname}</Td>
                         <Td >{student.lastname}</Td>
+                        <Td >{student.salleName}</Td>
                         {/* <Td borderColor={'#C6B062'}>{student.classe}</Td> */}
                         {/* <Td borderColor={'#C6B062'}>{student.sex}</Td> */}
                         {/* <Td borderColor={'#C6B062'}>
@@ -270,7 +292,7 @@ const Eleves = () => {
                                   query: {id: student.id}
                                   }}
                                 >
-                                 Details
+                                 {t("pages.eleves.listeDesEleves.details")}
                                 </Link>
                               </Button>
                             </ButtonGroup> 
@@ -323,11 +345,11 @@ const Eleves = () => {
                                           fontWeight='bold'
                                           textAlign={"center"}
                                           >
-                                          Confirmation de suppression
+                                            {t("pages.eleves.listeDesEleves.confirmDeletingPassword")}
                                         </AlertDialogHeader>
                                         <AlertDialogCloseButton/>
                                         <AlertDialogBody textAlign={"center"}>
-                                        Voulez-vous supprimer cet elève?
+                                          {t("pages.eleves.listeDesEleves.wouldYouWantToDeleteStudent")}
                                         </AlertDialogBody>
 
                                         <AlertDialogFooter>
@@ -336,14 +358,14 @@ const Eleves = () => {
                                             onClick={onClose}
                                             colorScheme="red"
                                           >
-                                            Annuler 
+                                            {t("pages.eleves.listeDesEleves.cancel")}
                                           </Button>
                                           <Button 
                                             colorScheme='green' 
                                             onClick={() => removeStudent(student.id)}
                                             ml={3}
                                           >
-                                            Supprimer
+                                            {t("pages.eleves.listeDesEleves.delete")}
                                           </Button>
                                         </AlertDialogFooter>
                                       </AlertDialogContent>
@@ -395,6 +417,14 @@ const Eleves = () => {
     </DefaultLayout>
   );
 };
+export async function getStaticProps({ locale }) {
+  return {
+    props: {
+      ...(await getStaticPropsTranslations(locale)),
+      // Will be passed to the page component as props
+    },
+  };
+}
 
 export default Eleves;
 

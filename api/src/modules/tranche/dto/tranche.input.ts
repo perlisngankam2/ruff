@@ -4,10 +4,11 @@ import { PensionCreateInput } from 'src/modules/pension/dto/pension.input';
 
 @InputType()
 export class TrancheCreateInput {
-  // @Field(()=>ID,{nullable:true})
-  // pension_id?: string;
-  // @Field(()=>ID,{nullable:true})
-  // anneeAcademiqueId?:string
+  @Field({nullable:true})
+  ID!: string;
+
+  @Field(()=>ID,{nullable:true})
+  anneeAcademiqueId?:string
 
   @Field(()=>ID,{nullable:true})
   salleId?:string

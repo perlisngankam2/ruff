@@ -21,27 +21,35 @@ import {
   Show,
   useDisclosure,
   Image,
+  Button,
+  Text
 } from "@chakra-ui/react";
 import Link from "next/link";
+import React, {useEffect, useState, useMemo, useContext, use} from "react";
 import { HiOutlineHome, HiUserGroup } from "react-icons/hi";
 import { IoMdSchool, IoIosStats, IoIosArrowDown } from "react-icons/io";
 import { GiTakeMyMoney } from "react-icons/gi";
 import { HamburgerIcon } from "@chakra-ui/icons";
 import { useAuth } from "../../../contexts/account/Auth/Auth";
 import { useAccount } from "../../../contexts/account/Account";
-import { GET_PERSONNEL_BY_USERID } from "../../../graphql/Queries";
+import { GET_PERSONNEL_BY_USERID, GET_ALL_SCHOOL_PARAMETER } from "../../../graphql/Queries";
 import { useMutation, useQuery } from '@apollo/client'; 
-
+import ContentProfilePopop from '../../layouts/Content-profil/ContentProfilePopop'
 
 const Header = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const { isOpen:isOpenPopop, onOpen:onOpenPopop, onClose:onClosePopop} = useDisclosure();
   const { removeAuthToken } = useAuth()
   const { account } = useAccount()
      const { data: personnelData, called, loading } = useQuery(GET_PERSONNEL_BY_USERID,
      {
     variables:{ userid: account?.id }
   })
+  const {data:dataSchoolParameter} = useQuery(GET_ALL_SCHOOL_PARAMETER);
 
+  useEffect(()=>{
+    console.log(dataSchoolParameter?.findAllparameters)
+})
   return (
     <Box
       as="header"
@@ -60,7 +68,6 @@ const Header = () => {
               <HamburgerIcon boxSize="6" />
             </Box>
           </Show>
-
           {/* DRAWER */}
           <Drawer isOpen={isOpen} onClose={onClose} placement={"left"}>
             <DrawerOverlay />
@@ -94,7 +101,6 @@ const Header = () => {
                     </Link>
                   </AccordionPanel>
                 </AccordionItem>
-
                 <AccordionItem pl={5}>
                   <AccordionButton pl={0} my={2}>
                     <Flex align="center" gap="1">
@@ -154,48 +160,59 @@ const Header = () => {
               </Accordion>
             </DrawerContent>
           </Drawer>
-
-          <Image 
-            src="/logo_blanc.png" 
-            w="150px" 
-            ml={"15px"}
-          />
-          <Box>
-            <Menu>
-              <MenuButton mr="12px">
-                <Flex align="center" gap="1">
-                  {account?.firstName === null && account?.firstName === null ?
+        {/* <Box>  */}
+      <Box display={{md:'flex'}} width={'full'}> 
+          {dataSchoolParameter &&  (
+             dataSchoolParameter?.findAllparameters.map((parameter, index) => ( 
+            <Box 
+              // src="/logo_blanc.png" 
+              w="150px" 
+              ml={"15px"}
+              key={index}
+              
+            >
+              <Text fontSize={'30px'}>{parameter.name}</Text>
+            </Box>
+          )))}
+            <Box ml={['auto', 'auto', 'auto', 'auto']}>
+              <Menu>
+                <MenuButton mr="12px">
+                  <Flex align="center" gap="1">
+                    {account?.firstName === null && account?.firstName === null ?
+                    <Avatar
+                      name={ personnelData?.getpersonnelbyaccount.firstName + ' ' + personnelData?.getpersonnelbyaccount.lastName } 
+                      size="md"
+                      mr={"10px"}
+                    />
+                  :
                   <Avatar
-                    name={ personnelData?.getpersonnelbyaccount.firstName + ' ' + personnelData?.getpersonnelbyaccount.lastName } 
-                    size="md"
-                    mr={"10px"}
-                  />
-                :
-                 <Avatar
-                    name={ account?.firstName + ' ' + account?.lastName } 
-                    size="md"
-                  />
-                }
-                  <Icon as={IoIosArrowDown} boxSize="5"/>
-                </Flex>
-              </MenuButton>
-              <MenuList color="black" background="white">
-                <Link href="/profil">
-                  <MenuItem>Profil</MenuItem>
-                </Link>
-                <Link href="#">
-                  <MenuItem>Paramètres</MenuItem>
-                </Link>
-                <Link href="/" onClick={removeAuthToken}>
-                  <MenuItem>Se Déconnecter</MenuItem>
-                </Link>
-                <Link href="#">
-                  <MenuItem>Aide</MenuItem>
-                </Link>
-              </MenuList>
-            </Menu>
-          </Box>
-        </Flex>
+                      name={ account?.firstName + ' ' + account?.lastName } 
+                      size="md"
+                    />
+                  }
+                    <Icon as={IoIosArrowDown} boxSize="5"/>
+                  </Flex>
+                </MenuButton>
+                <MenuList color="black" background="white">
+                  {/* <Link href="/profil">
+                    <MenuItem>Profil</MenuItem>
+                  </Link> */}
+                    <MenuItem onClick={onOpenPopop} >Profil</MenuItem>
+                  <Link href="#">
+                    <ContentProfilePopop isOpen={isOpenPopop} onOpen={onOpenPopop} onClose={onClosePopop}/>
+                  {/* <MenuItem >Paramètres</MenuItem> */}
+                  </Link>
+                  <Link href="/" onClick={removeAuthToken}>
+                    <MenuItem>Se Déconnecter</MenuItem>
+                  </Link>
+                  {/* <Link href="#">
+                    <MenuItem>Aide</MenuItem>
+                  </Link> */}
+                </MenuList>
+              </Menu>
+            </Box>
+      </Box>
+    </Flex>
       {/* </Container> */}
     </Box>
   );

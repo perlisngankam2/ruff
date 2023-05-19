@@ -18,6 +18,8 @@ import { useEffect ,useState } from "react";
 import { useMutation, useQuery } from "@apollo/client";
 import { MdDescription } from "react-icons/md";
 import DefaultLayout from "../../components/layouts/DefaultLayout";
+import {useTranslation} from "next-i18next";
+import { getStaticPropsTranslations } from "../../types/staticProps";
 import { 
   CREATE_SALLE,
   UPDATE_SALLE
@@ -28,22 +30,26 @@ import {
   GET_ALL_STUDY_LEVEL, 
   GET_ALL_CLASS,
   GET_SALLE_BY_ID,
+  GET_ALL_ANNEE_ACADEMIQUE
 }  from "../../graphql/Queries";
 
 const AddClass = () => {
 
   const toast = useToast();
   const router = useRouter();
+  const {t} = useTranslation();
   const teachers = ["Ryan Jones", "Illary Daenarys ", "Julian Clinton"];
   const [name, setName] = useState();
   const [section, setSection] = useState();
   const [niveauEtudeId, setNiveauEtudeId] = useState("");
   const [cycleId, setCycleId] = useState("");
+  const [anneeAcademiqueId, setAnneeAcademiqueId] = useState("");
   const [montantPensionSalle, setMontantPensionSalle] = useState();
   const [createSalle] = useMutation(CREATE_SALLE);
   const [updateSalle] = useMutation(UPDATE_SALLE);
   const {data:dataSection} = useQuery(GET_ALL_SECTION);
   const {data:dataStudyLevel} = useQuery(GET_ALL_STUDY_LEVEL);
+  const {data:dataAnneeAcademique} = useQuery(GET_ALL_ANNEE_ACADEMIQUE);
   const {data:dataCycle} = useQuery(GET_ALL_CYCLE);
 
   const [salle, setSalle] = useState({
@@ -76,14 +82,16 @@ const AddClass = () => {
     // console.log(dataSection?.findAllsection)
     console.log("j")
     console.log(dataStudyLevel?.findAllNiveauEtude)
+    console.log(dataSalleById);
+
     if(router.query.id) {
       const dataSalleEdit = dataSalleById?.findOnesalle
       if(dataSalleEdit){
         setSalle({
           name: dataSalleEdit.name,
           montantPensionSalle: dataSalleEdit.montantPensionSalle,
-          cycleId: dataSalleEdit.cycleId,
-          niveauEtudeId: dataSalleEdit.niveauEtudeId
+          // cycleId: dataSalleEdit.cycleid,
+          niveauEtudeId: dataSalleEdit.niveauid
         })
       }
     }
@@ -95,9 +103,10 @@ const AddClass = () => {
 
     console.log(name);
     console.log(section);
-    console.log(cycleId);
-    console.log(montantPensionSalle);
-    console.log(niveauEtudeId);
+    // console.log(cycleId);
+    console.log(salle.montantPensionSalle);
+    console.log(salle.niveauEtudeId);
+
 
     // const cycleData =
     if(!router.query.id){
@@ -106,15 +115,15 @@ const AddClass = () => {
           salle: {
             name: salle.name,
             niveauEtudeId: salle.niveauEtudeId,
-            cycleId: salle.cycleId,
-            montantPensionSalle: parseInt(salle.montantPensionSalle)
+            // cycleId: salle.cycleId,
+            montantPensionSalle: parseInt(salle.montantPensionSalle),
+            anneeAcademiqueId: anneeAcademiqueId
           }
         },
         refetchQueries:[{
           query: GET_ALL_CLASS
         }]
     })
-    console.log(cycleData)
     toast({
       title: "Creation d'une classe.",
       description: "La classe a ete créée avec succes.",
@@ -125,12 +134,12 @@ const AddClass = () => {
   }else{
     await updateSalle({
       variables:{
-        id:router.query.id,
+        id: router.query.id,
         input: {
           name: salle.name,
           montantPensionSalle: parseInt(salle.montantPensionSalle),
           niveauEtudeId: salle.niveauEtudeId,
-          cycleId: salle.cycleId
+          // cycleId: salle.cycleId
         }
       },
       refetchQueries:[{
@@ -166,7 +175,7 @@ const AddClass = () => {
                 color={"colors.primary"}
                 textAlign={"center"}
               >
-                Creation d'une classe
+                  {t('pages.class.classAdd.heading')}
               </Heading>
               <Stack
                 gap={2}
@@ -175,18 +184,24 @@ const AddClass = () => {
                 mt="25px"
               >
                   <FormControl>
-                    <FormLabel>Nom de la classe:</FormLabel>
+                    <FormLabel>
+                      {/* Nom de la classe: */}
+                      {t('pages.class.classAdd.name')}
+                    </FormLabel>
                     <Input 
                       placeholder="Nom de la classe" 
                       type="text"
                       // maxW="300px"
                       name="name"
                       value={salle.name}
-                      onChange = {(event) => setSalle( ...salle,{name:event.target.value})}
+                      onChange = {(event) => setSalle({...salle, name:event.target.value})}
                     />
                   </FormControl>
                   <FormControl>
-                    <FormLabel>Montant pension:</FormLabel>
+                    <FormLabel>
+                      {/* Montant pension: */}
+                      {t('pages.class.classAdd.feesAmount')}
+                    </FormLabel>
                     <Input 
                       placeholder="Valeur de la pension" 
                       type="number"
@@ -197,7 +212,10 @@ const AddClass = () => {
                     />
                   </FormControl>
                   <FormControl mt="15px">
-                      <FormLabel>Niveau d'etude</FormLabel>
+                      <FormLabel>
+                         {t('pages.class.classAdd.studyLevel')}
+                        {/* Niveau d'etude: */}
+                      </FormLabel>
                       <Select 
                         id="cycle"
                         name="niveauEtudeId"
@@ -212,19 +230,40 @@ const AddClass = () => {
                                     selected={salle.niveauEtudeId == niveauEtude.id? "selected": ''}
                                     value={niveauEtude.id} key={index}
                                   >
-                                    {niveauEtude.name}
+                                    {niveauEtude.name}({niveauEtude.cycleName})
                                   </option>
                               ))
                           )}
                       </Select>
                   </FormControl> 
-                  <FormControl mt="15px">
-                      <FormLabel>Cycle</FormLabel>
+                  <FormControl mt={4}>
+                        <FormLabel>
+                          {/* Annee academique */}
+                         {t('pages.class.classAdd.academicYear')}
+                        </FormLabel>
+                        <Select 
+                            type={'date'} 
+                            name="anneeAcademiqueId"
+                            value={anneeAcademiqueId}
+                            placeholder="Annee academique"
+                            onChange = {(event)=> setAnneeAcademiqueId(event.target.value)}
+                        >
+                          {dataAnneeAcademique &&
+                            dataAnneeAcademique.findAllAnnerAccademique.map((anneeAcademique, index) => (
+                              <option value={anneeAcademique.id} key={index}>
+                                {anneeAcademique.name}
+                              </option>
+                            ))
+                          }
+                        </Select>
+                    </FormControl>
+                  {/* <FormControl mt="15px">
+                      <FormLabel>Annee academique:</FormLabel>
                         <Select 
                           name="cycleId"
                           placeholder="Cycle"
                           minW="300px"
-                          onChange = {(event) => setSalle({...salle,cycleId:event.target.value})}
+                          onChange = {(event) => setSalle({...salle, cycleId:event.target.value})}
                           value={salle.cycleId}
                         >
                          {dataCycle &&(
@@ -235,16 +274,18 @@ const AddClass = () => {
                                 ))
                           )} 
                         </Select>
-                 </FormControl>
+                 </FormControl> */}
                   <Flex gap={5} pt="30px">
                     <Button colorScheme="red" onClick={() => router.back()}>
-                      Annuler
+                      {t('pages.class.classAdd.cancelButton')}
+                      {/* Annuler */}
                     </Button>
                     <Button
                       colorScheme="green"
                       onClick={addClasse}
                     >
-                      Creer
+                      {t('pages.class.classAdd.submitButton')}
+                      {/* Creer */}
                     </Button>
                   </Flex>
               </Stack>
@@ -255,5 +296,14 @@ const AddClass = () => {
     </DefaultLayout>
   );
 };
+
+export async function getStaticProps({ locale }) {
+  return {
+    props: {
+      ...(await getStaticPropsTranslations(locale)),
+      // Will be passed to the page component as props
+    },
+  };
+}
 
 export default AddClass;

@@ -48,8 +48,8 @@ export class TrancheStudentService {
         const tranche = await this.studentService.findByOne({id:input.trancheid})
         const anneAcademique = String((await this.avance.findByStudent(input.studentId)).map(async a=>(await a.anneeAcademique.load()).id)[0])
  
-        const year = await this.parameterservice.getAll()
-        const annee = year[year.length-1].year
+        // const year = await this.parameterservice.getAll()
+        // const annee = year[year.length-1].year
         wrap(trancheStudent).assign(
             {
             montant: 0.000000,
@@ -59,7 +59,7 @@ export class TrancheStudentService {
             //  regimePaimemnt: input.regimePaiement,
              tranche: tranche.id,
              student: student.id,
-             year: annee
+            //  year: annee
              
              
             },
@@ -179,13 +179,13 @@ async saveTranche(studentid:string,trancheid:string){
         const tranchestudent = new TrancheStudent()
         
 
-        const year = await this.parameterservice.getAll()
-        const annee = year[year.length-1].year
+        // const year = await this.parameterservice.getAll()
+        // const annee = year[year.length-1].year
         wrap(tranchestudent).assign({
             montant:0.00000,
             student:studentid,
             tranche:trancheid,
-            year : annee     
+            // year : annee     
         },
         {
             em:this.em
@@ -229,13 +229,13 @@ async saveTranche(studentid:string,trancheid:string){
         const trancheStudent = await this.findById(id)
         
  
-        const year = await this.parameterservice.getAll()
-        const annee = year[year.length-1].year
+        // const year = await this.parameterservice.getAll()
+        // const annee = year[year.length-1].year
         wrap(trancheStudent).assign({
             name:input.name || trancheStudent.name,
             montant: input.montant || trancheStudent.montant,
             description: input.description || trancheStudent.description,
-            year: annee
+            // year: annee
         },
         { em: this.em },
         );

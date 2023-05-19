@@ -67,6 +67,9 @@ import { useQuery, useMutation } from "@apollo/client";
 import Routes from "../../modules/routes";
 import {useForm, Controller, defaultValues } from "react-hook-form";
 import { zodResolver } from '@hookform/resolvers/zod';
+import { UseTranslation, useTranslation } from "next-i18next";
+// import { getStaticPropsTranslations } from "../../types/staticProps";
+
 
 import { 
   GET_ALL_STUDENT, 
@@ -86,7 +89,8 @@ import {
   GET_ALL_TRANCHE_BY_STUDENT_ID,
   GET_PENSION_ALREADY_PAY_BY_STUDENT_ID,
   GET_RESTE_PENSION_A_PAYER_BY_STUDENT_ID,
-  GET_ALL_PARENT
+  GET_ALL_PARENT,
+  GET_SECTION_STUDENT_BY_ID
 
 } from "../../graphql/Queries";
 
@@ -142,8 +146,11 @@ import {
 
 const DetailComponent = () => {
 
+
   const router = useRouter();
   const toast = useToast();
+  const {t} = useTranslation();
+
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { isOpen:isOpenns, onOpen:onOpenns, onClose:onClosses } = useDisclosure();
   const { isOpen:isOpenParent, onOpen:onOpenParent, onClose:onClosseParent } = useDisclosure();
@@ -184,14 +191,14 @@ const DetailComponent = () => {
       }
   );
 
-  const {data:dataTrancheStudentBySudentId} = useQuery(GET_TRANCHE_STUDENT_BY_STUDENT_ID,
-    {
-      variables: {studentid: router.query.id} 
-    }
-  ); 
+  // const {data:dataTrancheStudentBySudentId} = useQuery(GET_TRANCHE_STUDENT_BY_STUDENT_ID,
+  //   {
+  //     variables: {studentid: router.query.id} 
+  //   }
+  // ); 
 
-  //CLASSE DE CHAQUE ELEVE
-  const {data:dataStudentSalle} = useQuery(GET_STUDENT_SALLE,
+  //Niveau DE CHAQUE ELEVE
+  const {data:dataStudentLevel} = useQuery(GET_STUDENT_SALLE,
     {
       variables: {studentid: router.query.id} 
     }
@@ -237,6 +244,15 @@ const {data:dataResteFeesToPayByStudent} = useQuery(GET_RESTE_PENSION_A_PAYER_BY
     }
   )
 
+    //RECUPERATION DE LA SECTION DE L'ELEVE
+    const {data:dataSectionStudentById} = useQuery(GET_SECTION_STUDENT_BY_ID,
+      {
+          variables:{
+              studentid: router.query.id,
+          }   
+   
+      } 
+  );
   
   // const {data:dataPensionSalleByStudent} = useQuery(GET_MONTANT_PENSION_SALLE_BY_STUDENT,
   //   {
@@ -265,9 +281,9 @@ const {data:dataResteFeesToPayByStudent} = useQuery(GET_RESTE_PENSION_A_PAYER_BY
 
     //  }
     );
-    const [paySchoolFees] = useMutation(CREATE_SCOLARITE_TRANCHE_STUDENT);
+//     const [paySchoolFees] = useMutation(CREATE_SCOLARITE_TRANCHE_STUDENT);
        
-        console.log("i")
+//         console.log("i")
         // const PayTrancheSchoolFees = handleSubmit(async(values) =>{
         //   console.log("i")
         //   // event.preventDefault();
@@ -382,8 +398,9 @@ const {data:dataResteFeesToPayByStudent} = useQuery(GET_RESTE_PENSION_A_PAYER_BY
   const getTrancheById = (id) => {
     return (dataTranchePension?.findAlltranche)?.find((t, i) => t.id === id)
   }
-  const getTrancheStudentById = (id) => {
-    return (dataTrancheStudent?.findAlltranchestudent)?.find((t, i) => t.id === id)
+  const getTrancheStudentById =  (studentId , trancheId) => {
+    return (dataTrancheStudent?.findAlltranchestudent)?.find((t, i) => (t.trancheid === trancheId && t.studentid === studentId))
+    // return (dataTrancheStudent?.findAlltranchestudent)
   }
 
   // RECUPERATION DE LA LISTE DES TRANCHES LIES A UN ELEVE
@@ -426,22 +443,23 @@ const {data:dataResteFeesToPayByStudent} = useQuery(GET_RESTE_PENSION_A_PAYER_BY
         useEffect(() =>{
           loadTranches();
           loadParents();
+          console.log(dataSectionStudentById?.findSectionByStudent);
           // console.log(dataTranchePension?.findAlltranche.tranche.montant[0])
           // dataStudentId && console.log(dataStudentId.findOnestudent)
           // console.log(dataClass);
           //  console.log(dataFraisInscription);
           // console.log(dataClasse?.findAllsalle);
-          console.log(dataParents?.findAllparents)
-          console.log(dataTranchePension?.findAlltranche);
-          console.log(dataTrancheStudent?.findAlltranchestudent)
-          // console.log(dataPensionSalleByStudent?.findMontantPensionstudent)
-          console.log (dataTrancheByStudentId?.getClassfeeofStudent)
-          console.log(dataStudent?.findAllstudents.firstname);
-          console.log(dataTrancheCompleteByStudent?.getalltranchecompletedbystudent)
+          // console.log(dataParents?.findAllparents)
+          // console.log(dataTranchePension?.findAlltranche);
+          // console.log(dataTrancheStudent?.findAlltranchestudent)
+          // // console.log(dataPensionSalleByStudent?.findMontantPensionstudent)
+          // console.log (dataTrancheByStudentId?.getClassfeeofStudent)
+          // console.log(dataStudent?.findAllstudents.firstname);
+          // console.log(dataTrancheCompleteByStudent?.getalltranchecompletedbystudent)
           // console.log(dataTrancheStudentBySudentId?.getTrancheStudentByStudent)
         })
 
-    // console.log(dataTranchePension?.findAlltranche)
+    console.log(dataTranchePension?.findAlltranche)
     // const AllTranche = dataTranchePension?.findAlltranche.map((tranche) => {
     //   const totalPension = dataTrancheStudentBySudentId?.getTrancheStudentByStudent.montant;
     //   if (totalPension >= tranche.montant) {
@@ -456,78 +474,122 @@ const {data:dataResteFeesToPayByStudent} = useQuery(GET_RESTE_PENSION_A_PAYER_BY
         // }
         const addAvanceTranche = async() => { 
         let studentId = dataStudentId?.findOnestudent.id
-        console.log(montant)
-        console.log(selectedTranches)
-        console.log(studentId) 
+        let montantSaisie = montant;
         let orderTranche = selectedTranches.sort((a,b) => a.priority - b.priority)
-        console.log(orderTranche);
-
-        orderTranche.forEach((tranche , index) => {
-          const trancheMontant = getTrancheById(tranche.value)?.montant
-          const trancheStudent = getTrancheStudentById(studentId)
-          if(montant != 0) {
-            if(montant <  trancheMontant) {
-              createFeesAvanceTranche({
-                variables: {
-                  avancetranche:{
-                    montant: montant,
-                    trancheId: tranche.value,
-                    studentId: studentId
-                  }
+        console.log(orderTranche , "Tranche trie");
+        try {
+          orderTranche.forEach( (tranche , index) => {
+  
+            const trancheMontant = getTrancheById(tranche.value)?.montant
+            const trancheStudent =  getTrancheStudentById(studentId,tranche.value )
+            
+            if(montantSaisie != 0) {
+              if(trancheStudent && (!trancheStudent.complete)) {
+                const reste = trancheStudent.reste
+                if(montantSaisie < reste){
+                   createFeesAvanceTranche({
+                    variables: {
+                      avancetranche:{
+                        montant: montantSaisie,
+                        trancheId: tranche.value,
+                        studentId: studentId
+                      }
+                    }
+                  })
+                  toast({
+                    title: `Tranche : ${ tranche.label } partiellement soldé, reste a payer : ${ (reste - montantSaisie) } `,
+                    description: " paye avec succes.",
+                    status: "success",
+                    duration: 3000,
+                    isClosable: true,
+                  });
+                  montantSaisie = 0
+                } else {
+                   createFeesAvanceTranche({
+                    variables: {
+                      avancetranche:{
+                        montant: reste,
+                        trancheId: tranche.value,
+                        studentId: studentId
+                      }
+                    }
+                  })
+                  toast({
+                    title: `Tranche : ${ tranche.label } soldé `,
+                    description: " paye avec succes.",
+                    status: "success",
+                    duration: 3000,
+                    isClosable: true,
+                  });
+                  montantSaisie = (montantSaisie - reste)
+                  console.error("New montant : " , montantSaisie);
                 }
-              })
-              toast({
-                title: `Tranche : ${ tranche.label } partiellement soldé, reste a payer : ${ (trancheMontant - montant) } `,
-                description: " paye avec succes.",
-                status: "success",
-                duration: 3000,
-                isClosable: true,
-              });
-              setMontant(0)
-            } else if(montant > trancheMontant) {
-              createFeesAvanceTranche({
-                variables: {
-                  avancetranche:{
-                    montant: trancheMontant,
-                    trancheId: tranche.value,
-                    studentId: studentId
-                  }
+              } else {
+                if(montantSaisie < trancheMontant) {
+                   createFeesAvanceTranche({
+                    variables: {
+                      avancetranche:{
+                        montant: montantSaisie,
+                        trancheId: tranche.value,
+                        studentId: studentId
+                      }
+                    }
+                  })
+                  toast({
+                    title: `Tranche : ${ tranche.label } partiellement soldé, reste a payer : ${ (trancheMontant - montantSaisie) } `,
+                    description: " paye avec succes.",
+                    status: "success",
+                    duration: 3000,
+                    isClosable: true,
+                  });
+                  montantSaisie = 0
+                  console.error("New montant : " , montantSaisie);
+                } else {
+                   createFeesAvanceTranche({
+                    variables: {
+                      avancetranche:{
+                        montant: trancheMontant,
+                        trancheId: tranche.value,
+                        studentId: studentId
+                      }
+                    }
+                  })
+                  toast({
+                    title: `Tranche : ${ tranche.label } soldé,  `,
+                    description: " paye avec succes.",
+                    status: "success",
+                    duration: 3000,
+                    isClosable: true,
+                  });
+                  montantSaisie = (montantSaisie - trancheMontant)
+                  console.error("New montant : " , montantSaisie);
                 }
-              })
-              const reste = montant - trancheMontant
-              setMontant(reste)
-            } else {
-              createFeesAvanceTranche({
-                variables: {
-                  avancetranche:{
-                    montant: montant,
-                    trancheId: tranche.value,
-                    studentId: studentId
-                  }
-                }
-              })
-              setMontant(0)
+              }
             }
-          }
-        })
-
-        if(montant > 0 ) {
-          toast({
-            title: `Toutes les tranche ont été soldé, votre différence est : ${  montant } `,
-            description: " paye avec succes.",
-            status: "success",
-            duration: 3000,
-            isClosable: true,
-          });
-        } else {
-          toast({
-            title: `Toutes les tranches ont été soldé`,
-            description: " paye avec succes.",
-            status: "success",
-            duration: 3000,
-            isClosable: true,
-          });
+          })
+          onClose()
+          
+        } catch (error) {
+          console.log(error.message)
         }
+
+        // if(montantSaisie > 0 ) {
+        //   toast({
+        //     title: `Toutes les tranche ont été soldé, votre différence est : ${  montantSaisie } `,
+        //     description: " paye avec succes.",
+        //     status: "success",
+        //     duration: 3000,
+        //     isClosable: true,
+        //   });
+        // } else {
+        //   toast({
+        //     title: `Toutes les tranches ont été soldé`,
+        //     description: " paye avec succes.",
+        //     status: "success",
+        //     duration: 3000,
+        //     isClosable: true,
+        //   });
+        // }
           // const pension = dataStudentSalle?.findSalleByStudent?.montantPensionSalle
           // // const trancheStudentByStudent = dataTrancheStudentBySudentId?.getTrancheStudentByStudent
           // let totalTrancheSelectionner = 0
@@ -777,11 +839,14 @@ const {data:dataResteFeesToPayByStudent} = useQuery(GET_RESTE_PENSION_A_PAYER_BY
         <Text><Text as='b'>Sexe : </Text>
           {dataStudentId.findOnestudent.sex}
         </Text>
+        <Text><Text as='b'>Niveau : </Text>
+          {dataStudentLevel?.findSalleByStudent.levelName}
+        </Text>
         <Text><Text as='b'>Classe : </Text>
-          {dataStudentId.findOnestudent.classe}
+          {dataStudentId.findOnestudent.salleName}
         </Text>
         <Text><Text as='b'>Section : </Text> 
-          {/* {dataStudentId.findOnestudent.section} */}
+          {dataSectionStudentById?.findSectionByStudent[0].name}
         </Text>
         <Text
          mt={"20px"} 
@@ -1360,8 +1425,17 @@ const {data:dataResteFeesToPayByStudent} = useQuery(GET_RESTE_PENSION_A_PAYER_BY
   );
 };
 
+ 
+// export async function getStaticProps({ locale }) {
+//   return {
+//     props: {
+//       ...(await getStaticPropsTranslations(locale)),
+//       // Will be passed to the page component as props
+//     },
+//   };
+// }
 export default DetailComponent;
-
+ 
 
 
 

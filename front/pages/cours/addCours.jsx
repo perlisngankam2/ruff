@@ -36,12 +36,15 @@ import {
 } from "../../graphql/Queries";
 import { useState } from "react";
 import { useRouter } from "next/router";
+import {useTranslation} from "next-i18next";
+import { getStaticPropsTranslations } from "../../types/staticProps";
 
 
 function AjouterCours () {
 
     const router = useRouter();
     const toast = useToast();
+    const {t} = useTranslation()
     let input
     const [title, setTitle] = useState("");
     const [time, setTime] = useState("");
@@ -127,11 +130,12 @@ function AjouterCours () {
                     // onClick = {() => router.push(personnel/AjouterCategoryPersonnel)} 
                 >
                     {/* <Link href={'/personnel/ajoutercategorypersonnel'}>                                 */}
-                        Ajoutez une matiere                               
+                        {/* Ajoutez une matiere                                */}
                     {/* </Link>               */}
+                    {t('pages.courses.addCourse.addButton')}
                 </Button>
-          </Box>
-            <Box as={"form"}  > 
+            </Box>
+            <Box as={"form"}> 
                 <AlertDialog
                     isOpen={isOpen}
                     leastDestructiveRef={cancelRef}
@@ -152,7 +156,9 @@ function AjouterCours () {
                                         fontSize={['15px','20px','24px']} 
                                         p='2' 
                                     >
-                                    Ajouter une matiere
+                                    {/* Ajouter une matiere */}
+                                        {t('pages.courses.addCourse.heading')}
+
                                     </Heading>
                                 </Box>
                             </AlertDialogHeader>
@@ -161,7 +167,9 @@ function AjouterCours () {
                             <AlertDialogBody>
                             <Box>
                                 <FormControl>
-                                    <FormLabel>Nom</FormLabel>
+                                    <FormLabel>
+                                        {t('pages.courses.addCourse.name')}
+                                    </FormLabel>
                                     <Input 
                                         id="nom"
                                         type={'text'} 
@@ -173,7 +181,9 @@ function AjouterCours () {
                                      />
                                 </FormControl>
                                 <FormControl mt="15px">
-                                    <FormLabel>Taux horaire</FormLabel>
+                                    <FormLabel>
+                                        {t('pages.courses.addCourse.courseHours')}
+                                    </FormLabel>
                                     <Input 
                                         id="description"
                                         type={'number'} 
@@ -213,7 +223,7 @@ function AjouterCours () {
                                     onClick={onClose} 
                                     colorScheme='red' 
                                 >
-                                    annuler 
+                                    {t('pages.courses.addCourse.cancelButton')}
                                 </Button>
                                 {/* <Link href={'/personnel/ajoutercategorypersonnel'}> */}
                                     <Button 
@@ -221,7 +231,7 @@ function AjouterCours () {
                                     ml={3}
                                     onClick={addCourse}
                                     >
-                                        Ajoutez
+                                        {t('pages.courses.addCourse.submitButton')}
                                     </Button>
                                 {/* </Link>  */}
                             </AlertDialogFooter>
@@ -233,5 +243,14 @@ function AjouterCours () {
     </Center>
     
     );
+  }
+
+  export async function getStaticProps({ locale }) {
+    return {
+      props: {
+        ...(await getStaticPropsTranslations(locale)),
+        // Will be passed to the page component as props
+      },
+    };
   }
 export default AjouterCours;

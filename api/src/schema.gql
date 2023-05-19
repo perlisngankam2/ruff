@@ -211,7 +211,6 @@ type Tranche {
   priority: Float
   year: String
   salleid: ID
-  pensionid: ID
 }
 
 type TrancheStudent {
@@ -232,7 +231,8 @@ type Student {
   matricule: String
   firstname: String
   lastname: String
-  dateOfBirth: DateTime!
+  dateOfBirth: String
+  birthPlace: String
   sex: String
   adress: String
   transport: String
@@ -248,8 +248,10 @@ type Student {
   tutorLastName: String
   tutorPhoneNumber: String
   tutorProfession: String
-  salleid: ID!
-  categorieid: ID!
+  salleid: ID
+  salleName: ID
+  categorieid: ID
+  categoryName: ID
   parentTel: String!
 }
 
@@ -275,8 +277,11 @@ type Parameter {
   postalBox: String
   phoneNumber: String
   emailAddress: String
-  country: String
+  contry: String
+  schoolCurrency: String
   year: String
+  anneeAcademiqueId: ID
+  anneeAcademiqueName: ID
 }
 
 type AnneeAccademique {
@@ -310,8 +315,8 @@ type NiveauEtude {
   name: String
   description: String
   montantPension: Float
-  cycleid: ID!
-  cycleName: ID!
+  cycleid: ID
+  cycleName: ID
 }
 
 type Course {
@@ -326,9 +331,9 @@ type PersonnelSalle {
   personnelFirstName: ID
   personnelLastName: ID
   personnelFunction: ID
-  salleId: ID!
+  salleId: ID
   salleName: ID
-  courseId: ID!
+  courseId: ID
   courseName: ID
 }
 
@@ -338,7 +343,8 @@ type Salle {
   section: String
   montantPensionSalle: Float
   effectif: Float
-  niveauid: ID!
+  niveauid: ID
+  levelName: ID
 }
 
 type Personnel {
@@ -494,6 +500,7 @@ type Query {
   AmountrExpectedByTranche(studentid: String!): [Float!]!
   getClassfeebyStudent(studentid: String!): Float!
   getClassfeeofStudent(studentid: String!): [Tranche!]!
+  getAllForUseAnglophoneStudent: [Student!]!
   findAlllocalistaion: [Localisation!]!
   localisation(id: String!): Localisation!
   findAllcategorieeleve: [CategorieEleve!]!
@@ -541,7 +548,7 @@ type Query {
   getallretenupersonnelbymonth(personnelid: String!, month: String!): Float!
   findIdRetenuByRetenuPersonnel(personnelid: String!, month: String!): [String!]!
   findAllretenusalarial: [Retenue!]!
-  prime(id: String!): Prime!
+  prime(id: String!): Retenue!
   findAllcategorieretenu: [CategorieRetenu!]!
   categorieRetenu(id: String!): CategorieRetenu!
   findAllpersonnel: [Personnel!]!
@@ -559,6 +566,7 @@ type Query {
   getallpersonnelprimebymont(personnelid: String!, month: String!): Float!
   allMonthAffectedPrimeToPersonnel(personnelid: String!, primeid: String!): [Prime!]!
   findAllprime: [Prime!]!
+  findOnePrime(id: String!): Prime!
   findAllcategorieprime: [CategoriePrime!]!
   categoriePrime(id: String!): CategoriePrime!
   findallsalaire: [Salaire!]!
@@ -779,7 +787,8 @@ input StudentCreateInput {
   matricule: String
   firstname: String
   lastname: String
-  dateOfBirth: DateTime
+  dateOfBirth: String
+  birthPlace: String
   sex: String
   adress: String
   transport: String
@@ -886,6 +895,8 @@ input SectionCreateInput {
 }
 
 input TrancheCreateInput {
+  ID: String
+  anneeAcademiqueId: ID
   salleId: ID
   year: String
   name: String
@@ -900,10 +911,11 @@ input ParameterCreateInput {
   name: String
   phoneNumber: String
   emailAddress: String
-  country: String
+  contry: String
   postalBox: String
+  schoolCurrency: String
   year: String
-  anneeAcademique: String
+  anneeAcademiqueId: String
 }
 
 input TrancheStudentCreateInput {

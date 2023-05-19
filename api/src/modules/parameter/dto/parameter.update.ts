@@ -17,7 +17,7 @@ export class ParameterUpdateInput {
   emailAddress?: string;
 
   @Field({nullable:true})
-  country?: string;
+  contry?: string;
 
   @Field({nullable:true})
   postalBox?: string;
@@ -26,5 +26,8 @@ export class ParameterUpdateInput {
   year?: string;
 
   @Field({nullable:true})
-  anneeAcademique?: string;
+  schoolCurrency?: string;
+
+  @Field({nullable:true})
+  anneeAcademiqueId?: string;
 }

@@ -51,6 +51,7 @@ export class SalaireBaseService {
     
       getAll(): Promise<SalaireBase[]> {
         return this.salaireBaseRepository.findAll()
+        
       }
       
       async update(id:string, input: SalaireBaseUpdateInput): Promise<SalaireBase> {

@@ -41,7 +41,8 @@ import {
   FormLabel,
   useToast,
   AlertDialogHeader,
-  InputRightElement
+  InputRightElement,
+  Card
   
 } from "@chakra-ui/react";
 
@@ -71,12 +72,16 @@ import {MdDelete} from 'react-icons/md';
 import ReactPaginate from "react-paginate";
 import Link  from "next/link"
 import Routes from "../../modules/routes";
+import { useTranslation } from "next-i18next";
+import { getStaticPropsTranslations } from "../../types/staticProps";
+
 
 const Class = () => {
 
   const router = useRouter();
   const cancelRef = React.useRef()
   const toast = useToast();
+  const {t} = useTranslation();
   const { isOpen, onToggle, onClose, onOpen } = useDisclosure();
   const { isOpen:isOpenn, onClose:onClosse, onOpen:onOpenn } = useDisclosure();
   const { isOpen:isOpennes, onClose:onClosses, onOpen:onOpennes } = useDisclosure();
@@ -85,6 +90,7 @@ const Class = () => {
   const [anneeAcademiqueId, setAnneeAcademiqueId] = useState("");
   const [courseId, setCourseId] = useState("");
   const [montantPension, setMontantPension] = useState();
+  const [selectClassSarch, setSelectClassSearch] = useState("")
   const itemsPerPage = 15;
   const [pageNumber, setPageNumber] = useState(0);
   const pagesVisited = pageNumber * itemsPerPage;
@@ -94,6 +100,7 @@ const Class = () => {
   const {data:dataEnseignant} = useQuery(GET_ALL_PERSONNELS);
   const {data:dataAnneeAcademique} = useQuery(GET_ALL_ANNEE_ACADEMIQUE);
   const {data:dataCourse} = useQuery(GET_ALL_COURSES);
+  const {data:dataPersonnelSalle} = useQuery(GET_ALL_PERSONNEL_SALLE);
   const {data:dataCoursePersonnelSalle} = useQuery(GET_ALL_COURSE_PERSONNEL_SALLE);
   const [createPersonnelSalle] = useMutation(CREATE_PERSONNEL_SALLE);
   const [createMonantPensionClasse] = useMutation(CREATE_MONTANT_SCOLARITE_CLASS);
@@ -109,8 +116,8 @@ const Class = () => {
   }
 
   useEffect(() => {
-    console.log(dataClasse?.findAllsalle);
-    console.log(dataCoursePersonnelSalle?.findbyCoursePersonnelSalle);
+    console.log(dataPersonnelSalle?.findAllPersonnelSalle)
+    // console.log(dataCoursePersonnelSalle?.findbyCoursePersonnelSalle);
   })
   // const handleClose = () => {
   //   setShow(false)
@@ -124,7 +131,10 @@ const Class = () => {
         personnelId: personnelId,
         courseId: courseId
         }
-      }
+      },
+      refetchQueries:[{
+        query: GET_ALL_PERSONNEL_SALLE
+      }]
     })
     onClosse();
     toast({
@@ -195,7 +205,7 @@ const Class = () => {
             size="lg"
             textColor="pink.300"
           >
-            Liste des classes
+            {t('pages.class.classList.heading')}
           </Heading>
           <Hide below="sm">
             <Text>Dashboad / Classes / Liste classes</Text>
@@ -224,13 +234,14 @@ const Class = () => {
            width={"500px"}
            variant="flushed"
             placeholder="Selectionner la classe"
-            // onChange={e =>setQuery(e.target.value)}
+            onChange={e =>setSelectClassSearch(e.target.value)}
+            value={selectClassSarch}
           >
-            {/* {Classes.map((classe) => (
+            {dataClasse && dataClasse.findAllsalle.map((salle) => (
               <option 
-                key={classe.id}
-              >{classe.classe}</option>
-            ))} */}
+                key={salle.id}
+              >{salle.name}</option>
+            ))}
           </Select>
           <Box> 
             <Button
@@ -244,40 +255,47 @@ const Class = () => {
 
         {/* FORMULAIRE D'AFFECTATION D'UN PROFESSEUR A UNE CLASSE */}
         <Box> 
-            <Flex 
-              direction={["column", "column", "column"]}
-              mt={"15px"}
-              flexWrap={["wrap", "wrap", "wrap"]}
-              pl={["500px", "100px", "200px", "1050px"]}
+            <Box 
+              display={{md:"flex"}}
+              mt={"30px"}
+              // flexWrap={["wrap", "wrap", "wrap"]}
+              ml={["300px", "400px", "700px", "1020px"]}
+              gap={1}
+              flexDirection={"column"}
+              // align={"rigth"}
             > 
               <Flex gap={1}> 
-                <Text 
+                <Button 
                   mb={5}
                   fontSize="14px"
                   color = "colors.quinzaine"
-                  >
+                  onClick={onOpenn}
+                >
                   Affecter un enseignant
-                </Text>
-                <Icon 
+                </Button>
+                {/* <Icon 
                   as={IoIosAdd} 
                   boxSize="30px"
-                  color={"colors.greencolor"}
+                  color={"white"}
                   rounded="full"
                   // ml={["5px", "5px", "5px" ]}
                   mt={["-3px"]}
                   _hover={{background:"colors.bluecolor"}}
                   onClick={onOpenn}
-                  />
+                  bg={"colors.greencolor"}
+                  /> */}
               </Flex>
-              <Flex > 
-                <Text 
+              <Flex gap={1}> 
+                <Button 
                   mb={5}
                   fontSize="14px"
                   color = "colors.quinzaine"
+                  onClick={onOpennes}
+
                 >
                   Fixer une pension
-                </Text>
-                <Icon 
+                </Button>
+                {/* <Icon 
                   as={IoIosAdd} 
                   boxSize="30px"
                   color={"colors.greencolor"}
@@ -286,9 +304,9 @@ const Class = () => {
                   mt={["-3px"]}
                   _hover={{background:"colors.bluecolor"}}
                   onClick={onOpennes}
-                  />
+                  /> */}
               </Flex>
-            </Flex>
+            </Box>
           <AlertDialog
             isOpen={isOpenn}
             leastDestructiveRef={cancelRef}
@@ -493,20 +511,34 @@ const Class = () => {
               >
                   <Thead background="colors.secondary">
                   <Tr>
-                      <Th>Nom</Th>
+                      <Th>
+                        {t('pages.class.classList.name')}
+                      </Th>
                       <Th>Montant pension</Th>
+                      <Th>Niveau</Th>
+
                       {/* <Th >section</Th>  */}
-                      <Th >Action</Th>
+                      <Th >
+                        {t('pages.class.classList.Action')}
+                      </Th>
                   </Tr>
                   </Thead>
                   <Tbody>
                     {dataClasse && ( 
                       dataClasse.findAllsalle
                       .slice(pagesVisited, pagesVisited + itemsPerPage)
+                      .filter((salle) =>{
+                        if(selectClassSarch== ""){
+                          return salle
+                        }else if(salle.name.toLowerCase().includes(selectClassSarch.toLowerCase()))
+                        return salle
+                      })
                       .map((salle, index) =>( 
                       <Tr key={index}>
                          <Td >{salle.name}</Td> 
                          <Td>{salle.montantPensionSalle}</Td>
+                         <Td>{salle.levelName}</Td>
+
                          {/* <Td borderColor={'#C6B062'}>{salle.montantPensionSalle}</Td>   */}
                          {/* <Td borderColor={'#C6B062'}>{salle.section}</Td>  */}
                          {/* <Td borderColor={'#C6B062'}>{salle.montantPension}</Td>  */}
@@ -521,7 +553,9 @@ const Class = () => {
                               <Button>
                                 <Links 
                                   href=''
-                                >Details</Links>
+                                >
+                                  {t('pages.class.classList.details')}
+                                </Links>
                               </Button>
                             </ButtonGroup> 
                           </Td>
@@ -534,7 +568,7 @@ const Class = () => {
                                 // href="/class/updateclass"
                                   href= {{
                                   pathname: Routes.ClasseEdit?.path || '',
-                                  query: {id: salle.id}
+                                  query: {id: salle?.id}
                                   }}
                                 >
                                   <Icon
@@ -573,26 +607,25 @@ const Class = () => {
                                               fontWeight='bold'
                                               textAlign={"center"}
                                               >
-                                              Confirmation de suppression
+                                                {t('pages.class.classList.confirmDeletingClass')}
                                             </AlertDialogHeader>
                                             <AlertDialogBody textAlign={"center"}>
-                                            Voulez-vous supprimer cette classe?
+                                                {t('pages.class.classList.wouldYouWantToDeleteClass')}
                                             </AlertDialogBody>
-
                                             <AlertDialogFooter>
                                               <Button 
                                                 ref={cancelRef} 
                                                 onClick={onClose}
                                                 colorScheme="red"
                                               >
-                                                Annuler 
+                                                {t('pages.class.classList.cancelButton')}
                                               </Button>
                                               <Button 
                                                 colorScheme='green' 
-                                                onClick={() => {removeClass(salle.id)}}
+                                                onClick={() => {removeClass(salle?.id)}}
                                                 ml={3}
                                               >
-                                                Supprimer
+                                                {t('pages.class.classList.deleteButton')}
                                               </Button>
                                             </AlertDialogFooter>
                                           </AlertDialogContent>
@@ -608,9 +641,28 @@ const Class = () => {
               </Table>
             </TableContainer>
         </Box>
+ 
+        <Box mt={"15px"}> 
+          <ReactPaginate 
+            previousLabel={"<<"}
+            nextLabel={">>"}
+            pageCount={pageCountSalle}
+            onPageChange={changePage}
+            containerClassName={"paginationBttns"}
+            previousLinkClassName={"previousBttn"}
+            nextLinkClassName={"nextBttn"}
+            disabledClassName={"paginationDisabled"}
+            activeClassName={"paginationActive"}
+          />
+      </Box>
 
-{/* //CLASSE ACCOMPAGNE DES PROFESSEUR ET DES COURS ASSOCIE */}
-        {/* <Box mt={10}>
+      {/* //CLASSE ACCOMPAGNE DES PROFESSEUR ET DES COURS ASSOCIE */}
+      <Box mt="50px">
+        <Heading fontSize={"2xl"} textAlign={"center"}>
+          Classe, cours, profeseur
+        </Heading>
+      </Box>
+       <Box mt={10}>
            <TableContainer
             border={"1px"} 
             rounded={"md"}
@@ -621,23 +673,26 @@ const Class = () => {
               >
                   <Thead background="colors.secondary">
                   <Tr>
-                      <Th>Nom</Th>
-                      <Th>Montant pension</Th>
-                      {/* <Th >section</Th>  */}
-                      {/* <Th >Action</Th>
+                      <Th>Classes</Th>
+                      <Th>Professeurs</Th>
+                      <Th >Cours</Th> 
+                    <Th >Actions</Th>
                   </Tr>
                   </Thead>
                   <Tbody>
-                    {dataCoursePersonnelSalle && ( 
-                      dataCoursePersonnelSalle.findbyCoursePersonnelSalle
-                      .slice(pagesVisited, pagesVisited + itemsPerPage)
-                      .map((personnelSalle, index) =>( 
-                      <Tr key={index}>
-                         <Td >{personnelSalle.personnel_id.id}</Td>  */}
+                       {dataPersonnelSalle && (  
+                      dataPersonnelSalle.findAllPersonnelSalle
+                      // .slice(pagesVisited, pagesVisited + itemsPerPage)
+                      .map((personnelSalle, index) =>(  
+                        <Tr key={index}>
+                         <Td >{personnelSalle.salleName}</Td> 
+                         <Td >{personnelSalle.personnelFirstName} {personnelSalle.personnelLastName } ({personnelSalle.personnelFunction})</Td> 
+                         <Td >{personnelSalle.courseName}</Td> 
+
                          {/* <Td borderColor={'#C6B062'}>{salle.montantPensionSalle}</Td>   */}
                          {/* <Td borderColor={'#C6B062'}>{salle.section}</Td>  */}
                          {/* <Td borderColor={'#C6B062'}>{salle.montantPension}</Td>  */}
-{/*                         
+                         
                         <Td >
                           <ButtonGroup 
                             size='sm' 
@@ -650,8 +705,8 @@ const Class = () => {
                                   href='/eleves/details'
                                 >Details</Link>
                               </Button>
-                            </ButtonGroup> 
-                          </Td>
+                          </ButtonGroup> 
+                        </Td>
                             <Box 
                               display="flex"
                               ml={['-140px', '-140px', '-140px', '-140px']} 
@@ -729,24 +784,20 @@ const Class = () => {
                 </Tbody>
               </Table>
             </TableContainer>
-        </Box> */} 
-        <Box mt={"15px"}> 
-          <ReactPaginate 
-            previousLabel={"<<"}
-            nextLabel={">>"}
-            pageCount={pageCountSalle}
-            onPageChange={changePage}
-            containerClassName={"paginationBttns"}
-            previousLinkClassName={"previousBttn"}
-            nextLinkClassName={"nextBttn"}
-            disabledClassName={"paginationDisabled"}
-            activeClassName={"paginationActive"}
-          />
-      </Box>
+        </Box> 
       </Box>
       </Box>
     </DefaultLayout>
   );
 };
+
+export async function getStaticProps({ locale }) {
+  return {
+    props: {
+      ...(await getStaticPropsTranslations(locale)),
+      // Will be passed to the page component as props
+    },
+  };
+}
 
 export default Class;

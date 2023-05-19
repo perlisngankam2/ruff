@@ -172,6 +172,7 @@ export const CREATE_TRANCHE_PENSION = gql `
             dateLine
             montant
             priority
+            year
         }
     }
 `

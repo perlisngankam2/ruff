@@ -111,20 +111,20 @@ const BulletinLastPayment = () => {
     {
         variables:{ id: "e48ea429-457a-4c51-80b4-85062e28e032" },
     })
-    useEffect(()=>{
-      if(primeId){
-        const primes = []
-        primeId?.findIdPrimesByPrimesPersonnel.map(primeId=>{
-          console.log(primeId)
-          const a = refetch({id:primeId})
-          console.log("aaaaaaaaaa=>",a)
-        // console.log(dataPrimeNoms)
-        })
-      }
-    },[primeId])
+    // useEffect(()=>{
+    //   if(primeId){
+    //     const primes = []
+    //     primeId?.findIdPrimesByPrimesPersonnel.map(primeId=>{
+    //       console.log(primeId)
+    //       const a = refetch({id:primeId})
+    //       console.log("aaaaaaaaaa=>",a)
+    //     // console.log(dataPrimeNoms)
+    //     })
+    //   }
+    // },[primeId])
 
 
-    console.log(dataPrimeNoms
+    console.log(primeId
 )
 
 //     const {data:dataRetenueMontant} = useQuery(GET_ALL_AMOUNT_RETENU_PERSONNEL,

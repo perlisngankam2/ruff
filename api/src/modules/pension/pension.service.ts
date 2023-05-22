@@ -22,6 +22,8 @@ import { StudentService } from '../student/student.service';
 import { TrancheStudentService } from '../tranche-student/tranche-student.service';
 import { ExpenseService } from '../expenses/expense.service';
 import { ParameterService } from '../parameter/parameter.service';
+import { PaginatedResponse, PaginationInput, paginate } from 'src/pagination';
+import { PensionPaginatedResponse } from './type/pensionpagination';
 
 @Injectable()
 export class PensionService {
@@ -85,6 +87,20 @@ export class PensionService {
         })
       }
     
+
+    async paginationResponsePension(input: PaginationInput): Promise<PensionPaginatedResponse> {
+        const qb = this.pensionRepository.createQueryBuilder(); // Create a QueryBuilder
+      
+        const result = await paginate<Pension>(qb, input); // Use the paginate function
+      
+        // Create a PaginatedResponse instance with the result
+        const paginatedResponse = PaginatedResponse(Pension);
+        paginatedResponse.items = result.items;
+        paginatedResponse.total = result.total;
+        paginatedResponse.hasMore = result.hasMore;
+      
+        return paginatedResponse;
+      }
 
     async savePension(studentid:string){
       try {

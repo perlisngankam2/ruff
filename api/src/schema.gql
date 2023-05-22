@@ -378,6 +378,18 @@ enum Role {
   GESTIONAIRE
 }
 
+type UserPaginatedResponse {
+  items: [User!]!
+  total: Int!
+  hasMore: Boolean!
+}
+
+type StudentPaginatedResponse {
+  items: [Student!]!
+  total: Int!
+  hasMore: Boolean!
+}
+
 type ClassStatistics {
   sectionName: String!
   className: String!
@@ -424,6 +436,60 @@ type TOTALTABLETWO {
   TAUX_ENCAISSEMENT: Float!
   RESTE_RECOUVRER: Float!
   TAUX_RAR: Float!
+}
+
+type AvanceTranchePaginatedResponse {
+  items: [AvanceTranche!]!
+  total: Int!
+  hasMore: Boolean!
+}
+
+type PensionPaginatedResponse {
+  items: [Pension!]!
+  total: Int!
+  hasMore: Boolean!
+}
+
+type ExpensePaginatedResponse {
+  items: [Expense!]!
+  total: Int!
+  hasMore: Boolean!
+}
+
+type PersonnelPaginatedResponse {
+  items: [Personnel!]!
+  total: Int!
+  hasMore: Boolean!
+}
+
+type PrimePersonnelPaginatedResponse {
+  items: [PrimePersonnel!]!
+  total: Int!
+  hasMore: Boolean!
+}
+
+type RetenuPersonnelPaginatedResponse {
+  items: [RetenuPersonnel!]!
+  total: Int!
+  hasMore: Boolean!
+}
+
+type PaySalaryPaginatedResponse {
+  items: [PaySalary!]!
+  total: Int!
+  hasMore: Boolean!
+}
+
+type SalairePaginatedResponse {
+  items: [Salaire!]!
+  total: Int!
+  hasMore: Boolean!
+}
+
+type TrancheStudentPaginatedResponse {
+  items: [TrancheStudent!]!
+  total: Int!
+  hasMore: Boolean!
 }
 
 type SectionCycle {
@@ -482,10 +548,12 @@ type SpecialStudentStatistics {
 type Query {
   findAlluser: [User!]!
   user(id: String!): User!
+  pagiantionResponseUser(pagination: PaginationInput!): UserPaginatedResponse!
   getAllEmails: [String!]!
   findAllPersonnelSalle: [PersonnelSalle!]!
   findOnePersonnelSalle(id: String!): PersonnelSalle!
   findbyCoursePersonnelSalle(personnelid: String!, salleid: String!, courseid: String!): [[String!]!]!
+  pagiantionResponseStudent(pagination: PaginationInput!): StudentPaginatedResponse!
   findAllstudents: [Student!]!
   findOnestudent(id: String!): Student!
   getAllStudentsForUseAnglophone: [Student!]!
@@ -506,6 +574,7 @@ type Query {
   findAlltranchestudent: [TrancheStudent!]!
   trancheStudent(id: String!): TrancheStudent!
   getStudentByTrancheStudent(studentid: String!): TrancheStudent!
+  pagiantionResponseTrancheStudent(pagination: PaginationInput!): TrancheStudentPaginatedResponse!
   getTranchestudentPaymentDate(studentid: String!, trancheid: String!): DateTime!
   getTrancheDateLineByStudent(studentid: String!, trancheid: String!): DateTime!
   findavancetranchebyid(input: String!): AvanceTranche!
@@ -518,10 +587,13 @@ type Query {
   getallfessalreadypayed(studentid: String!): [Tranche!]!
   getalltranchecompletedbystudent(studentid: String!): [Tranche!]!
   RestTuitionFeebystudent(studentid: String!): [Tranche!]!
+  pagiantionResponseAvanceTranche(pagination: PaginationInput!): AvanceTranchePaginatedResponse!
+  pagiantionResponsePension(pagination: PaginationInput!): PensionPaginatedResponse!
   findAllpension: [Pension!]!
   pension(id: String!): Pension!
   findrestpensionbystudent(studentid: String!): Float!
   findpensionbystudent(studentid: String!): Pension!
+  pagiantionResponseExpense(pagination: PaginationInput!): ExpensePaginatedResponse!
   findoneexpense(id: String!): Expense!
   findallexpenses: [Expense!]!
   findAllAnnerAccademique: [AnneeAccademique!]!
@@ -529,20 +601,24 @@ type Query {
   findallpaysalaire: [PaySalary!]!
   getonepaysalaire(id: String!): PaySalary!
   PersonnelMonthPaySalary(personnelid: String!): [String!]!
+  pagiantionResponsePaySalary(pagination: PaginationInput!): PaySalaryPaginatedResponse!
   getpaysalairebypersonnel(personnelid: String!): [PaySalary!]!
   findAllretenupersonnel: [RetenuPersonnel!]!
+  pagiantionResponseRetenuPersonnel(pagination: PaginationInput!): RetenuPersonnelPaginatedResponse!
   retenuPersonnel(id: String!): RetenuPersonnel!
   findmontantretenubypersonnel(personnelid: String!): [Float!]!
   findnamesretenubypersonnel(personnelid: String!): [String!]!
   findsumallretenupersonnel(personnelid: String!): Float!
   getRetenuEtNom(personnelid: String!): [[String!]!]!
   getallretenupersonnelbymonth(personnelid: String!, month: String!): Float!
+  findRetenuByRetenuPersonnel(personnelid: String!, month: String!): [Retenue!]!
   findIdRetenuByRetenuPersonnel(personnelid: String!, month: String!): [String!]!
   findAllretenusalarial: [Retenue!]!
   prime(id: String!): Prime!
   findAllcategorieretenu: [CategorieRetenu!]!
   categorieRetenu(id: String!): CategorieRetenu!
   findAllpersonnel: [Personnel!]!
+  pagiantionResponsePersonnel(pagination: PaginationInput!): PersonnelPaginatedResponse!
   findOnePersonnel(id: String!): Personnel!
   getpersonnelaccount(id: String!): User!
   getpersonnelbyaccount(userid: String!): Personnel!
@@ -553,12 +629,14 @@ type Query {
   findIdPrimeByPersonnel(personnelid: String!): [String!]!
   findsumallprimepersonnel(personnelid: String!): Float!
   primesETnomprimepersonnel(personnelid: String!): [[String!]!]!
-  findIdPrimesByPrimesPersonnel(personnelid: String!, month: String!): [String!]!
+  findPrimesByPrimesPersonnel(personnelid: String!, month: String!): [Prime!]!
   getallpersonnelprimebymont(personnelid: String!, month: String!): Float!
   allMonthAffectedPrimeToPersonnel(personnelid: String!, primeid: String!): [Prime!]!
+  pagiantionResponsePrimePersonnel(pagination: PaginationInput!): PrimePersonnelPaginatedResponse!
   findAllprime: [Prime!]!
   findAllcategorieprime: [CategoriePrime!]!
   categoriePrime(id: String!): CategoriePrime!
+  pagiantionResponseSalaire(pagination: PaginationInput!): SalairePaginatedResponse!
   findallsalaire: [Salaire!]!
   getonesalaire(id: String!): Salaire!
   getsalairebypersonnel(personnelid: String!): [Salaire!]!
@@ -639,6 +717,11 @@ type Query {
   findOneparentstudent(id: String!): ParentStudent!
 }
 
+input PaginationInput {
+  take: Int!
+  skip: Int! = 0
+}
+
 type Mutation {
   createuser(createUser: UserCreateInput!): User!
   updateuser(id: String!, input: UpdateUserInput!): User!
@@ -688,6 +771,7 @@ type Mutation {
   createcategorieretenu(createCategorieRetenu: CategorieRetenuCreateInput!): CategorieRetenu!
   updatecategorieretenu(id: String!, input: CategorieRetenuUpdateInput!): CategorieRetenu!
   createpersonnel(createPersonnelUser: PersonnelCreateInput!): Personnel!
+  findAllpersonnel: Personnel!
   updatepersonnel(id: String!, input: PersonnelUpdateInput!): Personnel!
   deletepersonnel(id: String!): Personnel!
   createprimepersonnel(primePersonnel: PrimePersonnelCreateInput!): PrimePersonnel!

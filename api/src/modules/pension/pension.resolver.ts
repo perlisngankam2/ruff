@@ -13,6 +13,8 @@ import { Pension } from 'src/entities/pension.entity';
 import { PensionCreateInput } from './dto/pension.input';
 import { PensionUpdateInput } from './dto/pension.update';
 import { PensionService } from './pension.service';
+import { PensionPaginatedResponse } from './type/pensionpagination';
+import { PaginationInput } from 'src/pagination';
 
 
 @Resolver(() => Pension)
@@ -28,6 +30,14 @@ export class PensionResolver {
     async updatePension(@Args('id', { type: () => String }) id: string, Input: PensionUpdateInput) {
      return await this.pensionService.update(id,Input);
   }
+
+  
+@Query(() => PensionPaginatedResponse)
+async pagiantionResponsePension(
+  @Args('pagination') pagination: PaginationInput,
+): Promise<PensionPaginatedResponse> {
+  return await this.pensionService.paginationResponsePension(pagination);
+}
 
   @Query(() => [Pension])
     async findAllpension() {

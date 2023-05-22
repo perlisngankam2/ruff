@@ -11,6 +11,8 @@ import { Status } from 'src/entities/pesonnel.entity';
 import { PaySalary } from 'src/entities/paysalary.entity';
 import { PaySalaryCreateInput } from './dto/paysalary.create';
 import { PaySalaryUpdateInput } from './dto/paysalary.update';
+import { PaginatedResponse, PaginationInput, paginate } from 'src/pagination';
+import { PaySalaryPaginatedResponse } from './type/studentpagination';
 
 @Injectable()
 export class PaySalaryService {
@@ -146,6 +148,20 @@ return paysalaire;
   const a = this.paysalaryRepository.find({personnel:personnelid})
   return a
   
+}
+
+async pagiantionResponsePaysalary(input: PaginationInput): Promise<PaySalaryPaginatedResponse> {
+  const qb = this.paysalaryRepository.createQueryBuilder(); // Create a QueryBuilder
+
+  const result = await paginate<PaySalary>(qb, input); // Use the paginate function
+
+  // Create a PaginatedResponse instance with the result
+  const paginatedResponse = PaginatedResponse(PaySalary);
+  paginatedResponse.items = result.items;
+  paginatedResponse.total = result.total;
+  paginatedResponse.hasMore = result.hasMore;
+
+  return paginatedResponse;
 }
 
 async findPaySalaryByPersonnel(personnelid:string){

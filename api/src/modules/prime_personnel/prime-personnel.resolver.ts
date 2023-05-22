@@ -16,6 +16,8 @@ import { PrimePersonnelCreateInput } from './dto/prime-personnel.input';
 import { PrimePersonnelUpdateInput } from './dto/prime-personnel.update';
 import { PrimePersonnelService } from './prime-personnel.service';
 import e from 'express';
+import { PaginationInput } from 'src/pagination';
+import { PrimePersonnelPaginatedResponse } from './type/primepersonnelpagination';
 
 
 @Resolver(() => PrimePersonnel)
@@ -72,9 +74,9 @@ export class PrimePersonnelResolver {
  return await this.primePersonnelService.primesETnomprimepersonnel(personnelid)
   }
 
-  @Query(()=> [String])
-  async findIdPrimesByPrimesPersonnel(@Args('personnelid') personnelid:string,@Args('month') month:string){
- return await this.primePersonnelService.findIdPrimesByPrimesPersonnel(personnelid,month)
+  @Query(()=> [Prime])
+  async findPrimesByPrimesPersonnel(@Args('personnelid') personnelid:string,@Args('month') month:string){
+ return await this.primePersonnelService.findPrimesByPrimesPersonnel(personnelid,month)
   }
 
   @Query(()=> Number)
@@ -87,5 +89,12 @@ export class PrimePersonnelResolver {
   return await this.primePersonnelService.allMonthAffectedPrimeToPersonnel(personnelid,primeid)
   }
   
+  
+  @Query(() => PrimePersonnelPaginatedResponse)
+  async pagiantionResponsePrimePersonnel(
+  @Args('pagination') pagination: PaginationInput,
+): Promise<PrimePersonnelPaginatedResponse> {
+  return await this.primePersonnelService.paginationResponsePrimePersonnel(pagination);
+}
 
 }

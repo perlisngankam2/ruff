@@ -51,6 +51,11 @@ import { CourseModule } from './modules/course/course.module';
 import { TrancheStudentModule } from './modules/tranche-student/tranche-student.module';
 import { PensionSalleModule } from './modules/pensionsalle/pensionsalle.module';
 import { PaySalaryModule } from './modules/paysalary/paysalary.module';
+import { RolesGuard } from './modules/auth/guards/roles.guard';
+import { APP_GUARD } from '@nestjs/core';
+import { FileModule } from './modules/fileUpload/file.module';
+// import { APP_GUARD } from '@nestjs/core';
+// import { RolesGuard } from './modules/auth/guards/roles.guard';
 
 @Module({
   imports: [
@@ -92,6 +97,7 @@ import { PaySalaryModule } from './modules/paysalary/paysalary.module';
     StatisticModule,
     PensionSalleModule,
     CourseModule,
+    FileModule,
   
 
   

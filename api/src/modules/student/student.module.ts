@@ -11,6 +11,7 @@ import { UserModule } from '../user/user.module';
 import { StudentResolver } from './student.resolver';
 import { StudentService } from './student.service';
 import { TrancheModule } from '../tranche/tranche.module';
+import { RolesGuard } from '../auth/guards/roles.guard';
 
 @Module({
     imports:[
@@ -21,7 +22,7 @@ import { TrancheModule } from '../tranche/tranche.module';
         UserModule,
         TrancheModule
     ],
-    providers:[StudentService,StudentResolver],
+    providers:[StudentService,StudentResolver,RolesGuard],
     exports:[StudentService]
 })
 export class StudentModule {}

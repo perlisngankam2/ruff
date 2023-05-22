@@ -106,9 +106,15 @@ async login(user:User){
         access_token: this.jwtservice.sign({
             username: user.email,
             password: user.password,
+            role: user.role,
             sub: user.id}),
         user
     }
+}
+
+async validateUserById(userId: string) {
+  const user = await this.userservice.findOne(userId);
+  return user ? user : null;
 }
 
 

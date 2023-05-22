@@ -21,6 +21,7 @@ import { Personnel } from './pesonnel.entity';
 import { Student } from './student.entity';
 import { Cycle } from './cycle.entity'; 
 import { PensionSalle } from './pensionsalle.entity';
+import { Tranche } from './tranche.entity';
 
 
 @Entity()
@@ -82,6 +83,9 @@ export class Salle{
 
     @OneToMany(()=>Personnel, (teacher) => teacher.salle)
     teacher = new Collection<Personnel>(this)
+
+    @OneToMany(()=>Tranche, (tranche) => tranche.salle)
+    tranche = new Collection<Tranche>(this)
 
     @OneToMany(()=>Student, (student) => student.salle)
     student = new Collection<Student>(this)

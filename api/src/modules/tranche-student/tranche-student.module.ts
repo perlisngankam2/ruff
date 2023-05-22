@@ -10,6 +10,8 @@ import { TrancheStudentResolver } from './tranche-student.resolver';
 import { TrancheStudentService } from './tranche-student.service';
 import { TwilioModule } from 'nestjs-twilio';
 import { ParamaterModule } from '../parameter/parameter.module';
+import { RolesGuard } from '../auth/guards/roles.guard';
+import { UserModule } from '../user/user.module';
 
 @Module({
     imports:[
@@ -17,13 +19,14 @@ import { ParamaterModule } from '../parameter/parameter.module';
         forwardRef(() =>StudentModule),
         forwardRef(() =>TrancheModule),
         forwardRef(() => AvanceTrancheModule),
+        UserModule,
         ParamaterModule,
         TwilioModule.forRoot({
             accountSid: "AC0a6add445c06ee381b4ab8ee989d8220",
             authToken: "af7324e6a2d2179aacda4e0ea12a3b5a",
           }),
     ],
-    providers:[TrancheStudentService,TrancheStudentResolver],
+    providers:[TrancheStudentService,TrancheStudentResolver,RolesGuard],
     exports:[TrancheStudentService]
 })
 export class TrancheStudentModule {}

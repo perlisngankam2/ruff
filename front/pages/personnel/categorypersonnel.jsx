@@ -85,7 +85,6 @@ const Category = () => {
     if(!authToken){
       router.back()
     }
-    
   },[authToken])
   
   useEffect(() => {

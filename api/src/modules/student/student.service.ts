@@ -65,6 +65,7 @@ export class StudentService {
             matricule: input.matricule,
             firstname: input.firstname,
             lastname: input.lastname,
+            repeating: input.repeating,
             // classe : input.classe,
             sex: input.sex,
             dateOfBirth:input.dateOfBirth,

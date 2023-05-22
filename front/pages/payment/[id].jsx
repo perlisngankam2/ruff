@@ -252,10 +252,10 @@ const PaySlip = () => {
     const endMonth = new Date(today.getFullYear(), today.getMonth() + 3, 1);
     const options = [];
     let currentMonth = startMonth;
-
+ 
     if (!unavailableMonths) {
       // Si le tableau est vide, ajouter les options pour les 7 mois autour du mois actuel
-      for (let i = -3; i <= 3; i++) {
+      for (let i =-3; i <= 3; i++) {
         const date = new Date(today.getFullYear(), today.getMonth() + i, 1);
         const year = date.getFullYear();
         const month = (date.getMonth() + 1).toString().padStart(2, "0");

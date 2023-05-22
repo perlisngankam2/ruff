@@ -34,11 +34,13 @@ import { HiUsers } from "react-icons/hi";
 import { GiGraduateCap, GiReceiveMoney } from "react-icons/gi";
 import React, { createContext, use, useContext, useEffect } from 'react';
 import { UseTranslation, useTranslation } from "next-i18next";
+
 import { 
   GET_PERSONNEL_BY_USERID, 
   GET_ALL_STUDENT,
   GET_ALL_CLASS,
-  GET_ALL_PERSONNELS
+  GET_ALL_PERSONNELS,
+  GET_ALL_TRANCHE_PENSION
 } from "../../../graphql/Queries";
 import {useMutation, useQuery } from '@apollo/client';
 import { GoBriefcase } from "react-icons/go";
@@ -59,9 +61,15 @@ import { GoBriefcase } from "react-icons/go";
   const {data:dataStudent} = useQuery(GET_ALL_STUDENT);
   const {data:dataClass} = useQuery(GET_ALL_CLASS);
   const {data:dataPersonnel} = useQuery(GET_ALL_PERSONNELS)
+  const {data:dataTranches} = useQuery(GET_ALL_TRANCHE_PENSION);
   //  const { authToken } = useAuth();
 
   const router = useRouter();
+  useEffect(()=>{
+    console.log(dataStudent);
+    console.log(dataTranches);
+
+  })
   // console.log(personnelData?.getpersonnelbyaccount);
 
   //   useEffect(() => {

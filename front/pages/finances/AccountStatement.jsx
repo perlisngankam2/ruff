@@ -434,7 +434,7 @@ const AccountStatement = () => {
               width="20%"
               textAlign={'center'}
             >
-              {totalDebit + totalCredit}
+              {totalCredit -totalDebit}
               
             </Box>
           </Flex>

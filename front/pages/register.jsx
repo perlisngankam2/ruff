@@ -8,12 +8,12 @@ const Register = () => {
   const router = useRouter();
   const { setAuthToken, authToken } = useAuth();
 
-  useEffect(()=>{
-    if(!authToken){
-      router.back()
-    }
+  // useEffect(()=>{
+  //   if(!authToken){
+  //     router.back()
+  //   }
     
-  },[authToken])
+  // },[authToken])
 
   return (
   <RegisterPage />

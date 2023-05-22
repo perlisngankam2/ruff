@@ -43,21 +43,21 @@ const LoginForm = () => {
   const [loginInput, error] = useMutation(LOGIN_USER);
   const [user, setUser] = useState(null);
   const router = useRouter();
-  const { setAuthToken,authToken } = useAuth();
+  const { setAuthToken, authToken } = useAuth();
   const { dataUser, called, loading } = useQuery(GET_USER_CONNECTED);
   const { t } = useTranslation();
   //  console.log(setAuthToken.isLogged)
 
-  console.log(authToken)
-  useEffect(()=>{
-    if(authToken){
-      router.back()
-    }
-  },[authToken])
+  console.log(authToken);
+  // useEffect(()=>{
+  //   if(authToken){
+  //     router.back()
+  //   }
+  // },[authToken])
 
   console.log(dataUser);
   const [isLoading, setIsLoading] = useState(false);
-  
+
   const HandleClick = async (event) => {
     event.preventDefault();
     setIsLoading(true);
@@ -71,6 +71,8 @@ const LoginForm = () => {
       },
     });
 
+    console.log(authToken);
+
     console.log(login.data.login.user);
     if (login.data.login) {
       setAuthToken?.(login.data.login.access_token, login.data.login.user.id);
@@ -80,9 +82,6 @@ const LoginForm = () => {
       // } else {
       router.push("/dashboard");
       // }
-    }else if(!login.data.login){
-      setAuthToken(0)
-      router.push("/")
     }
     setIsLoading(false);
   };
@@ -117,7 +116,7 @@ const LoginForm = () => {
               >
                 Connexion
               </Heading>
-              <Box as="form" px="7">
+              <Box px="7">
                 <FormControl mb={3}>
                   <FormLabel>{t("molecules.LoginForm.email")}</FormLabel>
                   {/* <FormLabel>Email</FormLabel> */}

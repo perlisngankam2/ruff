@@ -401,6 +401,7 @@ const DetailComponent = () => {
   const getTrancheById = (id) => {
     return dataTranchePension?.findAlltranche?.find((t, i) => t.id === id);
   };
+  
   const getTrancheStudentById = (studentId, trancheId) => {
     return dataTrancheStudent?.findAlltranchestudent?.find(
       (t, i) => t.trancheid === trancheId && t.studentid === studentId
@@ -871,6 +872,10 @@ const DetailComponent = () => {
                   <Text>
                     <Text as="b">Section : </Text>
                     {dataSectionStudentById?.findSectionByStudent[0].name}
+                  </Text>
+                  <Text>
+                    <Text as="b">Status : </Text>
+                    {dataStudentId.findOnestudent.repeating}
                   </Text>
                   <Text mt={"20px"} fontSize={"md"} as="b">
                     Pere

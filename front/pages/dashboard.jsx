@@ -31,12 +31,11 @@ const dashboard = () => {
   const router = useRouter();
   const { setAuthToken, authToken } = useAuth();
   
-  useEffect(()=>{
-    if(!authToken){
-      router.back()
-    }
-    
-  },[authToken])
+  // useEffect(()=>{
+  //   if(!authToken){
+  //     router.back()
+  //   }
+  // },[authToken])
 
 
   return (

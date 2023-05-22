@@ -86,6 +86,9 @@ export class StudentCreateInput {
   @Field({nullable:true})
   tutorProfession!: string;
   
+  @Field({nullable:true})
+  repeating!: string;
+  
   // @Field({nullable:true})
   // salle!: string;
 

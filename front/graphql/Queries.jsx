@@ -91,6 +91,7 @@ export const GET_ALL_STUDENT =  gql `
             categorieid
             categoryName
             parentTel
+            repeating
         }
     }
 `
@@ -233,6 +234,7 @@ export const GET_STUDENT_BY_ID =  gql `
             categorieid
             categoryName
             parentTel
+            repeating
         }
     }
 `;

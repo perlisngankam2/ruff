@@ -28,8 +28,6 @@ import { useTranslation } from "next-i18next";
 import { getStaticPropsTranslations } from "../../types/staticProps";
 import { useAuth } from "../../contexts/account/Auth/Auth";
 
-
-
 const AddLevel = () => {
   const toast = useToast();
   const router = useRouter();
@@ -48,8 +46,8 @@ const AddLevel = () => {
   const [createStudyLevel] = useMutation(CREATE_STUDY_LEVEL);
   const { data: dataCycle } = useQuery(GET_ALL_CYCLE);
   const [updateStudyLevel] = useMutation(UPDATE_LEVEL);
-
-  const { data: dataLevelById, refetch } = useQuery(GET_LEVEL_BY_ID, {
+  const { data: dataStudyLevel, refetch } = useQuery(GET_ALL_STUDY_LEVEL);
+  const { data: dataLevelById } = useQuery(GET_LEVEL_BY_ID, {
     variables: {
       id: router.query.id,
     },
@@ -57,13 +55,12 @@ const AddLevel = () => {
 
   let input;
 
-  useEffect(()=>{
-    if(!authToken){
-      router.back()
+  useEffect(() => {
+    if (!authToken) {
+      router.back();
     }
-    
-  },[authToken])
-  
+  }, [authToken]);
+
   useEffect(() => {
     // console.log(dataSection?.findAllsection)
     console.log("j");

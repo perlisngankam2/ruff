@@ -233,6 +233,7 @@ type Student {
   lastname: String
   dateOfBirth: String
   birthPlace: String
+  repeating: String!
   sex: String
   adress: String
   fatherFirstName: String
@@ -803,6 +804,7 @@ input StudentCreateInput {
   tutorLastName: String
   tutorPhoneNumber: String
   tutorProfession: String
+  repeating: String
 }
 
 input LocalisationCreateInput {

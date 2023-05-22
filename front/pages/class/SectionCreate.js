@@ -23,7 +23,7 @@ import { IoIosAdd } from "react-icons/io";
 import { useMutation } from "@apollo/client";
 import { CREATE_SECTION, UPDATA_SECTION } from "../../graphql/Mutation";
 import { GET_ALL_SECTION } from "../../graphql/Queries";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import { getStaticPropsTranslations } from "../../types/staticProps";
 import { useTranslation } from "next-i18next";

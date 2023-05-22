@@ -62,6 +62,10 @@ export class Student {
   @Property({nullable:true})
   birthPlace!: string;
 
+  @Field({ nullable: false })
+  @Property({nullable: false})
+  repeating!: string;
+
   // @Field({ nullable: true })
   // @Enum({
   //   items: () => Regime,

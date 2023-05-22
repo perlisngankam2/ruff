@@ -172,7 +172,7 @@ const Paiement = () => {
                         <Box display='flex' gap='2'>
                             <Text>I</Text>
                             <Checkbox
-                                isChecked={dataStudentId?.findOnestudent.categoryName === "Candidat regulier"}
+                              isChecked={dataStudentId?.findOnestudent.categoryName === "Candidat regulier"}
                             >
                             </Checkbox>
                         </Box>

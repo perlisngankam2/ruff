@@ -59,6 +59,7 @@ export const CREATE_STUDENT = gql`
             tutorLastName
             tutorPhoneNumber
             tutorProfession
+            repeating
         }
     }
 `;
@@ -421,6 +422,7 @@ export const DELETE_STUDENT = gql `
             tutorLastName
             tutorPhoneNumber
             tutorProfession
+            repeating
         }
 }
 `;
@@ -542,6 +544,7 @@ mutation updateStudent ($id: String!, $input: StudentCreateInput!) {
         tutorLastName
         tutorPhoneNumber
         tutorProfession
+        repeating
     }
 }
 `

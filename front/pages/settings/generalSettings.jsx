@@ -74,7 +74,7 @@ const generalSetting = () => {
     CREATE_ANNEE_ACADEMIQUE
   );
   const [createSchoolParameters] = useMutation(CREATE_SCHOOL_PARAMETERS);
-  const { data: dataAnneeAcademique, refetch } = useQuery(
+  const { data:dataAnneeAcademique, refetch } = useQuery(
     GET_ALL_ANNEE_ACADEMIQUE
   );
   const { data: dataSchoolParameter } = useQuery(GET_ALL_SCHOOL_PARAMETER);
@@ -132,6 +132,7 @@ const generalSetting = () => {
         },
       },
     });
+    refetch()
     toast({
       title: "Enregistement des informations de l'etablissement.",
       description: "Enregistre avec succes.",

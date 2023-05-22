@@ -22,7 +22,7 @@ import {
   useToast,
 } from "@chakra-ui/react";
 
-import React from "react";
+import React, { useEffect } from "react";
 import { IoIosAdd } from "react-icons/io";
 import Link from "next/link";
 import { useMutation } from "@apollo/client";
@@ -105,12 +105,11 @@ function ajoutercategorypersonnel() {
     setMontant("");
   };
 
-  useEffect(()=>{
-    if(!authToken){
-      router.back()
+  useEffect(() => {
+    if (!authToken) {
+      router.back();
     }
-    
-  },[authToken])
+  }, [authToken]);
   // const pearl = () => {
   //     console.log("pepijjhnb  arl")
   // }

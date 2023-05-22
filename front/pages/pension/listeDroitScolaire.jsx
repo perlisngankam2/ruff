@@ -133,6 +133,7 @@ const Pension = () => {
         }]
       })
       onFermer();
+      refetch()
     }
 
     //creation d'une annee academique
@@ -442,7 +443,7 @@ const Pension = () => {
                         <Td p={0} pl={4}>{tranche.name}</Td>
                         <Td p={0} pl={4}>{tranche.montant}</Td>
                         <Td p={0} pl={4}>{tranche.priority}</Td>
-                        <Td p={0} pl={4}>{tranche.dateLine}</Td>
+                        <Td p={0} pl={4}>{new Date(tranche.dateLine).toLocaleDateString()}</Td>
                         {/* <Td >Monntant</Td>  */}
                         <Td p={0} pl={2}>
                             {/* <ButtonGroup 

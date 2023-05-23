@@ -105,9 +105,7 @@ console.log(dataUser)
             boxShadow="xl"
             rounded={13}
             background="white"
-            as="form"
-          
-            
+            as="form"   
           >
             <Container 
               maxW={{ base: "sm", sm: "md" }} 
@@ -125,7 +123,6 @@ console.log(dataUser)
                 Connexion
               </Heading>
               <Box 
-                as="form" 
                 px="7"
               >
                 <FormControl mb={3}>

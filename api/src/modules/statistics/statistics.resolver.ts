@@ -20,21 +20,21 @@ export class StatisticResolver {
 ///////////////////////////////////////////// STAT STUDENTS ////////////////////////////////////////////////////////
   @Query(() => [StudentStatistics])
   @UseGuards(JwtAuthGuard,RolesGuard)
-  @Roles(Role.ECONOME)
+  @Roles(Role.FONDATEUR)
   async getStudentStatisticsAnglophone(): Promise<StudentStatistics[]> {
     return this.statisticsService.getStudentStatisticsAnglophone();
   }
 
   @Query(() => [StudentStatistics])
   @UseGuards(JwtAuthGuard,RolesGuard)
-  @Roles(Role.ECONOME)
+  @Roles(Role.FONDATEUR)
   async getStudentStatisticsFrancophone(): Promise<StudentStatistics[]> {
     return this.statisticsService.getStudentStatisticsFrancophone();
   }
 
   @Query(()=>[TOTALTABLETWO])
   @UseGuards(JwtAuthGuard,RolesGuard)
-  @Roles(Role.ECONOME)
+  @Roles(Role.FONDATEUR)
   async getTotalStudentStatisticsFrancophone(){
      
     const MONTANT_ATTENDU=(await this.getStudentStatisticsFrancophone())
@@ -66,7 +66,7 @@ export class StatisticResolver {
 
   @Query(()=>[TOTALTABLETWO])
   @UseGuards(JwtAuthGuard,RolesGuard)
-  @Roles(Role.ECONOME)
+  @Roles(Role.FONDATEUR)
   async getTotalStudentStatisticsAnglophone(){
      
     const MONTANT_ATTENDU=(await this.getStudentStatisticsAnglophone())
@@ -99,7 +99,7 @@ export class StatisticResolver {
 
   @Query(()=>[TOTALTABLETWO])
   @UseGuards(JwtAuthGuard,RolesGuard)
-  @Roles(Role.ECONOME)
+  @Roles(Role.FONDATEUR)
   async getTotalMaxStudentStatistics(){
      
     const MONTANT_ATTENDU=(await this.getTotalStudentStatisticsAnglophone())
@@ -132,21 +132,21 @@ export class StatisticResolver {
 //////////////////////////////////////////////// EXTRAS /////////////////////////////////////////////////////////
   @Query(() => [SpecialStudentStatistics])
   @UseGuards(JwtAuthGuard,RolesGuard)
-  @Roles(Role.ECONOME)
+  @Roles(Role.FONDATEUR)
   async getTrancheStatisticsForSpecialStudents(): Promise<SpecialStudentStatistics[]> {
     return this.statisticsService.getTrancheStatisticsForSpecialStudents();
   }
 
   @Query(() => Number)
   @UseGuards(JwtAuthGuard,RolesGuard)
-  @Roles(Role.ECONOME)
+  @Roles(Role.FONDATEUR)
   async numberOfStudentsStartedPayingAdmissionFeeSalleAnglophone(@Args('sallename') sallename:string) {
     return await this.statisticsService.numberOfStudentsStartedPayingAdmissionFeeSalleAnglophone(sallename);
   }
 
   @Query(() => Number)
   @UseGuards(JwtAuthGuard,RolesGuard)
-  @Roles(Role.ECONOME)
+  @Roles(Role.FONDATEUR)
   async numberOfStudentsStartedPayingPension() {
     return await this.statisticsService.numberOfStudentsStartedPayingPension();
   }
@@ -159,21 +159,21 @@ export class StatisticResolver {
 
 @Query(() => [SectionStatistics])
 @UseGuards(JwtAuthGuard,RolesGuard)
-@Roles(Role.ECONOME)
+@Roles(Role.FONDATEUR)
 getSectionStatisticsAnglophoneSecondInstalment(): Promise<SectionStatistics[]> {
   return this.statisticsService.getSectionStatisticsAnglophoneSecondInstalment();
 }
 
 @Query(() => [SectionStatistics])
 @UseGuards(JwtAuthGuard,RolesGuard)
-@Roles(Role.ECONOME)
+@Roles(Role.FONDATEUR)
 getSectionStatisticsFrancophoneSecondInstalment(): Promise<SectionStatistics[]> {
   return this.statisticsService.getSectionStatisticsFrancophoneSecondInstalment();
 }
 
 @Query(()=>[TOTALTABLEONE])
 @UseGuards(JwtAuthGuard,RolesGuard)
-@Roles(Role.ECONOME)
+@Roles(Role.FONDATEUR)
  async TotalSectionStatisticsFrancophoneSecondInstalmentFee(){
   const TOTAL_EFFECTIFS_ENREGISTRES = (await this.getSectionStatisticsFrancophoneSecondInstalment())
   .map(a=>a.numberOfStudents).length>0?(await this.getSectionStatisticsFrancophoneSecondInstalment())
@@ -225,7 +225,7 @@ TOTAL_SECOND_TAUX_RECOUVRIR
 
  @Query(()=>[TOTALTABLEONE])
  @UseGuards(JwtAuthGuard,RolesGuard)
- @Roles(Role.ECONOME)
+ @Roles(Role.FONDATEUR)
  async TotalSectionStatisticsAnglophoneSecondInstalmentFee(){
   const TOTAL_EFFECTIFS_ENREGISTRES = (await this.getSectionStatisticsAnglophoneSecondInstalment())
   .map(a=>a.numberOfStudents).length>0?(await this.getSectionStatisticsAnglophoneSecondInstalment())
@@ -277,7 +277,7 @@ TOTAL_SECOND_TAUX_RECOUVRIR
 
  @Query(() => [TOTALTABLEONE])
  @UseGuards(JwtAuthGuard,RolesGuard)
- @Roles(Role.ECONOME)
+ @Roles(Role.FONDATEUR)
   async TotalMAX_T_ONE_SecondInstalmentFee(){
     const TOTAL_EFFECTIFS_ENREGISTRES = (await this.TotalSectionStatisticsAnglophoneSecondInstalmentFee())
       .map(a=>a.TOTAL_EFFECTIFS_ENREGISTRES)[0] + (await this.TotalSectionStatisticsFrancophoneSecondInstalmentFee())
@@ -329,21 +329,21 @@ TOTAL_SECOND_TAUX_RECOUVRIR
 ////////////////////////////////////// POUR LA PREMIERE TRANCHE TABLE T1 ANGLOPHONE ET FRANCOPHONE////////////////////////
    @Query(() => [SectionStatistics])
    @UseGuards(JwtAuthGuard,RolesGuard)
-   @Roles(Role.ECONOME)
+   @Roles(Role.FONDATEUR)
    async getSectionStatisticsAnglophoneFirstInstalment(): Promise<SectionStatistics[]> {
      return this.statisticsService.getSectionStatisticsAnglophoneFirstInstalment();
    }
  
    @Query(() => [SectionStatistics])
    @UseGuards(JwtAuthGuard,RolesGuard)
-   @Roles(Role.ECONOME)
+   @Roles(Role.FONDATEUR)
    getSectionStatisticsFrancophoneFirstInstalment(): Promise<SectionStatistics[]> {
      return this.statisticsService.getSectionStatisticsFrancophomeFirstInstalment();
    }
 
  @Query(()=>[TOTALTABLEONE])
  @UseGuards(JwtAuthGuard,RolesGuard)
- @Roles(Role.ECONOME)
+ @Roles(Role.FONDATEUR)
  async TotalSectionStatisticsFrancophoneFirstInstalmentFee(){
   const TOTAL_EFFECTIFS_ENREGISTRES = (await this.getSectionStatisticsFrancophoneFirstInstalment())
   .map(a=>a.numberOfStudents).length>0?(await this.getSectionStatisticsFrancophoneFirstInstalment())
@@ -395,7 +395,7 @@ TOTAL_SECOND_TAUX_RECOUVRIR
 
  @Query(()=>[TOTALTABLEONE])
  @UseGuards(JwtAuthGuard,RolesGuard)
- @Roles(Role.ECONOME)
+ @Roles(Role.FONDATEUR)
  async TotalSectionStatisticsAnglophoneFirstInstalmentFee(){
   const TOTAL_EFFECTIFS_ENREGISTRES = (await this.getSectionStatisticsAnglophoneFirstInstalment())
   .map(a=>a.numberOfStudents).length>0?(await this.getSectionStatisticsAnglophoneFirstInstalment())
@@ -447,7 +447,7 @@ TOTAL_SECOND_TAUX_RECOUVRIR
 
  @Query(() => [TOTALTABLEONE])
  @UseGuards(JwtAuthGuard,RolesGuard)
- @Roles(Role.ECONOME)
+ @Roles(Role.FONDATEUR)
   async TotalMAX_T_ONE_FirstInstalmentFee(){
     const TOTAL_EFFECTIFS_ENREGISTRES = (await this.TotalSectionStatisticsAnglophoneFirstInstalmentFee())
       .map(a=>a.TOTAL_EFFECTIFS_ENREGISTRES)[0] + (await this.TotalSectionStatisticsFrancophoneFirstInstalmentFee())
@@ -500,20 +500,20 @@ TOTAL_SECOND_TAUX_RECOUVRIR
 
  @Query(() => [SectionStatistics])
  @UseGuards(JwtAuthGuard,RolesGuard)
- @Roles(Role.ECONOME)
+ @Roles(Role.FONDATEUR)
  async getSectionStatisticsAnglophoneAdmissionFee(): Promise<SectionStatistics[]> {
    return this.statisticsService.getSectionStatisticsAnglophoneAdmissionFee();
  }
 
  @Query(() => [SectionStatistics])
  @UseGuards(JwtAuthGuard,RolesGuard)
- @Roles(Role.ECONOME)
+ @Roles(Role.FONDATEUR)
  getSectionStatisticsFrancophoneAdmissionFee(): Promise<SectionStatistics[]> {
    return this.statisticsService.getSectionStatisticsFrancophoneAdmissionFee();
  }
  @Query(()=>[TOTALTABLEONE])
  @UseGuards(JwtAuthGuard,RolesGuard)
- @Roles(Role.ECONOME)
+ @Roles(Role.FONDATEUR)
  async TotalSectionStatisticsFrancophoneAdmissionFee(){
   const TOTAL_EFFECTIFS_ENREGISTRES = (await this.getSectionStatisticsFrancophoneAdmissionFee())
   .map(a=>a.numberOfStudents).length>0?(await this.getSectionStatisticsFrancophoneAdmissionFee())
@@ -565,7 +565,7 @@ TOTAL_SECOND_TAUX_RECOUVRIR
 
  @Query(()=>[TOTALTABLEONE])
  @UseGuards(JwtAuthGuard,RolesGuard)
- @Roles(Role.ECONOME)
+ @Roles(Role.FONDATEUR)
  async TotalSectionStatisticsAnglophoneAdmissionFee(){
   const TOTAL_EFFECTIFS_ENREGISTRES = (await this.getSectionStatisticsAnglophoneAdmissionFee())
   .map(a=>a.numberOfStudents).length>0?(await this.getSectionStatisticsAnglophoneAdmissionFee())
@@ -617,7 +617,7 @@ TOTAL_SECOND_TAUX_RECOUVRIR
 
  @Query(() => [TOTALTABLEONE])
  @UseGuards(JwtAuthGuard,RolesGuard)
- @Roles(Role.ECONOME)
+ @Roles(Role.FONDATEUR)
   async TotalMAX_T_ONE_Admission(){
     const TOTAL_EFFECTIFS_ENREGISTRES = (await this.TotalSectionStatisticsAnglophoneAdmissionFee())
       .map(a=>a.TOTAL_EFFECTIFS_ENREGISTRES)[0] + (await this.TotalSectionStatisticsFrancophoneAdmissionFee())
@@ -670,20 +670,20 @@ TOTAL_SECOND_TAUX_RECOUVRIR
 ////////////////////////////////////// POUR LES TABLES TO ////////////////////////////////////////////////////////////
   @Query(() => [ClassStatistics])
   @UseGuards(JwtAuthGuard,RolesGuard)
-  @Roles(Role.ECONOME)
+  @Roles(Role.FONDATEUR)
   getGeneralAnglophoneSectionStatistics(): Promise<ClassStatistics[]> {
     return this.statisticsService.getGeneralAnglophoneClassStatistics()
   }
   @Query(() => [ClassStatistics])
   @UseGuards(JwtAuthGuard,RolesGuard)
-  @Roles(Role.ECONOME)
+  @Roles(Role.FONDATEUR)
   getGeneralFrancophoneSectionStatistics(): Promise<ClassStatistics[]> {
     return this.statisticsService.getGeneralFrancophoneClassStatistics()
   }
 
   @Query(() => [TOTAL])
   @UseGuards(JwtAuthGuard,RolesGuard)
-  @Roles(Role.ECONOME)
+  @Roles(Role.FONDATEUR)
   async TotalGeneralFrancophoneSectionStatistics(){
       const TOTAL_EFFECTIFS_ENREGISTRES = (await this.getGeneralFrancophoneSectionStatistics())
       .map(a=>a.numberOfStudents).length>0?(await this.getGeneralFrancophoneSectionStatistics())
@@ -717,7 +717,7 @@ TOTAL_SECOND_TAUX_RECOUVRIR
 
   @Query(() => [TOTAL])
   @UseGuards(JwtAuthGuard,RolesGuard)
-  @Roles(Role.ECONOME)
+  @Roles(Role.FONDATEUR)
   async TotalGeneralAnglophoneSectionStatistics(){
       const TOTAL_EFFECTIFS_ENREGISTRES = (await this.getGeneralAnglophoneSectionStatistics())
       .map(a=>a.numberOfStudents).length>0?(await this.getGeneralAnglophoneSectionStatistics())
@@ -751,7 +751,7 @@ TOTAL_SECOND_TAUX_RECOUVRIR
   
   @Query(() => [TOTAL])
   @UseGuards(JwtAuthGuard,RolesGuard)
-  @Roles(Role.ECONOME)
+  @Roles(Role.FONDATEUR)
   async TotalMAX_T_ZERO(){
     const TOTAL_EFFECTIFS_ENREGISTRES = (await this.TotalGeneralAnglophoneSectionStatistics())
       .map(a=>a.TOTAL_EFFECTIFS_ENREGISTRES)[0] + (await this.TotalGeneralFrancophoneSectionStatistics())
@@ -786,7 +786,7 @@ TOTAL_SECOND_TAUX_RECOUVRIR
 ////////////////////////////////////// extras /////////////////////////////////////////////////////////
   @Query(() => [SpecialStudentStatistics])
   @UseGuards(JwtAuthGuard,RolesGuard)
-  @Roles(Role.ECONOME)
+  @Roles(Role.FONDATEUR)
   getTrancheStatisticsForNormalStudents(): Promise<SpecialStudentStatistics[]> {
     return this.statisticsService.getTrancheStatisticsForNormalStudents();
   }

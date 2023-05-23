@@ -11,6 +11,8 @@ import { SalaireResolver } from './salaire.resolver';
 import { SalaireService } from './salaire.service';
 import { ExpenseModule } from '../expenses/expense.module';
 import { PaySalaryModule } from '../paysalary/paysalary.module';
+import { UserModule } from '../user/user.module';
+import { RolesGuard } from '../auth/guards/roles.guard';
 
 
 
@@ -23,9 +25,10 @@ imports:[MikroOrmModule.forFeature({ entities: [Salaire] }),
  PersonnelModule,
  PrimeModule,
  PaySalaryModule,
+ UserModule,
  forwardRef(() => ExpenseModule)
 ],
-providers:[SalaireService,SalaireResolver],
+providers:[SalaireService,SalaireResolver,RolesGuard],
 exports:[SalaireService]
 })
 export class SalaireModule {}

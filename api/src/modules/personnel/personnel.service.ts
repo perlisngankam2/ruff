@@ -9,6 +9,8 @@ import { Personnel } from 'src/entities/pesonnel.entity';
 import { PersonnelUpdateInput } from './dto/personnel.update';
 import { UserService } from '../user/user.service';
 import { EntityRepository } from '@mikro-orm/postgresql';
+import { PaginatedResponse, PaginationInput, paginate } from 'src/pagination';
+import { PersonnelPaginatedResponse } from './type/personnelpagination';
 
 @Injectable()
 export class PersonnelService {
@@ -130,6 +132,20 @@ async findCategoriepersonnelbypersonnel(personnnelid:string){
     return (await (await this.findOne(personnnelid)).category.load()).id
    }
 
+   
+   async paginationResponsePersonnel(input: PaginationInput): Promise<PersonnelPaginatedResponse> {
+    const qb = this.personnelRepository.createQueryBuilder(); // Create a QueryBuilder
+  
+    const result = await paginate<Personnel>(qb, input); // Use the paginate function
+  
+    // Create a PaginatedResponse instance with the result
+    const paginatedResponse = PaginatedResponse(Personnel);
+    paginatedResponse.items = result.items;
+    paginatedResponse.total = result.total;
+    paginatedResponse.hasMore = result.hasMore;
+  
+    return paginatedResponse;
+  }
 
 
 }

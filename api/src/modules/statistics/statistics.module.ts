@@ -13,6 +13,8 @@ import { Tranche } from "src/entities/tranche.entity";
 import { Student } from "src/entities/student.entity";
 import { PensionModule } from "../pension/pension.module";
 import { SalleModule } from "../salle/salle.module";
+import { UserModule } from "../user/user.module";
+import { RolesGuard } from "../auth/guards/roles.guard";
 
 
 @Module({
@@ -24,9 +26,10 @@ import { SalleModule } from "../salle/salle.module";
         TrancheStudentModule,
         AvanceTrancheModule,
         StudentModule,
-        PensionModule
+        PensionModule,
+        UserModule
     ],
-    providers:[StatisticsService,StatisticResolver],
+    providers:[StatisticsService,StatisticResolver,RolesGuard],
     exports:[StatisticsService]
 })
 export class StatisticModule {}

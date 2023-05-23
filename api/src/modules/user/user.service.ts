@@ -7,6 +7,8 @@ import * as bcript from 'bcrypt';
 import { UserCreateInput } from './dto/user.input';
 import { UpdateUserInput } from './dto/user.update';
 import { EntityRepository } from '@mikro-orm/postgresql';
+import { PaginatedResponse, PaginationInput, paginate } from 'src/pagination';
+import { UserPaginatedResponse } from './type/userpagination';
 
 @Injectable()
 export class UserService {
@@ -120,5 +122,20 @@ export class UserService {
     const a= (await this.getAll()).map(a=>a.email)
     return a
   }
+
+  
+async pagiantionResponseUser(input: PaginationInput): Promise<UserPaginatedResponse> {
+  const qb = this.userRepository.createQueryBuilder(); // Create a QueryBuilder
+
+  const result = await paginate<User>(qb, input); // Use the paginate function
+
+  // Create a PaginatedResponse instance with the result
+  const paginatedResponse = PaginatedResponse(User);
+  paginatedResponse.items = result.items;
+  paginatedResponse.total = result.total;
+  paginatedResponse.hasMore = result.hasMore;
+
+  return paginatedResponse;
+}
 
 }

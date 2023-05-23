@@ -15,6 +15,8 @@ import { RetenuPersonnelCreateInput } from './dto/retenu-personnel.input';
 import { RetenuPersonnelService } from './retenu-personnel.service';
 import { RetenuPersonnelUpdateInput } from './dto/retenu-personnel.update';
 import { Retenue } from 'src/entities/retenu-salaire.entity';
+import { RetenuPersonnelPaginatedResponse } from './type/retenupersonnelpagination';
+import { PaginationInput } from 'src/pagination';
 
 
 @Resolver(() => RetenuPersonnel)
@@ -30,6 +32,13 @@ export class RetenuPersonnelResolver {
   async findAllretenupersonnel() {
     return await this.retenuPersonnelService.getAll()
   }
+
+  @Query(() => RetenuPersonnelPaginatedResponse)
+  async pagiantionResponseRetenuPersonnel(
+  @Args('pagination') pagination: PaginationInput,
+): Promise<RetenuPersonnelPaginatedResponse> {
+  return await this.retenuPersonnelService.paginationResponseRetenuPersonnel(pagination);
+}
   
   @Query(() => RetenuPersonnel, { name: 'retenuPersonnel' })
   async findOneretenupersonnel(@Args('id', { type: () => String }) id: string) {
@@ -69,6 +78,11 @@ export class RetenuPersonnelResolver {
   @Query(()=> Number)
   async getallretenupersonnelbymonth(@Args('personnelid') personnelid:string,@Args('month') month:string){
   return await this.retenuPersonnelService.getallretenupersonnelbymonth(personnelid,month)
+  }
+
+  @Query(()=> [Retenue])
+  async findRetenuByRetenuPersonnel(@Args('personnelid') personnelid:string,@Args('month') month:string){
+ return await this.retenuPersonnelService.findRetenuByRetenuPersonnel(personnelid,month)
   }
 
   @Query(()=> [String])

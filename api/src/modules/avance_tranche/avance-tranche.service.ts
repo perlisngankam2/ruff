@@ -21,6 +21,8 @@ import { AvanceTrancheUpdateInput } from './dto/avance-tranche.update';
 import { PensionService } from '../pension/pension.service';
 import { AnneeAccademiqueService } from '../anne_accademique/anne-accademique.service';
 import { ParameterService } from '../parameter/parameter.service';
+import { paginate, PaginatedResponse, PaginationInput } from 'src/pagination';
+import { AvanceTranchePaginatedResponse } from './type/avancetranchepagination';
 
 @Injectable()
 export class AvanceTrancheService {
@@ -293,8 +295,22 @@ async AmountRecentAvanceTrancheByStudent(studentid:string){
       throw Error("!!!!!!!!!!No tranche completed!!!!!!!!!!!!!!!!!!!")
      }
      return a.map(a=>a.tranche.load())
-    }
-  }
+    }
+}
+
+async pagiantionResponseAvanceTranche(input: PaginationInput): Promise<AvanceTranchePaginatedResponse> {
+  const qb = this.avanceTrancheRepository.createQueryBuilder(); // Create a QueryBuilder
+
+  const result = await paginate<AvanceTranche>(qb, input); // Use the paginate function
+
+  // Create a PaginatedResponse instance with the result
+  const paginatedResponse = PaginatedResponse(AvanceTranche);
+  paginatedResponse.items = result.items;
+  paginatedResponse.total = result.total;
+  paginatedResponse.hasMore = result.hasMore;
+
+  return paginatedResponse;
+}
 // async TranchecompletedByStudent(studentid:string){
 //     const tranchestudent = await this.trancheStudentservice.findByStudents(studentid)
 //     console.log('==============================>'+tranchestudent)

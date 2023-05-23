@@ -11,6 +11,8 @@ import { Salaire } from 'src/entities/salaire.entity';
 import { ExpenseService } from '../expenses/expense.service';
 import { PaySalaryService } from '../paysalary/paysalary.service';
 import { error } from 'console';
+import { PaginatedResponse, PaginationInput, paginate } from 'src/pagination';
+import { SalairePaginatedResponse } from './type/salairepagination';
 
 @Injectable()
 export class SalaireService {
@@ -103,6 +105,20 @@ export class SalaireService {
     return this.salaireRepository.findOne(id,{
       populate:['personnel']
     })
+  }
+
+  async paginationResponseSalaire(input: PaginationInput): Promise<SalairePaginatedResponse> {
+    const qb = this.salaireRepository.createQueryBuilder(); // Create a QueryBuilder
+  
+    const result = await paginate<Salaire>(qb, input); // Use the paginate function
+  
+    // Create a PaginatedResponse instance with the result
+    const paginatedResponse = PaginatedResponse(Salaire);
+    paginatedResponse.items = result.items;
+    paginatedResponse.total = result.total;
+    paginatedResponse.hasMore = result.hasMore;
+  
+    return paginatedResponse;
   }
 
   getAll(): Promise<Salaire[]> {

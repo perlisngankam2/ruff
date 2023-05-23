@@ -24,7 +24,7 @@ import {
   Icon,
 } from "@chakra-ui/react";
 
-import React, { useEffect } from "react";
+import React, { useEffect,useState } from "react";
 import { IoIosAdd } from "react-icons/io";
 import Link from "next/link";
 import { useMutation, useQuery } from "@apollo/client";
@@ -34,7 +34,6 @@ import {
   GET_ALL_REDUCTION_SCOLARITE,
   GET_ALL_COURSES,
 } from "../../graphql/Queries";
-import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import { useTranslation } from "next-i18next";
 import { getStaticPropsTranslations } from "../../types/staticProps";

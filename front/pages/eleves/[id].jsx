@@ -401,7 +401,7 @@ const DetailComponent = () => {
   const getTrancheById = (id) => {
     return dataTranchePension?.findAlltranche?.find((t, i) => t.id === id);
   };
-  
+
   const getTrancheStudentById = (studentId, trancheId) => {
     return dataTrancheStudent?.findAlltranchestudent?.find(
       (t, i) => t.trancheid === trancheId && t.studentid === studentId
@@ -453,6 +453,8 @@ const DetailComponent = () => {
       });
     });
   };
+
+  
 
   useEffect(() => {
     if (!authToken) {

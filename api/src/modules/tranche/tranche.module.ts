@@ -7,6 +7,7 @@ import { TrancheService } from './tranche.service';
 import { ParamaterModule } from '../parameter/parameter.module';
 import { StudentModule } from '../student/student.module';
 import { TrancheStudentModule } from '../tranche-student/tranche-student.module';
+import { PensionSalleModule } from '../pensionsalle/pensionsalle.module';
 
 
 @Module({
@@ -14,7 +15,8 @@ import { TrancheStudentModule } from '../tranche-student/tranche-student.module'
         MikroOrmModule.forFeature({ entities: [Tranche] }),
         ParamaterModule,
         forwardRef(() =>StudentModule),
-        TrancheStudentModule
+        TrancheStudentModule,
+        PensionSalleModule
      
     ],
     providers:[TrancheService,TrancheResolver],

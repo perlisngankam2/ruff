@@ -23,6 +23,7 @@ import { ParameterService } from '../parameter/parameter.service';
 import { StudentService } from '../student/student.service';
 import { TrancheStudentService } from '../tranche-student/tranche-student.service';
 import { TrancheStat } from '../statistics/classStatistics';
+import { PensionSalleService } from '../pensionsalle/pensionsalle.service';
 
 
 @Injectable()
@@ -34,6 +35,7 @@ export class TrancheService {
         @Inject(forwardRef(()=>StudentService))
         private studentservice: StudentService,
         private tranchestudentservice: TrancheStudentService,
+        private Pensionsalleservice:PensionSalleService,
         private  em: EntityManager,
       ) {}
     
@@ -68,6 +70,16 @@ export class TrancheService {
             em:this.em
           }
         )
+        const a= (await this.getAll()).map(a=>a.montant)
+        const pension = ((await this.Pensionsalleservice.getAll()).filter(a=>a.salleId==input.salleId)).map(a=>a.montantPension)[0]
+        if(a.length>0){
+          const c=a.reduce(function(a,b){return a+b})
+          if((c+input.montant)>pension){
+            throw Error("!!!!!!!!montant de la pension pour cette salle a ete depasser veuillez entrer un montant valide!!!!!!!!!!!!")
+          }
+          await this.trancheRepository.persistAndFlush(tranche)
+          return tranche
+        }
         
         await this.trancheRepository.persistAndFlush(tranche)
         return tranche

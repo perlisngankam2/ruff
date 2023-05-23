@@ -12,7 +12,7 @@ import { EntityRepository } from '@mikro-orm/postgresql';
 import { forwardRef, Inject, Injectable } from '@nestjs/common';
 import { Field, ID, ObjectType } from '@nestjs/graphql';
 import { verify } from 'crypto';
-import { TwilioService } from 'nestjs-twilio';
+// import { TwilioService } from 'nestjs-twilio';
 import { AvanceTranche } from 'src/entities/avance-tranche.entity';
 import { RegimePaiement, TrancheStudent } from 'src/entities/tranche-student.entity';
 import { Tranche } from 'src/entities/tranche.entity';
@@ -35,7 +35,7 @@ export class TrancheStudentService {
         private trancheService: TrancheService,
         @Inject(forwardRef(() => StudentService))
         private studentService: StudentService,
-        private twilioService: TwilioService,
+        // private twilioService: TwilioService,
         private parameterservice: ParameterService,
         private  em: EntityManager,
       ) {}

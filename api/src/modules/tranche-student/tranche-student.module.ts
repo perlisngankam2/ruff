@@ -8,7 +8,7 @@ import { TrancheModule } from '../tranche/tranche.module';
 import { TrancheService } from '../tranche/tranche.service';
 import { TrancheStudentResolver } from './tranche-student.resolver';
 import { TrancheStudentService } from './tranche-student.service';
-import { TwilioModule } from 'nestjs-twilio';
+// import { TwilioModule } from 'nestjs-twilio';
 import { ParamaterModule } from '../parameter/parameter.module';
 
 @Module({
@@ -18,10 +18,10 @@ import { ParamaterModule } from '../parameter/parameter.module';
         forwardRef(() =>TrancheModule),
         forwardRef(() => AvanceTrancheModule),
         ParamaterModule,
-        TwilioModule.forRoot({
-            accountSid: "AC0a6add445c06ee381b4ab8ee989d8220",
-            authToken: "af7324e6a2d2179aacda4e0ea12a3b5a",
-          }),
+        // TwilioModule.forRoot({
+        //     accountSid: "AC0a6add445c06ee381b4ab8ee989d8220",
+        //     authToken: "af7324e6a2d2179aacda4e0ea12a3b5a",
+        //   }),
     ],
     providers:[TrancheStudentService,TrancheStudentResolver],
     exports:[TrancheStudentService]

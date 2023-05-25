@@ -17,6 +17,8 @@ import { PersonnelService } from '../personnel/personnel.service';
 import { RetenuService } from '../retenu_salarial/retenu.service';
 import { RetenuPersonnelCreateInput } from './dto/retenu-personnel.input';
 import { RetenuPersonnelUpdateInput } from './dto/retenu-personnel.update';
+import { PaginatedResponse, PaginationInput, paginate } from 'src/pagination';
+import { RetenuPersonnelPaginatedResponse } from './type/retenupersonnelpagination';
 
 @Injectable()
 export class RetenuPersonnelService {
@@ -189,5 +191,27 @@ async NomRetenuEtMontant(personnelid:string){
 
 async findIdRetenuByRetenuPersonnel(personnelid:string,month:string){
   return (await this.retenuPersonnelRepository.find({personnel:personnelid})).filter(async a=>(await a.paysalary.load()).moisPaie===month).map(async a=>(await a.retenue.load()).id)
+}
+
+async paginationResponseRetenuPersonnel(input: PaginationInput): Promise<RetenuPersonnelPaginatedResponse> {
+  const qb = this.retenuPersonnelRepository.createQueryBuilder(); // Create a QueryBuilder
+
+  const result = await paginate<RetenuPersonnel>(qb, input); // Use the paginate function
+
+  // Create a PaginatedResponse instance with the result
+  const paginatedResponse = PaginatedResponse(RetenuPersonnel);
+  paginatedResponse.items = result.items;
+  paginatedResponse.total = result.total;
+  paginatedResponse.hasMore = result.hasMore;
+
+  return paginatedResponse;
+}
+
+async findRetenuByRetenuPersonnel(personnelid:string, month:string) {
+  const retenuPersonnel = await this.retenuPersonnelRepository.find({personnel:personnelid});
+  if(retenuPersonnel.length>0){
+    return retenuPersonnel.filter(a=>a.startMonth===month).map(a=>a.retenue.load())
+  }
+  throw Error("!!!!!!!!!Aucune prime n'as ete attribuer a ce personnel pour ce mois!!!!!!!!")
 }
 }

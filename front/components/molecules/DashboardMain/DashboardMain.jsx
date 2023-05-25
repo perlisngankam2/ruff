@@ -84,14 +84,14 @@ import { GoBriefcase } from "react-icons/go";
     <DefaultLayout>
       <Box pt="90px" w="full">
         <Box top="-7" overflow="auto" minH="100vh" mx={6}>
-          {account?.role === null ?
+          {/* {account?.role === null ?
             <Heading fontSize="lg" mb={4} color="yellow.500">
               {t('molecules.DashboardMain.headingFonctionAndUserRole')}| {personnelData?.getpersonnelbyaccount.fonction}
             </Heading>:
             <Heading fontSize="lg" mb={4} color="yellow.500">
               {t('molecules.DashboardMain.headingFonctionAndUserRole')}| {account?.role}
             </Heading>
-          }
+          } */}
           <Flex flexDir="row" gap="8" mb="9" flexWrap="wrap">
             <DashboardCard 
               color="red.200" 

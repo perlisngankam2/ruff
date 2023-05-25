@@ -8,17 +8,20 @@ import { ParamaterModule } from '../parameter/parameter.module';
 // import { PensionModule } from '../pension/pension.module';
 // import { TrancheModule } from '../tranche/tranche.module';
 // import { TrancheStudentModule } from '../tranche-student/tranche-student.module';
+import { RolesGuard } from '../auth/guards/roles.guard';
+import { UserModule } from '../user/user.module';
 
 
 @Module({
     imports:[
         MikroOrmModule.forFeature({ entities: [AnneeAccademique] }),
         ParamaterModule,
+        UserModule
         // PensionModule,
         // TrancheModule,
         // TrancheStudentModule
     ],
-    providers:[AnneeAccademiqueService,AnneeAccademiqueResolver],
+    providers:[AnneeAccademiqueService,AnneeAccademiqueResolver, RolesGuard],
     exports:[AnneeAccademiqueService]
 })
 export class AnneAccademiqueModule {}

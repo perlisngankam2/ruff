@@ -74,6 +74,7 @@ export class Personnel {
     items: () => Role,
     default: Role.ADMIN,
   })
+  @Unique()
   fonction!: Role;
 
   @Field({ nullable: true })

@@ -8,6 +8,8 @@ import { PrimePersonnelResolver } from './prime-personnel.resolver';
 import { PrimePersonnelService } from './prime-personnel.service';
 import { SalaireModule } from '../salaire/salaire.module';
 import { PaySalaryModule } from '../paysalary/paysalary.module';
+import { RolesGuard } from '../auth/guards/roles.guard';
+import { UserModule } from '../user/user.module';
 
 @Module({
     imports:[
@@ -15,9 +17,10 @@ import { PaySalaryModule } from '../paysalary/paysalary.module';
         PrimeModule,
         PersonnelModule,
         forwardRef(() =>SalaireModule),
-        PaySalaryModule
+        PaySalaryModule,
+        UserModule
     ],
-    providers:[PrimePersonnelService,PrimePersonnelResolver],
+    providers:[PrimePersonnelService,PrimePersonnelResolver, RolesGuard],
     exports:[PrimePersonnelService]
 })
 export class PrimePersonnelModule {}

@@ -23,6 +23,8 @@ import { TrancheStudentCreateInput } from './dto/tranche-student.input';
 import { TrancheStudentUpdateInput } from './dto/tranche-student.update';
 import { ParameterService } from '../parameter/parameter.service';
 import { TrancheStat } from '../statistics/classStatistics';
+import { PaginatedResponse, PaginationInput, paginate } from 'src/pagination';
+import { TrancheStudentPaginatedResponse } from './type/tranchestudentpagination';
 
 @Injectable()
 export class TrancheStudentService {
@@ -278,6 +280,20 @@ async saveTranche(studentid:string,trancheid:string){
         tranche:trancheid
       })
       return (await a.tranche.load()).dateLine
+    }
+
+    async pagiantionResponseTrancheStudent(input: PaginationInput): Promise<TrancheStudentPaginatedResponse> {
+      const qb = this.trancheStudentRepository.createQueryBuilder(); // Create a QueryBuilder
+    
+      const result = await paginate<TrancheStudent>(qb, input); // Use the paginate function
+    
+      // Create a PaginatedResponse instance with the result
+      const paginatedResponse = PaginatedResponse(TrancheStudent);
+      paginatedResponse.items = result.items;
+      paginatedResponse.total = result.total;
+      paginatedResponse.hasMore = result.hasMore;
+    
+      return paginatedResponse;
     }
 
     async getTranchestudentPaymentDate(studentid:string,trancheid:string){

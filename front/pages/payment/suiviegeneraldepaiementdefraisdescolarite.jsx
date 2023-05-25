@@ -39,7 +39,6 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import {CiSearch} from 'react-icons/ci'
 import DefaultLayout from '../../components/layouts/DefaultLayout';
-import { useEffect } from 'react';
 import { useAuth } from '../../contexts/account/Auth/Auth';
 
 

@@ -90,7 +90,6 @@ const generalSetting = () => {
   });
 
   
-
   const addAnneeAcademique = async () => {
     await createAnneeAccademique({
       variables: {

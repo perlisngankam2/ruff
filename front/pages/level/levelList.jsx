@@ -81,6 +81,7 @@ const levelList = () => {
   };
 
   useEffect(() => {
+  console.log(authToken);
     if (!authToken) {
       router.back();
     }

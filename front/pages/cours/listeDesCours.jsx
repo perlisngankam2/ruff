@@ -46,7 +46,7 @@ import { getStaticPropsTranslations } from "../../types/staticProps";
 import { useAuth } from "../../contexts/account/Auth/Auth";
 
 const ListeDesCours = () => {
-  // const router = useRouter();
+  const router = useRouter();
   const [query, setQuery] = useState("");
   const cancelRef = React.useRef();
   const { t } = useTranslation();

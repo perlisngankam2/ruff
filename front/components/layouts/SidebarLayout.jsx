@@ -65,24 +65,24 @@ const SidebarLayout = ({ children }) => {
       color="#0e341f"
     >
         { 
-          (account?.role==="ADMIN")&&
+          (account?.role==="ADMIN") &&
             <AdminLayout/>
         }
         {
           (personnelData?.getpersonnelbyaccount.fonction==="fondateur") && 
               <FondateurLayout/>
-        }
+        } 
         {
           (personnelData?.getpersonnelbyaccount.fonction==="principal") && 
               <PrincipalLaout/>
         }
         {
-        (personnelData?.getpersonnelbyaccount.fonction==="econome") &&
-          <EconomeSidebarLayout/>
+          (personnelData?.getpersonnelbyaccount.fonction==="econome") &&
+            <EconomeSidebarLayout/>
         }
         { 
         (personnelData?.getpersonnelbyaccount.fonction==="manager") &&
-        <ManagerLayout/>
+           <ManagerLayout/>
         }
       { children }
     </VStack>

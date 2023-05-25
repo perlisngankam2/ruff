@@ -19,7 +19,6 @@ import {
   useToast,
 } from "@chakra-ui/react";
 import React from "react";
-import { useRouter } from "next/router";
 import { IoIosAdd } from "react-icons/io";
 import { useMutation, useQuery } from "@apollo/client";
 import {
@@ -31,6 +30,7 @@ import { GET_ALL_PARENT, GET_ALL_SECTION } from "../../graphql/Queries";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import { useAuth } from "../../contexts/account/Auth/Auth";
+
 
 const addParents = () => {
   const [name, setName] = useState("");

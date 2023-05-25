@@ -289,7 +289,7 @@ import { MdOutlineClass } from "react-icons/md";
             <Box as="span">Derniers paiements</Box>
           </Link>
         </AccordionPanel>
-        {/* <AccordionPanel pb={1} _hover={{background:"rgba(0,0,0,0.16)"}}>
+        <AccordionPanel pb={1} _hover={{background:"rgba(0,0,0,0.16)"}}>
           <Link href="/payment/ajouterprime">
             <Box as="span">Ajouter une prime</Box>
           </Link>
@@ -298,7 +298,7 @@ import { MdOutlineClass } from "react-icons/md";
           <Link href="/payment/ajouterretenue">
             <Box as="span">Ajouter une retenue</Box>
           </Link>
-        </AccordionPanel> */}
+        </AccordionPanel>
       </AccordionItem>
       {/* <AccordionItem>
         <AccordionButton pl={0} >

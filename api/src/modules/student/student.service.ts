@@ -24,6 +24,8 @@ import { StudentCreateInput } from './dto/student.input';
 import { StudentUpdateInput } from './dto/student.update';
 import { TrancheService } from '../tranche/tranche.service';
 import { addDays, format } from 'date-fns';
+import { PaginatedResponse, PaginationInput, paginate } from 'src/pagination';
+import { StudentPaginatedResponse } from './type/studentpagination';
 import { CategorieEleve } from 'src/entities/categorie-eleve.entity';
 
 @Injectable()
@@ -148,6 +150,20 @@ export class StudentService {
         })
       }
 
+      async pagiantionResponseStudent(input: PaginationInput): Promise<StudentPaginatedResponse> {
+        const qb = this.studentRepository.createQueryBuilder(); // Create a QueryBuilder
+      
+        const result = await paginate<Student>(qb, input); // Use the paginate function
+      
+        // Create a PaginatedResponse instance with the result
+        const paginatedResponse = PaginatedResponse(Student);
+        paginatedResponse.items = result.items;
+        paginatedResponse.total = result.total;
+        paginatedResponse.hasMore = result.hasMore;
+      
+        return paginatedResponse;
+      }
+
       async getAllForUseAnglophone(): Promise<Student[]> {
         const a= await this.studentRepository.findAll({
           populate: ['salle','pension','salle.niveau','salle.niveau.cycle','salle.niveau.cycle.section']
@@ -254,7 +270,7 @@ export class StudentService {
       if(!a){
         throw Error("student not found")
       }
-      return (await a.salle.load()).montantPensionSalle
+      return (a.salle.getEntity().pensionsalle.getItems().map(a=>a.montantPension))[0]
     }
    
       

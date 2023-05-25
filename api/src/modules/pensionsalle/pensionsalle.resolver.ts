@@ -14,7 +14,10 @@ import { PensionSalleService } from './pensionsalle.service';
 import { PensionSalleCreateInput } from './dto/pensionsalle.input';
 import { PensionSalle } from 'src/entities/pensionsalle.entity';
 import { PensionSalleUpdateInput } from './dto/pensionsalle.update';
-
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { RolesGuard } from '../auth/guards/roles.guard';
+import { Roles } from '../auth/decorators/roles.decorator';
+import { Role } from '../auth/roles/roles';
 
 
 @Resolver(() => PensionSalle)
@@ -22,6 +25,8 @@ export class PensionSalleResolver {
   constructor(private readonly pensionsalleService: PensionSalleService) {}
 
   @Mutation(() => PensionSalle)
+  @UseGuards(JwtAuthGuard,RolesGuard)
+  @Roles(Role.PRINCIPAL)
   async createPensionSalle(@Args('pensionsalle') Input: PensionSalleCreateInput) {
     return await this.pensionsalleService.create(Input);
   }
@@ -32,6 +37,8 @@ export class PensionSalleResolver {
   }
 
   @Query(() => [PensionSalle])
+  @UseGuards(JwtAuthGuard,RolesGuard)
+  @Roles(Role.PRINCIPAL, Role.FONDATEUR)
   async findAllpensionSalle() {
     return await this.pensionsalleService.getAll()
   }

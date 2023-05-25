@@ -11,6 +11,8 @@ import { Salaire } from 'src/entities/salaire.entity';
 import { ExpenseService } from '../expenses/expense.service';
 import { PaySalaryService } from '../paysalary/paysalary.service';
 import { error } from 'console';
+import { PaginatedResponse, PaginationInput, paginate } from 'src/pagination';
+import { SalairePaginatedResponse } from './type/salairepagination';
 
 @Injectable()
 export class SalaireService {
@@ -103,6 +105,20 @@ export class SalaireService {
     });
   }
 
+  async paginationResponseSalaire(input: PaginationInput): Promise<SalairePaginatedResponse> {
+    const qb = this.salaireRepository.createQueryBuilder(); // Create a QueryBuilder
+  
+    const result = await paginate<Salaire>(qb, input); // Use the paginate function
+  
+    // Create a PaginatedResponse instance with the result
+    const paginatedResponse = PaginatedResponse(Salaire);
+    paginatedResponse.items = result.items;
+    paginatedResponse.total = result.total;
+    paginatedResponse.hasMore = result.hasMore;
+  
+    return paginatedResponse;
+  }
+
   async getAll(): Promise<Salaire[]> {
     return this.salaireRepository.findAll({
       populate: ['personnel'],
@@ -160,7 +176,7 @@ export class SalaireService {
     return b;
   }
 
-  async personnelsalairenetbymonth(personnelid: string, month: string) {
+  async personnelsalairenetbymonth(personnelid: string, month: string) { 
     const a = (await this.salairepersonnel(personnelid)).filter(
       (a) => a.moisPaie == month,
     )[0].montant;

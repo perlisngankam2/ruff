@@ -15,4 +15,5 @@ export class GqlAuthGuard extends AuthGuard('local'){
         request.body = ctx.getArgs().loginInput;
         return request;
     }
+
 }

@@ -1,14 +1,21 @@
 /* eslint-disable prettier/prettier */
 import { Args, Mutation, Query, Resolver } from "@nestjs/graphql";
+import { UseGuards } from '@nestjs/common';
 import { PersonnelSalle } from "src/entities/personnelsalle.entity";
 import { PersonnelSalleCreateInput } from "./dto/personnelsalle.create.input";
 import { PersonnelSalleService } from "./personnelsalle.service";
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { RolesGuard } from '../auth/guards/roles.guard';
+import { Roles } from '../auth/decorators/roles.decorator';
+import { Role } from '../auth/roles/roles';
 
 @Resolver(() => PersonnelSalle)
 export class PersonnelSalleResolver {
   constructor(private readonly personnelsalleService: PersonnelSalleService) {}
 
   @Mutation(() => PersonnelSalle)
+  // @UseGuards(JwtAuthGuard,RolesGuard)
+  // @Roles(Role.PRINCIPAL)
   createPersonnelSalle(@Args('input') Input: PersonnelSalleCreateInput) {
     return this.personnelsalleService.create(Input);
   }

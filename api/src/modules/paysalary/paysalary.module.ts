@@ -7,6 +7,8 @@ import { RetenuPersonnelModule } from '../retenu_personnel/retenu_personnel.modu
 import { PaySalaryResolver } from './paysalary.resolver';
 import { PaySalary } from 'src/entities/paysalary.entity';
 import { PaySalaryService } from './paysalary.service';
+import { RolesGuard } from '../auth/guards/roles.guard';
+import { UserModule } from '../user/user.module';
 
 
 
@@ -18,8 +20,9 @@ imports:[MikroOrmModule.forFeature({ entities: [PaySalary] }),
  RetenuPersonnelModule,
  PersonnelModule,
  forwardRef(() =>PrimePersonnelModule,),
+ UserModule
 ],
-providers:[PaySalaryService,PaySalaryResolver],
+providers:[PaySalaryService,PaySalaryResolver,RolesGuard],
 exports:[PaySalaryService]
 })
 export class PaySalaryModule {}

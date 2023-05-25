@@ -27,7 +27,6 @@ import {
   Button,
   InputRightElement,
 } from "@chakra-ui/react";
-import { useRouter } from "next/router";
 import DefaultLayout from "../../components/layouts/DefaultLayout";
 import AddParents from "./addParents";
 import { Router, useRouter } from "next/router";

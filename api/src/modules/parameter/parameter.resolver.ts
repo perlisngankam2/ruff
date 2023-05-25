@@ -15,17 +15,25 @@ import { Parameter } from 'src/entities/parameter.entity';
 import { ParameterService } from './parameter.service';
 import { ParameterCreateInput } from './dto/parameter.input';
 import { ParameterUpdateInput } from './dto/parameter.update';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { RolesGuard } from '../auth/guards/roles.guard';
+import { Roles } from '../auth/decorators/roles.decorator';
+import { Role } from '../auth/roles/roles';
 
 @Resolver(() => Parameter)
 export class ParameterResolver {
   constructor(private readonly parameterService: ParameterService) {}
 
   @Mutation(() => Parameter)
+  @UseGuards(JwtAuthGuard,RolesGuard)
+  @Roles(Role.ADMIN)
   async createParameter(@Args('input') Input: ParameterCreateInput) {
     return await this.parameterService.create(Input);
   }
 
  @Mutation(() => Parameter)
+  @UseGuards(JwtAuthGuard,RolesGuard)
+  @Roles(Role.ADMIN, Role.ECONOME)
  async updateParameter(@Args('id', { type: () => String }) id: string, Input: ParameterUpdateInput) {
     return await this.parameterService.update(id,Input);
   }
@@ -41,6 +49,8 @@ export class ParameterResolver {
   }
 
   @Mutation(()=>Parameter)
+  @UseGuards(JwtAuthGuard,RolesGuard)
+  @Roles(Role.ADMIN, Role.FONDATEUR)
   async deleteparamaters(@Args('id') id:string){
   return await this.parameterService.delete(id)
   }

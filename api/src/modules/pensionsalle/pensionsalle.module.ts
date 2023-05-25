@@ -9,14 +9,18 @@ import { SalleModule } from '../salle/salle.module';
 import {  PensionSalleResolver } from './pensionsalle.resolver';
 import { PensionSalleService } from './pensionsalle.service';
 import { PensionSalle } from 'src/entities/pensionsalle.entity';
+import { RolesGuard } from '../auth/guards/roles.guard';
+import { UserModule } from '../user/user.module';
+
 
 @Module({
     imports:[
         MikroOrmModule.forFeature({ entities: [PensionSalle] }),
         AnneAccademiqueModule,
-        SalleModule
+        SalleModule,
+        UserModule
     ],
-    providers:[PensionSalleService,PensionSalleResolver],
+    providers:[PensionSalleService,PensionSalleResolver, RolesGuard],
     exports:[PensionSalleService]
 })
 export class PensionSalleModule {}

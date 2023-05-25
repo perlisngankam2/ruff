@@ -195,7 +195,7 @@ const PaySlip = () => {
         },
       },
     });
-
+    refetch();
     console.log(salaireData);
 
     toast({
@@ -336,6 +336,7 @@ const PaySlip = () => {
         },
       ],
     });
+    refetch();
     onClose();
   };
 
@@ -728,7 +729,7 @@ const PaySlip = () => {
                         onClick={HandleClickPayerSalaire}
                         isLoading={isLoading}
                       >
-                        ajouter
+                        Payer
                       </Button>
                     </AlertDialogFooter>
                   </AlertDialogContent>

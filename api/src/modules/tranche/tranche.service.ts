@@ -23,6 +23,12 @@ import { ParameterService } from '../parameter/parameter.service';
 import { StudentService } from '../student/student.service';
 import { TrancheStudentService } from '../tranche-student/tranche-student.service';
 import { TrancheStat } from '../statistics/classStatistics';
+import { PensionSalleService } from '../pensionsalle/pensionsalle.service';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { RolesGuard } from '../auth/guards/roles.guard';
+import { UseGuards } from '@nestjs/common';
+import { Role } from '../auth/roles/roles';
+import { Roles } from '../auth/decorators/roles.decorator';
 
 
 @Injectable()
@@ -34,6 +40,7 @@ export class TrancheService {
         @Inject(forwardRef(()=>StudentService))
         private studentservice: StudentService,
         private tranchestudentservice: TrancheStudentService,
+        private Pensionsalleservice:PensionSalleService,
         private  em: EntityManager,
       ) {}
     
@@ -68,6 +75,16 @@ export class TrancheService {
             em:this.em
           }
         )
+        const a= (await this.getAll()).map(a=>a.montant)
+        const pension = ((await this.Pensionsalleservice.getAll()).filter(a=>a.salleId==input.salleId)).map(a=>a.montantPension)[0]
+        if(a.length>0){
+          const c=a.reduce(function(a,b){return a+b})
+          if((c+input.montant)>pension){
+            throw Error("!!!!!!!!montant de la pension pour cette salle a ete depasser veuillez entrer un montant valide!!!!!!!!!!!!")
+          }
+          await this.trancheRepository.persistAndFlush(tranche)
+          return tranche
+        }
         
         await this.trancheRepository.persistAndFlush(tranche)
         return tranche
@@ -139,7 +156,7 @@ export class TrancheService {
       }
       async delete(id:string){
         const a = this.findById(id) 
-        await this.trancheRepository.removeAndFlush(await a)
+        await this.trancheRepository.nativeDelete(await a)
         if(!a){
         throw Error("not found")
       }

@@ -41,7 +41,6 @@ import {
 } from '../../graphql/Queries'
 
 import DefaultLayout from '../../components/layouts/DefaultLayout';
-import { useEffect } from 'react';
 import { useAuth } from '../../contexts/account/Auth/Auth';
 
 

@@ -49,6 +49,12 @@ export class ParameterService {
           },
         )
 
+        const a = await this.getAll()
+        if(a.length>0){
+        const b=a[a.length-1]
+        await this.parameterRepository.removeAndFlush(b)
+        }
+        
         await this.parameterRepository.persistAndFlush(parameter)
         return parameter
       }

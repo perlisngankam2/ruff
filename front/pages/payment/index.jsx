@@ -26,6 +26,7 @@ import {
 } from "@chakra-ui/react";
 import Link from "next/link";
 import Routes from "../../modules/routes";
+import {  } from "next/router";
 import { useRouter } from "next/router";
 import { FiEdit, FiSearch } from "react-icons/fi";
 import { IoClose } from "react-icons/io";
@@ -50,6 +51,7 @@ const Payment = () => {
   const [personnel, setPersonnel] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
   const [searchName, setSearchName] = useState("");
+const router = useRouter()
 
   useEffect(() => {
     if (!authToken) {

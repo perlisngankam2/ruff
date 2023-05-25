@@ -18,21 +18,31 @@ import { SectionCreateInput } from '../section/dto/section.input';
 import { CycleService } from './cycle.service';
 import { CycleCreateInput } from './dto/cycle.input';
 import { CycleUpdateInput } from './dto/cycle.update';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { RolesGuard } from '../auth/guards/roles.guard';
+import { Roles } from '../auth/decorators/roles.decorator';
+import { Role } from '../auth/roles/roles';
 
 @Resolver(() => Cycle)
 export class CycleResolver {
   constructor(private readonly cycleService: CycleService) {}
 
   @Mutation(() => Cycle)
+    @UseGuards(JwtAuthGuard,RolesGuard)
+  @Roles(Role.PRINCIPAL)
   async createCycle(@Args('cycle') input:CycleCreateInput) {
     return await this.cycleService.create(input);
   }
   @Query(() => [Cycle])
+  @UseGuards(JwtAuthGuard,RolesGuard)
+  @Roles(Role.PRINCIPAL)
   async findAllcycle() {
     return await this.cycleService.getAll()
   }
   
   @Query(() => Cycle)
+  @UseGuards(JwtAuthGuard,RolesGuard)
+  @Roles(Role.PRINCIPAL)
   async findOnecycle(@Args('id', { type: () => String }) id: string) {
     return await this.cycleService.findById(id);
   }
@@ -43,6 +53,8 @@ export class CycleResolver {
   }
 
   @Mutation(() => Cycle)
+  @UseGuards(JwtAuthGuard,RolesGuard)
+  @Roles(Role.PRINCIPAL)
   async deletecycle(@Args('id') id:string){
   return await this.cycleService.delete(id)
   }

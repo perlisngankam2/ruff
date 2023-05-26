@@ -117,10 +117,22 @@ const PaySlip = () => {
   const moisSalaire = dernierElementGenererSalaire?.moisPaie;
   const montantSalaire = dernierElementGenererSalaire?.montant;
 
-  const [moisPaie, setMoisPaie] = useState("");
+  const currentDate = new Date();
+  const yearName = currentDate.getFullYear();
+  console.log(yearName);
+  const modifyCurrentDateDate = currentDate.toLocaleString("default", {
+    month: "long",
+  });
+  console.log(modifyCurrentDateDate);
+  const finalCurrentMonth = `${modifyCurrentDateDate} ${yearName}`;
+  console.log(finalCurrentMonth);
+
+  const [moisPaie, setMoisPaie] = useState(finalCurrentMonth);
   const [jourPaie, setJourPaie] = useState(
     new Date().toISOString().slice(0, 10)
   );
+
+  console.log("mois de paie par defaut",moisPaie);
   const [isMonthUnavailable, setIsMonthUnavailable] = useState(false);
 
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -139,7 +151,7 @@ const PaySlip = () => {
   console.log("dataMoisSalaire");
   console.log(montantSalaire);
   console.log(dataPrimePersonnel);
-  console.log(moisPayes.includes(moisPaie.toLowerCase()));
+  // console.log(moisPayes.includes(moisPaie.toLowerCase()));
 
   // ...
 
@@ -248,14 +260,14 @@ const PaySlip = () => {
 
   const monthOptions = useMemo(() => {
     const today = new Date();
-    const startMonth = new Date(today.getFullYear(), today.getMonth() - 3, 1);
-    const endMonth = new Date(today.getFullYear(), today.getMonth() + 3, 1);
+    const startMonth = new Date(today.getFullYear(), today.getMonth() - 6, 1);
+    const endMonth = new Date(today.getFullYear(), today.getMonth() + 8, 1);
     const options = [];
     let currentMonth = startMonth;
 
     if (!unavailableMonths) {
       // Si le tableau est vide, ajouter les options pour les 7 mois autour du mois actuel
-      for (let i = -3; i <= 3; i++) {
+      for (let i =-6; i <= 8; i++) {
         const date = new Date(today.getFullYear(), today.getMonth() + i, 1);
         const year = date.getFullYear();
         const month = (date.getMonth() + 1).toString().padStart(2, "0");
@@ -297,17 +309,6 @@ const PaySlip = () => {
   }, [unavailableMonths]);
 
   // AFFICHAGE DU MOIS COURANT
-  const currentDate = new Date();
-  const yearName = currentDate.getFullYear();
-  console.log(yearName);
-  const month = (currentDate.getMonth() + 1).toString().padStart();
-  console.log(month);
-  const modifyCurrentDateDate = currentDate.toLocaleString("default", {
-    month: "long",
-  });
-  console.log(modifyCurrentDateDate);
-  const finalCurrentMonth = `${modifyCurrentDateDate} ${yearName}`;
-  console.log(finalCurrentMonth);
   // currentMonthNew = new
   // const monthOptions = useMemo(() => {
   //   const today = new Date();
@@ -471,7 +472,7 @@ const PaySlip = () => {
                     value={moisPaie}
                     onChange={handleMonthChange}
                     isRequired
-                    defaultValue={[finalCurrentMonth]}
+                    // defaultValue={moisPaie}
                   >
                     <option value="">Sélectionnez un mois</option>
                     {monthOptions}

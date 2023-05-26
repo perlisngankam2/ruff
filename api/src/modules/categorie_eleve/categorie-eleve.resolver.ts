@@ -25,22 +25,22 @@ export class CategorieEleveResolver {
   constructor(private readonly categorieService: CategorieEleveService) {}
 
   @Mutation(() => CategorieEleve)
-     @UseGuards(JwtAuthGuard,RolesGuard)
-  @Roles(Role.PRINCIPAL)
+  //    @UseGuards(JwtAuthGuard,RolesGuard)
+  // @Roles(Role.PRINCIPAL)
   async createcategorieeleve(@Args('createCategorieEleve') createCatgorieEleveInput: CategorieEleveCreateInput) {
     return await this.categorieService.create(createCatgorieEleveInput);
   }
   
   @Query(() => [CategorieEleve])
-  @UseGuards(JwtAuthGuard,RolesGuard)
-  @Roles(Role.PRINCIPAL)
+  // @UseGuards(JwtAuthGuard,RolesGuard)
+  // @Roles(Role.PRINCIPAL)
   async findAllcategorieeleve() {
     return await this.categorieService.getAll()
   }
   
   @Query(() => CategorieEleve)
-  @UseGuards(JwtAuthGuard,RolesGuard)
-  @Roles(Role.PRINCIPAL)
+  // @UseGuards(JwtAuthGuard,RolesGuard)
+  // @Roles(Role.PRINCIPAL)
   async findOneCategorieeleve(@Args('id', { type: () => String }) id: string) {
     return await this.categorieService.findByOne(id);
   }

@@ -16,8 +16,8 @@ export class CourseResolver {
   constructor(private readonly courseService: CourseService) {}
 
   @Mutation(() => Course)
-    @UseGuards(JwtAuthGuard,RolesGuard)
-  @Roles(Role.PRINCIPAL)
+  //   @UseGuards(JwtAuthGuard,RolesGuard)
+  // @Roles(Role.PRINCIPAL)
   createCourse(@Args('input') Input: CourseCreateInput) {
     return this.courseService.create(Input);
   }
@@ -28,8 +28,8 @@ export class CourseResolver {
 //   }
 
   @Query(() => [Course])
-  @UseGuards(JwtAuthGuard,RolesGuard)
-  @Roles(Role.PRINCIPAL, Role.FONDATEUR)
+  // @UseGuards(JwtAuthGuard,RolesGuard)
+  // @Roles(Role.PRINCIPAL, Role.FONDATEUR)
   findAllCourse() {
     return this.courseService.findall()
   }
@@ -42,13 +42,13 @@ export class CourseResolver {
   }
   
   @Query(() => Course)
-  @Roles(Role.PRINCIPAL, Role.FONDATEUR)
+  // @Roles(Role.PRINCIPAL, Role.FONDATEUR)
   findOneCourse(@Args('id', { type: () => String }) id: string) {
     return this.courseService.findByOne(id);
   }
 
   @Mutation(()=> Course)
-  @Roles(Role.PRINCIPAL)
+  // @Roles(Role.PRINCIPAL)
   async deleteCourse(@Args('id') id:string){
  return await this.courseService.delete(id)
   }

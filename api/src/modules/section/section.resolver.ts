@@ -26,36 +26,36 @@ export class SectionResolver {
   constructor(private readonly sectionService: SectionService) {}
 
   @Mutation(() => Section)
-  @UseGuards(JwtAuthGuard,RolesGuard)
-  @Roles(Role.PRINCIPAL)
+  // @UseGuards(JwtAuthGuard,RolesGuard)
+  // @Roles(Role.PRINCIPAL)
   createSection(@Args('section') input: SectionCreateInput) {
     return this.sectionService.create(input);
   }
 
   @Query(() => [Section])
-  @UseGuards(JwtAuthGuard,RolesGuard)
-  @Roles(Role.PRINCIPAL)
+  // @UseGuards(JwtAuthGuard,RolesGuard)
+  // @Roles(Role.PRINCIPAL)
   findAllsection() {
     return this.sectionService.getAll()
   }
 
   @Query(() => Section)
-  @UseGuards(JwtAuthGuard,RolesGuard)
-  @Roles(Role.PRINCIPAL)
+  // @UseGuards(JwtAuthGuard,RolesGuard)
+  // @Roles(Role.PRINCIPAL)
   findOnesection(@Args('id', { type: () => String }) id: string) {
     return this.sectionService.findByOne(id);
   }
 
   @Mutation(()=>Section)
-  @UseGuards(JwtAuthGuard,RolesGuard)
-  @Roles(Role.PRINCIPAL)
+  // @UseGuards(JwtAuthGuard,RolesGuard)
+  // @Roles(Role.PRINCIPAL)
   async updatesection(@Args('id') id:string,@Args('input') input:SectionUpdateInput){
     return await this.sectionService.update(id,input)
   }
 
   @Mutation(()=> Section)
-  @UseGuards(JwtAuthGuard,RolesGuard)
-  @Roles(Role.PRINCIPAL)
+  // @UseGuards(JwtAuthGuard,RolesGuard)
+  // @Roles(Role.PRINCIPAL)
   async deletesection(@Args('id') id:string){
  return await this.sectionService.delete(id)
   }

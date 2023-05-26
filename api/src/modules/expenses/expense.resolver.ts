@@ -13,13 +13,9 @@ import { Role } from "../auth/roles/roles";
 import { Roles } from "../auth/decorators/roles.decorator";
 
 
-
-
-
 @Resolver(() => Expense)
 export class ExpenseResolver {
   constructor(private readonly expenseService: ExpenseService) {}
-
 
   @Mutation(()=>Expense)
   @UseGuards(JwtAuthGuard,RolesGuard)
@@ -27,11 +23,6 @@ export class ExpenseResolver {
   async createExpense(@Args('input') input: ExpenseCreateInput){
     return await this.expenseService.create(input)
   }
-
-  // @Query()
-  // async getMaxDebitEtCredit(){
-
-  // }
 
   @Query(() => ExpensePaginatedResponse)
   @UseGuards(JwtAuthGuard,RolesGuard)
@@ -64,8 +55,8 @@ export class ExpenseResolver {
   }
 
   @Query(()=>[Expense])
-  @UseGuards(JwtAuthGuard,RolesGuard)
-  @Roles(Role.ECONOME)
+  // @UseGuards(JwtAuthGuard,RolesGuard)
+  // @Roles(Role.ECONOME)
   async findallexpenses(){
     return await this.expenseService.findall()
   }

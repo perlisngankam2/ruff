@@ -44,9 +44,9 @@ export class SalleService {
           name : input.name,
           montantPensionSalle: input.montantPensionSalle,
           niveau : input.niveauEtudeId,
-          section : input.sectionId,
+          // section : input.sectionId,
           effectif: input.effectif,
-          cycle : input.cycleId,
+          // cycle : input.cycleId,
           anneeAcademique : input.anneeAcademiqueId
           },
           {
@@ -133,8 +133,8 @@ export class SalleService {
         wrap(salle).assign({
             name: input.name || salle.name,
             montantPensionSalle: input.montantPensionSalle || salle.montantPensionSalle,
-            section : input.sectionId|| salle.section,
-            cycle : input.cycleId || salle.cycle,
+            // section : input.sectionId|| salle.section,
+            // cycle : input.cycleId || salle.cycle,
             niveau: input.niveauEtudeId || salle.niveau
             // montantPension: input.montantPension || salle.montantPension
         },

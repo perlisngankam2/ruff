@@ -28,15 +28,15 @@ export class RetenuPersonnelResolver {
   constructor(private readonly retenuPersonnelService: RetenuPersonnelService) {}
 
   @Mutation(() => RetenuPersonnel)
-  @UseGuards(JwtAuthGuard,RolesGuard)
-  @Roles(Role.PRINCIPAL)
+  // @UseGuards(JwtAuthGuard,RolesGuard)
+  // @Roles(Role.PRINCIPAL)
   async createretnupersonnel(@Args('retenuPersonnel') createRetenuPersonnelInput: RetenuPersonnelCreateInput) {
     return await this.retenuPersonnelService.create(createRetenuPersonnelInput);
   }
 
   @Query(() => [RetenuPersonnel])
-  @UseGuards(JwtAuthGuard,RolesGuard)
-  @Roles(Role.PRINCIPAL)
+  // @UseGuards(JwtAuthGuard,RolesGuard)
+  // @Roles(Role.PRINCIPAL)
   async findAllretenupersonnel() {
     return await this.retenuPersonnelService.getAll()
   }

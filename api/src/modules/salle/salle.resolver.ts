@@ -33,14 +33,14 @@ export class SalleResolver {
   }
 
   @Query(() => [Salle])
-  @UseGuards(JwtAuthGuard,RolesGuard)
-  @Roles(Role.FONDATEUR, Role.PRINCIPAL)
+  // @UseGuards(JwtAuthGuard,RolesGuard)
+  // @Roles(Role.FONDATEUR, Role.PRINCIPAL)
   findAllsalle() {
     return this.salleService.getAll()
   }
   
   @Query(() => Salle)
-  @Roles(Role.FONDATEUR, Role.PRINCIPAL)
+  // @Roles(Role.FONDATEUR, Role.PRINCIPAL)
   findOnesalle(@Args('id', { type: () => String }) id: string) {
     return this.salleService.findByOne(id);
   }

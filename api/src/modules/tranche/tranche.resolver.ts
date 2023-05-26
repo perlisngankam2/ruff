@@ -45,7 +45,8 @@ export class TrancheResolver {
   }
   
   @Query(() => Tranche, { name: 'tranche' })
-  @Roles(Role.ECONOME, Role.PRINCIPAL)
+  // @UseGuards(JwtAuthGuard, RolesGuard)
+  // @Roles(Role.ECONOME, Role.PRINCIPAL)
   findOnetranche(@Args('id', { type: () => String }) id: string) {
     return this.trancheService.findByOne(id);
   }

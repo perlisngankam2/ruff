@@ -28,21 +28,21 @@ export class CycleResolver {
   constructor(private readonly cycleService: CycleService) {}
 
   @Mutation(() => Cycle)
-    @UseGuards(JwtAuthGuard,RolesGuard)
-  @Roles(Role.PRINCIPAL)
+  //   @UseGuards(JwtAuthGuard,RolesGuard)
+  // @Roles(Role.PRINCIPAL)
   async createCycle(@Args('cycle') input:CycleCreateInput) {
     return await this.cycleService.create(input);
   }
   @Query(() => [Cycle])
-  @UseGuards(JwtAuthGuard,RolesGuard)
-  @Roles(Role.PRINCIPAL)
+  // @UseGuards(JwtAuthGuard,RolesGuard)
+  // @Roles(Role.PRINCIPAL)
   async findAllcycle() {
     return await this.cycleService.getAll()
   }
   
   @Query(() => Cycle)
-  @UseGuards(JwtAuthGuard,RolesGuard)
-  @Roles(Role.PRINCIPAL)
+  // @UseGuards(JwtAuthGuard,RolesGuard)
+  // @Roles(Role.PRINCIPAL)
   async findOnecycle(@Args('id', { type: () => String }) id: string) {
     return await this.cycleService.findById(id);
   }
@@ -53,8 +53,8 @@ export class CycleResolver {
   }
 
   @Mutation(() => Cycle)
-  @UseGuards(JwtAuthGuard,RolesGuard)
-  @Roles(Role.PRINCIPAL)
+  // @UseGuards(JwtAuthGuard,RolesGuard)
+  // @Roles(Role.PRINCIPAL)
   async deletecycle(@Args('id') id:string){
   return await this.cycleService.delete(id)
   }

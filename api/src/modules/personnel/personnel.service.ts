@@ -64,11 +64,15 @@ export class PersonnelService {
     }
 
   findOne(filters: FilterQuery<Personnel>): Promise<Personnel | null> {
-    return this.personnelRepository.findOne(filters);
+    return this.personnelRepository.findOne(filters,
+      // {populate:['category']}
+    );
   }
 
   getAll(): Promise<Personnel[]> {
-    return this.personnelRepository.findAll()
+    return this.personnelRepository.findAll(
+      // {populate:['category']}
+    )
   }
 
   hashPassword(password: string): string {

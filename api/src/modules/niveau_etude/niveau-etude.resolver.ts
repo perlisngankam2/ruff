@@ -36,8 +36,8 @@ export class NiveauEtudeResolver {
   }
 
    @Mutation(() => NiveauEtude)
-   @UseGuards(JwtAuthGuard,RolesGuard)
-   @Roles(Role.PRINCIPAL)
+  //  @UseGuards(JwtAuthGuard,RolesGuard)
+  //  @Roles(Role.PRINCIPAL)
   async updateNiveauEtude(@Args('id', { type: () => String }) id: string, @Args('input')Input: NiveauEtudeUpdateInput) {
     return await this.niveauEtudeService.update(id,Input);
   }
@@ -52,8 +52,8 @@ export class NiveauEtudeResolver {
   //   return await this.niveauEtudeService.getAll();
   // }
   @Query(()=>[NiveauEtude])
-  @UseGuards(JwtAuthGuard,RolesGuard)
-  @Roles(Role.PRINCIPAL)
+  // @UseGuards(JwtAuthGuard,RolesGuard)
+  // @Roles(Role.PRINCIPAL)
   async findAllNiveauEtude() {
     return await this.niveauEtudeService.getAll();
 }

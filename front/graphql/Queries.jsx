@@ -15,6 +15,7 @@ query findAllpersonnel {
         dateOfStartWork
         dateOfBirth
         childNumber
+      
     }
 }
 `
@@ -201,6 +202,7 @@ export const GET_ALL_PERSONNEL_BY_ID = gql `
             dateOfStartWork
             dateOfBirth
             childNumber
+           
         }
     }
 `;
@@ -730,6 +732,7 @@ query getpersonnelbyaccount ($userid: String!) {
         dateOfStartWork
         dateOfBirth
         childNumber
+     
     }
 }
 `;

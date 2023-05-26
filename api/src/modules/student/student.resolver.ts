@@ -29,15 +29,15 @@ export class StudentResolver {
               ) {}
 
   @Mutation(() => Student)
-  @UseGuards(JwtAuthGuard,RolesGuard)
-  @Roles(Role.ECONOME, Role.PRINCIPAL)
+  // @UseGuards(JwtAuthGuard,RolesGuard)
+  // @Roles(Role.ECONOME, Role.PRINCIPAL)
   createStudent(@Args('student') Input: StudentCreateInput) {
     return this.studentService.create(Input);
   }
 
   @Mutation(() => Student)
-  @UseGuards(JwtAuthGuard,RolesGuard)
-  @Roles(Role.ECONOME)
+  // @UseGuards(JwtAuthGuard,RolesGuard)
+  // @Roles(Role.ECONOME)
   async updateStudent(
     @Args('id') id:string,
     @Args('input') input: StudentCreateInput,
@@ -53,15 +53,15 @@ export class StudentResolver {
    }
 
   @Query(() => [Student])
-  @UseGuards(JwtAuthGuard,RolesGuard)
-  @Roles(Role.ECONOME, Role.PRINCIPAL)
+  // @UseGuards(JwtAuthGuard,RolesGuard)
+  // @Roles(Role.ECONOME, Role.PRINCIPAL)
   findAllstudents() {
     return this.studentService.getAll()
   }
   
   @Query(() => Student)
-  @UseGuards(JwtAuthGuard,RolesGuard)
-  @Roles(Role.ECONOME, Role.PRINCIPAL)
+  // @UseGuards(JwtAuthGuard,RolesGuard)
+  // @Roles(Role.ECONOME, Role.PRINCIPAL)
   findOnestudent(@Args('id', { type: () => String }) id: string) {
     return this.studentService.findByOne(id);
   }

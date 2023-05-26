@@ -24,36 +24,36 @@ export class ParentResolver {
   constructor(private readonly parentService: ParentService) {}
 
   @Mutation(() => Parent)
-  @UseGuards(JwtAuthGuard,RolesGuard)
-  @Roles(Role.PRINCIPAL, Role.ECONOME, Role.FONDATEUR)
+  // @UseGuards(JwtAuthGuard,RolesGuard)
+  // @Roles(Role.PRINCIPAL, Role.ECONOME, Role.FONDATEUR)
   async createParent(@Args('parent') Input: ParentCreateInput) {
     return await this.parentService.create(Input);
   }
 
  @Mutation(() => Parent)
- @UseGuards(JwtAuthGuard,RolesGuard)
- @Roles(Role.PRINCIPAL, Role.FONDATEUR)
+//  @UseGuards(JwtAuthGuard,RolesGuard)
+//  @Roles(Role.PRINCIPAL, Role.FONDATEUR)
  async updateParent(@Args('id', { type: () => String }) id: string, Input: ParentUpdateInput) {
     return await this.parentService.update(id,Input);
   }
 
   @Query(() => [Parent])
-  @UseGuards(JwtAuthGuard,RolesGuard)
-  @Roles(Role.PRINCIPAL, Role.FONDATEUR)
+  // @UseGuards(JwtAuthGuard,RolesGuard)
+  // @Roles(Role.PRINCIPAL, Role.FONDATEUR)
   async findAllparents() {
     return await this.parentService.getAll()
   }
   
   @Query(() => Parent, { name: 'parent' })
-  @UseGuards(JwtAuthGuard,RolesGuard)
-  @Roles(Role.PRINCIPAL, Role.FONDATEUR)
+  // @UseGuards(JwtAuthGuard,RolesGuard)
+  // @Roles(Role.PRINCIPAL, Role.FONDATEUR)
   async findOneparent(@Args('id', { type: () => String }) id: string) {
     return await this.parentService.findOne(id);
   }
 
   @Mutation(()=>Parent)
-  @UseGuards(JwtAuthGuard,RolesGuard)
-  @Roles(Role.PRINCIPAL, Role.FONDATEUR)
+  // @UseGuards(JwtAuthGuard,RolesGuard)
+  // @Roles(Role.PRINCIPAL, Role.FONDATEUR)
   async deleteparent(@Args('id') id:string){
   return await this.parentService.delete(id)
   }

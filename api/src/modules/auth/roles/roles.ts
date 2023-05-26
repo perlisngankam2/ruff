@@ -7,7 +7,7 @@ export enum Role{
     ECONOME = 'econome',
     FONDATEUR = 'fondateur',
     PRINCIPAL = 'principal',
-    GESTIONAIRE = 'gestionaire'
+    GESTIONNAIRE = 'gestionnaire'
   }
   
   registerEnumType(Role, {

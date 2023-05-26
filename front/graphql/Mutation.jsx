@@ -17,6 +17,7 @@ mutation createpersonnel ($createPersonnelUser: PersonnelCreateInput!) {
         dateOfStartWork
         dateOfBirth
         childNumber
+       
     }
 }
 `;
@@ -347,6 +348,7 @@ mutation deletepersonnel ($id: String!) {
         dateOfStartWork
         dateOfBirth
         childNumber
+
     }
 }
 `;

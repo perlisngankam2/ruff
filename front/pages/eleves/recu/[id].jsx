@@ -546,7 +546,7 @@ const receipt = () => {
                               fontSize="xl"
                               fontWeight="bold"
                             >
-                              {lastStudentPaiement}
+                              {lastStudentPaiement ? lastStudentPaiement : "0"}
                               {/* {dataLastPayment?.AmountRecentAvanceTrancheByStudent} */}
                               {/* {dataStudentByTrancheStudent?.getStudentByTrancheStudent.montant} */}
                             </Text>
@@ -594,11 +594,11 @@ const receipt = () => {
                                   </Box>
                                 </Th>
                                 {/* <Th border='1px'>
-                                                            <Box fontSize='8px' textAlign='center'>
-                                                                <Text>Net Reduit</Text>
-                                                                <Text>Net Discount</Text>
-                                                            </Box>
-                                                        </Th> */}
+                                  <Box fontSize='8px' textAlign='center'>
+                                      <Text>Net Reduit</Text>
+                                      <Text>Net Discount</Text>
+                                  </Box>
+                              </Th> */}
                                 <Th border="1px">
                                   <Box
                                     fontSize="10px"
@@ -616,9 +616,9 @@ const receipt = () => {
                                 <Th border="1px">
                                   <Box h="13px" fontSize="10px">
                                     <Text textAlign={"center"}>
-                                      {
-                                        dataClassFeesByStudentId?.getClassfeebyStudent
-                                      }
+                                      {dataClassFeesByStudentId?.getClassfeebyStudent
+                                        ? dataClassFeesByStudentId?.getClassfeebyStudent
+                                        : "0"}
                                     </Text>
                                   </Box>
                                 </Th>
@@ -626,10 +626,12 @@ const receipt = () => {
                                   <Box fontSize="10px">
                                     <Text textAlign={"center"}>
                                       {/* {dataStudentByTrancheStudent?.getTrancheStudentByStudent.montant} */}
-                                      {
-                                        dataAlreadyPayBySudent
-                                          ?.findpensionbystudent.montantPension
-                                      }
+                                      {dataAlreadyPayBySudent
+                                        ?.findpensionbystudent.montantPension
+                                        ? dataAlreadyPayBySudent
+                                            ?.findpensionbystudent
+                                            .montantPension
+                                        : "0"}
                                     </Text>
                                   </Box>
                                 </Th>
@@ -643,9 +645,9 @@ const receipt = () => {
                                 <Th border="1px">
                                   <Box fontSize="10px">
                                     <Text textAlign={"center"}>
-                                      {
-                                        dataResteFeesToPayByStudent?.findrestpensionbystudent
-                                      }{" "}
+                                      {dataResteFeesToPayByStudent?.findrestpensionbystudent
+                                        ? dataResteFeesToPayByStudent?.findrestpensionbystudent
+                                        : "0"}{" "}
                                       FCFA
                                     </Text>
                                   </Box>
@@ -749,10 +751,11 @@ const receipt = () => {
                               <Th border="1px">
                                 <Box fontSize="10px">
                                   <Text textAlign={"center"}>
-                                    {
-                                      dataMontantTrancheByStudent
-                                        ?.AmountrExpectedByTranche[0]
-                                    }
+                                    {dataMontantTrancheByStudent
+                                      ?.AmountrExpectedByTranche[0]
+                                      ? dataMontantTrancheByStudent
+                                          ?.AmountrExpectedByTranche[0]
+                                      : "aucun"}
                                   </Text>
                                 </Box>
                               </Th>
@@ -768,10 +771,10 @@ const receipt = () => {
                               <Th border="1px">
                                 <Box fontSize="10px">
                                   <Text textAlign={"center"}>
-                                    {
+                                    {/* {
                                       dataResteTrancheByStudentId
                                         ?.findByStudentRestTranche[0].Rest
-                                    }
+                                    } */}
                                   </Text>
                                 </Box>
                               </Th>
@@ -780,9 +783,12 @@ const receipt = () => {
                                   <Text textAlign={"center"}>
                                     {/* {(new Date(dataDateLineTrancheStudentInscription?.getTrancheDateLineByStudent)).toLocaleDateString()}
                                      */}
-                                    {new Date(
-                                      dataTrancheByStudentId?.getClassfeeofStudent[0].dateLine
-                                    ).toLocaleDateString()}
+                                    {dataTrancheByStudentId
+                                      ?.getClassfeeofStudent[0].dateLine
+                                      ? new Date(
+                                          dataTrancheByStudentId?.getClassfeeofStudent[0].dateLine
+                                        ).toLocaleDateString()
+                                      : "aucun"}
                                   </Text>
                                 </Box>
                               </Th>
@@ -809,10 +815,11 @@ const receipt = () => {
                               <Th border="1px">
                                 <Box fontSize="10px">
                                   <Text textAlign={"center"}>
-                                    {
-                                      dataMontantTrancheByStudent
-                                        ?.AmountrExpectedByTranche[1]
-                                    }
+                                    {dataMontantTrancheByStudent
+                                      ?.AmountrExpectedByTranche[1]
+                                      ? dataMontantTrancheByStudent
+                                          ?.AmountrExpectedByTranche[1]
+                                      : "aucun"}
                                   </Text>
                                 </Box>
                               </Th>
@@ -828,10 +835,10 @@ const receipt = () => {
                               <Th border="1px">
                                 <Box fontSize="10px">
                                   <Text textAlign={"center"}>
-                                    {
+                                    {/* {
                                       dataResteTrancheByStudentId
                                         ?.findByStudentRestTranche[1].Rest
-                                    }
+                                    } */}
                                   </Text>
                                 </Box>
                               </Th>
@@ -839,9 +846,12 @@ const receipt = () => {
                                 <Box fontSize="10px">
                                   <Text textAlign={"center"}>
                                     {/* {((new Date(expense.createdOn)).toLocaleDateString('fr-FR', { day: 'numeric', month: 'numeric', year: 'numeric' }))}  */}
-                                    {new Date(
-                                      dataTrancheByStudentId?.getClassfeeofStudent[1].dateLine
-                                    ).toLocaleDateString()}
+                                    {dataTrancheByStudentId
+                                      ?.getClassfeeofStudent[1].dateLine
+                                      ? new Date(
+                                          dataTrancheByStudentId?.getClassfeeofStudent[1].dateLine
+                                        ).toLocaleDateString()
+                                      : "aucun"}
                                     {/* {(new Date(dataDateLineTrancheStudentTranche1?.getTrancheDateLineByStudent)).toLocaleDateString()} */}
                                   </Text>
                                 </Box>
@@ -869,10 +879,11 @@ const receipt = () => {
                               <Th border="1px">
                                 <Box fontSize="10px">
                                   <Text textAlign={"center"}>
-                                    {
-                                      dataMontantTrancheByStudent
-                                        ?.AmountrExpectedByTranche[2]
-                                    }
+                                    {dataMontantTrancheByStudent
+                                      ?.AmountrExpectedByTranche[2]
+                                      ? dataMontantTrancheByStudent
+                                          ?.AmountrExpectedByTranche[2]
+                                      : "aucun"}
                                   </Text>
                                 </Box>
                               </Th>
@@ -898,9 +909,12 @@ const receipt = () => {
                                     {/* {((new Date(expense.createdOn)).toLocaleDateString('fr-FR', { day: 'numeric', month: 'numeric', year: 'numeric' }))}  */}
                                     {/* {dataDateLineTrancheStudentTranche2?.getTrancheDateLineByStudent}  */}
                                     {/* {console.log(dataDateLineTrancheStudentTranche2?.getTrancheDateLineByStudent)} */}
-                                    {new Date(
-                                      dataTrancheByStudentId?.getClassfeeofStudent[2].dateLine
-                                    ).toLocaleDateString()}
+                                    {dataTrancheByStudentId
+                                      ?.getClassfeeofStudent[2].dateLine
+                                      ? new Date(
+                                          dataTrancheByStudentId?.getClassfeeofStudent[2].dateLine
+                                        ).toLocaleDateString()
+                                      : "aucune"}
                                   </Text>
                                 </Box>
                               </Th>
@@ -922,10 +936,11 @@ const receipt = () => {
                             <Text align="center" fontSize="xl">
                               {/* {dataStudentByTrancheStudent?.getStudentByTrancheStudent.montant} */}
                               {/* {dataStudentByTrancheStudent?.getTrancheStudentByStudent.montant} */}
-                              {
-                                dataAlreadyPayBySudent?.findpensionbystudent
-                                  .montantPension
-                              }
+                              {dataAlreadyPayBySudent?.findpensionbystudent
+                                .montantPension
+                                ? dataAlreadyPayBySudent?.findpensionbystudent
+                                    .montantPension
+                                : "0"}
                             </Text>
                             <Text fontWeight="bold" fontSize="xl">
                               Fcfa

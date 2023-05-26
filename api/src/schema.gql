@@ -349,16 +349,16 @@ type Salle {
 
 type Personnel {
   id: ID!
-  firstName: String
-  lastName: String
-  phoneNumber: String
-  situationMatrimonial: String
-  sexe: String
+  firstName: String!
+  lastName: String!
+  phoneNumber: String!
+  situationMatrimonial: String!
+  sexe: String!
   fonction: String
-  status: String
+  status: String!
   dateOfStartWork: String!
   dateOfBirth: String!
-  childNumber: Float
+  childNumber: Float!
 }
 
 type User {
@@ -383,7 +383,7 @@ enum Role {
   ECONOME
   FONDATEUR
   PRINCIPAL
-  GESTIONAIRE
+  GESTIONNAIRE
 }
 
 type UserPaginatedResponse {
@@ -938,8 +938,6 @@ input RedutionScolariteInput {
 input SalleUpdateInput {
   ID: ID
   name: String
-  sectionId: ID
-  cycleId: String
   montantPensionSalle: Float
   niveauEtudeId: ID
   anneeAcademiqueId: String
@@ -1036,8 +1034,6 @@ input SalleCreateInput {
   ID: ID
   name: String
   anneeAcademiqueId: String
-  sectionId: ID
-  cycleId: String
   montantPensionSalle: Float
   effectif: Float = 0
   niveauEtudeId: ID

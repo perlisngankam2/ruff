@@ -332,9 +332,9 @@ const AccountStatement = () => {
                         // flex='1'
                       >
                         {expense.studentFirstname}&nbsp;
-                        {expense.studentLastname}
+                        {expense.studentLastname}&nbsp;
                         {expense.personnelFirstName} &nbsp;
-                        {expense.personnelLastName}&nbsp; (
+                        {expense.personnelLastName}&nbsp; (salaire,
                         {expense.personnelFonction})
                       </Box>
                       <Box
@@ -393,9 +393,8 @@ const AccountStatement = () => {
                         <Box>{expense.creditamount}</Box>
                       </Box>
                       <Box width="20%" textAlign={"center"}>
-                        {expense.creditTotal
-                          ? expense.creditTotal
-                          : -expense.beditTotal}
+                        {expense.creditTotal? expense.creditTotal: null}
+                        {expense.debitTotal ? -expense.debitTotal: null}
                         {/* Net */}
                       </Box>
                     </Flex>

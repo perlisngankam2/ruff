@@ -29,22 +29,22 @@ export class PrimePersonnelResolver {
   constructor(private readonly primePersonnelService: PrimePersonnelService) {}
 
   @Mutation(() => PrimePersonnel)
-  @UseGuards(JwtAuthGuard,RolesGuard)
-  @Roles(Role.PRINCIPAL)
+  // @UseGuards(JwtAuthGuard,RolesGuard)
+  // @Roles(Role.PRINCIPAL)
   async createprimepersonnel(@Args('primePersonnel') createPrimePersonnelInput: PrimePersonnelCreateInput) {
     return await this.primePersonnelService.create(createPrimePersonnelInput);
   }
 
   @Query(() => [PrimePersonnel])
-  @UseGuards(JwtAuthGuard,RolesGuard)
-  @Roles(Role.PRINCIPAL)
+  // @UseGuards(JwtAuthGuard,RolesGuard)
+  // @Roles(Role.PRINCIPAL)
   async findAllprimepersonnel() {
     return await this.primePersonnelService.getAll()
   }
   
   @Query(() => PrimePersonnel, { name: 'primePersonnel' })
-  @UseGuards(JwtAuthGuard,RolesGuard)
-  @Roles(Role.PRINCIPAL)
+  // @UseGuards(JwtAuthGuard,RolesGuard)
+  // @Roles(Role.PRINCIPAL)
   async findOnePrimepersonnel(@Args('id', { type: () => String }) id: string) {
     return await this.primePersonnelService.findByOne(id);
   }

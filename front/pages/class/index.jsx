@@ -130,6 +130,13 @@ const Class = () => {
     });
     refetch();
     onClose();
+    toast({
+      title: "Suppression de la classe.",
+      description: "Suppresion reussit.",
+      status: "success",
+      duration: 3000,
+      isClosable: true,
+    });
   };
   const courseTable = [];
   const loadingCourse = () => {
@@ -477,7 +484,7 @@ const Class = () => {
                         <FormControl mt={"10px"}>
                           <FormLabel>Montant scolarite</FormLabel>
                           <Input
-                            // type="text"
+                            type="number"
                             name="montantPension"
                             value={montantPension}
                             onChange={(event) =>

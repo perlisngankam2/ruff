@@ -57,7 +57,7 @@ export class TrancheResolver {
   }
 
   @Mutation(()=> Tranche)
-  async deletestudent(@Args('id') id:string){
+  async deletepension(@Args('id') id:string){
     return await this.trancheService.delete(id)
   }
 

@@ -416,6 +416,7 @@ const DetailComponent = () => {
     // console.log(newDisabledOptions)
     // const totalPension = dataTrancheStudentBySudentId?.getTrancheStudentByStudent.montant;
     const totalPension = dataClassFeesByStudentId?.getClassfeebyStudent;
+    console.log(totalPension);
     // const trancheIds = dataTranchePension?.findAlltranche.map((tranche) => tranche.id);
     // console.log(trancheIds)
     dataTrancheByStudentId?.getClassfeeofStudent.map((tranche) => {
@@ -423,13 +424,11 @@ const DetailComponent = () => {
         dataTrancheCompleteByStudent?.getalltranchecompletedbystudent.map(
           (tranche) => tranche.id
         );
-      console.log(trancheCompleteByStudent);
+      console.log("solde", trancheCompleteByStudent);
       tranches.push({
         label: tranche?.name + " ," + tranche?.montant + "Fcfa",
         value: tranche?.id,
-        isDisabled:
-          totalPension >= tranche?.montant &&
-          trancheCompleteByStudent?.includes(tranche?.id),
+        isDisabled: totalPension >= tranche?.montant && trancheCompleteByStudent?.includes(tranche?.id),
         //  (il faut aussi que l'id de cette tranche soit inclu dans la liste des tranches qui sont dans avancetranche)
         //la liste des tranches qi sont dans avance tranches et dont la somme total de tout ses avances soit superieur au montant de la tranche
       });
@@ -735,7 +734,7 @@ const DetailComponent = () => {
             {/* FORMULAIRE DE PAIEMENT DE SCOLARITE */}
 
             <Center>
-              {/* { (account?.role==="ADMIN") || (personnelData?.getpersonnelbyaccount.fonction==="econome") && */}
+              {/* personnelData?.getpersonnelbyaccount.fonction==="econome" && */}
               <Button
                 bg="colors.primary"
                 height="40px"
@@ -934,6 +933,7 @@ const DetailComponent = () => {
                           <Text>
                             Montant attendu:{" "}
                             {dataClassFeesByStudentId?.getClassfeebyStudent}{" "}
+                            {/* {totalPension} */}
                             FCFA |
                           </Text>
                           <Text>
@@ -1176,6 +1176,7 @@ const DetailComponent = () => {
                               // onChange={(value) => handleTrancheSelect(value)}
                             >
                               {console.log(selectedTranches)}
+                              {console.log("tranche Name",tranches[0])};
                               {/* {console.log(trancheId)} */}
                             </Selects>
                             {/* {errors.trancheId && <Text>{errors.trancheId.message}</Text>} */}

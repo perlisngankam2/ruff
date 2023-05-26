@@ -34,8 +34,8 @@ export class PensionSalle {
   @Property({ nullable: true })
   description!: string;
 
-  @Field({ defaultValue:0 })
-  @Property({ default:0 })
+  @Field({ nullable: false })
+  @Property({ nullable: false })
   montantPension!: number;
 
   @Field(() => Date, { nullable: true })

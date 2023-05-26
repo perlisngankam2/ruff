@@ -56,6 +56,7 @@ const AddLevel = () => {
   let input;
 
   useEffect(() => {
+    console.log(dataStudyLevel);
     if (!authToken) {
       router.back();
     }
@@ -97,7 +98,7 @@ const AddLevel = () => {
           },
         ],
       }),
-        refetch();
+      refetch();
       toast({
         title: "Creation d'un niveau d'etude.",
         description: "Le niveau a ete créée avec succes.",
@@ -122,6 +123,7 @@ const AddLevel = () => {
           },
         ],
       });
+      refetch()
       toast({
         title: "Modification d'un niveau d'etude.",
         description: "Le niveau a ete créée avec succes.",

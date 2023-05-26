@@ -245,6 +245,18 @@ const receipt = () => {
       variables: { studentid: router.query.id },
     }
   );
+
+  // const tranches = [];
+  // const loadTranches = () => {
+  //   dataTrancheByStudentId?.getClassfeeofStudent.map((tranche) => {
+  //     tranches.push({
+  //       label: tranche?.name + " ," + tranche?.montant + "Fcfa",
+  //       value: tranche?.id,
+  //       //  (il faut aussi que l'id de cette tranche soit inclu dans la liste des tranches qui sont dans avancetranche)
+  //       //la liste des tranches qi sont dans avance tranches et dont la somme total de tout ses avances soit superieur au montant de la tranche
+  //     });
+  //   });
+  // };
   // const {data:dataStudentByTrancheStudent} = useQuery(GET_STUDENT_BY_TRANCHE_STUDENT,
   //     {
   //         variables: {studentid: router.query.id}
@@ -273,6 +285,7 @@ const receipt = () => {
       dataAvanceMontantInscriptionByStudent?.SumAvanceTrancheByStudent
     );
     console.log(dataMontantTrancheByStudent);
+    // loadTranches();
   });
 
   if (loading) return <Text>Chargement en cour...</Text>;
@@ -751,11 +764,14 @@ const receipt = () => {
                               <Th border="1px">
                                 <Box fontSize="10px">
                                   <Text textAlign={"center"}>
-                                    {dataMontantTrancheByStudent
+                                    {/* {dataMontantTrancheByStudent
                                       ?.AmountrExpectedByTranche[0]
                                       ? dataMontantTrancheByStudent
                                           ?.AmountrExpectedByTranche[0]
-                                      : "aucun"}
+                                      : "aucun"} */}
+                                     {dataTrancheByStudentId
+                                      ?.getClassfeeofStudent[0].name?  dataTrancheByStudentId
+                                      ?.getClassfeeofStudent[0].name : "aucun"}
                                   </Text>
                                 </Box>
                               </Th>
@@ -815,11 +831,14 @@ const receipt = () => {
                               <Th border="1px">
                                 <Box fontSize="10px">
                                   <Text textAlign={"center"}>
-                                    {dataMontantTrancheByStudent
+                                    {/* {dataMontantTrancheByStudent
                                       ?.AmountrExpectedByTranche[1]
                                       ? dataMontantTrancheByStudent
                                           ?.AmountrExpectedByTranche[1]
-                                      : "aucun"}
+                                      : "aucun"} */}
+                                      {dataTrancheByStudentId
+                                      ?.getClassfeeofStudent[1].name?  dataTrancheByStudentId
+                                      ?.getClassfeeofStudent[1].name : "aucun"}
                                   </Text>
                                 </Box>
                               </Th>
@@ -879,11 +898,14 @@ const receipt = () => {
                               <Th border="1px">
                                 <Box fontSize="10px">
                                   <Text textAlign={"center"}>
-                                    {dataMontantTrancheByStudent
+                                    {/* {dataMontantTrancheByStudent
                                       ?.AmountrExpectedByTranche[2]
                                       ? dataMontantTrancheByStudent
                                           ?.AmountrExpectedByTranche[2]
-                                      : "aucun"}
+                                      : "aucun"} */}
+                                      {dataTrancheByStudentId
+                                      ?.getClassfeeofStudent[2].name?  dataTrancheByStudentId
+                                      ?.getClassfeeofStudent[2].name : "aucun"}
                                   </Text>
                                 </Box>
                               </Th>

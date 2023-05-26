@@ -172,7 +172,6 @@ const PaySlip = () => {
       },
     });
     refetch();
-
     console.log(genererSalaireData);
     onOpen();
 
@@ -195,6 +194,8 @@ const PaySlip = () => {
         },
       },
     });
+    setIsLoading(false);
+    onClose();
     refetch();
     console.log(salaireData);
 
@@ -212,7 +213,6 @@ const PaySlip = () => {
     });
 
     setMoisPaie("");
-    setIsLoading(false);
   };
 
   useEffect(() => {
@@ -252,10 +252,10 @@ const PaySlip = () => {
     const endMonth = new Date(today.getFullYear(), today.getMonth() + 3, 1);
     const options = [];
     let currentMonth = startMonth;
- 
+
     if (!unavailableMonths) {
       // Si le tableau est vide, ajouter les options pour les 7 mois autour du mois actuel
-      for (let i =-3; i <= 3; i++) {
+      for (let i = -3; i <= 3; i++) {
         const date = new Date(today.getFullYear(), today.getMonth() + i, 1);
         const year = date.getFullYear();
         const month = (date.getMonth() + 1).toString().padStart(2, "0");
@@ -296,6 +296,19 @@ const PaySlip = () => {
     return options;
   }, [unavailableMonths]);
 
+  // AFFICHAGE DU MOIS COURANT
+  const currentDate = new Date();
+  const yearName = currentDate.getFullYear();
+  console.log(yearName);
+  const month = (currentDate.getMonth() + 1).toString().padStart();
+  console.log(month);
+  const modifyCurrentDateDate = currentDate.toLocaleString("default", {
+    month: "long",
+  });
+  console.log(modifyCurrentDateDate);
+  const finalCurrentMonth = `${modifyCurrentDateDate} ${yearName}`;
+  console.log(finalCurrentMonth);
+  // currentMonthNew = new
   // const monthOptions = useMemo(() => {
   //   const today = new Date();
   //   const startMonth = new Date(today.getFullYear(), today.getMonth() - 3, 1);
@@ -458,6 +471,7 @@ const PaySlip = () => {
                     value={moisPaie}
                     onChange={handleMonthChange}
                     isRequired
+                    defaultValue={[finalCurrentMonth]}
                   >
                     <option value="">Sélectionnez un mois</option>
                     {monthOptions}

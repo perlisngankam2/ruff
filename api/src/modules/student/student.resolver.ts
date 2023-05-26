@@ -67,8 +67,8 @@ export class StudentResolver {
   }
 
   @Mutation(()=> Student)
-  @UseGuards(JwtAuthGuard,RolesGuard)
-  @Roles(Role.ECONOME)
+  // @UseGuards(JwtAuthGuard,RolesGuard)
+  // @Roles(Role.ECONOME)
   async deletestudent(@Args('id') id:string){
     return await this.studentService.delete(id)
   }
@@ -97,15 +97,15 @@ export class StudentResolver {
   }
 
   @Query(()=>Number)
-  @UseGuards(JwtAuthGuard,RolesGuard)
-  @Roles(Role.ECONOME, Role.ADMIN)
+  // @UseGuards(JwtAuthGuard,RolesGuard)
+  // @Roles(Role.ECONOME, Role.ADMIN)
   async getClassfeebyStudent(@Args('studentid') studentid:string){
     return await this.studentService.getclassfeebystudent(studentid)
   }
 
   @Query(()=>[Tranche])
-  @UseGuards(JwtAuthGuard,RolesGuard)
-  @Roles(Role.ECONOME)
+  // @UseGuards(JwtAuthGuard,RolesGuard)
+  // @Roles(Role.ECONOME)
   async getClassfeeofStudent(@Args('studentid') studentid:string){
     return await this.studentService.findlistfees(studentid)
   }

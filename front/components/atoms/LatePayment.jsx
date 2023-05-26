@@ -50,7 +50,7 @@ const LatePayment = () => {
       if (tranche.name.toLowerCase() === "tranche 2") {
         return new Date(tranche.dateLine).toLocaleDateString();
       } else {
-        return "aucune tranche"; // ou une valeur par défaut si vous ne voulez pas afficher de dateline
+        return null; // ou une valeur par défaut si vous ne voulez pas afficher de dateline
       }
     }
   );

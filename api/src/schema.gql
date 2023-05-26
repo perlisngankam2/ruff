@@ -739,7 +739,7 @@ type Mutation {
   deletePersonnelSalle(id: String!): PersonnelSalle!
   createStudent(student: StudentCreateInput!): Student!
   updateStudent(id: String!, input: StudentCreateInput!): Student!
-  deletestudent(id: String!): Tranche!
+  deletestudent(id: String!): Student!
   createLocalisation(createLocalisation: LocalisationCreateInput!): Localisation!
   updatelocalisation(id: String!, input: LocalisationUpdateInput!): Localisation!
   deletelocalisation: Localisation!
@@ -751,6 +751,7 @@ type Mutation {
   deleteprimepersonnel(id: String!): PrimePersonnel!
   createTranche(tranche: TrancheCreateInput!): Tranche!
   updatetranche(id: String!): Tranche!
+  deletepension(id: String!): Pension!
   createParameter(input: ParameterCreateInput!): Parameter!
   updateParameter(id: String!): Parameter!
   deleteparamaters(id: String!): Parameter!
@@ -759,7 +760,6 @@ type Mutation {
   deletetranchestudent(id: String!): TrancheStudent!
   createPensionSalle(pensionsalle: PensionSalleCreateInput!): PensionSalle!
   updatePension(id: String!): Pension!
-  deletepension(id: String!): Pension!
   createAnnerAccademique(anneeAccademique: AnneeAccademiqueCreateInput!): AnneeAccademique!
   updateanneeacademique(id: String!, input: AnneeAccademiqueUpdateInput!): AnneeAccademique!
   deleteanneeacademique(id: String!): AnneeAccademique!
@@ -1014,7 +1014,7 @@ input PensionSalleCreateInput {
   anneeAcademiqueId: ID
   name: String
   description: String
-  montantPension: Float! = 0
+  montantPension: Float!
   dateLine: ID
 }
 

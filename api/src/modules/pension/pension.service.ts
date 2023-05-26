@@ -60,7 +60,6 @@ export class PensionService {
             dateLine: input.dateLine,
             student: student.id,
             year:annee
-            
           },
           {
             em:this.em

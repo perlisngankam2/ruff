@@ -154,6 +154,7 @@ export class TrancheService {
           
           await this.trancheRepository.flush();
       }
+      
       async delete(id:string){
         const a = this.findById(id) 
         await this.trancheRepository.nativeDelete(await a)

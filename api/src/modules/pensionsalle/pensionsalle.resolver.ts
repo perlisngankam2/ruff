@@ -25,8 +25,8 @@ export class PensionSalleResolver {
   constructor(private readonly pensionsalleService: PensionSalleService) {}
 
   @Mutation(() => PensionSalle)
-  @UseGuards(JwtAuthGuard,RolesGuard)
-  @Roles(Role.PRINCIPAL)
+  // @UseGuards(JwtAuthGuard,RolesGuard)
+  // @Roles(Role.PRINCIPAL)
   async createPensionSalle(@Args('pensionsalle') Input: PensionSalleCreateInput) {
     return await this.pensionsalleService.create(Input);
   }

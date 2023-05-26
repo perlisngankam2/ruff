@@ -38,6 +38,7 @@ import {
   InputRightElement,
   AlertDialogCloseButton,
   Show,
+  useToast
 } from "@chakra-ui/react";
 // import Link from "../../components/atoms/Link"
 import React from "react";
@@ -75,6 +76,7 @@ const Eleves = () => {
   const cancelRef = React.useRef();
   const router = useRouter();
   const { t } = useTranslation();
+  const toast = useToast();
   const [query, setQuery] = useState("");
   const [data, setData] = useState([]);
   const { setAuthToken, authToken } = useAuth();

@@ -52,6 +52,7 @@ import { IoIosAdd } from "react-icons/io";
 const generalSetting = () => {
   const { setAuthToken, authToken } = useAuth();
   const [name, setName] = useState("");
+  const [parameterName, setParameterName] = useState("")
   const [anneeAcademiqueId, setAnneeAcademiqueId] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
   const [emailAddress, setEmailAddress] = useState("");
@@ -123,7 +124,7 @@ const generalSetting = () => {
     await createSchoolParameters({
       variables: {
         input: {
-          name: name,
+          parameterName: parameterName,
           phoneNumber: phoneNumber,
           emailAddress: emailAddress,
           contry: contry,
@@ -243,9 +244,9 @@ const generalSetting = () => {
                     // size={"lg"}
                     type="text"
                     width={"400px"}
-                    value={name}
-                    name="name"
-                    onChange={(event) => setName(event.target.value)}
+                    value={parameterName}
+                    name="parameterName"
+                    onChange={(event) => setParameterName(event.target.value)}
                   />
                 </FormControl>
                 <FormControl mt="17px">

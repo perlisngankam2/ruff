@@ -273,7 +273,7 @@ type Expense {
 
 type Parameter {
   id: ID!
-  name: String
+  parameterName: String
   postalBox: String
   phoneNumber: String
   emailAddress: String
@@ -989,7 +989,7 @@ input TrancheCreateInput {
 
 input ParameterCreateInput {
   ID: String
-  name: String
+  parameterName: String
   phoneNumber: String
   emailAddress: String
   contry: String

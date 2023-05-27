@@ -174,7 +174,7 @@ export const GET_ALL_SCHOOL_PARAMETER = gql  `
 query findAllparameters {
     findAllparameters {
         id
-        name
+        parameterName
         postalBox
         phoneNumber
         emailAddress

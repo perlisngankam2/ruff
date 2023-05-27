@@ -61,15 +61,15 @@ export class SectionResolver {
   }
 
   @Query(() => [Section])
-  @UseGuards(JwtAuthGuard,RolesGuard)
-  @Roles(Role.FONDATEUR)
+  // @UseGuards(JwtAuthGuard,RolesGuard)
+  // @Roles(Role.FONDATEUR)
   async getAllForUseAnglophone(){
    return await this.sectionService.getAllForUseAnglophone()
   }
 
   @Query(() => [Section])
-  @UseGuards(JwtAuthGuard,RolesGuard)
-  @Roles(Role.FONDATEUR)
+  // @UseGuards(JwtAuthGuard,RolesGuard)
+  // @Roles(Role.FONDATEUR)
   async getAllForUseFrancophone(){
    return await this.sectionService.getAllForUseFrancophone()
   }

@@ -282,6 +282,13 @@ const Pension = () => {
                 onClick={onOpen}
               />
             </Box>
+            <Box display={{ md: "flex" }} flexDirection={"column"} mt={"-10px"}>
+              <Text color={"red"}>
+               NB: Les tranches doivent etre enregistrées en fonction de leursordre de paiement
+              </Text>
+              <Text color={"red"}> et par ordre de priorité de la plus petite a la plus grande</Text>
+            </Box>
+          <Box mt={"20px"}> 
             <AlertDialog
               motionPreset="slideInBottom"
               leastDestructiveRef={cancelRef}
@@ -333,7 +340,6 @@ const Pension = () => {
                           placeholder="Valeur"
                           onChange={(event) => setMontant(event.target.value)}
                           isRequired
-
                         />
                       </FormControl>
                       <FormControl mt={4}>
@@ -345,7 +351,6 @@ const Pension = () => {
                           placeholder="Valeur"
                           onChange={(event) => setPriority(event.target.value)}
                           isRequired
-
                         />
                         {/* <Select 
                             type={'text'} 
@@ -372,7 +377,6 @@ const Pension = () => {
                           placeholder="Classe"
                           onChange={(event) => setSalleId(event.target.value)}
                           isRequired
-
                         >
                           {dataClasse &&
                             dataClasse.findAllsalle.map((salle, index) => (
@@ -391,7 +395,6 @@ const Pension = () => {
                           placeholder="Date limite de paiement"
                           onChange={(event) => setDateLine(event.target.value)}
                           isRequired
-
                         />
                       </FormControl>
                       <FormControl mt={4}>
@@ -405,7 +408,6 @@ const Pension = () => {
                             setAnneeAcademiqueId(event.target.value)
                           }
                           isRequired
-
                         >
                           {dataAnneeAcademique &&
                             dataAnneeAcademique.findAllAnnerAccademique.map(
@@ -430,6 +432,8 @@ const Pension = () => {
                 </Box>
               </AlertDialogContent>
             </AlertDialog>
+            </Box>
+
 
             {/* TABLEAU DE LA LISTE DES TRANCHES DE LA PENSION */}
             <Box>

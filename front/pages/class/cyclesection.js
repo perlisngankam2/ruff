@@ -120,12 +120,11 @@ const cyclesection = () => {
     setPageNumberCycle(page);
   };
 
-  useEffect(()=>{
-    if(!authToken){
-      router.back()
+  useEffect(() => {
+    if (!authToken) {
+      router.back();
     }
-    
-  },[authToken])
+  }, [authToken]);
 
   useEffect(() => {
     console.log(data?.findAllsection);
@@ -269,26 +268,28 @@ const cyclesection = () => {
           // {...onSubmit ? updateCycle: addCycle}
           // update={true}
           />
-          <TableContainer border={"1px"} rounded={"md"}>
-            <Table variant="striped" colorScheme={"white"} bg={"white"}>
-              <Thead background="colors.secondary">
-                <Tr>
-                  <Th>Nom</Th>
-                  <Th>Setion</Th>
-                  <Th>Actions</Th>
-                </Tr>
-              </Thead>
-              {dataCycle && (
-                <Tbody>
-                  {dataCycle.findAllcycle
-                    // .slice(pagesVisitedCycle, pagesVisitedCycle + itemPerPageCycle)
-                    .map((cycle, index) => (
-                      <CycleElement cycle={cycle} index={index} />
-                    ))}
-                </Tbody>
-              )}
-            </Table>
-          </TableContainer>
+          <Box>
+            <TableContainer border={"1px"} rounded={"md"}>
+              <Table variant="striped" colorScheme={"white"} bg={"white"}>
+                <Thead background="colors.secondary">
+                  <Tr>
+                    <Th>Nom</Th>
+                    <Th>Setion</Th>
+                    <Th>Actions</Th>
+                  </Tr>
+                </Thead>
+                {dataCycle && (
+                  <Tbody>
+                    {dataCycle.findAllcycle
+                      // .slice(pagesVisitedCycle, pagesVisitedCycle + itemPerPageCycle)
+                      .map((cycle, index) => (
+                        <CycleElement cycle={cycle} index={index} />
+                      ))}
+                  </Tbody>
+                )}
+              </Table>
+            </TableContainer>
+          </Box>
         </Box>
         <Box mt="15px">
           {/* <ReactPaginate 

@@ -83,15 +83,15 @@ export class StudentResolver {
   // }
 
   @Query(()=>[Student])
-  @UseGuards(JwtAuthGuard,RolesGuard)
-  @Roles(Role.FONDATEUR)
+  // @UseGuards(JwtAuthGuard,RolesGuard)
+  // @Roles(Role.FONDATEUR)
   async getAllStudentsForUseAnglophone(){
     return await this.studentService.getAllForUseAnglophone()
   }
   
   @Query(()=>[Number])
-  @UseGuards(JwtAuthGuard,RolesGuard)
-  @Roles(Role.ECONOME)
+  // @UseGuards(JwtAuthGuard,RolesGuard)
+  // @Roles(Role.ECONOME)
   async AmountrExpectedByTranche(@Args('studentid') studentid:string){
     return await this.studentService.findlisttranche(studentid)
   }
@@ -111,8 +111,8 @@ export class StudentResolver {
   }
 
 @Query(()=>[Student])
-@UseGuards(JwtAuthGuard,RolesGuard)
-  @Roles(Role.FONDATEUR)
+// @UseGuards(JwtAuthGuard,RolesGuard)
+//   @Roles(Role.FONDATEUR)
   async getAllForUseAnglophoneStudent(){
     return await this.studentService.getAllForUseAnglophone()
   }

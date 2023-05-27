@@ -13,7 +13,7 @@ export class Parameter {
 
   @Field({ nullable: true })
   @Property({ nullable: true })
-  name!: string;
+  parameterName!: string;
 
   @Field({ nullable: true })
   @Property({ nullable: true })

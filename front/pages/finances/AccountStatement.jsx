@@ -132,10 +132,10 @@ const AccountStatement = () => {
             size="lg"
             textColor="pink.300"
           >
-            {t("pages.finances.accountStatement.heading")}
+            {t("pages.finance.accountStatement.heading")}
           </Heading>
           <Hide below="sm">
-            <Text>Dashboad /</Text>
+            <Text>Dashboad /finance /état des entrées et sorties</Text>
           </Hide>
         </Flex>
         <Flex

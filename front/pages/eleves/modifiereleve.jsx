@@ -471,3 +471,5 @@ export default ModifierEleve;
 
 //   return resultat.trim();
 // }
+
+// SUPPRSSION DE LA PRIME , SUPPRESSION DE LA RETENU

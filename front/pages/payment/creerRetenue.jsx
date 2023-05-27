@@ -165,6 +165,7 @@ function creerRetenue() {
                         name="Nom"
                         placeholder="nom retenue"
                         bg="white"
+                        isRequired
                         // type="date"
                         // id="dateOfPrime"
                         // name="dateOfPrime"
@@ -200,6 +201,7 @@ function creerRetenue() {
                         name="Description"
                         placeholder="--montant--"
                         bg="white"
+                        isRequired
                         // borderColor="purple.100"
                         // onChange={e => setLastName(e.target.value)}
                         // value={lastName}

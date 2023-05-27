@@ -321,6 +321,7 @@ const AjouterEleve = () => {
           p={6}
           m="10px auto"
           as="form"
+          onSubmit={HandleClick}
           bg={"white"}
         >
           <Progress
@@ -426,6 +427,7 @@ const AjouterEleve = () => {
                         setStudent({ ...student, adress: e.target.value })
                       }
                       variant="flushed"
+                      
                     />
                   </FormControl>
                   <FormControl>
@@ -498,6 +500,7 @@ const AjouterEleve = () => {
                         })
                       }
                       variant="flushed"
+                      isRequired
                     >
                       {dataCategoryStudent &&
                         dataCategoryStudent.findAllcategorieeleve.map(
@@ -815,7 +818,6 @@ const AjouterEleve = () => {
                   colorScheme="red"
                   variant="solid"
                   type="submit"
-                  onClick={HandleClick}
                   isDisabled={
                     personnelData?.getpersonnelbyaccount.fonction ===
                       "principal" ||

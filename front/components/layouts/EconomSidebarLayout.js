@@ -196,11 +196,11 @@ import { MdOutlineClass } from "react-icons/md";
             <Box as="span">Categorie élèves</Box>
           </Link>
         </AccordionPanel>
-        <AccordionPanel pb={1} _hover={{background:"rgba(0,0,0,0.16)"}}>
+        {/* <AccordionPanel pb={1} _hover={{background:"rgba(0,0,0,0.16)"}}>
           <Link href="/eleves/reduction/reductionStudent">
             <Box as="span">Reduction scolarite</Box>
           </Link>
-        </AccordionPanel>
+        </AccordionPanel> */}
       </AccordionItem>
       {/* <AccordionItem> 
         <AccordionButton pl={0} >
@@ -300,7 +300,7 @@ import { MdOutlineClass } from "react-icons/md";
           </Link>
         </AccordionPanel>
       </AccordionItem>
-      {/* <AccordionItem>
+      <AccordionItem>
         <AccordionButton pl={0} >
           <Flex align="center" gap="1">
             <Icon as={IoIosStats} />
@@ -317,7 +317,7 @@ import { MdOutlineClass } from "react-icons/md";
             <Box as="span">Paiement par eleve</Box>
           </Link>
         </AccordionPanel>
-      </AccordionItem> */}
+      </AccordionItem>
       {/* <AccordionItem>
         <AccordionButton pl={0} >
           <Flex align="center" gap="1">

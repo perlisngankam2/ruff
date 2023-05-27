@@ -53,8 +53,8 @@ export class PrimeResolver {
   }
 
   @Mutation(()=>Prime)
-  @UseGuards(JwtAuthGuard,RolesGuard)
-  @Roles(Role.PRINCIPAL)
+  // @UseGuards(JwtAuthGuard,RolesGuard)
+  // @Roles(Role.PRINCIPAL)
   async deleteprime(@Args('id') id:string){
     return await this.primeService.delete(id)
   }

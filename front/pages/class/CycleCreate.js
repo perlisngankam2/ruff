@@ -184,15 +184,15 @@ const CycleCreate = () => {
         </Button>
       </Box>
       <Box>
-        <Box as={"form"}>
-          <AlertDialog
-            isOpen={isOpen}
-            leastDestructiveRef={cancelRef}
-            onClose={onClose}
-            size="xl"
-          >
-            <AlertDialogOverlay>
-              <AlertDialogContent width={"440px"}>
+        <AlertDialog
+          isOpen={isOpen}
+          leastDestructiveRef={cancelRef}
+          onClose={onClose}
+          size="xl"
+        >
+          <AlertDialogOverlay>
+            <AlertDialogContent width={"440px"}>
+              <Box as={"form"} onSubmit={addCycle}>
                 <AlertDialogHeader fontSize="sm" fontWeight="base" mt="9px">
                   <Box>
                     <Heading
@@ -216,6 +216,7 @@ const CycleCreate = () => {
                         placeholder="nom"
                         onChange={(event) => setName(event.target.value)}
                         value={name}
+                        isRequired
                       />
                     </FormControl>
                     <FormControl mt="15px">
@@ -227,7 +228,7 @@ const CycleCreate = () => {
                         placeholder="Section"
                         onChange={(event) => setSectionId(event.target.value)}
                         value={sectionId}
-                        required
+                        isRequired
                       >
                         {data &&
                           data.findAllsection.map((section, index) => (
@@ -245,15 +246,15 @@ const CycleCreate = () => {
                     {t("pages.cycle.cycleCreate.cancelButton")}
                   </Button>
                   {/* <Link href={'/personnel/ajoutercategorypersonnel'}> */}
-                  <Button colorScheme="green" ml={3} onClick={addCycle}>
+                  <Button colorScheme="green" ml={3} type="submit">
                     {t("pages.cycle.cycleCreate.submitButton")}
                   </Button>
                   {/* </Link>  */}
                 </AlertDialogFooter>
-              </AlertDialogContent>
-            </AlertDialogOverlay>
-          </AlertDialog>
-        </Box>
+              </Box>
+            </AlertDialogContent>
+          </AlertDialogOverlay>
+        </AlertDialog>
       </Box>
     </Center>
   );

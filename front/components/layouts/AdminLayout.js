@@ -228,7 +228,7 @@
               </Link>
             </AccordionPanel>
           </AccordionItem> */}
-          <AccordionItem>
+          {/* <AccordionItem>
             <AccordionButton pl={0} >
               <Flex align="center" gap="1">
                 <Icon as={IoIosStats} />
@@ -245,7 +245,7 @@
                 <Box as="span">Paiement par eleve</Box>
               </Link>
             </AccordionPanel>
-          </AccordionItem>
+          </AccordionItem> */}
           {/* <AccordionItem>
             <AccordionButton pl={0} >
               <Flex align="center" gap="1">

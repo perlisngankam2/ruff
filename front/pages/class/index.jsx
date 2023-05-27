@@ -362,7 +362,7 @@ const Class = () => {
             >
               <AlertDialogOverlay>
                 <AlertDialogContent width={"400px"}>
-                  <Box mt={"20px"}>
+                  <Box mt={"20px"} onSubmit={addPersonnelSalle} as="form">
                     <Heading textAlign="center" size="md">
                       Affectez un enseignant a une classe
                     </Heading>
@@ -375,6 +375,7 @@ const Class = () => {
                             placeholder="classe"
                             value={salleId}
                             onChange={(event) => setSalleId(event.target.value)}
+                            isRequired
                           >
                             {dataClasse &&
                               dataClasse.findAllsalle.map((salle, index) => (
@@ -393,6 +394,7 @@ const Class = () => {
                             }
                             // isDisabled
                             placeholder="enseignant"
+                            isRequired
                           >
                             {dataEnseignant &&
                               dataEnseignant?.findAllpersonnel.map(
@@ -413,6 +415,7 @@ const Class = () => {
                             onChange={setSelectedCourse}
                             placeholder="Matiere"
                             options={courseTable}
+                            isRequired
                           >
                             {/* {dataCourse &&
                               dataCourse?.findAllCourse.map((course, index) =>(
@@ -435,11 +438,7 @@ const Class = () => {
                         annuler
                       </Button>
                       <Links href={"#"}>
-                        <Button
-                          colorScheme="green"
-                          ml={3}
-                          onClick={addPersonnelSalle}
-                        >
+                        <Button colorScheme="green" ml={3} type="submit">
                           Affectez
                         </Button>
                       </Links>
@@ -461,7 +460,7 @@ const Class = () => {
             >
               <AlertDialogOverlay>
                 <AlertDialogContent width={"400px"}>
-                  <Box mt={"20px"}>
+                  <Box mt={"20px"} onSubmit={AddMontantPensionClasse} as="form">
                     <Heading textAlign="center" size="md">
                       Ajoutez une pension
                     </Heading>
@@ -474,6 +473,7 @@ const Class = () => {
                             placeholder="classe"
                             value={salleId}
                             onChange={(event) => setSalleId(event.target.value)}
+                            isRequired
                           >
                             {dataClasse &&
                               dataClasse.findAllsalle.map((salle, index) => (
@@ -492,6 +492,7 @@ const Class = () => {
                             }
                             // isDisabled
                             placeholder="Montant de la scolarite"
+                            isRequired
                           />
                         </FormControl>
                         <FormControl mt={"10px"}>
@@ -505,6 +506,7 @@ const Class = () => {
                             }
                             // isDisabled
                             placeholder="Annee academique"
+                            isRequired
                           >
                             {dataAnneeAcademique &&
                               dataAnneeAcademique.findAllAnnerAccademique.map(
@@ -530,11 +532,7 @@ const Class = () => {
                         annuler
                       </Button>
                       <Links href={"#"}>
-                        <Button
-                          colorScheme="green"
-                          ml={3}
-                          onClick={AddMontantPensionClasse}
-                        >
+                        <Button colorScheme="green" ml={3} type="submit">
                           Affectez
                         </Button>
                       </Links>

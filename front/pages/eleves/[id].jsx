@@ -172,7 +172,7 @@ const DetailComponent = () => {
   const [selectedTranches, setSelectedTranches] = useState([]);
   const [selectedParents, setSelectedParent] = useState([]);
   const [salleStudent, setSalleStudent] = useState(null);
-  
+
   // const isDisabled = true
   // const {register, handleSubmit, control,  formState: { isSubmitting, errors }, setValue} = useForm({
   //   resolver : zodResolver(schoolFeesSchema),
@@ -188,7 +188,7 @@ const DetailComponent = () => {
 
   //RECUPERATION DE TOUT LES ELEVES
   const { account, loaded } = useAccount();
-  const { setAuthToken,authToken } = useAuth();
+  const { setAuthToken, authToken } = useAuth();
 
   //information de l'utilisateur connecte
   const { data: personnelData, called } = useQuery(GET_PERSONNEL_BY_USERID, {
@@ -428,7 +428,9 @@ const DetailComponent = () => {
       tranches.push({
         label: tranche?.name + " ," + tranche?.montant + "Fcfa",
         value: tranche?.id,
-        isDisabled: totalPension >= tranche?.montant && trancheCompleteByStudent?.includes(tranche?.id),
+        isDisabled:
+          totalPension >= tranche?.montant &&
+          trancheCompleteByStudent?.includes(tranche?.id),
         //  (il faut aussi que l'id de cette tranche soit inclu dans la liste des tranches qui sont dans avancetranche)
         //la liste des tranches qi sont dans avance tranches et dont la somme total de tout ses avances soit superieur au montant de la tranche
       });
@@ -452,8 +454,6 @@ const DetailComponent = () => {
       });
     });
   };
-
-  
 
   useEffect(() => {
     if (!authToken) {
@@ -741,7 +741,6 @@ const DetailComponent = () => {
                 color="white"
                 borderRadius={"md"}
                 onClick={onOpen}
-
               >
                 Payer la Scolarite
               </Button>
@@ -1055,9 +1054,7 @@ const DetailComponent = () => {
 
             {/* FORMULAIRE DE PAIEMENT DE LA SCOLARITE */}
             <Box
-              as="form"
-              // onSubmit={PayTrancheSchoolFees}
-              // onSubmit={PayTrancheSchoolFees(handleSubmit)}
+            // onSubmit={PayTrancheSchoolFees}
             >
               <AlertDialog
                 isOpen={isOpen}
@@ -1067,65 +1064,44 @@ const DetailComponent = () => {
               >
                 <AlertDialogOverlay>
                   <AlertDialogContent>
-                    <AlertDialogCloseButton pl="20px" pb="20px" />
-
-                    <AlertDialogHeader fontSize="sm" fontWeight="base" mt="0">
-                      <Box
-                        bg={"colors.secondary"}
-                        borderBottomRightRadius={10}
-                        borderBottomLeftRadius={10}
-                      >
-                        <Heading
-                          as="h4"
-                          textAlign={"center"}
-                          fontSize={["15px", "20px", "20px"]}
-                          p="2"
-                          mt="10px"
+                    <Box as="form" onSubmit={addAvanceTranche}>
+                      <AlertDialogCloseButton pl="20px" pb="20px" />
+                      <AlertDialogHeader fontSize="sm" fontWeight="base" mt="0">
+                        <Box
+                          bg={"colors.secondary"}
+                          borderBottomRightRadius={10}
+                          borderBottomLeftRadius={10}
                         >
-                          Groupe Scolaire Bilingue Awono Bilongue
-                        </Heading>
-                      </Box>
-                    </AlertDialogHeader>
-
-                    <AlertDialogBody>
-                      <Box mt="4">
-                        {/* BOUTON D'INITIALISATION DE LA PENSION */}
-                        {/* <Box display="flex"> 
-                              <Text 
-                                mb={5}
-                                size="md"
-                                color = "colors.quinzaine"
-                              >
-                                Initialisez le paiement
-                              </Text>
-                              <Icon 
-                                as={IoIosAdd} 
-                                boxSize="30px"
-                                color={"colors.greencolor"}
-                                rounded="full"
-                                ml={["5px", "5px", "5px" ]}
-                                mr={["5px"]}
-                                _hover={{background:"colors.bluecolor"}}
-                                onClick={onOpenns}
-                              />
-                              </Box>  */}
-                        <Flex
-                          gap={5}
-                          flexWrap={["wrap", "wrap", "nowrap"]}
-                          align="end"
-                          ml={"240px"}
-                          mb="10px"
-                        >
-                          <Text>Pension total payée:</Text>
-                          <Text type={"text"}>
-                            {
-                              dataAlreadyPayBySudent?.findpensionbystudent
-                                .montantPension
-                            }{" "}
-                            FCFA
-                          </Text>
-                        </Flex>
-                        {/* <FormControl>
+                          <Heading
+                            as="h4"
+                            textAlign={"center"}
+                            fontSize={["15px", "20px", "20px"]}
+                            p="2"
+                            mt="10px"
+                          >
+                            Groupe Scolaire Bilingue Awono Bilongue
+                          </Heading>
+                        </Box>
+                      </AlertDialogHeader>
+                      <AlertDialogBody>
+                        <Box mt="4">
+                          <Flex
+                            gap={5}
+                            flexWrap={["wrap", "wrap", "nowrap"]}
+                            align="end"
+                            ml={"240px"}
+                            mb="10px"
+                          >
+                            <Text>Pension total payée:</Text>
+                            <Text type={"text"}>
+                              {
+                                dataAlreadyPayBySudent?.findpensionbystudent
+                                  .montantPension
+                              }{" "}
+                              FCFA
+                            </Text>
+                          </Flex>
+                          {/* <FormControl>
                             <FormLabel>
                               Motif
                             </FormLabel>
@@ -1146,52 +1122,46 @@ const DetailComponent = () => {
                                 }
                               </Select>
                           </FormControl> */}
-                        <Box>
-                          {/* <Controller
+                          <Box>
+                            {/* <Controller
                                control={control}
                                 name="trancheId"
                                 {...register("trancheId")}
                                 render = {({field: {...props}}) => {
                                   return(  */}
-                          <FormControl>
-                            <FormLabel>Motif</FormLabel>
-                            <Selects
-                              isMulti
-                              name={"selectedTranches"}
-                              value={selectedTranches}
-                              // onChange={(...e)=>{
-                              //   // console.log(e);
-                              //   // console.log(e[0]);
-                              //    setSelectedTranches((prev)=>[...prev,e[0]]);
-                              //   // console.log(selectedTranches);
-                              //   }
-                              //   }
-                              onChange={setSelectedTranches}
-                              options={tranches}
-                              placeholder={"Motif"}
-                              // {...props}
-                              trancheMiseAJour
-                              // error={error}
-                              // value={trancheId}
-                              // onChange={(value) => handleTrancheSelect(value)}
-                            >
-                              {console.log(selectedTranches)}
-                              {console.log("tranche Name",tranches[0])};
-                              {/* {console.log(trancheId)} */}
-                            </Selects>
-                            {/* {errors.trancheId && <Text>{errors.trancheId.message}</Text>} */}
-                          </FormControl>
-                          {/* )}} */}
-                          {/* /> */}
+                            <FormControl>
+                              <FormLabel>Motif</FormLabel>
+                              <Selects
+                                isMulti
+                                name={"selectedTranches"}
+                                value={selectedTranches}
+                                onChange={setSelectedTranches}
+                                options={tranches}
+                                placeholder={"Motif"}
+                                // {...props}
+                                trancheMiseAJour
+                                isRequired
+                                // error={error}
+                                // value={trancheId}
+                                // onChange={(value) => handleTrancheSelect(value)}
+                              >
+                                {console.log(selectedTranches)}
+                                {console.log("tranche Name", tranches[0])};
+                                {/* {console.log(trancheId)} */}
+                              </Selects>
+                              {/* {errors.trancheId && <Text>{errors.trancheId.message}</Text>} */}
+                            </FormControl>
+                            {/* )}} */}
+                            {/* /> */}
+                          </Box>
                         </Box>
-                      </Box>
-                      <Box mt="4">
-                        <Flex
-                          gap={5}
-                          flexWrap={["wrap", "wrap", "nowrap"]}
-                          align="end"
-                        >
-                          {/* <FormLabel>Montant attendu</FormLabel>
+                        <Box mt="4">
+                          <Flex
+                            gap={5}
+                            flexWrap={["wrap", "wrap", "nowrap"]}
+                            align="end"
+                          >
+                            {/* <FormLabel>Montant attendu</FormLabel>
                                 <Input 
                                   type={'text'} 
                                   disabled='disabled' 
@@ -1199,7 +1169,7 @@ const DetailComponent = () => {
                                   color='gray'
                                 />
                               </FormControl> */}
-                          {/* <FormControl>
+                            {/* <FormControl>
                                 <FormLabel>Montant percu</FormLabel>
                                 <Input 
                                   minValue="20000"
@@ -1210,114 +1180,91 @@ const DetailComponent = () => {
                                   onChange={(event) => setMontant(event.target.value)}
                                 />
                               </FormControl> */}
-                          {/* <Controller
+                            {/* <Controller
                                 name="montant"
                                 control={control}
                                 {...register("montant")}
                                 render = {({field: { ...props}})=> { 
                                   return ( */}
-                          <FormControl>
-                            <FormLabel>Montant percu</FormLabel>
-                            <NumberInput
-                              type="number"
-                              name="montant"
-                              isRequired
-                              // min={500}
-                              // value={montant}
-                              defaultValue={500}
-                              // onChange={(e)=>setMontant(e.target.value)}
-                              max={150000}
-                              // error={error}
-                              //  {...props}
-                              //  defaultValues={defaultValues.montant}
-                              // defaultValue="10000"
-                              //  {...register(montant)}
-                              //  ref={register}
-                              //  value={montant}
-                              onChange={(value) => setMontant(parseInt(value))}
-                            >
-                              <NumberInputField />
-                              <NumberInputStepper>
-                                <NumberIncrementStepper />
-                                <NumberDecrementStepper />
-                              </NumberInputStepper>
-                            </NumberInput>
-                            {/* {console.log(montant)} */}
-                          </FormControl>
-                          {/* )}}
-                              /> */}
-                          {/* <Selects
-                                 mt="10px"
-                                    isMulti
-                                    options={[
-                                      { value: "option1", label: "Option 1" },
-                                      { value: "option2", label: "Option 2" },
-                                      { value: "option3", label: "Option 3", isDisabled: true },
-                                    ]}
-                                  /> */}
-                        </Flex>
-                        {/* {errors.montant?.message && <Text>{errors.montant.message}</Text>} */}
-                        {/* min max default value */}
-                      </Box>
-                      <Box mt="10px">
-                        {/* <Controller 
+                            <FormControl>
+                              <FormLabel>Montant percu</FormLabel>
+                              <NumberInput
+                                type="number"
+                                name="montant"
+                                isRequired
+                                // min={500}
+                                // value={montant}
+                                defaultValue={500}
+                                // onChange={(e)=>setMontant(e.target.value)}
+                                max={150000}
+                                // error={error}
+                                //  {...props}
+                                //  defaultValues={defaultValues.montant}
+                                // defaultValue="10000"
+                                //  {...register(montant)}
+                                //  ref={register}
+                                //  value={montant}
+                                onChange={(value) =>
+                                  setMontant(parseInt(value))
+                                }
+                              >
+                                <NumberInputField />
+                                <NumberInputStepper>
+                                  <NumberIncrementStepper />
+                                  <NumberDecrementStepper />
+                                </NumberInputStepper>
+                              </NumberInput>
+                              {/* {console.log(montant)} */}
+                            </FormControl>
+                          </Flex>
+                          {/* {errors.montant?.message && <Text>{errors.montant.message}</Text>} */}
+                          {/* min max default value */}
+                        </Box>
+                        <Box mt="10px">
+                          {/* <Controller 
                         control={control}
                           name="studentId"
                           {...register("studentId", {register:true})}
                           render={({field:{...props}}) =>{ 
                           return( */}
-                        <FormControl>
-                          <FormLabel> Eleve</FormLabel>
-                          <Input
-                            type={"text"}
-                            // {...props}
-                            // error={error}
-                            // name="id"
-                            // {...register("id", { required: true })}
-                            // value={studentId}
-                            // onChange={(event) => setStudenId(event.target.value)}
-                            value={dataStudentId?.findOnestudent.firstname}
-                          />
-                          {/* {console.log(dataStudentId?.findOnestudent.id)} */}
-                        </FormControl>
-                        {/* )}}
+                          <FormControl>
+                            <FormLabel> Eleve</FormLabel>
+                            <Input
+                              type={"text"}
+                              value={dataStudentId?.findOnestudent.firstname}
+                              isRequired
+                            />
+                            {/* {console.log(dataStudentId?.findOnestudent.id)} */}
+                          </FormControl>
+                          {/* )}}
                           /> */}
-                      </Box>
-                    </AlertDialogBody>
-                    <AlertDialogFooter>
-                      <Button
-                        ref={cancelRef}
-                        onClick={onClose}
-                        colorScheme="red"
-                      >
-                        annuler
-                      </Button>
-                      <Link href={"#"}>
+                        </Box>
+                      </AlertDialogBody>
+                      <AlertDialogFooter>
+                        <Button
+                          ref={cancelRef}
+                          onClick={onClose}
+                          colorScheme="red"
+                        >
+                          annuler
+                        </Button>
                         <Button
                           colorScheme="green"
                           ml={3}
-                          // isLoading={isSubmitting}
-                          // onClick={PayTrancheSchoolFees}
-                          // (dataStudentId?.findOnestudent.id)
-                          onClick={addAvanceTranche}
                           isLoading={isLoading}
-                          // (dataTrancheStudentBySudentId?.getTrancheStudentByStudent.id)
+                          type="submit"
                         >
                           payer
                         </Button>
-                      </Link>
-                    </AlertDialogFooter>
+                      </AlertDialogFooter>
+                    </Box>
                   </AlertDialogContent>
                 </AlertDialogOverlay>
               </AlertDialog>
             </Box>
 
             {/* FORMULAIRE D'ATTRIBUTION D'UN PARENT A UN ELEVE */}
-            <Box
-              as="form"
-              // onSubmit={PayTrancheSchoolFees}
-              // onSubmit={PayTrancheSchoolFees(handleSubmit)}
-            >
+            <Box>
               <AlertDialog
                 isOpen={isOpenParent}
                 leastDestructiveRef={cancelRef}
@@ -1326,77 +1273,70 @@ const DetailComponent = () => {
               >
                 <AlertDialogOverlay>
                   <AlertDialogContent>
-                    <AlertDialogCloseButton />
+                    <Box as="form" onSubmit={affectionParentToStudent}>
+                      <AlertDialogCloseButton />
 
-                    <AlertDialogHeader fontSize="sm" fontWeight="base" mt="0">
-                      <Box
-                        // bg={"colors.secondary"}
-                        borderBottomRightRadius={10}
-                        borderBottomLeftRadius={10}
-                      >
-                        <Heading
-                          as="h4"
-                          textAlign={"center"}
-                          fontSize={["15px", "20px", "20px"]}
-                          mt={"10px"}
+                      <AlertDialogHeader fontSize="sm" fontWeight="base" mt="0">
+                        <Box
+                          borderBottomRightRadius={10}
+                          borderBottomLeftRadius={10}
                         >
-                          Attribuer un parent a cet eleve
-                        </Heading>
-                      </Box>
-                    </AlertDialogHeader>
-                    <AlertDialogBody>
-                      <Box mt="4">
-                        <Box>
+                          <Heading
+                            as="h4"
+                            textAlign={"center"}
+                            fontSize={["15px", "20px", "20px"]}
+                            mt={"10px"}
+                          >
+                            Attribuer un parent a cet eleve
+                          </Heading>
+                        </Box>
+                      </AlertDialogHeader>
+                      <AlertDialogBody>
+                        <Box mt="4">
+                          <Box>
+                            <FormControl>
+                              <FormLabel>Parent</FormLabel>
+                              <Selects
+                                isMulti
+                                name={"selectedParents"}
+                                value={selectedParents}
+                                onChange={setSelectedParent}
+                                options={parents}
+                                placeholder={"Motif"}
+                                trancheMiseAJour
+                                isRequired
+                              >
+                                {console.log(selectedParents)}
+                              </Selects>
+                            </FormControl>
+                          </Box>
+                        </Box>
+                        <Box mt="10px">
                           <FormControl>
-                            <FormLabel>Parent</FormLabel>
-                            <Selects
-                              isMulti
-                              name={"selectedParents"}
-                              value={selectedParents}
-                              onChange={setSelectedParent}
-                              options={parents}
-                              placeholder={"Motif"}
-                              trancheMiseAJour
-                            >
-                              {console.log(selectedParents)}
-                              {/* {console.log(trancheId)} */}
-                            </Selects>
-                            {/* {errors.trancheId && <Text>{errors.trancheId.message}</Text>} */}
+                            <FormLabel> Eleve</FormLabel>
+                            <Input
+                              type={"text"}
+                              value={dataStudentId?.findOnestudent.firstname}
+                              isRequired
+                            />
                           </FormControl>
                         </Box>
-                      </Box>
-                      <Box mt="10px">
-                        <FormControl>
-                          <FormLabel> Eleve</FormLabel>
-                          <Input
-                            type={"text"}
-                            value={dataStudentId?.findOnestudent.firstname}
-                          />
-                          {/* {console.log(dataStudentId?.findOnestudent.id)} */}
-                        </FormControl>
-                        {/* )}}
-                          /> */}
-                      </Box>
-                    </AlertDialogBody>
-                    <AlertDialogFooter>
-                      <Button
-                        ref={cancelRef}
-                        onClick={onClosseParent}
-                        colorScheme="red"
-                      >
-                        annuler
-                      </Button>
-                      <Link href={"#"}>
+                      </AlertDialogBody>
+                      <AlertDialogFooter>
                         <Button
-                          colorScheme="green"
-                          ml={3}
-                          onClick={affectionParentToStudent}
-                          // (dataTrancheStudentBySudentId?.getTrancheStudentByStudent.id)
+                          ref={cancelRef}
+                          onClick={onClosseParent}
+                          colorScheme="red"
                         >
-                          payer
+                          annuler
                         </Button>
-                      </Link>
-                    </AlertDialogFooter>
+                        <Link href={"#"}>
+                          <Button colorScheme="green" ml={3} type="submit">
+                            Enregistrer
+                          </Button>
+                        </Link>
+                      </AlertDialogFooter>
+                    </Box>
                   </AlertDialogContent>
                 </AlertDialogOverlay>
               </AlertDialog>

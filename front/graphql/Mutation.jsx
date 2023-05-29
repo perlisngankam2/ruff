@@ -499,8 +499,31 @@ export const DELETE_PARENT = gql `
     }
 `
 
-//mise a jour de la section
+//Supression d'une prime 
+export const DELETE_PRIME = gql` 
+mutation deleteprime ($id: String!) {
+    deleteprime (id: $id) {
+        id
+        nom
+        description
+        montant
+    }
+}
+`
 
+// Supression d'une retenue
+export const DELETE_RETENUE = gql `
+mutation deleteretenusalarial ($id: String!) {
+  deleteretenusalarial (id: $id) {
+      id
+      nom
+      description
+      montant
+  }
+}
+`
+
+//mise a jour de la section
 export const UPDATA_SECTION = gql `
     mutation updatesection ($id: String!, $input: SectionUpdateInput!) {
         updatesection (id: $id, input: $input) {

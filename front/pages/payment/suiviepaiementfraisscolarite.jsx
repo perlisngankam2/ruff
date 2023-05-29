@@ -131,9 +131,9 @@ const SuiviPaimentFraisScolarite = () => {
                     )}
                   </Tbody>
                 )}
+                  {dataTotalStudentStatisticsAnglophoneSection &&( 
                 <Tbody>
-                  {dataTotalStudentStatisticsAnglophoneSection &&
-                    dataTotalStudentStatisticsAnglophoneSection?.getTotalStudentStatisticsAnglophone.map(
+                    {dataTotalStudentStatisticsAnglophoneSection?.getTotalStudentStatisticsAnglophone.map(
                       (totalAnglophoneStudent, index) => (
                         <Tr borderBottom={"1px"} key={index}>
                           <Td borderBottom={"1px"}>Total</Td>
@@ -145,9 +145,9 @@ const SuiviPaimentFraisScolarite = () => {
                           <Td>{totalAnglophoneStudent.RESTE_RECOUVRER}</Td>
                           <Td>{totalAnglophoneStudent.TAUX_RAR}%</Td>
                         </Tr>
-                      )
-                    )}
+                      ))}
                 </Tbody>
+                    )}
               </Table>
             </TableContainer>
           </Box>

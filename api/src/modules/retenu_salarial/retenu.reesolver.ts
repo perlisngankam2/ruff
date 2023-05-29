@@ -54,8 +54,8 @@ export class RetenuResolver {
   }
 
   @Mutation(()=> Retenue)
-  @UseGuards(JwtAuthGuard,RolesGuard)
-  @Roles(Role.PRINCIPAL)
+  // @UseGuards(JwtAuthGuard,RolesGuard)
+  // @Roles(Role.PRINCIPAL)
   async deleteretenusalarial(@Args('id') id:string){
   return await this.retenuService.delete(id)
   }

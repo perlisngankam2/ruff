@@ -143,6 +143,54 @@ console.log(dataPrimeTotal
 
 
 
+// function nombreEnLettres(montant) {
+//   const chiffres = [
+//     '', 'un', 'deux', 'trois', 'quatre', 'cinq', 'six', 'sept', 'huit', 'neuf', 'dix',
+//     'onze', 'douze', 'treize', 'quatorze', 'quinze', 'seize', 'dix-sept', 'dix-huit', 'dix-neuf'
+//   ];
+
+//   const dizaines = [
+//     '', '', 'vingt', 'trente', 'quarante', 'cinquante', 'soixante', 'soixante-dix',
+//     'quatre-vingt', 'quatre-vingt-dix'
+//   ];
+
+//   const unite = montant % 10;
+//   const dizaine = Math.floor(montant / 10) % 10;
+//   const centaine = Math.floor(montant / 100) % 10;
+//   const millier = Math.floor(montant / 1000);
+
+//   let resultat = '';
+
+//   if (millier > 0) {
+//     resultat += nombreEnLettres(millier) + ' mille ';
+//     const reste = montant % 1000;
+//     if (reste > 0) {
+//       resultat += nombreEnLettres(reste) + ' ';
+//     }
+//   }
+
+//   if (centaine > 0) {
+//     if (centaine === 1) {
+//       resultat += 'cent ';
+//     } else {
+//       resultat += chiffres[centaine] + ' cent ';
+//     }
+//   }
+
+//   if (dizaine === 1 && unite > 0) {
+//     resultat += chiffres[10 + unite] + ' ';
+//   } else if (dizaine > 1 || (dizaine === 1 && unite === 0)) {
+//     resultat += dizaines[dizaine] + ' ';
+//   }
+
+//   if (dizaine !== 1 && unite > 0) {
+//     resultat += chiffres[unite] + ' ';
+//   }
+
+//   return resultat.trim();
+// }
+
+//  FONCTION DE CONVERTION EN LETTRE
 function nombreEnLettres(montant) {
   const chiffres = [
     '', 'un', 'deux', 'trois', 'quatre', 'cinq', 'six', 'sept', 'huit', 'neuf', 'dix',
@@ -157,16 +205,28 @@ function nombreEnLettres(montant) {
   const unite = montant % 10;
   const dizaine = Math.floor(montant / 10) % 10;
   const centaine = Math.floor(montant / 100) % 10;
-  const millier = Math.floor(montant / 1000);
+  const millier = Math.floor(montant / 1000) % 1000;
+
+  const million = Math.floor(montant / 1000000);
 
   let resultat = '';
 
-  if (millier > 0) {
-    resultat += nombreEnLettres(millier) + ' mille ';
-    const reste = montant % 1000;
-    if (reste > 0) {
-      resultat += nombreEnLettres(reste) + ' ';
+  if (million > 0) {
+      if (million === 1) {
+      resultat += 'un million ';
+    } else {
+      resultat += nombreEnLettres(million) + ' million ';
     }
+
+    montant %= 1000000;
+  }
+    if(millier > 0){
+      if (millier === 1) {
+      resultat += 'mille ';
+    } else {
+         resultat += nombreEnLettres(millier) + ' mille ';
+    }
+    const reste = millier % 1000;
   }
 
   if (centaine > 0) {
@@ -177,20 +237,31 @@ function nombreEnLettres(montant) {
     }
   }
 
+if (dizaine === 1 && unite === 0) {
+    resultat += chiffres[10] + ' ';
+  }
   if (dizaine === 1 && unite > 0) {
     resultat += chiffres[10 + unite] + ' ';
-  } else if (dizaine > 1 || (dizaine === 1 && unite === 0)) {
+  }
+  if (dizaine > 1) {
+    if ((dizaine === 7 && unite > 0) || (dizaine === 9 && unite > 0)) {
+    resultat += dizaines[dizaine-1] + ' ' + chiffres[10 + unite] + ' ';
+  }else{
     resultat += dizaines[dizaine] + ' ';
   }
 
-  if (dizaine !== 1 && unite > 0) {
+  }
+
+  if (dizaine !== 1&& dizaine !== 7 && dizaine !== 9 ) {
+    if(dizaine === 0  && unite > 0){
+   resultat += chiffres[unite] + ' ';
+    }
     resultat += chiffres[unite] + ' ';
+
   }
 
   return resultat.trim();
 }
-
-
 
 const lettre =nombreEnLettres(dernierElement)
 console.log(lettre)

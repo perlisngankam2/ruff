@@ -44,7 +44,7 @@ import DefaultLayout from "../../components/layouts/DefaultLayout";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { useMutation, useQuery } from "@apollo/client";
-import { CREATE_PRIME } from "../../graphql/Mutation";
+import { CREATE_PRIME, DELETE_PRIME} from "../../graphql/Mutation";
 import { GET_PRIME, GET_ALL_Category_Personnel } from "../../graphql/Queries";
 import { CheckIcon } from "@chakra-ui/icons";
 import { useToast } from "@chakra-ui/react";
@@ -64,8 +64,10 @@ function ajouterprime() {
   const [Montant, setMontant] = useState("");
   const [categoryPersonnelId, setCategoryPersonnelId] = useState("");
   const [createPrime, error] = useMutation(CREATE_PRIME);
+  const [deletePrime ] = useMutation(DELETE_PRIME);
 
-  const { data: dataPrime } = useQuery(GET_PRIME);
+
+  const { data: dataPrime, refetch} = useQuery(GET_PRIME);
   const toast = useToast();
   const router = useRouter();
   //  const {data:dataRetenue, refetch} = useQuery(GET_ALL_RETENUE)
@@ -125,6 +127,26 @@ function ajouterprime() {
   //     const year = today.getFullYear();
   //     const formattedDate = `${day}/${month}/${year}`;
   // console.log(formattedDate)
+
+  const removePrime = async (id) => {
+    await deletePrime({
+      variables: { id },
+      refetchQueries: [
+        {
+          query: GET_PRIME,
+        }
+      ]
+    });
+    toast({
+      title: "Suppression de la prime.",
+      description: "Suppresion reussit.",
+      status: "success",
+      duration: 3000,
+      isClosable: true,
+    });
+    onClose();
+  };
+
 
   return (
     <DefaultLayout>
@@ -202,84 +224,7 @@ function ajouterprime() {
                         return prime;
                     })
                     .map((prime, index) => (
-                      <Tr key={index}>
-                        <Td p={0} pl={6}>
-                          {prime.nom}
-                        </Td>
-
-                        {/* <Td  borderColor={'#C6B062'}>{cycle.section_id}</Td> */}
-                        <Td p={0} pl={6}>
-                          {prime.montant}
-                        </Td>
-                        <Td p={0} pl={3}>
-                          <Box display="flex">
-                            <Icon
-                              as={FiEdit}
-                              boxSize="40px"
-                              p="3"
-                              // bg="blue.100"
-                              rounded="full"
-                              // onClick={onOpen}
-                              _hover={{ background: "red.100" }}
-                            />
-                            <Icon
-                              as={MdDelete}
-                              boxSize="44px"
-                              p="3"
-                              rounded="full"
-                              color="colors.quaternary"
-                              _hover={{ background: "blue.100" }}
-                              onClick={onToggle}
-                            />
-
-                            <Box>
-                              <AlertDialog
-                                isOpen={isOpen}
-                                leastDestructiveRef={cancelRef}
-                                onClose={onClose}
-                                isCentered
-                              >
-                                <AlertDialogOverlay
-                                // alignSelf={"center"}
-                                >
-                                  <AlertDialogContent width={"380px"}>
-                                    <AlertDialogHeader
-                                      fontSize="lg"
-                                      fontWeight="bold"
-                                      textAlign={"center"}
-                                      mt="5px"
-                                    >
-                                      Confirmation de suppression
-                                    </AlertDialogHeader>
-                                    <AlertDialogCloseButton />
-
-                                    <AlertDialogBody textAlign={"center"}>
-                                      Voulez-vous supprimer cette ce cycle?
-                                    </AlertDialogBody>
-
-                                    <AlertDialogFooter>
-                                      <Button
-                                        ref={cancelRef}
-                                        onClick={onClose}
-                                        colorScheme="red"
-                                      >
-                                        Annuler
-                                      </Button>
-                                      <Button
-                                        colorScheme="green"
-                                        // onClick={() => removeCycle(cycle.id)}
-                                        ml={3}
-                                      >
-                                        Supprimer
-                                      </Button>
-                                    </AlertDialogFooter>
-                                  </AlertDialogContent>
-                                </AlertDialogOverlay>
-                              </AlertDialog>
-                            </Box>
-                          </Box>
-                        </Td>
-                      </Tr>
+                    <PrimeElement prime={prime} index={index}/>
                     ))}
                 </Tbody>
               )}
@@ -300,3 +245,112 @@ export async function getStaticProps({ locale }) {
 }
 
 export default ajouterprime;
+
+const PrimeElement = ({prime, index}) => {
+  const toast = useToast()
+  const { isOpen, onToggle, onClose, onOpen } = useDisclosure();
+  const [categoryPersonnelId, setCategoryPersonnelId] = useState("");
+  const [createPrime, error] = useMutation(CREATE_PRIME);
+  const [deletePrime ] = useMutation(DELETE_PRIME);
+  const cancelRef = React.useRef();
+
+  const removePrime = async (id) => {
+    await deletePrime({
+      variables: { id },
+      refetchQueries: [
+        {
+          query: GET_PRIME,
+        }
+      ]
+    });
+    toast({
+      title: "Suppression de la prime.",
+      description: "Suppresion reussit.",
+      status: "success",
+      duration: 3000,
+      isClosable: true,
+    });
+    onClose();
+  };
+
+  return(
+    <Tr key={index}>
+    <Td p={0} pl={6}>
+      {prime.nom}
+    </Td>
+
+    {/* <Td  borderColor={'#C6B062'}>{cycle.section_id}</Td> */}
+    <Td p={0} pl={6}>
+      {prime.montant}
+    </Td>
+    <Td p={0} pl={3}>
+      <Box display="flex">
+        <Icon
+          as={FiEdit}
+          boxSize="40px"
+          p="3"
+          // bg="blue.100"
+          rounded="full"
+          // onClick={onOpen}
+          _hover={{ background: "red.100" }}
+        />
+        <Icon
+          as={MdDelete}
+          boxSize="44px"
+          p="3"
+          rounded="full"
+          color="colors.quaternary"
+          _hover={{ background: "blue.100" }}
+          onClick={onToggle}
+        />
+
+        <Box>
+          <AlertDialog
+            isOpen={isOpen}
+            leastDestructiveRef={cancelRef}
+            onClose={onClose}
+            isCentered
+          >
+            <AlertDialogOverlay
+            // alignSelf={"center"}
+            >
+              <AlertDialogContent width={"380px"}>
+                <AlertDialogHeader
+                  fontSize="lg"
+                  fontWeight="bold"
+                  textAlign={"center"}
+                  mt="5px"
+                >
+                  Confirmation de suppression
+                </AlertDialogHeader>
+                <AlertDialogCloseButton />
+
+                <AlertDialogBody textAlign={"center"}>
+                  Voulez-vous supprimer cette prime?
+                </AlertDialogBody>
+
+                <AlertDialogFooter>
+                  <Button
+                    ref={cancelRef}
+                    onClick={onClose}
+                    colorScheme="red"
+                  >
+                    Annuler
+                  </Button>
+                  <Button
+                    colorScheme="green"
+                    onClick={() => removePrime(prime.id)}
+                    ml={3}
+                  >
+                    Supprimer
+                  </Button>
+                </AlertDialogFooter>
+              </AlertDialogContent>
+            </AlertDialogOverlay>
+          </AlertDialog>
+        </Box>
+      </Box>
+    </Td>
+  </Tr>
+  )
+}

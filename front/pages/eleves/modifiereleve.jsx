@@ -399,6 +399,7 @@ export default ModifierEleve;
 //     }
 // }
 
+
 //  FONCTION DE CONVERTION EN LETTRE
 // function nombreEnLettres(montant) {
 //   const chiffres = [
@@ -473,3 +474,20 @@ export default ModifierEleve;
 // }
 
 // SUPPRSSION DE LA PRIME , SUPPRESSION DE LA RETENU
+// mutation deleteprime ($id: String!) {
+//     deleteprime (id: $id) {9
+//         id
+//         nom
+//         description
+//         montant
+//     }
+// }
+
+// mutation deleteretenusalarial ($id: String!) {
+//   deleteretenusalarial (id: $id) {
+//       id
+//       nom
+//       description
+//       montant
+//   }
+// }

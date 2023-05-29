@@ -527,7 +527,7 @@ const DetailComponent = () => {
                 } `,
                 description: " paye avec succes.",
                 status: "success",
-                duration: 3000,
+                duration: 4000,
                 isClosable: true,
               });
               montantSaisie = 0;
@@ -572,7 +572,7 @@ const DetailComponent = () => {
                 } `,
                 description: " paye avec succes.",
                 status: "success",
-                duration: 3000,
+                duration: 4000,
                 isClosable: true,
               });
               montantSaisie = 0;
@@ -592,7 +592,7 @@ const DetailComponent = () => {
                 title: `Tranche : ${tranche.label} soldé,  `,
                 description: " paye avec succes.",
                 status: "success",
-                duration: 3000,
+                duration: 4000,
                 isClosable: true,
               });
               montantSaisie = montantSaisie - trancheMontant;
@@ -1054,6 +1054,7 @@ const DetailComponent = () => {
 
             {/* FORMULAIRE DE PAIEMENT DE LA SCOLARITE */}
             <Box
+             as="form" 
             // onSubmit={PayTrancheSchoolFees}
             >
               <AlertDialog
@@ -1064,7 +1065,10 @@ const DetailComponent = () => {
               >
                 <AlertDialogOverlay>
                   <AlertDialogContent>
-                    <Box as="form" onSubmit={addAvanceTranche}>
+                    <Box 
+                    // as="form" 
+                    // onSubmit={addAvanceTranche}
+                    >
                       <AlertDialogCloseButton pl="20px" pb="20px" />
                       <AlertDialogHeader fontSize="sm" fontWeight="base" mt="0">
                         <Box
@@ -1253,6 +1257,8 @@ const DetailComponent = () => {
                           ml={3}
                           isLoading={isLoading}
                           type="submit"
+                          onClick={addAvanceTranche}
+
                         >
                           payer
                         </Button>
@@ -1357,3 +1363,12 @@ const DetailComponent = () => {
 //   };
 // }
 export default DetailComponent;
+
+
+
+
+
+
+
+
+

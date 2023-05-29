@@ -342,6 +342,13 @@ const CycleElement = ({ cycle, index }) => {
         },
       ],
     });
+    toast({
+      title: "Suppression du cyle.",
+      description: "Suppresion reussit.",
+      status: "success",
+      duration: 3000,
+      isClosable: true,
+    });
     onClose();
   };
 
@@ -443,6 +450,13 @@ const SectionElement = ({ section, index }) => {
           query: GET_ALL_SECTION,
         },
       ],
+    });
+    toast({
+      title: "Suppression de la section.",
+      description: "Suppresion reussit.",
+      status: "success",
+      duration: 3000,
+      isClosable: true,
     });
     onClossses();
   };

@@ -4,12 +4,18 @@ import { InjectRepository } from "@mikro-orm/nestjs";
 import { Injectable } from "@nestjs/common";
 import { PersonnelSalle } from "src/entities/personnelsalle.entity";
 import { PersonnelSalleCreateInput } from "./dto/personnelsalle.create.input";
+import { SalleService } from "../salle/salle.service";
+import { PersonnelService } from "../personnel/personnel.service";
+import { CourseService } from "../course/course.service";
 
 @Injectable()
 export class PersonnelSalleService {
     constructor(
         @InjectRepository(PersonnelSalle)
         private personnelsalleRepository: EntityRepository<PersonnelSalle>,
+        private salleservice: SalleService,
+        private personnelService: PersonnelService,
+        private courseservice: CourseService,
         private  em: EntityManager,
       ) {}
     
@@ -17,10 +23,13 @@ export class PersonnelSalleService {
         input: PersonnelSalleCreateInput,
       ): Promise<PersonnelSalle> {  
         const personnelsalle = new PersonnelSalle()
+        const salle= await this.salleservice.findByOne(input.salleId)
+        const personnel = await this.personnelService.findById(input.personnelId)
+        const course = await this.courseservice.findByOne(input.courseId)
         wrap(personnelsalle).assign({
-          salle: input.salleId,
-          personnel: input.personnelId,
-          course: input.courseId
+          salle: salle,
+          personnel: personnel,
+          course: course
         },
         {
             em: this.em

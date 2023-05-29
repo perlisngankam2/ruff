@@ -167,7 +167,18 @@ export class StatisticsService {
     return student
     }
 
-    async getallStudentswhohaveCompletedSecondInstalment(){
+  async getLastThreeStudenstAdmissionFee(){
+    const a= this.getallStudentswhohaveCompletedAdmissionFee()
+    const list: Student[] = [];
+    for (let i = (await a).length - 3; i < (await a).length; i++) {
+      if (i >= 0) {
+        list.push(a[i]);
+      }
+    }
+    return list
+  }
+
+  async getallStudentswhohaveCompletedSecondInstalment(){
       const tranche =  (await this.trancheservice.getAll())
       const student = (await this.trancheStudentservice.getAll())
       .filter(a=>tranche.find(async b=>(await a.tranche.load()).id===b.id))

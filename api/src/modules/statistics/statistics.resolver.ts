@@ -10,6 +10,7 @@ import { RolesGuard } from "../auth/guards/roles.guard";
 import { UseGuards } from "@nestjs/common";
 import { Role } from "../auth/roles/roles";
 import { Roles } from "../auth/decorators/roles.decorator";
+import { Student } from "src/entities/student.entity";
 
 
 
@@ -791,6 +792,12 @@ TOTAL_SECOND_TAUX_RECOUVRIR
     return this.statisticsService.getTrancheStatisticsForNormalStudents();
   }
 
+  @Query(() => [Student])
+  @UseGuards(JwtAuthGuard,RolesGuard)
+  @Roles(Role.FONDATEUR)
+  async getLastThreeStudenstAdmissionFee(){
+    return await this.statisticsService.getLastThreeStudenstAdmissionFee()
+  }
 
 
 }

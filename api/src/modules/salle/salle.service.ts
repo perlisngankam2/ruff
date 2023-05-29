@@ -31,7 +31,7 @@ export class SalleService {
       ): Promise<Salle> {        
         const salle = new Salle()
         
-        // const niveauid = this.niveauEtude.findById(input.niveauId)
+        const niveauid = await this.niveauEtude.findById(input.niveauEtudeId)
         // if(!niveauid){
         //   throw Error("niveauid not found")
         // }
@@ -43,7 +43,7 @@ export class SalleService {
           {
           name : input.name,
           montantPensionSalle: input.montantPensionSalle,
-          niveau : input.niveauEtudeId,
+          niveau : niveauid,
           section : input.sectionId,
           effectif: input.effectif,
           cycle : input.cycleId

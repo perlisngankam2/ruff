@@ -97,10 +97,16 @@ export class Salle{
     pensionsalle = new Collection<PensionSalle>(this)
  
 
-    @Field(() => ID)
+    @Field(() => ID, { nullable: true })
     @Property({ persist: false })
-    get niveauid() {
-      return `${this.niveau.id}`;
+    get levelId() {
+      return this.niveau? `${this.niveau.id}` : null;
+    }
+
+    @Field(() => ID, { nullable: true })
+    @Property({ persist: false })
+    get levelName() {
+      return this.niveau.getEntity().name? `${this.niveau.getEntity().name}` : null;
     }
 
     // @Field(() => ID)

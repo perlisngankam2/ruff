@@ -29,7 +29,11 @@ export class Parameter {
 
   @Field({ nullable: true })
   @Property({ nullable: true })
-  country!: string;
+  contry!: string;
+
+  @Field({ nullable: true })
+  @Property({ nullable: true })
+  schoolCurrency!: string;
 
   @Field({ nullable: true })
   @Property({ nullable: true })
@@ -40,4 +44,18 @@ export class Parameter {
     // onDelete: "CASCADE"
   })
   anneeacademique!: IdentifiedReference<AnneeAccademique> | null;
+ 
+
+  @Field(() => ID, {nullable: true})
+  @Property({ persist: false })
+    get anneeAcademiqueId() {
+    return this.anneeacademique?`${this.anneeacademique.id}`:null;
+  }
+
+  @Field(() => ID, {nullable: true})
+  @Property({ persist: false })
+    get anneeAcademiqueName() {
+    return this.anneeacademique?`${this.anneeacademique.getEntity().name}`:null;
+  }
+
 }

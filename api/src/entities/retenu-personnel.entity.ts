@@ -56,7 +56,7 @@ export class RetenuPersonnel {
 
   
   @ManyToOne(() => PaySalary,{
-    nullable:false,
+    nullable:true,
     onDelete:'CASCADE',
   })
   paysalary!:IdentifiedReference<PaySalary>|null
@@ -73,10 +73,10 @@ export class RetenuPersonnel {
     return `${this.personnel.id}`;
   }
 
-  @Field(() => ID)
-  @Property({ persist: false })
-  get salaireid() {
-    return `${this.salaire.id}`;
-  }
+  // @Field(() => ID)
+  // @Property({ persist: false })
+  // get salaireid() {
+  //   return `${this.salaire.id}`;
+  // }
 
 }

@@ -52,7 +52,8 @@ export class StatisticsService {
     // });
 
     const students = await this.studentservice.getAllForUseAnglophone()
-
+    console.log(students);
+    
 
 
     return students.map(student => {
@@ -165,9 +166,20 @@ export class StatisticsService {
     .filter(async a=>(await a.tranche.load()).name==='Inscription')
     .map(a=>a.student.load())
     return student
-    }
+  }
 
-    async getallStudentswhohaveCompletedSecondInstalment(){
+  async getLastThreeStudenstAdmissionFee(){
+    const a= this.getallStudentswhohaveCompletedAdmissionFee()
+    const list: Student[] = [];
+    for (let i = (await a).length - 3; i < (await a).length; i++) {
+      if (i >= 0) {
+        list.push(a[i]);
+      }
+    }
+    return list
+  }
+
+  async getallStudentswhohaveCompletedSecondInstalment(){
       const tranche =  (await this.trancheservice.getAll())
       const student = (await this.trancheStudentservice.getAll())
       .filter(a=>tranche.find(async b=>(await a.tranche.load()).id===b.id))
@@ -176,7 +188,7 @@ export class StatisticsService {
       .filter(async a=>(await a.tranche.load()).name==='Tranche 2')
       .map(a=>a.student.load())
       return student
-      }
+    }
 
   async numberOfStudentsStartedPayingPension(){
     const students = await this.studentservice.getAll()
@@ -309,7 +321,8 @@ export class StatisticsService {
 
   async getSectionStatisticsAnglophoneAdmissionFee(): Promise<SectionStatistics[]> {
     const sections = await this.sectionservice.getAllForUseAnglophone()
-  
+    console.log("sections", sections);
+    
     const sectionStatistics: SectionStatistics[] = [];
   
     for (const section of sections) {
@@ -400,9 +413,9 @@ export class StatisticsService {
 
   async getSectionStatisticsAnglophoneFirstInstalment(): Promise<SectionStatistics[]> {
     const sections = await this.sectionservice.getAllForUseAnglophone()
-  
+
     const sectionStatistics: SectionStatistics[] = [];
-  
+ 
     for (const section of sections) {
       for (const cycle of section.cycle.getItems()) {
         for (const niveauclass of cycle.niveauEtude.getItems()){
@@ -581,7 +594,7 @@ export class StatisticsService {
 
   async getSectionStatisticsFrancophoneAdmissionFee(): Promise<SectionStatistics[]> {
     const sections = await this.sectionservice.getAllForUseFrancophone()
-  
+    
     const sectionStatistics: SectionStatistics[] = [];
   
     for (const section of sections) {
@@ -869,9 +882,11 @@ async getGeneralAnglophoneClassStatistics(): Promise<ClassStatistics[]>{
         // const numberOfStudentsCompletedFee = (this.getallStudentswhohaveCompletedAdmissionFee).length
         // const rateR = numberOfStudents > 0 ? numberOfStudentsCompletedFee / numberOfStudents * 100 : 0;
         const a = cycleClass.student.getItems()
-        console.log('=============>'+a)
+        console.log("aaa", a);
+        
+        // console.log('=============>'+a)
         const c = a.map(a=>a.pension)
-        console.log("===========>"+c)
+        console.log("cccccc"+c)
         // const b = a.map(a => a.pension.toArray().reduce(
         //   (sum, pension) => sum + pension.montantPension,
         //   0,
@@ -881,7 +896,7 @@ async getGeneralAnglophoneClassStatistics(): Promise<ClassStatistics[]>{
           const pensions = a.pension.getItems();
           return pensions.reduce((sum, pension) => sum + pension.montantPension, 0);
         });
-        console.log("===========>"+b)
+        console.log("bbbb"+b)
         
         const sumAmountAlreadyPaid= b.reduce(
           (sum, pension) => sum + pension,
@@ -1012,7 +1027,7 @@ async getTrancheStatisticsForSpecialStudents(): Promise<SpecialStudentStatistics
 
       const restOfAmountToPay = amountToPay - amountAlreadyPaid;
       console.log('=================>'+restOfAmountToPay)
-      const categorie=((await student.categorie.load()).description)
+      const categorie=((await student.categorie.load()).nom)
 
       result.push({
         studentFirstName,
@@ -1031,8 +1046,8 @@ async getTrancheStatisticsForSpecialStudents(): Promise<SpecialStudentStatistics
   }
   }
 
-  console.log('====================>'+result.filter(a=>a.categorie==='Candidat special'))
-  return result.filter(a=>a.categorie==='Candidat special');
+  console.log('====================>'+result.filter(a=>a.categorie==='Candidat regulier'))
+  return result.filter(a=>a.categorie==='Candidat regulier');
 }
 
 async getTrancheStatisticsForNormalStudents(): Promise<SpecialStudentStatistics[]> {
@@ -1070,7 +1085,7 @@ async getTrancheStatisticsForNormalStudents(): Promise<SpecialStudentStatistics[
 
       const restOfAmountToPay = amountToPay - amountAlreadyPaid;
       console.log('=================>'+restOfAmountToPay)
-      const categorie=((await student.categorie.load()).description)
+      const categorie=((await student.categorie.load()).nom)
 
       result.push({
         studentFirstName,
@@ -1094,8 +1109,6 @@ async getTrancheStatisticsForNormalStudents(): Promise<SpecialStudentStatistics[
 }
 
 }
-
-
 
 
 

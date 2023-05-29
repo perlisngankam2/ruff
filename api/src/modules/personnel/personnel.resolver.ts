@@ -28,16 +28,16 @@ export class PersonnelResolver {
   constructor(private readonly personnelService: PersonnelService) {}
 
   @Mutation(() => Personnel)
-  @UseGuards(JwtAuthGuard,RolesGuard)
-  @Roles(Role.ADMIN)
+  // @UseGuards(JwtAuthGuard,RolesGuard)
+  // @Roles(Role.ADMIN)
   async createpersonnel(@Args('createPersonnelUser') createPersonnelUserInput: PersonnelCreateInput) {
     return await this.personnelService.createPersonnel(createPersonnelUserInput);
   }
 
-  @Mutation(() => Personnel)
+ 
   @UseGuards(JwtAuthGuard,RolesGuard)
-  @Roles(Role.ADMIN)
-  @Query(() => [Personnel])
+  // @Roles(Role.ADMIN)
+  // @Query(() => [Personnel])
   async findAllpersonnel() {
     return await this.personnelService.getAll()
   }
@@ -83,10 +83,10 @@ export class PersonnelResolver {
 @Query(()=>Personnel)
 @UseGuards(JwtAuthGuard,RolesGuard)
 @Roles(Role.ADMIN)
-  async getpersonnelbyaccount(@Args('userid') userid:string):Promise<Personnel|null>{
+async getpersonnelbyaccount(@Args('userid') userid:string):Promise<Personnel|null>{
     const personnel=await this.personnelService.findpersonnelbyaccount(userid)
     if(!personnel){
-      throw Error("not found")
+     console.log("Il n'existe aucun personnel associee a ce compte")
     }
     return personnel
   }

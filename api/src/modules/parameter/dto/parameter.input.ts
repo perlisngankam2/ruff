@@ -17,16 +17,18 @@ export class ParameterCreateInput {
   emailAddress?: string;
 
   @Field({nullable:true})
-  country?: string;
+  contry?: string;
 
   @Field({nullable:true})
   postalBox?: string;
+
+  @Field({nullable:true})
+  schoolCurrency?: string;
 
   @Field({nullable:true})
   year?: string;
 
   @Field({nullable:true})
   anneeAcademiqueId?: string;
-
 
 }

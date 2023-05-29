@@ -17,18 +17,18 @@ query findAllpersonnel {
         childNumber
     }
 }
-`;
+`
 
 //category personnel
 export const GET_ALL_Category_Personnel = gql ` 
-query findAllcategoriepersonnel {
-    findAllcategoriepersonnel {
-        id
-        nom
-        description
-        montant
+    query findAllcategoriepersonnel {
+        findAllcategoriepersonnel {
+            id
+            nom
+            description
+            montant
+        }
     }
-}
 `;
 
 
@@ -55,16 +55,17 @@ export const GET_SALLE_BY_ID = gql `
             id
             name
             section
-            cycle
             montantPensionSalle
             effectif
+            levelId
+            levelName
         }
     }
 ` 
 
 //student
 export const GET_ALL_STUDENT =  gql `
-query findAllstudents {
+    query findAllstudents {
         findAllstudents {
             id
             matricule
@@ -73,7 +74,6 @@ query findAllstudents {
             dateOfBirth
             sex
             adress
-            transport
             fatherFirstName
             fatherLastName
             fatherPhoneNumber
@@ -86,6 +86,12 @@ query findAllstudents {
             tutorLastName
             tutorPhoneNumber
             tutorProfession
+            salleid
+            salleName
+            categorieid
+            categoryName
+            parentTel
+            repeating
         }
     }
 `
@@ -112,26 +118,40 @@ export const GET_ALL_SECTION =  gql `
     }
 `;
 
+//recuperation de la secrion de l'eleve
+export const GET_SECTION_STUDENT_BY_ID = gql `
+    query findSectionByStudent ($studentid: String!) {
+        findSectionByStudent (studentid: $studentid) {
+            id
+            name
+            description
+        }
+    }
+`
+
 //cycle 
 export const GET_ALL_CYCLE =  gql `
     query findAllcycle {
         findAllcycle {
             id
             name
+            sectionid
+            sectionName
         }
     }
 `;
 
 //liste des classes
-export const GET_ALL_CLASS =  gql `
+export const GET_ALL_CLASS = gql `
     query findAllsalle {
         findAllsalle {
             id
             name
             section
-            cycle
             montantPensionSalle
             effectif
+            levelId
+            levelName
         }
     }
 `;
@@ -147,6 +167,24 @@ export const GET_ALL_FRAIS_INSCRIPTION =  gql `
     }
 `;
 
+
+//reguperation des information de l'etablissement
+export const GET_ALL_SCHOOL_PARAMETER = gql  `
+query findAllparameters {
+    findAllparameters {
+        id
+        name
+        postalBox
+        phoneNumber
+        emailAddress
+        schoolCurrency
+        contry
+        year
+        anneeAcademiqueName
+        anneeAcademiqueId
+    }
+}
+ `;
 
 // one Personnel
 export const GET_ALL_PERSONNEL_BY_ID = gql `
@@ -176,9 +214,9 @@ export const GET_STUDENT_BY_ID =  gql `
             firstname
             lastname
             dateOfBirth
+            birthPlace
             sex
             adress
-            transport
             fatherFirstName
             fatherLastName
             fatherPhoneNumber
@@ -191,6 +229,12 @@ export const GET_STUDENT_BY_ID =  gql `
             tutorLastName
             tutorPhoneNumber
             tutorProfession
+            salleid
+            salleName
+            categorieid
+            categoryName
+            parentTel
+            repeating
         }
     }
 `;
@@ -214,6 +258,8 @@ export const GET_ALL_STUDY_LEVEL = gql `
             name
             description
             montantPension
+            cycleId
+            cycleName
         }
     }
 `
@@ -245,6 +291,7 @@ export const GET_ALL_TRANCHE_PENSION = gql `
     }
 `;
 
+//tranche student recupere toutes les tranches qui ont ete paye par un eleve
 export const GET_ALL_TRANCHE_STUDENT = gql `
     query findAlltranchestudent {
         findAlltranchestudent {
@@ -255,20 +302,282 @@ export const GET_ALL_TRANCHE_STUDENT = gql `
             complete
             reste
             surplus
-            avance
+            studentid
+            trancheid
+        }
+}
+`;
+
+//stattistique des eleves de la section anglophone 
+export const GET_STUDENT_STATISTICS_ANGLOPHONE_SECTION = gql `
+    query getStudentStatisticsAnglophone {
+        getStudentStatisticsAnglophone {
+            name
+            matricle
+            amountExpected
+            amountPaid
+            collectionRate
+            restToPay
+            rateArrears
+        }
+    }
+`
+
+//TOTal stattistique des eleves de la section anglophone
+export const GET_TOTAL_STUDENT_STATISTICS_ANGLOPHONE_SECTION = gql `
+    query getTotalStudentStatisticsAnglophone {
+        getTotalStudentStatisticsAnglophone {
+            MONTANT_ATTENDU
+            MONTANT_EN_CAISSE
+            TAUX_ENCAISSEMENT
+            RESTE_RECOUVRER
+            TAUX_RAR
+        }
+    }
+`
+
+//stattistique des eleves de la section francophone
+export const GET_STUDENT_STATISTICS_FRANCOPHONE_SECTION = gql `
+    query getStudentStatisticsFrancophone {
+        getStudentStatisticsFrancophone {
+            name
+            matricle
+            section
+            amountExpected
+            amountPaid
+            collectionRate
+            restToPay
+            rateArrears
+        }
+    }
+`
+  // //total stattistique des eleves de la section francophone
+export const GET_TOTAL_STUDENT_STATISTICS_FRANCOPHONE_SECTION = gql `
+    query getTotalStudentStatisticsFrancophone {
+        getTotalStudentStatisticsFrancophone {
+            MONTANT_ATTENDU
+            MONTANT_EN_CAISSE
+            TAUX_ENCAISSEMENT
+            RESTE_RECOUVRER
+            TAUX_RAR
+        }
+    }
+`
+
+
+// grand tableau des stattistique To des eleves par sections et par classe section anglophone
+export const GET_GENERAL_FEES_STATISTICS_PER_CLASS_ANGLOPHONE_SECTION = gql`
+query getGeneralAnglophoneSectionStatistics {
+    getGeneralAnglophoneSectionStatistics {
+        sectionName
+        className
+        numberOfStudents
+        expectedAmount
+        sumAmountAlreadyPaid
+        rateT
+        amountRest
+        rateZ
+    }
+}
+`
+export const GET_TOTAL_GENERAL_FEES_STATISTICS_PER_CLASS_ANGLOPHONE_SECTION = gql `
+query TotalGeneralAnglophoneSectionStatistics {
+    TotalGeneralAnglophoneSectionStatistics {
+        TOTAL_EFFECTIFS_ENREGISTRES
+        TOTAL_MONTANT_ATTENDU
+        TOTAL_MONTANT_EN_CAISSE
+        TOTAL_TAUX_ENCAISSEMENT
+        TOTAL_RESTE_A_RECOUVRER
+        TAUX_RAR
+    }
+}
+`
+
+//Le vrai To pour la section francophone 
+// TABLEAU DE SUIVI GENERAL  DU PAIEMENT DES FRAIS DE SCOLARITE
+export const GET_GENERAL_FEES_STATISTICS_PER_CLASS_FRANCOPHONE_SECTION = gql `
+    query getGeneralFrancophoneSectionStatistics {
+        getGeneralFrancophoneSectionStatistics {
+            sectionName
+            className
+            numberOfStudents
+            expectedAmount
+            sumAmountAlreadyPaid
+            rateT
+            amountRest
+            rateZ
+        }
+    }
+`
+
+
+
+//total de suivie generala de paiement des vrai de scolarite section francophone
+export const GET_TOTAL_GENERAL_FEES_STATISTICS_PER_CLASS_FRANCOPHONE_SECTION = gql `
+query TotalGeneralFrancophoneSectionStatistics {
+    TotalGeneralFrancophoneSectionStatistics {
+        TOTAL_EFFECTIFS_ENREGISTRES
+        TOTAL_MONTANT_ATTENDU
+        TOTAL_MONTANT_EN_CAISSE
+        TOTAL_TAUX_ENCAISSEMENT
+        TOTAL_RESTE_A_RECOUVRER
+        TAUX_RAR
+    }
+}
+`
+
+//Statistique de l'inscription pour la section anglphone 
+export const GET_STATISTICS_PRIMAIRE_ANGLOPHONE_CLASS = gql`
+query getSectionStatisticsAnglophoneAdmissionFee {
+    getSectionStatisticsAnglophoneAdmissionFee {
+        sectionName
+        className
+        numberOfStudents
+        numberOfStudentsStartedPaying
+        expectedAmount
+        numberOfStudentsCompletedFee
+        TAUXA
+        sumAmountAlreadyPaid
+        TAUXB
+        numberOfStudentsNotPaid
+        TAUXC
+        amountRest
+        TAUXD
+    }
+}
+`
+
+export const GET_TOTAL_STATISTICS_PRIMAIRE_ANGLOPHONE_CLASS = gql`
+    query TotalSectionStatisticsAnglophoneAdmissionFee {
+        TotalSectionStatisticsAnglophoneAdmissionFee {
+            TOTAL_EFFECTIFS_ENREGISTRES
+            TOTAL_MONTANT_ATTENDU
+            TOTAL_NOMBRE_ENCAISSEMENT
+            TOTAL_NOMBRE_SANS_ENCAISSEMENT
+            TOTAL_MONTANT_EN_CAISSE
+            TOTAL_FIRST_TAUX_ENCAISSEMENT
+            TOTAL_SECOND_TAUX_ENCAISSEMENT
+            TOTAL_RESTE_A_RECOUVRER
+            TOTAL_FIRST_TAUX_RECOUVRIR
+            TOTAL_SECOND_TAUX_RECOUVRIR
+        }
+    }
+`
+
+//Statistique de l'inscription pour la section francophone 
+export const GET_STATISTICS_PRIMAIRE_FRANCOPHONE_CLASS = gql `
+query getSectionStatisticsFrancophoneAdmissionFee {
+    getSectionStatisticsFrancophoneAdmissionFee {
+        sectionName
+        className
+        numberOfStudents
+        numberOfStudentsStartedPaying
+        expectedAmount
+        numberOfStudentsCompletedFee
+        TAUXA
+        sumAmountAlreadyPaid
+        TAUXB
+        numberOfStudentsNotPaid
+        TAUXC
+        amountRest
+        TAUXD
+    }
+}
+`
+
+export const GET_TOTAL_STATISTICS_PRIMAIRE_FRANCOPHONE_CLASS = gql`
+query TotalSectionStatisticsFrancophoneAdmissionFee {
+    TotalSectionStatisticsFrancophoneAdmissionFee {
+        TOTAL_EFFECTIFS_ENREGISTRES
+        TOTAL_MONTANT_ATTENDU
+        TOTAL_NOMBRE_ENCAISSEMENT
+        TOTAL_NOMBRE_SANS_ENCAISSEMENT
+        TOTAL_MONTANT_EN_CAISSE
+        TOTAL_FIRST_TAUX_ENCAISSEMENT
+        TOTAL_SECOND_TAUX_ENCAISSEMENT
+        TOTAL_RESTE_A_RECOUVRER
+        TOTAL_FIRST_TAUX_RECOUVRIR
+        TOTAL_SECOND_TAUX_RECOUVRIR
+    }
+}
+`
+
+//Statistique de PREMIERERE TRANCHE pour la section anglphone 
+
+export const GET_STATISTICS_TRANCHE1_PRIMAIRE_ANGLOPHONE_SECTION = gql`
+    query getSectionStatisticsAnglophoneFirstInstalment {
+        getSectionStatisticsAnglophoneFirstInstalment {
+            sectionName
+            className
+            numberOfStudents
+            expectedAmount
+            numberOfStudentsCompletedFee
+            TAUXA
+            sumAmountAlreadyPaid
+            TAUXB
+            numberOfStudentsNotPaid
+            TAUXC
+            amountRest
+            TAUXD
         }
     }
 `;
 
-export const GET_ALL_TRANCHE_PRIORITY = gql `
-    query findAlltranchepriority {
-        findAlltranchepriority {
-            id
-            name
-            description
+export const GET_TOTAL_STATISTICS_TRANCHE1_PRIMAIRE_ANGLOPHONE_SECTION = gql`
+query TotalSectionStatisticsAnglophoneFirstInstalmentFee {
+        TotalSectionStatisticsAnglophoneFirstInstalmentFee {
+            TOTAL_EFFECTIFS_ENREGISTRES
+            TOTAL_MONTANT_ATTENDU
+            TOTAL_NOMBRE_ENCAISSEMENT
+            TOTAL_NOMBRE_SANS_ENCAISSEMENT
+            TOTAL_MONTANT_EN_CAISSE
+            TOTAL_FIRST_TAUX_ENCAISSEMENT
+            TOTAL_SECOND_TAUX_ENCAISSEMENT
+            TOTAL_RESTE_A_RECOUVRER
+            TOTAL_FIRST_TAUX_RECOUVRIR
+            TOTAL_SECOND_TAUX_RECOUVRIR
         }
     }
 `;
+
+
+//Statistique de PREMIERE TRANCHE POUR LA SECTION FRANCOPHONE
+export const GET_STATISTICS_TRANCHE1_PRIMAIRE_FRANCOPHONE_SECTION = gql`
+query getSectionStatisticsFrancophoneFirstInstalment {
+    getSectionStatisticsFrancophoneFirstInstalment {
+        sectionName
+        className
+        numberOfStudents
+        numberOfStudentsStartedPaying
+        expectedAmount
+        numberOfStudentsCompletedFee
+        TAUXA
+        sumAmountAlreadyPaid
+        TAUXB
+        numberOfStudentsNotPaid
+        TAUXC
+        amountRest
+        TAUXD
+    }
+}`
+
+export const GET_TOTAL_STATISTICS_TRANCHE1_PRIMAIRE_FRANCOPHONE_SECTION = gql`
+    query TotalSectionStatisticsFrancophoneFirstInstalmentFee {
+        TotalSectionStatisticsFrancophoneFirstInstalmentFee {
+            TOTAL_EFFECTIFS_ENREGISTRES
+            TOTAL_MONTANT_ATTENDU
+            TOTAL_NOMBRE_ENCAISSEMENT
+            TOTAL_NOMBRE_SANS_ENCAISSEMENT
+            TOTAL_MONTANT_EN_CAISSE
+            TOTAL_FIRST_TAUX_ENCAISSEMENT
+            TOTAL_SECOND_TAUX_ENCAISSEMENT
+            TOTAL_RESTE_A_RECOUVRER
+            TOTAL_FIRST_TAUX_RECOUVRIR
+            TOTAL_SECOND_TAUX_RECOUVRIR
+        }
+    }
+`
+
 
 //recuperation d'une tranche de pension
 export const GET_TRANCHE_PENSION_BY_ID = gql `
@@ -296,6 +605,28 @@ export const GET_ALL_MONTANT_TRANCHE_BY_SALLE = gql `
 //     }
 // `
 
+
+//recuperation de toutes les payement de salaire et de scolarite pour gerer les depenses
+export const GET_ALL_EXPENSE_PERSONNEL_STUDENT = gql `
+    query findallexpenses {
+        findallexpenses {
+            id
+            creditamount
+            debitamount
+            debitTotal
+            creditTotal
+            createdOn
+            personnelid
+            personnelFirstName
+            personnelLastName
+            personnelFonction
+            studentid
+            studentFirstname
+            studentLastname
+        }
+    }
+`
+
 //one cycle
 export const GET_ONE_CYCLE =  gql `
     query findOnecycle ($id: String!) {
@@ -318,12 +649,14 @@ export const GET_ONE_SECTION = gql `
 `;
 
 export const GET_LEVEL_BY_ID = gql`
-    query niveaEtude ($id: String!) {
-        niveaEtude (id: $id) {
+    query findOneNiveauEtude ($id: String!) {
+        findOneNiveauEtude (id: $id) {
             id
             name
             description
             montantPension
+            cycleId
+            cycleName
         }
     }
 `
@@ -347,53 +680,58 @@ query user ($id: String!) {
 
 
 export const GET_ALL_USER = gql `
-    query findAlluser {
-        findAlluser {
-            id
-            email
-            password
-            firstName
-            lastName
-            name
-            role
-            phoneNumber
-            active
-            deactivatedAt
-        }
+   query findAlluser {
+    findAlluser {
+        id
+        email
+        password
+        firstName
+        lastName
+        name
+        role
+        phoneNumber
+        active
+        lastConnection
+        deactivatedAt
+        personnelid
+        studentid
     }
+}
 `;
 
 //Tranche student by studentIf
-export const GET_TRANCHE_STUDENT_BY_STUDENT_ID = gql `
-    query getTrancheStudentByStudent ($studentid: String!) {
-        getTrancheStudentByStudent (studentid: $studentid) {
-            id
-            name
-            description
-            montant
-            complete
-            reste
-        }
-    }
-`;
+// export const GET_TRANCHE_STUDENT_BY_STUDENT_ID = gql `
+//     query getTrancheStudentByStudent ($studentid: String!) {
+//         getTrancheStudentByStudent (studentid: $studentid) {
+//             id
+//             name
+//             description
+//             montant
+//             complete
+//             reste
+//         }
+//     }
+// `;
+
+
 
 //personnel by userid
 export const GET_PERSONNEL_BY_USERID= gql `
-    query getpersonnelbyaccount ($userid: String!) {
-        getpersonnelbyaccount (userid: $userid) {
-            id
-            firstName
-            lastName
-            phoneNumber
-            situationMatrimonial
-            sexe
-            fonction
-            status
-            dateOfStartWork
-            dateOfBirth
-            childNumber
-        }
+query getpersonnelbyaccount ($userid: String!) {
+    getpersonnelbyaccount (userid: $userid) {
+        id
+        firstName
+        lastName
+        phoneNumber
+        situationMatrimonial
+        sexe
+        fonction
+        status
+        dateOfStartWork
+        dateOfBirth
+        childNumber
     }
+}
 `;
 
 export const GET_CLASS_FEES_BY_STUDENT_ID = gql `
@@ -402,10 +740,23 @@ export const GET_CLASS_FEES_BY_STUDENT_ID = gql `
     }
 `
 
+//reste a payer a le penion totale de chque eleve
 export const GET_RESTE_PENSION_A_PAYER_BY_STUDENT_ID = gql `
     query findrestpensionbystudent ($studentid: String!) {
         findrestpensionbystudent (studentid: $studentid)
     }
+`
+
+//reste a peyer des tranches pour chaque eleve
+export const GET_RESTE_MONTANT_TRANCHE_BY_STUDENT_ID = gql `
+query findByStudentRestTranche ($studentid: String!) {
+    findByStudentRestTranche (studentid: $studentid) {
+        studentid
+        Nom
+        Priority
+        Rest
+    }
+}
 `
 
  export const GET_ALL_MONTANT_PENSION_CLASS = gql`
@@ -429,13 +780,37 @@ export const GET_RESTE_PENSION_A_PAYER_BY_STUDENT_ID = gql `
         }
     }
  `;
-export const GET_ALL_PERSONNEL_SALLE = gql`
+export const GET_ALL_PERSONNEL_SALLE = gql `
     query findAllPersonnelSalle {
         findAllPersonnelSalle {
             id
+            personnelId
+            personnelFirstName
+            personnelLastName
+            personnelFunction
+            salleId
+            salleName
+            courseId
+            courseName
         }
     }
 `;
+
+//recuperation de la pension fixe a une classe dans la table pension salle
+export const GET_ALL_PENSION_SALLE_ENTITY = gql `
+query findAllpensionSalle {
+    findAllpensionSalle {
+        id
+        name
+        description
+        montantPension
+        dateLine
+        yearid
+        yearName
+        salleId
+        salleName
+    }
+}`
 
 export const GET_PRIME= gql `
     query findAllprime {
@@ -473,19 +848,23 @@ query findAllparents {
 `
 
 //recuperation des infos de l'eleve a partir de tranche student
-export const GET_STUDENT_BY_TRANCHE_STUDENT = gql `
-query getTrancheStudentByStudent ($studentid: String!) {
-    getTrancheStudentByStudent (studentid: $studentid) {
-        id
-        name
-        description
-        montant
-        complete
-        reste
-        surplus
-    }
-}
-`; 
+// export const GET_STUDENT_BY_TRANCHE_STUDENT = gql `
+// query getTrancheStudentByStudent ($studentid: String!) {
+//     getTrancheStudentByStudent (studentid: $studentid) {
+//         id
+//         name
+//         description
+//         montant
+//         complete
+//         reste
+//         surplus
+//     }
+// }
+// `; 
+
+//recuperation de toutes informations des paiement des tranches dans tranche_student
+// export const GET_ALL_TRANCHE_STUDENT
+
 
 //recuperation de la classe deml'eleve\
 export const GET_STUDENT_SALLE = gql `
@@ -494,9 +873,10 @@ export const GET_STUDENT_SALLE = gql `
             id
             name
             section
-            cycle
             montantPensionSalle
             effectif
+            levelId
+            levelName
         }
     }
 `
@@ -515,10 +895,11 @@ export const GET_AVANCE_MONTANT_TRANCHE_BY_STUDENT = gql  `
     }
 `
 
-export const GET_RESTE_TRANCHE_BY_STUDENT = gql `
-    query RestTrancheByStudent ($studentid: String!, $trancheid: String!) {
-        RestTrancheByStudent (studentid: $studentid, trancheid: $trancheid)
-    }
+//RECUPERATION DE LA DATE LIMITE DE PAIEMENT PAR TRANCHE POUR CHQUE ELEVE
+export const GET_DATELINE_TRANCHE_BY_STUDENT = gql `
+query getTrancheDateLineByStudent ($studentid: String!, $trancheid: String!) {
+    getTrancheDateLineByStudent (studentid: $studentid, trancheid: $trancheid)
+}
 `;
 
 export const GET_ALL_MONTANT_TRANCHE_BY_STUDENT = gql `
@@ -536,12 +917,22 @@ query getsalairebypersonnel ($personnelid: String!) {
     }
 }
 `
-
-export const GET_ALL_TRANCHE_DATE_LINE_BY_STUDENT = gql `
-    query TrancheDateLine ($studentid: String!) {
-        TrancheDateLine (studentid: $studentid)
+export const GET_ALL_PAYSALAIRE_BY_ID = gql `
+query getpaysalairebypersonnel ($personnelid: String!) {
+    getpaysalairebypersonnel (personnelid: $personnelid) {
+        id
+        moisPaie
+        montant
+        personnelid
     }
+}
 `
+
+// export const GET_ALL_TRANCHE_DATE_LINE_BY_STUDENT = gql `
+//     query TrancheDateLine ($studentid: String!) {
+//         TrancheDateLine (studentid: $studentid)
+//     }
+// `
 
 export const GET_ALL_TRANCHE_COMPLETE_BY_STUDENT = gql `
     query getalltranchecompletedbystudent ($studentid: String!) {
@@ -554,6 +945,46 @@ export const GET_ALL_TRANCHE_COMPLETE_BY_STUDENT = gql `
         }
     }
 `;
+
+export const GET_ALL_TRANCHE_BY_STUDENT_ID = gql `
+    query getClassfeeofStudent ($studentid: String!) {
+        getClassfeeofStudent (studentid: $studentid) {
+            id
+            name
+            description
+            dateLine
+            montant
+            priority
+        }
+    }
+`;
+
+export const GET_PENSION_ALREADY_PAY_BY_STUDENT_ID = gql `
+    query findpensionbystudent ($studentid: String!) {
+        findpensionbystudent (studentid: $studentid) {
+            id
+            name
+            description
+            montantPension
+            complete
+            reste
+            surplus
+            dateLine
+        }
+    }
+`;
+
+export const GET_ALL_RETENUE = gql `
+    query findAllretenusalarial {
+        findAllretenusalarial {
+            id
+            nom
+            description
+            montant
+        }
+    }`
+    
+
 
 export const GET_ALL_MONTH_SALARY = gql `
 query PersonnelMonthSalary ($personnelid: String!) {
@@ -581,8 +1012,8 @@ query findmontantprimebypersonnel ($personnelid: String!) {
 `;
 //MONTANT TOTAL DE TOUTES LES PRIMES ATTRIBUES A UN PERSONNEL
 export const GET_SUM_AMOUNT_PRIME_PERSONNEL = gql `
-query findsumallprimepersonnel ($personnelid: String!) {
-    findsumallprimepersonnel (personnelid: $personnelid)
+query getallpersonnelprimebymont ($personnelid: String!, $month: String!) {
+    getallpersonnelprimebymont (personnelid: $personnelid, month: $month)
 }
 `;
 
@@ -600,8 +1031,8 @@ query findmontantretenubypersonnel ($personnelid: String!) {
 `;
 //MONTANT TOTAL DE TOUTES LES RETENUES ATTRIBUES A UN PERSONNEL
 export const GET_SUM_AMOUNT_RETENU_PERSONNEL = gql `
-query findsumallretenupersonnel ($personnelid: String!) {
-    findsumallretenupersonnel (personnelid: $personnelid)
+query getallretenupersonnelbymonth ($personnelid: String!, $month: String!) {
+    getallretenupersonnelbymonth (personnelid: $personnelid, month: $month)
 }
 `;
 //noms et montant des primes d'un personnel
@@ -614,5 +1045,42 @@ query primesETnomprimepersonnel ($personnelid: String!) {
 export const GET_RETENUE_PERSONNEL = gql `
 query getRetenuEtNom ($personnelid: String!) {
     getRetenuEtNom (personnelid: $personnelid)
+}
+`;
+
+export const FIND_ALL_SALAIRE = gql `
+query findallsalaire {
+    findallsalaire {
+        id
+        jourPaie
+        moisPaie
+        payer
+        montant
+        personnelid
+        personnelFirstName
+        personnelLastName
+        personnelFonction
+    }
+}
+`;
+export const FIND_BY_ID_SALAIRE = gql `
+query getonesalaire ($id: String!) {
+    getonesalaire (id: $id) {
+        id
+        jourPaie
+        moisPaie
+        payer
+        montant
+        personnelid
+        personnelFirstName
+        personnelLastName
+        personnelFonction
+    }
+}
+`;
+
+export const FIND_ID_PRIME = gql `
+query findIdPrimesByPrimesPersonnel ($personnelid: String!, $month: String!) {
+    findIdPrimesByPrimesPersonnel (personnelid: $personnelid, month: $month)
 }
 `;

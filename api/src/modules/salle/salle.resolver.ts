@@ -16,7 +16,6 @@ import { SalleUpdateInput } from './dto/salle.update';
 import { SalleService } from './salle.service';
 import { Section } from 'src/entities/section.entity';
 
-
 @Resolver(() => Salle)
 export class SalleResolver {
   constructor(private readonly salleService: SalleService) {}
@@ -83,7 +82,7 @@ export class SalleResolver {
 
   @Query(() => [Section])
   async findSectionByStudent(@Args('studentid', { type: () => String }) studentid: string) {
-   return await this.salleService.findSectionByStudent(studentid)
-  }
+   return await this.salleService.findSectionByStudents(studentid)
+  }
 
 }

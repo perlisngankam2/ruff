@@ -24,6 +24,9 @@ export class SalleUpdateInput {
   @Field(()=>ID, {nullable:true})
   niveauEtudeId?: string;
   
+  @Field({nullable:true})
+  anneeAcademiqueId?: string;
+
   @Field({nullable:true,defaultValue:0})
   effectif?: number;
 

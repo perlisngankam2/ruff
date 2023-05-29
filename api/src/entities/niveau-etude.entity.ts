@@ -80,18 +80,16 @@ export class NiveauEtude{
   @OneToMany(() => Salle, (salle) => salle.niveau)
   salle = new Collection<Salle>(this);
 
-
-    
-  @Field(() => ID)
+  @Field(() => ID, {nullable: true})
   @Property({ persist: false })
-    get cycleid() {
-    return this.cycle?`${this.cycle.id}`:null;
+    get cycleId() {
+    return this.cycle? `${this.cycle.id}`:null;
 }
 
-  @Field(() => ID)
+  @Field(() => ID, {nullable: true})
   @Property({ persist: false })
-  get cycleName() {
-  return this.cycle?`${this.cycle.getEntity().name}`:null;
+  get cycleName():string|null {
+  return this.cycle.getEntity().name?`${this.cycle.getEntity().name}`:null;
 }
 
 }

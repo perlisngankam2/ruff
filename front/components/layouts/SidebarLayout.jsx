@@ -6,6 +6,7 @@ import PrincipalLaout from "./PrincipalLayout";
 import EconomeSidebarLayout from "./EconomSidebarLayout";
 import ManagerLayout from "./ManagerLayout";
 import AdminLayout from "./AdminLayout";
+import FondateurLayout from './FondateurLayout'
 import { GET_PERSONNEL_BY_USERID } from "../../graphql/Queries";
 import { useMutation, useQuery } from '@apollo/client'; 
 import { useAccount } from "../../contexts/account/Account";
@@ -67,7 +68,10 @@ const SidebarLayout = ({ children }) => {
           (account?.role==="ADMIN")&&
             <AdminLayout/>
         }
-
+        {
+          (personnelData?.getpersonnelbyaccount.fonction==="fondateur") && 
+              <FondateurLayout/>
+        }
         {
           (personnelData?.getpersonnelbyaccount.fonction==="principal") && 
               <PrincipalLaout/>

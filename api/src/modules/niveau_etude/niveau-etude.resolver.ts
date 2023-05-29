@@ -19,7 +19,6 @@ import { Cycle } from 'src/entities/cycle.entity';
 import { CycleService } from '../cycle/cycle.service';
 
 
-
 @Resolver(() => NiveauEtude)
 export class NiveauEtudeResolver {
   constructor(private readonly niveauEtudeService: NiveauEtudeService,

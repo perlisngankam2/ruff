@@ -181,13 +181,13 @@ async saveTranche(studentid:string,trancheid:string){
         const tranchestudent = new TrancheStudent()
         
 
-        const year = await this.parameterservice.getAll()
-        const annee = year[year.length-1].year
+        // const year = await this.parameterservice.getAll()
+        // const annee = year[year.length-1].year
         wrap(tranchestudent).assign({
             montant:0.00000,
             student:studentid,
             tranche:trancheid,
-            year : annee     
+            // year : annee     
         },
         {
             em:this.em

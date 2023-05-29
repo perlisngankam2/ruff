@@ -57,7 +57,7 @@ export class TrancheService {
             description: input.description,
             // dateLine:format(input.dateLine, 'dd/MM/yyyy'),
             dateLine:input.dateLine,
-            // anneeAccademique: input.anneeAcademiqueId,
+            anneeAccademique: annee,
             salle: input.salleId,
             year: annee,
             priority: input.priority
@@ -102,6 +102,8 @@ export class TrancheService {
           populate:true
         })
       }
+
+     
 
       async getAllTranche(): Promise<Tranche[]> {
         return await this.trancheRepository.findAll({

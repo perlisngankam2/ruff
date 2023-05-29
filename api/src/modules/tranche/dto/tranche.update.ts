@@ -7,11 +7,11 @@ import { SalleCreateInput } from 'src/modules/salle/dto/salle.input';
 
 @InputType()
 export class TrancheUpdateInput {
-  // @Field(()=>ID,{nullable:true})
-  // pension_id?: string;
+  @Field({nullable:true})
+  ID!: string;
 
-  // @Field(()=>ID,{nullable:true})
-  // anneeAcademiqueId?:string
+  @Field(()=>ID,{nullable:true})
+  anneeAcademiqueId?:string
 
   @Field(()=>ID,{nullable:true})
   salleId?:string

@@ -60,6 +60,7 @@ export class SectionService {
       async getAllForUse(): Promise<Section[]> {
         return await this.sectionRepository.findAll({
           populate: ['cycle','cycle.niveauEtude','cycle.niveauEtude.salle','cycle.niveauEtude.salle.student','cycle.niveauEtude.salle.student.pension']
+
         })
       }
 

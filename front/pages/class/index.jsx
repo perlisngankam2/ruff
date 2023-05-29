@@ -1,9 +1,9 @@
-import { 
-  Box, 
+import {
+  Box,
   Flex,
   Button,
   ButtonGroup,
-  IconButton ,
+  IconButton,
   Center,
   Hide,
   Input,
@@ -41,9 +41,11 @@ import {
   FormLabel,
   useToast,
   AlertDialogHeader,
-  InputRightElement
-  
+  InputRightElement,
+  Card,
 } from "@chakra-ui/react";
+
+import { Select as Selects } from "chakra-react-select";
 
 // import {Link} from "next"
 import { useRouter } from "next/router";
@@ -52,80 +54,131 @@ import { FiSearch, FiEdit } from "react-icons/fi";
 import AddNew from "../../components/atoms/AddNew";
 import StudentBox from "../../components/atoms/StudentBox";
 import DefaultLayout from "../../components/layouts/DefaultLayout";
-import { 
+import {
   GET_ALL_CLASS,
   GET_ALL_PERSONNELS,
   GET_ALL_ANNEE_ACADEMIQUE,
   GET_ALL_COURSES,
   GET_ALL_PERSONNEL_SALLE,
-  GET_ALL_COURSE_PERSONNEL_SALLE
+  GET_ALL_COURSE_PERSONNEL_SALLE,
 } from "../../graphql/Queries";
-import { 
+import {
   DELETE_SALLE,
   CREATE_PERSONNEL_SALLE,
-  CREATE_MONTANT_SCOLARITE_CLASS
- } from "../../graphql/Mutation";
+  CREATE_MONTANT_SCOLARITE_CLASS,
+} from "../../graphql/Mutation";
 import { useMutation, useQuery } from "@apollo/client";
-import {IoIosAdd} from 'react-icons/io';
-import {MdDelete} from 'react-icons/md';
+import { IoIosAdd } from "react-icons/io";
+import { MdDelete } from "react-icons/md";
 import ReactPaginate from "react-paginate";
-import Link  from "next/link"
+import Link from "next/link";
 import Routes from "../../modules/routes";
+import { useTranslation } from "next-i18next";
+import { getStaticPropsTranslations } from "../../types/staticProps";
+import { useAuth } from "../../contexts/account/Auth/Auth";
 
 const Class = () => {
-
   const router = useRouter();
-  const cancelRef = React.useRef()
+  const cancelRef = React.useRef();
   const toast = useToast();
+  const { t } = useTranslation();
+  const { setAuthToken, authToken } = useAuth();
   const { isOpen, onToggle, onClose, onOpen } = useDisclosure();
-  const { isOpen:isOpenn, onClose:onClosse, onOpen:onOpenn } = useDisclosure();
-  const { isOpen:isOpennes, onClose:onClosses, onOpen:onOpennes } = useDisclosure();
+  const {
+    isOpen: isOpenn,
+    onClose: onClosse,
+    onOpen: onOpenn,
+  } = useDisclosure();
+  const {
+    isOpen: isOpennes,
+    onClose: onClosses,
+    onOpen: onOpennes,
+  } = useDisclosure();
   const [salleId, setSalleId] = useState("");
   const [personnelId, setPersonnelId] = useState("");
   const [anneeAcademiqueId, setAnneeAcademiqueId] = useState("");
-  const [courseId, setCourseId] = useState("");
+  // const [courseId, setCourseId] = useState("");
   const [montantPension, setMontantPension] = useState();
+  const [selectClassSarch, setSelectClassSearch] = useState("");
+  const [selectedCourse, setSelectedCourse] = useState([]);
   const itemsPerPage = 15;
   const [pageNumber, setPageNumber] = useState(0);
   const pagesVisited = pageNumber * itemsPerPage;
 
   const [deleteClasse] = useMutation(DELETE_SALLE);
-  const {data:dataClasse} = useQuery(GET_ALL_CLASS);
-  const {data:dataEnseignant} = useQuery(GET_ALL_PERSONNELS);
-  const {data:dataAnneeAcademique} = useQuery(GET_ALL_ANNEE_ACADEMIQUE);
-  const {data:dataCourse} = useQuery(GET_ALL_COURSES);
-  const {data:dataCoursePersonnelSalle} = useQuery(GET_ALL_COURSE_PERSONNEL_SALLE);
+  const { data: dataClasse, refetch } = useQuery(GET_ALL_CLASS);
+  const { data: dataEnseignant } = useQuery(GET_ALL_PERSONNELS);
+  const { data: dataAnneeAcademique } = useQuery(GET_ALL_ANNEE_ACADEMIQUE);
+  const { data: dataCourse } = useQuery(GET_ALL_COURSES);
+  const { data: dataPersonnelSalle } = useQuery(GET_ALL_PERSONNEL_SALLE);
+  const { data: dataCoursePersonnelSalle } = useQuery(
+    GET_ALL_COURSE_PERSONNEL_SALLE
+  );
   const [createPersonnelSalle] = useMutation(CREATE_PERSONNEL_SALLE);
-  const [createMonantPensionClasse] = useMutation(CREATE_MONTANT_SCOLARITE_CLASS);
+  const [createMonantPensionClasse] = useMutation(
+    CREATE_MONTANT_SCOLARITE_CLASS
+  );
 
-  const removeClass = async(id) => {
+  const removeClass = async (id) => {
     await deleteClasse({
-      variables: {id},
-      refetchQueries: [{
-        query: GET_ALL_CLASS
-      }]
-    })
+      variables: { id },
+      refetchQueries: [
+        {
+          query: GET_ALL_CLASS,
+        },
+      ],
+    });
+    refetch();
     onClose();
-  }
+  };
+  const courseTable = [];
+  const loadingCourse = () => {
+    dataCourse?.findAllCourse.map((course, index) => {
+      courseTable.push({
+        label: course?.title + " " + course?.time,
+        value: course?.id,
+      });
+    });
+  };
 
   useEffect(() => {
-    console.log(dataClasse?.findAllsalle);
-    console.log(dataCoursePersonnelSalle?.findbyCoursePersonnelSalle);
-  })
+    console.log(dataPersonnelSalle?.findAllPersonnelSalle);
+    loadingCourse();
+    // console.log(dataCoursePersonnelSalle?.findbyCoursePersonnelSalle);
+  });
   // const handleClose = () => {
   //   setShow(false)
   // }
 
+  console.log(authToken);
+  useEffect(() => {
+    console.log(authToken);
+
+    if (!authToken) {
+      router.back();
+    }
+  }, [authToken]);
+
   const addPersonnelSalle = async () => {
-    await createPersonnelSalle({
-      variables:{
-        input:{ 
-        salleId: salleId,
-        personnelId: personnelId,
-        courseId: courseId
-        }
-      }
-    })
+    console.log(selectedCourse);
+    console.log(salleId);
+    selectedCourse.map((course, index) => {
+      createPersonnelSalle({
+        variables: {
+          input: {
+            salleId: salleId,
+            personnelId: personnelId,
+            courseId: course.value,
+          },
+        },
+        refetchQueries: [
+          {
+            query: GET_ALL_PERSONNEL_SALLE,
+          },
+        ],
+      });
+    });
+    refetch();
     onClosse();
     toast({
       title: "Affection du personnel a la salle.",
@@ -134,42 +187,44 @@ const Class = () => {
       duration: 3000,
       isClosable: true,
     });
-    setPersonnelId("")
-    setSalleId("")
-  }
+    setPersonnelId("");
+    setSalleId("");
+  };
 
-  const AddMontantPensionClasse = async () =>{
+  const AddMontantPensionClasse = async () => {
     await createMonantPensionClasse({
-      variables:{
-        pension:{
+      variables: {
+        pension: {
           salleId: salleId,
           anneeAcademiqueId: anneeAcademiqueId,
-          montantPension: parseInt(montantPension)
-        }
-
-      }
-    })
-      onClosses();
-        // console.log(sectionData)
-      toast({
-          title: "Affection du montqnt de scolarite a une classe.",
-          description: "Qffection reussit.",
-          status: "success",
-          duration: 3000,
-          isClosable: true,
-      });
-      // router.push("/class/cyclesection")
+          montantPension: parseInt(montantPension),
+        },
+      },
+    });
+    refetch();
+    onClosses();
+    // console.log(sectionData)
+    toast({
+      title: "Affection du montqnt de scolarite a une classe.",
+      description: "Qffection reussit.",
+      status: "success",
+      duration: 3000,
+      isClosable: true,
+    });
+    // router.push("/class/cyclesection")
     setSalleId("");
     setAnneeAcademiqueId("");
     setMontantPension("");
-  }
+  };
 
-  const pageCountSalle = Math.ceil(dataClasse?.findAllsalle.length / itemsPerPage);
+  const pageCountSalle = Math.ceil(
+    dataClasse?.findAllsalle.length / itemsPerPage
+  );
 
   const changePage = ({ page }) => {
     setPageNumber(page);
   };
-  
+
   return (
     <DefaultLayout>
       <Box background="colors.tertiary" w="full">
@@ -180,104 +235,107 @@ const Class = () => {
           <StudentBox class="CP" studentnumber="16" />
           <StudentBox class="CM1" studentnumber="34" />
         </Flex> */}
-      <Box p="3" pt={"70px"} w="full">
-        <Flex
-          align="center"
-          justify="space-between"
-          boxShadow="md"
-          p="5"
-          rounded="lg"
-          background="white"
-        >
-          <Heading
-            textAlign="center"
-            color="WindowText"
-            size="lg"
-            textColor="pink.300"
+        <Box p="3" pt={"70px"} w="full">
+          <Flex
+            align="center"
+            justify="space-between"
+            boxShadow="md"
+            p="5"
+            rounded="lg"
+            background="white"
           >
-            Liste des classes
-          </Heading>
-          <Hide below="sm">
-            <Text>Dashboad / Classes / Liste classes</Text>
-          </Hide>
-        </Flex>
+            <Heading
+              textAlign="center"
+              color="WindowText"
+              size="lg"
+              textColor="pink.300"
+            >
+              {t("pages.class.classList.heading")}
+            </Heading>
+            <Hide below="sm">
+              <Text>Dashboad / Classes / Liste classes</Text>
+            </Hide>
+          </Flex>
 
-        <Flex 
-          gap={10} 
-          mt={7} 
-          maxWidth={"1300px"}
-        >
-          <InputGroup width="500px">
-            <InputRightElement
-              children={<Icon as={FiSearch} />}
-              cursor="pointer"
-            />
-            <Input
-              placeholder="Recherchez une classe..."
+          <Flex gap={10} mt={7} maxWidth={"1300px"}>
+            <InputGroup width="500px">
+              <InputRightElement
+                children={<Icon as={FiSearch} />}
+                cursor="pointer"
+              />
+              <Input
+                placeholder="Recherchez une classe..."
+                variant="flushed"
+                borderBottom={"1px"}
+                //value={recherche}
+                // onChange={e => setQuery(e.target.value)}
+              />
+            </InputGroup>
+            <Select
+              width={"500px"}
               variant="flushed"
-              borderBottom={"1px"}
-              //value={recherche}
-              // onChange={e => setQuery(e.target.value)}
-            />
-          </InputGroup>
-          <Select 
-           width={"500px"}
-           variant="flushed"
-            placeholder="Selectionner la classe"
-            // onChange={e =>setQuery(e.target.value)}
-          >
-            {/* {Classes.map((classe) => (
-              <option 
-                key={classe.id}
-              >{classe.classe}</option>
-            ))} */}
-          </Select>
-          <Box> 
-            <Button
+              placeholder="Selectionner la classe"
+              onChange={(e) => setSelectClassSearch(e.target.value)}
+              value={selectClassSarch}
+            >
+              {dataClasse &&
+                dataClasse.findAllsalle.map((salle) => (
+                  <option key={salle.id}>{salle.name}</option>
+                ))}
+            </Select>
+            <Box>
+              <Button
                 rightIcon={<Icon as={IoIosAdd} boxSize="20px" />}
                 onClick={() => router.push("/class/addclass")}
               >
                 Ajouter une classe
-            </Button>
-          </Box> 
-        </Flex>
-
-        {/* FORMULAIRE D'AFFECTATION D'UN PROFESSEUR A UNE CLASSE */}
-        <Box> 
-            <Flex 
-              direction={["column", "column", "column"]}
-              mt={"15px"}
-              flexWrap={["wrap", "wrap", "wrap"]}
-              pl={["500px", "100px", "200px", "1050px"]}
-            > 
-              <Flex gap={1}> 
-                <Text 
+              </Button>
+            </Box>
+          </Flex>
+          {/* FORMULAIRE D'AFFECTATION D'UN PROFESSEUR A UNE CLASSE */}
+          <Box>
+            <Box
+              display={{ md: "flex" }}
+              mt={"30px"}
+              ml={"auto"}
+              flexDirection={"column"}
+              // flexWrap={["wrap", "wrap", "wrap"]}
+            >
+              <Flex
+                gap={1}
+                ml={"auto"}
+                // w={"full"}
+              >
+                <Button
                   mb={5}
                   fontSize="14px"
-                  color = "colors.quinzaine"
-                  >
+                  color="colors.quinzaine"
+                  onClick={onOpenn}
+                >
                   Affecter un enseignant
-                </Text>
-                <Icon 
+                </Button>
+                {/* <Icon 
                   as={IoIosAdd} 
                   boxSize="30px"
-                  color={"colors.greencolor"}
+                  color={"white"}
                   rounded="full"
                   // ml={["5px", "5px", "5px" ]}
                   mt={["-3px"]}
                   _hover={{background:"colors.bluecolor"}}
                   onClick={onOpenn}
-                  />
+                  bg={"colors.greencolor"}
+                  /> */}
               </Flex>
-              <Flex > 
-                <Text 
+              <Flex gap={1} ml={"auto"}>
+                <Button
                   mb={5}
                   fontSize="14px"
-                  color = "colors.quinzaine"
+                  color="colors.quinzaine"
+                  onClick={onOpennes}
                 >
                   Fixer une pension
-                </Text>
-                <Icon 
+                </Button>
+                {/* <Icon 
                   as={IoIosAdd} 
                   boxSize="30px"
                   color={"colors.greencolor"}
@@ -286,255 +344,264 @@ const Class = () => {
                   mt={["-3px"]}
                   _hover={{background:"colors.bluecolor"}}
                   onClick={onOpennes}
-                  />
+                  /> */}
               </Flex>
-            </Flex>
-          <AlertDialog
-            isOpen={isOpenn}
-            leastDestructiveRef={cancelRef}
-            onClose={onClosse}
-            size='xl'
-          >
-            <AlertDialogOverlay>
-              <AlertDialogContent  width={"400px"}>
-                <Box mt={"20px"}> 
-                    <Heading 
-                      textAlign="center"
-                      size="md"
-                    >
+            </Box>
+            <AlertDialog
+              isOpen={isOpenn}
+              leastDestructiveRef={cancelRef}
+              onClose={onClosse}
+              size="xl"
+            >
+              <AlertDialogOverlay>
+                <AlertDialogContent width={"400px"}>
+                  <Box mt={"20px"}>
+                    <Heading textAlign="center" size="md">
                       Affectez un enseignant a une classe
                     </Heading>
                     <AlertDialogBody>
-                      <Box mt='4'>
+                      <Box mt="4">
                         <FormControl mt="5px">
                           <FormLabel>classe</FormLabel>
                           <Select
                             name="salleId"
                             placeholder="classe"
                             value={salleId}
-                            onChange={(event)=> setSalleId(event.target.value)}
+                            onChange={(event) => setSalleId(event.target.value)}
                           >
-                            {dataClasse && 
-                              dataClasse.findAllsalle.map((salle, index) =>(
-                                <option value={salle?.id}>
-                                  {salle.name}
-                                </option>
-                              ))
-
-                            }
+                            {dataClasse &&
+                              dataClasse.findAllsalle.map((salle, index) => (
+                                <option value={salle?.id}>{salle.name}</option>
+                              ))}
                           </Select>
                         </FormControl>
                         <FormControl mt={"10px"}>
-                            <FormLabel>Enseigant</FormLabel>
+                          <FormLabel>Enseigant</FormLabel>
                           <Select
                             // type="text"
                             name="personnelId"
                             value={personnelId}
-                            onChange={(event)=> setPersonnelId(event.target.value)}
-
+                            onChange={(event) =>
+                              setPersonnelId(event.target.value)
+                            }
                             // isDisabled
                             placeholder="enseignant"
                           >
                             {dataEnseignant &&
-                              dataEnseignant?.findAllpersonnel.map((personnel, index) =>(
-                                <option value={personnel?.id} key={index}>
-                                  {personnel.firstName} 
-                                </option>
-                              ))
-                            }
+                              dataEnseignant?.findAllpersonnel.map(
+                                (personnel, index) => (
+                                  <option value={personnel?.id} key={index}>
+                                    {personnel.firstName}
+                                  </option>
+                                )
+                              )}
                           </Select>
                         </FormControl>
                         <FormControl mt={"10px"}>
-                            <FormLabel>Enseigant</FormLabel>
-                          <Select
-                            name="courseId"
-                            value={courseId}
-                            onChange={(event)=> setCourseId(event.target.value)}
+                          <FormLabel>Enseigant</FormLabel>
+                          <Selects
+                            isMulti
+                            name="selectedCourse"
+                            value={selectedCourse}
+                            onChange={setSelectedCourse}
                             placeholder="Matiere"
+                            options={courseTable}
                           >
-                            {dataCourse &&
+                            {/* {dataCourse &&
                               dataCourse?.findAllCourse.map((course, index) =>(
                                 <option value={course?.id} key={index}>
                                   {course.title} 
                                 </option>
                               ))
+                            } */}
+                            {console.log(selectedCourse)}
+                          </Selects>
+                        </FormControl>
+                      </Box>
+                    </AlertDialogBody>
+                    <AlertDialogFooter>
+                      <Button
+                        ref={cancelRef}
+                        onClick={onClosse}
+                        colorScheme="red"
+                      >
+                        annuler
+                      </Button>
+                      <Links href={"#"}>
+                        <Button
+                          colorScheme="green"
+                          ml={3}
+                          onClick={addPersonnelSalle}
+                        >
+                          Affectez
+                        </Button>
+                      </Links>
+                    </AlertDialogFooter>
+                  </Box>
+                </AlertDialogContent>
+              </AlertDialogOverlay>
+            </AlertDialog>
+          </Box>
+
+          {/* FORMULAIRE D'AFFECTATION DE LA PENSION POUR UNE ANNEE ACADEMIQUE */}
+
+          <Box>
+            <AlertDialog
+              isOpen={isOpennes}
+              leastDestructiveRef={cancelRef}
+              onClose={onClosses}
+              size="xl"
+            >
+              <AlertDialogOverlay>
+                <AlertDialogContent width={"400px"}>
+                  <Box mt={"20px"}>
+                    <Heading textAlign="center" size="md">
+                      Ajoutez une pension
+                    </Heading>
+                    <AlertDialogBody>
+                      <Box mt="4">
+                        <FormControl mt="5px">
+                          <FormLabel>classe</FormLabel>
+                          <Select
+                            name="salleId"
+                            placeholder="classe"
+                            value={salleId}
+                            onChange={(event) => setSalleId(event.target.value)}
+                          >
+                            {dataClasse &&
+                              dataClasse.findAllsalle.map((salle, index) => (
+                                <option value={salle?.id}>{salle.name}</option>
+                              ))}
+                          </Select>
+                        </FormControl>
+                        <FormControl mt={"10px"}>
+                          <FormLabel>Montant scolarite</FormLabel>
+                          <Input
+                            // type="text"
+                            name="montantPension"
+                            value={montantPension}
+                            onChange={(event) =>
+                              setMontantPension(event.target.value)
                             }
+                            // isDisabled
+                            placeholder="Montant de la scolarite"
+                          />
+                        </FormControl>
+                        <FormControl mt={"10px"}>
+                          <FormLabel>Annee academique</FormLabel>
+                          <Select
+                            // type="text"
+                            name="anneeAcademiqueId"
+                            value={anneeAcademiqueId}
+                            onChange={(event) =>
+                              setAnneeAcademiqueId(event.target.value)
+                            }
+                            // isDisabled
+                            placeholder="Annee academique"
+                          >
+                            {dataAnneeAcademique &&
+                              dataAnneeAcademique.findAllAnnerAccademique.map(
+                                (anneeAcademique, index) => (
+                                  <option
+                                    value={anneeAcademique.id}
+                                    key={index}
+                                  >
+                                    {anneeAcademique.name}
+                                  </option>
+                                )
+                              )}
                           </Select>
                         </FormControl>
                       </Box>
                     </AlertDialogBody>
-                  <AlertDialogFooter>
-                    <Button 
-                      ref={cancelRef} 
-                      onClick={onClosse} 
-                      colorScheme='red' 
-                    >
-                      annuler
-                    </Button>
-                  <Links href={'#'}>
-                      <Button 
-                        colorScheme='green'  
-                        ml={3}
-                        onClick={addPersonnelSalle}
+                    <AlertDialogFooter>
+                      <Button
+                        ref={cancelRef}
+                        onClick={onClosses}
+                        colorScheme="red"
                       >
-                        Affectez  
-                    </Button>
-                    </Links> 
-                  </AlertDialogFooter>
-                </Box>
-              </AlertDialogContent>
-            </AlertDialogOverlay>
-          </AlertDialog>
-        </Box>
-
-{/* FORMULAIRE D'AFFECTATION DE LA PENSION POUR UNE ANNEE ACADEMIQUE */}
-
-    <Box>
-      <AlertDialog
-        isOpen={isOpennes}
-        leastDestructiveRef={cancelRef}
-        onClose={onClosses}
-        size='xl'
-      >
-        <AlertDialogOverlay>
-          <AlertDialogContent  width={"400px"}>
-            <Box mt={"20px"}> 
-                <Heading 
-                  textAlign="center"
-                  size="md"
-                >
-                  Ajoutez une pension
-                </Heading>
-                <AlertDialogBody>
-                  <Box mt='4'>
-                    <FormControl mt="5px">
-                      <FormLabel>classe</FormLabel>
-                      <Select
-                        name="salleId"
-                        placeholder="classe"
-                        value={salleId}
-                        onChange={(event)=> setSalleId(event.target.value)}
-                      >
-                        {dataClasse && 
-                          dataClasse.findAllsalle.map((salle, index) =>(
-                            <option value={salle?.id}>
-                              {salle.name}
-                            </option>
-                          ))
-                        }
-                      </Select>
-                    </FormControl>
-                    <FormControl mt={"10px"}>
-                        <FormLabel>Montant scolarite</FormLabel>
-                      <Input
-                        // type="text"
-                        name="montantPension"
-                        value={montantPension}
-                        onChange={(event)=> setMontantPension(event.target.value)}
-                        // isDisabled
-                        placeholder="Montant de la scolarite"
-                      />
-                    </FormControl>
-                    <FormControl mt={"10px"}>
-                        <FormLabel>Annee academique</FormLabel>
-                      <Select
-                        // type="text"
-                        name="anneeAcademiqueId"
-                        value={anneeAcademiqueId}
-                        onChange={(event)=> setAnneeAcademiqueId(event.target.value)}
-
-                        // isDisabled
-                        placeholder="Annee academique"
-                      >
-                        {dataAnneeAcademique &&
-                            dataAnneeAcademique.findAllAnnerAccademique.map((anneeAcademique, index) => (
-                              <option value={anneeAcademique.id} key={index}>
-                                {anneeAcademique.name}
-                              </option>
-                            ))
-                          }
-                      </Select>
-                    </FormControl>
+                        annuler
+                      </Button>
+                      <Links href={"#"}>
+                        <Button
+                          colorScheme="green"
+                          ml={3}
+                          onClick={AddMontantPensionClasse}
+                        >
+                          Affectez
+                        </Button>
+                      </Links>
+                    </AlertDialogFooter>
                   </Box>
-                </AlertDialogBody>
-              <AlertDialogFooter>
-                <Button 
-                  ref={cancelRef} 
-                  onClick={onClosses} 
-                  colorScheme='red' 
-                >
-                  annuler
-                </Button>
-              <Links href={'#'}>
-                  <Button 
-                    colorScheme='green'  
-                    ml={3}
-                    onClick={AddMontantPensionClasse}
-                  >
-                    Affectez  
-                  </Button>
-                </Links> 
-              </AlertDialogFooter>
-            </Box>
-          </AlertDialogContent>
-        </AlertDialogOverlay>
-      </AlertDialog>
-    </Box>
+                </AlertDialogContent>
+              </AlertDialogOverlay>
+            </AlertDialog>
+          </Box>
 
-{/* LISTE DES CLASSES */}
-<Box mt={10}>
-           <TableContainer
-            border={"1px"} 
-            rounded={"md"}
-           >
-              <Table 
-                variant='striped'
-                colorScheme={"white"}
-              >
-                  <Thead background="colors.secondary">
+          {/* LISTE DES CLASSES */}
+          <Box mt={10}>
+            <TableContainer border={"1px"} rounded={"md"}>
+              <Table variant="striped" colorScheme={"white"}>
+                <Thead background="colors.secondary">
                   <Tr>
-                      <Th>Nom</Th>
-                      <Th>Montant pension</Th>
-                      {/* <Th >section</Th>  */}
-                      <Th >Action</Th>
+                    <Th>{t("pages.class.classList.name")}</Th>
+                    <Th>Montant pension</Th>
+                    <Th>Niveau</Th>
+
+                    {/* <Th >section</Th>  */}
+                    <Th>{t("pages.class.classList.Action")}</Th>
                   </Tr>
-                  </Thead>
-                  <Tbody>
-                    {dataClasse && ( 
-                      dataClasse.findAllsalle
+                </Thead>
+                <Tbody>
+                  {dataClasse &&
+                    dataClasse.findAllsalle
                       .slice(pagesVisited, pagesVisited + itemsPerPage)
-                      .map((salle, index) =>( 
-                      <Tr key={index}>
-                         <Td >{salle.name}</Td> 
-                         <Td>{salle.montantPensionSalle}</Td>
-                         {/* <Td borderColor={'#C6B062'}>{salle.montantPensionSalle}</Td>   */}
-                         {/* <Td borderColor={'#C6B062'}>{salle.section}</Td>  */}
-                         {/* <Td borderColor={'#C6B062'}>{salle.montantPension}</Td>  */}
-                        
-                        <Td >
-                          <ButtonGroup 
-                            size='sm' 
-                            isAttached 
-                            variant='link' 
-                            colorScheme={'teal'}
-                            >
-                              <Button>
-                                <Links 
-                                  href=''
-                                >Details</Links>
-                              </Button>
-                            </ButtonGroup> 
+                      .filter((salle) => {
+                        if (selectClassSarch == "") {
+                          return salle;
+                        } else if (
+                          salle.name
+                            .toLowerCase()
+                            .includes(selectClassSarch.toLowerCase())
+                        )
+                          return salle;
+                      })
+                      .map((salle, index) => (
+                        <Tr key={index}>
+                          <Td p={0} pl={3}>
+                            {salle.name}
                           </Td>
-                            <Box 
-                              display="flex"
-                              ml={['-140px', '-140px', '-140px', '-140px']} 
-                               mt={['8px', '8px', '8px', '8px']}
-                             >
-                                <Link 
-                                // href="/class/updateclass"
-                                  href= {{
-                                  pathname: Routes.ClasseEdit?.path || '',
-                                  query: {id: salle.id}
+                          <Td p={0} pl={6}>
+                            {salle.montantPensionSalle}
+                          </Td>
+                          <Td p={0} pl={6}>
+                            {salle.levelName}
+                          </Td>
+
+                          {/* <Td borderColor={'#C6B062'}>{salle.montantPensionSalle}</Td>   */}
+                          {/* <Td borderColor={'#C6B062'}>{salle.section}</Td>  */}
+                          {/* <Td borderColor={'#C6B062'}>{salle.montantPension}</Td>  */}
+
+                          <Td p={0} pl={6}>
+                            <Box display={{ md: "flex" }} gap={3}>
+                              <ButtonGroup
+                                size="sm"
+                                isAttached
+                                variant="link"
+                                colorScheme={"teal"}
+                              >
+                                <Button>
+                                  <Links href="">
+                                    {t("pages.class.classList.details")}
+                                  </Links>
+                                </Button>
+                              </ButtonGroup>
+                              <Box>
+                                <Link
+                                  // href="/class/updateclass"
+                                  href={{
+                                    pathname: Routes.ClasseEdit?.path || "",
+                                    query: { id: salle?.id },
                                   }}
                                 >
                                   <Icon
@@ -542,211 +609,229 @@ const Class = () => {
                                     boxSize="40px"
                                     p="3"
                                     rounded="full"
-                                    _hover={{background:"red.100"}}
+                                    _hover={{ background: "red.100" }}
                                   />
                                 </Link>
-                                <Box href="#" mt="-3px">
-                                  <Icon
-                                    as={MdDelete}
-                                    boxSize="44px"
-                                    p="3"
-                                    rounded="full"
-                                    color="colors.quaternary"
-                                    onClick={onToggle}
-                                    _hover={{background:"blue.100"}}
-                                  />
-                                  <Box> 
-                                    <AlertDialog
-                                      isOpen={isOpen}
-                                      leastDestructiveRef={cancelRef}
-                                      onClose={onClose}
-                                      isCentered
+                                <Icon
+                                  as={MdDelete}
+                                  boxSize="44px"
+                                  p="3"
+                                  rounded="full"
+                                  color="colors.quaternary"
+                                  onClick={onToggle}
+                                  _hover={{ background: "blue.100" }}
+                                />
+                              </Box>
+                            </Box>
+                          </Td>
+                          <Box href="#">
+                            <Box>
+                              <AlertDialog
+                                isOpen={isOpen}
+                                leastDestructiveRef={cancelRef}
+                                onClose={onClose}
+                                isCentered
+                              >
+                                <AlertDialogOverlay
+                                // alignSelf={"center"}
+                                >
+                                  <AlertDialogContent width={"380px"}>
+                                    <AlertDialogHeader
+                                      fontSize="lg"
+                                      fontWeight="bold"
+                                      textAlign={"center"}
                                     >
-                                        <AlertDialogOverlay
-                                          // alignSelf={"center"}
-                                        >
-                                          <AlertDialogContent
-                                          width={"380px"}
-                                          >
-                                            <AlertDialogHeader 
-                                              fontSize='lg' 
-                                              fontWeight='bold'
-                                              textAlign={"center"}
-                                              >
-                                              Confirmation de suppression
-                                            </AlertDialogHeader>
-                                            <AlertDialogBody textAlign={"center"}>
-                                            Voulez-vous supprimer cette classe?
-                                            </AlertDialogBody>
-
-                                            <AlertDialogFooter>
-                                              <Button 
-                                                ref={cancelRef} 
-                                                onClick={onClose}
-                                                colorScheme="red"
-                                              >
-                                                Annuler 
-                                              </Button>
-                                              <Button 
-                                                colorScheme='green' 
-                                                onClick={() => {removeClass(salle.id)}}
-                                                ml={3}
-                                              >
-                                                Supprimer
-                                              </Button>
-                                            </AlertDialogFooter>
-                                          </AlertDialogContent>
-                                        </AlertDialogOverlay>
-                                    </AlertDialog>
-                                  </Box>
-                                  </Box>
-                            </Box> 
+                                      {t(
+                                        "pages.class.classList.confirmDeletingClass"
+                                      )}
+                                    </AlertDialogHeader>
+                                    <AlertDialogBody textAlign={"center"}>
+                                      {t(
+                                        "pages.class.classList.wouldYouWantToDeleteClass"
+                                      )}
+                                    </AlertDialogBody>
+                                    <AlertDialogFooter>
+                                      <Button
+                                        ref={cancelRef}
+                                        onClick={onClose}
+                                        colorScheme="red"
+                                      >
+                                        {t(
+                                          "pages.class.classList.cancelButton"
+                                        )}
+                                      </Button>
+                                      <Button
+                                        colorScheme="green"
+                                        onClick={() => {
+                                          removeClass(salle?.id);
+                                        }}
+                                        ml={3}
+                                      >
+                                        {t(
+                                          "pages.class.classList.deleteButton"
+                                        )}
+                                      </Button>
+                                    </AlertDialogFooter>
+                                  </AlertDialogContent>
+                                </AlertDialogOverlay>
+                              </AlertDialog>
+                            </Box>
+                          </Box>
                         </Tr>
-                       )) 
-                     )} 
+                      ))}
                 </Tbody>
               </Table>
             </TableContainer>
-        </Box>
+          </Box>
 
-{/* //CLASSE ACCOMPAGNE DES PROFESSEUR ET DES COURS ASSOCIE */}
-        {/* <Box mt={10}>
-           <TableContainer
-            border={"1px"} 
-            rounded={"md"}
-           >
-              <Table 
-                variant='striped'
-                colorScheme={"white"}
-              >
-                  <Thead background="colors.secondary">
+          <Box mt={"15px"}>
+            <ReactPaginate
+              previousLabel={"<<"}
+              nextLabel={">>"}
+              pageCount={pageCountSalle}
+              onPageChange={changePage}
+              containerClassName={"paginationBttns"}
+              previousLinkClassName={"previousBttn"}
+              nextLinkClassName={"nextBttn"}
+              disabledClassName={"paginationDisabled"}
+              activeClassName={"paginationActive"}
+            />
+          </Box>
+
+          {/* //CLASSE ACCOMPAGNE DES PROFESSEUR ET DES COURS ASSOCIE */}
+          <Box mt="50px">
+            <Heading fontSize={"2xl"} textAlign={"center"}>
+              Classe, cours, profeseur
+            </Heading>
+          </Box>
+          <Box mt={10}>
+            <TableContainer border={"1px"} rounded={"md"}>
+              <Table variant="striped" colorScheme={"white"}>
+                <Thead background="colors.secondary">
                   <Tr>
-                      <Th>Nom</Th>
-                      <Th>Montant pension</Th>
-                      {/* <Th >section</Th>  */}
-                      {/* <Th >Action</Th>
+                    <Th>Classes</Th>
+                    <Th>Professeurs</Th>
+                    <Th>Cours</Th>
+                    <Th>Actions</Th>
                   </Tr>
-                  </Thead>
-                  <Tbody>
-                    {dataCoursePersonnelSalle && ( 
-                      dataCoursePersonnelSalle.findbyCoursePersonnelSalle
-                      .slice(pagesVisited, pagesVisited + itemsPerPage)
-                      .map((personnelSalle, index) =>( 
-                      <Tr key={index}>
-                         <Td >{personnelSalle.personnel_id.id}</Td>  */}
-                         {/* <Td borderColor={'#C6B062'}>{salle.montantPensionSalle}</Td>   */}
-                         {/* <Td borderColor={'#C6B062'}>{salle.section}</Td>  */}
-                         {/* <Td borderColor={'#C6B062'}>{salle.montantPension}</Td>  */}
-{/*                         
-                        <Td >
-                          <ButtonGroup 
-                            size='sm' 
-                            isAttached 
-                            variant='link' 
-                            colorScheme={'teal'}
-                            >
-                              <Button>
-                                <Link 
-                                  href='/eleves/details'
-                                >Details</Link>
-                              </Button>
-                            </ButtonGroup> 
+                </Thead>
+                <Tbody>
+                  {dataPersonnelSalle &&
+                    dataPersonnelSalle.findAllPersonnelSalle
+                      // .slice(pagesVisited, pagesVisited + itemsPerPage)
+                      .map((personnelSalle, index) => (
+                        <Tr key={index}>
+                          <Td p={0} pl={3}>
+                            {personnelSalle.salleName}
                           </Td>
-                            <Box 
-                              display="flex"
-                              ml={['-140px', '-140px', '-140px', '-140px']} 
-                               mt={['8px', '8px', '8px', '8px']}
-                             >
-                                <Link 
-                                href="/class/updateclass">
+                          <Td p={0} pl={6}>
+                            {personnelSalle.personnelFirstName}{" "}
+                            {personnelSalle.personnelLastName} (
+                            {personnelSalle.personnelFunction})
+                          </Td>
+                          <Td p={0} pl={6}>
+                            {personnelSalle.courseName}
+                          </Td>
+
+                          {/* <Td borderColor={'#C6B062'}>{salle.montantPensionSalle}</Td>   */}
+                          {/* <Td borderColor={'#C6B062'}>{salle.section}</Td>  */}
+                          {/* <Td borderColor={'#C6B062'}>{salle.montantPension}</Td>  */}
+
+                          <Td p={0} pl={6}>
+                            <Box display={{ md: "flex" }} gap={3}>
+                              <ButtonGroup
+                                size="sm"
+                                isAttached
+                                variant="link"
+                                colorScheme={"teal"}
+                              >
+                                <Button>
+                                  <Link href="/eleves/details">Details</Link>
+                                </Button>
+                              </ButtonGroup>
+                              <Box>
+                                <Link href="/class/updateclass">
                                   <Icon
                                     as={FiEdit}
                                     boxSize="40px"
                                     p="3"
                                     rounded="full"
-                                    _hover={{background:"red.100"}}
-                                />
-                                </Link>
-                                <Box href="#" mt="-3px">
-                                  <Icon
-                                    as={MdDelete}
-                                    boxSize="44px"
-                                    p="3"
-                                    rounded="full"
-                                    color="colors.quaternary"
-                                    onClick={onToggle}
-                                    _hover={{background:"blue.100"}}
+                                    _hover={{ background: "red.100" }}
                                   />
-                                  <Box> 
-                                    <AlertDialog
-                                      isOpen={isOpen}
-                                      leastDestructiveRef={cancelRef}
-                                      onClose={onClose}
-                                      isCentered
-                                    >
-                                        <AlertDialogOverlay
-                                          // alignSelf={"center"}
-                                        >
-                                          <AlertDialogContent
-                                          width={"380px"}
-                                          >
-                                            <AlertDialogHeader 
-                                              fontSize='lg' 
-                                              fontWeight='bold'
-                                              textAlign={"center"}
-                                              >
-                                              Confirmation de suppression
-                                            </AlertDialogHeader>
-                                            <AlertDialogBody textAlign={"center"}>
-                                            Voulez-vous supprimer cette classe?
-                                            </AlertDialogBody>
+                                </Link>
+                                <Icon
+                                  as={MdDelete}
+                                  boxSize="44px"
+                                  p="3"
+                                  rounded="full"
+                                  color="colors.quaternary"
+                                  onClick={onToggle}
+                                  _hover={{ background: "blue.100" }}
+                                />
+                              </Box>
+                            </Box>
+                          </Td>
+                          <Box>
+                            <AlertDialog
+                              isOpen={isOpen}
+                              leastDestructiveRef={cancelRef}
+                              onClose={onClose}
+                              isCentered
+                            >
+                              <AlertDialogOverlay
+                              // alignSelf={"center"}
+                              >
+                                <AlertDialogContent width={"380px"}>
+                                  <AlertDialogHeader
+                                    fontSize="lg"
+                                    fontWeight="bold"
+                                    textAlign={"center"}
+                                  >
+                                    Confirmation de suppression
+                                  </AlertDialogHeader>
+                                  <AlertDialogBody textAlign={"center"}>
+                                    Voulez-vous supprimer cette classe?
+                                  </AlertDialogBody>
 
-                                            <AlertDialogFooter>
-                                              <Button 
-                                                ref={cancelRef} 
-                                                onClick={onClose}
-                                                colorScheme="red"
-                                              >
-                                                Annuler 
-                                              </Button>
-                                              <Button 
-                                                colorScheme='green' 
-                                                // onClick={() => {removeClass(salle.id)}}
-                                                ml={3}
-                                              >
-                                                Supprimer
-                                              </Button>
-                                            </AlertDialogFooter>
-                                          </AlertDialogContent>
-                                        </AlertDialogOverlay>
-                                    </AlertDialog>
-                                  </Box>
-                                  </Box>
-                            </Box> 
+                                  <AlertDialogFooter>
+                                    <Button
+                                      ref={cancelRef}
+                                      onClick={onClose}
+                                      colorScheme="red"
+                                    >
+                                      Annuler
+                                    </Button>
+                                    <Button
+                                      colorScheme="green"
+                                      // onClick={() => {removeClass(salle.id)}}
+                                      ml={3}
+                                    >
+                                      Supprimer
+                                    </Button>
+                                  </AlertDialogFooter>
+                                </AlertDialogContent>
+                              </AlertDialogOverlay>
+                            </AlertDialog>
+                          </Box>
                         </Tr>
-                       )) 
-                     )} 
+                      ))}
                 </Tbody>
               </Table>
             </TableContainer>
-        </Box> */} 
-        <Box mt={"15px"}> 
-          <ReactPaginate 
-            previousLabel={"<<"}
-            nextLabel={">>"}
-            pageCount={pageCountSalle}
-            onPageChange={changePage}
-            containerClassName={"paginationBttns"}
-            previousLinkClassName={"previousBttn"}
-            nextLinkClassName={"nextBttn"}
-            disabledClassName={"paginationDisabled"}
-            activeClassName={"paginationActive"}
-          />
-      </Box>
-      </Box>
+          </Box>
+        </Box>
       </Box>
     </DefaultLayout>
   );
 };
+
+export async function getStaticProps({ locale }) {
+  return {
+    props: {
+      ...(await getStaticPropsTranslations(locale)),
+      // Will be passed to the page component as props
+    },
+  };
+}
 
 export default Class;

@@ -16,6 +16,7 @@ import { Parameter } from 'src/entities/parameter.entity';
 import { AnneeAccademiqueService } from '../anne_accademique/anne-accademique.service';
 import { ParameterCreateInput } from './dto/parameter.input';
 import { ParameterUpdateInput } from './dto/parameter.update';
+// import { AnneeAccademique } from 'src/entities/annee-accademique.entity';
 
 
 @Entity()
@@ -24,7 +25,7 @@ export class ParameterService {
     constructor(
         @InjectRepository(Parameter)
         private parameterRepository: EntityRepository<Parameter>,
-        // private academicservice: AnneeAccademiqueService,
+        private academicservice: AnneeAccademiqueService,
         private  em: EntityManager,
       ) {}
     
@@ -32,14 +33,16 @@ export class ParameterService {
         input: ParameterCreateInput,
       ): Promise<Parameter> {        
         const parameter = new Parameter()
+        const year = await this.academicservice.findByOne(input.anneeAcademiqueId)
         wrap(parameter).assign({
             year: input.year,
             name: input.name,
-            country: input.country,
+            contry: input.contry,
             phoneNumber: input.phoneNumber,
             postalBox: input.postalBox,
             emailAddress: input.emailAddress,
-            anneeacademique: input.anneeAcademiqueId
+            schoolCurrency: input.schoolCurrency,
+            anneeacademique: year
 
         },
           {
@@ -67,7 +70,12 @@ export class ParameterService {
         const paramter = new Parameter()
         wrap(paramter).assign(
             {
-              year: year
+              year: year,
+              // name: input.name,
+              // contry: input.contry,
+              // phoneNumber: input.phoneNumber,
+              // postalBox: input.postalBox,
+              // emailAddress: input.emailAddress
             },
             {
                 em: this.em
@@ -83,14 +91,21 @@ export class ParameterService {
       }
     
       getAll(): Promise<Parameter[]> {
-        return this.parameterRepository.findAll()
+        return this.parameterRepository.findAll({
+          populate:['anneeacademique']
+        })
       }
       
       async update(id:string, input:ParameterUpdateInput): Promise<Parameter> {
         const parameter =await this.findById(id)
         wrap(parameter).assign({
-           year: input.year
-            },
+           year: input.year,
+           name: input.name,
+           contry: input.contry,
+           phoneNumber: input.phoneNumber,
+           postalBox: input.postalBox,
+           emailAddress: input.emailAddress
+        },
             { em: this.em },
     );
         await this.parameterRepository.persistAndFlush(parameter);

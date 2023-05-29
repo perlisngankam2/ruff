@@ -74,4 +74,6 @@ async pagiantionResponsePaySalary(
 async getpaysalairebypersonnel(@Args('personnelid') personnelid:string){
     return await this.paysalaireService.salairepersonnel(personnelid)
 }
+
+
 }

@@ -7,52 +7,74 @@ import {
   FormControl,
   FormLabel,
   Heading,
+  InputGroup,
   HStack,
+  InputRightElement,
   Input,
   Select,
   Stack,
   VStack,
   useToast,
-  Text
+  Text,
+  FormErrorMessage 
 } from "@chakra-ui/react";
 import { useFormik } from "formik";
 import Link from "next/link";
 import { CREATE_USER } from "../../graphql/Mutation";
+import { GET_ALL_USER} from "../../graphql/Queries";
 import { useMutation, useQuery } from "@apollo/client";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import DefaultLayout from "../../components/layouts/DefaultLayout";
 import { useTranslation } from 'next-i18next';
+import { ViewIcon, ViewOffIcon } from '@chakra-ui/icons';
+import { useAuth } from "../../contexts/account/Auth/Auth";
 
 
 function PersonnelAccountForm() {
 
+
+  const { setAuthToken, authToken } = useAuth();
   const [Nom , setNom] = useState("");
   const [Prenom , setPrenom] = useState("");
   const [PhoneNumber, setPhoneNumber] = useState("");
   const [Email , setEmail] = useState("");
   const [Password, setPassword] = useState("");
+  const [motDePasseEstInvalide, setMotDePasseEstInvalide] = useState(false);
   const [confirmPassword, setConfirmPassword] = useState('');
   const [passwordsMatch, setPasswordsMatch] = useState(true);
+  const [isInvalid, setIsInvalid] = useState();
   const [createUser, error] = useMutation(CREATE_USER);
   const toast = useToast()
   const router = useRouter()
   const {t} = useTranslation();
+
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const {data:dataUser, refetch} = useQuery(GET_ALL_USER);
+
+
   const handleConfirmPasswordChange = (event) => {
     setConfirmPassword(event.target.value);
     setPasswordsMatch(event.target.value === Password);
   };
  
+  // console.log(dataUser)
   const HandleClick = async (event) => {
   event.preventDefault();
+
+  setIsInvalid(Password !== "" && !/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/.test(Password))
+
+  if(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/.test(Password)){
   const userData = await createUser({
-        variables:{
+      variables:{
         createUser: { 
           email: Email,
           password : Password,
         }
       }
     })
+    refetch()
     console.log(userData)
     toast({
       title: "Compte crée avec succès",
@@ -66,9 +88,15 @@ function PersonnelAccountForm() {
     setPassword("");
     setConfirmPassword("")
     router.push("/personnel")
-
   }
 
+  }
+  useEffect(()=>{
+    if(!authToken){
+      router.back()
+    }
+    
+  },[authToken])
 
   return (
     // <DefaultLayout>
@@ -163,29 +191,66 @@ function PersonnelAccountForm() {
                     <FormLabel>
                     {t('pages.personnel.PersonnelAccountForm.passWord')}
                     </FormLabel>
-                    <Input 
+                      <InputGroup>
+                          <Input 
+                      type={showPassword ? 'text' : 'password'}
                       placeholder="********"
-                      type="password"
                       // maxW="300px"
                       name="Password"
                       value={Password}
                       onChange = {(event) => setPassword(event.target.value)}
-                    />
+                     pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$"
+                      errorBorderColor="crimson"
+                      required
+      />
+                {/* <Input type={showPassword ? 'text' : 'password'} /> */}
+                <InputRightElement h={'full'}>
+                  <Button
+                    variant={'ghost'}
+                    onClick={() =>
+                      setShowPassword((showPassword) => !showPassword)
+                    }>
+                    {showPassword ? <ViewIcon /> : <ViewOffIcon />}
+                  </Button>
+                </InputRightElement>
+              </InputGroup>
+                
+        <Box mt={1} color={"crimson"}>
+        {isInvalid && (
+          <Text>
+            Le mot de passe doit contenir au moins un chiffre, une lettre majuscule et une lettre minuscule, et doit comporter au moins 8 caractères ou plus.
+          </Text>
+        )}
+     </Box>
                   </FormControl>
                      <FormControl>
                     <FormLabel>
                         {t('pages.personnel.PersonnelAccountForm.confirmPassWord')}
                     </FormLabel>
-                    <Input 
+
+                      <InputGroup>
+                        <Input 
                       placeholder="********"
-                      type="password"
+                      type={showConfirmPassword ? 'text' : 'password'}
                       // maxW="300px"
                       name="Password"
                       value={confirmPassword}
                       onChange={handleConfirmPasswordChange}
                     />
+                {/* <Input type={showPassword ? 'text' : 'password'} /> */}
+                <InputRightElement h={'full'}>
+                  <Button
+                    variant={'ghost'}
+                    onClick={() =>
+                      setShowConfirmPassword((showConfirmPassword) => !showConfirmPassword)
+                    }>
+                    {showConfirmPassword ? <ViewIcon /> : <ViewOffIcon />}
+                  </Button>
+                </InputRightElement>
+              </InputGroup>
+                   
                   </FormControl>
-                  {!passwordsMatch && <Text color='red'>
+                  {!passwordsMatch && confirmPassword!=="" && <Text color='red'>
                   {t('pages.personnel.PersonnelAccountForm.passWordsDoNotCorresponding')}
                     </Text>}
                   <Flex gap={5} pt="30px">

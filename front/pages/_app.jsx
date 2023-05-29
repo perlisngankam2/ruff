@@ -30,7 +30,8 @@ function MyApp({ Component, pageProps}) {
         bluecolor: "#BEE3F8",
         greenColor: "green",
         redColor400: "#F56565",
-        greenColor400: "#48BB78"
+        greenColor400: "#48BB78",
+        whiteColor: "white"
       }, 
     },
   });  

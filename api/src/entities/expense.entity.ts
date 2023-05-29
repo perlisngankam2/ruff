@@ -22,7 +22,7 @@ export class Expense {
     @Property({ nullable: true })
     creditamount: number;
 
-  
+
     @Property({ onCreate: () => new Date() })
     createdAt = new Date();
   
@@ -50,61 +50,64 @@ export class Expense {
     })
     personnel!:IdentifiedReference<Personnel>|null
 
-
     @ManyToOne(() => AnneeAccademique ,{
       nullable:true,
       onDelete:'CASCADE'
     })
     anneeAccademique!:IdentifiedReference<AnneeAccademique>|null
 
-    @Field(() => ID)
-    @Property({ persist: false })
-    get studentid():string|null {
-      return this.student? `${this.student.id}` : null;
-    }
-
-    @Field(() => ID, { nullable: true })
-    @Property({ persist: false })
-    get personnelid(): string | null {
-      return this.personnel? `${this.personnel.id}` : null;
-    }
-
-    @Field(() => ID, { nullable: true })
-    @Property({ persist: false })
-    get personnelName(): string | null {
-      return this.personnel? `${this.personnel.getEntity().lastName}` : null;
-    }
-
-    @Field(() => ID, { nullable: true })
-    @Property({ persist: false })
-    get personnelSurName(): string | null {
-      return this.personnel? `${this.personnel.getEntity().firstName}` : null;
-    }
-
-    @Field(() => ID, { nullable: true })
-    @Property({ persist: false })
-    get personnelFunction(): string | null {
-      return this.personnel? `${this.personnel.getEntity().fonction}` : null;
-    }
-
-    @Field(() => ID)
-    @Property({ persist: false })
-    get studentLastname() {
-      return this.student? `${this.student.getEntity().lastname})` : null;
-    }
-
-    @Field(() => ID)
-    @Property({ persist: false })
-    get studentSurname() {
-      return this.student? `${this.student.getEntity().firstname}` : null;
-    }
-
     @Field(() => String)
     @Property({ persist: false })
     get createdOn() {
       return `${this.createdAt}`;
+    }  
+
+    @Field(() => ID, { nullable: true })
+    @Property({ persist: false })
+    get personnelid(): string | null {
+      return this.personnel ? `${this.personnel.id}` : null;
     }
-  }
+
+    @Field(() => ID, { nullable: true })
+    @Property({ persist: false })
+    get personnelFirstName(): string | null {
+      return this.personnel ? `${this.personnel.getEntity().firstName}` : null;
+    }
+
+    @Field(() => ID, { nullable: true })
+    @Property({ persist: false })
+    get personnelLastName(): string | null {
+      return this.personnel ? `${this.personnel.getEntity().lastName}` : null;
+    }
+
+    @Field(() => ID, { nullable: true })
+    @Property({ persist: false })
+    get personnelFonction(): string | null {
+      return this.personnel ? `${this.personnel.getEntity().fonction}` : null;
+    }
+
+    @Field(() => ID, { nullable: true })
+    @Field(() => ID, { nullable: true })
+    @Property({ persist: false })
+    get studentid() : string | null{
+      return this.student ? `${this.student.id}` : null;
+    }
+
+    @Field(() => ID, { nullable: true })
+    @Field(() => ID, { nullable: true })
+    @Property({ persist: false })
+    get studentFirstname(): string | null {
+      return this.student ? `${this.student.getEntity().firstname}` : null;
+    }
+
+    @Field(() => ID, { nullable: true }) 
+    @Property({ persist: false })
+    get studentLastname(): string | null  {
+      return this.student ? `${this.student.getEntity().lastname}` : null;
+      return this.student ? `${this.student.getEntity().lastname}` : null;
+    }
+  
+}
   
 
   

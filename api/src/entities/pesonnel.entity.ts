@@ -54,7 +54,7 @@ export class Personnel {
   lastName!: string;
   
   @Field({ nullable: true })
-  @Property({ nullable: true })
+  @Property({unique:true})
   phoneNumber!: string;
   
   // @Field({ nullable: true })
@@ -132,17 +132,17 @@ export class Personnel {
   })
   category!:IdentifiedReference<CategoriePersonnel>|null
 
-  @Field(() => ID)
-  @Property({ persist: false })
-  get userid(): string|null {
-    return this.user?`${this.user.id}`: null;
-  }
+  // @Field(() => ID)
+  // @Property({ persist: false })
+  // get userid() {
+  //   return `${this.user.id}`;
+  // }
 
-  @Field(() => ID)
-  @Property({ persist: false })
-  get categorieid(): string|null {
-    return this.category ?`${this.category.id}`: null;
-  }
+  // @Field(() => ID)
+  // @Property({ persist: false })
+  // get categorieid(): string|null {
+  //   return this.category ?`${this.category.id}`: null;
+  // }
 
 
 // relation with another Entites

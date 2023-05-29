@@ -37,20 +37,21 @@ import { GET_ALL_PERSONNELS } from "../../graphql/Queries";
 import { DELETE_PERSONNEL } from "../../graphql/Mutation";
 import Category from "./categorypersonnel";
 import ReactPaginate from "react-paginate";
-import { UseTranslation, useTranslation } from "next-i18next";
+import { useTranslation } from "next-i18next";
 import { getStaticPropsTranslations } from "../../types/staticProps";
-
+import { useAuth } from "../../contexts/account/Auth/Auth";
 
 
 const Personnel = () => {
 
   const [searchName, setSearchName] = useState("");
+  const { setAuthToken, authToken } = useAuth();
   console.log(searchName);
   const {data:dataPersonnel, loading, error} = useQuery(GET_ALL_PERSONNELS)
   const [deletePersonnel] = useMutation(DELETE_PERSONNEL);
   const [personnel, setPersonnel] = useState([]);
   const [pageNumber, setPageNumber] = useState(0);
-  const itemsPerPage = 15;
+  const itemsPerPage = 8;
   const pagesVisited = pageNumber * itemsPerPage;
   const { isOpen, onToggle, onClose, onOpen } = useDisclosure();
   const router = useRouter();
@@ -58,7 +59,6 @@ const Personnel = () => {
 
 
   const {t} = useTranslation()
-
 
   const employees = [
     { id: 1, name: "DON WILFRIED", function: "Directeur" },
@@ -71,7 +71,13 @@ const Personnel = () => {
     { id: 8, name: "HALAN JAMES", function: "Enseignant" },
   ];
 
-
+  useEffect(()=>{
+    if(!authToken){
+      router.back()
+    }
+    
+  },[authToken])
+  
   useEffect (() => {
     setPersonnel(dataPersonnel)
     console.log(dataPersonnel) 
@@ -106,8 +112,8 @@ const Personnel = () => {
   
   const pageCount = Math.ceil(dataPersonnel?.findAllpersonnel.length / itemsPerPage);
 
-  const changePage = ({ page }) => {
-    setPageNumber(page);
+  const changePage = ({ selected }) => {
+    setPageNumber(selected);
   };
   return (
     <DefaultLayout>
@@ -175,7 +181,6 @@ const Personnel = () => {
          {dataPersonnel && ( 
            
             dataPersonnel.findAllpersonnel
-            .slice(pagesVisited, pagesVisited + itemsPerPage)
             .filter((personnel) =>{
               if(searchName == ""){
                 return personnel;
@@ -185,6 +190,8 @@ const Personnel = () => {
               return personnel;
             }
             )
+            .slice(pagesVisited, pagesVisited + itemsPerPage)
+            
             .map((personnel, index) => (
               <Box key={index}>
                  <Employee
@@ -192,7 +199,9 @@ const Personnel = () => {
                   lastName={personnel.lastName}
                   fonction={personnel.fonction}
                   situationMatrimonial={personnel.situationMatrimonial}
+                  sexe={personnel.sexe}
                   id={personnel.id}
+
                 /> 
               {/* <Box
                 bg={"gray.200"}

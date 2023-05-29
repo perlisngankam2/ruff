@@ -1,8 +1,23 @@
 import RegisterPage from "../components/pages/pages/RegisterPage";
 import { getStaticPropsTranslations } from '../types/staticProps';
+import React,{useEffect ,useState} from "react";
+import { useRouter } from "next/router";
+import { useAuth } from "../contexts/account/Auth/Auth";
 
 const Register = () => {
-  return <RegisterPage />;
+  const router = useRouter();
+  const { setAuthToken, authToken } = useAuth();
+
+  // useEffect(()=>{
+  //   if(!authToken){
+  //     router.back()
+  //   }
+    
+  // },[authToken])
+
+  return (
+  <RegisterPage />
+  );
 };
 export async function getStaticProps({ locale }) {
   return {

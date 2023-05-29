@@ -6,7 +6,6 @@ import { Field, InputType,ID } from '@nestjs/graphql';
 export class StudentCreateInput {
   @Field({nullable:true})
   ID!: string;
-
     
   @Field({nullable:true})
   salleId!: string;
@@ -21,7 +20,10 @@ export class StudentCreateInput {
   lastname!: string;
 
   @Field({ nullable:true })
-  dateOfBirth!: Date;
+  dateOfBirth!: string;
+
+  @Field({ nullable: true })
+  birthPlace!: string;
 
   @Field({ nullable: true })
   sex!: string;
@@ -32,8 +34,8 @@ export class StudentCreateInput {
   @Field({ nullable: true })
   adress!: string;
 
-  @Field({ nullable: true })
-  transport!: string;
+  // @Field({ nullable: true })
+  // transport!: string;
 
   // @Field({defaultValue:true})
   // old!: boolean;
@@ -79,6 +81,9 @@ export class StudentCreateInput {
 
   @Field({nullable:true})
   tutorProfession!: string;
+  
+  @Field({nullable:true})
+  repeating!: string;
   
   // @Field({nullable:true})
   // salle!: string;

@@ -57,16 +57,18 @@ import {
    GET_ALL_TRANCHE, 
    GET_ALL_TRANCHE_PENSION,
    GET_ALL_CLASS,
-   GET_ALL_TRANCHE_PRIORITY
   } from "../../graphql/Queries";
-import { FiSearch } from "react-icons/fi";
+import { FiEdit, FiSearch } from "react-icons/fi";
 import ReactPaginate from "react-paginate";
 import { setPriority } from "os";
+import { useAuth } from "../../contexts/account/Auth/Auth";
+
 
 const Pension = () => {
 
     // const router = useRouter();
     const [query , setQuery] = useState("");
+    const { setAuthToken, authToken } = useAuth();
     const [name, setName] = useState("");
     const [montant, setMontant] = useState();
     const [dateLine, setDateLine] = useState();
@@ -107,9 +109,8 @@ const Pension = () => {
     const [createAnneeAccademique, {loading, error}] = useMutation(CREATE_ANNEE_ACADEMIQUE);
     const {data:dataAnneeAcademique} = useQuery(GET_ALL_ANNEE_ACADEMIQUE);
     const {data:dataFraisInscription} = useQuery(GET_ALL_FRAIS_INSCRIPTION);
-    const {data:dataTranchePension} = useQuery(GET_ALL_TRANCHE_PENSION);
+    const {data:dataTranchePension, refetch} = useQuery(GET_ALL_TRANCHE_PENSION);
     const {data:dataClasse} = useQuery(GET_ALL_CLASS);
-    const {data:dataTranchePriority} = useQuery(GET_ALL_TRANCHE_PRIORITY)
     const [createdFraisInscription] = useMutation(CREATE_FRAIS_INSCRIPTION);
     const [createTranchePension] = useMutation(CREATE_TRANCHE_PENSION);
     const [createTranchePriority] = useMutation(CREATE_TRANCHE_PRIORITY);
@@ -120,21 +121,7 @@ const Pension = () => {
     const [isformOpen, setIsFormOpen] = useState(false)
     const cancelRef = React.useRef();
     const router = useRouter();
-
     const toast= useToast();
-
-
-  //  const defaultValues = useMemo(() =>{
-  //     name =  "",
-  //     section = ""
-  // })
-
-    //  useEffect (() => {
-    //   console.log(data?.findAllsection);
-    //   setSection(data);
-    //   console.log(dataCycle?.findAllcycle)
-    //   console.log("hh")
-    // });
 
     const removeTranchePension = async (id) => {
       await deleTranchePension({
@@ -146,54 +133,11 @@ const Pension = () => {
         }]
       })
       onFermer();
+      refetch()
     }
 
     //creation d'une annee academique
-
-    const addAnneeAcademique = async () =>{
-      await createAnneeAccademique({
-        variables:{
-          anneeAccademique: {
-            name: name
-        },
-        refetchQueries:[{
-          query: GET_ALL_ANNEE_ACADEMIQUE
-      }]
-      }
-      })
-      onClosses();
-      toast({
-        title: "Creation d'une annee academique.",
-        description: "Annee academique créée avec succes.",
-        status: "success",
-        duration: 3000,
-        isClosable: true,
-      });
-      setName("")
-    }
-
-    const addTranchePriority = async () =>{
-      await createTranchePriority({
-        variables:{
-          input: {
-            name: name
-        },
-        refetchQueries:[{
-          query: GET_ALL_TRANCHE_PRIORITY
-      }]
-      }
-      })
-      fermer();
-      toast({
-        title: "Creation d'une priorite.",
-        description: "Priorite créée avec succes.",
-        status: "success",
-        duration: 3000,
-        isClosable: true,
-      });
-      setName("")
-    }
-    
+       
     const addTranchePension = async() => {
       console.log(name);
       console.log("annee academiqueId", anneeAcademiqueId);
@@ -216,6 +160,7 @@ const Pension = () => {
           }]
         }
       })
+      refetch()
       onClose();
       toast({
         title: "Creation frais inscription.",
@@ -231,6 +176,13 @@ const Pension = () => {
 
     }
 
+    useEffect(()=>{
+      if(!authToken){
+        router.back()
+      }
+      
+    },[authToken])
+    
     useEffect(() => {
       console.log(dataAnneeAcademique)
       // console.log(dataFraisInscription?.findAllfraisinscription)
@@ -291,208 +243,6 @@ const Pension = () => {
           </Select> */}
           {/* <SectionCreate/> */}
         </Flex>
-        <Box mt={10} mb={5}>
-          <Box 
-          display={{md:"flex"}}
-          > 
-            <Heading 
-              mb={5}
-              size="md"
-              color = "colors.quinzaine"
-            >
-                Annee academique
-            </Heading>
-            <Icon 
-              as={IoIosAdd} 
-              boxSize="30px"
-              color={"colors.greencolor"}
-              // _hover={bg:}
-              rounded="full"
-              ml={["10px", "10px", "10px" ]}
-              _hover={{background:"colors.bluecolor"}}
-              onClick={onOpenns}
-            />
-          </Box>
-          <Box as="form"> 
-            <AlertDialog
-              motionPreset='slideInBottom'
-              // leastDestructiveRef={cancelRef}
-              onClose={onClosses}
-              isOpen={isOpenns}
-              isCentered
-            >
-              <AlertDialogOverlay />
-              <AlertDialogContent>
-                <AlertDialogHeader
-                  textAlign={"center"}
-                >
-                  Ajoutez une anneee academique
-                </AlertDialogHeader>
-                <AlertDialogCloseButton />
-                <AlertDialogBody>
-                <Box>
-                  <FormControl>
-                      <FormLabel>Nom</FormLabel>
-                      <Input 
-                        type={'text'} 
-                        name="name"
-                        placeholder="Annee academique"
-                        onChange = {(event) => setName(event.target.value)}
-                        value={name}
-                      />
-                  </FormControl>
-                  </Box>
-                </AlertDialogBody>
-                <AlertDialogFooter>
-                  <Button
-                    ref={cancelRef} 
-                    onClick={onClosses}
-                    colorScheme='red'
-                  >
-                    annuler
-                  </Button>
-                  <Button 
-                    colorScheme='green' 
-                    ml={3}
-                    onClick = {addAnneeAcademique}
-                  >
-                    Creer
-                  </Button>
-                </AlertDialogFooter>
-              </AlertDialogContent>
-            </AlertDialog>
-          </Box>
-        </Box>
-
-
-        {/* TABLEAU DE LA LISTE DES ANNEES ACADEMIQUES*/}
-        <Box 
-          width={["400px", "400px","400px"]} 
-          border="1px" 
-          borderColor={"GREEN"}
-        >
-          <TableContainer>
-            <Table size='sm' variant='striped'>
-              <Thead>
-                <Tr>
-                  <Th>Nom</Th>
-                </Tr>
-              </Thead>
-              <Tbody>
-                {dataAnneeAcademique && 
-                (dataAnneeAcademique.findAllAnnerAccademique.map((anneeAccademique, index) =>( 
-                <Tr key={index}>
-                  <Td>{anneeAccademique.name}</Td>
-                </Tr>
-                ))
-                )}
-              </Tbody>
-            </Table>
-          </TableContainer>
-        </Box>
-
-
-          {/* CREATION D'NE PRIORITE POUR LA TRANCHE */}
-      {/* <Box mt={8} mb={5}>
-          <Box 
-          display={{md:"flex"}}
-          > 
-            <Heading 
-              mb={5}
-              size="md"
-              color = "colors.quinzaine"
-            >
-                Priorite
-            </Heading>
-            <Icon 
-              as={IoIosAdd} 
-              boxSize="30px"
-              color={"colors.greencolor"}
-              // _hover={bg:}
-              rounded="full"
-              ml={["10px", "10px", "10px" ]}
-              _hover={{background:"colors.bluecolor"}}
-              onClick={ouvert}
-            />
-          </Box>
-          <Box><Text>Elle definit l'ordre dans lequel les tranches de la scolarite vont etre creés et payeés</Text></Box>
-
-          <Box as="form"> 
-            <AlertDialog
-              motionPreset='slideInBottom'
-              // leastDestructiveRef={cancelRef}
-              onClose={fermer}
-              isOpen={ouvrir}
-              isCentered
-            >
-              <AlertDialogOverlay />
-              <AlertDialogContent>
-                <AlertDialogHeader
-                  textAlign={"center"}
-                >
-                  Ajoutez une priorite
-                </AlertDialogHeader>
-                <AlertDialogCloseButton />
-                <AlertDialogBody>
-                <Box>
-                  <FormControl>
-                      <FormLabel>Nom</FormLabel>
-                      <Input 
-                        type={'text'} 
-                        name="name"
-                        placeholder="Valeur de la priorite"
-                        onChange = {(event) => setName(event.target.value)}
-                        value={name}
-                      />
-                  </FormControl>
-                  </Box>
-                </AlertDialogBody>
-                <AlertDialogFooter>
-                  <Button
-                    ref={cancelRef} 
-                    onClick={fermer}
-                    colorScheme='red'
-                  >
-                    annuler
-                  </Button>
-                  <Button 
-                    colorScheme='green' 
-                    ml={3}
-                    onClick = {addTranchePriority}
-                  >
-                    Creer
-                  </Button>
-                </AlertDialogFooter>
-              </AlertDialogContent>
-            </AlertDialog>
-          </Box>
-        </Box> */}
-
-        {/* TABLEAU DES LA PRIORITES*/}
-        {/* <Box 
-          width={["400px", "400px","400px"]} 
-          border="1px" 
-          borderColor={"GREEN"}
-        >
-          <TableContainer>
-            <Table size='sm' variant='striped'>
-              <Thead>
-                <Tr>
-                  <Th>Nom</Th>
-                </Tr>
-              </Thead>
-              <Tbody>
-                {dataTranchePriority && 
-                (dataTranchePriority?.findAlltranchepriority.map((tranchePriority, index) =>( 
-                <Tr key={index}>
-                  <Td>{tranchePriority.name}</Td>
-                </Tr>
-                ))
-                )}
-              </Tbody>
-            </Table>
-          </TableContainer>
-        </Box> */}
 
 {/* FORMULAIRE DE CREATION DES TRANCHES DE LA PENSIONS */}
         <Box mt={"50px"} >
@@ -504,7 +254,7 @@ const Pension = () => {
                 color = "colors.quinzaine"
                 mb={10}
                 >
-                  Frais de scolarite
+                  Frais des différentes tranches de pension
               </Heading>
                 <Icon 
                 as={IoIosAdd} 
@@ -677,6 +427,7 @@ const Pension = () => {
                       <Tr>
                         <Th>Nom</Th>
                         <Th >Montant</Th>
+                        <Th >Priorite</Th>
                         <Th>Date limite</Th>
                         <Th>Action</Th>
                         {/* <Th >Montant deuxiere tranche</Th> */}
@@ -691,10 +442,11 @@ const Pension = () => {
                       <Tr key={index}>
                         <Td p={0} pl={4}>{tranche.name}</Td>
                         <Td p={0} pl={4}>{tranche.montant}</Td>
-                        <Td p={0} pl={4}>{tranche.dateLine}</Td>
+                        <Td p={0} pl={4}>{tranche.priority}</Td>
+                        <Td p={0} pl={4}>{new Date(tranche.dateLine).toLocaleDateString()}</Td>
                         {/* <Td >Monntant</Td>  */}
-                        <Td p={0}>
-                            <ButtonGroup 
+                        <Td p={0} pl={2}>
+                            {/* <ButtonGroup 
                               size='sm' 
                               isAttached 
                               variant='link' 
@@ -705,13 +457,22 @@ const Pension = () => {
                                     href='/eleves/details'
                                   >Details</Link>
                                 </Button>
-                              </ButtonGroup>  
-                            </Td>
+                              </ButtonGroup>   */}
                               <Box 
                                 display="flex"
-                                ml={['-140px', '-140px', '-140px', '-140px']} 
-                                 mt={['8px', '8px', '8px', '8px']}
                                >
+                                <Link 
+                                // href="/class/updateclass"
+                                  href= {'#'}
+                                >
+                                  <Icon
+                                    as={FiEdit}
+                                    boxSize="40px"
+                                    p="3"
+                                    rounded="full"
+                                    _hover={{background:"red.100"}}
+                                  />
+                                </Link>
                                   <Box href="#" mt="-3px">
                                     <Icon
                                       as={MdDelete}
@@ -768,6 +529,8 @@ const Pension = () => {
                                     </Box>
                                     </Box>
                               </Box> 
+                            </Td>
+                              
                             </Tr>
 
 

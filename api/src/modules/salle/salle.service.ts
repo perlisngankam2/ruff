@@ -46,14 +46,14 @@ export class SalleService {
           niveau : niveauid,
           section : input.sectionId,
           effectif: input.effectif,
-          cycle : input.cycleId
+          cycle : input.cycleId,
+          anneeAcademique : input.anneeAcademiqueId
           },
           {
             em: this.em
           }
         )
       
-        
         await this.salleRepository.persistAndFlush(salle)
         return salle
       }
@@ -61,16 +61,16 @@ export class SalleService {
       findByOne(filters: FilterQuery<Salle>): Promise<Salle | null> {
         return this.salleRepository.findOne(filters);
       }
+
       findById(id:string){
         return this.salleRepository.findOne(id)
       }
     
-     async  getAll(): Promise<Salle[]> {
-      const salles= this.salleRepository.findAll({
-        populate:['cycle','niveau','niveau.cycle.section']
-      })
-      return salles
-
+      async  getAll(): Promise<Salle[]> {
+        const salles= this.salleRepository.findAll({
+          populate:['cycle','niveau','niveau.cycle.section']
+        })
+        return salles
       }
 
       async salleAnglophoneSection(){
@@ -209,17 +209,20 @@ export class SalleService {
     }
 
     async findStudentBySalle(studentid:string){
-      return (await this.em.find(Salle,{student:studentid},{
-        populate:['niveau','niveau.salle']
-      }))[0]
+      return (await this.em.find(Salle,{student:studentid},
+        {
+          populate:['niveau','niveau.salle']
+        }
+      ))[0]
+      
     }
 
-    async findSectionByStudent(studentid:string){
+    async findSectionByStudents(studentid:string){
       const a=(await this.em.find(Salle,{student:studentid},{
         populate:['niveau','niveau.salle','niveau.salle.student']
       })).map(async a=>((await (await a.niveau.load()).cycle.load()).section.load()))
 
-      return a
-    }
+      return a
+    }
 
 }

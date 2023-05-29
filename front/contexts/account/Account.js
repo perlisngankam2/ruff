@@ -28,48 +28,18 @@ export const AccountProvider  = ({ children }) => {
 
 
     if (authToken) {
-  
      console.log(dataUser?.user);
-      
     } 
-    
   }, [authToken, dataUser?.user]);
 
 
-      //   const {data:dataPersonnelId} = useQuery(GET_PERSONNEL_BY_ID,
-      // {
-      //   variables:{ id: router.query.id}
-      // })
-
-      // useEffect(() =>{
-      //   console.log(dataPersonnelId)
-      // })
-
-
-      // console.log(dataUser?.me)
-
-    // useEffect(() => {
-    //   if (!loading && called) {
-    //     if (!dataUser) {
-    //       removeAuthToken?.();
-    //       router.push('/')
-    //       // Redirigez l'utilisateur vers la page de connexion ou affichez un message d'erreur
-    //     }
-    //   }
-    // }, [loading, called, dataUser, removeAuthToken]);
-
-    // if (loading || !called) {
-    //   return <div>Loading...</div>;
-    // }
-
       return (
         <AccountContext.Provider
-          value={{ account: dataUser?.user, loaded: !loading && called }}
+          value={{ account: dataUser?.user, loaded: !loading && called}}
         >
           {children}
         </AccountContext.Provider>
       );
 }
 ;
-
 export const useAccount = () => useContext(AccountContext);

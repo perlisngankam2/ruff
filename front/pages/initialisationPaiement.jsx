@@ -1,10 +1,25 @@
 import { Box, Button, Center, Divider, Flex, Heading, Input, Text } from '@chakra-ui/react';
-import React from 'react'
+import React,{useEffect ,useState} from "react";
+import { useRouter } from "next/router";
+
 import DefaultLayout from "../components/layouts/DefaultLayout";
 import { CREATE_SALAIRE } from "../graphql/Mutation";
+import { useAuth } from "../contexts/account/Auth/Auth";
+
+
 
 function initialisationPaiement() {
+  const router = useRouter();
+  const { setAuthToken, authToken } = useAuth();
 
+  useEffect(()=>{
+    if(!authToken){
+      router.back()
+    }
+    
+  },[authToken])
+
+  
   return (
     <DefaultLayout>
       <Box pt="70px" w="100%" bg={"#f6f7fb"}>

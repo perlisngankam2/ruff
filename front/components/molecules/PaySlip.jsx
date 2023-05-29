@@ -30,7 +30,6 @@ const PaySlip = () => {
                     mb={'20px'}
                 >
                    <PaySlipLogoBox />
-
                     <Box>
                         <PaySlipFolderSalaryBox name1='DOSSIER/SALAIRE' name2='EMPLOI' name3='xxxxxxxx' name4='xxxxxxx' />
                         <PaySlipFolderSalaryBox name1='MAT.CNPS' name2='CLASSIFICATION' name3='xxxxxxxx' name4='xxxxxxx' />

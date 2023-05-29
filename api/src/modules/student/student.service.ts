@@ -66,11 +66,13 @@ export class StudentService {
             matricule: input.matricule,
             firstname: input.firstname,
             lastname: input.lastname,
+            repeating: input.repeating,
             // classe : input.classe,
             sex: input.sex,
-            dateOfBirth:format(input.dateOfBirth, 'dd/MM/yyyy'),
+            dateOfBirth:input.dateOfBirth,
+            birthPlace: input.birthPlace,
             adress:input.adress,
-            transport:input.transport,
+            // transport:input.transport,
             categorie : input.categoryStudentId,
             salle: input.salleId,
             fatherFirstName:input.fatherFirstName,
@@ -100,9 +102,10 @@ export class StudentService {
       }
     
       findByOne(filters: FilterQuery<Student>): Promise<Student | null> {
-        return this.studentRepository.findOne(filters);
+        return this.studentRepository.findOne(filters, 
+            {populate:['salle', 'categorie']}
+          );
       }
-
       
       findById(id:string){
         return this.studentRepository.findOne(id)
@@ -142,7 +145,7 @@ export class StudentService {
     
       getAll(): Promise<Student[]> {
         return this.studentRepository.findAll({
-          populate:['salle','pension','salle.niveau.cycle','salle.niveau.cycle.section','trancheStudent']
+          populate:['salle','pension','salle.niveau.cycle','salle.niveau.cycle.section','trancheStudent', 'categorie']
         })
       }
 
@@ -178,7 +181,6 @@ export class StudentService {
         })
         return a.filter(async a=>(await (await (await (await a.salle.load()).niveau.load()).cycle.load()).section.load()).name==='Anglophone')
       }
-
       
       async getAllForUseFrancophone(): Promise<Student[]> {
         const a= await this.studentRepository.findAll({
@@ -222,7 +224,7 @@ export class StudentService {
             adress:input.adress,
             // exclut: input.exclut || student.exclut,
             // old: input.old,
-            transport:input.transport,
+            // transport:input.transport,
             categorie:input.categoryStudentId,
             salle: input.salleId,
             fatherFirstName:input.fatherFirstName,

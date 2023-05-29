@@ -9,7 +9,7 @@ import {
   AlertDialogOverlay,
   useDisclosure,
   Button,
-    Center,
+  Center,
   Flex,
   Input,
   FormControl,
@@ -26,6 +26,9 @@ import { GET_ALL_SECTION, GET_ONE_SECTION } from "../../graphql/Queries";
 import { useState } from "react";
 import { useRouter } from "next/router";
 import { useParams } from 'react-router-dom';
+// import { getStaticPropsTranslations } from "../../../types/staticProps";
+import { useTranslation } from "next-i18next";
+
 
 const  SectionCreate =  () => {
 
@@ -43,6 +46,7 @@ const  SectionCreate =  () => {
     const router = useRouter()
     const toast = useToast();
     const { id } = useParams();
+    const {t} = useTranslation();
     // const addCategoryPersonnel = async (event, value) => {
     //     console.log("value")
     //     event.preventDefault();

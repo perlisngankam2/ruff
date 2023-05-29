@@ -57,7 +57,7 @@ export class TrancheService {
             description: input.description,
             // dateLine:format(input.dateLine, 'dd/MM/yyyy'),
             dateLine:input.dateLine,
-            // anneeAccademique: input.anneeAcademiqueId,
+            anneeAccademique: input.anneeAcademiqueId,
             salle: input.salleId,
             year: annee,
             priority: input.priority

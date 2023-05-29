@@ -46,7 +46,6 @@ type RetenuPersonnel {
   startMonth: String
   retenueid: ID!
   personnelid: ID!
-  salaireid: ID!
 }
 
 type Salaire {
@@ -56,6 +55,9 @@ type Salaire {
   payer: Boolean!
   montant: Float!
   personnelid: ID!
+  personnelFirstName: ID
+  personnelLastName: ID
+  personnelFonction: ID
 }
 
 type PrimePersonnel {
@@ -63,7 +65,6 @@ type PrimePersonnel {
   startMonth: String
   primeid: ID!
   personnelid: ID!
-  salaireid: ID!
 }
 
 type Prime {
@@ -196,6 +197,7 @@ type PensionSalle {
   montantPension: Float!
   dateLine: DateTime
   yearid: ID!
+  yearName: ID!
   salleId: ID!
   salleName: ID
 }
@@ -209,7 +211,6 @@ type Tranche {
   priority: Float
   year: String
   salleid: ID
-  pensionid: ID
 }
 
 type TrancheStudent {
@@ -230,10 +231,11 @@ type Student {
   matricule: String
   firstname: String
   lastname: String
-  dateOfBirth: DateTime!
+  dateOfBirth: String
+  birthPlace: String
+  repeating: String!
   sex: String
   adress: String
-  transport: String
   fatherFirstName: String
   fatherLastName: String
   fatherPhoneNumber: String
@@ -247,7 +249,9 @@ type Student {
   tutorPhoneNumber: String
   tutorProfession: String
   salleid: ID!
+  salleName: ID
   categorieid: ID!
+  categoryName: ID
   parentTel: String!
 }
 
@@ -257,14 +261,14 @@ type Expense {
   debitamount: Float
   debitTotal: Float
   creditTotal: Float
-  studentid: ID!
-  personnelid: ID
-  personnelName: ID
-  personnelSurName: ID
-  personnelFunction: ID
-  studentLastname: ID!
-  studentSurname: ID!
   createdOn: String!
+  personnelid: ID
+  personnelFirstName: ID
+  personnelLastName: ID
+  personnelFonction: ID
+  studentid: ID
+  studentFirstname: ID
+  studentLastname: ID
 }
 
 type Parameter {
@@ -273,8 +277,11 @@ type Parameter {
   postalBox: String
   phoneNumber: String
   emailAddress: String
-  country: String
+  contry: String
+  schoolCurrency: String
   year: String
+  anneeAcademiqueId: ID
+  anneeAcademiqueName: ID
 }
 
 type AnneeAccademique {
@@ -308,8 +315,8 @@ type NiveauEtude {
   name: String
   description: String
   montantPension: Float
-  cycleid: ID!
-  cycleName: ID!
+  cycleId: ID
+  cycleName: ID
 }
 
 type Course {
@@ -321,10 +328,12 @@ type Course {
 type PersonnelSalle {
   id: ID!
   personnelId: ID
-  personnelName: ID
-  salleId: ID!
+  personnelFirstName: ID
+  personnelLastName: ID
+  personnelFunction: ID
+  salleId: ID
   salleName: ID
-  courseId: ID!
+  courseId: ID
   courseName: ID
 }
 
@@ -350,8 +359,6 @@ type Personnel {
   dateOfStartWork: String!
   dateOfBirth: String!
   childNumber: Float
-  userid: ID!
-  categorieid: ID!
 }
 
 type User {
@@ -589,6 +596,7 @@ type Query {
   AmountrExpectedByTranche(studentid: String!): [Float!]!
   getClassfeebyStudent(studentid: String!): Float!
   getClassfeeofStudent(studentid: String!): [Tranche!]!
+  getAllForUseAnglophoneStudent: [Student!]!
   findAlllocalistaion: [Localisation!]!
   localisation(id: String!): Localisation!
   findAllcategorieeleve: [CategorieEleve!]!
@@ -904,6 +912,7 @@ input CourseUpdateInput {
 input SalleCreateInput {
   ID: ID
   name: String
+  anneeAcademiqueId: String
   sectionId: ID
   cycleId: String
   montantPensionSalle: Float
@@ -957,6 +966,7 @@ input SalleUpdateInput {
   cycleId: String
   montantPensionSalle: Float
   niveauEtudeId: ID
+  anneeAcademiqueId: String
   effectif: Float = 0
   niveau: NiveauEtudeCreateInput
 }
@@ -996,10 +1006,10 @@ input StudentCreateInput {
   matricule: String
   firstname: String
   lastname: String
-  dateOfBirth: DateTime
+  dateOfBirth: String
+  birthPlace: String
   sex: String
   adress: String
-  transport: String
   categoryStudentId: String
   inscription: ID
   fatherFirstName: String
@@ -1014,6 +1024,7 @@ input StudentCreateInput {
   tutorLastName: String
   tutorPhoneNumber: String
   tutorProfession: String
+  repeating: String
 }
 
 input LocalisationCreateInput {
@@ -1053,6 +1064,8 @@ input CategorieEleveUpdateInput {
 }
 
 input TrancheCreateInput {
+  ID: String
+  anneeAcademiqueId: ID
   salleId: ID
   year: String
   name: String
@@ -1067,10 +1080,11 @@ input ParameterCreateInput {
   name: String
   phoneNumber: String
   emailAddress: String
-  country: String
+  contry: String
   postalBox: String
+  schoolCurrency: String
   year: String
-  anneeAcademique: String
+  anneeAcademiqueId: String
 }
 
 input TrancheStudentCreateInput {

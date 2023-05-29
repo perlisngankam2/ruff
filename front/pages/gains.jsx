@@ -13,8 +13,24 @@ import {
 } from "@chakra-ui/react"
 import Link from "next/link";
 import DefaultLayout from "../components/layouts/DefaultLayout";
+import React,{useEffect ,useState} from "react";
+import { useRouter } from "next/router";
+import { useAuth } from "../contexts/account/Auth/Auth";
+
 
 function gains (){
+
+  const router = useRouter();
+  const { setAuthToken, authToken } = useAuth();
+
+  useEffect(()=>{
+    if(!authToken){
+      router.back()
+    }
+    
+  },[authToken])
+
+
     return(
         <DefaultLayout>
             <Box p="3" pt="70px">

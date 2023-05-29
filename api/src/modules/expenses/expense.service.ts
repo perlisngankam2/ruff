@@ -32,13 +32,12 @@ export class ExpenseService {
     private avancetrancheservice: AvanceTrancheService,
   ) {}
 
-async findall(){
-        const expense= this.ExpenseRepository.findAll({
-          populate:['student','personnel']
-        })
-        return expense
-      }
-
+  async findall(){
+    const expense= this.ExpenseRepository.findAll({
+      populate:['student','personnel']
+    })
+    return expense
+   }
 
 async findByOne(filters: FilterQuery<Expense>): Promise<Expense | null> {
     return await this.ExpenseRepository.findOne(filters);
@@ -108,6 +107,42 @@ async delete(id:string){
 
 }
 
+// async savePensionExpense(studentid: string){
+//     const pension = await this.pensionservice.findpensionbystudent(studentid)
+
+//     if(pension){
+//         const montantpension = pension.montantPension
+//         const expense = new Expense()
+
+//         const a= (await this.findall()).map(a=>a.creditamount)
+//         wrap(expense).assign({
+//             student: studentid,
+//             creditamount: montantpension,
+//             creditTotal:  a.length>0 ? a.reduce(function(a,b){return a+b}) : 0
+//         },
+//         {
+//             em:this.em
+//         })
+//         // const depense = await this.findexpensebystudent(studentid)
+//         // if(depense){
+//         //     await this.ExpenseRepository.removeAndFlush(depense)
+//         //     console.log(depense)
+//         //     await this.ExpenseRepository.persistAndFlush(expense)
+//         //     return expense
+//         // }
+//         // if(!depense){
+//         // await this.ExpenseRepository.persistAndFlush(expense)
+//         // return expense
+//         // }
+//          await this.ExpenseRepository.persistAndFlush(expense)
+//          return expense
+//     }
+
+//     if(!pension){
+//         throw Error("!!!!!!!!!!!!!!!!pension for this student has not being found!!!!!!!!!!!!!!!!!!!!!!!")
+//     }
+// }
+
 async savePensionExpense(studentid: string){
     const avancetranches = await this.avancetrancheservice.findByStudent(studentid)
     const a= avancetranches[avancetranches.length-1]
@@ -137,17 +172,43 @@ async savePensionExpense(studentid: string){
     }
 }
 
+// async saveSalaireExpenses(personnelid: string){
+//     const salaires =  await this.salaireservice.salairepersonnel(personnelid)
 
+//     if(salaires.length>0){
+//         const salairemontant = salaires.map(a=>a.montant).reduce(function(a,b){return a+b})
+//         const expense = new Expense()
+
+        
+//     const a= (await this.findall()).map(a=>a.debitamount)
+
+//         wrap(expense).assign({
+//             personnel: personnelid,
+//             debitamount: salairemontant,
+//             debitTotal: a.length>0 ? a.reduce(function(a,b){return a+b}) : 0
+//         },
+//         {
+//             em:this.em
+//         })
+   
+//         await this.ExpenseRepository.persistAndFlush(expense)
+//         return expense
+
+
+//     }
+//     if(salaires.length==0){
+//         throw Error("!!!!!!!!!!!!!!!!!!!no salary has being paied to this personnel!!!!!!!!!!!!!!!!!!!!!!!")
+//     }   
+// }
 
 async saveSalaireExpenses(personnelid: string){
     const salaires =  await this.salaireservice.salairepersonnel(personnelid)
-    const a = salaires[salaires.length-1]
+    const a = salaires[salaires.length - 1]
 
     if(salaires.length>0){
         const salairemontant = a.montant
         const expense = new Expense()
 
-        
 
         wrap(expense).assign({
             personnel: personnelid,
@@ -168,6 +229,7 @@ async saveSalaireExpenses(personnelid: string){
         throw Error("!!!!!!!!!!!!!!!!!!!no salary has being paied to this personnel!!!!!!!!!!!!!!!!!!!!!!!")
     }   
 }
+
 
 async findexpensebystudent(studentid:string){
  return await this.ExpenseRepository.findOne({student:studentid})

@@ -25,7 +25,7 @@ export class Section {
     id!: string;
   
     @Field({ nullable: true })
-    @Property({nullable:true})
+    @Property({unique:true})
     name!: string;
 
     @Field({ nullable: true })
@@ -42,4 +42,5 @@ export class Section {
 
     @OneToMany(() => Cycle, (cycle) => cycle.section)
     cycle = new Collection<Cycle>(this);
+
 }

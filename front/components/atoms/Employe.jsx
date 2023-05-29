@@ -51,7 +51,16 @@ const Employee = (props) => {
  
   if (loading) return <Text>Chargement en cour...</Text>
   if (error) return <Text>Une erreur s'est produite!</Text>
-
+  
+const removePersonnel = async(id) => {
+    await deletePersonnel({
+        variables: {id},
+        
+        refetchQueries:[{
+          query: GET_ALL_PERSONNELS
+        }]
+    })
+  }
  
   return(
           <Box
@@ -60,15 +69,15 @@ const Employee = (props) => {
             rounded="md"
           > 
               <Center>
-                {dataPersonnelId?.findOnePersonnel.sexe.toLowerCase() === "homme" ? 
+                {props.sexe.toLowerCase() === "masculin" ? 
                  <Avatar
-                  size="70px"
+                  size="lg"
                   mt={["10px","10px", "10px" ]}
                   src="https://img.freepik.com/vecteurs-premium/profil-avatar-homme-icone-ronde_24640-14044.jpg?w=2000"
                 />
              :
                 <Avatar
-                  size="70px"
+                  size="lg"
                   mt={["10px","10px", "10px" ]}
                   src="https://img.freepik.com/premium-vector/woman-avatar-profile-round-icon_24640-14042.jpg?size=626&ext=jpg"
                 /> }
@@ -117,6 +126,7 @@ const Employee = (props) => {
                     p="3"
                     bg="purple.100"
                     rounded="full"
+                    _hover={{background:"green.300"}}
                   />
                 </Link>
                 <Link href="/personnel/modifierpersonnel">
@@ -126,6 +136,8 @@ const Employee = (props) => {
                     p="3"
                     bg="blue.100"
                     rounded="full"
+                    _hover={{background:"blue.300"}}
+
                   />
                 </Link>
                 <Box href="#">
@@ -137,6 +149,8 @@ const Employee = (props) => {
                     rounded="full"
                     color="white"
                     onClick={onToggle}
+                    _hover={{background:"red"}}
+
                   />
                     <Box> 
                       <AlertDialog

@@ -20,10 +20,23 @@ import {
   AvatarBadge,
   AvatarGroup,
 } from "@chakra-ui/react";
+import { useRouter } from "next/router";
+import { useEffect ,useState } from "react";
 import { getStaticPropsTranslations } from '../types/staticProps';
 import DashboardMain from "../components/molecules/dashboardMain/dashboardMain";
+import { useAuth } from "../contexts/account/Auth/Auth";
+ 
 
- const dashboard = () => {
+const dashboard = () => {
+  const router = useRouter();
+  const { setAuthToken, authToken } = useAuth();
+  
+  // useEffect(()=>{
+  //   if(!authToken){
+  //     router.back()
+  //   }
+  // },[authToken])
+
 
   return (
     <DashboardMain/>

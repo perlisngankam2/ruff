@@ -68,8 +68,8 @@ async createavancetranche(
         
         const tranche = await this.trancheservice.findByOne(input.trancheId)
 
-        // const year = await this.parametreservice.getAll()
-        // const annee = year[year.length-1].year
+        const year = await this.parametreservice.getAll()
+        const annee = year[year.length-1].year
 
         if(!tranche && !student){
           throw Error("!!!!!!!!!!!!!!tranche and student not found!!!!!!!!!!!!!!!!!!!!!!")
@@ -80,7 +80,7 @@ async createavancetranche(
           description: input.description,
           student: student.id,
           tranche: tranche.id,
-          // year: annee
+          year: annee
           
           },
           {
@@ -157,7 +157,7 @@ async createavancetranche(
               student: student.id,
               tranche: tranche.id,
               complete: false,
-              // year:annee
+              year:annee
               },
               {
               em:this.em

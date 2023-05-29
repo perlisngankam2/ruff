@@ -14,6 +14,7 @@ import { PaySalaryService } from "../paysalary/paysalary.service";
 import { PaginatedResponse, PaginationInput, paginate } from "src/pagination";
 import { EntityRepository } from "@mikro-orm/postgresql";
 import { ExpensePaginatedResponse } from "./type/expensepagination";
+import { ParameterService } from "../parameter/parameter.service";
 
 
 
@@ -30,6 +31,7 @@ export class ExpenseService {
     private paysalaryservice: PaySalaryService,
     @Inject(forwardRef(() =>AvanceTrancheService))
     private avancetrancheservice: AvanceTrancheService,
+    private parameterservice: ParameterService,
   ) {}
 
   async findall(){
@@ -50,11 +52,13 @@ async findbyid(id:string){
   
 async create(input: ExpenseCreateInput){
     const expense = new Expense()
+    const year = await this.parameterservice.getAll()
+    const annee = year[year.length-1].year
 
 
     wrap(expense).assign(
         {
-         anneeAccademique: input.academicyearId,
+         anneeAccademique: annee,
          student: input.studentId,
          personnel:input.personnelId,
          debitamount:input.debit,
@@ -76,9 +80,11 @@ async update(id:string, input: ExpenseUpdateInput){
         throw Error("Expense not found")
     }
 
+    const year = await this.parameterservice.getAll()
+    const annee = year[year.length-1].year
     wrap(expense).assign(
         {
-         anneeAccademique: input.academicyearId,
+         anneeAccademique: annee,
          student: input.studentId,
          personnel:input.personnelId,
          debitamount:input.debit,

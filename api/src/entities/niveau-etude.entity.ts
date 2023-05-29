@@ -84,7 +84,7 @@ export class NiveauEtude{
     
   @Field(() => ID)
   @Property({ persist: false })
-    get cycleid() {
+   get cycleid() {
     return this.cycle?`${this.cycle.id}`:null;
 }
 

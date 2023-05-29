@@ -34,7 +34,7 @@ export class PersonnelResolver {
     return await this.personnelService.createPersonnel(createPersonnelUserInput);
   }
 
-  @Mutation(() => Personnel)
+ 
   @UseGuards(JwtAuthGuard,RolesGuard)
   @Roles(Role.ADMIN)
   @Query(() => [Personnel])
@@ -83,7 +83,7 @@ export class PersonnelResolver {
 @Query(()=>Personnel)
 @UseGuards(JwtAuthGuard,RolesGuard)
 @Roles(Role.ADMIN)
-  async getpersonnelbyaccount(@Args('userid') userid:string):Promise<Personnel|null>{
+async getpersonnelbyaccount(@Args('userid') userid:string):Promise<Personnel|null>{
     const personnel=await this.personnelService.findpersonnelbyaccount(userid)
     if(!personnel){
       throw Error("not found")

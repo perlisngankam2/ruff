@@ -3,6 +3,7 @@ import { Args, Mutation, Query, Resolver } from "@nestjs/graphql";
 import { Course } from "src/entities/course.entity";
 import { CourseService } from "./course.service";
 import { CourseCreateInput } from "./dto/course.createinput";
+import { CourseUpdateInput } from "./dto/course.updateinput";
 
 
 @Resolver(() => Course)
@@ -32,5 +33,10 @@ export class CourseResolver {
   @Mutation(()=> Course)
   async deleteCourse(@Args('id') id:string){
  return await this.courseService.delete(id)
+  }
+
+  @Mutation(()=> Course)
+  async updatecourse(@Args('id') id:string, @Args('input') input:CourseUpdateInput){
+  return await this.updatecourse(id,input)
   }
 }

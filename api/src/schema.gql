@@ -567,6 +567,7 @@ type Query {
   findAllreductionscolarite: [ReductionScolarite!]!
   primePersonnel(id: String!): PrimePersonnel!
   findAlltranche: [Tranche!]!
+  deleteTranche(id: String!): Tranche!
   tranche(id: String!): Tranche!
   findByStudentRestTranche(studentid: String!): [TrancheStat!]!
   findAllparameters: [Parameter!]!
@@ -787,7 +788,6 @@ type Mutation {
   createcategorieretenu(createCategorieRetenu: CategorieRetenuCreateInput!): CategorieRetenu!
   updatecategorieretenu(id: String!, input: CategorieRetenuUpdateInput!): CategorieRetenu!
   createpersonnel(createPersonnelUser: PersonnelCreateInput!): Personnel!
-  findAllpersonnel: Personnel!
   updatepersonnel(id: String!, input: PersonnelUpdateInput!): Personnel!
   deletepersonnel(id: String!): Personnel!
   createprimepersonnel(primePersonnel: PrimePersonnelCreateInput!): PrimePersonnel!
@@ -822,6 +822,7 @@ type Mutation {
   deleteparent(id: String!): Parent!
   createCourse(input: CourseCreateInput!): Course!
   deleteCourse(id: String!): Course!
+  updatecourse(id: String!, input: CourseUpdateInput!): Course!
   login(loginInput: LoginInput!): LoginResponse!
   loginUpdate(loginInput: LoginUpdate!): User!
   createParentstudent(input: ParentStudentCreateInput!): ParentStudent!
@@ -1352,6 +1353,11 @@ input ParentCreateInput {
 }
 
 input CourseCreateInput {
+  title: String
+  time: Float
+}
+
+input CourseUpdateInput {
   title: String
   time: Float
 }

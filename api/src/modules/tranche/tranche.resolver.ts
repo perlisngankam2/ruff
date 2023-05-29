@@ -34,6 +34,11 @@ export class TrancheResolver {
   findAlltranche() {
     return this.trancheService.getAll()
   }
+
+  @Query(()=>Tranche)
+  async deleteTranche(@Args('id', { type: () => String }) id: string){
+   return await this.trancheService.delete(id)
+  }
   
   @Query(() => Tranche, { name: 'tranche' })
   findOnetranche(@Args('id', { type: () => String }) id: string) {

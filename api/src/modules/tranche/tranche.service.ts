@@ -103,6 +103,8 @@ export class TrancheService {
         })
       }
 
+     
+
       async getAllTranche(): Promise<Tranche[]> {
         return await this.trancheRepository.findAll({
           populate:['trancheStudent.tranche','trancheStudent.student']

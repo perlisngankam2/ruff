@@ -73,6 +73,7 @@ const Pension = () => {
   const [salleId, setSalleId] = useState("");
   const [tranchePriorityId, setTranchePriorityId] = useState("");
   const [priority, setPriority] = useState();
+
   //STATE DE LA PAGINATION
   const itemsPerPage = 15;
   const [pageNumber, setPageNumber] = useState(0);
@@ -105,12 +106,7 @@ const Pension = () => {
     onOpen: onOpenns,
     onClose: onClosses,
   } = useDisclosure();
-  const {
-    isOpen: Onouvrir,
-    onOpen: OnOuvert,
-    onClose: onFermer,
-    onToggle,
-  } = useDisclosure();
+
   const {
     isOpen: ouvrir,
     onOpen: ouvert,
@@ -137,21 +133,6 @@ const Pension = () => {
   const cancelRef = React.useRef();
   const router = useRouter();
   const toast = useToast();
-
-  const removeTranchePension = async (id) => {
-    await deleTranchePension({
-      variables: {
-        id,
-      },
-      refetchQueries: [
-        {
-          query: GET_ALL_TRANCHE_PENSION,
-        },
-      ],
-    });
-    onFermer();
-    refetch();
-  };
 
   //creation d'une annee academique
 
@@ -284,32 +265,36 @@ const Pension = () => {
             </Box>
             <Box display={{ md: "flex" }} flexDirection={"column"} mt={"-10px"}>
               <Text color={"red"}>
-               NB: Les tranches doivent etre enregistrées en fonction de leursordre de paiement
+                NB: Les tranches doivent etre enregistrées en fonction de
+                leursordre de paiement
               </Text>
-              <Text color={"red"}> et par ordre de priorité de la plus petite a la plus grande</Text>
+              <Text color={"red"}>
+                {" "}
+                et par ordre de priorité de la plus petite a la plus grande
+              </Text>
             </Box>
-          <Box mt={"20px"}> 
-            <AlertDialog
-              motionPreset="slideInBottom"
-              leastDestructiveRef={cancelRef}
-              onClose={onClose}
-              isOpen={isOpen}
-              isCentered
-            >
-              <AlertDialogOverlay />
-              <AlertDialogContent>
-                <Box as={"form"} onSubmit={addTranchePension}>
-                  <AlertDialogHeader
-                    textAlign={"center"}
-                    fontSize={["15px", "20px", "24px"]}
-                    mt={"5px"}
-                  >
-                    Ajoutez frais de scolarite
-                  </AlertDialogHeader>
-                  <AlertDialogCloseButton />
-                  <AlertDialogBody>
-                    <Box>
-                      {/* <FormControl>
+            <Box mt={"20px"}>
+              <AlertDialog
+                motionPreset="slideInBottom"
+                leastDestructiveRef={cancelRef}
+                onClose={onClose}
+                isOpen={isOpen}
+                isCentered
+              >
+                <AlertDialogOverlay />
+                <AlertDialogContent>
+                  <Box as={"form"} onSubmit={addTranchePension}>
+                    <AlertDialogHeader
+                      textAlign={"center"}
+                      fontSize={["15px", "20px", "24px"]}
+                      mt={"5px"}
+                    >
+                      Ajoutez frais de scolarite
+                    </AlertDialogHeader>
+                    <AlertDialogCloseButton />
+                    <AlertDialogBody>
+                      <Box>
+                        {/* <FormControl>
                         <FormLabel>Classe</FormLabel>
                         <Select 
                             type={'text'} 
@@ -320,39 +305,41 @@ const Pension = () => {
                           <option>cc</option>
                         </Select>
                     </FormControl> */}
-                      <FormControl mt={4}>
-                        <FormLabel>Nom</FormLabel>
-                        <Input
-                          type={"text"}
-                          name="name"
-                          value={name}
-                          onChange={(event) => setName(event.target.value)}
-                          placeholder="Nom"
-                          isRequired
-                        />
-                      </FormControl>
-                      <FormControl mt={4}>
-                        <FormLabel>Montant</FormLabel>
-                        <Input
-                          type={"number"}
-                          name="montant"
-                          value={montant}
-                          placeholder="Valeur"
-                          onChange={(event) => setMontant(event.target.value)}
-                          isRequired
-                        />
-                      </FormControl>
-                      <FormControl mt={4}>
-                        <FormLabel>Priorite</FormLabel>
-                        <Input
-                          type={"number"}
-                          name="priority"
-                          value={priority}
-                          placeholder="Valeur"
-                          onChange={(event) => setPriority(event.target.value)}
-                          isRequired
-                        />
-                        {/* <Select 
+                        <FormControl mt={4}>
+                          <FormLabel>Nom</FormLabel>
+                          <Input
+                            type={"text"}
+                            name="name"
+                            value={name}
+                            onChange={(event) => setName(event.target.value)}
+                            placeholder="Nom"
+                            isRequired
+                          />
+                        </FormControl>
+                        <FormControl mt={4}>
+                          <FormLabel>Montant</FormLabel>
+                          <Input
+                            type={"number"}
+                            name="montant"
+                            value={montant}
+                            placeholder="Valeur"
+                            onChange={(event) => setMontant(event.target.value)}
+                            isRequired
+                          />
+                        </FormControl>
+                        <FormControl mt={4}>
+                          <FormLabel>Priorite</FormLabel>
+                          <Input
+                            type={"number"}
+                            name="priority"
+                            value={priority}
+                            placeholder="Valeur"
+                            onChange={(event) =>
+                              setPriority(event.target.value)
+                            }
+                            isRequired
+                          />
+                          {/* <Select 
                             type={'text'} 
                             name="tranchePriorityId"
                             value={tranchePriorityId}
@@ -367,73 +354,81 @@ const Pension = () => {
                             ))
                           }
                         </Select> */}
-                      </FormControl>
-                      <FormControl mt={4}>
-                        <FormLabel>Classe</FormLabel>
-                        <Select
-                          type={"text"}
-                          name="salleId"
-                          value={salleId}
-                          placeholder="Classe"
-                          onChange={(event) => setSalleId(event.target.value)}
-                          isRequired
-                        >
-                          {dataClasse &&
-                            dataClasse.findAllsalle.map((salle, index) => (
-                              <option value={salle.id} key={index}>
-                                {salle.name}
-                              </option>
-                            ))}
-                        </Select>
-                      </FormControl>
-                      <FormControl mt={4}>
-                        <FormLabel>Date limite paiement</FormLabel>
-                        <Input
-                          type={"date"}
-                          name="dateLine"
-                          value={dateLine}
-                          placeholder="Date limite de paiement"
-                          onChange={(event) => setDateLine(event.target.value)}
-                          isRequired
-                        />
-                      </FormControl>
-                      <FormControl mt={4}>
-                        <FormLabel>Annee academique</FormLabel>
-                        <Select
-                          type={"date"}
-                          name="anneeAcademiqueId"
-                          value={anneeAcademiqueId}
-                          placeholder="Annee academique"
-                          onChange={(event) =>
-                            setAnneeAcademiqueId(event.target.value)
-                          }
-                          isRequired
-                        >
-                          {dataAnneeAcademique &&
-                            dataAnneeAcademique.findAllAnnerAccademique.map(
-                              (anneeAcademique, index) => (
-                                <option value={anneeAcademique.id} key={index}>
-                                  {anneeAcademique.name}
+                        </FormControl>
+                        <FormControl mt={4}>
+                          <FormLabel>Classe</FormLabel>
+                          <Select
+                            type={"text"}
+                            name="salleId"
+                            value={salleId}
+                            placeholder="Classe"
+                            onChange={(event) => setSalleId(event.target.value)}
+                            isRequired
+                          >
+                            {dataClasse &&
+                              dataClasse.findAllsalle.map((salle, index) => (
+                                <option value={salle.id} key={index}>
+                                  {salle.name}
                                 </option>
-                              )
-                            )}
-                        </Select>
-                      </FormControl>
-                    </Box>
-                  </AlertDialogBody>
-                  <AlertDialogFooter>
-                    <Button ref={cancelRef} onClick={onClose} colorScheme="red">
-                      annuler
-                    </Button>
-                    <Button colorScheme="green" ml={3} type="submit">
-                      Creer
-                    </Button>
-                  </AlertDialogFooter>
-                </Box>
-              </AlertDialogContent>
-            </AlertDialog>
+                              ))}
+                          </Select>
+                        </FormControl>
+                        <FormControl mt={4}>
+                          <FormLabel>Date limite paiement</FormLabel>
+                          <Input
+                            type={"date"}
+                            name="dateLine"
+                            value={dateLine}
+                            placeholder="Date limite de paiement"
+                            onChange={(event) =>
+                              setDateLine(event.target.value)
+                            }
+                            isRequired
+                          />
+                        </FormControl>
+                        <FormControl mt={4}>
+                          <FormLabel>Annee academique</FormLabel>
+                          <Select
+                            type={"date"}
+                            name="anneeAcademiqueId"
+                            value={anneeAcademiqueId}
+                            placeholder="Annee academique"
+                            onChange={(event) =>
+                              setAnneeAcademiqueId(event.target.value)
+                            }
+                            isRequired
+                          >
+                            {dataAnneeAcademique &&
+                              dataAnneeAcademique.findAllAnnerAccademique.map(
+                                (anneeAcademique, index) => (
+                                  <option
+                                    value={anneeAcademique.id}
+                                    key={index}
+                                  >
+                                    {anneeAcademique.name}
+                                  </option>
+                                )
+                              )}
+                          </Select>
+                        </FormControl>
+                      </Box>
+                    </AlertDialogBody>
+                    <AlertDialogFooter>
+                      <Button
+                        ref={cancelRef}
+                        onClick={onClose}
+                        colorScheme="red"
+                      >
+                        annuler
+                      </Button>
+                      <Button colorScheme="green" ml={3} type="submit">
+                        Creer
+                      </Button>
+                    </AlertDialogFooter>
+                  </Box>
+                </AlertDialogContent>
+              </AlertDialog>
             </Box>
-
 
             {/* TABLEAU DE LA LISTE DES TRANCHES DE LA PENSION */}
             <Box>
@@ -454,112 +449,15 @@ const Pension = () => {
                       {/* <Th >Montant deuxiere tranche</Th> */}
                     </Tr>
                   </Thead>
-                  <Tbody>
-                    {dataTranchePension &&
-                      dataTranchePension.findAlltranche
+                  {dataTranchePension && (
+                    <Tbody>
+                      {dataTranchePension.findAlltranche
                         .slice(pagesVisited, pagesVisited + itemsPerPage)
                         .map((tranche, index) => (
-                          <Tr key={index}>
-                            <Td p={0} pl={4}>
-                              {tranche.name}
-                            </Td>
-                            <Td p={0} pl={4}>
-                              {tranche.montant}
-                            </Td>
-                            <Td p={0} pl={4}>
-                              {tranche.priority}
-                            </Td>
-                            <Td p={0} pl={4}>
-                              {new Date(tranche.dateLine).toLocaleDateString()}
-                            </Td>
-                            {/* <Td >Monntant</Td>  */}
-                            <Td p={0} pl={2}>
-                              {/* <ButtonGroup 
-                              size='sm' 
-                              isAttached 
-                              variant='link' 
-                              colorScheme={'teal'}
-                              >
-                                <Button>
-                                  <Link 
-                                    href='/eleves/details'
-                                  >Details</Link>
-                                </Button>
-                              </ButtonGroup>   */}
-                              <Box display="flex">
-                                <Link
-                                  // href="/class/updateclass"
-                                  href={"#"}
-                                >
-                                  <Icon
-                                    as={FiEdit}
-                                    boxSize="40px"
-                                    p="3"
-                                    rounded="full"
-                                    _hover={{ background: "red.100" }}
-                                  />
-                                </Link>
-                                <Box href="#" mt="-3px">
-                                  <Icon
-                                    as={MdDelete}
-                                    boxSize="44px"
-                                    p="3"
-                                    rounded="full"
-                                    color="colors.quaternary"
-                                    onClick={OnOuvert}
-                                    _hover={{ background: "blue.100" }}
-                                  />
-                                  <Box>
-                                    <AlertDialog
-                                      isOpen={Onouvrir}
-                                      leastDestructiveRef={cancelRef}
-                                      onClose={onFermer}
-                                      isCentered
-                                    >
-                                      <AlertDialogOverlay
-                                      // alignSelf={"center"}
-                                      >
-                                        <AlertDialogContent width={"380px"}>
-                                          <AlertDialogHeader
-                                            fontSize="lg"
-                                            fontWeight="bold"
-                                            textAlign={"center"}
-                                          >
-                                            Confirmation de suppression
-                                          </AlertDialogHeader>
-                                          <AlertDialogBody textAlign={"center"}>
-                                            Voulez-vous supprimer cet cette
-                                            tranche?
-                                          </AlertDialogBody>
-
-                                          <AlertDialogFooter>
-                                            <Button
-                                              ref={cancelRef}
-                                              onClick={onFermer}
-                                              colorScheme="red"
-                                            >
-                                              Annuler
-                                            </Button>
-                                            <Button
-                                              colorScheme="green"
-                                              onClick={() =>
-                                                removeTranchePension(tranche.id)
-                                              }
-                                              ml={3}
-                                            >
-                                              Supprimer
-                                            </Button>
-                                          </AlertDialogFooter>
-                                        </AlertDialogContent>
-                                      </AlertDialogOverlay>
-                                    </AlertDialog>
-                                  </Box>
-                                </Box>
-                              </Box>
-                            </Td>
-                          </Tr>
+                          <TrancheElement tranche={tranche} index={index} />
                         ))}
-                  </Tbody>
+                    </Tbody>
+                  )}
                 </Table>
               </TableContainer>
             </Box>
@@ -584,3 +482,132 @@ const Pension = () => {
 };
 
 export default Pension;
+
+const TrancheElement = ({ tranche, index }) => {
+  const {
+    isOpen: Onouvrir,
+    onOpen: OnOuvert,
+    onClose: onFermer,
+    onToggle,
+  } = useDisclosure();
+  const cancelRef = React.useRef();
+  const [deleTranchePension] = useMutation(DELETE_TRANCHE_PENSION);
+
+  const removeTranchePension = async (id) => {
+    await deleTranchePension({
+      variables: {
+        id,
+      },
+      refetchQueries: [
+        {
+          query: GET_ALL_TRANCHE_PENSION,
+        },
+      ],
+    });
+    onFermer();
+    refetch();
+  };
+
+  const { data: dataTranchePension, refetch } = useQuery(
+    GET_ALL_TRANCHE_PENSION
+  );
+
+  return (
+    <Tr key={index}>
+      <Td p={0} pl={4}>
+        {tranche.name}
+      </Td>
+      <Td p={0} pl={4}>
+        {tranche.montant}
+      </Td>
+      <Td p={0} pl={4}>
+        {tranche.priority}
+      </Td>
+      <Td p={0} pl={4}>
+        {new Date(tranche.dateLine).toLocaleDateString()}
+      </Td>
+      {/* <Td >Monntant</Td>  */}
+      <Td p={0} pl={2}>
+        {/* <ButtonGroup 
+          size='sm' 
+          isAttached 
+          variant='link' 
+          colorScheme={'teal'}
+          >
+            <Button>
+              <Link 
+                href='/eleves/details'
+              >Details</Link>
+            </Button>
+        </ButtonGroup>   */}
+        <Box display="flex">
+          <Link
+            // href="/class/updateclass"
+            href={"#"}
+          >
+            <Icon
+              as={FiEdit}
+              boxSize="40px"
+              p="3"
+              rounded="full"
+              _hover={{ background: "red.100" }}
+            />
+          </Link>
+          <Box href="#" mt="-3px">
+            <Icon
+              as={MdDelete}
+              boxSize="44px"
+              p="3"
+              rounded="full"
+              color="colors.quaternary"
+              onClick={OnOuvert}
+              _hover={{ background: "blue.100" }}
+            />
+            <Box>
+              <AlertDialog
+                isOpen={Onouvrir}
+                leastDestructiveRef={cancelRef}
+                onClose={onFermer}
+                isCentered
+              >
+                <AlertDialogOverlay
+                // alignSelf={"center"}
+                >
+                  <AlertDialogContent width={"380px"}>
+                    <AlertDialogHeader
+                      fontSize="lg"
+                      fontWeight="bold"
+                      textAlign={"center"}
+                    >
+                      Confirmation de suppression
+                    </AlertDialogHeader>
+                    <AlertDialogBody textAlign={"center"}>
+                      Voulez-vous supprimer cet cette tranche?
+                    </AlertDialogBody>
+
+                    <AlertDialogFooter>
+                      <Button
+                        ref={cancelRef}
+                        onClick={onFermer}
+                        colorScheme="red"
+                      >
+                        Annuler
+                      </Button>
+                      <Button
+                        colorScheme="green"
+                        onClick={() => removeTranchePension(tranche.id)}
+                        ml={3}
+                      >
+                        Supprimer
+                      </Button>
+                    </AlertDialogFooter>
+                  </AlertDialogContent>
+                </AlertDialogOverlay>
+              </AlertDialog>
+            </Box>
+          </Box>
+        </Box>
+      </Td>
+    </Tr>
+  );
+};

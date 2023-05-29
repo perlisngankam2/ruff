@@ -4,7 +4,7 @@ import { useQuery, useMutation } from "@apollo/client";
 import { GET_ALL_STUDENT } from "../../graphql/Queries";
 import { useEffect } from "react";
 
-const LastStudentRegisteredBox = () => {
+const LastStudentPayInscriptionFee = () => {
   const {
     data: dataStudent,
     loading,
@@ -30,7 +30,7 @@ const LastStudentRegisteredBox = () => {
             fontWeight="bold"
             mb={"10px"}
           >
-            Derniers élèves enrégistrés
+            Derniers élèves inscrit
           </Text>
         </Box>
         <Box >
@@ -94,4 +94,4 @@ const LastStudentRegisteredBox = () => {
   );
 };
 
-export default LastStudentRegisteredBox;
+export default LastStudentPayInscriptionFee;

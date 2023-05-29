@@ -216,7 +216,7 @@ export class PensionService {
   }
   async delete(id: string) {
     const a = this.findById(id);
-    await this.pensionRepository.removeAndFlush(a);
+    await this.pensionRepository.nativeDelete(await a);
     if (!a) {
       throw Error('not found');
     }

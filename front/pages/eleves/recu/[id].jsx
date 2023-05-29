@@ -714,13 +714,13 @@ const receipt = () => {
                                   <Text>Deadline</Text>
                                 </Box>
                               </Th>
-
+{/* 
                               <Th border="1px">
                                 <Box fontSize="10px" textAlign="center" p="5px">
                                   <Text>Date </Text>
                                   <Text>Date</Text>
                                 </Box>
-                              </Th>
+                              </Th> */}
                             </Tr>
                           </Thead>
                           <Tbody>
@@ -808,11 +808,11 @@ const receipt = () => {
                                   </Text>
                                 </Box>
                               </Th>
-                              <Th border="1px">
+                              {/* <Th border="1px">
                                 <Box fontSize="10px">
                                   <Text textAlign={"center"}>rrr</Text>
                                 </Box>
-                              </Th>
+                              </Th> */}
                             </Tr>
                             <Tr gap="1">
                               <Th border="1px">
@@ -875,11 +875,11 @@ const receipt = () => {
                                   </Text>
                                 </Box>
                               </Th>
-                              <Th border="1px">
+                              {/* <Th border="1px">
                                 <Box fontSize="8px">
                                   <Text textAlign={"center"}></Text>
                                 </Box>
-                              </Th>
+                              </Th> */}
                             </Tr>
                             <Tr gap="1">
                               <Th border="1px">
@@ -924,7 +924,7 @@ const receipt = () => {
                                     {/* {dataResteTrancheByStudentId?.findByStudentRestTranche? dataResteTrancheByStudentId?.findByStudentRestTranche[2].Rest : 50000} */}
                                   </Text>
                                 </Box>
-                              </Th>
+                              </Th> 
                               <Th border="1px">
                                 <Box fontSize="10px">
                                   <Text textAlign={"center"}>
@@ -940,11 +940,11 @@ const receipt = () => {
                                   </Text>
                                 </Box>
                               </Th>
-                              <Th border="1px">
+                              {/* <Th border="1px">
                                 <Box fontSize="10px">
                                   <Text textAlign={"center"}></Text>
                                 </Box>
-                              </Th>
+                              </Th> */}
                             </Tr>
                           </Tbody>
                         </Table>

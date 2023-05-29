@@ -75,11 +75,11 @@ const ListeDesCours = () => {
   const { data: dataCourse, refetch } = useQuery(GET_ALL_COURSES);
   const [deleteCourse] = useMutation(DELETE_COURSE);
 
-  useEffect(()=>{
-    if(!authToken){
-      router.back()
+  useEffect(() => {
+    if (!authToken) {
+      router.back();
     }
-  },[authToken])
+  }, [authToken]);
 
   useEffect(() => {
     console.log(dataCourse?.findAllCourse);

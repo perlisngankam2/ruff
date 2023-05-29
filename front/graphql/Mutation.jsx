@@ -457,8 +457,8 @@ export const DELETE_COURSE = gql `
 
 //Suppression des montant des tranches de la pension
 export const DELETE_TRANCHE_PENSION = gql `
-    mutation deletepension ($id: String!) {
-        deletepension (id: $id) {
+    mutation deletePension ($id: String!) {
+        deletePension (id: $id) {
             id
             name
             description

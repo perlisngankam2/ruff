@@ -306,8 +306,8 @@ export const GET_ALL_TRANCHE_STUDENT = gql`
 `;
 
 export const GET_LAST_THREE_STUDENT_REGISTER = gql`
-  query getLastThreeStudents {
-    getLastThreeStudents {
+query getLastThreeStudents {
+  getLastThreeStudents {
       id
       matricule
       firstname
@@ -334,8 +334,8 @@ export const GET_LAST_THREE_STUDENT_REGISTER = gql`
       categorieid
       categoryName
       parentTel
-    }
   }
+}
 `;
 
 //RECUPERATION DES PENSIONS DE TOUTES LES CLASSES 

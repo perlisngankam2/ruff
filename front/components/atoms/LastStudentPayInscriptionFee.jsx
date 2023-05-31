@@ -1,7 +1,10 @@
 import { Avatar, Box, Flex, Icon, Text } from "@chakra-ui/react";
 import { RiUserAddFill } from "react-icons/ri";
 import { useQuery, useMutation } from "@apollo/client";
-import { GET_ALL_STUDENT } from "../../graphql/Queries";
+import { GET_ALL_STUDENT,
+  GET_LAST_THREE_STUDENT_WHO_COMPLETED_ADMISSION_FEE
+}
+ from "../../graphql/Queries";
 import { useEffect } from "react";
 
 const LastStudentPayInscriptionFee = () => {
@@ -13,7 +16,7 @@ const LastStudentPayInscriptionFee = () => {
     b,
   } = useQuery(GET_ALL_STUDENT);
   let dataTwoLastStudent = dataStudent?.findAllstudents.slice(-3);
-
+  const {data:dataThreeLastStudentPayInscription} = useQuery(GET_LAST_THREE_STUDENT_WHO_COMPLETED_ADMISSION_FEE)
   useEffect(() => {
     console.log("dernier eleve enregistre", dataTwoLastStudent);
   });
@@ -34,11 +37,16 @@ const LastStudentPayInscriptionFee = () => {
           </Text>
         </Box>
         <Box >
+        {dataThreeLastStudentPayInscription && 
+        dataThreeLastStudentPayInscription?.getLastThreeStudenstAdmissionFee
+        .map((student, index)=>(
           <Flex
             rounded="md"
             bg="rgba(0,0,0,0.24)"
             p="1"
             justify="space-between"
+            key={index}
+
           >
             <Box direction="column">
               <Flex
@@ -61,7 +69,8 @@ const LastStudentPayInscriptionFee = () => {
                     color="red"
                     fontWeight="normal"
                   >
-                    Nom 
+                    {student.firstname} 
+                     
                   </Text>
                   <Text
                     mt="2"
@@ -71,23 +80,24 @@ const LastStudentPayInscriptionFee = () => {
                     fontWeight="normal"
 
                   >
-                    Prenom
+                    {student.lastname} 
                   </Text>
                 </Box>
               </Flex>
             </Box>
             <Box direction="column" mr="5" mt="3">
-              <Icon as={RiUserAddFill} color="yellow.600" boxSize={14} />
+              <Icon as={RiUserAddFill} color="yellow.600" boxSize={6} />
               <Text
                 position="relative"
                 fontSize={{ base: "md", sm: "md", md: "md" }}
                 letterSpacing="tight"
                 color="purple.500"
               >
-                CMI
+                {student.salleName}
               </Text>
             </Box>
           </Flex>
+           ))  }
         </Box>
       </Box>
     </Box>

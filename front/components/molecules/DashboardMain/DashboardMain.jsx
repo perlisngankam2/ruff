@@ -135,9 +135,8 @@ const DashboardMain = () => {
                 py="9"
                 // w={"90%"}
               >
-                <LastStudentPayInscriptionFee />
-
                 <LastStudentRegisteredBox />
+                <LastStudentPayInscriptionFee />
               </SimpleGrid>
             </Flex>
             <Flex flexDir="column" align="center" gap="5">

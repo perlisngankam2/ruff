@@ -334,8 +334,9 @@ const AccountStatement = () => {
                         {expense.studentFirstname}&nbsp;
                         {expense.studentLastname}&nbsp;
                         {expense.personnelFirstName} &nbsp;
-                        {expense.personnelLastName}&nbsp; (salaire,
+                        {(expense.personnelLastName)}&nbsp; (
                         {expense.personnelFonction})
+                        {/* (<Text>salaire</Text> */}
                       </Box>
                       <Box
                         width="20%"

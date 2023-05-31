@@ -140,8 +140,8 @@ const SuiviPaiementFraisInscription = () => {
                 {dataInscriptionStatisticsFrancophoneSection && (
                   <Tbody>
                     {dataInscriptionStatisticsFrancophoneSection.getSectionStatisticsFrancophoneAdmissionFee.map(
-                      (francophoneClass) => (
-                        <Tr>
+                      (francophoneClass, index) => (
+                        <Tr key={index}>
                           <Td border={"1px"} rowSpan={6}>
                             {francophoneClass.sectionName}
                           </Td>

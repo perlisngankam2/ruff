@@ -52,4 +52,9 @@ export class CourseResolver {
   async deleteCourse(@Args('id') id:string){
  return await this.courseService.delete(id)
   }
+
+  @Mutation(()=> Course)
+  async updatecourse(@Args('id') id:string, @Args('input') input:CourseUpdateInput){
+  return await this.updatecourse(id,input)
+  }
 }

@@ -21,6 +21,33 @@ import { ParameterUpdateInput } from './dto/parameter.update';
 @Entity()
 @ObjectType()
 export class ParameterService {
+  // constructor(
+  //     @InjectRepository(Parameter)
+  //     private parameterRepository: EntityRepository<Parameter>,
+  //     private academicservice: AnneeAccademiqueService,
+  //     private  em: EntityManager,
+  //   ) {}
+
+  //   async create(
+  //     input: ParameterCreateInput,
+  //   ): Promise<Parameter> {
+  //     const parameter = new Parameter()
+  //     const year = await this.academicservice.findByOne(input.anneeAcademiqueId)
+  //     wrap(parameter).assign({
+  //         year: input.year,
+  //         name: input.name,
+  //         contry: input.contry,
+  //         phoneNumber: input.phoneNumber,
+  //         postalBox: input.postalBox,
+  //         emailAddress: input.emailAddress,
+  //         schoolCurrency: input.schoolCurrency,
+  //         anneeacademique: year
+
+  //     },
+  //       {
+  //         em:this.em
+  //       },
+  //     )
   constructor(
     @InjectRepository(Parameter)
     private parameterRepository: EntityRepository<Parameter>,

@@ -179,7 +179,7 @@ const Header = () => {
                 ml={"15px"}
                 key={index}
               >
-                <Text fontSize={"30px"}>{parameter.name}</Text>
+                <Text fontSize={"30px"}>{parameter.parameterName}</Text>
               </Box>
             ))}
           <Box ml={["auto", "auto", "auto", "auto"]}>

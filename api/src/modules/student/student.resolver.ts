@@ -58,6 +58,13 @@ export class StudentResolver {
   findAllstudents() {
     return this.studentService.getAll()
   }
+
+  @Query(() => [Student])
+  // @UseGuards(JwtAuthGuard,RolesGuard)
+  // @Roles(Role.ECONOME)
+  async getLastThreeStudents(){
+    return await this.studentService.getLastThreeStudents()
+  }
   
   @Query(() => Student)
   // @UseGuards(JwtAuthGuard,RolesGuard)

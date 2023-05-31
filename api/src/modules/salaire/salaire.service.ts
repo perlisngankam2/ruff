@@ -99,24 +99,10 @@ export class SalaireService {
     });
   }
 
-  findById(id: string) {
+  async findById(id: string) {
     return this.salaireRepository.findOne(id, {
       populate: ['personnel'],
     });
-  }
-
-  async paginationResponseSalaire(input: PaginationInput): Promise<SalairePaginatedResponse> {
-    const qb = this.salaireRepository.createQueryBuilder(); // Create a QueryBuilder
-  
-    const result = await paginate<Salaire>(qb, input); // Use the paginate function
-  
-    // Create a PaginatedResponse instance with the result
-    const paginatedResponse = PaginatedResponse(Salaire);
-    paginatedResponse.items = result.items;
-    paginatedResponse.total = result.total;
-    paginatedResponse.hasMore = result.hasMore;
-  
-    return paginatedResponse;
   }
 
   async getAll(): Promise<Salaire[]> {
@@ -137,15 +123,35 @@ export class SalaireService {
         montant: input.montant,
         payer: input.payer,
         personnel: personnel.id,
-        //   periode: periode.id
-      },
-      {
-        em: this.em,
-      },
-    );
+        jourPaie: input.jourPaie,
+        moisPaie: input.moisPaie
+        },
+        {
+          em: this.em
+        }
+      )
+      await this.salaireRepository.persistAndFlush(salaire)
+      await this.expenseservice.saveSalaireExpenses(personnel.id)
+      return salaire
+     
+      }
 
-    return salaire;
+
+
+  async paginationResponseSalaire(input: PaginationInput): Promise<SalairePaginatedResponse> {
+    const qb = this.salaireRepository.createQueryBuilder(); // Create a QueryBuilder
+  
+    const result = await paginate<Salaire>(qb, input); // Use the paginate function
+  
+    // Create a PaginatedResponse instance with the result
+    const paginatedResponse = PaginatedResponse(Salaire);
+    paginatedResponse.items = result.items;
+    paginatedResponse.total = result.total;
+    paginatedResponse.hasMore = result.hasMore;
+  
+    return paginatedResponse;
   }
+
 
   async delete(id: string) {
     const a = this.findById(id);
@@ -188,3 +194,4 @@ export class SalaireService {
     return a;
   }
 }
+

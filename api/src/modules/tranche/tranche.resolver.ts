@@ -31,7 +31,7 @@ export class TrancheResolver {
   }
 
   @Mutation(() => Tranche)
-  @Roles(Role.ECONOME, Role.PRINCIPAL)
+  // @Roles(Role.ECONOME, Role.PRINCIPAL)
   updatetranche(
     @Args('id', { type: () => String }) id: string,
     Input: TrancheUpdateInput,
@@ -46,6 +46,11 @@ export class TrancheResolver {
     return this.trancheService.getAll();
   }
 
+  @Mutation(() => Tranche)
+  async deleteTranche(@Args('id', { type: () => String }) id: string) {
+    return await this.trancheService.delete(id);
+  }
+
   @Query(() => Tranche, { name: 'tranche' })
   // @UseGuards(JwtAuthGuard, RolesGuard)
   // @Roles(Role.ECONOME, Role.PRINCIPAL)
@@ -58,13 +63,13 @@ export class TrancheResolver {
     return await this.trancheService.delete(id);
   }
 
-  @Mutation(() => Tranche)
-  async deletePension(@Args('id') id: string) {
-    return await this.trancheService.delete(id);
-  }
+  // @Mutation(() => Tranche)
+  // async deletePension(@Args('id') id: string) {
+  //   return await this.trancheService.delete(id);
+  // }
 
   @Query(() => [TrancheStat])
-  @Roles(Role.ECONOME, Role.PRINCIPAL)
+  // @Roles(Role.ECONOME, Role.PRINCIPAL)
   async findByStudentRestTranche(@Args('studentid') studentid: string) {
     return await this.trancheService.findByStudentRestTranche(studentid);
   }

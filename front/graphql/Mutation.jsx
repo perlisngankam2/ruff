@@ -223,15 +223,19 @@ export const CREATE_SCOLARITE_TRANCHE_STUDENT  = gql`
 
 //mutation d'affection de la pension a une classe 
 export const CREATE_MONTANT_SCOLARITE_CLASS = gql `
-    mutation createPension ($pension: PensionCreateInput!) {
-        createPension (pension: $pension) {
+    mutation createPensionSalle ($pensionsalle: PensionSalleCreateInput!) {
+        createPensionSalle (pensionsalle: $pensionsalle) {
             id
             name
             description
             montantPension
             dateLine
+            yearid
+            yearName
+            salleId
+            salleName
         }
-    }
+}
 `;
 
 export const CREATE_PERSONNEL_SALLE = gql `
@@ -291,7 +295,7 @@ export const CREATE_SCHOOL_PARAMETERS = gql`
 mutation createParameter ($input: ParameterCreateInput!) {
     createParameter (input: $input) {
         id
-        name
+        parameterName
         postalBox
         phoneNumber
         emailAddress

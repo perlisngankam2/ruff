@@ -1,6 +1,6 @@
 /* eslint-disable prettier/prettier */
 import { MikroOrmModule } from '@mikro-orm/nestjs';
-import { Module } from '@nestjs/common';
+import { Module, forwardRef } from '@nestjs/common';
 import { AnneeAccademique } from 'src/entities/annee-accademique.entity';
 import { AnneeAccademiqueResolver } from './anne-accademique.resolver';
 import { AnneeAccademiqueService } from './anne-accademique.service';
@@ -15,7 +15,8 @@ import { UserModule } from '../user/user.module';
 @Module({
     imports:[
         MikroOrmModule.forFeature({ entities: [AnneeAccademique] }),
-        ParamaterModule,
+        forwardRef(()=>ParamaterModule),
+        // ParamaterModule,
         UserModule
         // PensionModule,
         // TrancheModule,

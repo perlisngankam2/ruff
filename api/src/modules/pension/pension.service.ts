@@ -1,12 +1,12 @@
 /* eslint-disable prettier/prettier */
 import {
-  Collection,
-  Entity,
-  EntityManager,
-  FilterQuery,
-  NotFoundError,
-  wrap,
-} from '@mikro-orm/core';
+    Collection,
+    Entity,
+    EntityManager,
+    FilterQuery,
+    NotFoundError,
+    wrap,
+  } from '@mikro-orm/core';
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { EntityRepository } from '@mikro-orm/postgresql';
 import { Inject, Injectable, forwardRef } from '@nestjs/common';
@@ -27,21 +27,24 @@ import { PensionPaginatedResponse } from './type/pensionpagination';
 
 @Injectable()
 export class PensionService {
-  constructor(
-    @InjectRepository(Pension)
-    private pensionRepository: EntityRepository<Pension>,
-    @Inject(forwardRef(() => StudentService))
-    private studentservice: StudentService,
-    @Inject(forwardRef(() => TrancheStudentService))
-    private trancheStudentservice: TrancheStudentService,
-    @Inject(forwardRef(() => ExpenseService))
-    private expenseservice: ExpenseService,
-    private parameterservice: ParameterService,
-    private em: EntityManager,
-  ) {}
+    constructor(
+        @InjectRepository(Pension)
+        private pensionRepository: EntityRepository<Pension>,
+        @Inject(forwardRef(() => StudentService))
+        private studentservice: StudentService,
+        @Inject(forwardRef(() => TrancheStudentService))
+        private trancheStudentservice: TrancheStudentService,
+        @Inject(forwardRef(() => ExpenseService))
+        private expenseservice: ExpenseService,
+        private parameterservice: ParameterService,
+        private  em: EntityManager,
+      ) {}
+    
+      async create(
+        input: PensionCreateInput,
+      ): Promise<Pension> {  
 
-  async create(input: PensionCreateInput): Promise<Pension> {
-    const pension = new Pension();
+        const pension = new Pension()
 
         const student = await this.studentservice.findByOne(input.studentId)
         if(!student){
@@ -60,6 +63,7 @@ export class PensionService {
             dateLine: input.dateLine,
             student: student.id,
             year:annee
+            
           },
           {
             em:this.em
@@ -174,60 +178,53 @@ export class PensionService {
           throw new Error('Error in savePension function')
       }
   }
-
-  async updatesavePension(input: string) {
-    const parameter = await this.getAll();
+  
+  async updatesavePension(input:string){
+    const parameter= await this.getAll()
     parameter.forEach((parameter) => {
-      parameter.year = input;
-      this.pensionRepository.persist(parameter);
-    });
-
-    await this.pensionRepository.flush();
-  }
-
-  async update(id: string, input: PensionUpdateInput): Promise<Pension> {
-    const pension = await this.findById(id);
-    const student = await this.studentservice.findByOne(input.studentId);
-    if (!student) {
-      throw Error('!!!!!!!!!!!!!!!!!STUDENT DOES NOT EXISTS!!!!!!!!!!!!!!!!!!');
-    }
-    const montant = (
-      await this.trancheStudentservice.findByStudents(student.id)
-    )
-      .map((a) => a.montant)
-      .reduce(function (a, b) {
-        return a + b;
+        parameter.year= input;
+        this.pensionRepository.persist(parameter);
       });
-    const year = await this.parameterservice.getAll();
-    const annee = year[year.length - 1].year;
-    wrap(pension).assign(
-      {
-        name: input.name || pension.name,
-        dateLine: input.dateLine,
-        description: input.description || pension.description,
-        montantPension: montant,
-        student: input.studentId || pension.student,
-        year: annee,
-      },
-      { em: this.em },
+      
+      await this.pensionRepository.flush();
+  }
+
+      async update(id:string, input: PensionUpdateInput): Promise<Pension> {
+        const pension = await this.findById(id)
+        const student = await this.studentservice.findByOne(input.studentId)
+        if(!student){
+          throw Error('!!!!!!!!!!!!!!!!!STUDENT DOES NOT EXISTS!!!!!!!!!!!!!!!!!!')
+        }
+        const montant = (await this.trancheStudentservice.findByStudents(student.id)).map(a=>a.montant).reduce(function(a,b){return a+b})
+        const year = await this.parameterservice.getAll()
+        const annee = year[year.length-1].year
+        wrap(pension).assign({
+            name:input.name || pension.name,
+            dateLine: input.dateLine,
+            description: input.description || pension.description,
+            montantPension:montant,
+            student:input.studentId||pension.student,
+            year:annee
+        },
+        { em: this.em },
     );
-    await this.pensionRepository.persistAndFlush(pension);
-    return pension;
-  }
-  async delete(id: string) {
-    const a = this.findById(id);
-    await this.pensionRepository.nativeDelete(await a);
-    if (!a) {
-      throw Error('not found');
-    }
-    return a;
-  }
+        await this.pensionRepository.persistAndFlush(pension);
+        return pension;
+      }
+      async delete(id:string){
+        const a = this.findById(id)
+        await this.pensionRepository.removeAndFlush(a)
+        if(!a){
+        throw Error("not found")
+        }
+        return a
+      } 
+      
+      async findpensionbystudent(studentid:string){
+        return await this.pensionRepository.findOne({student:studentid})
+      }
 
-  async findpensionbystudent(studentid: string) {
-    return await this.pensionRepository.findOne({ student: studentid });
-  }
-
-  async findrestpensionbystudent(studentid: string) {
-    return (await this.findpensionbystudent(studentid)).reste;
-  }
+      async findrestpensionbystudent(studentid: string){
+        return (await this.findpensionbystudent(studentid)).reste
+      }
 }

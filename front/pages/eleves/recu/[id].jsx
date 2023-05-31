@@ -116,16 +116,8 @@ const receipt = () => {
       variables: { studentid: router.query.id },
     }
   );
+
   //MONTANT DES TRANCHES PAYE EN FONCTION DE CHAQUE ELEVE
-  const { data: dataAvanceMontantInscriptionByStudent } = useQuery(
-    GET_AVANCE_MONTANT_TRANCHE_BY_STUDENT,
-    {
-      variables: {
-        studentid: router.query.id,
-        trancheid: dataTranchePension?.findAlltranche[0].id,
-      },
-    }
-  );
 
   const { data: dataAvanceMontantTranche1ByStudent } = useQuery(
     GET_AVANCE_MONTANT_TRANCHE_BY_STUDENT,
@@ -272,19 +264,49 @@ const receipt = () => {
     // format: 'a4',
   };
 
-  useEffect(() => {
-    if (!authToken) {
-      router.back();
+  // useEffect(() => {
+  //   if (!authToken) {
+  //     router.back();
+  //   }
+  // }, [authToken]);
+
+  const dataFinalRestByTranche =
+    dataResteTrancheByStudentId?.findByStudentRestTranche.map(
+      (tranche) => tranche.Rest
+    );
+  const trancheId = dataTranchePension?.findAlltranche.map(
+    (tranche, index) => tranche.id
+  );
+
+  const trancheid = dataTrancheByStudentId?.getClassfeeofStudent.map(
+    (tranche, index) => tranche.id
+  );
+  console.log(trancheid);
+  const { data: dataAvanceMontantInscriptionByStudent } = useQuery(
+    GET_AVANCE_MONTANT_TRANCHE_BY_STUDENT,
+    {
+      variables: {
+        studentid: router.query.id,
+        trancheid: dataTrancheByStudentId?.getClassfeeofStudent.map(
+          (tranche, index) => tranche.id
+        ),
+      },
     }
-  }, [authToken]);
+  );
 
   useEffect(() => {
     // console.log(dataStudentByTrancheStudent?.getTrancheStudentByStudent)
     console.log(dataStudentSalle?.dataStudentSalle);
     console.log(
-      dataAvanceMontantInscriptionByStudent?.SumAvanceTrancheByStudent
+      dataAvanceMontantInscriptionByStudent
+      // ?.SumAvanceTrancheByStudent
     );
     console.log(dataMontantTrancheByStudent);
+    console.log(dataTrancheByStudentId);
+    console.log(dataResteTrancheByStudentId?.findByStudentRestTranche);
+    console.log(dataFinalRestByTranche);
+    console.log(trancheId);
+
     // loadTranches();
   });
 
@@ -714,7 +736,7 @@ const receipt = () => {
                                   <Text>Deadline</Text>
                                 </Box>
                               </Th>
-{/* 
+                              {/* 
                               <Th border="1px">
                                 <Box fontSize="10px" textAlign="center" p="5px">
                                   <Text>Date </Text>
@@ -723,230 +745,45 @@ const receipt = () => {
                               </Th> */}
                             </Tr>
                           </Thead>
-                          <Tbody>
-                            {/* <Tr gap='1'>
-                                                                <Th border='1px' bg='#rgba(0,0,0,0.36)'><Box fontSize='8px' fontWeight='bold' textAlign='center'>
-                                                                <Text>I</Text>
-
-                                                            </Box>
-                                                            </Th>
-                                                            <Th border='1px'><Box fontSize='8px'>
-                                                                <Text></Text>
-                                                            </Box>
-                                                            </Th>
-                                                            <Th border='1px'><Box fontSize='8px'>
-                                                                <Text></Text>
-                                                            </Box>
-                                                            </Th>
-                                                            <Th border='1px'><Box fontSize='8px'>
-                                                                <Text></Text>
-                                                            </Box>
-                                                            </Th>
-                                                            <Th border='1px'><Box fontSize='8px'>
-                                                                <Text></Text>
-                                                            </Box>
-                                                            </Th>
-                                                        </Tr> */}
-                            <Tr gap="1">
-                              <Th border="1px">
-                                <Box
-                                  textAlign="center"
-                                  fontWeight="bold"
-                                  fontSize="10px"
-                                  display={"flex"}
-                                  flexDirection={"column"}
-                                  p="5px"
-                                >
-                                  <Text>Inscription</Text>
-                                  <Text>Reg. Fees</Text>
-                                </Box>
-                              </Th>
-                              <Th border="1px">
-                                <Box fontSize="10px">
-                                  <Text textAlign={"center"}>
-                                    {/* {dataMontantTrancheByStudent
-                                      ?.AmountrExpectedByTranche[0]
-                                      ? dataMontantTrancheByStudent
-                                          ?.AmountrExpectedByTranche[0]
-                                      : "aucun"} */}
-                                     {dataTrancheByStudentId
-                                      ?.getClassfeeofStudent[0].name?  dataTrancheByStudentId
-                                      ?.getClassfeeofStudent[0].name : "aucun"}
-                                  </Text>
-                                </Box>
-                              </Th>
-                              <Th border="1px">
-                                <Box fontSize="10px">
-                                  <Text textAlign={"center"}>
-                                    {dataAvanceMontantInscriptionByStudent?.SumAvanceTrancheByStudent
-                                      ? dataAvanceMontantInscriptionByStudent?.SumAvanceTrancheByStudent
-                                      : "0"}
-                                  </Text>
-                                </Box>
-                              </Th>
-                              <Th border="1px">
-                                <Box fontSize="10px">
-                                  <Text textAlign={"center"}>
-                                    {/* {
-                                      dataResteTrancheByStudentId
-                                        ?.findByStudentRestTranche[0].Rest
-                                    } */}
-                                  </Text>
-                                </Box>
-                              </Th>
-                              <Th border="1px">
-                                <Box fontSize="10px">
-                                  <Text textAlign={"center"}>
-                                    {/* {(new Date(dataDateLineTrancheStudentInscription?.getTrancheDateLineByStudent)).toLocaleDateString()}
-                                     */}
-                                    {dataTrancheByStudentId
-                                      ?.getClassfeeofStudent[0].dateLine
-                                      ? new Date(
-                                          dataTrancheByStudentId?.getClassfeeofStudent[0].dateLine
-                                        ).toLocaleDateString()
-                                      : "aucun"}
-                                  </Text>
-                                </Box>
-                              </Th>
-                              {/* <Th border="1px">
-                                <Box fontSize="10px">
-                                  <Text textAlign={"center"}>rrr</Text>
-                                </Box>
-                              </Th> */}
-                            </Tr>
-                            <Tr gap="1">
-                              <Th border="1px">
-                                <Box
-                                  textAlign="center"
-                                  fontSize="10px"
-                                  fontWeight="bold"
-                                  display={"flex"}
-                                  flexDirection={"column"}
-                                  p="5px"
-                                >
-                                  <Text>Tranche 1</Text>
-                                  <Text>First Part</Text>
-                                </Box>
-                              </Th>
-                              <Th border="1px">
-                                <Box fontSize="10px">
-                                  <Text textAlign={"center"}>
-                                    {/* {dataMontantTrancheByStudent
-                                      ?.AmountrExpectedByTranche[1]
-                                      ? dataMontantTrancheByStudent
-                                          ?.AmountrExpectedByTranche[1]
-                                      : "aucun"} */}
-                                      {dataTrancheByStudentId
-                                      ?.getClassfeeofStudent[1].name?  dataTrancheByStudentId
-                                      ?.getClassfeeofStudent[1].name : "aucun"}
-                                  </Text>
-                                </Box>
-                              </Th>
-                              <Th border="1px">
-                                <Box fontSize="10px">
-                                  <Text textAlign={"center"}>
-                                    {
-                                      dataAvanceMontantTranche1ByStudent?.SumAvanceTrancheByStudent
-                                    }
-                                  </Text>
-                                </Box>
-                              </Th>
-                              <Th border="1px">
-                                <Box fontSize="10px">
-                                  <Text textAlign={"center"}>
-                                    {/* {
-                                      dataResteTrancheByStudentId
-                                        ?.findByStudentRestTranche[1].Rest
-                                    } */}
-                                  </Text>
-                                </Box>
-                              </Th>
-                              <Th border="1px">
-                                <Box fontSize="10px">
-                                  <Text textAlign={"center"}>
-                                    {/* {((new Date(expense.createdOn)).toLocaleDateString('fr-FR', { day: 'numeric', month: 'numeric', year: 'numeric' }))}  */}
-                                    {dataTrancheByStudentId
-                                      ?.getClassfeeofStudent[1].dateLine
-                                      ? new Date(
-                                          dataTrancheByStudentId?.getClassfeeofStudent[1].dateLine
-                                        ).toLocaleDateString()
-                                      : "aucun"}
-                                    {/* {(new Date(dataDateLineTrancheStudentTranche1?.getTrancheDateLineByStudent)).toLocaleDateString()} */}
-                                  </Text>
-                                </Box>
-                              </Th>
-                              {/* <Th border="1px">
-                                <Box fontSize="8px">
-                                  <Text textAlign={"center"}></Text>
-                                </Box>
-                              </Th> */}
-                            </Tr>
-                            <Tr gap="1">
-                              <Th border="1px">
-                                <Box
-                                  textAlign="center"
-                                  fontSize="10px"
-                                  fontWeight="bold"
-                                  display={"flex"}
-                                  flexDirection={"column"}
-                                  p="5px"
-                                >
-                                  <Text textAlign={"center"}>Tranche 2</Text>
-                                  <Text textAlign={"center"}>Second part</Text>
-                                </Box>
-                              </Th>
-                              <Th border="1px">
-                                <Box fontSize="10px">
-                                  <Text textAlign={"center"}>
-                                    {/* {dataMontantTrancheByStudent
-                                      ?.AmountrExpectedByTranche[2]
-                                      ? dataMontantTrancheByStudent
-                                          ?.AmountrExpectedByTranche[2]
-                                      : "aucun"} */}
-                                      {dataTrancheByStudentId
-                                      ?.getClassfeeofStudent[2].name?  dataTrancheByStudentId
-                                      ?.getClassfeeofStudent[2].name : "aucun"}
-                                  </Text>
-                                </Box>
-                              </Th>
-                              <Th border="1px">
-                                <Box fontSize="10px">
-                                  <Text textAlign={"center"}>
-                                    {
-                                      dataAvanceMontantTranche2ByStudent?.SumAvanceTrancheByStudent
-                                    }
-                                  </Text>
-                                </Box>
-                              </Th>
-                              <Th border="1px">
-                                <Box fontSize="10px">
-                                  <Text textAlign={"center"}>
-                                    {/* {dataResteTrancheByStudentId?.findByStudentRestTranche? dataResteTrancheByStudentId?.findByStudentRestTranche[2].Rest : 50000} */}
-                                  </Text>
-                                </Box>
-                              </Th> 
-                              <Th border="1px">
-                                <Box fontSize="10px">
-                                  <Text textAlign={"center"}>
-                                    {/* {((new Date(expense.createdOn)).toLocaleDateString('fr-FR', { day: 'numeric', month: 'numeric', year: 'numeric' }))}  */}
-                                    {/* {dataDateLineTrancheStudentTranche2?.getTrancheDateLineByStudent}  */}
-                                    {/* {console.log(dataDateLineTrancheStudentTranche2?.getTrancheDateLineByStudent)} */}
-                                    {dataTrancheByStudentId
-                                      ?.getClassfeeofStudent[2].dateLine
-                                      ? new Date(
-                                          dataTrancheByStudentId?.getClassfeeofStudent[2].dateLine
-                                        ).toLocaleDateString()
-                                      : "aucune"}
-                                  </Text>
-                                </Box>
-                              </Th>
-                              {/* <Th border="1px">
-                                <Box fontSize="10px">
-                                  <Text textAlign={"center"}></Text>
-                                </Box>
-                              </Th> */}
-                            </Tr>
-                          </Tbody>
+                          {dataTrancheByStudentId && (
+                            <Tbody>
+                              {dataTrancheByStudentId?.getClassfeeofStudent.map(
+                                (tranche, index) => (
+                                  <Tr key={index}>
+                                    {/* <Td rowSpan={4}></Td> */}
+                                    <Td border={"1px"} textAlign={"center"}>
+                                      {tranche.name}
+                                    </Td>
+                                    <Td border={"1px"} textAlign={"center"}>
+                                      {tranche.montant}
+                                    </Td>
+                                    <Td border={"1px"} textAlign={"center"}>
+                                      {tranche.montant}
+                                    </Td>
+                                    <Td border={"1px"} textAlign={"center"}>
+                                      {dataFinalRestByTranche}
+                                    </Td>
+                                    <Td border={"1px"} textAlign={"center"}>
+                                      {new Date(
+                                        tranche.dateLine
+                                      ).toLocaleDateString()}
+                                    </Td>
+                                  </Tr>
+                                )
+                              )}
+                            </Tbody>
+                          )}
+                          {/* <Tbody>
+                            {dataTrancheByStudentId &&
+                              dataTrancheByStudentId?.getClassfeeofStudent.map(
+                                (tranche, index) => (
+                                  <Tr>
+                                    {/* <Td></Td> */}
+                          {/* <Td>{tranche.dateLine}</Td>
+                                  </Tr>
+                                )
+                              )}
+                          </Tbody>  */}
                         </Table>
                       </TableContainer>
                       <Box textAlign="center">

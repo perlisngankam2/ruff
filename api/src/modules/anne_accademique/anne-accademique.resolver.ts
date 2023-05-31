@@ -26,8 +26,8 @@ export class AnneeAccademiqueResolver {
   constructor(private readonly anneeService: AnneeAccademiqueService) {}
 
   @Mutation(() => AnneeAccademique)
-  @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles(Role.ADMIN)
+  // @UseGuards(JwtAuthGuard, RolesGuard)
+  // @Roles(Role.ADMIN)
   async createAnnerAccademique(
     @Args('anneeAccademique') input: AnneeAccademiqueCreateInput,
   ) {

@@ -493,7 +493,9 @@ const DetailComponent = () => {
   // const alertMontantMaxAPayer = () => {
   //   if(montant>)
   // }
-  const addAvanceTranche = async () => {
+  const addAvanceTranche = async (event) => {
+    event.preventDefault();
+
     let studentId = dataStudentId?.findOnestudent.id;
     let montantSaisie = montant;
     let orderTranche = selectedTranches.sort((a, b) => a.priority - b.priority);
@@ -663,7 +665,9 @@ const DetailComponent = () => {
     // }
   };
 
-  const affectionParentToStudent = async () => {
+  const affectionParentToStudent = async (event) => {
+    event.preventDefault();
+
     let studentId = dataStudentId?.findOnestudent.id;
     console.log(studentId);
     console.log(selectedParents);
@@ -1054,8 +1058,8 @@ const DetailComponent = () => {
 
             {/* FORMULAIRE DE PAIEMENT DE LA SCOLARITE */}
             <Box
-             as="form" 
-            // onSubmit={PayTrancheSchoolFees}
+              as="form"
+              // onSubmit={PayTrancheSchoolFees}
             >
               <AlertDialog
                 isOpen={isOpen}
@@ -1065,8 +1069,8 @@ const DetailComponent = () => {
               >
                 <AlertDialogOverlay>
                   <AlertDialogContent>
-                    <Box 
-                    // as="form" 
+                    <Box
+                    // as="form"
                     // onSubmit={addAvanceTranche}
                     >
                       <AlertDialogCloseButton pl="20px" pb="20px" />
@@ -1258,7 +1262,6 @@ const DetailComponent = () => {
                           isLoading={isLoading}
                           type="submit"
                           onClick={addAvanceTranche}
-
                         >
                           payer
                         </Button>
@@ -1363,12 +1366,3 @@ const DetailComponent = () => {
 //   };
 // }
 export default DetailComponent;
-
-
-
-
-
-
-
-
-

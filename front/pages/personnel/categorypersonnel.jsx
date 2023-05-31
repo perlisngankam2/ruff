@@ -81,12 +81,12 @@ const Category = () => {
   //     window.location.reload();
   //   }
   // }
-  useEffect(()=>{
-    if(!authToken){
-      router.back()
+  useEffect(() => {
+    if (!authToken) {
+      router.back();
     }
-  },[authToken])
-  
+  }, [authToken]);
+
   useEffect(() => {
     console.log(data?.findAllcategoriepersonnel);
   }, [data]);

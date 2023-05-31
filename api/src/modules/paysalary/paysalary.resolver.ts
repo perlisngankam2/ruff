@@ -25,15 +25,15 @@ async createpaysalaire(@Args('input') input:PaySalaryCreateInput){
 }
 
 @Mutation(()=>PaySalary)
-@UseGuards(JwtAuthGuard,RolesGuard)
-@Roles(Role.ECONOME)
+// @UseGuards(JwtAuthGuard,RolesGuard)
+// @Roles(Role.ECONOME)
 async updatepaysalire(@Args('id') id:string,@Args('input') input: PaySalaryUpdateInput){
     return await this.paysalaireService.update(id,input)
 }
 
 @Mutation(()=>PaySalary)
-@UseGuards(JwtAuthGuard,RolesGuard)
-@Roles(Role.ECONOME)
+// @UseGuards(JwtAuthGuard,RolesGuard)
+// @Roles(Role.ECONOME)
 async deletePaysalire(@Args('id') id:string){
     return await this.paysalaireService.delete(id)
 }

@@ -37,8 +37,8 @@ export class PensionSalleResolver {
   }
 
   @Query(() => [PensionSalle])
-  @UseGuards(JwtAuthGuard,RolesGuard)
-  @Roles(Role.PRINCIPAL, Role.FONDATEUR)
+  // @UseGuards(JwtAuthGuard,RolesGuard)
+  // @Roles(Role.PRINCIPAL, Role.FONDATEUR)
   async findAllpensionSalle() {
     return await this.pensionsalleService.getAll()
   }

@@ -17,6 +17,7 @@ import {
   VStack,
   useDisclosure,
   AlertDialogCloseButton,
+  useToast
 } from "@chakra-ui/react";
 
 import Routes from "../../modules/routes";
@@ -36,6 +37,7 @@ import { DELETE_PERSONNEL } from "../../graphql/Mutation";
 
 const Employee = (props) => {
   const router = useRouter();
+  const toast = useToast()
   const cancelRef = React.useRef();
   const {
     data: dataPersonnel,
@@ -66,6 +68,13 @@ const Employee = (props) => {
       ],
     });
     refetch();
+    toast({
+      title: "Suppression du personnel.",
+      description: "Suppresion reussit.",
+      status: "success",
+      duration: 3000,
+      isClosable: true,
+    });
   };
 
   return (

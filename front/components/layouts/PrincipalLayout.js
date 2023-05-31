@@ -116,6 +116,11 @@ import {
           </Link>
         </AccordionPanel>
         <AccordionPanel pb={1} _hover={{background:"rgba(0,0,0,0.16)"}}>
+          <Link href="/class/pensionSalle">
+            <Box as="span">pensions</Box>
+          </Link>
+        </AccordionPanel>
+        <AccordionPanel pb={1} _hover={{background:"rgba(0,0,0,0.16)"}}>
           <Link href="/class/cyclesection">
             <Box as="span">Cycle & section</Box>
           </Link>

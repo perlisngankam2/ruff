@@ -40,7 +40,7 @@ export class Parameter {
   year!: string;
  
   @ManyToOne(() => AnneeAccademique, {
-    nullable: true,
+    nullable: false,
     // onDelete: "CASCADE"
   })
   anneeacademique!: IdentifiedReference<AnneeAccademique> | null;

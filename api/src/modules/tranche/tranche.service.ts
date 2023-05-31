@@ -53,6 +53,7 @@ export class TrancheService {
         // ? await this.pensionService.findByOne(input.pension_id)
         // : await this.pensionService.create(input.pension) 
 
+        
         const year = await this.parameterservice.getAll()
         const annee = year[year.length-1].year
         wrap(tranche).assign(
@@ -62,7 +63,7 @@ export class TrancheService {
             description: input.description,
             // dateLine:format(input.dateLine, 'dd/MM/yyyy'),
             dateLine:input.dateLine,
-            anneeAccademique: input.anneeAcademiqueId,
+            anneeAccademique: annee,
             salle: input.salleId,
             year: annee,
             priority: input.priority
@@ -108,6 +109,8 @@ export class TrancheService {
         })
       }
 
+     
+
       async getAllTranche(): Promise<Tranche[]> {
         return await this.trancheRepository.findAll({
           populate:['trancheStudent.tranche','trancheStudent.student']
@@ -127,7 +130,6 @@ export class TrancheService {
         //     }
         //     this.pensionService.update(pension.id, input.pension);
         //   }
-
         const year = await this.parameterservice.getAll()
         const annee = year[year.length-1].year
         wrap(tranche).assign({

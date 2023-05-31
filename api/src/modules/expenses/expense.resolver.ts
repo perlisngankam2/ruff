@@ -18,15 +18,15 @@ export class ExpenseResolver {
   constructor(private readonly expenseService: ExpenseService) {}
 
   @Mutation(()=>Expense)
-  @UseGuards(JwtAuthGuard,RolesGuard)
-  @Roles(Role.ECONOME)
+  // @UseGuards(JwtAuthGuard,RolesGuard)
+  // @Roles(Role.ECONOME)
   async createExpense(@Args('input') input: ExpenseCreateInput){
     return await this.expenseService.create(input)
   }
 
   @Query(() => ExpensePaginatedResponse)
-  @UseGuards(JwtAuthGuard,RolesGuard)
-  @Roles(Role.ECONOME)
+  // @UseGuards(JwtAuthGuard,RolesGuard)
+  // @Roles(Role.ECONOME)
   async pagiantionResponseExpense(
     @Args('pagination') pagination: PaginationInput,
   ): Promise<ExpensePaginatedResponse> {
@@ -34,22 +34,22 @@ export class ExpenseResolver {
   }
 
   @Mutation(()=>Expense)
-  @UseGuards(JwtAuthGuard,RolesGuard)
-  @Roles(Role.ECONOME)
+  // @UseGuards(JwtAuthGuard,RolesGuard)
+  // @Roles(Role.ECONOME)
   async updateExpense(@Args('id') id: string,@Args('input') input: ExpenseUpdateInput){
     return await this.expenseService.update(id,input)
   }
   
   @Mutation(()=>Expense)
-  @UseGuards(JwtAuthGuard,RolesGuard)
-  @Roles(Role.ECONOME)
+  // @UseGuards(JwtAuthGuard,RolesGuard)
+  // @Roles(Role.ECONOME)
   async deleteExpense(@Args('id') id: string){
     return await this.expenseService.delete(id)
   }
 
   @Query(()=>Expense)
-  @UseGuards(JwtAuthGuard,RolesGuard)
-  @Roles(Role.ECONOME)
+  // @UseGuards(JwtAuthGuard,RolesGuard)
+  // @Roles(Role.ECONOME)
   async findoneexpense(@Args('id') id: string){
     return await this.expenseService.findByOne(id)
   }

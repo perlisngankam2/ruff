@@ -35,6 +35,7 @@ export class NiveauEtudeService {
       ): Promise<NiveauEtude> {  
         const niveauEtude = new NiveauEtude()
 
+        const cycle = await this.cycleservice.findById(input.cycleId)
         // const sectionCycle = input.sectionCycle
         // ? await this.sectionCycle.findByOne({id:input.section})
         // : await this.sectionCycle.create(input.sectionCycle)
@@ -45,7 +46,7 @@ export class NiveauEtudeService {
            description: input.description,
           //  sectionCycle: sectionCycle.id,
           //  salle: input.salle,
-           cycle: input.cycleId,
+           cycle: cycle,
            montantPension: input.montantPension
           },
           {

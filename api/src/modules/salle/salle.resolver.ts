@@ -67,7 +67,7 @@ export class SalleResolver {
 
   
   @Mutation(()=>Salle)
-  @Roles(Role.FONDATEUR, Role.PRINCIPAL)
+  // @Roles(Role.FONDATEUR, Role.PRINCIPAL)
   async UpdateSalle(@Args('id') id:string, @Args('input') input:SalleUpdateInput){
    return this.salleService.update(id,input)
   }

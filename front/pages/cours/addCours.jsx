@@ -62,7 +62,9 @@ function AjouterCours() {
     }
   }, [authToken]);
 
-  const addCourse = async () => {
+  const addCourse = async (event) => {
+    event.preventDefault();
+
     console.log(time);
     await createCourse({
       variables: {

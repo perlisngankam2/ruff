@@ -44,6 +44,7 @@ export class PersonnelResolver {
     return await this.personnelService.getAll();
   }
 
+
   @Query(() => PersonnelPaginatedResponse)
   async pagiantionResponsePersonnel(
     @Args('pagination') pagination: PaginationInput,
@@ -59,8 +60,8 @@ export class PersonnelResolver {
   }
 
   @Mutation(() => Personnel)
-  @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles(Role.ECONOME)
+  // @UseGuards(JwtAuthGuard, RolesGuard)
+  // @Roles(Role.ECONOME)
   async updatepersonnel(
     @Args('id') id: string,
     @Args('input') input: PersonnelUpdateInput,

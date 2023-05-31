@@ -35,11 +35,11 @@ export class PensionSalleService {
 
         const pensionsalle = new PensionSalle()
 
-        await this.anneAccademique.findByOne({id:input.anneeAcademiqueId})
+        const year = await this.anneAccademique.findByOne({id:input.anneeAcademiqueId})
             
             // : await this.anneAccademique.create(input.anneeAccademique)
 
-        await this.salleService.findByOne({id:input.salleId})
+        const salle =await this.salleService.findByOne({id:input.salleId})
              
             // : await this.salleService.create(input.salle)
 
@@ -48,8 +48,8 @@ export class PensionSalleService {
             montantPension:input.montantPension,
             name: input.name,
             description: input.description,
-            salle: input.salleId,
-            anneeAccademique: input.anneeAcademiqueId
+            salle: salle,
+            anneeAccademique: year
           },
           {
             em:this.em

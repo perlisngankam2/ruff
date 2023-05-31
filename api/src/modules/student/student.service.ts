@@ -150,6 +150,18 @@ export class StudentService {
         })
       }
 
+      async getLastThreeStudents():Promise<Student[]>{
+        const a= this.getAll()
+        const list: Student[] = [];
+        for (let i = (await a).length - 3; i < (await a).length; i++) {
+          if (i >= 0) {
+            list.push(a[i]);
+          }
+        }
+        return list
+      }
+      
+
       async pagiantionResponseStudent(input: PaginationInput): Promise<StudentPaginatedResponse> {
         const qb = this.studentRepository.createQueryBuilder(); // Create a QueryBuilder
       

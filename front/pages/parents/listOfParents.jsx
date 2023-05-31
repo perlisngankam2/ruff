@@ -26,10 +26,10 @@ import {
   AlertDialogFooter,
   Button,
   InputRightElement,
+   
 } from "@chakra-ui/react";
 import DefaultLayout from "../../components/layouts/DefaultLayout";
 import AddParents from "./addParents";
-import { Router, useRouter } from "next/router";
 import { FiEdit, FiSearch } from "react-icons/fi";
 import { MdDelete } from "react-icons/md";
 import {
@@ -42,6 +42,7 @@ import { useMutation, useQuery } from "@apollo/client";
 import React, { useEffect, useState } from "react";
 import ReactPaginate from "react-paginate";
 import { useAuth } from "../../contexts/account/Auth/Auth";
+import { useRouter } from "next/router";
 
 const ListOfParents = () => {
   

@@ -1501,3 +1501,30 @@ export default ModifierEleve;
 // // }
 
 // export default receipt;
+
+
+// const list: Student[] = [];
+//         for (let i = (await a).length - 3; i < (await a).length; i++) {
+//           if (i >= 0) {
+//             list.push(a[i]);
+//           }
+//         }
+
+
+// const list: Student[] = [];
+//     for (let i = (await a).length - 3; i < (await a).length; i++) {
+//       if (i >= 0) {
+//         list.push(a[i]);
+//       }
+//     }
+//     return list
+
+
+   
+// async getclassfeebystudent(studentid:string){
+//   const a= await this.findByOne(studentid)
+//   if(!a){
+//     throw Error("student not found")
+//   }
+//   return (a.salle.getEntity().pensionsalle.getItems().map(a=>a.montantPension))[0]
+// }

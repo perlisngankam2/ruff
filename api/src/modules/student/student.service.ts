@@ -152,13 +152,7 @@ export class StudentService {
 
       async getLastThreeStudents():Promise<Student[]>{
         const a= this.getAll()
-        const list: Student[] = [];
-        for (let i = (await a).length - 3; i < (await a).length; i++) {
-          if (i >= 0) {
-            list.push(a[i]);
-          }
-        }
-        return list
+        return (await a).slice(-3)
       }
       
 
@@ -178,14 +172,14 @@ export class StudentService {
 
       async getAllForUseAnglophone(): Promise<Student[]> {
         const a= await this.studentRepository.findAll({
-          populate: ['salle','pension','salle.niveau','salle.niveau.cycle','salle.niveau.cycle.section']
+          populate: ['salle','pension','salle.niveau','salle.niveau.cycle','salle.niveau.cycle.section', 'salle.pensionsalle']
         })
         return a.filter(async a=>(await (await (await (await a.salle.load()).niveau.load()).cycle.load()).section.load()).name==='Anglophone')
       }
       
       async getAllForUseFrancophone(): Promise<Student[]> {
         const a= await this.studentRepository.findAll({
-          populate: ['salle','pension','salle.niveau','salle.niveau.cycle','salle.niveau.cycle.section']
+          populate: ['salle','pension','salle.niveau','salle.niveau.cycle','salle.niveau.cycle.section', 'salle.pensionsalle']
         })
         return a.filter(async a=>(await (await (await (await a.salle.load()).niveau.load()).cycle.load()).section.load()).name=='Francophone')
       }
@@ -277,13 +271,17 @@ export class StudentService {
       }
 
       
-    async getclassfeebystudent(studentid:string){
-      const a= await this.findByOne(studentid)
-      if(!a){
-        throw Error("student not found")
-      }
-      return (a.salle.getEntity().pensionsalle.getItems().map(a=>a.montantPension))[0]
-    }
+      async getclassfeebystudent(studentid:string){
+        const students =  await this.studentRepository.findAll({
+          populate:['salle','salle.pensionsalle']
+        })
+        const student = students.filter(a=>a.id==studentid)[0]
+        
+        if(!student){
+          throw Error("student not found")
+        }
+        return (student.salle.getEntity().pensionsalle.getItems().map(a=>a.montantPension))[0]
+      }
    
       
 }

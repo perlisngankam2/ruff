@@ -170,13 +170,7 @@ export class StatisticsService {
 
   async getLastThreeStudenstAdmissionFee(){
     const a= this.getallStudentswhohaveCompletedAdmissionFee()
-    const list: Student[] = [];
-    for (let i = (await a).length - 3; i < (await a).length; i++) {
-      if (i >= 0) {
-        list.push(a[i]);
-      }
-    }
-    return list
+        return (await a).slice(-3)
   }
 
   async getallStudentswhohaveCompletedSecondInstalment(){

@@ -107,7 +107,7 @@ router.push('/dashboard')
             boxShadow="xl"
             rounded={13}
             background="white"
-            as="form"
+            w='400px'
           
             
           >
@@ -170,30 +170,11 @@ router.push('/dashboard')
                 </FormControl>
 
 
-                <HStack 
-                  mb={5} 
-                  spacing={{ base: "10px", lg: "60px" }}
-                >
-                  <Checkbox
-                    id="remember"
-                    colorScheme="green"
-                    // isChecked={formik.values.remember}
-                    // onChange={formik.handleChange}
-                  >
-                    {/* Se souvenir de moi */}
-                    {t('molecules.LoginForm.seSouvenirDeMoi')}
-                  </Checkbox>
-                  <Link href="#">
-                    <Box as="span" color="#0E341F">
-                      {t('molecules.LoginForm.motDePasseOublie')}
-                      {/* Mot de passe oublié ? */}
-                    </Box>
-                  </Link>
-                </HStack>
                 <>
 
                 <Button 
                   w="100%" 
+                  mt='5'
                   colorScheme="green" 
                   type="submit" 
                   mb={5}
@@ -250,7 +231,6 @@ router.push('/dashboard')
   );
 }
 
-}
 
 
 export default LoginForm;

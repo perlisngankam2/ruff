@@ -20,7 +20,7 @@ id!: string;
 moisPaie!: string;
 
 @Property({ onCreate: () => new Date() })
-createdAt = format(new Date(),'HH:mm:ss');
+createdAt = new Date();
 
 @Field({ defaultValue: 0 })
 @Property({ default: 0 })

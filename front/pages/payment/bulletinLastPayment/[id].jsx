@@ -24,7 +24,7 @@ import { GET_ALL_PERSONNEL_BY_ID,
          GET_ALL_AMOUNT_RETENU_PERSONNEL,
          GET_SUM_AMOUNT_RETENU_PERSONNEL,
          GET_ALL_SALAIRE_BY_ID, 
-         GET_SALARY_NET,
+         GET_ALL_PAYSALAIRE_BY_ID,
          GET_Category_Personnel_BY_ID, 
          GET_Category_Personnel_ID,
         FIND_BY_ID_SALAIRE,
@@ -45,21 +45,14 @@ const BulletinLastPayment = () => {
 
   const router = useRouter();
   // const tableRef = useRef();
- //
 
-
+  //recupere un salaire precis par son id
       const {data:dataSalaireId, loading, error} = useQuery(FIND_BY_ID_SALAIRE,
       {
         variables:{ id: router.query.id}
       });
 
-      //
-    //   const {data:dataSalaireNet} = useQuery(GET_SALARY_NET,
-    //   {
-    //     variables:{ personnelid: router.query.id}
-    //   });
-
-
+  // recupere les infos d'un personnel precis
          const {data:dataPersonnelId} = useQuery(GET_ALL_PERSONNEL_BY_ID,
       {
         variables:{ id: dataSalaireId?.getonesalaire.personnelid}
@@ -67,7 +60,7 @@ const BulletinLastPayment = () => {
 
 
 
-        // recupere l'ID de la categorie associee a un personnel
+    // recupere l'ID de la categorie associee a un personnel
 
     const {data:dataCategorieId} = useQuery(GET_Category_Personnel_ID,
      {
@@ -81,22 +74,22 @@ const BulletinLastPayment = () => {
         variables:{ id: dataCategorieId?.findCategoriepersonnelbypersonnel}
     })
 
- //Id de la prime affectee a un personnel
- const {data:primeId} = useQuery(FIND_ID_PRIME,
-    {
-        variables:{ personnelid: dataSalaireId?.getonesalaire.personnelid,
-                    month: dataSalaireId?.getonesalaire.moisPaie
-        }
-    })
+    //recupere le nom et le montant des primes attribuees au personnel pour un mois
+  const {data:primeId} = useQuery(FIND_ID_PRIME,
+      {
+          variables:{ personnelid: dataSalaireId?.getonesalaire.personnelid,
+                      month: dataSalaireId?.getonesalaire.moisPaie
+          }
+      })
 
-
+    //Total des primes d'un personnel pour un mois precis
     const {data:dataPrimeTotal} = useQuery(GET_SUM_AMOUNT_PRIME_PERSONNEL,
     {
         variables:{ personnelid: dataSalaireId?.getonesalaire.personnelid,
                     month: dataSalaireId?.getonesalaire.moisPaie
         }
     })
-
+  //Total des retenues d'un personnel pour un mois precis
         const {data:dataRetenueTotal} = useQuery(GET_SUM_AMOUNT_RETENU_PERSONNEL,
     {
         variables:{ personnelid: dataSalaireId?.getonesalaire.personnelid,
@@ -106,11 +99,6 @@ const BulletinLastPayment = () => {
 
     console.log('prime id')
     
-
-    const {data:dataPrimeNoms,refetch} = useQuery(GET_ALL_NAME_PRIME_PERSONNEL,
-    {
-        variables:{ id: "e48ea429-457a-4c51-80b4-85062e28e032" },
-    })
     // useEffect(()=>{
     //   if(primeId){
     //     const primes = []
@@ -124,64 +112,21 @@ const BulletinLastPayment = () => {
     // },[primeId])
 
 
-    console.log(primeId
-)
+    console.log(primeId)
 
-//     const {data:dataRetenueMontant} = useQuery(GET_ALL_AMOUNT_RETENU_PERSONNEL,
-//     {
-//         variables:{ personnelid: router.query.id}
-//     })
-
-//     const {data:dataRetenueTotal} = useQuery(GET_SUM_AMOUNT_RETENU_PERSONNEL,
-//     {
-//         variables:{ personnelid: router.query.id}
-//     })
-
-    //
-// primeId?.findIdPrimesByPrimesPersonnel.map((prime, index) => {
-//    const {data:dataPrimeNoms} = useQuery(GET_ALL_NAME_PRIME_PERSONNEL,
-//     {
-//         variables:{ id: prime },
-//       skip: primeId?.findIdPrimesByPrimesPersonnel.length === 0,
-//     })
-
-//   })
-
-
-  // const {data:dataPrimeNoms} = useQuery(GET_ALL_NAME_PRIME_PERSONNEL,
-  //   {
-  //       variables:{ id: prime },
-  //     skip: primeId?.findIdPrimesByPrimesPersonnel.length === 0,
-  //   })
-
-//     const {data:dataPrimeMontant} = useQuery(GET_ALL_AMOUNT_PRIME_PERSONNEL,
-//     {
-//         variables:{ personnelid: router.query.id}
-//     })
-
-//     const {data:dataPrimeTotal} = useQuery(GET_SUM_AMOUNT_PRIME_PERSONNEL,
-//     {
-//         variables:{ personnelid: router.query.id}
-//     })
-
-
-
-// console.log(dataSalaireNet?.PersonnelNetSalary)
 console.log(dataSalaireId?.getonesalaire)
 
-// console.log("dataRetenue")
-// console.log(dataPrimeNoms)
-// console.log(dataRetenueMontant?.findmontantretenubypersonnel)
-// console.log(dataRetenueTotal?.findsumallretenupersonnel
-// )
-// console.log("dataPrime")
-// console.log(dataPrimeNoms?.findnamesprimebypersonnel)
-// console.log(dataPrimeMontant?.findmontantprimebypersonnel)
-// console.log(dataPrimeTotal?.findsumallprimepersonnel
-// )
+//test
+
+  //   const {data:dataGenererSalaire} = useQuery(GET_ALL_PAYSALAIRE_BY_ID,
+  // {
+  //   variables:{ personnelid: "3dafb9a6-ce68-491e-bfc6-7ec93e4d691a"}
+  // });
+
+  //   console.log('datagenerer salaire',dataGenererSalaire)
 
 
-
+  //fonction qui ecrit un nombre en lettre 
 function nombreEnLettres(montant) {
   const chiffres = [
     '', 'un', 'deux', 'trois', 'quatre', 'cinq', 'six', 'sept', 'huit', 'neuf', 'dix',
@@ -197,22 +142,27 @@ function nombreEnLettres(montant) {
   const dizaine = Math.floor(montant / 10) % 10;
   const centaine = Math.floor(montant / 100) % 10;
   const millier = Math.floor(montant / 1000) % 1000;
+
   const million = Math.floor(montant / 1000000);
 
   let resultat = '';
 
   if (million > 0) {
-    resultat += nombreEnLettres(million) + ' million ';
+      if (million === 1) {
+      resultat += 'un million ';
+    } else {
+      resultat += nombreEnLettres(million) + ' million ';
+    }
+   
     montant %= 1000000;
   }
-
-  if (millier > 0) {
-    resultat += nombreEnLettres(millier) + ' mille ';
-    montant %= 1000;
-    // La correction est ici
-    if (montant === 0) {
-      resultat += ' ';
+    if(millier > 0){
+      if (millier === 1) {
+      resultat += 'mille ';
+    } else {
+         resultat += nombreEnLettres(millier) + ' mille ';
     }
+    const reste = millier % 1000;
   }
 
   if (centaine > 0) {
@@ -222,15 +172,28 @@ function nombreEnLettres(montant) {
       resultat += chiffres[centaine] + ' cent ';
     }
   }
-
+  
+if (dizaine === 1 && unite === 0) {
+    resultat += chiffres[10] + ' ';
+  }
   if (dizaine === 1 && unite > 0) {
     resultat += chiffres[10 + unite] + ' ';
-  } else if (dizaine > 1 || (dizaine === 1 && unite === 0)) {
+  }  
+  if (dizaine > 1) {
+    if ((dizaine === 7 && unite > 0) || (dizaine === 9 && unite > 0)) {
+    resultat += dizaines[dizaine-1] + ' ' + chiffres[10 + unite] + ' ';
+  }else{
     resultat += dizaines[dizaine] + ' ';
   }
+    
+  }
 
-  if (dizaine !== 1 && unite > 0) {
+  if (dizaine !== 1&& dizaine !== 7 && dizaine !== 9 ) {
+    if(dizaine === 0  && unite > 0){
+   resultat += chiffres[unite] + ' ';
+    }
     resultat += chiffres[unite] + ' ';
+    
   }
 
   return resultat.trim();
@@ -365,35 +328,35 @@ const options = {
                   <Box w='300px' borderLeft={'1px'}   py='6px' >
 
                        <Heading fontSize={'md'} fontWeight={'bold'} color='black'ml='6px'>PRIMES SALARIALES</Heading>
-                          {/* { 
+                        
+                                 { 
                       primeId && (
                         primeId?.findIdPrimesByPrimesPersonnel.map((prime) => (
                             <Text ml='20px'>
-                              {prime}
+                              {prime.nom}
                             </Text>
-                        )))} */}
+                        )))}
                   </Box>
                     <Box  w='180px'  borderLeft={'1px'} py='6px' >
 
-            
-                               {/* { 
-                      dataPrimeMontant && <Box mt='20px'>
-                       { dataPrimeMontant?.findmontantprimebypersonnel.map((prime) => (
+                     { 
+                      primeId && <Box mt='20px'>
+                       { primeId?.findIdPrimesByPrimesPersonnel.map((prime) => (
                             <Text textAlign={"right"} mr='6px'>
-                              {prime}
+                              {prime.montant}
                             </Text>
-                            ))}</Box>} */}
+                            ))}</Box>}
                     </Box>
                     <Box w='100px'  borderLeft={'1px'} py='6px'  ></Box>
                     <Box w='160px'  borderLeft={'1px'} py='6px' >
 
-                               {/* { 
-                       dataPrimeMontant && <Box mt='20px'>
-                       { dataPrimeMontant?.findmontantprimebypersonnel.map((prime) => (
+                               { 
+                       primeId && <Box mt='20px'>
+                       { primeId?.findIdPrimesByPrimesPersonnel.map((prime) => (
                             <Text textAlign={"right"} mr='6px'>
-                              {prime}
+                              {prime.montant}
                             </Text>
-                            ))}</Box>} */}
+                            ))}</Box>}
                     </Box>
                     <Box  w='160px' borderLeft={'1px'} borderRight={'1px'} py='6px'  ></Box>
 

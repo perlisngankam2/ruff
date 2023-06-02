@@ -85,6 +85,8 @@ const AjouterPersonnel = () => {
   const [isPermanent, setIsPermanent] = useState(false);
   const [createPersonnel, {error}] = useMutation(CREATE_PERSONNEL);
   const {data:dataCategoryPersonnel} = useQuery(GET_ALL_Category_Personnel);
+
+  const {data:dataALLPersonnel, refetch} = useQuery(GET_ALL_PERSONNELS);
   // const handleSubmit = (event) => {
   //   event.preventDefault();
   //   // router.push("/personnel");
@@ -160,6 +162,7 @@ if(/^[^\s][a-zA-Z\s]*[^\s]$/.test(firstName) && /^[^\s][a-zA-Z\s]*[^\s]$/.test(l
           query: GET_ALL_PERSONNELS
         }]
       }}, 
+      refetch(),
       console.log('hh')
       ) 
       console.log(data)

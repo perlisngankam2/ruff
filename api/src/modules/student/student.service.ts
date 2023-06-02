@@ -25,7 +25,6 @@ import { StudentUpdateInput } from './dto/student.update';
 import { TrancheService } from '../tranche/tranche.service';
 import { addDays, format } from 'date-fns';
 import { CategorieEleve } from 'src/entities/categorie-eleve.entity';
-import { CategorieEleve } from 'src/entities/categorie-eleve.entity';
 
 @Injectable()
 export class StudentService {
@@ -68,8 +67,6 @@ export class StudentService {
             lastname: input.lastname,
             // classe : input.classe,
             sex: input.sex,
-            dateOfBirth:input.dateOfBirth,
-            birthPlace: input.birthPlace,
             dateOfBirth:input.dateOfBirth,
             birthPlace: input.birthPlace,
             adress:input.adress,

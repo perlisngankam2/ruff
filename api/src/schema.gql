@@ -233,8 +233,6 @@ type Student {
   lastname: String
   dateOfBirth: String
   birthPlace: String
-  dateOfBirth: String
-  birthPlace: String
   sex: String
   adress: String
   transport: String
@@ -250,10 +248,6 @@ type Student {
   tutorLastName: String
   tutorPhoneNumber: String
   tutorProfession: String
-  salleid: ID!
-  salleName: ID
-  categorieid: ID!
-  categoryName: ID
   salleid: ID
   salleName: ID
   categorieid: ID
@@ -285,11 +279,7 @@ type Parameter {
   emailAddress: String
   contry: String
   schoolCurrency: String
-  contry: String
-  schoolCurrency: String
   year: String
-  anneeAcademiqueId: ID
-  anneeAcademiqueName: ID
   anneeAcademiqueId: ID
   anneeAcademiqueName: ID
 }
@@ -327,8 +317,6 @@ type NiveauEtude {
   montantPension: Float
   cycleid: ID
   cycleName: ID
-  cycleid: ID
-  cycleName: ID
 }
 
 type Course {
@@ -344,9 +332,7 @@ type PersonnelSalle {
   personnelLastName: ID
   personnelFunction: ID
   salleId: ID
-  salleId: ID
   salleName: ID
-  courseId: ID
   courseId: ID
   courseName: ID
 }
@@ -357,8 +343,6 @@ type Salle {
   section: String
   montantPensionSalle: Float
   effectif: Float
-  niveauid: ID
-  levelName: ID
   niveauid: ID
   levelName: ID
 }
@@ -517,7 +501,6 @@ type Query {
   getClassfeebyStudent(studentid: String!): Float!
   getClassfeeofStudent(studentid: String!): [Tranche!]!
   getAllForUseAnglophoneStudent: [Student!]!
-  getAllForUseAnglophoneStudent: [Student!]!
   findAlllocalistaion: [Localisation!]!
   localisation(id: String!): Localisation!
   findAllcategorieeleve: [CategorieEleve!]!
@@ -579,7 +562,7 @@ type Query {
   findIdPrimeByPersonnel(personnelid: String!): [String!]!
   findsumallprimepersonnel(personnelid: String!): Float!
   primesETnomprimepersonnel(personnelid: String!): [[String!]!]!
-  findIdPrimesByPrimesPersonnel(personnelid: String!, month: String!): [String!]!
+  findIdPrimesByPrimesPersonnel(personnelid: String!, month: String!): [Prime!]!
   getallpersonnelprimebymont(personnelid: String!, month: String!): Float!
   allMonthAffectedPrimeToPersonnel(personnelid: String!, primeid: String!): [Prime!]!
   findAllprime: [Prime!]!
@@ -806,8 +789,6 @@ input StudentCreateInput {
   lastname: String
   dateOfBirth: String
   birthPlace: String
-  dateOfBirth: String
-  birthPlace: String
   sex: String
   adress: String
   transport: String
@@ -916,8 +897,6 @@ input SectionCreateInput {
 input TrancheCreateInput {
   ID: String
   anneeAcademiqueId: ID
-  ID: String
-  anneeAcademiqueId: ID
   salleId: ID
   year: String
   name: String
@@ -933,12 +912,9 @@ input ParameterCreateInput {
   phoneNumber: String
   emailAddress: String
   contry: String
-  contry: String
   postalBox: String
   schoolCurrency: String
-  schoolCurrency: String
   year: String
-  anneeAcademiqueId: String
   anneeAcademiqueId: String
 }
 

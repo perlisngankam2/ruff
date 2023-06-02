@@ -8,14 +8,6 @@ import {
     AlertDialogContent,
     AlertDialogOverlay,
     useDisclosure,
-    Box, Button, Center, Divider, Flex, Heading, Input, Select, Text, Hide, Avatar,
-    AlertDialog,
-    AlertDialogBody,
-    AlertDialogFooter,
-    AlertDialogHeader,
-    AlertDialogContent,
-    AlertDialogOverlay,
-    useDisclosure,
 } from "@chakra-ui/react";
 import PaySlipBottom from "../../components/atoms/PaySlipBottom";
 import PaySlipMiddle from "../../components/atoms/PaySlipMiddle";
@@ -24,28 +16,20 @@ import PaySlipLogoBox from "../../components/atoms/PaySlipLogoBox";
 import PaySlipInformationEmployeeBox from "../../components/atoms/PaySlipInformationEmployeeBox";
 import DefaultLayout from "../../components/layouts/DefaultLayout";
 import { useQuery, useMutation } from "@apollo/client";
-import { GET_ALL_PERSONNEL_BY_ID, GET_PRIME_PERSONNEL, GET_ALL_PAYSALAIRE_BY_ID, GET_RETENUE_PERSONNEL, GET_Category_Personnel_BY_ID, GET_Category_Personnel_ID, GET_ALL_SALAIRE_BY_ID, GET_ALL_MONTH_SALARY, GET_SALARY_NET} from "../../graphql/Queries";
-import React,  { useEffect, useState } from "react";
-import { GET_ALL_PERSONNEL_BY_ID, GET_PRIME_PERSONNEL, GET_ALL_PAYSALAIRE_BY_ID, GET_RETENUE_PERSONNEL, GET_Category_Personnel_BY_ID, GET_Category_Personnel_ID, GET_ALL_SALAIRE_BY_ID, GET_ALL_MONTH_SALARY, GET_SALARY_NET} from "../../graphql/Queries";
+import { GET_ALL_PERSONNEL_BY_ID, FIND_ID_PRIME,GET_PRIME_PERSONNEL, GET_ALL_PAYSALAIRE_BY_ID, GET_RETENUE_PERSONNEL, GET_Category_Personnel_BY_ID, GET_Category_Personnel_ID, GET_ALL_SALAIRE_BY_ID, GET_ALL_MONTH_SALARY, GET_SALARY_NET} from "../../graphql/Queries";
 import React,  { useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import { CREATE_SALAIRE, PAY_SALAIRE,DELETE_PAYSALAIRE } from "../../graphql/Mutation";
 import { CREATE_SALAIRE, PAY_SALAIRE,DELETE_PAYSALAIRE } from "../../graphql/Mutation";
 import { useToast } from "@chakra-ui/react";
 import Routes from "../../modules/routes";
 import Link from "next/link";
-import { useMemo } from 'react';
 import { useMemo } from 'react';
 
 const PaySlip = () => {
 
   const router = useRouter();
   const toast = useToast();
-
-    const [genererSalaire] = useMutation(PAY_SALAIRE);
-  const [createSalaire] = useMutation(CREATE_SALAIRE);
-  const [deletepaysalaire] = useMutation(DELETE_PAYSALAIRE);
-    const [genererSalaire] = useMutation(PAY_SALAIRE);
+  const [genererSalaire] = useMutation(PAY_SALAIRE);
   const [createSalaire] = useMutation(CREATE_SALAIRE);
   const [deletepaysalaire] = useMutation(DELETE_PAYSALAIRE);
 
@@ -98,15 +82,17 @@ const PaySlip = () => {
 
     const {data:dataGenererSalaire, refetch} = useQuery(GET_ALL_PAYSALAIRE_BY_ID,
   {
-    variables:{ personnelid: router.query.id},
-    fetchPolicy: 'network-only',  
+    variables:{ personnelid: router.query.id}
+    // fetchPolicy: 'network-only',  
   });
+
+ 
 
   console.log('datagenerer salaire',dataGenererSalaire)
   //recupere le dernier indice et le dernier element de generer salaire
          const dernierIndiceGenererSalaire = dataGenererSalaire?.getpaysalairebypersonnel.length - 1
        const dernierElementGenererSalaire = dataGenererSalaire?.getpaysalairebypersonnel[dernierIndiceGenererSalaire];
-console.log(dernierElementGenererSalaire)
+console.log(dernierElementGenererSalaire?.montant)
 
   
   const personnelId = dataPersonnelId?.findOnePersonnel.id ;
@@ -115,21 +101,22 @@ console.log(dernierElementGenererSalaire)
   const moisSalaire = dernierElementGenererSalaire?.moisPaie ;
   const montantSalaire = dernierElementGenererSalaire?.montant;
 
-  const moisSalaire = dernierElementGenererSalaire?.moisPaie ;
-  const montantSalaire = dernierElementGenererSalaire?.montant;
-
   const [moisPaie, setMoisPaie] = useState("");
   const [jourPaie , setJourPaie] = useState(new Date().toISOString().slice(0, 10));
-  const [jourPaie , setJourPaie] = useState(new Date().toISOString().slice(0, 10));
 const [isMonthUnavailable, setIsMonthUnavailable] = useState(false);
-
-
-    const { isOpen,  onOpen, onClose } = useDisclosure();
-  const cancelRef = React.useRef()
 
     const { isOpen,  onOpen, onClose } = useDisclosure();
   const cancelRef = React.useRef()
     const moisPayes = []
+
+     //primes attribuees au personnel
+
+   const {data:primeId} = useQuery(FIND_ID_PRIME,
+    {
+        variables:{ personnelid: router.query.id,
+                    month: dernierElementGenererSalaire?.moisPaie
+        }
+    })
     
   const loadMoisPayes = () => {
     dataMoisSalaire?.PersonnelMonthSalary.map((item) => { 
@@ -143,7 +130,7 @@ const [isMonthUnavailable, setIsMonthUnavailable] = useState(false);
 
   }
     console.log("dataMoisSalaire")
-  console.log(montantSalaire)
+  console.log(primeId?.findIdPrimesByPrimesPersonnel)
   console.log(dataPrimePersonnel)
   console.log(montantSalaire)
   console.log(dataPrimePersonnel)
@@ -166,19 +153,8 @@ const unavailableMonths = useMemo(
 
  console.log(unavailableMonths)
 
-
-
-
-  const HandleClickGenererSalaire = async (event) => {
   const HandleClickGenererSalaire = async (event) => {
     event.preventDefault();
-
-    // router.push({
-    //               pathname: Routes.Bulletin?.path || '',
-    //               query: {id: router.query.id}
-    //             })
-
-    const genererSalaireData = await genererSalaire({
 
     // router.push({
     //               pathname: Routes.Bulletin?.path || '',
@@ -216,7 +192,7 @@ const unavailableMonths = useMemo(
           input: { 
             ID: "",
             personnelId: personnelId,
-            montant: montantSalaire,
+            montant: parseInt(montantSalaire),
             moisPaie: moisSalaire, 
             jourPaie: jourPaie,
           }
@@ -269,14 +245,14 @@ const handleMonthChange = (e) => {
 
 const monthOptions = useMemo(() => {
   const today = new Date();
-  const startMonth = new Date(today.getFullYear(), today.getMonth() - 3, 1);
-  const endMonth = new Date(today.getFullYear(), today.getMonth() + 3, 1);
+  const startMonth = new Date(today.getFullYear(), today.getMonth() - 4, 1);
+  const endMonth = new Date(today.getFullYear(), today.getMonth() + 7, 1);
   const options = [];
   let currentMonth = startMonth;
 
    if (!unavailableMonths) {
     // Si le tableau est vide, ajouter les options pour les 7 mois autour du mois actuel
-    for (let i = -3; i <= 3; i++) {
+    for (let i = -4; i <= 7; i++) {
       const date = new Date(today.getFullYear(), today.getMonth() + i, 1);
       const year = date.getFullYear();
       const month = (date.getMonth() + 1).toString().padStart(2, '0');
@@ -352,15 +328,7 @@ const monthOptions = useMemo(() => {
 
 // if (loading) return <Text>Chargement en cour...</Text>
 
- const removePaySalaire = async(id) => {
-      await deletepaysalaire({
-        variables: {id},
-        refetchQueries: [{
-          query: GET_ALL_PAYSALAIRE_BY_ID
-        }]
-      })
-      onClose();
-    }
+
 
  const removePaySalaire = async(id) => {
       await deletepaysalaire({
@@ -374,7 +342,6 @@ const monthOptions = useMemo(() => {
 
     return ( 
 
-<>{!loading &&
 
 <>{!loading &&
 
@@ -409,9 +376,7 @@ const monthOptions = useMemo(() => {
           </Hide>
         </Flex>
           
-        <Box 
-          bg={"gray.200"}
-          width='500px' 
+        
         <Box 
           bg={"gray.200"}
           width='500px' 
@@ -446,22 +411,13 @@ const monthOptions = useMemo(() => {
     margin="0 auto">  
 
                 <Flex gap={6}>
-                <Flex gap={6}>
                   <Text>Fonction :</Text>
                   <Text fontWeight={'bold'}>{dataPersonnelId?.findOnePersonnel.fonction.toUpperCase()}</Text>
                 </Flex>
                 <Flex gap={6}>
                   <Text>Categorie :</Text>
                   <Text fontWeight={'bold'} >{dataCategorie?.findOneCategoriepersonnel.nom.toUpperCase()}</Text>
-                  <Text fontWeight={'bold'}>{dataPersonnelId?.findOnePersonnel.fonction.toUpperCase()}</Text>
                 </Flex>
-                <Flex gap={6}>
-                  <Text>Categorie :</Text>
-                  <Text fontWeight={'bold'} >{dataCategorie?.findOneCategoriepersonnel.nom.toUpperCase()}</Text>
-                </Flex>
-                <Flex gap={10}>
-                  <Text>Statut :</Text>
-                  <Text fontWeight={'bold'}>{dataPersonnelId?.findOnePersonnel.status}</Text>
                 <Flex gap={10}>
                   <Text>Statut :</Text>
                   <Text fontWeight={'bold'}>{dataPersonnelId?.findOnePersonnel.status}</Text>
@@ -499,39 +455,7 @@ const monthOptions = useMemo(() => {
                   
                   
                   </Box>
-                 <Box width={'340px'} gap={7} as={"form"} mt="20px"
-            onSubmit={HandleClickGenererSalaire}
-         >
-          <Text fontSize='sm'>Mois de salaire</Text>
-              {/* <Input
-                    placeholder="nom prime"
-                    bg='white'
-                    type="month"
-                    name="dateOfPrime"
-                    rounded={2}
-                    onChange={handleMoisPaieChange}
-                    isDisabled={dataMoisSalaire?.PersonnelMonthSalary.includes(moisPaie)}
-                    value={moisPaie}
-                    
-                  /> */}
-                  <Select
-                  
-        bg='white'         
-        id="moisPaie"
-        name="moisPaie"
-        value={moisPaie}
-        onChange={handleMonthChange}
-        isRequired
-      >
-        <option value="">Sélectionnez un mois</option>
-        {monthOptions}
-      </Select>
-      {isMonthUnavailable && <p>Le mois sélectionné a déjà été payé.</p>}
-   
-                  {console.log(moisPaie)}
-                  
-                  
-                  </Box>
+            
                 
                 {/* <Box>
                 {/* <Box>
@@ -559,13 +483,13 @@ const monthOptions = useMemo(() => {
                   <Text></Text>
                   <Text></Text>
                 </Flex> */}
-                </Flex> */}
+               
                 
                 
                 
                 </Box>
                 </Box>
-                </Box>
+               
              
         {/* <Flex 
         <Flex 
@@ -614,7 +538,6 @@ const monthOptions = useMemo(() => {
             onSubmit={HandleClick}
          >
           <Text fontSize='sm'> Salaire Mois</Text> */}
-          <Text fontSize='sm'> Salaire Mois</Text> */}
               {/* <Input
                     placeholder="nom prime"
                     bg='white'
@@ -641,28 +564,7 @@ const monthOptions = useMemo(() => {
       {isMonthUnavailable && <p>Le mois sélectionné a déjà été payé.</p>}
    
                   {console.log(moisPaie)} */}
-                  {console.log(moisPaie)} */}
-                  
-                      {/* <Input
-                    placeholder="jour de paie"
-                      {/* <Input
-                    placeholder="jour de paie"
-                    bg='white'
-                    type="date"
-                    rounded={2}
-                    name="dateOfPrime"
-                    mt={'8px'}
-                    onChange={(event) => setJourPaie(event.target.value)}
-                    value={jourPaie || new Date().toISOString().slice(0, 10)}
-                    value={jourPaie || new Date().toISOString().slice(0, 10)}
-                    
-                  />
-                  
-                   {console.log(jourPaie)}
-                  </Box>
-        </Flex>
-      </Center> */}
-      </Center> */}
+
        <Box 
         mx='100px' 
         pb={'20px'} 
@@ -671,13 +573,7 @@ const monthOptions = useMemo(() => {
           <Divider />
         </Box>
              <Center>
-          <Button disabled={!moisPaie} type="submit" color='white' bg='#eb808a' variant='solid' mx='auto' my='auto'
-          //  onClick={HandleClick}
-          onClick={HandleClickGenererSalaire}
-           >
-              
-            Generer le paiement
-               
+            
           <Button disabled={!moisPaie} type="submit" color='white' bg='#eb808a' variant='solid' mx='auto' my='auto'
           //  onClick={HandleClick}
           onClick={HandleClickGenererSalaire}
@@ -749,15 +645,14 @@ const monthOptions = useMemo(() => {
                 </Flex>
                 <Box>
                   <Text>PRIMES SALARIALES</Text>
-                  {dataPrimePersonnel ?
-                 (dataPrimePersonnel?.primesETnomprimepersonnel.map((prime) =>(
-                   <Flex>{prime[1]}
+                  {primeId &&
+                 primeId?.findIdPrimesByPrimesPersonnel.map((prime) =>(
+                   <Flex gap={3}>
+                    <Text fontWeight={'bold'}>{prime.nom} :</Text>
+                    <Text fontWeight={'bold'}>{prime.montant}</Text>
                     
 </Flex>
-                 ))) :
-                 <Text>Aucune prime pour ce mois</Text>
-                    
-                  }
+                 ))}
                 </Box>
                 <Flex gap={6}>
                   <Text>SALAIRE NET :</Text>
@@ -800,124 +695,12 @@ const monthOptions = useMemo(() => {
         </AlertDialogOverlay>
       </AlertDialog>
 
-             <AlertDialog
-              isOpen={isOpen}
-              leastDestructiveRef={cancelRef}
-              onClose={onClose}
-              size='xl'
-             
-             >
-
-             <AlertDialogOverlay>
-                  <AlertDialogContent  >
-                    <AlertDialogHeader 
-                      fontSize='sm' 
-                      fontWeight='base' 
-                      mt='0'
-                    >
-                    <Box  
-                      bg={"colors.secondary"} 
-                      borderBottomRightRadius={10} 
-                      borderBottomLeftRadius={10}
-                    >
-                        <Heading 
-                         
-                          textAlign={'center'} 
-                          fontSize={['15px','20px','26px']} 
-                          p='2' 
-                        >
-                                PREVISUALISATION
-                        </Heading>
-                    </Box>
-                    </AlertDialogHeader>
-                    <AlertDialogBody>
- 
-            <Box mt='4'>
-                <Box 
-                  // gap={5} 
-                  // flexWrap={['wrap','wrap','nowrap']} 
-                  // align='end'
-                >
-                   
-                <Heading  mr='20px'  textAlign="center" 
-                fontSize="2xl" 
-                m={["8px", "8px", "8px"]}
-                textColor='#eb808a'>
-                        {dataPersonnelId?.findOnePersonnel.firstName.charAt(0).toUpperCase()+dataPersonnelId?.findOnePersonnel.firstName.substring(1) +' '+ dataPersonnelId?.findOnePersonnel.lastName.charAt(0).toUpperCase()+dataPersonnelId?.findOnePersonnel.lastName.substring(1)}
-                        </Heading>
-                      <Center>
-
-                        
-        <Box 
-          mt="20px"
-          
-        >  <Flex gap={6}>
-                  <Text>Salaire du mois de :</Text>
-                 {dernierElementGenererSalaire &&
-                 <Text fontWeight={'bold'}>{dernierElementGenererSalaire.moisPaie}</Text>
-                 }</Flex>
-                <Flex gap={6}>
-                  <Text>Montant de base :</Text>
-                  <Text fontWeight={'bold'}>{dataCategorie?.findOneCategoriepersonnel.montant}</Text>
-                </Flex>
-                <Box>
-                  <Text>PRIMES SALARIALES</Text>
-                  {dataPrimePersonnel ?
-                 (dataPrimePersonnel?.primesETnomprimepersonnel.map((prime) =>(
-                   <Flex>{prime[1]}
-                    
-</Flex>
-                 ))) :
-                 <Text>Aucune prime pour ce mois</Text>
-                    
-                  }
-                </Box>
-                <Flex gap={6}>
-                  <Text>SALAIRE NET :</Text>
-                  <Text fontWeight={'bold'}>{dernierElementGenererSalaire?.montant}</Text>
-                </Flex>
-         <Box width={'340px'} as={"form"}
-            onSubmit={HandleClickPayerSalaire}
-            mt={'8px'}
-         >
-          <Text fontSize='sm'> Jour de Paie</Text>
-                      <Input
-                    placeholder="jour de paie"
-                    bg='white'
-                    type="date"
-                    rounded={2}
-                    name="dateOfPrime"
-                    // mt={'8px'}
-                    onChange={(event) => setJourPaie(event.target.value)}
-                    value={jourPaie}
-                    isRequired
-                  />
-                  
-                   {console.log(jourPaie)}
-                  </Box>
-        </ Box>
-      </Center>
-                   
-                </Box>
-            </Box>
-            </AlertDialogBody>
-            <AlertDialogFooter>
-              <Button onClick={() => removePaySalaire(dernierElementGenererSalaire.id)} colorScheme='red' >
-                annuler
-              </Button>
-                <Button colorScheme='green'  ml={3} type='submit' onClick={HandleClickPayerSalaire}>
-                  ajouter
-                </Button>
-            </AlertDialogFooter>
-          </AlertDialogContent>
-        </AlertDialogOverlay>
-      </AlertDialog>
+        
         </Center>
       </Box>
-
-    </DefaultLayout>
-}</>
-}</>
+   </DefaultLayout>
+}
+</>
 )};
      
 

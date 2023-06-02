@@ -38,13 +38,14 @@ const Employee = (props) => {
 
   const router = useRouter();
   const cancelRef = React.useRef()
-  const {data:dataPersonnel, loading, error} = useQuery(GET_ALL_PERSONNELS)
+  const {data:dataPersonnel,refetch} = useQuery(GET_ALL_PERSONNELS)
   const [deletePersonnel] = useMutation(DELETE_PERSONNEL);
   const [personnel, setPersonnel] = useState([]);
   const { isOpen, onToggle, onClose, onOpen } = useDisclosure();
   
 
   useEffect (() => {
+    refetch(),
     setPersonnel(dataPersonnel)
     console.log(dataPersonnel) 
 }, [dataPersonnel])
@@ -59,8 +60,8 @@ const Employee = (props) => {
     onClose();
   }
  
-  if (loading) return <Text>Chargement en cour...</Text>
-  if (error) return <Text>Une erreur s'est produite!</Text>
+  // if (loading) return <Text>Chargement en cour...</Text>
+  // if (error) return <Text>Une erreur s'est produite!</Text>
 
  
   return(

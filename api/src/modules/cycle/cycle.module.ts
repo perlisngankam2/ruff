@@ -7,13 +7,16 @@ import { Module } from '@nestjs/common';
 import { Cycle } from 'src/entities/cycle.entity';
 import { CycleResolver } from './cycle.resolver';
 import { CycleService } from './cycle.service';
+import { RolesGuard } from '../auth/guards/roles.guard';
+import { UserModule } from '../user/user.module';
 
 @Module({
     imports:[
         MikroOrmModule.forFeature({ entities: [Cycle,Section] }),
-        SectionModule
+        SectionModule,
+        UserModule
     ],
-    providers:[CycleService,CycleResolver,SectionService],
+    providers:[CycleService,CycleResolver,SectionService, RolesGuard],
     exports:[CycleService]
 })
 export class CycleModule {}

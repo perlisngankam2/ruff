@@ -12,11 +12,11 @@ export class SalleUpdateInput {
   @Field({nullable:true})
   name?: string;
 
-  @Field(()=>ID,{nullable:true})
-  sectionId?: string;
+  // @Field(()=>ID,{nullable:true})
+  // sectionId?: string;
   
-  @Field({nullable:true})
-  cycleId?: string;
+  // @Field({nullable:true})
+  // cycleId?: string;
 
   @Field({nullable:true})
   montantPensionSalle?: number;

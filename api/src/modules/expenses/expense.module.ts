@@ -9,6 +9,9 @@ import { PensionModule } from "../pension/pension.module";
 import { SalaireModule } from "../salaire/salaire.module";
 import { AvanceTrancheModule } from "../avance_tranche/avance_tranche.module";
 import { PaySalaryModule } from "../paysalary/paysalary.module";
+import { UserModule } from "../user/user.module";
+import { RolesGuard } from "../auth/guards/roles.guard";
+import { ParamaterModule } from "../parameter/parameter.module";
 
 
 @Module({
@@ -18,9 +21,11 @@ import { PaySalaryModule } from "../paysalary/paysalary.module";
         forwardRef(()=>AvanceTrancheModule),
         PaySalaryModule,
         forwardRef(() => PensionModule),
-        forwardRef(() => SalaireModule)
+        forwardRef(() => SalaireModule),
+        UserModule,
+        ParamaterModule
     ],
-    providers:[ExpenseService,ExpenseResolver],
+    providers:[ExpenseService,ExpenseResolver,RolesGuard],
     exports:[ExpenseService]
 })
 export class ExpenseModule{}

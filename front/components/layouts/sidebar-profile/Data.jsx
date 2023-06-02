@@ -25,7 +25,7 @@ const list = [
 function Data(){
     return(
         <VStack as="ul" spacing={0} listStyleType="none">
-            {list.map(item => (
+            {/* {list.map(item => (
                 <Box
                   key={item.id}
                   as='li'
@@ -44,7 +44,7 @@ function Data(){
                         {item.value}
                     </Text>
                 </Box>
-            ))}
+            ))} */}
 
         </VStack>
 

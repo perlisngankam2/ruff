@@ -50,18 +50,18 @@
                 <Box as="span">Ajouter personnel</Box>
               </Link>
             </AccordionPanel>
-            <AccordionPanel pb={1} _hover={{background:"rgba(0,0,0,0.16)"}}>
+            {/* <AccordionPanel pb={1} _hover={{background:"rgba(0,0,0,0.16)"}}>
               <Link href="/personnel/categorypersonnel">
                 <Box as="span">Categorie personnel</Box>
               </Link>
-            </AccordionPanel>
+            </AccordionPanel> */}
             <AccordionPanel pb={1} _hover={{background:"rgba(0,0,0,0.16)"}}>
               <Link href="/comptePersonnel">
                 <Box as="span" pb={1}>Compte personnel</Box>
               </Link>
             </AccordionPanel>
           </AccordionItem>
-          <AccordionItem>
+          {/* <AccordionItem>
             <AccordionButton  pl={0}>
               <Flex align="center" gap="1">
                 <Icon as={MdOutlineClass} />
@@ -83,8 +83,8 @@
                 <Box as="span">Cycle & section</Box>
               </Link>
             </AccordionPanel>
-          </AccordionItem>
-          <AccordionItem>
+          </AccordionItem> */}
+          {/* <AccordionItem>
             <AccordionButton pl={0}>
               <Flex align="center" gap="1">
                 <Icon as={FaLevelUpAlt} />
@@ -101,8 +101,8 @@
                 <Box as="span">Ajouter un niveau</Box>
               </Link>
             </AccordionPanel>
-          </AccordionItem>
-          <AccordionItem> 
+          </AccordionItem> */}
+          {/* <AccordionItem> 
             <AccordionButton pl={0} >
               <Flex align="center" gap="1">
                 <Icon as={IoMdSchool} />
@@ -124,13 +124,13 @@
                 <Box as="span">Categorie élèves</Box>
               </Link>
             </AccordionPanel>
-            <AccordionPanel pb={1} _hover={{background:"rgba(0,0,0,0.16)"}}>
+            {/* <AccordionPanel pb={1} _hover={{background:"rgba(0,0,0,0.16)"}}>
               <Link href="/eleves/reduction/reductionStudent">
                 <Box as="span">Reduction scolarite</Box>
               </Link>
-            </AccordionPanel>
-          </AccordionItem>
-          <AccordionItem> 
+            </AccordionPanel> */}
+          {/* </AccordionItem>  */}
+          {/* <AccordionItem> 
             <AccordionButton pl={0} >
               <Flex align="center" gap="1">
                 <Icon as={MdLibraryBooks}/>
@@ -142,8 +142,8 @@
                 <Box as="span">Liste des matieres</Box>
               </Link>
             </AccordionPanel>
-          </AccordionItem>
-          <AccordionItem>
+          </AccordionItem> */}
+          {/* <AccordionItem>
             <AccordionButton pl={0}>
               <Flex align="center" gap="1">
                 <Icon as={MdOutlineClass} />
@@ -155,7 +155,7 @@
                 <Box as="span">Pension</Box>
               </Link>
             </AccordionPanel>
-          </AccordionItem  >
+          </AccordionItem  > */}
           {/* <AccordionItem>
             <AccordionButton  pl={0}>
               <Flex align="center" gap="1">
@@ -169,7 +169,7 @@
               </Link>
             </AccordionPanel>
           </AccordionItem> */}
-           <AccordionItem>
+           {/* <AccordionItem>
             <AccordionButton  pl={0}>
               <Flex align="center" gap="1">
                 <Icon as={MdOutlineFamilyRestroom} />
@@ -181,8 +181,8 @@
                 <Box as="span">Tout les parents</Box>
               </Link>
             </AccordionPanel>
-          </AccordionItem>
-          <AccordionItem>
+          </AccordionItem> */}
+          {/* <AccordionItem>
             <AccordionButton pl={0} >
               <Flex align="center" gap="1">
                 <Icon as={GiTakeMyMoney} />
@@ -199,9 +199,9 @@
                 <Box as="span">Finance 2</Box>
               </Link>
             </AccordionPanel>
-          </AccordionItem>
-          <AccordionItem>
-            <AccordionButton pl={0} >
+          </AccordionItem> */}
+          {/* <AccordionItem>
+            <AccordionButton pl={0}>
               <Flex align="center" gap="1">
                 <Icon as={GiPayMoney}/>
                 <Box as="span">Salaires</Box>
@@ -227,8 +227,8 @@
                 <Box as="span">Ajouter une retenue</Box>
               </Link>
             </AccordionPanel>
-          </AccordionItem>
-          <AccordionItem>
+          </AccordionItem> */}
+          {/* <AccordionItem>
             <AccordionButton pl={0} >
               <Flex align="center" gap="1">
                 <Icon as={IoIosStats} />
@@ -245,8 +245,8 @@
                 <Box as="span">Paiement par eleve</Box>
               </Link>
             </AccordionPanel>
-          </AccordionItem>
-          <AccordionItem>
+          </AccordionItem> */}
+          {/* <AccordionItem>
             <AccordionButton pl={0} >
               <Flex align="center" gap="1">
                 <Icon as={MdOutlineSms} />
@@ -263,7 +263,7 @@
                 <Box as="span">Créer un message</Box>
               </Link>
             </AccordionPanel>
-          </AccordionItem>
+          </AccordionItem> */}
           <AccordionItem  mt="30px" border="0px">
             <AccordionButton pl={0} >
               <Flex align="center" gap="1">

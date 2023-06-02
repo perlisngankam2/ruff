@@ -43,6 +43,7 @@ import {
 // import { getStaticPropsTranslations } from "../../types/staticProps";
 import {useTranslation } from "next-i18next";
 import { MinusIcon } from "@chakra-ui/icons";
+import { useAuth } from "../../contexts/account/Auth/Auth";
 
 // export const colorOptions = [ 
 //   { value: "blue", label: "Blue", color: "#0052CC" },
@@ -69,6 +70,7 @@ const Profil = () => {
 
   
     const toast = useToast();
+  const { setAuthToken, authToken } = useAuth();
     const { isOpen,  onOpen, onClose } = useDisclosure();
     const { isOpen:isOpenns, onOpen:onOpenns, onClose:onClosses } = useDisclosure();
     const { isOpen:isOpenns1, onOpen:onOpenns1, onClose:onClosses1 } = useDisclosure();
@@ -83,6 +85,12 @@ const Profil = () => {
     variables:{ id: router.query.id}
   })
 
+  useEffect(()=>{
+    if(!authToken){
+      router.back()
+    }
+    
+  },[authToken])
 //       const {data:dataCategorieId} = useQuery(GET_Category_Personnel_ID,
 //      {
 //         variables: { personnelid: router.query.id}

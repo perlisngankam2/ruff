@@ -8,7 +8,7 @@ export class ParameterCreateInput {
   ID?: string;
 
   @Field({nullable:true})
-  name?: string;
+  parameterName?: string;
 
   @Field({nullable:true})
   phoneNumber?: string;

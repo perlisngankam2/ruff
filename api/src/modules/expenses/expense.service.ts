@@ -1,6 +1,6 @@
 /* eslint-disable prettier/prettier */
 
-import { EntityManager, EntityRepository, FilterQuery, wrap } from "@mikro-orm/core";
+import { EntityManager, FilterQuery, wrap } from "@mikro-orm/core";
 import { InjectRepository } from "@mikro-orm/nestjs";
 import { Inject, Injectable, forwardRef } from "@nestjs/common";
 import { Expense } from "src/entities/expense.entity";
@@ -11,6 +11,10 @@ import { SalaireService } from "../salaire/salaire.service";
 import { format } from "date-fns";
 import { AvanceTrancheService } from "../avance_tranche/avance-tranche.service";
 import { PaySalaryService } from "../paysalary/paysalary.service";
+import { PaginatedResponse, PaginationInput, paginate } from "src/pagination";
+import { EntityRepository } from "@mikro-orm/postgresql";
+import { ExpensePaginatedResponse } from "./type/expensepagination";
+import { ParameterService } from "../parameter/parameter.service";
 
 
 
@@ -27,6 +31,7 @@ export class ExpenseService {
     private paysalaryservice: PaySalaryService,
     @Inject(forwardRef(() =>AvanceTrancheService))
     private avancetrancheservice: AvanceTrancheService,
+    private parameterservice: ParameterService,
   ) {}
 
   async findall(){
@@ -47,11 +52,13 @@ async findbyid(id:string){
   
 async create(input: ExpenseCreateInput){
     const expense = new Expense()
+    const year = await this.parameterservice.getAll()
+    const annee = year[year.length-1].year
 
 
     wrap(expense).assign(
         {
-         anneeAccademique: input.academicyearId,
+         anneeAccademique: annee,
          student: input.studentId,
          personnel:input.personnelId,
          debitamount:input.debit,
@@ -73,9 +80,11 @@ async update(id:string, input: ExpenseUpdateInput){
         throw Error("Expense not found")
     }
 
+    const year = await this.parameterservice.getAll()
+    const annee = year[year.length-1].year
     wrap(expense).assign(
         {
-         anneeAccademique: input.academicyearId,
+         anneeAccademique: annee,
          student: input.studentId,
          personnel:input.personnelId,
          debitamount:input.debit,
@@ -231,6 +240,20 @@ async saveSalaireExpenses(personnelid: string){
 async findexpensebystudent(studentid:string){
  return await this.ExpenseRepository.findOne({student:studentid})
 }
+
+async pagiantionResponseExpense(input: PaginationInput): Promise<ExpensePaginatedResponse> {
+    const qb = this.ExpenseRepository.createQueryBuilder(); // Create a QueryBuilder
+  
+    const result = await paginate<Expense>(qb, input); // Use the paginate function
+  
+    // Create a PaginatedResponse instance with the result
+    const paginatedResponse = PaginatedResponse(Expense);
+    paginatedResponse.items = result.items;
+    paginatedResponse.total = result.total;
+    paginatedResponse.hasMore = result.hasMore;
+  
+    return paginatedResponse;
+  }
   
 async getallcredit(){
  return (await this.findall()).map(a=>a.creditamount)

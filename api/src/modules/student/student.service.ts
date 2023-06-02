@@ -24,6 +24,8 @@ import { StudentCreateInput } from './dto/student.input';
 import { StudentUpdateInput } from './dto/student.update';
 import { TrancheService } from '../tranche/tranche.service';
 import { addDays, format } from 'date-fns';
+import { PaginatedResponse, PaginationInput, paginate } from 'src/pagination';
+import { StudentPaginatedResponse } from './type/studentpagination';
 import { CategorieEleve } from 'src/entities/categorie-eleve.entity';
 
 @Injectable()
@@ -65,12 +67,13 @@ export class StudentService {
             matricule: input.matricule,
             firstname: input.firstname,
             lastname: input.lastname,
+            repeating: input.repeating,
             // classe : input.classe,
             sex: input.sex,
             dateOfBirth:input.dateOfBirth,
             birthPlace: input.birthPlace,
             adress:input.adress,
-            transport:input.transport,
+            // transport:input.transport,
             categorie : input.categoryStudentId,
             salle: input.salleId,
             fatherFirstName:input.fatherFirstName,
@@ -104,7 +107,6 @@ export class StudentService {
             {populate:['salle', 'categorie']}
           );
       }
-
       
       findById(id:string){
         return this.studentRepository.findOne(id)
@@ -148,16 +150,36 @@ export class StudentService {
         })
       }
 
+      async getLastThreeStudents():Promise<Student[]>{
+        const a= this.getAll()
+        return (await a).slice(-3)
+      }
+      
+
+      async pagiantionResponseStudent(input: PaginationInput): Promise<StudentPaginatedResponse> {
+        const qb = this.studentRepository.createQueryBuilder(); // Create a QueryBuilder
+      
+        const result = await paginate<Student>(qb, input); // Use the paginate function
+      
+        // Create a PaginatedResponse instance with the result
+        const paginatedResponse = PaginatedResponse(Student);
+        paginatedResponse.items = result.items;
+        paginatedResponse.total = result.total;
+        paginatedResponse.hasMore = result.hasMore;
+      
+        return paginatedResponse;
+      }
+
       async getAllForUseAnglophone(): Promise<Student[]> {
         const a= await this.studentRepository.findAll({
-          populate: ['salle','pension','salle.niveau','salle.niveau.cycle','salle.niveau.cycle.section']
+          populate: ['salle','pension','salle.niveau','salle.niveau.cycle','salle.niveau.cycle.section', 'salle.pensionsalle']
         })
         return a.filter(async a=>(await (await (await (await a.salle.load()).niveau.load()).cycle.load()).section.load()).name==='Anglophone')
       }
       
       async getAllForUseFrancophone(): Promise<Student[]> {
         const a= await this.studentRepository.findAll({
-          populate: ['salle','pension','salle.niveau','salle.niveau.cycle','salle.niveau.cycle.section']
+          populate: ['salle','pension','salle.niveau','salle.niveau.cycle','salle.niveau.cycle.section', 'salle.pensionsalle']
         })
         return a.filter(async a=>(await (await (await (await a.salle.load()).niveau.load()).cycle.load()).section.load()).name=='Francophone')
       }
@@ -197,7 +219,7 @@ export class StudentService {
             adress:input.adress,
             // exclut: input.exclut || student.exclut,
             // old: input.old,
-            transport:input.transport,
+            // transport:input.transport,
             categorie:input.categoryStudentId,
             salle: input.salleId,
             fatherFirstName:input.fatherFirstName,
@@ -249,13 +271,17 @@ export class StudentService {
       }
 
       
-    async getclassfeebystudent(studentid:string){
-      const a= await this.findByOne(studentid)
-      if(!a){
-        throw Error("student not found")
-      }
-      return (await a.salle.load()).montantPensionSalle
-    }
+      async getclassfeebystudent(studentid:string){
+        const students =  await this.studentRepository.findAll({
+          populate:['salle','salle.pensionsalle']
+        })
+        const student = students.filter(a=>a.id==studentid)[0]
+        
+        if(!student){
+          throw Error("student not found")
+        }
+        return (student.salle.getEntity().pensionsalle.getItems().map(a=>a.montantPension))[0]
+      }
    
       
 }

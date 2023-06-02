@@ -49,7 +49,7 @@ const DashboardCard = (props) => {
             fontWeight="normal"
           >
             <Box as="span" fontWeight="bold" mr='4px'>
-              105
+              {/* 105 */}
             </Box>
              {/* {t('atoms.DashboardCard.nombreGarconInscrit')} */}
           </Text>
@@ -60,9 +60,9 @@ const DashboardCard = (props) => {
             letterSpacing="tight"
           >
             <Box as="span" fontWeight="bold" mr='4px'>
-              149
+              {/* 149 */}
             </Box>
-            Filles inscrites
+            {/* Filles inscrites */}
           </Text>
         </Flex>
 

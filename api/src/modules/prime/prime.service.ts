@@ -91,7 +91,7 @@ export class PrimeService {
     
       async delete(id:string){
        const a = this.findById(id)
-       await this.primeRepository.removeAndFlush(a)
+       await this.primeRepository.nativeDelete(await a)
        if(!a){
        throw Error("not found")
        }

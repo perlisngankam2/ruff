@@ -170,6 +170,7 @@ export class StatisticsService {
 
   async getLastThreeStudenstAdmissionFee(){
     const a= this.getallStudentswhohaveCompletedAdmissionFee()
+<<<<<<< HEAD
     // const list: Student[] = [];
     // for (let i = (await a).length - 3; i < (await a).length; i++) {
     //   if (i >= 0) {
@@ -177,6 +178,9 @@ export class StatisticsService {
     //   }
     // }
     return (await a).slice(-3)
+=======
+        return (await a).slice(-3)
+>>>>>>> e6ca72e1c418a49f9188a391cdc55b4d1fe46cd8
   }
 
   async getallStudentswhohaveCompletedSecondInstalment(){

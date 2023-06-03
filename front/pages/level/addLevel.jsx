@@ -56,6 +56,7 @@ const AddLevel = () => {
   let input;
 
   useEffect(() => {
+    console.log(dataStudyLevel);
     if (!authToken) {
       router.back();
     }
@@ -97,7 +98,7 @@ const AddLevel = () => {
           },
         ],
       }),
-        refetch();
+      refetch();
       toast({
         title: "Creation d'un niveau d'etude.",
         description: "Le niveau a ete créée avec succes.",
@@ -122,6 +123,7 @@ const AddLevel = () => {
           },
         ],
       });
+      refetch()
       toast({
         title: "Modification d'un niveau d'etude.",
         description: "Le niveau a ete créée avec succes.",
@@ -150,7 +152,7 @@ const AddLevel = () => {
             background="white"
             mt={10}
           >
-            <Box as="form" width="500px">
+            <Box as="form" width="500px"  onSubmit={addStudyLevel}            >
               {/* <Text>jj</Text> */}
               <Heading
                 color={"colors.primary"}
@@ -180,6 +182,7 @@ const AddLevel = () => {
                     onChange={(event) =>
                       setLevel({ ...level, name: event.target.value })
                     }
+                    isRequired
                   />
                 </FormControl>
                 <FormControl mt="15px">
@@ -192,6 +195,7 @@ const AddLevel = () => {
                     onChange={(event) =>
                       setLevel({ ...level, montantPension: event.target.value })
                     }
+                    isRequired
                   />
                 </FormControl>
                 <FormControl mt="15px">
@@ -204,6 +208,7 @@ const AddLevel = () => {
                       setLevel({ ...level, cycleId: event.target.value })
                     }
                     value={level.cycleId}
+                    isRequired
                   >
                     {dataCycle &&
                       dataCycle.findAllcycle.map((cycle, index) => (
@@ -223,7 +228,7 @@ const AddLevel = () => {
                   <Button colorScheme="red" onClick={() => router.back()}>
                     {t("pages.level.addLevel.cancelButton")}
                   </Button>
-                  <Button colorScheme="green" onClick={addStudyLevel}>
+                  <Button colorScheme="green" type="submit">
                     {t("pages.level.addLevel.submitButton")}
                   </Button>
                 </Flex>

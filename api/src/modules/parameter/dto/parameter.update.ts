@@ -8,7 +8,7 @@ export class ParameterUpdateInput {
   ID?: string;
   
   @Field({nullable:true})
-  name?: string;
+  parameterName?: string;
 
   @Field({nullable:true})
   phoneNumber?: string;

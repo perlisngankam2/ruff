@@ -26,11 +26,10 @@ import {
   AlertDialogFooter,
   Button,
   InputRightElement,
+   
 } from "@chakra-ui/react";
-import { useRouter } from "next/router";
 import DefaultLayout from "../../components/layouts/DefaultLayout";
 import AddParents from "./addParents";
-import { Router, useRouter } from "next/router";
 import { FiEdit, FiSearch } from "react-icons/fi";
 import { MdDelete } from "react-icons/md";
 import {
@@ -42,12 +41,15 @@ import { DELETE_CATEGORY_STUDENT, DELETE_PARENT } from "../../graphql/Mutation";
 import { useMutation, useQuery } from "@apollo/client";
 import React, { useEffect, useState } from "react";
 import ReactPaginate from "react-paginate";
+import { useAuth } from "../../contexts/account/Auth/Auth";
+import { useRouter } from "next/router";
 
 const ListOfParents = () => {
-  // const router = useRouter();
+  
+  const router = useRouter();
   const cancelRef = React.useRef();
   const [query, setQuery] = useState("");
-  const router = useRouter();
+  const { setAuthToken, authToken } = useAuth();
 
   //STATE DE LA PAGINATION
   const itemsPerPage = 10;
@@ -67,6 +69,7 @@ const ListOfParents = () => {
   const [searchNameStudentParent, setSearchNameStudentParent] = useState("");
 
   useEffect(() => {
+    console.log(authToken);
     if (!authToken) {
       router.back();
     }

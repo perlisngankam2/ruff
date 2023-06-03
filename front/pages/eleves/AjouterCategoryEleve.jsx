@@ -87,13 +87,12 @@ function AjouterCategoryEleve() {
     setDescription("");
   };
 
-  useEffect(()=>{
-    if(!authToken){
-      router.back()
+  useEffect(() => {
+    if (!authToken) {
+      router.back();
     }
-    
-  },[authToken])
-  
+  }, [authToken]);
+
   useEffect(() => {
     console.log(dataReductionScolarite?.findAllreductionscolarite);
   });
@@ -111,7 +110,7 @@ function AjouterCategoryEleve() {
             Ajouter une categorie d'élève
           </Button>
         </Box>
-        <Box as={"form"}>
+        <Box>
           <AlertDialog
             isOpen={isOpen}
             leastDestructiveRef={cancelRef}
@@ -120,81 +119,88 @@ function AjouterCategoryEleve() {
           >
             <AlertDialogOverlay>
               <AlertDialogContent width={"420px"}>
-                <AlertDialogHeader fontSize="sm" fontWeight="base" mt="0">
-                  <Box>
-                    <Heading
-                      // as='H4'
-                      textAlign={"center"}
-                      fontSize={["15px", "20px", "20px"]}
-                      p="2"
-                    >
-                      Ajouter une categorie d'élève
-                    </Heading>
-                  </Box>
-                </AlertDialogHeader>
-                <AlertDialogCloseButton />
-                <AlertDialogBody>
-                  <Box>
-                    <FormControl>
-                      <FormLabel>Nom</FormLabel>
-                      <Input
-                        id="nom"
-                        type={"text"}
-                        name="nom"
-                        value={nom}
-                        placeholder="nom"
-                        onChange={(event) => setNom(event.target.value)}
-                        ref={(node) => {
-                          input = node;
-                        }}
-                      />
-                    </FormControl>
-                    <FormControl mt="15px">
-                      <FormLabel>Description</FormLabel>
-                      <Input
-                        id="description"
-                        type={"text"}
-                        name="description"
-                        value={description}
-                        placeholder="Description"
-                        onChange={(event) => setDescription(event.target.value)}
-                        ref={(node) => {
-                          input = node;
-                        }}
-                      />
-                    </FormControl>
-                    <FormControl mt="15px">
-                      <FormLabel>Reduction</FormLabel>
-                      <Select
-                        name="reductionScolariteId"
-                        value={reductionScolariteId}
-                        placeholder="valeur"
-                        onChange={(event) =>
-                          setReductionScolariteId(event.target.value)
-                        }
-                        ref={(node) => {
-                          input = node;
-                        }}
+                <Box
+                 as={"form"} onSubmit={addCategoryEleve}
+                >
+                  <AlertDialogHeader fontSize="sm" fontWeight="base" mt="0">
+                    <Box>
+                      <Heading
+                        // as='H4'
+                        textAlign={"center"}
+                        fontSize={["15px", "20px", "20px"]}
+                        p="2"
                       >
-                        {dataReductionScolarite?.findAllreductionscolarite.map(
-                          (reductionscolarite, index) => (
-                            <option value={reductionscolarite.id} key={index}>
-                              {reductionscolarite.montant}
-                            </option>
-                          )
-                        )}
-                      </Select>
-                    </FormControl>
-                  </Box>
-                </AlertDialogBody>
-                <AlertDialogFooter>
-                  <Button ref={cancelRef} onClick={onClose} colorScheme="red">
-                    annuler
-                  </Button>
-                  <Button colorScheme="green" ml={3} onClick={addCategoryEleve}>
-                    Creer
-                  </Button>
-                </AlertDialogFooter>
+                        Ajouter une categorie d'élève
+                      </Heading>
+                    </Box>
+                  </AlertDialogHeader>
+                  <AlertDialogCloseButton />
+                  <AlertDialogBody>
+                    <Box>
+                      <FormControl>
+                        <FormLabel>Nom</FormLabel>
+                        <Input
+                          id="nom"
+                          type={"text"}
+                          name="nom"
+                          value={nom}
+                          placeholder="nom"
+                          onChange={(event) => setNom(event.target.value)}
+                          ref={(node) => {
+                            input = node;
+                          }}
+                          isRequired
+                        />
+                      </FormControl>
+                      <FormControl mt="15px">
+                        <FormLabel>Description</FormLabel>
+                        <Input
+                          id="description"
+                          type={"text"}
+                          name="description"
+                          value={description}
+                          placeholder="Description"
+                          onChange={(event) =>
+                            setDescription(event.target.value)
+                          }
+                          ref={(node) => {
+                            input = node;
+                          }}
+                        />
+                      </FormControl>
+                      <FormControl mt="15px">
+                        <FormLabel>Reduction</FormLabel>
+                        <Select
+                          name="reductionScolariteId"
+                          value={reductionScolariteId}
+                          placeholder="valeur"
+                          onChange={(event) =>
+                            setReductionScolariteId(event.target.value)
+                          }
+                          ref={(node) => {
+                            input = node;
+                          }}
+                        >
+                          {dataReductionScolarite?.findAllreductionscolarite.map(
+                            (reductionscolarite, index) => (
+                              <option value={reductionscolarite.id} key={index}>
+                                {reductionscolarite.montant}
+                              </option>
+                            )
+                          )}
+                        </Select>
+                      </FormControl>
+                    </Box>
+                  </AlertDialogBody>
+                  <AlertDialogFooter>
+                    <Button ref={cancelRef} onClick={onClose} colorScheme="red">
+                      annuler
+                    </Button>
+                    <Button colorScheme="green" ml={3} type="submit">
+                      Creer
+                    </Button>
+                  </AlertDialogFooter>
+                </Box>
               </AlertDialogContent>
             </AlertDialogOverlay>
           </AlertDialog>

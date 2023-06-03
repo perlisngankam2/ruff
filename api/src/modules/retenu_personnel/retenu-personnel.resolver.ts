@@ -17,6 +17,10 @@ import { RetenuPersonnelUpdateInput } from './dto/retenu-personnel.update';
 import { Retenue } from 'src/entities/retenu-salaire.entity';
 import { RetenuPersonnelPaginatedResponse } from './type/retenupersonnelpagination';
 import { PaginationInput } from 'src/pagination';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { RolesGuard } from '../auth/guards/roles.guard';
+import { Roles } from '../auth/decorators/roles.decorator';
+import { Role } from '../auth/roles/roles';
 
 
 @Resolver(() => RetenuPersonnel)
@@ -24,11 +28,15 @@ export class RetenuPersonnelResolver {
   constructor(private readonly retenuPersonnelService: RetenuPersonnelService) {}
 
   @Mutation(() => RetenuPersonnel)
+  // @UseGuards(JwtAuthGuard,RolesGuard)
+  // @Roles(Role.PRINCIPAL)
   async createretnupersonnel(@Args('retenuPersonnel') createRetenuPersonnelInput: RetenuPersonnelCreateInput) {
     return await this.retenuPersonnelService.create(createRetenuPersonnelInput);
   }
 
   @Query(() => [RetenuPersonnel])
+  // @UseGuards(JwtAuthGuard,RolesGuard)
+  // @Roles(Role.PRINCIPAL)
   async findAllretenupersonnel() {
     return await this.retenuPersonnelService.getAll()
   }
@@ -46,6 +54,8 @@ export class RetenuPersonnelResolver {
   }
 
   @Mutation(()=>RetenuPersonnel)
+  @UseGuards(JwtAuthGuard,RolesGuard)
+  @Roles(Role.PRINCIPAL)
   async updateretenupersonnel(@Args('id') id:string,@Args('input') input:RetenuPersonnelUpdateInput){
     return await this.retenuPersonnelService.update(id,input)
   }

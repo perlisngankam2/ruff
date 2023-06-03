@@ -60,13 +60,11 @@ const SectionCreate = () => {
   // }
 
   let input;
-  useEffect(()=>{
-    if(!authToken){
-      router.back()
+  useEffect(() => {
+    if (!authToken) {
+      router.back();
     }
-    
-  },[authToken])
-
+  }, [authToken]);
 
   const addSection = async (event, value) => {
     event.preventDefault();
@@ -123,7 +121,7 @@ const SectionCreate = () => {
             Ajouter une Section
           </Button>
         </Box>
-        <Box as={"form"} onSubmit={() => router.push("/class/cyclesection")}>
+        <Box>
           <AlertDialog
             isOpen={isOpen}
             leastDestructiveRef={cancelRef}
@@ -132,38 +130,40 @@ const SectionCreate = () => {
           >
             <AlertDialogOverlay>
               <AlertDialogContent width={"440px"}>
-                <AlertDialogHeader fontSize="sm" fontWeight="base" mt="9px">
-                  <Box>
-                    <Heading
-                      textAlign={"center"}
-                      fontSize={["15px", "20px", "24px"]}
-                      p="2"
-                    >
-                      {t("pages.section.sectionCreate.heading")}
-                    </Heading>
-                  </Box>
-                </AlertDialogHeader>
-                <AlertDialogCloseButton />
+                <Box as={"form"} onSubmit={addSection}>
+                  <AlertDialogHeader fontSize="sm" fontWeight="base" mt="9px">
+                    <Box>
+                      <Heading
+                        textAlign={"center"}
+                        fontSize={["15px", "20px", "24px"]}
+                        p="2"
+                      >
+                        {t("pages.section.sectionCreate.heading")}
+                      </Heading>
+                    </Box>
+                  </AlertDialogHeader>
+                  <AlertDialogCloseButton />
 
-                <AlertDialogBody>
-                  <Box>
-                    <FormControl>
-                      <FormLabel>
-                        {t("pages.section.sectionCreate.name")}
-                      </FormLabel>
-                      <Input
-                        id="name"
-                        type={"text"}
-                        name="name"
-                        placeholder="nom"
-                        onChange={(event) => setName(event.target.value)}
-                        ref={(node) => {
-                          input = node;
-                        }}
-                        value={name}
-                      />
-                    </FormControl>
-                    {/* <FormControl mt="15px">
+                  <AlertDialogBody>
+                    <Box>
+                      <FormControl>
+                        <FormLabel>
+                          {t("pages.section.sectionCreate.name")}
+                        </FormLabel>
+                        <Input
+                          id="name"
+                          type={"text"}
+                          name="name"
+                          placeholder="nom"
+                          onChange={(event) => setName(event.target.value)}
+                          ref={(node) => {
+                            input = node;
+                          }}
+                          value={name}
+                          isRequired
+                        />
+                      </FormControl>
+                      {/* <FormControl mt="15px">
                                     <FormLabel>
                                     {t('pages.class.sectionCreate.description')} 
                                     </FormLabel>
@@ -177,18 +177,19 @@ const SectionCreate = () => {
                                         value={description}
                                     />
                                 </FormControl> */}
-                  </Box>
-                </AlertDialogBody>
-                <AlertDialogFooter>
-                  <Button ref={cancelRef} onClick={onClose} colorScheme="red">
-                    {t("pages.section.sectionCreate.cancelButton")}
-                  </Button>
-                  {/* <Link href={'/personnel/ajoutercategorypersonnel'}> */}
-                  <Button colorScheme="green" ml={3} onClick={addSection}>
-                    {t("pages.section.sectionCreate.submitButton")}
-                  </Button>
-                  {/* </Link>  */}
-                </AlertDialogFooter>
+                    </Box>
+                  </AlertDialogBody>
+                  <AlertDialogFooter>
+                    <Button ref={cancelRef} onClick={onClose} colorScheme="red">
+                      {t("pages.section.sectionCreate.cancelButton")}
+                    </Button>
+                    {/* <Link href={'/personnel/ajoutercategorypersonnel'}> */}
+                    <Button colorScheme="green" ml={3} type="submit">
+                      {t("pages.section.sectionCreate.submitButton")}
+                    </Button>
+                    {/* </Link>  */}
+                  </AlertDialogFooter>
+                </Box>
               </AlertDialogContent>
             </AlertDialogOverlay>
           </AlertDialog>

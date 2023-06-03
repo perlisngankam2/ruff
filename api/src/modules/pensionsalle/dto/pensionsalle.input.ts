@@ -20,7 +20,7 @@ export class PensionSalleCreateInput {
   @Field({nullable:true})
   description?: string;
 
-  @Field({nullable:true})
+  @Field({nullable:false})
   montantPension?: number;
 
   @Field(()=>ID,{nullable:true})

@@ -24,7 +24,7 @@ import {
   Icon,
 } from "@chakra-ui/react";
 
-import React, { useEffect,useState } from "react";
+import React, { useEffect, useState } from "react";
 import { IoIosAdd } from "react-icons/io";
 import Link from "next/link";
 import { useMutation, useQuery } from "@apollo/client";
@@ -62,7 +62,9 @@ function AjouterCours() {
     }
   }, [authToken]);
 
-  const addCourse = async () => {
+  const addCourse = async (event) => {
+    event.preventDefault();
+
     console.log(time);
     await createCourse({
       variables: {
@@ -106,7 +108,7 @@ function AjouterCours() {
             {t("pages.courses.addCourse.addButton")}
           </Button>
         </Box>
-        <Box as={"form"}>
+        <Box>
           <AlertDialog
             isOpen={isOpen}
             leastDestructiveRef={cancelRef}
@@ -115,54 +117,59 @@ function AjouterCours() {
           >
             <AlertDialogOverlay>
               <AlertDialogContent width={"400px"}>
-                <AlertDialogHeader fontSize="sm" fontWeight="base" mt="0">
-                  <Box>
-                    <Heading
-                      // as='H4'
-                      textAlign={"center"}
-                      fontSize={["15px", "20px", "24px"]}
-                      p="2"
-                    >
-                      {/* Ajouter une matiere */}
-                      {t("pages.courses.addCourse.heading")}
-                    </Heading>
-                  </Box>
-                </AlertDialogHeader>
-                <AlertDialogCloseButton />
+                <Box as={"form"} onSubmit={addCourse}>
+                  <AlertDialogHeader fontSize="sm" fontWeight="base" mt="0">
+                    <Box>
+                      <Heading
+                        // as='H4'
+                        textAlign={"center"}
+                        fontSize={["15px", "20px", "24px"]}
+                        p="2"
+                      >
+                        {/* Ajouter une matiere */}
+                        {t("pages.courses.addCourse.heading")}
+                      </Heading>
+                    </Box>
+                  </AlertDialogHeader>
+                  <AlertDialogCloseButton />
 
-                <AlertDialogBody>
-                  <Box>
-                    <FormControl>
-                      <FormLabel>{t("pages.courses.addCourse.name")}</FormLabel>
-                      <Input
-                        id="nom"
-                        type={"text"}
-                        name="title"
-                        value={title}
-                        placeholder="Nom"
-                        onChange={(event) => setTitle(event.target.value)}
-                        ref={(node) => {
-                          input = node;
-                        }}
-                      />
-                    </FormControl>
-                    <FormControl mt="15px">
-                      <FormLabel>
-                        {t("pages.courses.addCourse.courseHours")}
-                      </FormLabel>
-                      <Input
-                        id="description"
-                        type={"number"}
-                        name="time"
-                        value={time}
-                        placeholder="Nombre d'heure du cours"
-                        onChange={(event) => setTime(event.target.value)}
-                        ref={(node) => {
-                          input = node;
-                        }}
-                      />
-                    </FormControl>
-                    {/* <FormControl mt="15px">
+                  <AlertDialogBody>
+                    <Box>
+                      <FormControl>
+                        <FormLabel>
+                          {t("pages.courses.addCourse.name")}
+                        </FormLabel>
+                        <Input
+                          id="nom"
+                          type={"text"}
+                          name="title"
+                          value={title}
+                          placeholder="Nom"
+                          onChange={(event) => setTitle(event.target.value)}
+                          ref={(node) => {
+                            input = node;
+                          }}
+                          isRequired
+                        />
+                      </FormControl>
+                      <FormControl mt="15px">
+                        <FormLabel>
+                          {t("pages.courses.addCourse.courseHours")}
+                        </FormLabel>
+                        <Input
+                          id="description"
+                          type={"number"}
+                          name="time"
+                          value={time}
+                          placeholder="Nombre d'heure du cours"
+                          onChange={(event) => setTime(event.target.value)}
+                          ref={(node) => {
+                            input = node;
+                          }}
+                          isRequired
+                        />
+                      </FormControl>
+                      {/* <FormControl mt="15px">
                                     <FormLabel>Reduction</FormLabel>
                                     <Select 
                                         name="reductionScolariteId"
@@ -183,18 +190,19 @@ function AjouterCours() {
                                         }
                                     </Select>
                                 </FormControl> */}
-                  </Box>
-                </AlertDialogBody>
-                <AlertDialogFooter>
-                  <Button ref={cancelRef} onClick={onClose} colorScheme="red">
-                    {t("pages.courses.addCourse.cancelButton")}
-                  </Button>
-                  {/* <Link href={'/personnel/ajoutercategorypersonnel'}> */}
-                  <Button colorScheme="green" ml={3} onClick={addCourse}>
-                    {t("pages.courses.addCourse.submitButton")}
-                  </Button>
-                  {/* </Link>  */}
-                </AlertDialogFooter>
+                    </Box>
+                  </AlertDialogBody>
+                  <AlertDialogFooter>
+                    <Button ref={cancelRef} onClick={onClose} colorScheme="red">
+                      {t("pages.courses.addCourse.cancelButton")}
+                    </Button>
+                    {/* <Link href={'/personnel/ajoutercategorypersonnel'}> */}
+                    <Button colorScheme="green" ml={3} type="submit">
+                      {t("pages.courses.addCourse.submitButton")}
+                    </Button>
+                    {/* </Link>  */}
+                  </AlertDialogFooter>
+                </Box>
               </AlertDialogContent>
             </AlertDialogOverlay>
           </AlertDialog>

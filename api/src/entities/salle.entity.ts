@@ -24,7 +24,6 @@ import { PensionSalle } from './pensionsalle.entity';
 import { Tranche } from './tranche.entity';
 import { AnneeAccademique } from './annee-accademique.entity';
 
-
 @Entity()
 @ObjectType()
 export class Salle {
@@ -95,6 +94,9 @@ export class Salle {
   @OneToMany(() => Personnel, (teacher) => teacher.salle)
   teacher = new Collection<Personnel>(this);
 
+  @OneToMany(() => Tranche, (tranche) => tranche.salle)
+  tranche = new Collection<Tranche>(this);
+
   @OneToMany(() => Student, (student) => student.salle)
   student = new Collection<Student>(this);
 
@@ -104,28 +106,23 @@ export class Salle {
   @OneToMany(() => PensionSalle, (pensionsalle) => pensionsalle.salle)
   pensionsalle = new Collection<PensionSalle>(this);
 
+  @Field(() => ID, { nullable: true })
+  @Property({ persist: false })
+  get levelId() {
+    return this.niveau ? `${this.niveau.id}` : null;
+  }
 
-@OneToMany(()=>Tranche, (tranche) => tranche.salle)
-tranche = new Collection<Tranche>(this)
+  @Field(() => ID, { nullable: true })
+  @Property({ persist: false })
+  get levelName() {
+    return this.niveau.getEntity().name
+      ? `${this.niveau.getEntity().name}`
+      : null;
+  }
 
- 
-
-@Field(() => ID, { nullable: true })
-@Property({ persist: false })
-get levelId() {
-      return this.niveau? `${this.niveau.id}` : null;
-    }
-
-@Field(() => ID, { nullable: true })
-@Property({ persist: false })
-get levelName() {
-      return this.niveau.getEntity().name? `${this.niveau.getEntity().name}` : null;
-    }
-
-    // @Field(() => ID)
-    // @Property({ persist: false })
-    // get cycleid() {
-    //   return `${this.cycle.id}`;
-    // }
-
+  // @Field(() => ID)
+  // @Property({ persist: false })
+  // get cycleid() {
+  //   return `${this.cycle.id}`;
+  // }
 }

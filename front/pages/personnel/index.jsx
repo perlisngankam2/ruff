@@ -46,7 +46,6 @@ const Personnel = () => {
 
   const [searchName, setSearchName] = useState("");
   const { setAuthToken, authToken } = useAuth();
-  console.log(searchName);
   const {data:dataPersonnel, loading, error} = useQuery(GET_ALL_PERSONNELS)
   const [deletePersonnel] = useMutation(DELETE_PERSONNEL);
   const [personnel, setPersonnel] = useState([]);
@@ -79,22 +78,14 @@ const Personnel = () => {
   },[authToken])
   
   useEffect (() => {
-    setPersonnel(dataPersonnel)
+    // setPersonnel(dataPersonnel)
     console.log(dataPersonnel) 
   }, [dataPersonnel])
  
   if (loading) return <Text>Chargement en cour...</Text>
   if (error) return <Text>Une erreur s'est produite!</Text>
 
-  const removePersonnel = async(id) => {
-    await deletePersonnel({
-        variables: {id},
-        refetchQueries:[{
-          query: GET_ALL_PERSONNELS
-        }]
-    })
-    onClose();
-  }
+ 
   // const removePersonnel = async(id) => {
   //   await deletePersonnel({
   //       variables: {id},
@@ -108,7 +99,6 @@ const Personnel = () => {
   const handleChange = (e) => {
     setSearchName(e.target.value);
   };
-  
   
   const pageCount = Math.ceil(dataPersonnel?.findAllpersonnel.length / itemsPerPage);
 
@@ -179,7 +169,7 @@ const Personnel = () => {
         >
         <Flex gap={12} mt={3} flexWrap="wrap">
          {dataPersonnel && ( 
-           
+
             dataPersonnel.findAllpersonnel
             .filter((personnel) =>{
               if(searchName == ""){

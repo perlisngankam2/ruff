@@ -103,6 +103,8 @@ const LoginForm = () => {
             rounded={13}
             background="white"
             as="form"
+            onSubmit={HandleClick}
+
           >
             <Container maxW={{ base: "sm", sm: "md" }} px="0">
               <Heading
@@ -125,6 +127,7 @@ const LoginForm = () => {
                     type="text"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
+                    isRequired
                   />
                 </FormControl>
                 <FormControl mb={4}>
@@ -135,6 +138,7 @@ const LoginForm = () => {
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     name="password"
+                    isRequired
                   />
                 </FormControl>
                 <HStack mb={5} spacing={{ base: "10px", lg: "60px" }}>
@@ -161,7 +165,6 @@ const LoginForm = () => {
                     isLoading={isLoading}
                     type="submit"
                     mb={5}
-                    onClick={HandleClick}
                   >
                     {t("molecules.LoginForm.seConnecter")}
                   </Button>

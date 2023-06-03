@@ -17,15 +17,15 @@ export class SalaireResolver {
   constructor(private readonly salaireService: SalaireService) {}
 
 @Mutation(()=>Salaire)
-@UseGuards(JwtAuthGuard,RolesGuard)
-@Roles(Role.ECONOME)
+// @UseGuards(JwtAuthGuard,RolesGuard)
+// @Roles(Role.ECONOME)
 async createsalaire(@Args('input') input:SalaireCreateInput){
  return await this.salaireService.create(input)
 }
 
 @Query(() => SalairePaginatedResponse)
-@UseGuards(JwtAuthGuard,RolesGuard)
-@Roles(Role.ECONOME)
+// @UseGuards(JwtAuthGuard,RolesGuard)
+// @Roles(Role.ECONOME)
 async pagiantionResponseSalaire(
 @Args('pagination') pagination: PaginationInput,
 ): Promise<SalairePaginatedResponse> {
@@ -37,43 +37,43 @@ return await this.salaireService.paginationResponseSalaire(pagination);
 // }
 
 @Query(()=>[Salaire])
-@UseGuards(JwtAuthGuard,RolesGuard)
-@Roles(Role.ECONOME)
+// @UseGuards(JwtAuthGuard,RolesGuard)
+// @Roles(Role.ECONOME)
 async findallsalaire(){
     return await this.salaireService.getAll()
 }
 
 @Query(()=>Salaire)
-@UseGuards(JwtAuthGuard,RolesGuard)
-@Roles(Role.ECONOME)
+// @UseGuards(JwtAuthGuard,RolesGuard)
+// @Roles(Role.ECONOME)
 async getonesalaire(@Args('id') id:string){
     return await this.salaireService.findByOne(id)
 }
 
 @Query(()=>[Salaire])
-@UseGuards(JwtAuthGuard,RolesGuard)
-@Roles(Role.ECONOME)
+// @UseGuards(JwtAuthGuard,RolesGuard)
+// @Roles(Role.ECONOME)
 async getsalairebypersonnel(@Args('personnelid') personnelid:string){
     return await this.salaireService.salairepersonnel(personnelid)
 }
 
 @Query(()=>[String])
-@UseGuards(JwtAuthGuard,RolesGuard)
-@Roles(Role.ECONOME)
+// @UseGuards(JwtAuthGuard,RolesGuard)
+// @Roles(Role.ECONOME)
 async PersonnelMonthSalary(@Args('personnelid') personnelid:string){
     return await this.salaireService.personnelMonthSalary(personnelid)
 }
 
 @Query(()=>[Number])
-@UseGuards(JwtAuthGuard,RolesGuard)
-@Roles(Role.ECONOME)
+// @UseGuards(JwtAuthGuard,RolesGuard)
+// @Roles(Role.ECONOME)
 async PersonnelNetSalary(@Args('personnelid') personnelid:string){
     return await this.salaireService.personnelNetSalary(personnelid)
 }
 
 @Query(()=>Number)
-@UseGuards(JwtAuthGuard,RolesGuard)
-@Roles(Role.ECONOME)
+// @UseGuards(JwtAuthGuard,RolesGuard)
+// @Roles(Role.ECONOME)
 async personnelsalairenetbymonth(@Args('personnelid') personnelid:string,@Args('month') month:string){
     return await this.salaireService.personnelsalairenetbymonth(personnelid,month)
 }

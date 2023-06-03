@@ -123,9 +123,9 @@ const SuiviePaiementSectionFrancophone = () => {
                                     </Tbody>
                                     }
 
-                                    <Tbody>
                                     {dataTotalStudentStatisticsFrancophoneSection && (
-                                        dataTotalStudentStatisticsFrancophoneSection?.getTotalStudentStatisticsFrancophone
+                                    <Tbody>
+                                    {dataTotalStudentStatisticsFrancophoneSection?.getTotalStudentStatisticsFrancophone
                                         .map((totalFrancophoneStudent, index) => ( 
                                         <Tr borderBottom={"1px"} key={index}>
                                             <Td  borderBottom={"1px"}>TotalL</Td>
@@ -137,8 +137,9 @@ const SuiviePaiementSectionFrancophone = () => {
                                             <Td>{totalFrancophoneStudent.RESTE_RECOUVRER}</Td>
                                             <Td>{totalFrancophoneStudent. TAUX_RAR}%</Td>
                                         </Tr> 
-                                    )))}                                    
+                                    )) }                                   
                                     </Tbody>
+                                    )}
                                 </Table>
                             </TableContainer>
                         </Box>

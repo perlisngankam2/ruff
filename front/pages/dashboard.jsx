@@ -37,7 +37,9 @@ const dashboard = () => {
   //   }
   // },[authToken])
 
-
+useEffect(()=>{
+  console.log(useAuth);
+})
   return (
     <DashboardMain/>
   );

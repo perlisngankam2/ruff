@@ -10,6 +10,8 @@ import {
   Tr,
 } from "@chakra-ui/react";
 import { RiMoneyDollarCircleLine } from "react-icons/ri";
+import { BsFillCreditCardFill } from "react-icons/bs";
+
 import { useTranslation } from "next-i18next";
 import React, { createContext, use, useContext, useEffect } from "react";
 import { useMutation, useQuery } from "@apollo/client";
@@ -50,7 +52,7 @@ const LatePayment = () => {
       if (tranche.name.toLowerCase() === "tranche 2") {
         return new Date(tranche.dateLine).toLocaleDateString();
       } else {
-        return "aucune tranche"; // ou une valeur par défaut si vous ne voulez pas afficher de dateline
+        return null; // ou une valeur par défaut si vous ne voulez pas afficher de dateline
       }
     }
   );
@@ -89,7 +91,7 @@ const LatePayment = () => {
         </Text>
         <Icon
           alignContent="right"
-          as={RiMoneyDollarCircleLine}
+          as={BsFillCreditCardFill}
           color="green.500"
           boxSize={8}
         />

@@ -26,36 +26,36 @@ export class TrancheStudentResolver {
   constructor(private readonly trancheService: TrancheStudentService) {}
 
   @Mutation(() => TrancheStudent)
-  @UseGuards(JwtAuthGuard,RolesGuard)
-  @Roles(Role.ECONOME)
+  // @UseGuards(JwtAuthGuard,RolesGuard)
+  // @Roles(Role.ECONOME)
   createTrancheStudent(@Args('trancheStudent') Input: TrancheStudentCreateInput) {
     return this.trancheService.create(Input);
   }
 
    @Mutation(() => TrancheStudent)
-   @UseGuards(JwtAuthGuard,RolesGuard)
-   @Roles(Role.ECONOME)
+  //  @UseGuards(JwtAuthGuard,RolesGuard)
+  //  @Roles(Role.ECONOME)
    updateTrancheStudent(@Args('id', { type: () => String }) id: string, Input: TrancheStudentUpdateInput) {
      return this.trancheService.update(id,Input);
   }
 
   @Query(() => [TrancheStudent])
-  @UseGuards(JwtAuthGuard,RolesGuard)
-  @Roles(Role.ECONOME)
+  // @UseGuards(JwtAuthGuard,RolesGuard)
+  // @Roles(Role.ECONOME)
   findAlltranchestudent() {
     return this.trancheService.getAll()
   }
   
   @Query(() => TrancheStudent, { name: 'trancheStudent' })
-  @UseGuards(JwtAuthGuard,RolesGuard)
-  @Roles(Role.ECONOME)
+  // @UseGuards(JwtAuthGuard,RolesGuard)
+  // @Roles(Role.ECONOME)
   findOnetranchestudent(@Args('id', { type: () => String }) id: string) {
     return this.trancheService.findByOne(id);
   }
 
   @Mutation(()=> TrancheStudent)
-  @UseGuards(JwtAuthGuard,RolesGuard)
-  @Roles(Role.ECONOME)
+  // @UseGuards(JwtAuthGuard,RolesGuard)
+  // @Roles(Role.ECONOME)
   async deletetranchestudent(@Args('id') id:string){
  return await this.trancheService.delete(id)
   }
@@ -66,8 +66,8 @@ export class TrancheStudentResolver {
 //   }
 
   @Query(()=>TrancheStudent)
-  @UseGuards(JwtAuthGuard,RolesGuard)
-  @Roles(Role.ECONOME)
+  // @UseGuards(JwtAuthGuard,RolesGuard)
+  // @Roles(Role.ECONOME)
   async getStudentByTrancheStudent(@Args('studentid') studentid:string){
     const student=await this.trancheService.findStudentByTrancheStudent(studentid)
     if(!student){
@@ -77,8 +77,8 @@ export class TrancheStudentResolver {
   }
 
   @Query(() => TrancheStudentPaginatedResponse)
-  @UseGuards(JwtAuthGuard,RolesGuard)
-  @Roles(Role.ECONOME)
+  // @UseGuards(JwtAuthGuard,RolesGuard)
+  // @Roles(Role.ECONOME)
   async pagiantionResponseTrancheStudent(
     @Args('pagination') pagination: PaginationInput,
   ): Promise<TrancheStudentPaginatedResponse> {
@@ -86,15 +86,15 @@ export class TrancheStudentResolver {
   }
 
   @Query(()=>Date)
-  @UseGuards(JwtAuthGuard,RolesGuard)
-  @Roles(Role.ECONOME)
+  // @UseGuards(JwtAuthGuard,RolesGuard)
+  // @Roles(Role.ECONOME)
   async getTranchestudentPaymentDate(@Args('studentid') studentid:string,@Args('trancheid') trancheid:string){
     return await this.trancheService.getTranchestudentPaymentDate(studentid,trancheid)
   }
 
   @Query(()=>Date)
-  @UseGuards(JwtAuthGuard,RolesGuard)
-  @Roles(Role.ECONOME)
+  // @UseGuards(JwtAuthGuard,RolesGuard)
+  // @Roles(Role.ECONOME)
   async getTrancheDateLineByStudent(@Args('studentid') studentid:string,@Args('trancheid') trancheid:string){
   return await this.trancheService.getTrancheDateLineByStudent(studentid,trancheid)
   }

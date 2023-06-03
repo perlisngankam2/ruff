@@ -22,80 +22,90 @@ import { RolesGuard } from '../auth/guards/roles.guard';
 import { Roles } from '../auth/decorators/roles.decorator';
 import { Role } from '../auth/roles/roles';
 
-
 @Resolver(() => Personnel)
 export class PersonnelResolver {
   constructor(private readonly personnelService: PersonnelService) {}
 
   @Mutation(() => Personnel)
-  @UseGuards(JwtAuthGuard,RolesGuard)
-  @Roles(Role.ADMIN)
-  async createpersonnel(@Args('createPersonnelUser') createPersonnelUserInput: PersonnelCreateInput) {
-    return await this.personnelService.createPersonnel(createPersonnelUserInput);
+  // @UseGuards(JwtAuthGuard,RolesGuard)
+  // @Roles(Role.ECONOME, Role.PRINCIPAL)
+  async createpersonnel(
+    @Args('createPersonnelUser') createPersonnelUserInput: PersonnelCreateInput,
+  ) {
+    return await this.personnelService.createPersonnel(
+      createPersonnelUserInput,
+    );
   }
 
- 
-  @UseGuards(JwtAuthGuard,RolesGuard)
-  @Roles(Role.ADMIN)
   @Query(() => [Personnel])
+  // @UseGuards(JwtAuthGuard, RolesGuard)
+  // @Roles(Role.ECONOME, Role.FONDATEUR, Role.PRINCIPAL)
   async findAllpersonnel() {
-    return await this.personnelService.getAll()
+    return await this.personnelService.getAll();
   }
 
-  
+
   @Query(() => PersonnelPaginatedResponse)
-  @UseGuards(JwtAuthGuard,RolesGuard)
-  @Roles(Role.ADMIN)
   async pagiantionResponsePersonnel(
-  @Args('pagination') pagination: PaginationInput,
-): Promise<PersonnelPaginatedResponse> {
-  return await this.personnelService.paginationResponsePersonnel(pagination);
-}
-  
+    @Args('pagination') pagination: PaginationInput,
+  ): Promise<PersonnelPaginatedResponse> {
+    return await this.personnelService.paginationResponsePersonnel(pagination);
+  }
+
   @Query(() => Personnel)
-  @UseGuards(JwtAuthGuard,RolesGuard)
-  @Roles(Role.ADMIN)
+  // @UseGuards(JwtAuthGuard,RolesGuard)
+  // @Roles(Role.ECONOME, Role.FONDATEUR)
   async findOnePersonnel(@Args('id', { type: () => String }) id: string) {
     return await this.personnelService.findOne(id);
   }
 
-  @Mutation(()=>Personnel)
-  @UseGuards(JwtAuthGuard,RolesGuard)
-  @Roles(Role.ADMIN)
-  async updatepersonnel(@Args('id') id:string,@Args('input') input:PersonnelUpdateInput){
-  return await this.personnelService.update(id,input)
+  @Mutation(() => Personnel)
+  // @UseGuards(JwtAuthGuard, RolesGuard)
+  // @Roles(Role.ECONOME)
+  async updatepersonnel(
+    @Args('id') id: string,
+    @Args('input') input: PersonnelUpdateInput,
+  ) {
+    return await this.personnelService.update(id, input);
   }
 
   @Mutation(() => Personnel)
-  @UseGuards(JwtAuthGuard,RolesGuard)
-  @Roles(Role.ADMIN)
-  async deletepersonnel(@Args('id') id:string){
-   return await this.personnelService.delete(id)
+  // @UseGuards(JwtAuthGuard, RolesGuard)
+  // @Roles(Role.ECONOME, Role.FONDATEUR)
+  async deletepersonnel(@Args('id') id: string) {
+    return await this.personnelService.delete(id);
   }
 
-  @Query(()=>User)
-  @UseGuards(JwtAuthGuard,RolesGuard)
-  @Roles(Role.ADMIN)
-  async getpersonnelaccount(@Args('id') id:string){
-    return await this.personnelService.getcorrespondingaccount(id)
+  @Query(() => User)
+  // @UseGuards(JwtAuthGuard,RolesGuard)
+  // @Roles(Role.ADMIN)
+  async getpersonnelaccount(@Args('id') id: string) {
+    return await this.personnelService.getcorrespondingaccount(id);
   }
 
-@Query(()=>Personnel)
-@UseGuards(JwtAuthGuard,RolesGuard)
-@Roles(Role.ADMIN)
-async getpersonnelbyaccount(@Args('userid') userid:string):Promise<Personnel|null>{
-    const personnel=await this.personnelService.findpersonnelbyaccount(userid)
-    if(!personnel){
-     console.log("Il n'existe aucun personnel associee a ce compte")
+  @Query(() => Personnel)
+  // @UseGuards(JwtAuthGuard,RolesGuard)
+  // @Roles(Role.ADMIN)
+  async getpersonnelbyaccount(
+    @Args('userid') userid: string,
+  ): Promise<Personnel | null> {
+    const personnel = await this.personnelService.findpersonnelbyaccount(
+      userid,
+    );
+    if (!personnel) {
+      console.log("Il n'existe aucun personnel associee a ce compte");
     }
-    return personnel
+    return personnel;
   }
 
-  @Query(()=>String)
-  @UseGuards(JwtAuthGuard,RolesGuard)
-  @Roles(Role.ADMIN)
-  async findCategoriepersonnelbypersonnel(@Args('personnelid') personnelid:string){
-     return await this.personnelService.findCategoriepersonnelbypersonnel(personnelid)
+  @Query(() => String)
+  // @UseGuards(JwtAuthGuard,RolesGuard)
+  // @Roles(Role.ADMIN)
+  async findCategoriepersonnelbypersonnel(
+    @Args('personnelid') personnelid: string,
+  ) {
+    return await this.personnelService.findCategoriepersonnelbypersonnel(
+      personnelid,
+    );
   }
-
 }

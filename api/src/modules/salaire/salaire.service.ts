@@ -182,7 +182,7 @@ export class SalaireService {
     return b;
   }
 
-  async personnelsalairenetbymonth(personnelid: string, month: string) {
+  async personnelsalairenetbymonth(personnelid: string, month: string) { 
     const a = (await this.salairepersonnel(personnelid)).filter(
       (a) => a.moisPaie == month,
     )[0].montant;

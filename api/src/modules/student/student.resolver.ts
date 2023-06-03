@@ -29,25 +29,23 @@ export class StudentResolver {
               ) {}
 
   @Mutation(() => Student)
-  @UseGuards(JwtAuthGuard,RolesGuard)
-  @Roles(Role.ECONOME)
+  // @UseGuards(JwtAuthGuard,RolesGuard)
+  // @Roles(Role.ECONOME, Role.PRINCIPAL)
   createStudent(@Args('student') Input: StudentCreateInput) {
     return this.studentService.create(Input);
   }
 
   @Mutation(() => Student)
-  @UseGuards(JwtAuthGuard,RolesGuard)
-  @Roles(Role.ECONOME)
+  // @UseGuards(JwtAuthGuard,RolesGuard)
+  // @Roles(Role.ECONOME)
   async updateStudent(
     @Args('id') id:string,
     @Args('input') input: StudentCreateInput,
     ) {
     return this.studentService.update(id,input);
-   }
+  }
 
    @Query(() => StudentPaginatedResponse)
-   @UseGuards(JwtAuthGuard,RolesGuard)
-   @Roles(Role.ECONOME)
    async pagiantionResponseStudent(
      @Args('pagination') pagination: PaginationInput,
    ): Promise<StudentPaginatedResponse> {
@@ -56,7 +54,11 @@ export class StudentResolver {
 
   @Query(() => [Student])
   // @UseGuards(JwtAuthGuard,RolesGuard)
+<<<<<<< HEAD
   // @Roles(Role.ECONOME)
+=======
+  // @Roles(Role.ECONOME, Role.PRINCIPAL)
+>>>>>>> e6ca72e1c418a49f9188a391cdc55b4d1fe46cd8
   findAllstudents() {
     return this.studentService.getAll()
   }
@@ -69,15 +71,15 @@ export class StudentResolver {
   }
   
   @Query(() => Student)
-  @UseGuards(JwtAuthGuard,RolesGuard)
-  @Roles(Role.ECONOME)
+  // @UseGuards(JwtAuthGuard,RolesGuard)
+  // @Roles(Role.ECONOME, Role.PRINCIPAL)
   findOnestudent(@Args('id', { type: () => String }) id: string) {
     return this.studentService.findByOne(id);
   }
 
   @Mutation(()=> Student)
-  @UseGuards(JwtAuthGuard,RolesGuard)
-  @Roles(Role.ECONOME)
+  // @UseGuards(JwtAuthGuard,RolesGuard)
+  // @Roles(Role.ECONOME)
   async deletestudent(@Args('id') id:string){
     return await this.studentService.delete(id)
   }
@@ -92,29 +94,40 @@ export class StudentResolver {
   // }
 
   @Query(()=>[Student])
-  @UseGuards(JwtAuthGuard,RolesGuard)
-  @Roles(Role.ECONOME)
+  // @UseGuards(JwtAuthGuard,RolesGuard)
+  // @Roles(Role.FONDATEUR)
   async getAllStudentsForUseAnglophone(){
     return await this.studentService.getAllForUseAnglophone()
   }
   @Query(()=>[Number])
-  @UseGuards(JwtAuthGuard,RolesGuard)
-  @Roles(Role.ECONOME)
+  // @UseGuards(JwtAuthGuard,RolesGuard)
+  // @Roles(Role.ECONOME)
   async AmountrExpectedByTranche(@Args('studentid') studentid:string){
     return await this.studentService.findlisttranche(studentid)
   }
 
   @Query(()=>Number)
-  @UseGuards(JwtAuthGuard,RolesGuard)
-  @Roles(Role.ECONOME)
+  // @UseGuards(JwtAuthGuard,RolesGuard)
+  // @Roles(Role.ECONOME, Role.ADMIN)
   async getClassfeebyStudent(@Args('studentid') studentid:string){
     return await this.studentService.getclassfeebystudent(studentid)
   }
 
   @Query(()=>[Tranche])
-  @UseGuards(JwtAuthGuard,RolesGuard)
-  @Roles(Role.ECONOME)
+  // @UseGuards(JwtAuthGuard,RolesGuard)
+  // @Roles(Role.ECONOME)
   async getClassfeeofStudent(@Args('studentid') studentid:string){
     return await this.studentService.findlistfees(studentid)
   }
+<<<<<<< HEAD
+=======
+
+@Query(()=>[Student])
+// @UseGuards(JwtAuthGuard,RolesGuard)
+//   @Roles(Role.FONDATEUR)
+  async getAllForUseAnglophoneStudent(){
+    return await this.studentService.getAllForUseAnglophone()
+  }
+
+>>>>>>> e6ca72e1c418a49f9188a391cdc55b4d1fe46cd8
 }

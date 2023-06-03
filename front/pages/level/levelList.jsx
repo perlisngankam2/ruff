@@ -50,10 +50,7 @@ import { useTranslation } from "next-i18next";
 import { getStaticPropsTranslations } from "../../types/staticProps";
 import { useAuth } from "../../contexts/account/Auth/Auth";
 
-
-
 const levelList = () => {
-  
   const router = useRouter();
   const cancelRef = React.useRef();
   const { setAuthToken, authToken } = useAuth();
@@ -65,7 +62,10 @@ const levelList = () => {
   const pagesVisited = pageNumber * itemsPerPage;
 
   const [deleteStudyLevel] = useMutation(DELETE_STUDY_LEVEL);
-  const {data:dataStudyLevel, loading, error,
+  const {
+    data: dataStudyLevel,
+    loading,
+    error,
   } = useQuery(GET_ALL_STUDY_LEVEL);
 
   const removeStudyLevel = async (id) => {
@@ -81,6 +81,7 @@ const levelList = () => {
   };
 
   useEffect(() => {
+    console.log(authToken);
     if (!authToken) {
       router.back();
     }
@@ -258,12 +259,11 @@ const levelList = () => {
                                             "pages.level.listLevel.confirmDeleting"
                                           )}
                                         </AlertDialogHeader>
-                                        <AlertDialogBody
-                                          textAlign={"center"}
-                                        ></AlertDialogBody>
-                                        {t(
-                                          "pages.level.listLevel.wouldYouWantToDeleteLevel"
-                                        )}
+                                        <AlertDialogBody textAlign={"center"}>
+                                          {t(
+                                            "pages.level.listLevel.wouldYouWantToDeleteLevel"
+                                          )}
+                                        </AlertDialogBody>
                                         <AlertDialogFooter>
                                           <Button
                                             ref={cancelRef}

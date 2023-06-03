@@ -26,6 +26,7 @@ import { TrancheService } from '../tranche/tranche.service';
 import { addDays, format } from 'date-fns';
 import { PaginatedResponse, PaginationInput, paginate } from 'src/pagination';
 import { StudentPaginatedResponse } from './type/studentpagination';
+import { CategorieEleve } from 'src/entities/categorie-eleve.entity';
 
 @Injectable()
 export class StudentService {
@@ -151,12 +152,15 @@ export class StudentService {
 
       async getLastThreeStudents():Promise<Student[]>{
         const a= this.getAll()
+<<<<<<< HEAD
         // const list: Student[] = [];
         // for (let i = (await a).length - 3; i < (await a).length; i++) {
         //   if (i >= 0) {
         //     list.push(a[i]);
         //   }
         // }
+=======
+>>>>>>> e6ca72e1c418a49f9188a391cdc55b4d1fe46cd8
         return (await a).slice(-3)
       }
       
@@ -177,14 +181,22 @@ export class StudentService {
 
       async getAllForUseAnglophone(): Promise<Student[]> {
         const a= await this.studentRepository.findAll({
+<<<<<<< HEAD
           populate: ['salle','pension','salle.niveau','salle.niveau.cycle','salle.niveau.cycle.section','salle.pensionsalle']
+=======
+          populate: ['salle','pension','salle.niveau','salle.niveau.cycle','salle.niveau.cycle.section', 'salle.pensionsalle']
+>>>>>>> e6ca72e1c418a49f9188a391cdc55b4d1fe46cd8
         })
         return a.filter(async a=>(await (await (await (await a.salle.load()).niveau.load()).cycle.load()).section.load()).name==='Anglophone')
       }
       
       async getAllForUseFrancophone(): Promise<Student[]> {
         const a= await this.studentRepository.findAll({
+<<<<<<< HEAD
           populate: ['salle','pension','salle.niveau','salle.niveau.cycle','salle.niveau.cycle.section','salle.pensionsalle']
+=======
+          populate: ['salle','pension','salle.niveau','salle.niveau.cycle','salle.niveau.cycle.section', 'salle.pensionsalle']
+>>>>>>> e6ca72e1c418a49f9188a391cdc55b4d1fe46cd8
         })
         return a.filter(async a=>(await (await (await (await a.salle.load()).niveau.load()).cycle.load()).section.load()).name=='Francophone')
       }
@@ -276,6 +288,7 @@ export class StudentService {
       }
 
       
+<<<<<<< HEAD
     async getclassfeebystudent(studentid:string){
       const students =  await this.studentRepository.findAll({
         populate:['salle','salle.pensionsalle']
@@ -287,6 +300,19 @@ export class StudentService {
       }
       return (student.salle.getEntity().pensionsalle.getItems().map(a=>a.montantPension))[0]
     }
+=======
+      async getclassfeebystudent(studentid:string){
+        const students =  await this.studentRepository.findAll({
+          populate:['salle','salle.pensionsalle']
+        })
+        const student = students.filter(a=>a.id==studentid)[0]
+        
+        if(!student){
+          throw Error("student not found")
+        }
+        return (student.salle.getEntity().pensionsalle.getItems().map(a=>a.montantPension))[0]
+      }
+>>>>>>> e6ca72e1c418a49f9188a391cdc55b4d1fe46cd8
    
       
 }

@@ -10,6 +10,8 @@ import {
   Tr,
 } from "@chakra-ui/react";
 import { BsFillCreditCardFill } from "react-icons/bs";
+import { RiMoneyDollarCircleLine } from "react-icons/ri";
+
 import { useTranslation } from "next-i18next";
 import { GET_ALL_EXPENSE_PERSONNEL_STUDENT } from "../../graphql/Queries";
 import { useQuery, useMutation } from "@apollo/client";
@@ -45,14 +47,14 @@ const TreasuryBox = () => {
           letterSpacing="tight"
           fontSize="xl"
           color="red"
-          align="flex-start"
+          align="flex-staBsFillCreditCardFillrt"
           fontWeight="bold"
         >
           {t("atoms.TreasuryBox.titreTresorerie")}
         </Text>
         <Icon
           alignContent="right"
-          as={BsFillCreditCardFill}
+          as={RiMoneyDollarCircleLine}
           color="green.500"
           boxSize={8}
         />

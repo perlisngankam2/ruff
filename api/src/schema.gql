@@ -273,7 +273,7 @@ type Expense {
 
 type Parameter {
   id: ID!
-  name: String
+  parameterName: String
   postalBox: String
   phoneNumber: String
   emailAddress: String
@@ -349,16 +349,16 @@ type Salle {
 
 type Personnel {
   id: ID!
-  firstName: String
-  lastName: String
-  phoneNumber: String
-  situationMatrimonial: String
-  sexe: String
+  firstName: String!
+  lastName: String!
+  phoneNumber: String!
+  situationMatrimonial: String!
+  sexe: String!
   fonction: String
-  status: String
+  status: String!
   dateOfStartWork: String!
   dateOfBirth: String!
-  childNumber: Float
+  childNumber: Float!
 }
 
 type User {
@@ -383,7 +383,7 @@ enum Role {
   ECONOME
   FONDATEUR
   PRINCIPAL
-  GESTIONAIRE
+  GESTIONNAIRE
 }
 
 type UserPaginatedResponse {
@@ -603,7 +603,6 @@ type Query {
   findAllreductionscolarite: [ReductionScolarite!]!
   primePersonnel(id: String!): PrimePersonnel!
   findAlltranche: [Tranche!]!
-  deleteTranche(id: String!): Tranche!
   tranche(id: String!): Tranche!
   findByStudentRestTranche(studentid: String!): [TrancheStat!]!
   findAllparameters: [Parameter!]!
@@ -743,6 +742,7 @@ type Mutation {
   updatepersonnel(id: String!, input: PersonnelUpdateInput!): Personnel!
   deletepersonnel(id: String!): Personnel!
   createCourse(input: CourseCreateInput!): Course!
+  updateCouse(id: String!, input: CourseUpdateInput!): Course!
   deleteCourse(id: String!): Course!
   updatecourse(id: String!, input: CourseUpdateInput!): Course!
   createSalle(salle: SalleCreateInput!): Salle!
@@ -774,6 +774,7 @@ type Mutation {
   createreductionscolarite(reductionscolarite: RedutionScolariteInput!): ReductionScolarite!
   createTranche(tranche: TrancheCreateInput!): Tranche!
   updatetranche(id: String!): Tranche!
+  deleteTranche(id: String!): Tranche!
   createParameter(input: ParameterCreateInput!): Parameter!
   updateParameter(id: String!): Parameter!
   deleteparamaters(id: String!): Parameter!
@@ -912,8 +913,6 @@ input SalleCreateInput {
   ID: ID
   name: String
   anneeAcademiqueId: String
-  sectionId: ID
-  cycleId: String
   montantPensionSalle: Float
   effectif: Float = 0
   niveauEtudeId: ID
@@ -961,8 +960,6 @@ input RedutionScolariteInput {
 input SalleUpdateInput {
   ID: ID
   name: String
-  sectionId: ID
-  cycleId: String
   montantPensionSalle: Float
   niveauEtudeId: ID
   anneeAcademiqueId: String
@@ -1076,7 +1073,7 @@ input TrancheCreateInput {
 
 input ParameterCreateInput {
   ID: String
-  name: String
+  parameterName: String
   phoneNumber: String
   emailAddress: String
   contry: String
@@ -1113,7 +1110,11 @@ input PensionSalleCreateInput {
   anneeAcademiqueId: ID
   name: String
   description: String
+<<<<<<< HEAD
   montantPension: Float
+=======
+  montantPension: Float!
+>>>>>>> e6ca72e1c418a49f9188a391cdc55b4d1fe46cd8
   dateLine: ID
 }
 

@@ -140,14 +140,13 @@ const RouteName = {
     EleveEdit:{ 
       path:'/eleves/ajoutereleve'
     },
-    Personnel: {
-      path: '/personnel',
+    // Personnel: {
+    //   path: '/personnel',
       // type: AuthRoute.Public,
       // platforms: [Platform.Main]
-    },
+    // },
     ResetPassword:{
     path: '/resetPassword'
-
     },
 
     Bulletin: {

@@ -23,6 +23,7 @@ import { PaySalaryService } from '../paysalary/paysalary.service';
 import { PaginatedResponse, PaginationInput, paginate } from 'src/pagination';
 import { PrimePersonnelPaginatedResponse } from './type/primepersonnelpagination';
 
+
 @Injectable()
 export class PrimePersonnelService {
     constructor(

@@ -52,6 +52,7 @@ import { IoIosAdd } from "react-icons/io";
 const generalSetting = () => {
   const { setAuthToken, authToken } = useAuth();
   const [name, setName] = useState("");
+  const [parameterName, setParameterName] = useState("");
   const [anneeAcademiqueId, setAnneeAcademiqueId] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
   const [emailAddress, setEmailAddress] = useState("");
@@ -89,8 +90,6 @@ const generalSetting = () => {
     console.log(dataSchoolParameter?.findAllparameters);
   });
 
-  
-
   const addAnneeAcademique = async () => {
     await createAnneeAccademique({
       variables: {
@@ -124,7 +123,7 @@ const generalSetting = () => {
     await createSchoolParameters({
       variables: {
         input: {
-          name: name,
+          parameterName: parameterName,
           phoneNumber: phoneNumber,
           emailAddress: emailAddress,
           contry: contry,
@@ -132,6 +131,11 @@ const generalSetting = () => {
           anneeAcademiqueId: anneeAcademiqueId,
           schoolCurrency: schoolCurrency,
         },
+        refetchQueries: [
+          {
+            query: GET_ALL_SCHOOL_PARAMETER,
+          },
+        ],
       },
     });
     refetch();
@@ -147,7 +151,11 @@ const generalSetting = () => {
     setPostalBox("");
     setEmailAddress("");
     setSchoolCurrency("");
+  
   };
+
+
+ 
   return (
     <DefaultLayout>
       <Box pt="70px" width="full" background="colors.tertiary" pb={"40px"}>
@@ -220,14 +228,15 @@ const generalSetting = () => {
                     // width={"540px"}
                     textAlign={"center"}
                     onChange={handleFileChange}
+                    isRequired
                   />
                 </FormControl>
               </CardBody>
               <CardFooter mt="-20px" ml="auto">
-                <Button colorScheme="blue">Mettre à jour</Button>
+                <Button colorScheme="blue" type="submit">Mettre à jour</Button>
               </CardFooter>
             </Card>
-            <Card align="center" width={"500px"} bg="white" mt="40px" ml="50px">
+            <Card align="center" width={"500px"} bg="white" mt="40px" ml="50px" as={"form"} onSubmit={addShoolParameters}                              >
               <CardHeader
                 fontWeight={"bold"}
                 // ml="-240px"
@@ -237,6 +246,7 @@ const generalSetting = () => {
               >
                 Mettre à jour les informations de l'ecole
               </CardHeader>
+             
               <CardBody>
                 <FormControl>
                   <FormLabel fontSize={"lg"}>Nom de l'ecole</FormLabel>
@@ -244,9 +254,10 @@ const generalSetting = () => {
                     // size={"lg"}
                     type="text"
                     width={"400px"}
-                    value={name}
-                    name="name"
-                    onChange={(event) => setName(event.target.value)}
+                    value={parameterName}
+                    name="parameterName"
+                    onChange={(event) => setParameterName(event.target.value)}
+                    isRequired
                   />
                 </FormControl>
                 <FormControl mt="17px">
@@ -255,6 +266,10 @@ const generalSetting = () => {
                     // size={"lg"}
                     type="text"
                     width={"400px"}
+                    name="postalBox"
+                    value={postalBox}
+                    onChange={(event) => setPostalBox(event.target.value)}
+                    isRequired
                   />
                 </FormControl>
                 <FormControl mt="17px">
@@ -265,6 +280,7 @@ const generalSetting = () => {
                     value={phoneNumber}
                     name="phoneNumber"
                     onChange={(event) => setPhoneNumber(event.target.value)}
+                    isRequired
                   />
                 </FormControl>
                 <FormControl mt="17px">
@@ -275,6 +291,7 @@ const generalSetting = () => {
                     value={emailAddress}
                     name="emailAddress"
                     onChange={(event) => setEmailAddress(event.target.value)}
+                    isRequired
                   />
                 </FormControl>
                 <FormControl mt="17px">
@@ -287,6 +304,7 @@ const generalSetting = () => {
                     onChange={(event) =>
                       setAnneeAcademiqueId(event.target.value)
                     }
+                    isRequired
                   >
                     {dataAnneeAcademique &&
                       dataAnneeAcademique.findAllAnnerAccademique.map(
@@ -306,6 +324,7 @@ const generalSetting = () => {
                     name="contry"
                     value={contry}
                     onChange={(event) => setContry(event.target.value)}
+                    isRequired
                   />
                 </FormControl>
                 <FormControl mt="17px">
@@ -316,11 +335,12 @@ const generalSetting = () => {
                     name="schoolCurrency"
                     value={schoolCurrency}
                     onChange={(event) => setSchoolCurrency(event.target.value)}
+                    isRequired
                   />
                 </FormControl>
               </CardBody>
               <CardFooter mt="-20px" marginLeft={"auto"}>
-                <Button colorScheme="blue" onClick={addShoolParameters}>
+                <Button colorScheme="blue" type="submit">
                   Mettre à jour
                 </Button>
               </CardFooter>
@@ -359,7 +379,7 @@ const generalSetting = () => {
                         >
                           <Box display={{ md: "flex" }} gap={3}>
                             <Text fontWeight={"bold"}>Nom :</Text>
-                            <Text>{parameter.name}</Text>
+                            <Text>{parameter.parameterName}</Text>
                           </Box>
                           <Box display={{ md: "flex" }} gap={3}>
                             <Text fontWeight={"bold"}>Telephone :</Text>
@@ -455,7 +475,7 @@ const generalSetting = () => {
         </Box>
 
         {/* CREATION D'UNE ANNEE ACADEMIQUE */}
-        <Box as="form">
+        <Box>
           <AlertDialog
             motionPreset="slideInBottom"
             // leastDestructiveRef={cancelRef}
@@ -465,32 +485,35 @@ const generalSetting = () => {
           >
             <AlertDialogOverlay />
             <AlertDialogContent>
-              <AlertDialogHeader textAlign={"center"} mt={"10px"}>
-                Ajoutez une anneee academique
-              </AlertDialogHeader>
-              <AlertDialogCloseButton />
-              <AlertDialogBody>
-                <Box>
-                  <FormControl>
-                    <FormLabel>Nom</FormLabel>
-                    <Input
-                      type={"text"}
-                      name="name"
-                      placeholder="Annee academique"
-                      onChange={(event) => setName(event.target.value)}
-                      value={name}
-                    />
-                  </FormControl>
-                </Box>
-              </AlertDialogBody>
-              <AlertDialogFooter>
-                <Button ref={cancelRef} onClick={onClosses} colorScheme="red">
-                  annuler
-                </Button>
-                <Button colorScheme="green" ml={3} onClick={addAnneeAcademique}>
-                  Creer
-                </Button>
-              </AlertDialogFooter>
+              <Box as="form" onSubmit={addAnneeAcademique}>
+                <AlertDialogHeader textAlign={"center"} mt={"10px"}>
+                  Ajoutez une anneee academique
+                </AlertDialogHeader>
+                <AlertDialogCloseButton />
+                <AlertDialogBody>
+                  <Box>
+                    <FormControl>
+                      <FormLabel>Nom</FormLabel>
+                      <Input
+                        type={"text"}
+                        name="name"
+                        placeholder="Annee academique"
+                        onChange={(event) => setName(event.target.value)}
+                        value={name}
+                        isRequired
+                      />
+                    </FormControl>
+                  </Box>
+                </AlertDialogBody>
+                <AlertDialogFooter>
+                  <Button ref={cancelRef} onClick={onClosses} colorScheme="red">
+                    annuler
+                  </Button>
+                  <Button colorScheme="green" ml={3} type="submit">
+                    Creer
+                  </Button>
+                </AlertDialogFooter>
+              </Box>
             </AlertDialogContent>
           </AlertDialog>
         </Box>

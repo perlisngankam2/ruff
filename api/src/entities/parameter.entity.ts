@@ -13,7 +13,7 @@ export class Parameter {
 
   @Field({ nullable: true })
   @Property({ nullable: true })
-  name!: string;
+  parameterName!: string;
 
   @Field({ nullable: true })
   @Property({ nullable: true })
@@ -40,7 +40,7 @@ export class Parameter {
   year!: string;
  
   @ManyToOne(() => AnneeAccademique, {
-    nullable: true,
+    nullable: false,
     // onDelete: "CASCADE"
   })
   anneeacademique!: IdentifiedReference<AnneeAccademique> | null;

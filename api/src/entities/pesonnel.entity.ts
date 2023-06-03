@@ -45,15 +45,15 @@ export class Personnel {
   @PrimaryKeyUuid()
   id!: string;
 
-  @Field({ nullable: true })
+  @Field({ nullable: false })
   @Property({ nullable: true })
   firstName!: string;
 
-  @Field({ nullable: true })
+  @Field({ nullable: false })
   @Property({ nullable: true })
   lastName!: string;
   
-  @Field({ nullable: true })
+  @Field({ nullable: false })
   @Property({unique:true})
   phoneNumber!: string;
   
@@ -61,12 +61,12 @@ export class Personnel {
   // @Property({ nullable: true })
   // salary!: number;
 
-  @Field({ nullable: true })
-  @Property({ nullable: true })
+  @Field({ nullable: false })
+  @Property({ nullable: false })
   situationMatrimonial!: string;
 
-  @Field({ nullable: true })
-  @Property({ nullable: true })
+  @Field({ nullable: false })
+  @Property({ nullable: false })
   sexe!: string;
 
   @Field({ nullable: true })
@@ -74,10 +74,10 @@ export class Personnel {
     items: () => Role,
     default: Role.ADMIN,
   })
-  @Unique()
+  // @Unique()
   fonction!: Role;
 
-  @Field({ nullable: true })
+  @Field({ nullable: false })
   @Enum({
     items: () => Status,
     default: Status.PERMANENT,
@@ -103,8 +103,8 @@ export class Personnel {
   // @Property({ nullable: true })
   // matricule!: string;
 
-  @Field({ nullable: true})
-  @Property({ nullable: true })
+  @Field({ nullable: false})
+  @Property({ nullable: false })
   childNumber!: number;
 
   // @Field({nullable: true})
@@ -173,5 +173,17 @@ export class Personnel {
 
   @OneToMany(() => PaySalary, paysalary => paysalary.personnel)
   paysalary = new Collection<PaySalary>(this);
+
+  // @Field(() => ID, { nullable: true })
+  // @Property({ persist: false })
+  // get categoryId() {
+  //   return `${this.category.id}`;
+  // }
+
+  // @Field(() => ID, { nullable: true })
+  // @Property({ persist: false })
+  // get categoryName(): string | null {
+  //   return this.category? `${this.category.getEntity().nom}` : null;
+  // }
 
 }

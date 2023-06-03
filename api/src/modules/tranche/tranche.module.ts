@@ -8,6 +8,8 @@ import { ParamaterModule } from '../parameter/parameter.module';
 import { StudentModule } from '../student/student.module';
 import { TrancheStudentModule } from '../tranche-student/tranche-student.module';
 import { PensionSalleModule } from '../pensionsalle/pensionsalle.module';
+import { RolesGuard } from '../auth/guards/roles.guard';
+import { UserModule } from '../user/user.module';
 
 
 @Module({
@@ -16,10 +18,11 @@ import { PensionSalleModule } from '../pensionsalle/pensionsalle.module';
         ParamaterModule,
         forwardRef(() =>StudentModule),
         TrancheStudentModule,
-        PensionSalleModule
+        PensionSalleModule,
+        UserModule,
      
     ],
-    providers:[TrancheService,TrancheResolver],
+    providers:[TrancheService,TrancheResolver, RolesGuard],
     exports:[TrancheService]
 })
 export class TrancheModule {}

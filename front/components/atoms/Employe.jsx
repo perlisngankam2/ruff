@@ -16,7 +16,8 @@ import {
   Text,
   VStack,
   useDisclosure,
-  AlertDialogCloseButton
+  AlertDialogCloseButton,
+  useToast
 } from "@chakra-ui/react";
 
 import Routes from "../../modules/routes";
@@ -35,76 +36,74 @@ import { DELETE_PERSONNEL } from "../../graphql/Mutation";
 // import { GetStaticPaths } from "next/types";
 
 const Employee = (props) => {
-
   const router = useRouter();
-  const cancelRef = React.useRef()
-  const {data:dataPersonnel, loading, error} = useQuery(GET_ALL_PERSONNELS)
+  const toast = useToast()
+  const cancelRef = React.useRef();
+  const {
+    data: dataPersonnel,
+    loading,
+    error,
+    refetch,
+  } = useQuery(GET_ALL_PERSONNELS);
   const [deletePersonnel] = useMutation(DELETE_PERSONNEL);
   const [personnel, setPersonnel] = useState([]);
   const { isOpen, onToggle, onClose, onOpen } = useDisclosure();
-  
 
-  useEffect (() => {
-    setPersonnel(dataPersonnel)
-    console.log(dataPersonnel) 
-}, [dataPersonnel])
- 
-  if (loading) return <Text>Chargement en cour...</Text>
-  if (error) return <Text>Une erreur s'est produite!</Text>
-  
-const removePersonnel = async(id) => {
+  useEffect(() => {
+    setPersonnel(dataPersonnel);
+    console.log(dataPersonnel);
+  }, [dataPersonnel]);
+
+  if (loading) return <Text>Chargement en cour...</Text>;
+  if (error) return <Text>Une erreur s'est produite!</Text>;
+
+  const removePersonnel = async (id) => {
     await deletePersonnel({
-        variables: {id},
-        
-        refetchQueries:[{
-          query: GET_ALL_PERSONNELS
-        }]
-    })
-  }
- 
-  return(
-          <Box
-            bg={"gray.200"}
-            width={"200px"}
-            rounded="md"
-          > 
-              <Center>
-                {props.sexe.toLowerCase() === "masculin" ? 
-                 <Avatar
-                  size="lg"
-                  mt={["10px","10px", "10px" ]}
-                  src="https://img.freepik.com/vecteurs-premium/profil-avatar-homme-icone-ronde_24640-14044.jpg?w=2000"
-                />
-             :
-                <Avatar
-                  size="lg"
-                  mt={["10px","10px", "10px" ]}
-                  src="https://img.freepik.com/premium-vector/woman-avatar-profile-round-icon_24640-14042.jpg?size=626&ext=jpg"
-                /> }
-              </Center>
-              <Text 
-                textAlign="center" 
-                fontSize="0.85em" 
-                m={["8px", "8px", "8px"]}
-              >
-                {props.firstName}
-              </Text>
-              <Text 
-                textAlign="center" 
-                fontSize="0.85em" 
-                m={["8px", "8px", "8px"]}
-              >
-                {props.lastName}
-              </Text>
-              <Text 
-                textAlign="center"
-                fontWeight="bold" 
-                fontSize="0.85em"
-                mb={"3px"}
-              >
-                {props.fonction}
-              </Text>
-              {/* <Text 
+      variables: { id },
+
+      refetchQueries: [
+        {
+          query: GET_ALL_PERSONNELS,
+        },
+      ],
+    });
+    refetch();
+    toast({
+      title: "Suppression du personnel.",
+      description: "Suppresion reussit.",
+      status: "success",
+      duration: 3000,
+      isClosable: true,
+    });
+  };
+
+  return (
+    <Box bg={"gray.200"} width={"200px"} rounded="md">
+      <Center>
+        {props.sexe.toLowerCase() === "masculin" ? (
+          <Avatar
+            size="lg"
+            mt={["10px", "10px", "10px"]}
+            src="https://img.freepik.com/vecteurs-premium/profil-avatar-homme-icone-ronde_24640-14044.jpg?w=2000"
+          />
+        ) : (
+          <Avatar
+            size="lg"
+            mt={["10px", "10px", "10px"]}
+            src="https://img.freepik.com/premium-vector/woman-avatar-profile-round-icon_24640-14042.jpg?size=626&ext=jpg"
+          />
+        )}
+      </Center>
+      <Text textAlign="center" fontSize="0.85em" m={["8px", "8px", "8px"]}>
+        {props.firstName}
+      </Text>
+      <Text textAlign="center" fontSize="0.85em" m={["8px", "8px", "8px"]}>
+        {props.lastName}
+      </Text>
+      <Text textAlign="center" fontWeight="bold" fontSize="0.85em" mb={"3px"}>
+        {props.fonction}
+      </Text>
+      {/* <Text 
                 textAlign="center" 
                 fontWeight="bold" 
                 fontSize="0.85em"
@@ -112,96 +111,90 @@ const removePersonnel = async(id) => {
               >
                 {props.situationMatrimonial}
               </Text> */}
-              <Flex justify="center" gap="4">
-                <Link 
-                  href={{
-                    pathname: Routes.PersonnelDetails?.path || '',
-                    query: {id: props.id}
-                  }}
-                >
-                  {console.log(props.id)}
-                  <Icon
-                    as={BiDetail}
-                    boxSize="40px"
-                    p="3"
-                    bg="purple.100"
-                    rounded="full"
-                    _hover={{background:"green.300"}}
-                  />
-                </Link>
-                <Link href="/personnel/modifierpersonnel">
-                  <Icon
-                    as={FiEdit}
-                    boxSize="40px"
-                    p="3"
-                    bg="blue.100"
-                    rounded="full"
-                    _hover={{background:"blue.300"}}
+      <Flex justify="center" gap="4">
+        <Link
+          href={{
+            pathname: Routes.PersonnelDetails?.path || "",
+            query: { id: props.id },
+          }}
+        >
+          {console.log(props.id)}
+          <Icon
+            as={BiDetail}
+            boxSize="40px"
+            p="3"
+            bg="purple.100"
+            rounded="full"
+            _hover={{ background: "green.300" }}
+          />
+        </Link>
+        <Link href="/personnel/modifierpersonnel">
+          <Icon
+            as={FiEdit}
+            boxSize="40px"
+            p="3"
+            bg="blue.100"
+            rounded="full"
+            _hover={{ background: "blue.300" }}
+          />
+        </Link>
+        <Box href="#">
+          <Icon
+            as={MdDelete}
+            boxSize="40px"
+            p="3"
+            bg="red.500"
+            rounded="full"
+            color="white"
+            onClick={onToggle}
+            _hover={{ background: "red" }}
+          />
+          <Box>
+            <AlertDialog
+              isOpen={isOpen}
+              leastDestructiveRef={cancelRef}
+              onClose={onClose}
+              isCentered
+            >
+              <AlertDialogOverlay
+              // alignSelf={"center"}
+              >
+                <AlertDialogContent width={"380px"}>
+                  <AlertDialogHeader
+                    fontSize="lg"
+                    fontWeight="bold"
+                    textAlign={"center"}
+                    mt="5px"
+                  >
+                    Confirmation de suppression
+                  </AlertDialogHeader>
+                  <AlertDialogCloseButton />
 
-                  />
-                </Link>
-                <Box href="#">
-                  <Icon
-                    as={MdDelete}
-                    boxSize="40px"
-                    p="3"
-                    bg="red.500"
-                    rounded="full"
-                    color="white"
-                    onClick={onToggle}
-                    _hover={{background:"red"}}
+                  <AlertDialogBody textAlign={"center"}>
+                    Voulez-vous supprimer cet Personnel?
+                  </AlertDialogBody>
 
-                  />
-                    <Box> 
-                      <AlertDialog
-                        isOpen={isOpen}
-                        leastDestructiveRef={cancelRef}
-                        onClose={onClose}
-                        isCentered
-                      >
-                          <AlertDialogOverlay
-                            // alignSelf={"center"}
-                          >
-                            <AlertDialogContent
-                            width={"380px"}
-                            >
-                              <AlertDialogHeader 
-                                fontSize='lg' 
-                                fontWeight='bold'
-                                textAlign={"center"}
-                                mt="5px"
-                                >
-                                Confirmation de suppression
-                              </AlertDialogHeader>
-                              <AlertDialogCloseButton/>
-
-                              <AlertDialogBody textAlign={"center"}>
-                              Voulez-vous supprimer cet Personnel?
-                              </AlertDialogBody>
-
-                              <AlertDialogFooter>
-                                <Button 
-                                  ref={cancelRef} 
-                                  onClick={onClose}
-                                  colorScheme="red"
-                                >
-                                  Annuler 
-                                </Button>
-                                <Button 
-                                  colorScheme='green' 
-                                  onClick={() => {removePersonnel(props.id)}}
-                                  ml={3}
-                                >
-                                  Supprimer
-                                </Button>
-                              </AlertDialogFooter>
-                            </AlertDialogContent>
-                          </AlertDialogOverlay>
-                      </AlertDialog>
-                    </Box>
-                </Box>
-              </Flex>
-            </Box>
+                  <AlertDialogFooter>
+                    <Button ref={cancelRef} onClick={onClose} colorScheme="red">
+                      Annuler
+                    </Button>
+                    <Button
+                      colorScheme="green"
+                      onClick={() => {
+                        removePersonnel(props.id);
+                      }}
+                      ml={3}
+                    >
+                      Supprimer
+                    </Button>
+                  </AlertDialogFooter>
+                </AlertDialogContent>
+              </AlertDialogOverlay>
+            </AlertDialog>
+          </Box>
+        </Box>
+      </Flex>
+    </Box>
   );
 };
 

@@ -126,7 +126,7 @@ const Profil = () => {
   };
 
   const { data: dataPersonnel } = useQuery(GET_ALL_PERSONNELS);
-  const { data: dataPrime } = useQuery(GET_PRIME);
+  const { data: dataPrime, refetch } = useQuery(GET_PRIME);
 
   const [createPrimePersonnel] = useMutation(CREATE_PRIME_PERSONNEL);
   const [createRetenuePersonnel] = useMutation(CREATE_RETENUE_PERSONNEL);
@@ -159,11 +159,12 @@ const Profil = () => {
         },
       },
     });
+    refetch();
     onClose();
     // console.log(userData)
     toast({
       title: "Succès.",
-      description: "La prime a été crée .",
+      description: "La prime a été attribueé .",
       status: "success",
       duration: 3000,
       isClosable: true,
@@ -190,11 +191,12 @@ const Profil = () => {
         },
       },
     });
+    refetch();
     onClosses1();
     // console.log(userData)
     toast({
       title: "Succès.",
-      description: "La retenue a été appliquée .",
+      description: "La retenue a été attribueé .",
       status: "success",
       duration: 3000,
       isClosable: true,
@@ -205,12 +207,11 @@ const Profil = () => {
 
   console.log(moisPayes);
 
-  useEffect(()=>{
-    if(!authToken){
-      router.back()
+  useEffect(() => {
+    if (!authToken) {
+      router.back();
     }
-  },[authToken])
-
+  }, [authToken]);
 
   useEffect(() => {
     console.log(dataPersonnelId);
@@ -246,12 +247,7 @@ const Profil = () => {
                   >
                     {dataPersonnelId.findOnePersonnel.fonction}
                   </Text>
-                  <Box 
-                    background="blue.500" 
-                    p="3" 
-                    rounded="md" 
-                    color="white"
-                  >
+                  <Box background="blue.500" p="3" rounded="md" color="white">
                     <Text>
                       Nom
                       {/* {t('pages.personnel.ajouterpersonnel.firstName')} */}:{" "}
@@ -278,11 +274,7 @@ const Profil = () => {
                       {dataPersonnelId.findOnePersonnel.sexe}
                     </Text>
                   </Box>
-                  <Box 
-                    background="white" 
-                    p="3" 
-                    rounded="md"
-                  >
+                  <Box background="white" p="3" rounded="md">
                     <Text>
                       Date de naissance :
                       {dataPersonnelId.findOnePersonnel.dateOfBirth}
@@ -298,6 +290,11 @@ const Profil = () => {
                     <Text>
                       {" "}
                       Statut: {dataPersonnelId.findOnePersonnel.status}
+                    </Text>
+                    <Text>
+                      {" "}
+                      Catégorie: 
+                      {/* {dataPersonnelId.findOnePersonnel.categoryName} */}
                     </Text>
                     {/* <Text> Section: Anglophone</Text>
               <Text> Classe: CM1</Text> */}
@@ -362,8 +359,7 @@ const Profil = () => {
                   // color="white"
                   onClick={onOpen}
                   w="110px"
-                 _hover={{background:"green.300"}}
-
+                  _hover={{ background: "green.300" }}
                 >
                   prime
                 </Button>
@@ -375,20 +371,16 @@ const Profil = () => {
                 >
                   <AlertDialogOverlay>
                     <AlertDialogContent>
-                      <AlertDialogHeader 
-                        fontSize="sm" 
-                        fontWeight="base" 
-                        mt="0"
-                      >
+                      <AlertDialogHeader fontSize="sm" fontWeight="base" mt="0">
                         <Box
-                          // bg={"colors.secondary"}
+                        // bg={"colors.secondary"}
                         >
                           <Heading
                             textAlign={"center"}
                             fontSize={["25px", "25px", "25px"]}
                             p="2"
                           >
-                            Attribuer une prime 
+                            Attribuer une prime
                           </Heading>
                         </Box>
                       </AlertDialogHeader>
@@ -435,6 +427,7 @@ const Profil = () => {
                                   setPrimeId(event.target.value)
                                 }
                                 value={primeId}
+                                isRequired
                               >
                                 {dataPrime &&
                                   dataPrime.findAllprime
@@ -462,13 +455,10 @@ const Profil = () => {
                                 type="month"
                                 // id="dateOfPrime"
                                 name="dateOfPrime"
-                                // placeholder="{formattedDate}"
-                                // bg='white'
-
-                                // borderColor="purple.100"
                                 onChange={handleMoisPaieChange}
                                 // disabled={moisPayes.includes(startDate)}
                                 value={startDate}
+                                isRequired
                                 // // ref={dateOfStartWorkRef}
                               />
                             </FormControl>
@@ -569,8 +559,7 @@ const Profil = () => {
                   // color="black"
                   onClick={onOpenns1}
                   w="110px"
-                 _hover={{background:"red.300"}}
-
+                  _hover={{ background: "red.300" }}
                 >
                   retenue
                 </Button>
@@ -585,8 +574,7 @@ const Profil = () => {
                     <AlertDialogContent>
                       <AlertDialogHeader fontSize="sm" fontWeight="base" mt="0">
                         <Box
-                          // bg={"colors.secondary"}
-                         
+                        // bg={"colors.secondary"}
                         >
                           <Heading
                             textAlign={"center"}
@@ -640,6 +628,7 @@ const Profil = () => {
                                   setRetenuId(event.target.value)
                                 }
                                 value={retenuId}
+                                isRequired
                               >
                                 {dataRetenue &&
                                   dataRetenue.findAllretenusalarial
@@ -694,6 +683,7 @@ const Profil = () => {
                                 // borderColor="purple.100"
                                 onChange={handleMoisPaieChange1}
                                 value={startDate1}
+                                isRequired
                                 // // ref={dateOfStartWorkRef}
                               />
                             </FormControl>

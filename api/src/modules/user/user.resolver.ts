@@ -27,6 +27,8 @@ export class UserResolver {
   constructor(private readonly userService: UserService) {}
 
   @Mutation(() => User)
+  // @UseGuards(JwtAuthGuard,RolesGuard)
+  // @Roles(Role.ADMIN)
   createuser(@Args('createUser') createUserInput: UserCreateInput) {
     return this.userService.create(createUserInput);
   }
@@ -37,8 +39,8 @@ export class UserResolver {
   // }
 
   @Query(() => [User])
-  @UseGuards(JwtAuthGuard,RolesGuard)
-  @Roles(Role.ADMIN)
+  // @UseGuards(JwtAuthGuard,RolesGuard)
+  // @Roles(Role.ADMIN)
   findAlluser() {
     return this.userService.getAll();
   }

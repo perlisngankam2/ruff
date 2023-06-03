@@ -532,11 +532,11 @@ type StudentStatistics {
   name: String!
   matricle: String!
   section: String!
-  amountExpected: Float!
-  amountPaid: Float!
-  collectionRate: Float!
-  restToPay: Float!
-  rateArrears: Float!
+  amountExpected: Float
+  amountPaid: Float
+  collectionRate: Float
+  restToPay: Float
+  rateArrears: Float
 }
 
 type SpecialStudentStatistics {
@@ -596,7 +596,6 @@ type Query {
   AmountrExpectedByTranche(studentid: String!): [Float!]!
   getClassfeebyStudent(studentid: String!): Float!
   getClassfeeofStudent(studentid: String!): [Tranche!]!
-  getAllForUseAnglophoneStudent: [Student!]!
   findAlllocalistaion: [Localisation!]!
   localisation(id: String!): Localisation!
   findAllcategorieeleve: [CategorieEleve!]!
@@ -1114,7 +1113,7 @@ input PensionSalleCreateInput {
   anneeAcademiqueId: ID
   name: String
   description: String
-  montantPension: Float! = 0
+  montantPension: Float
   dateLine: ID
 }
 

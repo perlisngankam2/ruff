@@ -82,7 +82,7 @@ export class SalleService {
 
       async NumberofStudentsSalleAnglophoneSection(){
         const salles= this.salleRepository.findAll({
-          populate:['student','cycle','niveau','niveau.cycle.section']
+          populate:['student','cycle','niveau','niveau.cycle.section','pensionsalle']
         })
         return (await salles).filter(a=> a.niveau.getEntity().cycle.getEntity().section.getEntity().name==='Anglophone').map(a=>a.student.count()).reduce(function(a,b){return a+b})
       }

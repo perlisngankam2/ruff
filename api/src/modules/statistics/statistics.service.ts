@@ -60,7 +60,7 @@ export class StatisticsService {
       const pensions = student.pension.toArray();
       const a= student.salle.getEntity().pensionsalle.getItems().map(a=>a.montantPension)
       console.log('================>'+a)
-      const amountExpected =a[a.length-1];
+      const amountExpected =a[a.length-1]===0?0:a[a.length-1];
       const section = student.salle.getEntity().niveau.getEntity().cycle.getEntity().section.getEntity().name
       console.log('=========================>'+section)
       console.log('=============>'+amountExpected)
@@ -68,7 +68,7 @@ export class StatisticsService {
         (sum, pension) => sum + pension.montantPension,
         0,
       );
-      const collectionRate = amountExpected === 0 ? 0 : (amountPaid / amountExpected) * 100;
+      const collectionRate = amountExpected === 0  ? 0 : (amountPaid / amountExpected) * 100;
       const restToPay = amountExpected - amountPaid;
       const rateArrears = amountExpected === 0 ? 0 : (restToPay / amountExpected) * 100;
 
@@ -170,13 +170,13 @@ export class StatisticsService {
 
   async getLastThreeStudenstAdmissionFee(){
     const a= this.getallStudentswhohaveCompletedAdmissionFee()
-    const list: Student[] = [];
-    for (let i = (await a).length - 3; i < (await a).length; i++) {
-      if (i >= 0) {
-        list.push(a[i]);
-      }
-    }
-    return list
+    // const list: Student[] = [];
+    // for (let i = (await a).length - 3; i < (await a).length; i++) {
+    //   if (i >= 0) {
+    //     list.push(a[i]);
+    //   }
+    // }
+    return (await a).slice(-3)
   }
 
   async getallStudentswhohaveCompletedSecondInstalment(){

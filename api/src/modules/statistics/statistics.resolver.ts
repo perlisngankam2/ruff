@@ -793,8 +793,8 @@ TOTAL_SECOND_TAUX_RECOUVRIR
   }
 
   @Query(() => [Student])
-  @UseGuards(JwtAuthGuard,RolesGuard)
-  @Roles(Role.FONDATEUR)
+  // @UseGuards(JwtAuthGuard,RolesGuard)
+  // @Roles(Role.FONDATEUR)
   async getLastThreeStudenstAdmissionFee(){
     return await this.statisticsService.getLastThreeStudenstAdmissionFee()
   }

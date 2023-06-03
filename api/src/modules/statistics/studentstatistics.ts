@@ -15,19 +15,19 @@ export class StudentStatistics {
   @Field()
   section: string;
 
-  @Field(() => Float)
+  @Field({nullable:true})
   amountExpected: number;
 
-  @Field(() => Float)
+  @Field({nullable:true})
   amountPaid: number;
 
-  @Field(() => Float)
+  @Field({nullable:true})
   collectionRate: number;
 
-  @Field(() => Float)
+  @Field({nullable:true})
   restToPay: number;
 
-  @Field(() => Float)
+  @Field({nullable:true})
   rateArrears: number;
 }
 

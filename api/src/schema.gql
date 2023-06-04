@@ -182,7 +182,7 @@ type AvanceTranche {
   name: String
   description: String
   dateLine: DateTime
-  year: String
+  anneAcademique: String
   montant: Float!
   reste: Float!
   complete: Boolean!
@@ -209,14 +209,14 @@ type Tranche {
   dateLine: DateTime
   montant: Float
   priority: Float
-  year: String
+  anneAcademique: String
   salleid: ID
 }
 
 type TrancheStudent {
   id: ID!
   name: String
-  year: String
+  anneAcademique: String
   description: String
   montant: Float
   complete: Boolean!
@@ -392,6 +392,13 @@ type UserPaginatedResponse {
   hasMore: Boolean!
 }
 
+type SectionCycle {
+  id: ID!
+  description: String
+  cycleid: ID!
+  sectionid: ID!
+}
+
 type StudentPaginatedResponse {
   items: [Student!]!
   total: Int!
@@ -500,13 +507,6 @@ type TrancheStudentPaginatedResponse {
   hasMore: Boolean!
 }
 
-type SectionCycle {
-  id: ID!
-  description: String
-  cycleid: ID!
-  sectionid: ID!
-}
-
 type LoginResponse {
   access_token: String!
   user: User!
@@ -596,6 +596,7 @@ type Query {
   AmountrExpectedByTranche(studentid: String!): [Float!]!
   getClassfeebyStudent(studentid: String!): Float!
   getClassfeeofStudent(studentid: String!): [Tranche!]!
+  getAllForUseAnglophoneStudent: [Student!]!
   findAlllocalistaion: [Localisation!]!
   localisation(id: String!): Localisation!
   findAllcategorieeleve: [CategorieEleve!]!
@@ -605,6 +606,7 @@ type Query {
   findAlltranche: [Tranche!]!
   tranche(id: String!): Tranche!
   findByStudentRestTranche(studentid: String!): [TrancheStat!]!
+  findByStudentAmountReceivedTranche(studentid: String!): [TrancheStat!]!
   findAllparameters: [Parameter!]!
   findOneparameters(id: String!): Parameter!
   findAllAnnerAccademique: [AnneeAccademique!]!
@@ -1110,11 +1112,7 @@ input PensionSalleCreateInput {
   anneeAcademiqueId: ID
   name: String
   description: String
-<<<<<<< HEAD
-  montantPension: Float
-=======
   montantPension: Float!
->>>>>>> e6ca72e1c418a49f9188a391cdc55b4d1fe46cd8
   dateLine: ID
 }
 
@@ -1122,7 +1120,7 @@ input AvanceTrancheCreateInput {
   ID: String
   trancheId: ID
   studentId: ID
-  year: String
+  anneeAcademique: String
   name: String
   description: String
   montant: Float

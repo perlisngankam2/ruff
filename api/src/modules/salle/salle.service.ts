@@ -37,14 +37,6 @@ export class SalleService {
     // ? await this.niveauEtude.findByOne({id:input.niveau.ID})
     // : await this.niveauEtude.create(input.niveau)
 
-<<<<<<< HEAD
-      async NumberofStudentsSalleAnglophoneSection(){
-        const salles= this.salleRepository.findAll({
-          populate:['student','cycle','niveau','niveau.cycle.section','pensionsalle']
-        })
-        return (await salles).filter(a=> a.niveau.getEntity().cycle.getEntity().section.getEntity().name==='Anglophone').map(a=>a.student.count()).reduce(function(a,b){return a+b})
-      }
-=======
     wrap(salle).assign(
       {
         name: input.name,
@@ -61,7 +53,6 @@ export class SalleService {
         em: this.em,
       },
     );
->>>>>>> e6ca72e1c418a49f9188a391cdc55b4d1fe46cd8
 
     await this.salleRepository.persistAndFlush(salle);
     return salle;
@@ -166,7 +157,7 @@ export class SalleService {
     return salle;
   }
   async delete(id: string) {
-    const a = this.findById(id);
+    const a =await this.findById(id);
     await this.salleRepository.nativeDelete(await a);
     if (!a) {
       throw Error('not found');

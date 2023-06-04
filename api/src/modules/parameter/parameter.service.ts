@@ -21,12 +21,12 @@ import { ParameterUpdateInput } from './dto/parameter.update';
 @Entity()
 @ObjectType()
 export class ParameterService {
-  // constructor(
-  //     @InjectRepository(Parameter)
-  //     private parameterRepository: EntityRepository<Parameter>,
-  //     private academicservice: AnneeAccademiqueService,
-  //     private  em: EntityManager,
-  //   ) {}
+  constructor(
+      @InjectRepository(Parameter)
+      private parameterRepository: EntityRepository<Parameter>,
+      private academicservice: AnneeAccademiqueService,
+      private  em: EntityManager,
+    ) {}
 
   //   async create(
   //     input: ParameterCreateInput,
@@ -48,25 +48,26 @@ export class ParameterService {
   //         em:this.em
   //       },
   //     )
-  constructor(
-    @InjectRepository(Parameter)
-    private parameterRepository: EntityRepository<Parameter>,
-    // private academicservice: AnneeAccademiqueService,
-    private em: EntityManager,
-  ) {}
+  // constructor(
+  //   @InjectRepository(Parameter)
+  //   private parameterRepository: EntityRepository<Parameter>,
+  //   // private academicservice: AnneeAccademiqueService,
+  //   private em: EntityManager,
+  // ) {}
 
   async create(input: ParameterCreateInput): Promise<Parameter> {
     const parameter = new Parameter();
+    const anneeAcademique= (await this.academicservice.findByOne(input.anneeAcademiqueId))
     wrap(parameter).assign(
       {
-        year: input.year,
+        // year: input.year,
         parameterName: input.parameterName,
         contry: input.contry,
         phoneNumber: input.phoneNumber,
         postalBox: input.postalBox,
         emailAddress: input.emailAddress,
         schoolCurrency: input.schoolCurrency,
-        anneeacademique: input.anneeAcademiqueId,
+        anneeacademique: anneeAcademique,
       },
       {
         em: this.em,

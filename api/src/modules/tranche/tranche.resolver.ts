@@ -73,4 +73,9 @@ export class TrancheResolver {
   async findByStudentRestTranche(@Args('studentid') studentid: string) {
     return await this.trancheService.findByStudentRestTranche(studentid);
   }
+
+  @Query(() => [TrancheStat])
+  async findByStudentAmountReceivedTranche(@Args('studentid') studentid: string){
+    return await this.trancheService.findByStudentAmountReceivedTranche(studentid);
+  }
 }

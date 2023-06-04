@@ -25,8 +25,8 @@ export class CategoriePersonnelResolver {
   constructor(private readonly categorieService: CategoriePersonnelService) {}
 
   @Mutation(() => CategoriePersonnel)
-  @UseGuards(JwtAuthGuard,RolesGuard)
-  @Roles(Role.PRINCIPAL)
+  // @UseGuards(JwtAuthGuard,RolesGuard)
+  // @Roles(Role.PRINCIPAL)
   async createcategoriepersonnnel(@Args('createCategoriePersonnel') createCatgoriePersonnelInput: CategoriePersonnelCreateInput) {
     return await this.categorieService.create(createCatgoriePersonnelInput);
   }

@@ -43,7 +43,7 @@ export class AvanceTranche {
 
   @Field(() => String, { nullable: true })
   @Property({ nullable: true })
-  year!: string;
+  anneAcademique!: string;
 
   @Field({ defaultValue:0 })
   @Property({ default:0 })

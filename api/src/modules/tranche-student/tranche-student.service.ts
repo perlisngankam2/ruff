@@ -51,7 +51,7 @@ export class TrancheStudentService {
         const anneAcademique = String((await this.avance.findByStudent(input.studentId)).map(async a=>(await a.anneeAcademique.load()).id)[0])
  
         const year = await this.parameterservice.getAll()
-        const annee = year[year.length-1].year
+        const annee = year[year.length-1].anneeAcademiqueName
         wrap(trancheStudent).assign(
             {
             montant: 0.000000,
@@ -61,7 +61,7 @@ export class TrancheStudentService {
             //  regimePaimemnt: input.regimePaiement,
              tranche: tranche.id,
              student: student.id,
-             year: annee
+             anneAcademique: annee
              
              
             },
@@ -130,7 +130,7 @@ export class TrancheStudentService {
     async updatesaveTrancheStudent(input:string){
       const trancheStudent= await this.getAll()
       trancheStudent.forEach((parameter) => {
-          parameter.year= input;
+          parameter.anneAcademique= input;
           this.trancheStudentRepository.persist(parameter);
         });
         
@@ -232,12 +232,12 @@ async saveTranche(studentid:string,trancheid:string){
         
  
         const year = await this.parameterservice.getAll()
-        const annee = year[year.length-1].year
+        const annee = year[year.length-1].anneeAcademiqueName
         wrap(trancheStudent).assign({
             name:input.name || trancheStudent.name,
             montant: input.montant || trancheStudent.montant,
             description: input.description || trancheStudent.description,
-            year: annee
+            anneAcademique: annee
         },
         { em: this.em },
         );
@@ -262,7 +262,7 @@ async saveTranche(studentid:string,trancheid:string){
     }
 
     async delete(id:string){
-    const a = this.findById(id)
+    const a =await this.findById(id)
     await this.trancheStudentRepository.removeAndFlush(await a)
     if(!a){
     throw Error("not found")

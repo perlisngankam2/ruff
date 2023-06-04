@@ -33,7 +33,7 @@ export class StudentService {
     constructor(
         @InjectRepository(Student)
         private studentRepository: EntityRepository<Student>,
-        // private salleService: SalleService,
+        private salleService: SalleService,
         private trancheservice: TrancheService,
         private localisationService: LocalisationService,
         private categorieService: CategorieEleveService,
@@ -55,9 +55,8 @@ export class StudentService {
         //      ? await this.inscriptionService.findByOne({id:input.inscription_id})
         //   : await this.inscriptionService.create(input.inscription)
 
-        // const salle = input.salle
-        //     ? await this.salleService.findByOne({id:input.salle.ID})
-        //     : await this.salleService.create(input.salle)
+        const salle = await this.salleService.findByOne({id:input.salleId})
+        const categorie_eleve =  await this.categorieService.findByOne({id:input.categoryStudentId})
 
         // const user = input.user
         //     ? await this.userService.findByOne({id:input.user.ID})
@@ -74,8 +73,8 @@ export class StudentService {
             birthPlace: input.birthPlace,
             adress:input.adress,
             // transport:input.transport,
-            categorie : input.categoryStudentId,
-            salle: input.salleId,
+            categorie : categorie_eleve,
+            salle: salle,
             fatherFirstName:input.fatherFirstName,
             fatherLastName:input.fatherLastName,
             fatherPhoneNumber:input.fatherPhoneNumber,
@@ -152,15 +151,6 @@ export class StudentService {
 
       async getLastThreeStudents():Promise<Student[]>{
         const a= this.getAll()
-<<<<<<< HEAD
-        // const list: Student[] = [];
-        // for (let i = (await a).length - 3; i < (await a).length; i++) {
-        //   if (i >= 0) {
-        //     list.push(a[i]);
-        //   }
-        // }
-=======
->>>>>>> e6ca72e1c418a49f9188a391cdc55b4d1fe46cd8
         return (await a).slice(-3)
       }
       
@@ -181,22 +171,14 @@ export class StudentService {
 
       async getAllForUseAnglophone(): Promise<Student[]> {
         const a= await this.studentRepository.findAll({
-<<<<<<< HEAD
-          populate: ['salle','pension','salle.niveau','salle.niveau.cycle','salle.niveau.cycle.section','salle.pensionsalle']
-=======
           populate: ['salle','pension','salle.niveau','salle.niveau.cycle','salle.niveau.cycle.section', 'salle.pensionsalle']
->>>>>>> e6ca72e1c418a49f9188a391cdc55b4d1fe46cd8
         })
         return a.filter(async a=>(await (await (await (await a.salle.load()).niveau.load()).cycle.load()).section.load()).name==='Anglophone')
       }
       
       async getAllForUseFrancophone(): Promise<Student[]> {
         const a= await this.studentRepository.findAll({
-<<<<<<< HEAD
-          populate: ['salle','pension','salle.niveau','salle.niveau.cycle','salle.niveau.cycle.section','salle.pensionsalle']
-=======
           populate: ['salle','pension','salle.niveau','salle.niveau.cycle','salle.niveau.cycle.section', 'salle.pensionsalle']
->>>>>>> e6ca72e1c418a49f9188a391cdc55b4d1fe46cd8
         })
         return a.filter(async a=>(await (await (await (await a.salle.load()).niveau.load()).cycle.load()).section.load()).name=='Francophone')
       }
@@ -260,7 +242,7 @@ export class StudentService {
 
       
     async delete(id:string){
-      const a = this.findById(id)
+      const a = await this.findById(id)
       await this.studentRepository.removeAndFlush(await a)
       if(!a){
       throw Error("not found")
@@ -288,19 +270,6 @@ export class StudentService {
       }
 
       
-<<<<<<< HEAD
-    async getclassfeebystudent(studentid:string){
-      const students =  await this.studentRepository.findAll({
-        populate:['salle','salle.pensionsalle']
-      })
-      const student = students.filter(a=>a.id==studentid)[0]
-      
-      if(!student){
-        throw Error("student not found")
-      }
-      return (student.salle.getEntity().pensionsalle.getItems().map(a=>a.montantPension))[0]
-    }
-=======
       async getclassfeebystudent(studentid:string){
         const students =  await this.studentRepository.findAll({
           populate:['salle','salle.pensionsalle']
@@ -312,7 +281,6 @@ export class StudentService {
         }
         return (student.salle.getEntity().pensionsalle.getItems().map(a=>a.montantPension))[0]
       }
->>>>>>> e6ca72e1c418a49f9188a391cdc55b4d1fe46cd8
    
       
 }

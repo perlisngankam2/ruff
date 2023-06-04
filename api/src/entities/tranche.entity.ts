@@ -55,7 +55,7 @@ export class Tranche {
 
   @Field({ nullable: true })
   @Property({ nullable: true})
-  year!: string;
+  anneAcademique!: string;
 
   @OneToMany(()=>TrancheStudent, (trancheStudent) => trancheStudent.tranche)
   trancheStudent = new Collection<TrancheStudent>(this)

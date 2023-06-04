@@ -69,7 +69,7 @@ async createavancetranche(
         const tranche = await this.trancheservice.findByOne(input.trancheId)
 
         const year = await this.parametreservice.getAll()
-        const annee = year[year.length-1].year
+        const annee = year[year.length-1].anneeAcademiqueName
 
         if(!tranche && !student){
           throw Error("!!!!!!!!!!!!!!tranche and student not found!!!!!!!!!!!!!!!!!!!!!!")
@@ -80,7 +80,7 @@ async createavancetranche(
           description: input.description,
           student: student.id,
           tranche: tranche.id,
-          year: annee
+          anneAcademique: annee
           
           },
           {
@@ -157,7 +157,7 @@ async createavancetranche(
               student: student.id,
               tranche: tranche.id,
               complete: false,
-              year:annee
+              anneAcademique:annee
               },
               {
               em:this.em
@@ -197,7 +197,7 @@ async update(id:string, input: AvanceTrancheUpdateInput): Promise<AvanceTranche>
         const avance = await this.findByIdavancetranche(id)
   
         const year = await this.parametreservice.getAll()
-        const annee = year[year.length-1].year
+        const annee = year[year.length-1].anneeAcademiqueName
    
           wrap(avance).assign({
               name:input.name || avance.name,
@@ -205,7 +205,7 @@ async update(id:string, input: AvanceTrancheUpdateInput): Promise<AvanceTranche>
               description: input.description || avance.description,
               tranche: input.trancheId,
               student:input.studentId,
-              year:annee
+              anneAcademique:annee
           },
           { em: this.em },
           );
@@ -226,7 +226,7 @@ async deleteavancetranche(id:string):Promise<AvanceTranche>{
 async updatesaveAvanceTranche(input:string){
       const parameter= await this.getAllavancetranche()
       parameter.forEach((parameter) => {
-          parameter.year= input;
+          parameter.anneAcademique= input;
           this.avanceTrancheRepository.persist(parameter);
         });
         

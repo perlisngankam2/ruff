@@ -20,7 +20,8 @@ import { RolesGuard } from '../auth/guards/roles.guard';
         LocalisationModule,
         CategorieEleveModule,
         UserModule,
-        TrancheModule
+        TrancheModule,
+        SalleModule
     ],
     providers:[StudentService,StudentResolver,RolesGuard],
     exports:[StudentService]

@@ -10,6 +10,7 @@ import { TrancheStudentModule } from '../tranche-student/tranche-student.module'
 import { PensionSalleModule } from '../pensionsalle/pensionsalle.module';
 import { RolesGuard } from '../auth/guards/roles.guard';
 import { UserModule } from '../user/user.module';
+import { SalleModule } from '../salle/salle.module';
 
 
 @Module({
@@ -20,6 +21,7 @@ import { UserModule } from '../user/user.module';
         TrancheStudentModule,
         PensionSalleModule,
         UserModule,
+        SalleModule
      
     ],
     providers:[TrancheService,TrancheResolver, RolesGuard],

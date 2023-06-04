@@ -54,11 +54,7 @@ export class StudentResolver {
 
   @Query(() => [Student])
   // @UseGuards(JwtAuthGuard,RolesGuard)
-<<<<<<< HEAD
-  // @Roles(Role.ECONOME)
-=======
   // @Roles(Role.ECONOME, Role.PRINCIPAL)
->>>>>>> e6ca72e1c418a49f9188a391cdc55b4d1fe46cd8
   findAllstudents() {
     return this.studentService.getAll()
   }
@@ -119,8 +115,6 @@ export class StudentResolver {
   async getClassfeeofStudent(@Args('studentid') studentid:string){
     return await this.studentService.findlistfees(studentid)
   }
-<<<<<<< HEAD
-=======
 
 @Query(()=>[Student])
 // @UseGuards(JwtAuthGuard,RolesGuard)
@@ -129,5 +123,4 @@ export class StudentResolver {
     return await this.studentService.getAllForUseAnglophone()
   }
 
->>>>>>> e6ca72e1c418a49f9188a391cdc55b4d1fe46cd8
 }

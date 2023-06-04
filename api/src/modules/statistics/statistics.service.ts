@@ -145,7 +145,7 @@ export class StatisticsService {
   const tranche =  (await this.trancheservice.getAll())
   const student = (await this.trancheStudentservice.getAll())
   .filter(a=>tranche.find(async b=>(await a.tranche.load()).id===b.id))
-  .filter(a=>tranche.find(async b=>(await a.tranche.load()).year===b.year))
+  .filter(a=>tranche.find(async b=>(await a.tranche.load()).anneAcademique===b.anneAcademique))
   .filter(a=>tranche.find(async b=>(await a.tranche.load()).montant===b.montant))
   .filter(async a=>(await a.tranche.load()).name==='Tranche 1')
   .map(a=>a.student.load())
@@ -161,7 +161,7 @@ export class StatisticsService {
     const tranche =  (await this.trancheservice.getAll())
     const student = (await this.trancheStudentservice.getAll())
     .filter(a=>tranche.find(async b=>(await a.tranche.load()).id===b.id))
-    .filter(a=>tranche.find(async b=>(await a.tranche.load()).year===b.year))
+    .filter(a=>tranche.find(async b=>(await a.tranche.load()).anneAcademique===b.anneAcademique))
     .filter(a=>tranche.find(async b=>(await a.tranche.load()).montant===b.montant))
     .filter(async a=>(await a.tranche.load()).name==='Inscription')
     .map(a=>a.student.load())
@@ -170,24 +170,14 @@ export class StatisticsService {
 
   async getLastThreeStudenstAdmissionFee(){
     const a= this.getallStudentswhohaveCompletedAdmissionFee()
-<<<<<<< HEAD
-    // const list: Student[] = [];
-    // for (let i = (await a).length - 3; i < (await a).length; i++) {
-    //   if (i >= 0) {
-    //     list.push(a[i]);
-    //   }
-    // }
-    return (await a).slice(-3)
-=======
         return (await a).slice(-3)
->>>>>>> e6ca72e1c418a49f9188a391cdc55b4d1fe46cd8
   }
 
   async getallStudentswhohaveCompletedSecondInstalment(){
       const tranche =  (await this.trancheservice.getAll())
       const student = (await this.trancheStudentservice.getAll())
       .filter(a=>tranche.find(async b=>(await a.tranche.load()).id===b.id))
-      .filter(a=>tranche.find(async b=>(await a.tranche.load()).year===b.year))
+      .filter(a=>tranche.find(async b=>(await a.tranche.load()).anneAcademique===b.anneAcademique))
       .filter(a=>tranche.find(async b=>(await a.tranche.load()).montant===b.montant))
       .filter(async a=>(await a.tranche.load()).name==='Tranche 2')
       .map(a=>a.student.load())

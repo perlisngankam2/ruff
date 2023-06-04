@@ -112,6 +112,21 @@ Rest:number
 }
 
 @ObjectType()
+export class TrancheStatTwo{
+@Field()
+studentid:string
+
+@Field()
+Nom:string
+
+@Field()
+Priority:number
+
+@Field()
+montantPercu:number
+}
+
+@ObjectType()
 export class TOTALTABLETWO{
 @Field()
 MONTANT_ATTENDU:number

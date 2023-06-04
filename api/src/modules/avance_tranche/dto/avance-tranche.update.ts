@@ -19,7 +19,7 @@ export class AvanceTrancheUpdateInput {
   studentId?:string
   
   @Field({nullable:true})
-  year?: string;
+  anneeAcademique?: string;
 
   // @Field(()=>ID,{nullable:true})
   // anneeAcademiqueId?:string

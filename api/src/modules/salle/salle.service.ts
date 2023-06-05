@@ -157,7 +157,7 @@ export class SalleService {
     return salle;
   }
   async delete(id: string) {
-    const a = this.findById(id);
+    const a =await this.findById(id);
     await this.salleRepository.nativeDelete(await a);
     if (!a) {
       throw Error('not found');

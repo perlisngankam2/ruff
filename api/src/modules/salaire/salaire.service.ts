@@ -154,7 +154,7 @@ export class SalaireService {
 
 
   async delete(id: string) {
-    const a = this.findById(id);
+    const a = await this.findById(id);
     await this.salaireRepository.removeAndFlush(a);
     if (!a) {
       throw Error('not found');

@@ -33,7 +33,7 @@ export class StudentService {
     constructor(
         @InjectRepository(Student)
         private studentRepository: EntityRepository<Student>,
-        // private salleService: SalleService,
+        private salleService: SalleService,
         private trancheservice: TrancheService,
         private localisationService: LocalisationService,
         private categorieService: CategorieEleveService,
@@ -55,9 +55,8 @@ export class StudentService {
         //      ? await this.inscriptionService.findByOne({id:input.inscription_id})
         //   : await this.inscriptionService.create(input.inscription)
 
-        // const salle = input.salle
-        //     ? await this.salleService.findByOne({id:input.salle.ID})
-        //     : await this.salleService.create(input.salle)
+        const salle = await this.salleService.findByOne({id:input.salleId})
+        const categorie_eleve =  await this.categorieService.findByOne({id:input.categoryStudentId})
 
         // const user = input.user
         //     ? await this.userService.findByOne({id:input.user.ID})
@@ -74,8 +73,8 @@ export class StudentService {
             birthPlace: input.birthPlace,
             adress:input.adress,
             // transport:input.transport,
-            categorie : input.categoryStudentId,
-            salle: input.salleId,
+            categorie : categorie_eleve,
+            salle: salle,
             fatherFirstName:input.fatherFirstName,
             fatherLastName:input.fatherLastName,
             fatherPhoneNumber:input.fatherPhoneNumber,
@@ -243,7 +242,7 @@ export class StudentService {
 
       
     async delete(id:string){
-      const a = this.findById(id)
+      const a = await this.findById(id)
       await this.studentRepository.removeAndFlush(await a)
       if(!a){
       throw Error("not found")

@@ -182,7 +182,7 @@ type AvanceTranche {
   name: String
   description: String
   dateLine: DateTime
-  year: String
+  anneAcademique: String
   montant: Float!
   reste: Float!
   complete: Boolean!
@@ -209,14 +209,14 @@ type Tranche {
   dateLine: DateTime
   montant: Float
   priority: Float
-  year: String
+  anneAcademique: String
   salleid: ID
 }
 
 type TrancheStudent {
   id: ID!
   name: String
-  year: String
+  anneAcademique: String
   description: String
   montant: Float
   complete: Boolean!
@@ -392,6 +392,13 @@ type UserPaginatedResponse {
   hasMore: Boolean!
 }
 
+type SectionCycle {
+  id: ID!
+  description: String
+  cycleid: ID!
+  sectionid: ID!
+}
+
 type StudentPaginatedResponse {
   items: [Student!]!
   total: Int!
@@ -500,13 +507,6 @@ type TrancheStudentPaginatedResponse {
   hasMore: Boolean!
 }
 
-type SectionCycle {
-  id: ID!
-  description: String
-  cycleid: ID!
-  sectionid: ID!
-}
-
 type LoginResponse {
   access_token: String!
   user: User!
@@ -532,11 +532,11 @@ type StudentStatistics {
   name: String!
   matricle: String!
   section: String!
-  amountExpected: Float!
-  amountPaid: Float!
-  collectionRate: Float!
-  restToPay: Float!
-  rateArrears: Float!
+  amountExpected: Float
+  amountPaid: Float
+  collectionRate: Float
+  restToPay: Float
+  rateArrears: Float
 }
 
 type SpecialStudentStatistics {
@@ -606,6 +606,7 @@ type Query {
   findAlltranche: [Tranche!]!
   tranche(id: String!): Tranche!
   findByStudentRestTranche(studentid: String!): [TrancheStat!]!
+  findByStudentAmountReceivedTranche(studentid: String!): [TrancheStat!]!
   findAllparameters: [Parameter!]!
   findOneparameters(id: String!): Parameter!
   findAllAnnerAccademique: [AnneeAccademique!]!
@@ -1119,7 +1120,7 @@ input AvanceTrancheCreateInput {
   ID: String
   trancheId: ID
   studentId: ID
-  year: String
+  anneeAcademique: String
   name: String
   description: String
   montant: Float

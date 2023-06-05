@@ -165,7 +165,7 @@ export class RetenuPersonnelService {
   }
 
       async delete(id:string){
-      const a = this.findById(id)
+      const a = await this.findById(id)
       await this.retenuPersonnelRepository.removeAndFlush(a)
       if(!a){
       throw Error("not found")

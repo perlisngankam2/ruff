@@ -95,7 +95,6 @@ export class StudentResolver {
   async getAllStudentsForUseAnglophone(){
     return await this.studentService.getAllForUseAnglophone()
   }
-  
   @Query(()=>[Number])
   // @UseGuards(JwtAuthGuard,RolesGuard)
   // @Roles(Role.ECONOME)

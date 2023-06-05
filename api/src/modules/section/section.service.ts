@@ -81,7 +81,7 @@ export class SectionService {
         return section;
       }
       async delete(id:string){
-       const a= this.findById(id)
+       const a= await this.findById(id)
        await this.sectionRepository.removeAndFlush(await a)
        if(!a){
       throw Error("not found")

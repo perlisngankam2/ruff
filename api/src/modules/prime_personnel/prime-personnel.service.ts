@@ -216,7 +216,7 @@ export class PrimePersonnelService {
     //   }
     
       async delete(id:string){
-       const a = this.findById(id) 
+       const a = await this.findById(id) 
        await this.primePersonnelRepository.removeAndFlush(a)
        if(!a){
        throw Error("not found")

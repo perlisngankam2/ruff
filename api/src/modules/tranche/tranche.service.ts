@@ -22,7 +22,7 @@ import { format } from 'date-fns';
 import { ParameterService } from '../parameter/parameter.service';
 import { StudentService } from '../student/student.service';
 import { TrancheStudentService } from '../tranche-student/tranche-student.service';
-import { TrancheStat } from '../statistics/classStatistics';
+import { TrancheStat, TrancheStatTwo } from '../statistics/classStatistics';
 import { PensionSalleService } from '../pensionsalle/pensionsalle.service';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { RolesGuard } from '../auth/guards/roles.guard';
@@ -41,6 +41,7 @@ export class TrancheService {
         private studentservice: StudentService,
         private tranchestudentservice: TrancheStudentService,
         private Pensionsalleservice:PensionSalleService,
+        private salleservice: SalleService,
         private  em: EntityManager,
       ) {}
     
@@ -52,10 +53,11 @@ export class TrancheService {
         // const pension = input.pension
         // ? await this.pensionService.findByOne(input.pension_id)
         // : await this.pensionService.create(input.pension) 
+        const salle =  await this.salleservice.findByOne({id:input.salleId})
 
         
         const year = await this.parameterservice.getAll()
-        const annee = year[year.length-1].year
+        const annee = year[year.length-1].anneeAcademiqueName
         wrap(tranche).assign(
           {
             montant: input.montant,
@@ -63,9 +65,9 @@ export class TrancheService {
             description: input.description,
             // dateLine:format(input.dateLine, 'dd/MM/yyyy'),
             dateLine:input.dateLine,
-            anneeAccademique: annee,
-            salle: input.salleId,
-            year: annee,
+            anneAcademique: annee,
+            salle: salle,
+            // year: annee,
             priority: input.priority
 
             // tranchepriority: input.tranchePriorityId
@@ -131,11 +133,11 @@ export class TrancheService {
         //     this.pensionService.update(pension.id, input.pension);
         //   }
         const year = await this.parameterservice.getAll()
-        const annee = year[year.length-1].year
+        const annee = year[year.length-1].anneeAcademiqueName
         wrap(tranche).assign({
             name:input.name || tranche.name,
             montant: input.montant || tranche.montant,
-            year: annee,
+            anneAcademique: annee,
             description: input.description || tranche.description,
             dateLine:format(input.dateLine,'dd/MM/yyyy'),
             priority: input.priority || tranche.priority,
@@ -150,7 +152,7 @@ export class TrancheService {
       async updatesaveTranche(input:string){
         const parameter= await this.getAll()
         parameter.forEach((parameter) => {
-            parameter.year= input;
+            parameter.anneAcademique= input;
             this.trancheRepository.persist(parameter);
           });
           
@@ -158,7 +160,7 @@ export class TrancheService {
       }
       
       async delete(id:string){
-        const a = this.findById(id) 
+        const a = await this.findById(id) 
         await this.trancheRepository.nativeDelete(await a)
         if(!a){
         throw Error("not found")
@@ -187,7 +189,9 @@ export class TrancheService {
             if (trancheStudent.length==0) break;
       
             for(const trancheStd of trancheStudent){
-            const Rest= (await this.tranchestudentservice.findRestByTrancheAndStudent(trancheStd.student.id, trancheStd.tranche.id)).reste
+              const restObject = await this.tranchestudentservice.findRestByTrancheAndStudent(studentid, trancheStd.tranche.id);
+              const Rest = restObject ? restObject.reste || 0 : 0;
+            console.log('==========>rest'+Rest)
       
             result.push({
               studentid,
@@ -201,4 +205,42 @@ export class TrancheService {
         return result.filter(a=>a.studentid===studentid);
 
       }
+
+  async findByStudentAmountReceivedTranche(studentid:string){
+    const students = await this.studentservice.getAll()
+    const Tranches = students.map((student) => student.trancheStudent.getItems().map((trancheStudent) => trancheStudent.tranche));
+
+    const tranches = await Promise.all(Tranches.flat().map((tranche) => this.trancheRepository.findOne(tranche.id, { populate: ['trancheStudent'] })));
+  
+    console.log("==============>"+tranches)
+    
+    const result: TrancheStatTwo[] = [];
+  
+    for (const student of students) {
+      const studentid = student.id
+      for (const tranche of tranches) {
+        const Nom = tranche.name;
+        const Priority = tranche.priority;
+        const trancheStudent = tranche.trancheStudent.getItems()
+        .filter(async a=>(await a.tranche.load()).id===tranche.id);
+        console.log('tranchestudent=======>'+trancheStudent)
+        if (trancheStudent.length==0) break;
+  
+        for(const trancheStd of trancheStudent){
+          const restObject = await this.tranchestudentservice.findRestByTrancheAndStudent(studentid, trancheStd.tranche.id);
+          const montantPercu = restObject ? restObject.montant || 0 : 0;
+        console.log('==========>rest'+montantPercu)
+  
+        result.push({
+          studentid,
+          Nom,
+          Priority,
+          montantPercu
+        });
+      }
+    }
+    }
+    return result.filter(a=>a.studentid===studentid);
+
+    }
 }

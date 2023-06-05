@@ -41,7 +41,7 @@ export class TrancheStudent {
 
   @Field({nullable:true})
   @Property({nullable:true})
-  year!: string;
+  anneAcademique!: string;
 
   @Field({nullable:true})
   @Property({nullable:true})

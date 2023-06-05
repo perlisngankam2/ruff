@@ -40,7 +40,7 @@ const LastStudentRegisteredBox = () => {
             Derniers élèves enrégistrés
           </Text>
         </Box>
-        <Box>
+        <Box gap={4}>
           {dataLastThreeStudentRegister &&
             dataLastThreeStudentRegister?.getLastThreeStudents.map(
               (student, index) => (
@@ -50,6 +50,8 @@ const LastStudentRegisteredBox = () => {
                   p="1"
                   justify="space-between"
                   key={index}
+                  // gap={"20px"}
+                  mb={4}
                 >
                   <Box direction="column">
                     <Flex

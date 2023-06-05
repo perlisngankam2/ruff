@@ -103,7 +103,7 @@ const PensionSalle = () => {
   const [montantPension, setMontantPension] = useState();
   const [selectClassSarch, setSelectClassSearch] = useState("");
   const [selectedCourse, setSelectedCourse] = useState([]);
-  const itemsPerPage = 15;
+  const itemsPerPage = 20;
   const [pageNumber, setPageNumber] = useState(0);
   const pagesVisited = pageNumber * itemsPerPage;
 
@@ -120,7 +120,7 @@ const PensionSalle = () => {
     CREATE_MONTANT_SCOLARITE_CLASS
   );
 
-  // RECUPERATION DU NOM ET DE L'ID DE L'ANNEE ACADEMIQUE
+  // RECUPERATION DU NOM ET DE L'ID DE L'ANNEE ACADEMIQUE EN COUR
   const anneeAcademiqueName =
     dataSchoolParameter?.findAllparameters[0].anneeAcademiqueName;
   console.log(anneeAcademiqueName);
@@ -244,7 +244,8 @@ const PensionSalle = () => {
               size="lg"
               textColor="pink.300"
             >
-              {t("pages.class.classList.heading")}
+              {/* {t("pages.class.classList.heading")} */}
+              Pensions des classes
             </Heading>
             <Hide below="sm">
               <Text>Dashboad / Classes / Pension des classes</Text>
@@ -481,21 +482,6 @@ const PensionSalle = () => {
                                 </Button>
                               </ButtonGroup>
                               <Box>
-                                <Link
-                                  href="/class/updateclass"
-                                  //   href={{
-                                  //     pathname: Routes.ClasseEdit?.path || "",
-                                  //     query: { id: pen?.id },
-                                  //   }}
-                                >
-                                  <Icon
-                                    as={FiEdit}
-                                    boxSize="40px"
-                                    p="3"
-                                    rounded="full"
-                                    _hover={{ background: "red.100" }}
-                                  />
-                                </Link>
                                 <Icon
                                   as={MdDelete}
                                   boxSize="44px"
@@ -546,9 +532,9 @@ const PensionSalle = () => {
                                       </Button>
                                       <Button
                                         colorScheme="green"
-                                        onClick={() => {
-                                          removeClass(salle?.id);
-                                        }}
+                                        // onClick={() => {
+                                        //   removeClass(salle?.id);
+                                        // }}
                                         ml={3}
                                       >
                                         {t(

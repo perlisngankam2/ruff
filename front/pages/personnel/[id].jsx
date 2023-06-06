@@ -92,7 +92,11 @@ const Profil = () => {
   const router = useRouter();
   const { t } = useTranslation();
 
-  const { data: dataPersonnelId, loading } = useQuery(GET_ALL_PERSONNEL_BY_ID, {
+  const {
+    data: dataPersonnelId,
+    loading,
+    error,
+  } = useQuery(GET_ALL_PERSONNEL_BY_ID, {
     variables: { id: router.query.id },
   });
   const { data: dataRetenue } = useQuery(GET_ALL_RETENUE);
@@ -218,6 +222,9 @@ const Profil = () => {
     console.log(dataPersonnel);
   });
 
+  if (loading) return <Text>Chargement en cours...</Text>;
+  if (error) return <Text>Error: {error.message}</Text>;
+
   return (
     <DefaultLayout>
       <Box p="3" pt="70px" w="100%" background="colors.tertiary">
@@ -293,7 +300,7 @@ const Profil = () => {
                     </Text>
                     <Text>
                       {" "}
-                      Catégorie: 
+                      Catégorie:
                       {/* {dataPersonnelId.findOnePersonnel.categoryName} */}
                     </Text>
                     {/* <Text> Section: Anglophone</Text>

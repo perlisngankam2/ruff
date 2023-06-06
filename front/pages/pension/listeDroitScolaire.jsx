@@ -126,7 +126,9 @@ const Pension = () => {
   const { data: dataSchoolParameter } = useQuery(GET_ALL_SCHOOL_PARAMETER);
   const { data: dataClasse } = useQuery(GET_ALL_CLASS);
   const [createdFraisInscription] = useMutation(CREATE_FRAIS_INSCRIPTION);
-  const [createTranchePension] = useMutation(CREATE_TRANCHE_PENSION);
+  const [createTranchePension] = useMutation(CREATE_TRANCHE_PENSION, {
+    onError: (error) => console.log(error),
+  });
   const [createTranchePriority] = useMutation(CREATE_TRANCHE_PRIORITY);
   const [deleTranchePension] = useMutation(DELETE_TRANCHE_PENSION);
 
@@ -182,7 +184,6 @@ const Pension = () => {
       duration: 3000,
       isClosable: true,
     });
-    setAnneeAcademiqueId("");
     setDateLine("");
     setMontant("");
     setDateLine("");

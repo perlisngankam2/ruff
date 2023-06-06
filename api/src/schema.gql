@@ -248,9 +248,9 @@ type Student {
   tutorLastName: String
   tutorPhoneNumber: String
   tutorProfession: String
-  salleid: ID!
+  salleid: ID
   salleName: ID
-  categorieid: ID!
+  categorieid: ID
   categoryName: ID
   parentTel: String!
 }

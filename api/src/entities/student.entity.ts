@@ -214,23 +214,22 @@ export class Student {
   //   return `${this.user.id}`;
   // }
 
-  @Field(() => ID)
+  @Field(() => ID, { nullable: true })
   @Property({ persist: false })
-  get salleid() {
-    return `${this.salle.id}`;
-  }
+  get salleid():string|null {
+    return this.salle?`${this.salle.id}`:null;
+  }
 
   @Field(() => ID, { nullable: true })
   @Property({ persist: false })
   get salleName(): string | null {
     return this.salle ? `${this.salle.getEntity().name}` : null;
   }
-
-  @Field(() => ID)
+  @Field(() => ID, { nullable: true })
   @Property({ persist: false })
-  get categorieid() {
-    return `${this.categorie.id}`;
-  }
+  get categorieid():string|null {
+    return this.categorie?`${this.categorie.id}`:null;
+  }
 
   @Field(() => ID, { nullable: true })
   @Property({ persist: false })

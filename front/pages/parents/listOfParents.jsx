@@ -57,11 +57,8 @@ const ListOfParents = () => {
   const pagesVisited = pageNumber * itemsPerPage;
 
   const {
-    data: dataCategoryEleve,
-    loading,
-    error,
-  } = useQuery(GET_ALL_Category_Eleve);
-  const { data: dataParents } = useQuery(GET_ALL_PARENT);
+    data: dataCategoryEleve} = useQuery(GET_ALL_Category_Eleve);
+  const { data: dataParents, refetch, loading, error } = useQuery(GET_ALL_PARENT);
 
   //  const [deleteCategoryStudent] = useMutation(DELETE_CATEGORY_STUDENT);
   const [deleteParent] = useMutation(DELETE_PARENT);
@@ -80,9 +77,9 @@ const ListOfParents = () => {
     console.log(dataParents?.findAllparents);
   });
 
-  if (loading) return <Text>Chargement en cour...</Text>;
-  if (error) return <Text>Une erreur s'est produite!</Text>;
-
+  if (loading) return <Text>Chargement en cours...</Text>;
+  if (error) return <Text>Error: {error.message}</Text>;
+  
   const removeParent = async (id) => {
     await deleteParent({
       variables: { id },

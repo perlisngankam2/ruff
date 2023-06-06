@@ -310,8 +310,8 @@ const receipt = () => {
     // loadTranches();
   });
 
-  if (loading) return <Text>Chargement en cour...</Text>;
-  if (error) return <Text>Une erreur s'est produite!</Text>;
+  if (loading) return <Text>Chargement en cours...</Text>;
+  if (error) return <Text>Error: {error.message}</Text>;
 
   const lastStudentPaiement =
     dataLastPayment?.AmountRecentAvanceTrancheByStudent;

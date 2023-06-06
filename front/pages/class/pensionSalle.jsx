@@ -108,13 +108,20 @@ const PensionSalle = () => {
   const pagesVisited = pageNumber * itemsPerPage;
 
   const [deleteClasse] = useMutation(DELETE_SALLE);
-  const { data: dataClasse,  } = useQuery(GET_ALL_CLASS);
+  const { data: dataClasse } = useQuery(GET_ALL_CLASS);
   const { data: dataEnseignant } = useQuery(GET_ALL_PERSONNELS);
   const { data: dataAnneeAcademique } = useQuery(GET_ALL_ANNEE_ACADEMIQUE);
   const { data: dataCourse } = useQuery(GET_ALL_COURSES);
   const { data: dataPersonnelSalle } = useQuery(GET_ALL_PERSONNEL_SALLE);
   const { data: dataSchoolParameter } = useQuery(GET_ALL_SCHOOL_PARAMETER);
-  const {data:dataPensionSalle, refetch } = useQuery(GET_ALL_PENSION_SALLE);
+  const {
+    data: dataPensionSalle,
+    refetch,
+    loading,
+    error,
+  } = useQuery(GET_ALL_PENSION_SALLE, {
+    onError: (error) => console.log(error),
+  });
   const [createPersonnelSalle] = useMutation(CREATE_PERSONNEL_SALLE);
   const [createMontantPensionClasse] = useMutation(
     CREATE_MONTANT_SCOLARITE_CLASS
@@ -176,6 +183,9 @@ const PensionSalle = () => {
   //     router.back();
   //   }
   // }, [authToken]);
+
+  if (loading) return <Text>Chargement en cours...</Text>;
+  if (error) return <Text>Error: {error.message}</Text>;
 
   const AddMontantPensionClasse = async (e) => {
     e.preventDefault();
@@ -399,7 +409,6 @@ const PensionSalle = () => {
                             isRequired
                           />
                           {/* console.log(dataSchoolParameter?.findAllparameters); */}
-
                         </FormControl>
                       </Box>
                     </AlertDialogBody>

@@ -47,9 +47,11 @@ const SuiviPaiementParEleveReNormal = () => {
   const { setAuthToken, authToken } = useAuth();
   const router = useRouter();
 
-  const { data: dataStudentStatisticsFeesPerClassAndSection } = useQuery(
-    GET_GENERAL_FEES_STATISTICS_PER_CLASS_ANGLOPHONE_SECTION
-  );
+  const {
+    data: dataStudentStatisticsFeesPerClassAndSection,
+    loading,
+    error,
+  } = useQuery(GET_GENERAL_FEES_STATISTICS_PER_CLASS_ANGLOPHONE_SECTION);
   const { data: dataGeneralClassStatisticsFrancophoneSection } = useQuery(
     GET_GENERAL_FEES_STATISTICS_PER_CLASS_FRANCOPHONE_SECTION
   );
@@ -71,6 +73,9 @@ const SuiviPaiementParEleveReNormal = () => {
   // useEffect(()=>{
   //     console.log(dataStudentStatisticsFeesPerClassAndSection);
   // })
+  if (loading) return <Text>Chargement en cours...</Text>;
+  if (error) return <Text>Error: {error.message}</Text>;
+
   return (
     <DefaultLayout>
       <Center mt="70px">

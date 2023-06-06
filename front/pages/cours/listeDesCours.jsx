@@ -38,7 +38,7 @@ import { MdDelete } from "react-icons/md";
 //   import { DELETE_CATEGORY_STUDENT } from "../../graphql/Mutation";
 import { useMutation, useQuery } from "@apollo/client";
 import React, { use, useEffect, useState } from "react";
-import { GET_ALL_COURSES, loading, error } from "../../graphql/Queries";
+import { GET_ALL_COURSES } from "../../graphql/Queries";
 import { DELETE_COURSE } from "../../graphql/Mutation";
 import ReactPaginate from "react-paginate";
 import { useTranslation } from "next-i18next";
@@ -72,7 +72,12 @@ const ListeDesCours = () => {
 
   //  const {data:dataCategoryEleve} = useQuery(GET_ALL_Category_Eleve);
   //  const [deleteCategoryStudent] = useMutation(DELETE_CATEGORY_STUDENT);
-  const { data: dataCourse, refetch } = useQuery(GET_ALL_COURSES);
+  const {
+    data: dataCourse,
+    refetch,
+    loading,
+    error,
+  } = useQuery(GET_ALL_COURSES);
   const [deleteCourse] = useMutation(DELETE_COURSE);
 
   useEffect(() => {
@@ -84,6 +89,9 @@ const ListeDesCours = () => {
   useEffect(() => {
     console.log(dataCourse?.findAllCourse);
   });
+
+  if (loading) return <Text>Chargement en cours...</Text>;
+  if (error) return <Text>Error: {error.message}</Text>;
 
   const removeCourse = async (id) => {
     await deleteCourse({

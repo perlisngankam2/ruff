@@ -71,6 +71,8 @@ export const GET_ALL_STUDENT = gql`
       firstname
       lastname
       dateOfBirth
+      birthPlace
+      repeating
       sex
       adress
       fatherFirstName
@@ -90,7 +92,6 @@ export const GET_ALL_STUDENT = gql`
       categorieid
       categoryName
       parentTel
-      repeating
     }
   }
 `;
@@ -306,8 +307,8 @@ export const GET_ALL_TRANCHE_STUDENT = gql`
 `;
 
 export const GET_LAST_THREE_STUDENT_REGISTER = gql`
-query getLastThreeStudents {
-  getLastThreeStudents {
+  query getLastThreeStudents {
+    getLastThreeStudents {
       id
       matricule
       firstname
@@ -334,11 +335,11 @@ query getLastThreeStudents {
       categorieid
       categoryName
       parentTel
+    }
   }
-}
 `;
 
-//RECUPERATION DES PENSIONS DE TOUTES LES CLASSES 
+//RECUPERATION DES PENSIONS DE TOUTES LES CLASSES
 export const GET_ALL_PENSION_SALLE = gql`
   query findAllpensionSalle {
     findAllpensionSalle {

@@ -38,7 +38,9 @@ const addParents = () => {
   const { setAuthToken, authToken } = useAuth();
 
   const cancelRef = React.useRef();
-  const [createParent, { error }] = useMutation(CREATE_PARENT);
+  const [createParent, { error }] = useMutation(CREATE_PARENT, {
+    onError: (error) => console.log(error),
+  });
   const [updateSection] = useMutation(UPDATA_SECTION);
   const router = useRouter();
   const toast = useToast();
@@ -119,7 +121,7 @@ const addParents = () => {
           >
             <AlertDialogOverlay>
               <AlertDialogContent width={"500px"}>
-                <Box as={"form"} onSubmit={addParent}      >
+                <Box as={"form"} onSubmit={addParent}>
                   <AlertDialogHeader fontSize="sm" fontWeight="base" mt="0">
                     <Box>
                       <Heading
@@ -283,7 +285,7 @@ const addParents = () => {
                       annuler
                     </Button>
                     {/* <Link href={'/personnel/ajoutercategorypersonnel'}> */}
-                    <Button colorScheme="green" ml={3}  type="submit">
+                    <Button colorScheme="green" ml={3} type="submit">
                       Creer
                     </Button>
                     {/* </Link>  */}

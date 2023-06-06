@@ -40,11 +40,13 @@ const LoginForm = () => {
   const cancelRef = React.useRef();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [loginInput, error] = useMutation(LOGIN_USER);
+  const [loginInput, error] = useMutation(LOGIN_USER, {
+    onError: (error) => console.log(error),
+  });
   const [user, setUser] = useState(null);
   const router = useRouter();
   const { setAuthToken, authToken } = useAuth();
-  const { dataUser, called, loading } = useQuery(GET_USER_CONNECTED);
+  const { dataUser, called, loading, error } = useQuery(GET_USER_CONNECTED);
   const { t } = useTranslation();
   //  console.log(setAuthToken.isLogged)
 
@@ -104,7 +106,6 @@ const LoginForm = () => {
             background="white"
             as="form"
             onSubmit={HandleClick}
-
           >
             <Container maxW={{ base: "sm", sm: "md" }} px="0">
               <Heading

@@ -28,7 +28,7 @@ import {
   GET_ALL_CLASS,
   GET_SALLE_BY_ID,
   GET_ALL_ANNEE_ACADEMIQUE,
-  GET_ALL_SCHOOL_PARAMETER
+  GET_ALL_SCHOOL_PARAMETER,
 } from "../../graphql/Queries";
 import { useAuth } from "../../contexts/account/Auth/Auth";
 
@@ -44,7 +44,9 @@ const AddClass = () => {
   const [cycleId, setCycleId] = useState("");
   // const [anneeAcademiqueId, setAnneeAcademiqueId] = useState("");
   const [montantPensionSalle, setMontantPensionSalle] = useState();
-  const [createSalle] = useMutation(CREATE_SALLE);
+  const [createSalle] = useMutation(CREATE_SALLE, {
+    onError: (error) => console.log(error),
+  });
   const [updateSalle] = useMutation(UPDATE_SALLE);
   const { data: dataSection } = useQuery(GET_ALL_SECTION);
   const { data: dataStudyLevel } = useQuery(GET_ALL_STUDY_LEVEL);
@@ -162,8 +164,6 @@ const AddClass = () => {
     }
     router.push("/class");
   };
-
-
 
   return (
     <DefaultLayout>

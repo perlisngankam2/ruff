@@ -39,20 +39,18 @@ import {
 } from "../../graphql/Queries";
 import { useEffect } from "react";
 import { useRouter } from "next/router";
-import { useAuth } from '../../contexts/account/Auth/Auth';
-
-
+import { useAuth } from "../../contexts/account/Auth/Auth";
 
 const SuiviPaimentFraisScolarite = () => {
-
-
   const { setAuthToken, authToken } = useAuth();
   const router = useRouter();
   // const {t} = useTranslation();
 
-  const { data: dataStudentStatisticsAnglophoneSection } = useQuery(
-    GET_STUDENT_STATISTICS_ANGLOPHONE_SECTION
-  );
+  const {
+    data: dataStudentStatisticsAnglophoneSection,
+    loading,
+    error,
+  } = useQuery(GET_STUDENT_STATISTICS_ANGLOPHONE_SECTION);
   const { data: dataTotalStudentStatisticsAnglophoneSection } = useQuery(
     GET_TOTAL_STUDENT_STATISTICS_ANGLOPHONE_SECTION
   );
@@ -66,6 +64,10 @@ const SuiviPaimentFraisScolarite = () => {
   useEffect(() => {
     console.log(dataStudentStatisticsAnglophoneSection);
   });
+
+  if (loading) return <Text>Chargement en cours...</Text>;
+  if (error) return <Text>Error: {error.message}</Text>;
+
   return (
     <DefaultLayout>
       <Center>
@@ -131,8 +133,8 @@ const SuiviPaimentFraisScolarite = () => {
                     )}
                   </Tbody>
                 )}
-                  {dataTotalStudentStatisticsAnglophoneSection &&( 
-                <Tbody>
+                {dataTotalStudentStatisticsAnglophoneSection && (
+                  <Tbody>
                     {dataTotalStudentStatisticsAnglophoneSection?.getTotalStudentStatisticsAnglophone.map(
                       (totalAnglophoneStudent, index) => (
                         <Tr borderBottom={"1px"} key={index}>
@@ -145,9 +147,10 @@ const SuiviPaimentFraisScolarite = () => {
                           <Td>{totalAnglophoneStudent.RESTE_RECOUVRER}</Td>
                           <Td>{totalAnglophoneStudent.TAUX_RAR}%</Td>
                         </Tr>
-                      ))}
-                </Tbody>
+                      )
                     )}
+                  </Tbody>
+                )}
               </Table>
             </TableContainer>
           </Box>

@@ -18,7 +18,7 @@ import {
   AlertDialogOverlay,
   Text,
   VStack,
-  useDisclosure
+  useDisclosure,
 } from "@chakra-ui/react";
 
 import Routes from "../../modules/routes";
@@ -41,12 +41,10 @@ import { useTranslation } from "next-i18next";
 import { getStaticPropsTranslations } from "../../types/staticProps";
 import { useAuth } from "../../contexts/account/Auth/Auth";
 
-
 const Personnel = () => {
-
   const [searchName, setSearchName] = useState("");
   const { setAuthToken, authToken } = useAuth();
-  const {data:dataPersonnel, loading, error} = useQuery(GET_ALL_PERSONNELS)
+  const { data: dataPersonnel, loading, error } = useQuery(GET_ALL_PERSONNELS);
   const [deletePersonnel] = useMutation(DELETE_PERSONNEL);
   const [personnel, setPersonnel] = useState([]);
   const [pageNumber, setPageNumber] = useState(0);
@@ -54,10 +52,9 @@ const Personnel = () => {
   const pagesVisited = pageNumber * itemsPerPage;
   const { isOpen, onToggle, onClose, onOpen } = useDisclosure();
   const router = useRouter();
-  const cancelRef = React.useRef()
+  const cancelRef = React.useRef();
 
-
-  const {t} = useTranslation()
+  const { t } = useTranslation();
 
   const employees = [
     { id: 1, name: "DON WILFRIED", function: "Directeur" },
@@ -70,50 +67,44 @@ const Personnel = () => {
     { id: 8, name: "HALAN JAMES", function: "Enseignant" },
   ];
 
-  useEffect(()=>{
-    if(!authToken){
-      router.back()
+  useEffect(() => {
+    if (!authToken) {
+      router.back();
     }
-    
-  },[authToken])
-  
-  useEffect (() => {
-    // setPersonnel(dataPersonnel)
-    console.log(dataPersonnel) 
-  }, [dataPersonnel])
- 
-  if (loading) return <Text>Chargement en cour...</Text>
-  if (error) return <Text>Une erreur s'est produite!</Text>
+  }, [authToken]);
 
- 
+  useEffect(() => {
+    // setPersonnel(dataPersonnel)
+    console.log(dataPersonnel);
+  }, [dataPersonnel]);
+
+  if (loading) return <Text>Chargement en cours...</Text>;
+  if (error) return <Text>Error: {error.message}</Text>;
+
   // const removePersonnel = async(id) => {
   //   await deletePersonnel({
   //       variables: {id},
-        
+
   //       refetchQueries:[{
   //         query: GET_ALL_PERSONNELS
   //       }]
   //   })
   // }
-  
+
   const handleChange = (e) => {
     setSearchName(e.target.value);
   };
-  
-  const pageCount = Math.ceil(dataPersonnel?.findAllpersonnel.length / itemsPerPage);
+
+  const pageCount = Math.ceil(
+    dataPersonnel?.findAllpersonnel.length / itemsPerPage
+  );
 
   const changePage = ({ selected }) => {
     setPageNumber(selected);
   };
   return (
     <DefaultLayout>
-      <Box 
-        p="3" 
-        pt="70px" 
-        background="colors.tertiary" 
-        w="full" 
-        minH="100vh"
-      >
+      <Box p="3" pt="70px" background="colors.tertiary" w="full" minH="100vh">
         <Flex
           align="center"
           justify="space-between"
@@ -128,19 +119,19 @@ const Personnel = () => {
             size="lg"
             textColor="pink.300"
           >
-            {t('pages.personnel.index.personnelList')}
+            {t("pages.personnel.index.personnelList")}
           </Heading>
           <Hide below="sm">
             <Text>Dashboad / personnel /Liste du personnel</Text>
           </Hide>
         </Flex>
-        <Flex 
-          // bg="white" 
+        <Flex
+          // bg="white"
           my="5"
-          p="5" 
-          rounded="md" 
+          p="5"
+          rounded="md"
           justify="space-between"
-         >
+        >
           <InputGroup width="500px">
             <InputRightElement
               children={<Icon as={FiSearch} />}
@@ -156,44 +147,43 @@ const Personnel = () => {
             rightIcon={<Icon as={IoIosAdd} boxSize="20px" />}
             onClick={() => router.push("/personnel/ajouterpersonnel")}
           >
-            {t('pages.personnel.index.addPersonnelButton')}
+            {t("pages.personnel.index.addPersonnelButton")}
           </Button>
         </Flex>
-        <Flex gap={5} flexWrap="wrap" >
-        <Box 
-          w="full" 
-          bg="white" 
-          rounded="md" 
-          p="3" 
-          boxShadow="md"
-        >
-        <Flex gap={12} mt={3} flexWrap="wrap">
-         {dataPersonnel && ( 
+        <Flex gap={5} flexWrap="wrap">
+          <Box w="full" bg="white" rounded="md" p="3" boxShadow="md">
+            <Flex gap={12} mt={3} flexWrap="wrap">
+              {dataPersonnel &&
+                dataPersonnel.findAllpersonnel
+                  .filter((personnel) => {
+                    if (searchName == "") {
+                      return personnel;
+                    } else if (
+                      personnel.firstName
+                        .toLowerCase()
+                        .includes(searchName.toLowerCase()) ||
+                      personnel.lastName
+                        .toLowerCase()
+                        .includes(searchName.toLowerCase()) ||
+                      personnel.fonction
+                        .toLowerCase()
+                        .includes(searchName.toLowerCase())
+                    )
+                      return personnel;
+                  })
+                  .slice(pagesVisited, pagesVisited + itemsPerPage)
 
-            dataPersonnel.findAllpersonnel
-            .filter((personnel) =>{
-              if(searchName == ""){
-                return personnel;
-              }else if (personnel.firstName.toLowerCase().includes (searchName.toLowerCase()) || 
-              personnel.lastName.toLowerCase().includes (searchName.toLowerCase()) || 
-              personnel.fonction.toLowerCase().includes (searchName.toLowerCase()))
-              return personnel;
-            }
-            )
-            .slice(pagesVisited, pagesVisited + itemsPerPage)
-            
-            .map((personnel, index) => (
-              <Box key={index}>
-                 <Employee
-                  firstName={personnel.firstName}
-                  lastName={personnel.lastName}
-                  fonction={personnel.fonction}
-                  situationMatrimonial={personnel.situationMatrimonial}
-                  sexe={personnel.sexe}
-                  id={personnel.id}
-
-                /> 
-              {/* <Box
+                  .map((personnel, index) => (
+                    <Box key={index}>
+                      <Employee
+                        firstName={personnel.firstName}
+                        lastName={personnel.lastName}
+                        fonction={personnel.fonction}
+                        situationMatrimonial={personnel.situationMatrimonial}
+                        sexe={personnel.sexe}
+                        id={personnel.id}
+                      />
+                      {/* <Box
                 bg={"gray.200"}
                 width={"200px"}
                 rounded="md"
@@ -227,8 +217,8 @@ const Personnel = () => {
               >
                 {personnel.fonction}
                 {/* {props.fonction} */}
-              {/* </Text> */}
-              {/* <Text 
+                      {/* </Text> */}
+                      {/* <Text 
                 textAlign="center" 
                 fontWeight="bold" 
                 fontSize="0.85em"
@@ -236,34 +226,34 @@ const Personnel = () => {
               >
                 {props.situationMatrimonial}
               </Text> */}
-              {/* // <Flex justify="center" gap="4">
+                      {/* // <Flex justify="center" gap="4">
               //   <Link  */}
-              {/* //     href={{ */}
-              {/* //       pathname: Routes.PersonnelDetails?.path || '',
+                      {/* //     href={{ */}
+                      {/* //       pathname: Routes.PersonnelDetails?.path || '',
               //       query: {id: personnel.id}
               //     }}
               //   >
               //     <Icon
               //       as={BiDetail} */}
-              {/* //       boxSize="40px"
+                      {/* //       boxSize="40px"
               //       p="3"
               //       bg="purple.100"
               //       rounded="full"
               //     />
               //   </Link> */}
-              {/* //   <Link href="/personnel/modifierpersonnel">
+                      {/* //   <Link href="/personnel/modifierpersonnel">
               //     <Icon
               //       as={FiEdit} */}
-              {/* //       boxSize="40px"
+                      {/* //       boxSize="40px"
               //       p="3"
               //       bg="blue.100"
               //       rounded="full"
               //     />
               //   </Link>
               //   <Box href="#"> */}
-              {/* //     <Icon
+                      {/* //     <Icon
               //       as={MdDelete} */}
-              {/* //       boxSize="40px"
+                      {/* //       boxSize="40px"
               //       p="3"
               //       bg="red.500"
               //       rounded="full"
@@ -272,7 +262,7 @@ const Personnel = () => {
               //     />
               //       <Box> 
               //         <AlertDialog */}
-              {/* //           isOpen={isOpen}
+                      {/* //           isOpen={isOpen}
               //           leastDestructiveRef={cancelRef}
               //           onClose={onClose}
               //           isCentered
@@ -283,7 +273,7 @@ const Personnel = () => {
               //               <AlertDialogContent
               //               width={"380px"}
               //               > */}
-              {/* //                 <AlertDialogHeader 
+                      {/* //                 <AlertDialogHeader 
               //                   fontSize='lg' 
               //                   fontWeight='bold'
               //                   textAlign={"center"}
@@ -303,7 +293,7 @@ const Personnel = () => {
               //                     Annuler 
               //                   </Button>
               //                   <Button  */}
-              {/* //                     colorScheme='green' 
+                      {/* //                     colorScheme='green' 
               //                     onClick={() => {removePersonnel(props.id)}}
               //                     ml={3}
               //                   >
@@ -314,29 +304,28 @@ const Personnel = () => {
               //             </AlertDialogOverlay>
               //         </AlertDialog>
               //       </Box> */}
-              {/* //   </Box>
+                      {/* //   </Box>
               // </Flex>
-            // </Box> */} 
-              
-              </Box>
-            )) )}
-          </Flex>
-        </Box>
-        <Center mt="5px" ml="540px"> 
-          <Box> 
-            <ReactPaginate 
-              previousLabel={"<<"}
-              nextLabel={">>"}
-              pageCount={pageCount}
-              onPageChange={changePage}
-              containerClassName={"paginationBttns"}
-              previousLinkClassName={"previousBttn"}
-              nextLinkClassName={"nextBttn"}
-              disabledClassName={"paginationDisabled"}
-              activeClassName={"paginationActive"}
-            />
+            // </Box> */}
+                    </Box>
+                  ))}
+            </Flex>
           </Box>
-        </Center>
+          <Center mt="5px" ml="540px">
+            <Box>
+              <ReactPaginate
+                previousLabel={"<<"}
+                nextLabel={">>"}
+                pageCount={pageCount}
+                onPageChange={changePage}
+                containerClassName={"paginationBttns"}
+                previousLinkClassName={"previousBttn"}
+                nextLinkClassName={"nextBttn"}
+                disabledClassName={"paginationDisabled"}
+                activeClassName={"paginationActive"}
+              />
+            </Box>
+          </Center>
           {/* {dataPersonnel
             .filter((personnel) =>{
               if(searchName == ""){

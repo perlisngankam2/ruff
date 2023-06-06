@@ -70,7 +70,9 @@ const AjouterEleve = () => {
   const [age, setAge] = useState("");
   const { data: dataClass } = useQuery(GET_ALL_CLASS);
   const { data: dataCategoryStudent } = useQuery(GET_ALL_Category_Eleve);
-  const [createStudent, error] = useMutation(CREATE_STUDENT);
+  const [createStudent, error] = useMutation(CREATE_STUDENT, {
+    onError: (error) => console.log(error),
+  });
   const [updateStudent] = useMutation(UPDATE_STUDENT);
   const { data: dataSection } = useQuery(GET_ALL_SECTION);
 
@@ -427,7 +429,6 @@ const AjouterEleve = () => {
                         setStudent({ ...student, adress: e.target.value })
                       }
                       variant="flushed"
-                      
                     />
                   </FormControl>
                   <FormControl>

@@ -1,15 +1,14 @@
-
 import {
-    Box,
-    Text,
-    Center,
-    Heading,
-    Flex,
-    Image,
-    Button,
-    Icon
+  Box,
+  Text,
+  Center,
+  Heading,
+  Flex,
+  Image,
+  Button,
+  Icon,
 } from "@chakra-ui/react";
-import ReactToPrint from 'react-to-print';
+import ReactToPrint from "react-to-print";
 import PaySlipBottom from "../../../components/atoms/PaySlipBottom";
 import PaySlipMiddle from "../../../components/atoms/PaySlipMiddle";
 import PaySlipFolderSalaryBox from "../../../components/atoms/PaySlipFolderSalaryBox";
@@ -30,7 +29,7 @@ import { GET_ALL_PERSONNEL_BY_ID,
          GET_Category_Personnel_ID } from "../../../graphql/Queries";
 import { useRouter } from "next/router";
 import { useQuery } from "@apollo/client";
-import React, { useRef, useEffect }  from "react";
+import React, { useRef, useEffect } from "react";
 import { GiTrafficCone } from "react-icons/gi";
 import { TfiPrinter } from "react-icons/tfi";
 import ReactToPdf from "react-to-pdf";
@@ -41,6 +40,7 @@ import ReactToPdf from "react-to-pdf";
 // import 'pdfmake';
 
 const Bulletin = () => {
+  const { setAuthToken, authToken } = useAuth();
 
   const router = useRouter();
 
@@ -63,12 +63,14 @@ const Bulletin = () => {
   });
 
   // recupere l'ID de la categorie associee a un personnel
+  // recupere l'ID de la categorie associee a un personnel
 
   const {data:dataCategorieId} = useQuery(GET_Category_Personnel_ID,
   {
     variables:{ personnelid: router.query.id}
   })
 
+  // information de la categorie associee au personnel
   // information de la categorie associee au personnel
 
   const {data:dataCategorie} = useQuery(GET_Category_Personnel_BY_ID,
@@ -109,21 +111,31 @@ const Bulletin = () => {
         }
     })
 
+  //   if (millier > 0) {
+  //     resultat += nombreEnLettres(millier) + ' mille ';
+  //     const reste = montant % 1000;
+  //     if (reste > 0) {
+  //       resultat += nombreEnLettres(reste) + ' ';
+  //     }
+  //   }
 
-console.log(dataSalaireNet?.PersonnelNetSalary)
-console.log(dataSalaireId?.getsalairebypersonnel)
+  //   if (centaine > 0) {
+  //     if (centaine === 1) {
+  //       resultat += 'cent ';
+  //     } else {
+  //       resultat += chiffres[centaine] + ' cent ';
+  //     }
+  //   }
 
-console.log("dataRetenue")
-console.log(dataRetenueNoms?.findnamesretenubypersonnel)
-console.log(dataRetenueMontant?.findmontantretenubypersonnel)
-console.log(dataRetenueTotal
-)
-console.log("dataPrime")
-console.log(dataPrimeNoms?.findnamesprimebypersonnel)
-console.log(dataPrimeMontant?.findmontantprimebypersonnel)
-console.log(dataPrimeTotal
-)
+  //   if (dizaine === 1 && unite > 0) {
+  //     resultat += chiffres[10 + unite] + ' ';
+  //   } else if (dizaine > 1 || (dizaine === 1 && unite === 0)) {
+  //     resultat += dizaines[dizaine] + ' ';
+  //   }
 
+  //   if (dizaine !== 1 && unite > 0) {
+  //     resultat += chiffres[unite] + ' ';
+  //   }
 
 //fonction qui ecrit un nombre en lettre 
 function nombreEnLettres(montant) {
@@ -132,10 +144,18 @@ function nombreEnLettres(montant) {
     'onze', 'douze', 'treize', 'quatorze', 'quinze', 'seize', 'dix-sept', 'dix-huit', 'dix-neuf'
   ];
 
-  const dizaines = [
-    '', '', 'vingt', 'trente', 'quarante', 'cinquante', 'soixante', 'soixante-dix',
-    'quatre-vingt', 'quatre-vingt-dix'
-  ];
+    const dizaines = [
+      "",
+      "",
+      "vingt",
+      "trente",
+      "quarante",
+      "cinquante",
+      "soixante",
+      "soixante-dix",
+      "quatre-vingt",
+      "quatre-vingt-dix",
+    ];
 
   const unite = montant % 10;
   const dizaine = Math.floor(montant / 10) % 10;
@@ -144,7 +164,12 @@ function nombreEnLettres(montant) {
 
   const million = Math.floor(montant / 1000000);
 
-  let resultat = '';
+    if (million > 0) {
+      if (million === 1) {
+        resultat += "un million ";
+      } else {
+        resultat += nombreEnLettres(million) + " million ";
+      }
 
   if (million > 0) {
       if (million === 1) {
@@ -195,99 +220,142 @@ if (dizaine === 1 && unite === 0) {
     
   }
 
-  return resultat.trim();
+    return resultat.trim();
+  }
 }
 
+  const lettre = nombreEnLettres(dernierElement);
+  console.log(lettre);
 
+  const componentRef = useRef();
+  const ref = React.createRef();
+  const options = {
+    orientation: "landscape",
+    unit: "mm",
+    format: "a4",
+  };
 
-const lettre =nombreEnLettres(dernierElement)
-console.log(lettre)
+  //     {tableRef.current.DataTable({
+  //       dom: 'Bfrtip',
+  //       buttons: [
+  //         'copy', 'csv', 'excel', 'pdf', 'print'
+  //       ]
+  //     });}
 
-const componentRef = useRef();
-const ref = React.createRef();
-const options = {
-      orientation: 'landscape',
-      unit: 'mm',
-      format: 'a4',
-};
+  useEffect(() => {
+    if (!authToken) {
+      router.back();
+    }
+  }, [authToken]);
 
-//     {tableRef.current.DataTable({
-//       dom: 'Bfrtip',
-//       buttons: [
-//         'copy', 'csv', 'excel', 'pdf', 'print'
-//       ]
-//     });}
+  if (loading) return <Text>Chargement en cour...</Text>;
+  if (error) return <Text>Une erreur s'est produite!</Text>;
 
-
-    if (loading) return <Text>Chargement en cour...</Text>
-    if (error) return <Text>Une erreur s'est produite!</Text>
-
-    
-    return ( 
-      <>
-      {!loading &&
-
-      <DefaultLayout>
-            <Box p="3" pt="70px" w="100%" background="colors.tertiary">
-              <Flex gap={4}>
+  return (
+    <>
+      {!loading && (
+        <DefaultLayout>
+          <Box p="3" pt="70px" w="100%" background="colors.tertiary">
+            <Flex gap={4}>
               <ReactToPrint
-               trigger={() => <Button rightIcon={<Icon as={TfiPrinter} boxSize="20px" />}>Imprimer</Button>}
-               content={() => componentRef.current}
-                documentTitle= "Bulletin de paie"
+                trigger={() => (
+                  <Button rightIcon={<Icon as={TfiPrinter} boxSize="20px" />}>
+                    Imprimer
+                  </Button>
+                )}
+                content={() => componentRef.current}
+                documentTitle="Bulletin de paie"
                 pageStyle="print"
               />
-              <ReactToPdf targetRef={componentRef} filename="Bulletin de paie" options={options} x={17} y={10} >
-              {({toPdf}) => ( <Button onClick={toPdf}>Generate pdf</Button>)}
+              <ReactToPdf
+                targetRef={componentRef}
+                filename="Bulletin de paie"
+                options={options}
+                x={17}
+                y={10}
+              >
+                {({ toPdf }) => <Button onClick={toPdf}>Generate pdf</Button>}
               </ReactToPdf>
-              
-              </Flex>
-              <Box mt='15px'>
-        <Center >
+            </Flex>
+            <Box mt="15px">
+              <Center>
+                <Box
+                  borderWidth="1px"
+                  bg={"white"}
+                  borderColor="black"
+                  w="1000px"
+                  ref={componentRef}
+                >
+                  <Box w="1000px">
+                    <Flex gap="350px" borderBottom={"1px"} w="full">
+                      <Box ml="20px" mb="5px">
+                        <Image src="../../logo.png" w="150px" />
+                      </Box>
+                      <Box mt="30px" mr="20px">
+                        <Heading> BULLETIN DE PAIE</Heading>
+                        <Text mt="10px" textAlign={"center"}>
+                          Mois de paie:{" "}
+                          {dernierElementSalaire?.moisPaie
+                            .split("-")
+                            .reverse()
+                            .join("-")}
+                        </Text>
+                        <Text textAlign={"center"}>
+                          Paiement, le{" "}
+                          {dernierElementSalaire?.jourPaie
+                            .split("-")
+                            .reverse()
+                            .join("-")}
+                        </Text>
+                      </Box>
+                    </Flex>
+                    <Flex gap="280px" mt="20px">
+                      <Box ml="17px">
+                        <Flex mt="10px">
+                          <Text ml={["10px", "10px", "10px"]} fontWeight="bold">
+                            Matricule:
+                          </Text>
+                          <Text ml={["10px", "10px", "10px"]}>
+                            {" "}
+                            XXXXXXXXXXX
+                          </Text>
+                        </Flex>
+                        <Flex>
+                          <Text ml={["10px", "10px", "10px"]} fontWeight="bold">
+                            Categorie:
+                          </Text>
+                          <Text ml={["10px", "10px", "10px"]}>
+                            {" "}
+                            {dataCategorie?.findOneCategoriepersonnel.nom.toUpperCase()}
+                          </Text>
+                        </Flex>
 
-          <Box borderWidth='1px' 
-                    bg={'white'}
-                    borderColor='black' 
-                    w='1000px'
-                   ref={componentRef}
-                    >
-            <Box  w='1000px' > 
-                  <Flex gap='350px' borderBottom={'1px'} w='full'>
-                    <Box ml='20px' mb='5px'><Image  src="../../logo.png" w='150px' /></Box>
-                    <Box mt='30px' mr='20px' >
-                      <Heading > BULLETIN DE PAIE</Heading>  
-                      <Text mt='10px' textAlign={"center"} >Mois de paie: {dernierElementSalaire?.moisPaie.split("-").reverse().join("-")}</Text>
-                      <Text textAlign={"center"} >Paiement, le {dernierElementSalaire?.jourPaie.split("-").reverse().join("-")}</Text>
-                    </Box>
-                    
-
-
-                  </Flex>
-                  <Flex gap='280px' mt='20px'>
-
-              <Box ml='17px' >
-
-                 <Flex mt='10px'>
-                    <Text ml={['10px', '10px', '10px']} fontWeight='bold'>Matricule:</Text>
-                    <Text ml={['10px', '10px', '10px']} > XXXXXXXXXXX</Text>
-                </Flex>
-                <Flex>
-                    <Text ml={['10px', '10px', '10px']}  fontWeight='bold'>Categorie:</Text>
-                    <Text ml={['10px', '10px', '10px']}> {dataCategorie?.findOneCategoriepersonnel.nom.toUpperCase()}</Text>
-                </Flex>
-
-                <Flex>
-                    <Text ml={['10px', '10px', '10px']} fontWeight='bold'>Fonction:</Text>
-                    <Text ml={['10px', '10px', '10px']} >{dataPersonnelId?.findOnePersonnel.fonction.toUpperCase()} </Text>
-                </Flex>
-                <Flex>
-                    <Text ml={['10px', '10px', '10px']} fontWeight='bold'>Status:</Text>
-                    <Text ml={['10px', '10px', '10px']} >{dataPersonnelId?.findOnePersonnel.status} </Text>
-                </Flex>
-                 <Flex>
-                    <Text ml={['10px', '10px', '10px']} fontWeight='bold'>Anciennete:</Text>
-                    <Text ml={['10px', '10px', '10px']} > {dataPersonnelId?.findOnePersonnel.dateOfStartWork}</Text>
-                </Flex>
-            </Box>
+                        <Flex>
+                          <Text ml={["10px", "10px", "10px"]} fontWeight="bold">
+                            Fonction:
+                          </Text>
+                          <Text ml={["10px", "10px", "10px"]}>
+                            {dataPersonnelId?.findOnePersonnel.fonction.toUpperCase()}{" "}
+                          </Text>
+                        </Flex>
+                        <Flex>
+                          <Text ml={["10px", "10px", "10px"]} fontWeight="bold">
+                            Status:
+                          </Text>
+                          <Text ml={["10px", "10px", "10px"]}>
+                            {dataPersonnelId?.findOnePersonnel.status}{" "}
+                          </Text>
+                        </Flex>
+                        <Flex>
+                          <Text ml={["10px", "10px", "10px"]} fontWeight="bold">
+                            Anciennete:
+                          </Text>
+                          <Text ml={["10px", "10px", "10px"]}>
+                            {" "}
+                            {dataPersonnelId?.findOnePersonnel.dateOfStartWork}
+                          </Text>
+                        </Flex>
+                      </Box>
 
             <Box  w='300px' >
                 <Text mt='30px' textAlign={'center'} fontWeight='bold'>{dataPersonnelId?.findOnePersonnel.firstName.toUpperCase()+' '+dataPersonnelId?.findOnePersonnel.lastName.toUpperCase()} </Text>
@@ -357,102 +425,177 @@ const options = {
 
                   </Flex>
 
-                   <Flex w='full'>
-                  <Box w='300px' borderLeft={'1px'}   py='6px' >
+                          <Flex w="full">
+                            <Box w="300px" borderLeft={"1px"} py="6px">
+                              <Heading
+                                fontSize={"md"}
+                                fontWeight={"bold"}
+                                color="black"
+                                ml="6px"
+                              >
+                                RETENUES SALARIALES
+                              </Heading>
+                              {dataRetenueNoms &&
+                                dataRetenueNoms?.findnamesretenubypersonnel.map(
+                                  (retenue) => <Text ml="20px">{retenue}</Text>
+                                )}
+                            </Box>
+                            <Box w="180px" borderLeft={"1px"} py="6px">
+                              {dataRetenueMontant && (
+                                <Box mt="20px">
+                                  {dataRetenueMontant?.findmontantretenubypersonnel.map(
+                                    (retenue) => (
+                                      <Text textAlign={"right"} mr="6px">
+                                        {retenue}
+                                      </Text>
+                                    )
+                                  )}
+                                </Box>
+                              )}
+                            </Box>
+                            <Box w="100px" borderLeft={"1px"} py="6px"></Box>
+                            <Box w="160px" borderLeft={"1px"} py="6px"></Box>
+                            <Box
+                              w="160px"
+                              borderLeft={"1px"}
+                              borderRight={"1px"}
+                              py="6px"
+                            >
+                              {dataRetenueMontant && (
+                                <Box mt="20px">
+                                  {dataRetenueMontant?.findmontantretenubypersonnel.map(
+                                    (retenue) => (
+                                      <Text textAlign={"right"} mr="6px">
+                                        {retenue}
+                                      </Text>
+                                    )
+                                  )}
+                                </Box>
+                              )}
+                            </Box>
+                          </Flex>
 
-                       <Heading fontSize={'md'} fontWeight={'bold'} color='black' ml='6px'>RETENUES SALARIALES</Heading>
-                          { 
-                      dataRetenueNoms && (
-                        dataRetenueNoms?.findnamesretenubypersonnel.map((retenue) => (
-                            <Text ml='20px' >
-                              {retenue}
+                          <Flex w="full">
+                            <Box w="300px" borderLeft={"1px"} py="6px">
+                              <Heading
+                                fontSize={"md"}
+                                fontWeight={"bold"}
+                                color="black"
+                                ml="6px"
+                              >
+                                TOTAL PRIMES
+                              </Heading>
+                            </Box>
+                            <Box w="180px" borderLeft={"1px"} py="6px"></Box>
+                            <Box w="100px" borderLeft={"1px"} py="6px"></Box>
+                            <Box w="160px" borderLeft={"1px"} py="6px">
+                              <Text
+                                textAlign={"right"}
+                                mr="6px"
+                                fontWeight={"bold"}
+                              >
+                                {dataPrimeTotal?.getallpersonnelprimebymont}
+                              </Text>
+                            </Box>
+                            <Box
+                              w="160px"
+                              borderLeft={"1px"}
+                              borderRight={"1px"}
+                              py="6px"
+                            ></Box>
+                          </Flex>
+
+                          <Flex w="full" mb="8px">
+                            <Box
+                              w="300px"
+                              borderLeft={"1px"}
+                              borderBottom={"1px"}
+                              py="6px"
+                            >
+                              <Heading
+                                fontSize={"md"}
+                                fontWeight={"bold"}
+                                color="black"
+                                ml="6px"
+                              >
+                                TOTAL RETENUES
+                              </Heading>
+                            </Box>
+                            <Box
+                              w="180px"
+                              borderLeft={"1px"}
+                              borderBottom={"1px"}
+                              py="6px"
+                            ></Box>
+                            <Box
+                              w="100px"
+                              borderLeft={"1px"}
+                              borderBottom={"1px"}
+                              py="6px"
+                            ></Box>
+                            <Box
+                              w="160px"
+                              borderLeft={"1px"}
+                              borderBottom={"1px"}
+                              py="6px"
+                            ></Box>
+                            <Box
+                              w="160px"
+                              borderLeft={"1px"}
+                              borderBottom={"1px"}
+                              borderRight={"1px"}
+                              py="6px"
+                            >
+                              <Text
+                                textAlign={"right"}
+                                mr="6px"
+                                fontWeight={"bold"}
+                              >
+                                {dataRetenueTotal?.getallretenupersonnelbymonth}
+                              </Text>
+                            </Box>
+                          </Flex>
+                        </Box>
+                        <Flex w="900px" border={"1px"} mt="20px">
+                          <Box
+                            py="6px"
+                            w="450px"
+                            borderRight={"1px"}
+                            background="colors.primary"
+                            color="white"
+                          >
+                            <Text>NET A PAYER</Text>
+                          </Box>
+                          <Box py="6px" w="450px">
+                            <Text
+                              textAlign={"right"}
+                              mr="20px"
+                              fontSize={"18px"}
+                              fontWeight={"bold"}
+                            >
+                              {dernierElement} FCFA
                             </Text>
-                        )))}
+                          </Box>
+                        </Flex>
+                        <Box p={"10px"}>
+                          <Text textAlign={"center"}>
+                            Montant en lettre du salaire net :
+                            <Text fontWeight={"bold"}>
+                              {lettre.toUpperCase()} FRANC CFA
+                            </Text>
+                          </Text>
+                        </Box>
+                      </Box>
+                    </Center>
                   </Box>
-                    <Box  w='180px'  borderLeft={'1px'} py='6px' >
-
-                               { 
-                     dataRetenueMontant && <Box mt='20px'>
-                        {dataRetenueMontant?.findmontantretenubypersonnel.map((retenue) => (
-                            <Text textAlign={"right"} mr='6px'>
-                              {retenue}
-                            </Text>
-                            ))}</Box>}
-                    </Box>
-                    <Box w='100px'  borderLeft={'1px'} py='6px'  ></Box>
-                    <Box w='160px'  borderLeft={'1px'} py='6px' ></Box>
-                    <Box  w='160px' borderLeft={'1px'} borderRight={'1px'} py='6px'  >
-                            { 
-                     dataRetenueMontant && <Box mt='20px'>
-                        {dataRetenueMontant?.findmontantretenubypersonnel.map((retenue) => (
-                            <Text textAlign={"right"} mr='6px' >
-                              {retenue}
-                            </Text>
-                            ))}</Box>}
-                    </Box>
-
-                  </Flex>
-
-              
-
-                  <Flex w='full'>
-                    <Box w='300px' borderLeft={'1px'}   py='6px' ><Heading fontSize={'md'} fontWeight={'bold'} color='black' ml='6px'>TOTAL PRIMES</Heading></Box>
-                    <Box  w='180px'  borderLeft={'1px'} py='6px' ></Box>
-                    <Box w='100px'  borderLeft={'1px'} py='6px'  ></Box>
-                    <Box w='160px'  borderLeft={'1px'} py='6px' ><Text textAlign={"right"} mr='6px' fontWeight={'bold'}>{dataPrimeTotal?.getallpersonnelprimebymont}</Text></Box>
-                    <Box  w='160px' borderLeft={'1px'} borderRight={'1px'} py='6px'  ></Box>
-
-                  </Flex>
-
-                  <Flex w='full' mb='8px'>
-                    <Box w='300px' borderLeft={'1px'} borderBottom={'1px'}  py='6px' ><Heading fontSize={'md'} fontWeight={'bold'} color='black' ml='6px'>TOTAL RETENUES</Heading></Box>
-                    <Box  w='180px'  borderLeft={'1px'} borderBottom={'1px'} py='6px' ></Box>
-                    <Box w='100px'  borderLeft={'1px'} borderBottom={'1px'} py='6px'  ></Box>
-                    <Box w='160px'  borderLeft={'1px'} borderBottom={'1px'} py='6px' ></Box>
-                    <Box  w='160px' borderLeft={'1px'}borderBottom={'1px'} borderRight={'1px'} py='6px'  ><Text textAlign={"right"} mr='6px' fontWeight={'bold'}>{dataRetenueTotal?.getallretenupersonnelbymonth}</Text></Box>
-
-                  </Flex>
-
-
-              </Box>
-              <Flex w='900px' border={'1px'} mt='20px'>
-                <Box py='6px' w='450px' borderRight={'1px'} background="colors.primary"color='white'><Text>NET A PAYER</Text></Box>
-                <Box py='6px' w='450px' ><Text textAlign={'right'} mr='20px' fontSize={'18px'} fontWeight={'bold'}>{dernierElement} FCFA</Text></Box>
-              </Flex>
-                <Box 
-                        p={'10px'}>
-                        <Text textAlign={'center'}>
-                            Montant en lettre du salaire net :<Text fontWeight={'bold'}>{lettre.toUpperCase()} FRANC CFA</Text>
-                        </Text>
-                    </Box>
-              
-              </Box>
-              
-
-            </Center>
-
-
-
+                </Box>
+              </Center>
             </Box>
-          
-
-
-
           </Box>
-    
-
-
-           </Center>
-
-       </Box>
-        </Box>
-
-         
         </DefaultLayout>
-      
-        }</>
-       
-     );
-}
- 
+      )}
+    </>
+  );
+};
+
 export default Bulletin;

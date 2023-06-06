@@ -34,8 +34,8 @@ export class PensionSalle {
   @Property({ nullable: true })
   description!: string;
 
-  @Field({ defaultValue:0 })
-  @Property({ default:0 })
+  @Field({ nullable: false })
+  @Property({ nullable: false })
   montantPension!: number;
 
   @Field(() => Date, { nullable: true })
@@ -79,7 +79,7 @@ export class PensionSalle {
   @Field(() => ID, { nullable: true })
   @Property({ persist: false })
   get salleName(): string | null {
-    return this.salle? `${this.salle.getEntity().name}` : null;
+    return this.salle.getEntity().name? `${this.salle.getEntity().name}` : null;
 
 }
 }

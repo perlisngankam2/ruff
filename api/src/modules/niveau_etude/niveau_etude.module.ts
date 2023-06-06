@@ -7,15 +7,19 @@ import { NiveauEtudeResolver } from './niveau-etude.resolver';
 import { NiveauEtudeService } from './niveau-etude.service';
 import { CycleModule } from '../cycle/cycle.module';
 import { CycleService } from '../cycle/cycle.service';
+import { RolesGuard } from '../auth/guards/roles.guard';
+import { UserModule } from '../user/user.module';
 
 
 @Module({
     imports:[
         MikroOrmModule.forFeature({ entities: [NiveauEtude] }),
         SectionCycleModule,
-        CycleModule
+        CycleModule,
+        UserModule,
+
     ],
-    providers:[NiveauEtudeService,NiveauEtudeResolver],
+    providers:[NiveauEtudeService,NiveauEtudeResolver, RolesGuard],
     exports:[NiveauEtudeService]
 })
 export class NiveauEtudeModule {}

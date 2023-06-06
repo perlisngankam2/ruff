@@ -20,16 +20,28 @@ import {
   FormLabel,
   extendTheme 
 } from '@chakra-ui/react';
-import React from "react";
-
+import React,{useEffect ,useState} from "react";
+import { useRouter } from "next/router";
+import { useAuth } from "../contexts/account/Auth/Auth";
 
 import Link from "next/link";
 
 import MyApp from "./_app";
 
 function Finances  () {
+
+  const router = useRouter();
+  const { setAuthToken, authToken } = useAuth();
   const { isOpen, onOpen, onClose } = useDisclosure()
   const cancelRef = React.useRef()
+
+  useEffect(()=>{
+    if(!authToken){
+      router.back()
+    }
+    
+  },[authToken])
+
   return (
     <DefaultLayout>
       <Box p="3" pt="70px">

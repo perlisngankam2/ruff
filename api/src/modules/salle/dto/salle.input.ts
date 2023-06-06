@@ -13,11 +13,11 @@ export class SalleCreateInput {
   @Field({nullable:true})
   anneeAcademiqueId?: string;
 
-  @Field(()=>ID,{nullable:true})
-  sectionId?: string;
+  // @Field(()=>ID,{nullable:true})
+  // sectionId?: string;
 
-  @Field({nullable:true})
-  cycleId?: string;
+  // @Field({nullable:true})
+  // cycleId?: string;
 
   @Field({nullable:true})
   montantPensionSalle?: number;

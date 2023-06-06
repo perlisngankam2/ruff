@@ -30,7 +30,7 @@ export class AnneeAccademique {
   id!: string;
 
   @Field({ nullable: true })
-  @Property({ nullable: true })
+  @Property({ unique:true })
   name!: string;
 
   @Field({ nullable: true })

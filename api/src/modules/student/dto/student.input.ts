@@ -1,10 +1,6 @@
 /* eslint-disable prettier/prettier */
 import { Field, InputType,ID } from '@nestjs/graphql';
-import { CategorieEleveCreateInput } from 'src/modules/categorie_eleve/dto/categorie-eleve.input';
-import { InscriptionInput } from 'src/modules/inscription/dto/inscription.input';
-import { LocalisationCreateInput } from 'src/modules/localisation/dto/localisation.input';
-import { SalleCreateInput } from 'src/modules/salle/dto/salle.input';
-import { UserCreateInput } from 'src/modules/user/dto/user.input';
+
 
 @InputType()
 export class StudentCreateInput {
@@ -38,8 +34,8 @@ export class StudentCreateInput {
   @Field({ nullable: true })
   adress!: string;
 
-  @Field({ nullable: true })
-  transport!: string;
+  // @Field({ nullable: true })
+  // transport!: string;
 
   // @Field({defaultValue:true})
   // old!: boolean;
@@ -85,6 +81,9 @@ export class StudentCreateInput {
 
   @Field({nullable:true})
   tutorProfession!: string;
+  
+  @Field({nullable:true})
+  repeating!: string;
   
   // @Field({nullable:true})
   // salle!: string;

@@ -35,6 +35,7 @@ export class NiveauEtudeService {
       ): Promise<NiveauEtude> {  
         const niveauEtude = new NiveauEtude()
 
+        const cycle = await this.cycleservice.findById(input.cycleId)
         // const sectionCycle = input.sectionCycle
         // ? await this.sectionCycle.findByOne({id:input.section})
         // : await this.sectionCycle.create(input.sectionCycle)
@@ -45,7 +46,7 @@ export class NiveauEtudeService {
            description: input.description,
           //  sectionCycle: sectionCycle.id,
           //  salle: input.salle,
-           cycle: input.cycleId,
+           cycle: cycle,
            montantPension: input.montantPension
           },
           {
@@ -58,15 +59,20 @@ export class NiveauEtudeService {
       }
     
       findByOne(filters: FilterQuery<NiveauEtude>): Promise<NiveauEtude | null> {
-        return this.niveauEtudeRepository.findOne(filters);
+        return this.niveauEtudeRepository.findOne(filters,
+          {
+            populate:['cycle']
+          });
       }
       findById(id:string){
-        return this.niveauEtudeRepository.findOne(id)
+        return this.niveauEtudeRepository.findOne(id, {
+          populate:['cycle']
+        })
       }
 
       async findcyclebyniveau(niveauid:string){
         return (await this.findByOne(niveauid)).cycle.load()
-       }
+      }
       
       async getAll() {
         const niveaus= this.niveauEtudeRepository.findAll({

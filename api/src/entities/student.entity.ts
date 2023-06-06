@@ -43,7 +43,7 @@ export class Student {
   id!: string;
 
   @Field({ nullable: true })
-  @Property({ unique:false })
+  @Property({unique: true})
   matricule!: string;
 
   @Field({ nullable: true })
@@ -61,6 +61,10 @@ export class Student {
   @Field({ nullable: true })
   @Property({nullable:true})
   birthPlace!: string;
+
+  @Field({ nullable: false })
+  @Property({nullable: false})
+  repeating!: string;
 
   // @Field({ nullable: true })
   // @Enum({
@@ -81,9 +85,9 @@ export class Student {
   @Property({ nullable: true })
   adress!: string;
 
-  @Field({ nullable: true })
-  @Property({ nullable: true })
-  transport!: string;
+  // @Field({ nullable: true })
+  // @Property({ nullable: true })
+  // transport!: string;
 
   // @Field({ defaultValue: false })
   // @Property({ default:false })

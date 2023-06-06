@@ -1,5 +1,6 @@
 /* eslint-disable prettier/prettier */
 import { Field, ObjectType } from "@nestjs/graphql";
+import { PaginatedResponse } from "src/pagination";
 
 @ObjectType()
 export class ClassStatistics {
@@ -127,3 +128,8 @@ RESTE_RECOUVRER:number
 @Field()
 TAUX_RAR:number
 }
+
+
+@ObjectType()
+export class ClassStatisticsPaginatedResponse extends PaginatedResponse(
+ClassStatistics) {}

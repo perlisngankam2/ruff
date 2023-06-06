@@ -10,11 +10,29 @@ import {
   Tr,
 } from "@chakra-ui/react";
 import { BsFillCreditCardFill } from "react-icons/bs";
+import { RiMoneyDollarCircleLine } from "react-icons/ri";
+
 import { useTranslation } from "next-i18next";
+import { GET_ALL_EXPENSE_PERSONNEL_STUDENT } from "../../graphql/Queries";
+import { useQuery, useMutation } from "@apollo/client";
+import React, { useEffect, useState } from "react";
 
 const TreasuryBox = () => {
+  const { t } = useTranslation();
 
-const {t} = useTranslation();
+  const { data: dataExpensePersonnelStudent } = useQuery(
+    GET_ALL_EXPENSE_PERSONNEL_STUDENT
+  );
+
+  let totalDebit = dataExpensePersonnelStudent?.findallexpenses.reduce(
+    (acc, curr) => acc + curr.debitamount,
+    0
+  );
+
+  let totalCredit = dataExpensePersonnelStudent?.findallexpenses.reduce(
+    (acc, curr) => acc + curr.creditamount,
+    0
+  );
 
   return (
     <Box
@@ -29,14 +47,14 @@ const {t} = useTranslation();
           letterSpacing="tight"
           fontSize="xl"
           color="red"
-          align="flex-start"
+          align="flex-staBsFillCreditCardFillrt"
           fontWeight="bold"
         >
-          {t('atoms.TreasuryBox.titreTresorerie')}  
+          {t("atoms.TreasuryBox.titreTresorerie")}
         </Text>
         <Icon
           alignContent="right"
-          as={BsFillCreditCardFill}
+          as={RiMoneyDollarCircleLine}
           color="green.500"
           boxSize={8}
         />
@@ -45,20 +63,20 @@ const {t} = useTranslation();
         <Table variant="striped" colorScheme="gray" size="12px">
           <Tbody mx={6}>
             <Tr mx={6} color="green.500">
-              <Td>9 265 000 Frais d'inscription</Td>
+              <Td>{totalCredit} FCFA Frais de scolarite</Td>
             </Tr>
-            <Tr color="green.500">
-              <Td>2250 000 FCFA frais d'APEE</Td>
+            <Tr color="red">
+              <Td>{totalDebit} FCFA de paie</Td>
             </Tr>
-            <Tr color="green.500">
-              <Td>2250 000 FCFA frais d'Examenx</Td>
+            {/* <Tr color="green.500">
+              <Td> FCFA en caisse</Td>
             </Tr>
             <Tr color="red">
               <Td>350 523 FCFA de paie</Td>
             </Tr>
             <Tr color="red">
               <Td>465 000 FCFA d'action</Td>
-            </Tr>
+            </Tr> */}
           </Tbody>
         </Table>
       </TableContainer>
@@ -71,7 +89,7 @@ const {t} = useTranslation();
         px="4"
         py="-2"
       >
-        Solde:
+        Montant total en caisse:
       </Text>
       <Flex position="relative" justify="space-between" mx="5">
         <Text
@@ -81,7 +99,7 @@ const {t} = useTranslation();
           color="green.500"
           align="flex-start"
         >
-          11 567 700 FCFA
+          {totalCredit -totalDebit} FCFA
         </Text>
         <Text
           letterSpacing="tight"
@@ -89,7 +107,7 @@ const {t} = useTranslation();
           color="yellow.500"
           fontWeight="bold"
         >
-          Decembre
+          {(new Date).toLocaleDateString()}
         </Text>
       </Flex>
     </Box>

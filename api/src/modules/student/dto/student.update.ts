@@ -31,6 +31,9 @@ export class StudentUpdateInput {
 
   @Field({ nullable: true })
   sex!: string;
+  
+  @Field({nullable:true})
+  repeating!: string;
 
   // @Field({ nullable: true })
   // classe!: string;
@@ -38,8 +41,8 @@ export class StudentUpdateInput {
   @Field({ nullable: true })
   adress!: string;
 
-  @Field({ nullable: true })
-  transport!: string;
+  // @Field({ nullable: true })
+  // transport!: string;
 
   // @Field({defaultValue:true})
   // old!: boolean;

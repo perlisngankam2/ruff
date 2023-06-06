@@ -35,6 +35,7 @@ import React, { useRef, useEffect }  from "react";
 import { GiTrafficCone } from "react-icons/gi";
 import { TfiPrinter } from "react-icons/tfi";
 import ReactToPdf from "react-to-pdf";
+import { useAuth } from "../../../contexts/account/Auth/Auth";
 // import $ from 'jquery';
 // import 'datatables.net';
 // import 'datatables.net-buttons';
@@ -44,6 +45,8 @@ import ReactToPdf from "react-to-pdf";
 const BulletinLastPayment = () => {
 
   const router = useRouter();
+  const { setAuthToken, authToken } = useAuth();
+
   // const tableRef = useRef();
 
   //recupere un salaire precis par son id
@@ -200,6 +203,12 @@ if (dizaine === 1 && unite === 0) {
 }
 
 
+useEffect(()=>{
+  if(!authToken){
+    router.back()
+  }
+  
+},[authToken])
 
 
 

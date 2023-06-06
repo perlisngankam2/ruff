@@ -75,7 +75,7 @@ import {
           </Link>
         </AccordionButton>
       </AccordionItem>
-      {/* <AccordionItem>
+      <AccordionItem>
         <AccordionButton  pl={0}>
           <Flex align="center" gap="1">
             <Icon as={HiUserGroup} />
@@ -97,12 +97,7 @@ import {
             <Box as="span">Categorie personnel</Box>
           </Link>
         </AccordionPanel>
-        <AccordionPanel pb={1} _hover={{background:"rgba(0,0,0,0.16)"}}>
-          <Link href="/comptePersonnel">
-            <Box as="span" pb={1}>Compte personnel</Box>
-          </Link>
-        </AccordionPanel>
-      </AccordionItem> */}
+      </AccordionItem>
       <AccordionItem>
         <AccordionButton  pl={0}>
           <Flex align="center" gap="1">
@@ -118,6 +113,11 @@ import {
         <AccordionPanel pb={1} _hover={{background:"rgba(0,0,0,0.16)"}}>
           <Link href="/class/addclass">
             <Box as="span">Ajouter une classe</Box>
+          </Link>
+        </AccordionPanel>
+        <AccordionPanel pb={1} _hover={{background:"rgba(0,0,0,0.16)"}}>
+          <Link href="/class/pensionSalle">
+            <Box as="span">pensions des classes</Box>
           </Link>
         </AccordionPanel>
         <AccordionPanel pb={1} _hover={{background:"rgba(0,0,0,0.16)"}}>
@@ -166,11 +166,11 @@ import {
             <Box as="span">Categorie élèves</Box>
           </Link>
         </AccordionPanel>
-        <AccordionPanel pb={1} _hover={{background:"rgba(0,0,0,0.16)"}}>
+        {/* <AccordionPanel pb={1} _hover={{background:"rgba(0,0,0,0.16)"}}>
           <Link href="/eleves/reduction/reductionStudent">
             <Box as="span">Reduction scolarite</Box>
           </Link>
-        </AccordionPanel>
+        </AccordionPanel> */}
       </AccordionItem>
       <AccordionItem> 
         <AccordionButton pl={0} >
@@ -198,19 +198,6 @@ import {
           </Link>
         </AccordionPanel>
       </AccordionItem  >
-      <AccordionItem>
-        <AccordionButton  pl={0}>
-          <Flex align="center" gap="1">
-            <Icon as={MdOutlineClass} />
-            <Box as="span">Parents</Box>
-          </Flex>
-        </AccordionButton>
-        <AccordionPanel _hover={{background:"rgba(0,0,0,0.16)"}}>
-          <Link href="reduction/reductionStudent">
-            <Box as="span">Reduction scolarite</Box>
-          </Link>
-        </AccordionPanel>
-      </AccordionItem>
        <AccordionItem>
         <AccordionButton  pl={0}>
           <Flex align="center" gap="1">

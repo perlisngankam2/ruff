@@ -21,17 +21,20 @@ import {
 import { useFormik } from "formik";
 import Link from "next/link";
 import { CREATE_USER } from "../../graphql/Mutation";
-import { GET_ALL_USER } from "../../graphql/Queries";
+import { GET_ALL_USER} from "../../graphql/Queries";
 import { useMutation, useQuery } from "@apollo/client";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import DefaultLayout from "../../components/layouts/DefaultLayout";
 import { useTranslation } from 'next-i18next';
 import { ViewIcon, ViewOffIcon } from '@chakra-ui/icons';
+import { useAuth } from "../../contexts/account/Auth/Auth";
 
 
 function PersonnelAccountForm() {
 
+
+  const { setAuthToken, authToken } = useAuth();
   const [Nom , setNom] = useState("");
   const [Prenom , setPrenom] = useState("");
   const [PhoneNumber, setPhoneNumber] = useState("");
@@ -42,13 +45,13 @@ function PersonnelAccountForm() {
   const [passwordsMatch, setPasswordsMatch] = useState(true);
   const [isInvalid, setIsInvalid] = useState();
   const [createUser, error] = useMutation(CREATE_USER);
-  const {data:dataUser} = useQuery(GET_ALL_USER);
   const toast = useToast()
   const router = useRouter()
   const {t} = useTranslation();
 
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const {data:dataUser, refetch} = useQuery(GET_ALL_USER);
 
 
   const handleConfirmPasswordChange = (event) => {
@@ -56,6 +59,7 @@ function PersonnelAccountForm() {
     setPasswordsMatch(event.target.value === Password);
   };
  
+  // console.log(dataUser)
   const HandleClick = async (event) => {
   event.preventDefault();
 
@@ -63,13 +67,14 @@ function PersonnelAccountForm() {
 
   if(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/.test(Password)){
   const userData = await createUser({
-        variables:{
+      variables:{
         createUser: { 
           email: Email,
           password : Password,
         }
       }
     })
+    refetch()
     console.log(userData)
     toast({
       title: "Compte crée avec succès",
@@ -86,7 +91,12 @@ function PersonnelAccountForm() {
   }
 
   }
-
+  useEffect(()=>{
+    if(!authToken){
+      router.back()
+    }
+    
+  },[authToken])
 
   return (
     // <DefaultLayout>

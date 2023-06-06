@@ -1,26 +1,31 @@
 /* eslint-disable prettier/prettier */
 import { CanActivate, ExecutionContext, Injectable } from "@nestjs/common";
 import { Reflector } from "@nestjs/core";
-import { Role } from "../roles/roles";
+import { UserService } from "src/modules/user/user.service";
+import { GqlAuthGuard } from "./gql-auth.guards";
+import { GqlExecutionContext } from "@nestjs/graphql";
+
 
 @Injectable()
-export class RolesGuard implements CanActivate{
-    constructor(private reflector: Reflector){}
+export class RolesGuard implements CanActivate {
+  constructor(private reflector: Reflector, private userService: UserService) {}
 
-    canActivate(context: ExecutionContext): boolean{
-        //let us extract required roles
-      const requiredRoles = this.reflector.getAllAndOverride<Role[]>('roles',[
-      context.getHandler(),
-      context.getClass(),
-      ]);
+  async getRequest(context: ExecutionContext) {
+    const ctx = GqlExecutionContext.create(context);
+    return ctx.getContext().req;
+  }
+  async canActivate(context: ExecutionContext): Promise<boolean> {
+    const roles = this.reflector.get<string[]>('roles', context.getHandler());
+    console.log('==============>roles'+roles)
+ 
+    const request = await this.getRequest(context)
+    console.log('==========>request'+request)
+    if (request?.user) {
+      const { id } = request.user;
+      const user = await this.userService.findById(id);
+      return roles.includes(user.role);
+    }
 
-      if(!requiredRoles){
-         return false
-      }
-      //extract the user
-      const {user} = context.switchToHttp().getResponse();
-      //does the user has the required roles
-      return requiredRoles.some((role) => user.roles.includes(role)) || requiredRoles.some((fonction) => user.roles.includes(fonction))
-    } 
-
+    return false;
+  }
 }

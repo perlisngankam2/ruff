@@ -33,14 +33,14 @@ export class CycleService {
         // ? await this.sectionService.findByOne({id:input.sectionId})
         // : await this.sectionService.create(input.section)
        
-         await this.sectionService.findByOne({id:input.sectionId})
+         const section=await this.sectionService.findByOne({id:input.sectionId})
         
         const cycle = new Cycle()
 
         wrap(cycle).assign(
           {
           name: input.name,
-          section: input.sectionId
+          section: section
           },
           {
             em: this.em

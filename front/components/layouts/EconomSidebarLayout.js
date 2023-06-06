@@ -10,7 +10,8 @@ import {
   import Link from "next/link";
   import { HiOutlineHome, HiUserGroup } from "react-icons/hi";
   import { IoMdSchool, IoIosStats, IoIosArrowDown } from "react-icons/io";
-  import { GiTakeMyMoney } from "react-icons/gi";
+  import { GiPayMoney, GiTakeMyMoney } from "react-icons/gi";
+import { MdOutlineClass } from "react-icons/md";
 
   const EconomeSidebarLayout = ({ children }) => {
     return (
@@ -195,11 +196,11 @@ import {
             <Box as="span">Categorie élèves</Box>
           </Link>
         </AccordionPanel>
-        <AccordionPanel pb={1} _hover={{background:"rgba(0,0,0,0.16)"}}>
+        {/* <AccordionPanel pb={1} _hover={{background:"rgba(0,0,0,0.16)"}}>
           <Link href="/eleves/reduction/reductionStudent">
             <Box as="span">Reduction scolarite</Box>
           </Link>
-        </AccordionPanel>
+        </AccordionPanel> */}
       </AccordionItem>
       {/* <AccordionItem> 
         <AccordionButton pl={0} >
@@ -288,7 +289,7 @@ import {
             <Box as="span">Derniers paiements</Box>
           </Link>
         </AccordionPanel>
-        {/* <AccordionPanel pb={1} _hover={{background:"rgba(0,0,0,0.16)"}}>
+        <AccordionPanel pb={1} _hover={{background:"rgba(0,0,0,0.16)"}}>
           <Link href="/payment/ajouterprime">
             <Box as="span">Ajouter une prime</Box>
           </Link>
@@ -297,9 +298,9 @@ import {
           <Link href="/payment/ajouterretenue">
             <Box as="span">Ajouter une retenue</Box>
           </Link>
-        </AccordionPanel> */}
+        </AccordionPanel>
       </AccordionItem>
-      {/* <AccordionItem>
+      <AccordionItem>
         <AccordionButton pl={0} >
           <Flex align="center" gap="1">
             <Icon as={IoIosStats} />
@@ -316,7 +317,7 @@ import {
             <Box as="span">Paiement par eleve</Box>
           </Link>
         </AccordionPanel>
-      </AccordionItem> */}
+      </AccordionItem>
       {/* <AccordionItem>
         <AccordionButton pl={0} >
           <Flex align="center" gap="1">

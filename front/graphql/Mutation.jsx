@@ -17,6 +17,7 @@ mutation createpersonnel ($createPersonnelUser: PersonnelCreateInput!) {
         dateOfStartWork
         dateOfBirth
         childNumber
+       
     }
 }
 `;
@@ -47,7 +48,6 @@ export const CREATE_STUDENT = gql`
             dateOfBirth
             sex
             adress
-            transport
             fatherFirstName
             fatherLastName
             fatherPhoneNumber
@@ -60,6 +60,7 @@ export const CREATE_STUDENT = gql`
             tutorLastName
             tutorPhoneNumber
             tutorProfession
+            repeating
         }
     }
 `;
@@ -85,7 +86,7 @@ export const CREATE_SALLE = gql `
             section
             montantPensionSalle
             effectif
-            niveauid
+            levelId
             levelName
         }
     }
@@ -120,7 +121,7 @@ export const CREATE_STUDY_LEVEL = gql `
             name
             description
             montantPension
-            cycleid
+            cycleId
             cycleName
         }
     }
@@ -223,15 +224,19 @@ export const CREATE_SCOLARITE_TRANCHE_STUDENT  = gql`
 
 //mutation d'affection de la pension a une classe 
 export const CREATE_MONTANT_SCOLARITE_CLASS = gql `
-    mutation createPension ($pension: PensionCreateInput!) {
-        createPension (pension: $pension) {
+    mutation createPensionSalle ($pensionsalle: PensionSalleCreateInput!) {
+        createPensionSalle (pensionsalle: $pensionsalle) {
             id
             name
             description
             montantPension
             dateLine
+            yearid
+            yearName
+            salleId
+            salleName
         }
-    }
+}
 `;
 
 export const CREATE_PERSONNEL_SALLE = gql `
@@ -291,7 +296,7 @@ export const CREATE_SCHOOL_PARAMETERS = gql`
 mutation createParameter ($input: ParameterCreateInput!) {
     createParameter (input: $input) {
         id
-        name
+        parameterName
         postalBox
         phoneNumber
         emailAddress
@@ -348,6 +353,7 @@ mutation deletepersonnel ($id: String!) {
         dateOfStartWork
         dateOfBirth
         childNumber
+
     }
 }
 `;
@@ -381,7 +387,7 @@ export const DELETE_SALLE = gql `
             section
             montantPensionSalle
             effectif
-            niveauid
+            levelId
             levelName
         }
     }
@@ -394,7 +400,7 @@ export const DELETE_STUDY_LEVEL = gql `
             name
             description
             montantPension
-            cycleid
+            cycleId
             cycleName
         }
     }
@@ -411,7 +417,6 @@ export const DELETE_STUDENT = gql `
             dateOfBirth
             sex
             adress
-            transport
             fatherFirstName
             fatherLastName
             fatherPhoneNumber
@@ -424,6 +429,7 @@ export const DELETE_STUDENT = gql `
             tutorLastName
             tutorPhoneNumber
             tutorProfession
+            repeating
         }
 }
 `;
@@ -456,8 +462,8 @@ export const DELETE_COURSE = gql `
 
 //Suppression des montant des tranches de la pension
 export const DELETE_TRANCHE_PENSION = gql `
-    mutation deletepension ($id: String!) {
-        deletepension (id: $id) {
+    mutation deletePension ($id: String!) {
+        deletePension (id: $id) {
             id
             name
             description
@@ -475,7 +481,7 @@ export const UPDATE_SALLE = gql `
             section
             montantPensionSalle
             effectif
-            niveauid
+            levelId
             levelName
         }
     }
@@ -498,8 +504,31 @@ export const DELETE_PARENT = gql `
     }
 `
 
-//mise a jour de la section
+//Supression d'une prime 
+export const DELETE_PRIME = gql` 
+mutation deleteprime ($id: String!) {
+    deleteprime (id: $id) {
+        id
+        nom
+        description
+        montant
+    }
+}
+`
 
+// Supression d'une retenue
+export const DELETE_RETENUE = gql `
+mutation deleteretenusalarial ($id: String!) {
+  deleteretenusalarial (id: $id) {
+      id
+      nom
+      description
+      montant
+  }
+}
+`
+
+//mise a jour de la section
 export const UPDATA_SECTION = gql `
     mutation updatesection ($id: String!, $input: SectionUpdateInput!) {
         updatesection (id: $id, input: $input) {
@@ -533,7 +562,6 @@ mutation updateStudent ($id: String!, $input: StudentCreateInput!) {
         dateOfBirth
         sex
         adress
-        transport
         fatherFirstName
         fatherLastName
         fatherPhoneNumber
@@ -546,6 +574,7 @@ mutation updateStudent ($id: String!, $input: StudentCreateInput!) {
         tutorLastName
         tutorPhoneNumber
         tutorProfession
+        repeating
     }
 }
 `

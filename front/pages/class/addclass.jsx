@@ -32,12 +32,15 @@ import {
   GET_SALLE_BY_ID,
   GET_ALL_ANNEE_ACADEMIQUE
 }  from "../../graphql/Queries";
+import { useAuth } from "../../contexts/account/Auth/Auth";
+
 
 const AddClass = () => {
 
   const toast = useToast();
   const router = useRouter();
   const {t} = useTranslation();
+  const { setAuthToken, authToken } = useAuth();
   const teachers = ["Ryan Jones", "Illary Daenarys ", "Julian Clinton"];
   const [name, setName] = useState();
   const [section, setSection] = useState();
@@ -71,13 +74,13 @@ const AddClass = () => {
   // console.log(typeof bb)
   
   let input;
-  // const addSalle = (event) => {
-  // console.log('vdw')
-  // }
+  useEffect(()=>{
+    if(!authToken){
+      router.back()
+    }
+    
+  },[authToken])
 
-  // if (loading) return "creation en cour..."
-  // if(error)  return "erreur! ${error.message}";
-  
   useEffect(() => {
     // console.log(dataSection?.findAllsection)
     console.log("j")
@@ -170,6 +173,7 @@ const AddClass = () => {
             <Box 
               as="form"
               width="500px"
+              onSubmit={addClasse}
             > 
               <Heading 
                 color={"colors.primary"}
@@ -195,6 +199,7 @@ const AddClass = () => {
                       name="name"
                       value={salle.name}
                       onChange = {(event) => setSalle({...salle, name:event.target.value})}
+                      isRequired
                     />
                   </FormControl>
                   <FormControl>
@@ -209,6 +214,8 @@ const AddClass = () => {
                       name="montantPensionSalle"
                       value={salle.montantPensionSalle}
                       onChange = {(event) => setSalle({...salle, montantPensionSalle:event.target.value})}
+                      
+
                     />
                   </FormControl>
                   <FormControl mt="15px">
@@ -223,6 +230,8 @@ const AddClass = () => {
                         minW="300px"
                         onChange = {(event) => setSalle({...salle,niveauEtudeId:event.target.value})}
                         value={salle.niveauEtudeId}
+                      isRequired
+
                       >
                           {dataStudyLevel &&(
                               dataStudyLevel.findAllNiveauEtude.map((niveauEtude, index) => ( 
@@ -247,6 +256,8 @@ const AddClass = () => {
                             value={anneeAcademiqueId}
                             placeholder="Annee academique"
                             onChange = {(event)=> setAnneeAcademiqueId(event.target.value)}
+                      isRequired
+
                         >
                           {dataAnneeAcademique &&
                             dataAnneeAcademique.findAllAnnerAccademique.map((anneeAcademique, index) => (
@@ -276,16 +287,17 @@ const AddClass = () => {
                         </Select>
                  </FormControl> */}
                   <Flex gap={5} pt="30px">
-                    <Button colorScheme="red" onClick={() => router.back()}>
+                    <Button colorScheme="red" 
+                    // onClick={() => router.back()}
+                    >
                       {t('pages.class.classAdd.cancelButton')}
                       {/* Annuler */}
                     </Button>
                     <Button
+                    type="submit"
                       colorScheme="green"
-                      onClick={addClasse}
                     >
                       {t('pages.class.classAdd.submitButton')}
-                      {/* Creer */}
                     </Button>
                   </Flex>
               </Stack>

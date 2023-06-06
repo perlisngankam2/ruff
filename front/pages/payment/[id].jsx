@@ -1,13 +1,22 @@
-
 import {
-    Box, Button, Center, Divider, Flex, Heading, Input, Select, Text, Hide, Avatar,
-    AlertDialog,
-    AlertDialogBody,
-    AlertDialogFooter,
-    AlertDialogHeader,
-    AlertDialogContent,
-    AlertDialogOverlay,
-    useDisclosure,
+  Box,
+  Button,
+  Center,
+  Divider,
+  Flex,
+  Heading,
+  Input,
+  Select,
+  Text,
+  Hide,
+  Avatar,
+  AlertDialog,
+  AlertDialogBody,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogContent,
+  AlertDialogOverlay,
+  useDisclosure,
 } from "@chakra-ui/react";
 import PaySlipBottom from "../../components/atoms/PaySlipBottom";
 import PaySlipMiddle from "../../components/atoms/PaySlipMiddle";
@@ -19,63 +28,58 @@ import { useQuery, useMutation } from "@apollo/client";
 import { GET_ALL_PERSONNEL_BY_ID, FIND_ID_PRIME,GET_PRIME_PERSONNEL, GET_ALL_PAYSALAIRE_BY_ID, GET_RETENUE_PERSONNEL, GET_Category_Personnel_BY_ID, GET_Category_Personnel_ID, GET_ALL_SALAIRE_BY_ID, GET_ALL_MONTH_SALARY, GET_SALARY_NET} from "../../graphql/Queries";
 import React,  { useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import { CREATE_SALAIRE, PAY_SALAIRE,DELETE_PAYSALAIRE } from "../../graphql/Mutation";
+import {
+  CREATE_SALAIRE,
+  PAY_SALAIRE,
+  DELETE_PAYSALAIRE,
+} from "../../graphql/Mutation";
 import { useToast } from "@chakra-ui/react";
 import Routes from "../../modules/routes";
 import Link from "next/link";
-import { useMemo } from 'react';
+import { useMemo } from "react";
+import { useAuth } from "../../contexts/account/Auth/Auth";
 
 const PaySlip = () => {
-
   const router = useRouter();
   const toast = useToast();
   const [genererSalaire] = useMutation(PAY_SALAIRE);
   const [createSalaire] = useMutation(CREATE_SALAIRE);
   const [deletepaysalaire] = useMutation(DELETE_PAYSALAIRE);
 
-
   //information du personnel par son ID
 
-    const {data:dataPersonnelId, error} = useQuery(GET_ALL_PERSONNEL_BY_ID,
-      {
-        variables:{ id: router.query.id}
-      })
-
+  const { data: dataPersonnelId, error } = useQuery(GET_ALL_PERSONNEL_BY_ID, {
+    variables: { id: router.query.id },
+  });
 
   // recupere l'ID de la categorie associee a un personnel
 
-    const {data:dataCategorieId} = useQuery(GET_Category_Personnel_ID,
-     {
-        variables:{ personnelid: router.query.id}
-     })
+  const { data: dataCategorieId } = useQuery(GET_Category_Personnel_ID, {
+    variables: { personnelid: router.query.id },
+  });
 
-// information de la categorie associee au personnel
+  // information de la categorie associee au personnel
 
-    const {data:dataCategorie} = useQuery(GET_Category_Personnel_BY_ID,
-    {
-        variables:{ id: dataCategorieId?.findCategoriepersonnelbypersonnel}
-    })
+  const { data: dataCategorie } = useQuery(GET_Category_Personnel_BY_ID, {
+    variables: { id: dataCategorieId?.findCategoriepersonnelbypersonnel },
+  });
 
+  //recupere tout les noms et montant des primes d'un personnel
 
-//recupere tout les noms et montant des primes d'un personnel
-
-    const {data:dataPrimePersonnel} = useQuery(GET_PRIME_PERSONNEL,
-  {
-    variables:{ personnelid: router.query.id}
+  const { data: dataPrimePersonnel } = useQuery(GET_PRIME_PERSONNEL, {
+    variables: { personnelid: router.query.id },
   });
 
   //recupere tout les noms et montant des retenues d'un personnel
 
-    const {data:dataRetenuePersonnel} = useQuery(GET_RETENUE_PERSONNEL,
-  {
-    variables:{ personnelid: router.query.id}
+  const { data: dataRetenuePersonnel } = useQuery(GET_RETENUE_PERSONNEL, {
+    variables: { personnelid: router.query.id },
   });
 
-//recupere tout les mois de salaire d'un personnel
+  //recupere tout les mois de salaire d'un personnel
 
-    const {data:dataMoisSalaire , loading} = useQuery(GET_ALL_MONTH_SALARY,
-  {
-    variables:{ personnelid: router.query.id}
+  const { data: dataMoisSalaire, loading } = useQuery(GET_ALL_MONTH_SALARY, {
+    variables: { personnelid: router.query.id },
   });
 
 //generer salaire d'un personnel
@@ -98,12 +102,26 @@ console.log(dernierElementGenererSalaire?.montant)
   const personnelId = dataPersonnelId?.findOnePersonnel.id ;
   const montant = dataCategorie?.findOneCategoriepersonnel.montant;
 
-  const moisSalaire = dernierElementGenererSalaire?.moisPaie ;
+  const moisSalaire = dernierElementGenererSalaire?.moisPaie;
   const montantSalaire = dernierElementGenererSalaire?.montant;
 
-  const [moisPaie, setMoisPaie] = useState("");
-  const [jourPaie , setJourPaie] = useState(new Date().toISOString().slice(0, 10));
-const [isMonthUnavailable, setIsMonthUnavailable] = useState(false);
+  const currentDate = new Date();
+  const yearName = currentDate.getFullYear();
+  console.log(yearName);
+  const modifyCurrentDateDate = currentDate.toLocaleString("default", {
+    month: "long",
+  });
+  console.log(modifyCurrentDateDate);
+  const finalCurrentMonth = `${modifyCurrentDateDate} ${yearName}`;
+  console.log(finalCurrentMonth);
+
+  const [moisPaie, setMoisPaie] = useState(finalCurrentMonth);
+  const [jourPaie, setJourPaie] = useState(
+    new Date().toISOString().slice(0, 10)
+  );
+
+  console.log("mois de paie par defaut",moisPaie);
+  const [isMonthUnavailable, setIsMonthUnavailable] = useState(false);
 
     const { isOpen,  onOpen, onClose } = useDisclosure();
   const cancelRef = React.useRef()
@@ -140,16 +158,16 @@ const [isMonthUnavailable, setIsMonthUnavailable] = useState(false);
 
 
 
-// ...
+  // ...
 
-const unavailableMonths = useMemo(
-  () =>
-    dataMoisSalaire?.PersonnelMonthSalary.map((paidMonth) => {
-      const [year, month] = paidMonth.split('-');
-      return new Date(year, month - 1, 1);
-    }),
-  [dataMoisSalaire?.PersonnelMonthSalary]
-);
+  const unavailableMonths = useMemo(
+    () =>
+      dataMoisSalaire?.PersonnelMonthSalary.map((paidMonth) => {
+        const [year, month] = paidMonth.split("-");
+        return new Date(year, month - 1, 1);
+      }),
+    [dataMoisSalaire?.PersonnelMonthSalary]
+  );
 
  console.log(unavailableMonths)
 
@@ -162,45 +180,41 @@ const unavailableMonths = useMemo(
     //             })
 
     const genererSalaireData = await genererSalaire({
-          variables:{
-          input: { 
-            personnelId: personnelId,
-            montant: parseInt(montant),
-            moisPaie: moisPaie
-          },
+      variables: {
+        input: {
+          personnelId: personnelId,
+          montant: parseInt(montant),
+          moisPaie: moisPaie,
+        },
       },
     });
     refetch();
- 
+    console.log(genererSalaireData);
+    onOpen();
 
-    console.log(genererSalaireData)
-    onOpen()
-  
-
-        setMoisPaie("");
-  }
-  console.log(dataGenererSalaire)
-
-
+    setMoisPaie("");
+  };
+  console.log(dataGenererSalaire);
 
   const HandleClickPayerSalaire = async (event) => {
     event.preventDefault();
-
+    setIsLoading(true);
 
     const salaireData = await createSalaire({
-          variables:{
-          input: { 
-            ID: "",
-            personnelId: personnelId,
-            montant: parseInt(montantSalaire),
-            moisPaie: moisSalaire, 
-            jourPaie: jourPaie,
-          }
-        }
-      })
-
-
-    console.log(salaireData)
+      variables: {
+        input: {
+          ID: "",
+          personnelId: personnelId,
+          montant: parseInt(montantSalaire),
+          moisPaie: moisSalaire,
+          jourPaie: jourPaie,
+        },
+      },
+    });
+    setIsLoading(false);
+    onClose();
+    refetch();
+    console.log(salaireData);
 
     toast({
       title: "Succès.",
@@ -211,37 +225,43 @@ const unavailableMonths = useMemo(
     });
 
     router.push({
-                  pathname: Routes.Bulletin?.path || '',
-                  query: {id: router.query.id}
-                })
+      pathname: Routes.Bulletin?.path || "",
+      query: { id: router.query.id },
+    });
 
-        setMoisPaie("");
-  }
+    setMoisPaie("");
+  };
 
-    useEffect(() =>{
-      loadMoisPayes()
-      console.log(dataPersonnelId?.findOnePersonnel)
+  useEffect(() => {
+    if (!authToken) {
+      router.back();
+    }
+  }, [authToken]);
 
-   }, [dataMoisSalaire?.PersonnelMonthSalary]);
+  useEffect(() => {
+    loadMoisPayes();
+    console.log(dataPersonnelId?.findOnePersonnel);
+  }, [dataMoisSalaire?.PersonnelMonthSalary]);
 
-const handleMonthChange = (e) => {
-  const { value } = e.target;
-  setMoisPaie(value);
-  const selectedMonth = new Date(value);
-  if(!loading){
-    if(!unavailableMonths){
-      
-      const isMonthUnavailable = false
-    }else{
-  const isMonthUnavailable = unavailableMonths.some(
-    (unavailableMonth) =>
-      unavailableMonth.getFullYear() === selectedMonth.getFullYear() &&
-      unavailableMonth.getMonth() === selectedMonth.getMonth()
-  );}}
-  setIsMonthUnavailable(isMonthUnavailable);
-};
+  const handleMonthChange = (e) => {
+    const { value } = e.target;
+    setMoisPaie(value);
+    const selectedMonth = new Date(value);
+    if (!loading) {
+      if (!unavailableMonths) {
+        const isMonthUnavailable = false;
+      } else {
+        const isMonthUnavailable = unavailableMonths.some(
+          (unavailableMonth) =>
+            unavailableMonth.getFullYear() === selectedMonth.getFullYear() &&
+            unavailableMonth.getMonth() === selectedMonth.getMonth()
+        );
+      }
+    }
+    setIsMonthUnavailable(isMonthUnavailable);
+  };
 
-// ...
+  // ...
 
 const monthOptions = useMemo(() => {
   const today = new Date();
@@ -266,67 +286,65 @@ const monthOptions = useMemo(() => {
     }
   }
 
-  while (currentMonth < endMonth) {
+    while (currentMonth < endMonth) {
+      const year = currentMonth.getFullYear();
+      const month = (currentMonth.getMonth() + 1).toString().padStart(2, "0");
+      const optionValue = `${year}-${month}`;
 
+      if (!loading) {
+        const isUnavailable = unavailableMonths.some(
+          (unavailableMonth) =>
+            unavailableMonth.getFullYear() === currentMonth.getFullYear() &&
+            unavailableMonth.getMonth() === currentMonth.getMonth()
+        );
+        if (!isUnavailable) {
+          const monthName = currentMonth.toLocaleString("default", {
+            month: "long",
+          });
+          options.push(
+            <option key={optionValue} value={optionValue}>
+              {`${monthName} ${year}`}
+            </option>
+          );
+        }
+      }
+      currentMonth = new Date(year, currentMonth.getMonth() + 1, 1);
+    }
+    return options;
+  }, [unavailableMonths]);
 
-    const year = currentMonth.getFullYear();
-    const month = (currentMonth.getMonth() + 1).toString().padStart(2, '0');
-    const optionValue = `${year}-${month}`;
+  // AFFICHAGE DU MOIS COURANT
+  // currentMonthNew = new
+  // const monthOptions = useMemo(() => {
+  //   const today = new Date();
+  //   const startMonth = new Date(today.getFullYear(), today.getMonth() - 3, 1);
+  //   const endMonth = new Date(today.getFullYear(), today.getMonth() + 6, 1);
+  //   const options = [];
+  //   let currentMonth = startMonth;
 
-    
-    if(!loading){
-    const isUnavailable = unavailableMonths.some(
-      (unavailableMonth) =>
-        unavailableMonth.getFullYear() === currentMonth.getFullYear() &&
-        unavailableMonth.getMonth() === currentMonth.getMonth()
-    );
-    if (!isUnavailable) {
-      const monthName = currentMonth.toLocaleString('default', { month: 'long' });
-      options.push(
-        <option key={optionValue} value={optionValue}>
-          {`${monthName} ${year}`}
-        </option>
-      );
-    } 
-  
-  }
-    currentMonth = new Date(year, currentMonth.getMonth() + 1, 1);
-  }
-  return options;
-}, [unavailableMonths]);
+  //    if (!unavailableMonths) {
+  //     // Si le tableau est vide, ajouter les options pour les 7 mois autour du mois actuel
+  //     for (let i = -3; i <= 3; i++) {
+  //       const date = new Date(today.getFullYear(), today.getMonth() + i, 1);
+  //       const year = date.getFullYear();
+  //       const month = (date.getMonth() + 1).toString().padStart(2, '0');
+  //       const optionValue = `${year}-${month}`;
+  //       const monthName = date.toLocaleString('default', { month: 'long' });
+  //       options.push(
+  //         <option key={optionValue} value={optionValue}>
+  //           {`${monthName} ${year}`}
+  //         </option>
+  //       );
+  //     }
+  //   }
 
-// const monthOptions = useMemo(() => {
-//   const today = new Date();
-//   const startMonth = new Date(today.getFullYear(), today.getMonth() - 3, 1);
-//   const endMonth = new Date(today.getFullYear(), today.getMonth() + 6, 1);
-//   const options = [];
-//   let currentMonth = startMonth;
+  //   while (currentMonth < endMonth) {
 
-//    if (!unavailableMonths) {
-//     // Si le tableau est vide, ajouter les options pour les 7 mois autour du mois actuel
-//     for (let i = -3; i <= 3; i++) {
-//       const date = new Date(today.getFullYear(), today.getMonth() + i, 1);
-//       const year = date.getFullYear();
-//       const month = (date.getMonth() + 1).toString().padStart(2, '0');
-//       const optionValue = `${year}-${month}`;
-//       const monthName = date.toLocaleString('default', { month: 'long' });
-//       options.push(
-//         <option key={optionValue} value={optionValue}>
-//           {`${monthName} ${year}`}
-//         </option>
-//       );
-//     }
-//   }
+  //     const year = currentMonth.getFullYear();
+  //     const month = (currentMonth.getMonth() + 1).toString().padStart(2, '0');
+  //     const optionValue = `${year}-${month}`;
 
-//   while (currentMonth < endMonth) {
-
-
-//     const year = currentMonth.getFullYear();
-//     const month = (currentMonth.getMonth() + 1).toString().padStart(2, '0');
-//     const optionValue = `${year}-${month}`;
-
-
-// if (loading) return <Text>Chargement en cour...</Text>
+  // if (loading) return <Text>Chargement en cour...</Text>
 
 
 
@@ -412,21 +430,31 @@ const monthOptions = useMemo(() => {
 
                 <Flex gap={6}>
                   <Text>Fonction :</Text>
-                  <Text fontWeight={'bold'}>{dataPersonnelId?.findOnePersonnel.fonction.toUpperCase()}</Text>
+                  <Text fontWeight={"bold"}>
+                    {dataPersonnelId?.findOnePersonnel.fonction.toUpperCase()}
+                  </Text>
                 </Flex>
                 <Flex gap={6}>
                   <Text>Categorie :</Text>
-                  <Text fontWeight={'bold'} >{dataCategorie?.findOneCategoriepersonnel.nom.toUpperCase()}</Text>
+                  <Text fontWeight={"bold"}>
+                    {dataCategorie?.findOneCategoriepersonnel.nom.toUpperCase()}
+                  </Text>
                 </Flex>
                 <Flex gap={10}>
                   <Text>Statut :</Text>
-                  <Text fontWeight={'bold'}>{dataPersonnelId?.findOnePersonnel.status}</Text>
+                  <Text fontWeight={"bold"}>
+                    {dataPersonnelId?.findOnePersonnel.status}
+                  </Text>
                 </Flex>
-                 <Box width={'340px'} gap={7} as={"form"} mt="20px"
-            onSubmit={HandleClickGenererSalaire}
-         >
-          <Text fontSize='sm'>Mois de salaire</Text>
-              {/* <Input
+                <Box
+                  width={"340px"}
+                  gap={7}
+                  as={"form"}
+                  mt="20px"
+                  onSubmit={HandleClickGenererSalaire}
+                >
+                  <Text fontSize="sm">Mois de salaire</Text>
+                  {/* <Input
                     placeholder="nom prime"
                     bg='white'
                     type="month"
@@ -438,19 +466,21 @@ const monthOptions = useMemo(() => {
                     
                   /> */}
                   <Select
-                  
-        bg='white'         
-        id="moisPaie"
-        name="moisPaie"
-        value={moisPaie}
-        onChange={handleMonthChange}
-        isRequired
-      >
-        <option value="">Sélectionnez un mois</option>
-        {monthOptions}
-      </Select>
-      {isMonthUnavailable && <p>Le mois sélectionné a déjà été payé.</p>}
-   
+                    bg="white"
+                    id="moisPaie"
+                    name="moisPaie"
+                    value={moisPaie}
+                    onChange={handleMonthChange}
+                    isRequired
+                    // defaultValue={moisPaie}
+                  >
+                    <option value="">Sélectionnez un mois</option>
+                    {monthOptions}
+                  </Select>
+                  {isMonthUnavailable && (
+                    <p>Le mois sélectionné a déjà été payé.</p>
+                  )}
+
                   {console.log(moisPaie)}
                   
                   
@@ -538,7 +568,7 @@ const monthOptions = useMemo(() => {
             onSubmit={HandleClick}
          >
           <Text fontSize='sm'> Salaire Mois</Text> */}
-              {/* <Input
+            {/* <Input
                     placeholder="nom prime"
                     bg='white'
                     type="month"
@@ -583,35 +613,28 @@ const monthOptions = useMemo(() => {
                
            </Button>
 
-             <AlertDialog
-              isOpen={isOpen}
-              leastDestructiveRef={cancelRef}
-              onClose={onClose}
-              size='xl'
-             
-             >
-
-             <AlertDialogOverlay>
-                  <AlertDialogContent  >
-                    <AlertDialogHeader 
-                      fontSize='sm' 
-                      fontWeight='base' 
-                      mt='0'
-                    >
-                    <Box  
-                      bg={"colors.secondary"} 
-                      borderBottomRightRadius={10} 
-                      borderBottomLeftRadius={10}
-                    >
-                        <Heading 
-                         
-                          textAlign={'center'} 
-                          fontSize={['15px','20px','26px']} 
-                          p='2' 
+              <AlertDialog
+                isOpen={isOpen}
+                leastDestructiveRef={cancelRef}
+                onClose={onClose}
+                size="xl"
+              >
+                <AlertDialogOverlay>
+                  <AlertDialogContent>
+                    <AlertDialogHeader fontSize="sm" fontWeight="base" mt="0">
+                      <Box
+                        bg={"colors.secondary"}
+                        borderBottomRightRadius={10}
+                        borderBottomLeftRadius={10}
+                      >
+                        <Heading
+                          textAlign={"center"}
+                          fontSize={["15px", "20px", "26px"]}
+                          p="2"
                         >
-                                PREVISUALISATION
+                          PREVISUALISATION
                         </Heading>
-                    </Box>
+                      </Box>
                     </AlertDialogHeader>
                     <AlertDialogBody>
  
@@ -715,8 +738,6 @@ export default PaySlip;
 //   const [moisPaie, setMoisPaie] = useState("");
 //   const [jourPaie , setJourPaie] = useState("");
 //   const [createSalaire] = useMutation(CREATE_SALAIRE);
-  
-
 
 //   const handleMoisPaieChange = (event) => {
 //     const selectedMonth = event.target.value;

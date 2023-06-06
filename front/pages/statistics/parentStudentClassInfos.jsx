@@ -20,9 +20,13 @@ import { useQuery, useMutation } from "@apollo/client";
 
   } from "../../graphql/Queries"
 import { useRouter } from 'next/router';
+import { useEffect } from 'react';
+import { useAuth } from "../../contexts/account/Auth/Auth";
+
 
 const ParentStudentClass = () => {
     const router = useRouter()
+  const { setAuthToken, authToken } = useAuth();
     const {data:dataStudentId, loading, error} = useQuery(GET_STUDENT_BY_ID,
         {
           variables: {id: router.query.id}
@@ -43,6 +47,13 @@ const ParentStudentClass = () => {
           variables: {studentid: router.query.id} 
         }
       )
+      
+      useEffect(()=>{
+        if(!authToken){
+          router.back()
+        }
+        
+      },[authToken])
   
     return (
         <DefaultLayout> 

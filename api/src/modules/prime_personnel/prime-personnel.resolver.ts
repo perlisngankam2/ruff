@@ -17,23 +17,34 @@ import { PrimePersonnelUpdateInput } from './dto/prime-personnel.update';
 import { PrimePersonnelService } from './prime-personnel.service';
 // import {prime}
 import e from 'express';
-
+import { PaginationInput } from 'src/pagination';
+import { PrimePersonnelPaginatedResponse } from './type/primepersonnelpagination';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { RolesGuard } from '../auth/guards/roles.guard';
+import { Roles } from '../auth/decorators/roles.decorator';
+import { Role } from '../auth/roles/roles';
 
 @Resolver(() => PrimePersonnel)
 export class PrimePersonnelResolver {
   constructor(private readonly primePersonnelService: PrimePersonnelService) {}
 
   @Mutation(() => PrimePersonnel)
+  // @UseGuards(JwtAuthGuard,RolesGuard)
+  // @Roles(Role.PRINCIPAL)
   async createprimepersonnel(@Args('primePersonnel') createPrimePersonnelInput: PrimePersonnelCreateInput) {
     return await this.primePersonnelService.create(createPrimePersonnelInput);
   }
 
   @Query(() => [PrimePersonnel])
+  // @UseGuards(JwtAuthGuard,RolesGuard)
+  // @Roles(Role.PRINCIPAL)
   async findAllprimepersonnel() {
     return await this.primePersonnelService.getAll()
   }
   
   @Query(() => PrimePersonnel, { name: 'primePersonnel' })
+  // @UseGuards(JwtAuthGuard,RolesGuard)
+  // @Roles(Role.PRINCIPAL)
   async findOnePrimepersonnel(@Args('id', { type: () => String }) id: string) {
     return await this.primePersonnelService.findByOne(id);
   }
@@ -74,8 +85,8 @@ export class PrimePersonnelResolver {
   }
 
   @Query(()=> [Prime])
-  async findIdPrimesByPrimesPersonnel(@Args('personnelid') personnelid:string,@Args('month') month:string){
- return await this.primePersonnelService.findIdPrimesByPrimesPersonnel(personnelid,month)
+  async findPrimesByPrimesPersonnel(@Args('personnelid') personnelid:string,@Args('month') month:string){
+ return await this.primePersonnelService.findPrimesByPrimesPersonnel(personnelid,month)
   }
 
   @Query(()=> Number)
@@ -88,5 +99,12 @@ export class PrimePersonnelResolver {
   return await this.primePersonnelService.allMonthAffectedPrimeToPersonnel(personnelid,primeid)
   }
   
+  
+  @Query(() => PrimePersonnelPaginatedResponse)
+  async pagiantionResponsePrimePersonnel(
+  @Args('pagination') pagination: PaginationInput,
+): Promise<PrimePersonnelPaginatedResponse> {
+  return await this.primePersonnelService.paginationResponsePrimePersonnel(pagination);
+}
 
 }

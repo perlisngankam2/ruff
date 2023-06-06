@@ -20,6 +20,9 @@ import { PrimePersonnelCreateInput } from './dto/prime-personnel.input';
 import { PrimePersonnelUpdateInput } from './dto/prime-personnel.update';
 import { SalaireService } from '../salaire/salaire.service';
 import { PaySalaryService } from '../paysalary/paysalary.service';
+import { PaginatedResponse, PaginationInput, paginate } from 'src/pagination';
+import { PrimePersonnelPaginatedResponse } from './type/primepersonnelpagination';
+
 
 @Injectable()
 export class PrimePersonnelService {
@@ -239,7 +242,7 @@ async findIdPrimeByPersonnel(personnelid:string){
   return (await this.primePersonnelRepository.find({personnel:personnelid})).map(async a=>(await a.prime.load()).id)
 }
 
-async findIdPrimesByPrimesPersonnel(personnelid:string, month:string) {
+async findPrimesByPrimesPersonnel(personnelid:string, month:string) {
   const primesPersonnel = await this.primePersonnelRepository.find({personnel:personnelid});
   if(primesPersonnel.length>0){
     return primesPersonnel.filter(a=>a.startMonth===month).map(a=>a.prime.load())
@@ -256,4 +259,17 @@ async allMonthAffectedPrimeToPersonnel(personnelid:string,primeid:string){
   throw Error("il n'existe aucun mois d affectation de prime a ce personnel")
 }
 
+async paginationResponsePrimePersonnel(input: PaginationInput): Promise<PrimePersonnelPaginatedResponse> {
+  const qb = this.primePersonnelRepository.createQueryBuilder(); // Create a QueryBuilder
+
+  const result = await paginate<PrimePersonnel>(qb, input); // Use the paginate function
+
+  // Create a PaginatedResponse instance with the result
+  const paginatedResponse = PaginatedResponse(PrimePersonnel);
+  paginatedResponse.items = result.items;
+  paginatedResponse.total = result.total;
+  paginatedResponse.hasMore = result.hasMore;
+
+  return paginatedResponse;
+}
 }

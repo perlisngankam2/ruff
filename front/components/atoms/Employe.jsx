@@ -16,7 +16,8 @@ import {
   Text,
   VStack,
   useDisclosure,
-  AlertDialogCloseButton
+  AlertDialogCloseButton,
+  useToast
 } from "@chakra-ui/react";
 
 import Routes from "../../modules/routes";
@@ -35,7 +36,6 @@ import { DELETE_PERSONNEL } from "../../graphql/Mutation";
 // import { GetStaticPaths } from "next/types";
 
 const Employee = (props) => {
-
   const router = useRouter();
   const cancelRef = React.useRef()
   const {data:dataPersonnel,refetch} = useQuery(GET_ALL_PERSONNELS)
@@ -114,91 +114,90 @@ const Employee = (props) => {
               >
                 {props.situationMatrimonial}
               </Text> */}
-              <Flex justify="center" gap="4">
-                <Link 
-                  href={{
-                    pathname: Routes.PersonnelDetails?.path || '',
-                    query: {id: props.id}
-                  }}
-                >
-                  {console.log(props.id)}
-                  <Icon
-                    as={BiDetail}
-                    boxSize="40px"
-                    p="3"
-                    bg="purple.100"
-                    rounded="full"
-                  />
-                </Link>
-                <Link href="/personnel/modifierpersonnel">
-                  <Icon
-                    as={FiEdit}
-                    boxSize="40px"
-                    p="3"
-                    bg="blue.100"
-                    rounded="full"
-                  />
-                </Link>
-                <Box href="#">
-                  <Icon
-                    as={MdDelete}
-                    boxSize="40px"
-                    p="3"
-                    bg="red.500"
-                    rounded="full"
-                    color="white"
-                    onClick={onToggle}
-                  />
-                    <Box> 
-                      <AlertDialog
-                        isOpen={isOpen}
-                        leastDestructiveRef={cancelRef}
-                        onClose={onClose}
-                        isCentered
-                      >
-                          <AlertDialogOverlay
-                            // alignSelf={"center"}
-                          >
-                            <AlertDialogContent
-                            width={"380px"}
-                            >
-                              <AlertDialogHeader 
-                                fontSize='lg' 
-                                fontWeight='bold'
-                                textAlign={"center"}
-                                mt="5px"
-                                >
-                                Confirmation de suppression
-                              </AlertDialogHeader>
-                              <AlertDialogCloseButton/>
+      <Flex justify="center" gap="4">
+        <Link
+          href={{
+            pathname: Routes.PersonnelDetails?.path || "",
+            query: { id: props.id },
+          }}
+        >
+          {console.log(props.id)}
+          <Icon
+            as={BiDetail}
+            boxSize="40px"
+            p="3"
+            bg="purple.100"
+            rounded="full"
+            _hover={{ background: "green.300" }}
+          />
+        </Link>
+        <Link href="/personnel/modifierpersonnel">
+          <Icon
+            as={FiEdit}
+            boxSize="40px"
+            p="3"
+            bg="blue.100"
+            rounded="full"
+            _hover={{ background: "blue.300" }}
+          />
+        </Link>
+        <Box href="#">
+          <Icon
+            as={MdDelete}
+            boxSize="40px"
+            p="3"
+            bg="red.500"
+            rounded="full"
+            color="white"
+            onClick={onToggle}
+            _hover={{ background: "red" }}
+          />
+          <Box>
+            <AlertDialog
+              isOpen={isOpen}
+              leastDestructiveRef={cancelRef}
+              onClose={onClose}
+              isCentered
+            >
+              <AlertDialogOverlay
+              // alignSelf={"center"}
+              >
+                <AlertDialogContent width={"380px"}>
+                  <AlertDialogHeader
+                    fontSize="lg"
+                    fontWeight="bold"
+                    textAlign={"center"}
+                    mt="5px"
+                  >
+                    Confirmation de suppression
+                  </AlertDialogHeader>
+                  <AlertDialogCloseButton />
 
-                              <AlertDialogBody textAlign={"center"}>
-                              Voulez-vous supprimer cet Personnel?
-                              </AlertDialogBody>
+                  <AlertDialogBody textAlign={"center"}>
+                    Voulez-vous supprimer cet Personnel?
+                  </AlertDialogBody>
 
-                              <AlertDialogFooter>
-                                <Button 
-                                  ref={cancelRef} 
-                                  onClick={onClose}
-                                  colorScheme="red"
-                                >
-                                  Annuler 
-                                </Button>
-                                <Button 
-                                  colorScheme='green' 
-                                  onClick={() => {removePersonnel(props.id)}}
-                                  ml={3}
-                                >
-                                  Supprimer
-                                </Button>
-                              </AlertDialogFooter>
-                            </AlertDialogContent>
-                          </AlertDialogOverlay>
-                      </AlertDialog>
-                    </Box>
-                </Box>
-              </Flex>
-            </Box>
+                  <AlertDialogFooter>
+                    <Button ref={cancelRef} onClick={onClose} colorScheme="red">
+                      Annuler
+                    </Button>
+                    <Button
+                      colorScheme="green"
+                      onClick={() => {
+                        removePersonnel(props.id);
+                      }}
+                      ml={3}
+                    >
+                      Supprimer
+                    </Button>
+                  </AlertDialogFooter>
+                </AlertDialogContent>
+              </AlertDialogOverlay>
+            </AlertDialog>
+          </Box>
+        </Box>
+      </Flex>
+    </Box>
   );
 };
 

@@ -37,7 +37,7 @@ import { Center, Heading, Divider, Input, NumberInput,
   Box,
   Button,
   ButtonGroup,
-  IconButton ,
+  IconButton,
   Flex,
   Hide,
   InputGroup,
@@ -67,17 +67,18 @@ import { Center, Heading, Divider, Input, NumberInput,
   AlertDialogBody,
   AlertDialogFooter,
   InputRightElement,
-  AlertDialogCloseButton, } from '@chakra-ui/react'
-import React from 'react'
-import DefaultLayout from '../../components/layouts/DefaultLayout';
+  AlertDialogCloseButton,
+} from "@chakra-ui/react";
+import React from "react";
+import DefaultLayout from "../../components/layouts/DefaultLayout";
 import { useRouter } from "next/router";
-import { useEffect ,useState } from "react";
+import { useEffect, useState } from "react";
 import { useMutation, useQuery } from "@apollo/client";
 import { CREATE_PRIME } from "../../graphql/Mutation";
 import { GET_PRIME, GET_ALL_Category_Personnel } from "../../graphql/Queries";
 import { CheckIcon } from '@chakra-ui/icons'
 import { GET_PRIME, GET_ALL_Category_Personnel } from "../../graphql/Queries";
-import { CheckIcon } from '@chakra-ui/icons'
+import { CheckIcon } from "@chakra-ui/icons";
 import { useToast } from "@chakra-ui/react";
 import{ FiEdit, FiSearch} from 'react-icons/fi';
 import {MdDelete} from 'react-icons/md';
@@ -88,34 +89,39 @@ import CreerPrime from './creerPrime';
 import{ FiEdit, FiSearch} from 'react-icons/fi';
 import {MdDelete} from 'react-icons/md';
 import ReactPaginate from "react-paginate";
-import {useTranslation} from "next-i18next";
+import { useTranslation } from "next-i18next";
 import { getStaticPropsTranslations } from "../../types/staticProps";
-import CreerPrime from './creerPrime';
+import CreerPrime from "./creerPrime";
+import { useAuth } from "../../contexts/account/Auth/Auth";
 
 function ajouterprime() {
-
+  const { setAuthToken, authToken } = useAuth();
   const { isOpen, onToggle, onClose, onOpen } = useDisclosure();
-  const [Nom , setNom] = useState("");
-  const [Description , setDescription] = useState("");
+  const [Nom, setNom] = useState("");
+  const [Description, setDescription] = useState("");
   const [Montant, setMontant] = useState("");
   const [categoryPersonnelId, setCategoryPersonnelId] = useState("");
   const [createPrime, error] = useMutation(CREATE_PRIME);
-  
-    const {data:dataPrime} = useQuery(GET_PRIME);
-  const toast = useToast()
-  const router = useRouter()
-    //  const {data:dataRetenue, refetch} = useQuery(GET_ALL_RETENUE)
-    const itemsPerPage = 15;
-    const [pageNumber, setPageNumber] = useState(0);
-    const pagesVisited = pageNumber * itemsPerPage;
-      const pageCountPrime = Math.ceil(dataPrime?.findAllprime.length / itemsPerPage);
-    const cancelRef = React.useRef();
-    const {t} = useTranslation();
-      const [searchPrime, setSearchPrime] = useState("");
+  const [deletePrime ] = useMutation(DELETE_PRIME);
 
-       const handleChangePrime = (event) =>{
-      setSearchPrime(event.target.value)
-    }
+
+  const { data: dataPrime, refetch} = useQuery(GET_PRIME);
+  const toast = useToast();
+  const router = useRouter();
+  //  const {data:dataRetenue, refetch} = useQuery(GET_ALL_RETENUE)
+  const itemsPerPage = 15;
+  const [pageNumber, setPageNumber] = useState(0);
+  const pagesVisited = pageNumber * itemsPerPage;
+  const pageCountPrime = Math.ceil(
+    dataPrime?.findAllprime.length / itemsPerPage
+  );
+  const cancelRef = React.useRef();
+  const { t } = useTranslation();
+  const [searchPrime, setSearchPrime] = useState("");
+
+  const handleChangePrime = (event) => {
+    setSearchPrime(event.target.value);
+  };
 
     const changePage = ({ page }) => {
       setPageNumber(page);
@@ -125,16 +131,16 @@ function ajouterprime() {
     const HandleClick = async (event) => {
   event.preventDefault();
 
-  const primeData = await createPrime({
-        variables:{
-        prime: { 
+    const primeData = await createPrime({
+      variables: {
+        prime: {
           nom: Nom,
-          description: Description, 
+          description: Description,
           montant: parseInt(Montant),
           // categorieId: categoryPersonnelId,
-        }
-      }
-    })
+        },
+      },
+    });
     // console.log(userData)
     toast({
       title: "Succès.",
@@ -159,6 +165,26 @@ function ajouterprime() {
 //     const year = today.getFullYear();
 //     const formattedDate = `${day}/${month}/${year}`;
 // console.log(formattedDate)
+
+  const removePrime = async (id) => {
+    await deletePrime({
+      variables: { id },
+      refetchQueries: [
+        {
+          query: GET_PRIME,
+        }
+      ]
+    });
+    toast({
+      title: "Suppression de la prime.",
+      description: "Suppresion reussit.",
+      status: "success",
+      duration: 3000,
+      isClosable: true,
+    });
+    onClose();
+  };
+
 
   return (
     
@@ -185,16 +211,13 @@ function ajouterprime() {
             <Text>Dashboad / Salaire/Primes Salariales</Text>
           </Hide>
         </Flex>
-        <Flex 
-          gap={8} 
-          mt={7}
-        >
-          <InputGroup >
-          {/* <InputRightElement
+        <Flex gap={8} mt={7}>
+          <InputGroup>
+            {/* <InputRightElement
               children={<Icon as={FiSearch} />}
               cursor="pointer"
             /> */}
-             <InputRightElement
+            <InputRightElement
               children={<Icon as={FiSearch} />}
               cursor="pointer"
             />
@@ -216,86 +239,135 @@ function ajouterprime() {
           </Select> */}
           <CreerPrime />
         </Flex>
- <Box mb={5} mt='10'>
-          <TableContainer
-            border={"1px"} 
-            rounded={"md"}
-          >
-            <Table 
-              variant='striped' 
-              colorScheme={"white"}
-              bg={"white"}
-            >
-                <Thead background="colors.secondary">
+        <Box mb={5} mt="10">
+          <TableContainer border={"1px"} rounded={"md"}>
+            <Table variant="striped" colorScheme={"white"} bg={"white"}>
+              <Thead background="colors.secondary">
                 <Tr>
-                    <Th>Nom</Th>
-                    <Th>Valeur</Th>
-                    <Th>Actions</Th>
+                  <Th>Nom</Th>
+                  <Th>Valeur</Th>
+                  <Th>Actions</Th>
                 </Tr>
-                </Thead>
-                {dataPrime && ( 
+              </Thead>
+              {dataPrime && (
                 <Tbody>
-                {dataPrime?.findAllprime
-                  .slice(pagesVisited, pagesVisited + itemsPerPage)
-                  .filter((prime) =>{
-                    if(searchPrime==""){
-                      return prime
-                    }else if(prime.nom.toLowerCase().includes(searchPrime.toLowerCase()))
-                      return prime;
-                  })
-                  .map((prime, index) => ( 
-                     <Tr key={index}>
-        <Td p={0} pl={6}>{prime.nom}</Td>
-        
-        {/* <Td  borderColor={'#C6B062'}>{cycle.section_id}</Td> */}
-        <Td p={0} pl={6}>{prime.montant}</Td>
-        <Td p={0} pl={3}>
-        <Box display="flex">
-          <Icon
-            as={FiEdit}
-            boxSize="40px"
-            p="3"
-            // bg="blue.100"
-            rounded="full"
-            // onClick={onOpen}
-            _hover={{background:"red.100"}}
-          />
-          <Icon
-            as={MdDelete}
-            boxSize="44px"
-            p="3"
-            rounded="full"
-            color="colors.quaternary"
-            _hover={{background:"blue.100"}}
-            onClick={onToggle}
-            />
+                  {dataPrime?.findAllprime
+                    .slice(pagesVisited, pagesVisited + itemsPerPage)
+                    .filter((prime) => {
+                      if (searchPrime == "") {
+                        return prime;
+                      } else if (
+                        prime.nom
+                          .toLowerCase()
+                          .includes(searchPrime.toLowerCase())
+                      )
+                        return prime;
+                    })
+                    .map((prime, index) => (
+                    <PrimeElement prime={prime} index={index}/>
+                    ))}
+                </Tbody>
+              )}
+            </Table>
+          </TableContainer>
+        </Box>
+      </Box>
+    </DefaultLayout>
+  );
+}
+export async function getStaticProps({ locale }) {
+  return {
+    props: {
+      ...(await getStaticPropsTranslations(locale)),
+      // Will be passed to the page component as props
+    },
+  };
+}
 
-            <Box> 
-              <AlertDialog
-                isOpen={isOpen}
-                leastDestructiveRef={cancelRef}
-                onClose={onClose}
-                isCentered
-              >
-                  <AlertDialogOverlay
-                    // alignSelf={"center"}
-                  >
-                    <AlertDialogContent
-                    width={"380px"}
-                    >
-                      <AlertDialogHeader 
-                        fontSize='lg' 
-                        fontWeight='bold'
-                        textAlign={"center"}
-                        mt="5px"
-                        >
-                        Confirmation de suppression
-                      </AlertDialogHeader>
-                    <AlertDialogCloseButton/>
+export default ajouterprime;
 
-                      <AlertDialogBody textAlign={"center"}>
-                      Voulez-vous supprimer cette ce cycle?
-                      </AlertDialogBody>
+const PrimeElement = ({prime, index}) => {
+  const toast = useToast()
+  const { isOpen, onToggle, onClose, onOpen } = useDisclosure();
+  const [categoryPersonnelId, setCategoryPersonnelId] = useState("");
+  const [createPrime, error] = useMutation(CREATE_PRIME);
+  const [deletePrime ] = useMutation(DELETE_PRIME);
+  const cancelRef = React.useRef();
+
+  const removePrime = async (id) => {
+    await deletePrime({
+      variables: { id },
+      refetchQueries: [
+        {
+          query: GET_PRIME,
+        }
+      ]
+    });
+    toast({
+      title: "Suppression de la prime.",
+      description: "Suppresion reussit.",
+      status: "success",
+      duration: 3000,
+      isClosable: true,
+    });
+    onClose();
+  };
+
+  return(
+    <Tr key={index}>
+    <Td p={0} pl={6}>
+      {prime.nom}
+    </Td>
+
+    {/* <Td  borderColor={'#C6B062'}>{cycle.section_id}</Td> */}
+    <Td p={0} pl={6}>
+      {prime.montant}
+    </Td>
+    <Td p={0} pl={3}>
+      <Box display="flex">
+        <Icon
+          as={FiEdit}
+          boxSize="40px"
+          p="3"
+          // bg="blue.100"
+          rounded="full"
+          // onClick={onOpen}
+          _hover={{ background: "red.100" }}
+        />
+        <Icon
+          as={MdDelete}
+          boxSize="44px"
+          p="3"
+          rounded="full"
+          color="colors.quaternary"
+          _hover={{ background: "blue.100" }}
+          onClick={onToggle}
+        />
+
+        <Box>
+          <AlertDialog
+            isOpen={isOpen}
+            leastDestructiveRef={cancelRef}
+            onClose={onClose}
+            isCentered
+          >
+            <AlertDialogOverlay
+            // alignSelf={"center"}
+            >
+              <AlertDialogContent width={"380px"}>
+                <AlertDialogHeader
+                  fontSize="lg"
+                  fontWeight="bold"
+                  textAlign={"center"}
+                  mt="5px"
+                >
+                  Confirmation de suppression
+                </AlertDialogHeader>
+                <AlertDialogCloseButton />
+
+                <AlertDialogBody textAlign={"center"}>
+                  Voulez-vous supprimer cette prime?
+                </AlertDialogBody>
 
                       <AlertDialogFooter>
                         <Button 

@@ -31,10 +31,21 @@ import { Box,
 // import { useTranslation} from 'next-i18next';
 import {CiSearch} from 'react-icons/ci'
 import DefaultLayout from '../../components/layouts/DefaultLayout';
+import { useState, useEffect } from "react";
+import { useRouter } from "next/router";
+import { useAuth } from '../../contexts/account/Auth/Auth';
+
 
 const SuiviPaiementParEleveReNormal = () => {
+    const { setAuthToken, authToken } = useAuth();
+    const router = useRouter();
 
     // const {t} = useTranslation();
+    useEffect(() => {
+        if (!authToken) {
+          router.back();
+        }
+      }, [authToken]);
 
     return (
         <DefaultLayout>

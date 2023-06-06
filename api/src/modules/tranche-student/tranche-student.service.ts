@@ -12,7 +12,7 @@ import { EntityRepository } from '@mikro-orm/postgresql';
 import { forwardRef, Inject, Injectable } from '@nestjs/common';
 import { Field, ID, ObjectType } from '@nestjs/graphql';
 import { verify } from 'crypto';
-import { TwilioService } from 'nestjs-twilio';
+// import { TwilioService } from 'nestjs-twilio';
 import { AvanceTranche } from 'src/entities/avance-tranche.entity';
 import { RegimePaiement, TrancheStudent } from 'src/entities/tranche-student.entity';
 import { Tranche } from 'src/entities/tranche.entity';
@@ -23,6 +23,8 @@ import { TrancheStudentCreateInput } from './dto/tranche-student.input';
 import { TrancheStudentUpdateInput } from './dto/tranche-student.update';
 import { ParameterService } from '../parameter/parameter.service';
 import { TrancheStat } from '../statistics/classStatistics';
+import { PaginatedResponse, PaginationInput, paginate } from 'src/pagination';
+import { TrancheStudentPaginatedResponse } from './type/tranchestudentpagination';
 
 @Injectable()
 export class TrancheStudentService {
@@ -35,7 +37,7 @@ export class TrancheStudentService {
         private trancheService: TrancheService,
         @Inject(forwardRef(() => StudentService))
         private studentService: StudentService,
-        private twilioService: TwilioService,
+        // private twilioService: TwilioService,
         private parameterservice: ParameterService,
         private  em: EntityManager,
       ) {}
@@ -48,8 +50,8 @@ export class TrancheStudentService {
         const tranche = await this.studentService.findByOne({id:input.trancheid})
         const anneAcademique = String((await this.avance.findByStudent(input.studentId)).map(async a=>(await a.anneeAcademique.load()).id)[0])
  
-        // const year = await this.parameterservice.getAll()
-        // const annee = year[year.length-1].year
+        const year = await this.parameterservice.getAll()
+        const annee = year[year.length-1].year
         wrap(trancheStudent).assign(
             {
             montant: 0.000000,
@@ -59,7 +61,7 @@ export class TrancheStudentService {
             //  regimePaimemnt: input.regimePaiement,
              tranche: tranche.id,
              student: student.id,
-            //  year: annee
+             year: annee
              
              
             },
@@ -229,13 +231,13 @@ async saveTranche(studentid:string,trancheid:string){
         const trancheStudent = await this.findById(id)
         
  
-        // const year = await this.parameterservice.getAll()
-        // const annee = year[year.length-1].year
+        const year = await this.parameterservice.getAll()
+        const annee = year[year.length-1].year
         wrap(trancheStudent).assign({
             name:input.name || trancheStudent.name,
             montant: input.montant || trancheStudent.montant,
             description: input.description || trancheStudent.description,
-            // year: annee
+            year: annee
         },
         { em: this.em },
         );
@@ -278,6 +280,20 @@ async saveTranche(studentid:string,trancheid:string){
         tranche:trancheid
       })
       return (await a.tranche.load()).dateLine
+    }
+
+    async pagiantionResponseTrancheStudent(input: PaginationInput): Promise<TrancheStudentPaginatedResponse> {
+      const qb = this.trancheStudentRepository.createQueryBuilder(); // Create a QueryBuilder
+    
+      const result = await paginate<TrancheStudent>(qb, input); // Use the paginate function
+    
+      // Create a PaginatedResponse instance with the result
+      const paginatedResponse = PaginatedResponse(TrancheStudent);
+      paginatedResponse.items = result.items;
+      paginatedResponse.total = result.total;
+      paginatedResponse.hasMore = result.hasMore;
+    
+      return paginatedResponse;
     }
 
     async getTranchestudentPaymentDate(studentid:string,trancheid:string){

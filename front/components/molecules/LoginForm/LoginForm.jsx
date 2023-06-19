@@ -40,7 +40,7 @@ const LoginForm = () => {
   const cancelRef = React.useRef();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [loginInput, error] = useMutation(LOGIN_USER, {
+  const [loginInput] = useMutation(LOGIN_USER, {
     onError: (error) => console.log(error),
   });
   const [user, setUser] = useState(null);

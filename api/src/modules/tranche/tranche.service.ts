@@ -22,13 +22,14 @@ import { format } from 'date-fns';
 import { ParameterService } from '../parameter/parameter.service';
 import { StudentService } from '../student/student.service';
 import { TrancheStudentService } from '../tranche-student/tranche-student.service';
-import { TrancheStat, TrancheStatTwo } from '../statistics/classStatistics';
+import { TranchStatTwo, TrancheStat, TrancheStatNotPayed} from '../statistics/classStatistics';
 import { PensionSalleService } from '../pensionsalle/pensionsalle.service';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { RolesGuard } from '../auth/guards/roles.guard';
 import { UseGuards } from '@nestjs/common';
 import { Role } from '../auth/roles/roles';
 import { Roles } from '../auth/decorators/roles.decorator';
+
 
 
 @Injectable()
@@ -166,9 +167,39 @@ export class TrancheService {
         throw Error("not found")
       }
         return a 
-      }   
+      }  
+      
+      async trancheNotYetPayedByStudent(studentId:string){
+        const students = await this.studentservice.getAll()
+        const listalltranche = students.filter(a=>a.id===studentId).map(a=>a.salle.getEntity().tranche.getItems()).flat()
+        console.log('======a'+listalltranche)
+        const tranchepayed = students.filter(a=>a.id===studentId).map((student) => student.trancheStudent.getItems().map((trancheStudent) => trancheStudent.tranche)).flat()
+        console.log('======>tranchepayed'+tranchepayed)
+        const trancheNotYetPayed = listalltranche.filter((tranche) => {
+          return !tranchepayed.some((tranchePayed) => tranchePayed.id === tranche.id);
+        });
+        const result: TrancheStatNotPayed[] = [];
+        for(const a of trancheNotYetPayed){
+          const studentid=studentId
+          const Nom=a.name
+          const Priority=a.priority
+          const Rest = a.montant
+
+          result.push({
+            studentid,
+            Nom,
+            Priority,
+            Rest
+          });
+        }
+      
+        return result;
+      }
 
       async findByStudentRestTranche(studentid:string){
+       
+        const trancheNotPayed  = await this.trancheNotYetPayedByStudent(studentid)
+        console.log('========>trancheNotPayed'+trancheNotPayed)
         const students = await this.studentservice.getAll()
         const Tranches = students.map((student) => student.trancheStudent.getItems().map((trancheStudent) => trancheStudent.tranche));
 
@@ -183,6 +214,8 @@ export class TrancheService {
           for (const tranche of tranches) {
             const Nom = tranche.name;
             const Priority = tranche.priority;
+            // const trancheNotPayed = a
+            // console.log("=====>second_a"+trancheNotPayed)
             const trancheStudent = tranche.trancheStudent.getItems()
             .filter(async a=>(await a.tranche.load()).id===tranche.id);
             console.log('tranchestudent=======>'+trancheStudent)
@@ -192,16 +225,18 @@ export class TrancheService {
               const restObject = await this.tranchestudentservice.findRestByTrancheAndStudent(studentid, trancheStd.tranche.id);
               const Rest = restObject ? restObject.reste || 0 : 0;
             console.log('==========>rest'+Rest)
-      
+
             result.push({
               studentid,
               Nom,
               Priority,
-              Rest
+              Rest,
+              trancheNotPayed
             });
           }
         }
         }
+
         return result.filter(a=>a.studentid===studentid);
 
       }
@@ -209,22 +244,39 @@ export class TrancheService {
   async findByStudentAmountReceivedTranche(studentid:string){
     const students = await this.studentservice.getAll()
     const Tranches = students.map((student) => student.trancheStudent.getItems().map((trancheStudent) => trancheStudent.tranche));
+    
+    // const Tranches = students.map((student) => student.salle.getEntity().tranche.getItems()).map((trancheStudent) => trancheStudent.tranche));
+    console.log('=======>tranche_unnnnnn'+Tranches)
 
     const tranches = await Promise.all(Tranches.flat().map((tranche) => this.trancheRepository.findOne(tranche.id, { populate: ['trancheStudent'] })));
   
-    console.log("==============>"+tranches)
+    console.log("==============>pp"+tranches)
     
-    const result: TrancheStatTwo[] = [];
+    const result: TranchStatTwo[] = [];
   
     for (const student of students) {
       const studentid = student.id
+      const studentTrancheIds = student.salle.getEntity().tranche.getItems().map((trancheStudent) => trancheStudent.id);
+      console.log("===========>idssssss"+studentTrancheIds)
       for (const tranche of tranches) {
+          console.log("============>traaaaa"+tranche.id)
         const Nom = tranche.name;
         const Priority = tranche.priority;
         const trancheStudent = tranche.trancheStudent.getItems()
         .filter(async a=>(await a.tranche.load()).id===tranche.id);
         console.log('tranchestudent=======>'+trancheStudent)
-        if (trancheStudent.length==0) break;
+        if (!studentTrancheIds.includes(tranche.id)) {
+          // The student has not started paying this tranche
+          const Nom = tranche.name;
+          const Priority = tranche.priority;
+  
+          result.push({
+            studentid,
+            Nom,
+            Priority,
+            montantPercu: 0,
+          });
+        } 
   
         for(const trancheStd of trancheStudent){
           const restObject = await this.tranchestudentservice.findRestByTrancheAndStudent(studentid, trancheStd.tranche.id);

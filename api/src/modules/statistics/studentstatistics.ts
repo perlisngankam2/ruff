@@ -78,7 +78,6 @@ export async function paginate<T>(
 
 
 
-
 @ObjectType()
 export class StudentStatisticsPaginatedResponse extends PaginatedResponse(
   StudentStatistics) {}

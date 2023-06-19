@@ -97,7 +97,7 @@ TOTAL_SECOND_TAUX_RECOUVRIR:number
 }
 
 @ObjectType()
-export class TrancheStat{
+export class TrancheStatNotPayed{
 @Field()
 studentid:string
 
@@ -112,7 +112,7 @@ Rest:number
 }
 
 @ObjectType()
-export class TrancheStatTwo{
+export class TrancheStat{
 @Field()
 studentid:string
 
@@ -123,8 +123,13 @@ Nom:string
 Priority:number
 
 @Field()
-montantPercu:number
+Rest:number
+
+@Field(() => [TrancheStatNotPayed], { nullable: true }) 
+trancheNotPayed?: TrancheStatNotPayed[];
 }
+
+
 
 @ObjectType()
 export class TOTALTABLETWO{
@@ -144,6 +149,20 @@ RESTE_RECOUVRER:number
 TAUX_RAR:number
 }
 
+@ObjectType()
+export class TranchStatTwo{
+@Field()
+studentid:string
+
+@Field()
+Nom:string
+
+@Field()
+Priority:number
+
+@Field()
+montantPercu:number
+}
 
 @ObjectType()
 export class ClassStatisticsPaginatedResponse extends PaginatedResponse(

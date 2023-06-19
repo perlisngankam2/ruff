@@ -216,8 +216,8 @@ export class Student {
 
   @Field(() => ID)
   @Property({ persist: false })
-  get salleid() {
-    return `${this.salle.id}`;
+  get salleid():string|null {
+    return this.salle?`${this.salle.id}`:null;
   }
 
   @Field(() => ID, { nullable: true })
@@ -228,8 +228,8 @@ export class Student {
 
   @Field(() => ID)
   @Property({ persist: false })
-  get categorieid() {
-    return `${this.categorie.id}`;
+  get categorieid():string|null {
+    return this.categorie?`${this.categorie.id}`:null;
   }
 
   @Field(() => ID, { nullable: true })

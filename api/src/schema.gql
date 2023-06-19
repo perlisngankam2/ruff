@@ -445,6 +445,13 @@ type TrancheStatNotPayed {
   Rest: Float!
 }
 
+type TrancheStatNotReceived {
+  studentid: String!
+  Nom: String!
+  Priority: Float!
+  montantPercu: Float!
+}
+
 type TrancheStat {
   studentid: String!
   Nom: String!
@@ -466,6 +473,7 @@ type TranchStatTwo {
   Nom: String!
   Priority: Float!
   montantPercu: Float!
+  trancheNotPayed: [TrancheStatNotReceived!]
 }
 
 type AvanceTranchePaginatedResponse {

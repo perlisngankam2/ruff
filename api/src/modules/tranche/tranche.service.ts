@@ -22,7 +22,7 @@ import { format } from 'date-fns';
 import { ParameterService } from '../parameter/parameter.service';
 import { StudentService } from '../student/student.service';
 import { TrancheStudentService } from '../tranche-student/tranche-student.service';
-import { TranchStatTwo, TrancheStat, TrancheStatNotPayed} from '../statistics/classStatistics';
+import { TranchStatTwo, TrancheStat, TrancheStatNotPayed, TrancheStatNotReceived} from '../statistics/classStatistics';
 import { PensionSalleService } from '../pensionsalle/pensionsalle.service';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { RolesGuard } from '../auth/guards/roles.guard';
@@ -169,6 +169,7 @@ export class TrancheService {
         return a 
       }  
       
+     
       async trancheNotYetPayedByStudent(studentId:string){
         const students = await this.studentservice.getAll()
         const listalltranche = students.filter(a=>a.id===studentId).map(a=>a.salle.getEntity().tranche.getItems()).flat()
@@ -195,7 +196,28 @@ export class TrancheService {
       
         return result;
       }
-      
+
+      async trancheNotYetReceivedByStudent(studentId:string){
+         const a = await this.trancheNotYetPayedByStudent(studentId)
+         const result: TrancheStatNotReceived[] = [];
+         for(const b of a){
+          const studentid=studentId
+          const Nom=b.Nom
+          const Priority=b.Priority
+          const montantPercu = 0
+         
+
+          result.push({
+            studentid,
+            Nom,
+            Priority,
+            montantPercu
+          });
+        }
+
+        return result
+      }
+
       async findByStudentRestTranche(studentid:string){
        
         const trancheNotPayed  = await this.trancheNotYetPayedByStudent(studentid)
@@ -243,6 +265,7 @@ export class TrancheService {
 
   async findByStudentAmountReceivedTranche(studentid:string){
     const students = await this.studentservice.getAll()
+    const trancheNotPayed  = await this.trancheNotYetReceivedByStudent(studentid)
     const Tranches = students.map((student) => student.trancheStudent.getItems().map((trancheStudent) => trancheStudent.tranche));
     
     // const Tranches = students.map((student) => student.salle.getEntity().tranche.getItems()).map((trancheStudent) => trancheStudent.tranche));
@@ -275,6 +298,7 @@ export class TrancheService {
             Nom,
             Priority,
             montantPercu: 0,
+            trancheNotPayed
           });
         } 
   
@@ -287,7 +311,8 @@ export class TrancheService {
           studentid,
           Nom,
           Priority,
-          montantPercu
+          montantPercu,
+          trancheNotPayed
         });
       }
     }

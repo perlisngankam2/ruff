@@ -112,6 +112,21 @@ Rest:number
 }
 
 @ObjectType()
+export class TrancheStatNotReceived{
+@Field()
+studentid:string
+
+@Field()
+Nom:string
+
+@Field()
+Priority:number
+
+@Field()
+montantPercu:number
+}
+
+@ObjectType()
 export class TrancheStat{
 @Field()
 studentid:string
@@ -162,6 +177,9 @@ Priority:number
 
 @Field()
 montantPercu:number
+
+@Field(() => [TrancheStatNotReceived], { nullable: true }) 
+trancheNotPayed?: TrancheStatNotReceived[];
 }
 
 @ObjectType()

@@ -184,12 +184,12 @@ const Class = () => {
 
   if (loading) return <Text>Chargement en cours...</Text>;
   if (error) return <Text>Error: {error.message}</Text>;
-
+// http://downloads.asterisk.org/pub/telephony/asterisk/asterisk-20-current.tar.gz
   const addPersonnelSalle = async (e) => {
     e.preventDefault();
     console.log(selectedCourse);
     console.log(salleId);
-    selectedCourse.map((course, index) => {
+    selectedCourse.map((course, index)=> {
       createPersonnelSalle({
         variables: {
           input: {

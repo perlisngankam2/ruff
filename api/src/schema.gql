@@ -438,11 +438,26 @@ type TOTALTABLEONE {
   TOTAL_SECOND_TAUX_RECOUVRIR: Float!
 }
 
+type TrancheStatNotPayed {
+  studentid: String!
+  Nom: String!
+  Priority: Float!
+  Rest: Float!
+}
+
+type TrancheStatNotReceived {
+  studentid: String!
+  Nom: String!
+  Priority: Float!
+  montantPercu: Float!
+}
+
 type TrancheStat {
   studentid: String!
   Nom: String!
   Priority: Float!
   Rest: Float!
+  trancheNotPayed: [TrancheStatNotPayed!]
 }
 
 type TOTALTABLETWO {
@@ -451,6 +466,14 @@ type TOTALTABLETWO {
   TAUX_ENCAISSEMENT: Float!
   RESTE_RECOUVRER: Float!
   TAUX_RAR: Float!
+}
+
+type TranchStatTwo {
+  studentid: String!
+  Nom: String!
+  Priority: Float!
+  montantPercu: Float!
+  trancheNotPayed: [TrancheStatNotReceived!]
 }
 
 type AvanceTranchePaginatedResponse {
@@ -606,7 +629,8 @@ type Query {
   findAlltranche: [Tranche!]!
   tranche(id: String!): Tranche!
   findByStudentRestTranche(studentid: String!): [TrancheStat!]!
-  findByStudentAmountReceivedTranche(studentid: String!): [TrancheStat!]!
+  findByStudentAmountReceivedTranche(studentid: String!): [TranchStatTwo!]!
+  trancheNotYetPayedByStudent(studentid: String!): [TrancheStatNotPayed!]!
   findAllparameters: [Parameter!]!
   findOneparameters(id: String!): Parameter!
   findAllAnnerAccademique: [AnneeAccademique!]!

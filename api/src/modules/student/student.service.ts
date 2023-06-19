@@ -163,6 +163,7 @@ export class StudentService {
   getAll(): Promise<Student[]> {
     return this.studentRepository.findAll({
       populate: [
+        'salle.tranche',
         'salle',
         'pension',
         'salle.niveau.cycle',

@@ -13,11 +13,12 @@ import { Tranche } from 'src/entities/tranche.entity';
 import { TrancheCreateInput } from './dto/tranche.input';
 import { TrancheUpdateInput } from './dto/tranche.update';
 import { TrancheService } from './tranche.service';
-import { TrancheStat } from '../statistics/classStatistics';
+import { TranchStatTwo, TrancheStat, TrancheStatNotPayed } from '../statistics/classStatistics';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { RolesGuard } from '../auth/guards/roles.guard';
 import { Roles } from '../auth/decorators/roles.decorator';
 import { Role } from '../auth/roles/roles';
+
 
 @Resolver(() => Tranche)
 export class TrancheResolver {
@@ -74,8 +75,13 @@ export class TrancheResolver {
     return await this.trancheService.findByStudentRestTranche(studentid);
   }
 
-  @Query(() => [TrancheStat])
+  @Query(() => [TranchStatTwo])
   async findByStudentAmountReceivedTranche(@Args('studentid') studentid: string){
     return await this.trancheService.findByStudentAmountReceivedTranche(studentid);
+  }
+
+  @Query(() => [TrancheStatNotPayed])
+  async trancheNotYetPayedByStudent(@Args('studentid') studentid: string){
+     return this.trancheService.trancheNotYetPayedByStudent(studentid)
   }
 }

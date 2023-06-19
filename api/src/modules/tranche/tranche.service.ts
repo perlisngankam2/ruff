@@ -195,7 +195,7 @@ export class TrancheService {
       
         return result;
       }
-
+      
       async findByStudentRestTranche(studentid:string){
        
         const trancheNotPayed  = await this.trancheNotYetPayedByStudent(studentid)

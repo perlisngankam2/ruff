@@ -37,8 +37,7 @@ import { FiEdit, FiSearch } from "react-icons/fi";
 import { MdDelete } from "react-icons/md";
 import {
   GET_ALL_Category_Personnel,
-  loading,
-  error,
+
 } from "../../graphql/Queries";
 import { DELETE_CATEGORY_PERSONNEL } from "../../graphql/Mutation";
 import { useQuery, useMutation } from "@apollo/client";
@@ -91,8 +90,8 @@ const Category = () => {
     console.log(data?.findAllcategoriepersonnel);
   }, [data]);
 
-  if (loading) return <Text>Chargement en cour...</Text>;
-  if (error) return <Text>Une erreur s'est produite!</Text>;
+  if (loading) return <Text>Chargement en cours...</Text>;
+  if (error) return <Text>Error: {error.message}</Text>;
 
   const deleteCategoryPersonnel = async (id) => {
     await deletePerssCategory({

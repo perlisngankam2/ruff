@@ -28,8 +28,6 @@ import {
 import { getStaticPropsTranslations } from "../../types/staticProps";
 import { useAuth } from "../../contexts/account/Auth/Auth";
 
-
-
 const AjouterPersonnel = () => {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -63,8 +61,13 @@ const AjouterPersonnel = () => {
   const { t } = useTranslation();
   const router = useRouter();
   const { setAuthToken, authToken } = useAuth();
-  const { data} = useQuery(GET_ALL_USER);
-  const {data:dataPersonnel, loading, error, refetch} = useQuery(GET_ALL_PERSONNELS)
+  const { data } = useQuery(GET_ALL_USER);
+  const {
+    data: dataPersonnel,
+    loading,
+    error,
+    refetch,
+  } = useQuery(GET_ALL_PERSONNELS);
 
   //propriete manquante//
   // firstName
@@ -89,7 +92,9 @@ const AjouterPersonnel = () => {
   console.log(isInvalidNom);
 
   const [isPermanent, setIsPermanent] = useState(false);
-  const [createPersonnel] = useMutation(CREATE_PERSONNEL);
+  const [createPersonnel] = useMutation(CREATE_PERSONNEL, {
+    onError: (error) => console.log(error),
+  });
   const { data: dataCategoryPersonnel } = useQuery(GET_ALL_Category_Personnel);
   // const handleSubmit = (event) => {
   //   event.preventDefault();
@@ -202,12 +207,11 @@ const AjouterPersonnel = () => {
     }
   };
 
-  useEffect(()=>{
-    if(!authToken){
-      router.back()
+  useEffect(() => {
+    if (!authToken) {
+      router.back();
     }
-    
-  },[authToken])
+  }, [authToken]);
 
   useEffect(() => {
     console.log(dataCategoryPersonnel?.findAllcategoriepersonnel);

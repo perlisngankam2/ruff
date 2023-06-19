@@ -48,9 +48,11 @@ const SuiviPaiementPremiereTranche = () => {
   const { setAuthToken, authToken } = useAuth();
   const router = useRouter();
 
-  const { data: dataTranche1StatisticsClassAnglophoneSection } = useQuery(
-    GET_STATISTICS_TRANCHE1_PRIMAIRE_ANGLOPHONE_SECTION
-  );
+  const {
+    data: dataTranche1StatisticsClassAnglophoneSection,
+    loading,
+    error,
+  } = useQuery(GET_STATISTICS_TRANCHE1_PRIMAIRE_ANGLOPHONE_SECTION);
   const { data: dataTotalTranche1StatisticsClassAnglophoneSection } = useQuery(
     GET_TOTAL_STATISTICS_TRANCHE1_PRIMAIRE_ANGLOPHONE_SECTION
   );
@@ -68,6 +70,9 @@ const SuiviPaiementPremiereTranche = () => {
     }
   }, [authToken]);
 
+  if (loading) return <Text>Chargement en cours...</Text>;
+  if (error) return <Text>Error: {error.message}</Text>;
+  
   return (
     <DefaultLayout>
       <Center mt="70px">
@@ -190,6 +195,7 @@ const SuiviPaiementPremiereTranche = () => {
                             {
                               totalFrancophoneClasse.TOTAL_FIRST_TAUX_ENCAISSEMENT
                             }
+                            %
                           </Td>
                           <Td border={"1px"}>
                             {totalFrancophoneClasse.TOTAL_MONTANT_EN_CAISSE}
@@ -198,6 +204,7 @@ const SuiviPaiementPremiereTranche = () => {
                             {
                               totalFrancophoneClasse.TOTAL_SECOND_TAUX_ENCAISSEMENT
                             }
+                            %
                           </Td>
                           <Td border={"1px"}>
                             {
@@ -205,13 +212,14 @@ const SuiviPaiementPremiereTranche = () => {
                             }
                           </Td>
                           <Td border={"1px"}>
-                            {totalFrancophoneClasse.TOTAL_FIRST_TAUX_RECOUVRIR}
+                            {totalFrancophoneClasse.TOTAL_FIRST_TAUX_RECOUVRIR}%
                           </Td>
                           <Td border={"1px"}>
                             {totalFrancophoneClasse.TOTAL_RESTE_A_RECOUVRER}
                           </Td>
                           <Td border={"1px"}>
                             {totalFrancophoneClasse.TOTAL_SECOND_TAUX_RECOUVRIR}
+                            %
                           </Td>
                         </Tr>
                       )

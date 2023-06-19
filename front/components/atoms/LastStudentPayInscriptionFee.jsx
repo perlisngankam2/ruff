@@ -46,7 +46,7 @@ const LastStudentPayInscriptionFee = () => {
             p="1"
             justify="space-between"
             key={index}
-
+            mb={4}
           >
             <Box direction="column">
               <Flex

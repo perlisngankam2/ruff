@@ -34,6 +34,7 @@ import {
   FormLabel,
   useToast,
   InputRightElement,
+  InputLeftAddon,
 } from "@chakra-ui/react";
 
 import DefaultLayout from "../../components/layouts/DefaultLayout";
@@ -56,6 +57,7 @@ import {
   GET_ALL_TRANCHE,
   GET_ALL_TRANCHE_PENSION,
   GET_ALL_CLASS,
+  GET_ALL_SCHOOL_PARAMETER,
 } from "../../graphql/Queries";
 import { FiEdit, FiSearch } from "react-icons/fi";
 import ReactPaginate from "react-paginate";
@@ -69,7 +71,7 @@ const Pension = () => {
   const [name, setName] = useState("");
   const [montant, setMontant] = useState();
   const [dateLine, setDateLine] = useState();
-  const [anneeAcademiqueId, setAnneeAcademiqueId] = useState("");
+  // const [anneeAcademiqueId, setAnneeAcademiqueId] = useState("");
   const [salleId, setSalleId] = useState("");
   const [tranchePriorityId, setTranchePriorityId] = useState("");
   const [priority, setPriority] = useState();
@@ -121,9 +123,12 @@ const Pension = () => {
   const { data: dataTranchePension, refetch } = useQuery(
     GET_ALL_TRANCHE_PENSION
   );
+  const { data: dataSchoolParameter } = useQuery(GET_ALL_SCHOOL_PARAMETER);
   const { data: dataClasse } = useQuery(GET_ALL_CLASS);
   const [createdFraisInscription] = useMutation(CREATE_FRAIS_INSCRIPTION);
-  const [createTranchePension] = useMutation(CREATE_TRANCHE_PENSION);
+  const [createTranchePension] = useMutation(CREATE_TRANCHE_PENSION, {
+    onError: (error) => console.log(error),
+  });
   const [createTranchePriority] = useMutation(CREATE_TRANCHE_PRIORITY);
   const [deleTranchePension] = useMutation(DELETE_TRANCHE_PENSION);
 
@@ -135,8 +140,18 @@ const Pension = () => {
   const toast = useToast();
 
   //creation d'une annee academique
+  // RECUPERATION DU NOM ET DE L'ID DE L'ANNEE ACADEMIQUE EN COUR
+  const anneeAcademiqueName =
+    dataSchoolParameter?.findAllparameters[0].anneeAcademiqueName;
+  console.log(anneeAcademiqueName);
 
-  const addTranchePension = async () => {
+  let anneeAcademiqueId =
+    dataSchoolParameter?.findAllparameters[0].anneeAcademiqueId;
+  console.log("anneeAcademiqueIds", anneeAcademiqueId);
+
+  const addTranchePension = async (event) => {
+    event.preventDefault();
+
     console.log(name);
     console.log("annee academiqueId", anneeAcademiqueId);
     console.log(montant);
@@ -169,7 +184,6 @@ const Pension = () => {
       duration: 3000,
       isClosable: true,
     });
-    setAnneeAcademiqueId("");
     setDateLine("");
     setMontant("");
     setDateLine("");
@@ -388,28 +402,12 @@ const Pension = () => {
                         </FormControl>
                         <FormControl mt={4}>
                           <FormLabel>Annee academique</FormLabel>
-                          <Select
-                            type={"date"}
-                            name="anneeAcademiqueId"
-                            value={anneeAcademiqueId}
+                          <Input
+                            type="text"
+                            value={anneeAcademiqueName}
                             placeholder="Annee academique"
-                            onChange={(event) =>
-                              setAnneeAcademiqueId(event.target.value)
-                            }
                             isRequired
-                          >
-                            {dataAnneeAcademique &&
-                              dataAnneeAcademique.findAllAnnerAccademique.map(
-                                (anneeAcademique, index) => (
-                                  <option
-                                    value={anneeAcademique.id}
-                                    key={index}
-                                  >
-                                    {anneeAcademique.name}
-                                  </option>
-                                )
-                              )}
-                          </Select>
+                          />
                         </FormControl>
                       </Box>
                     </AlertDialogBody>

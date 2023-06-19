@@ -48,7 +48,7 @@ const SuiviPaiementFraisInscription = () => {
   const { setAuthToken, authToken } = useAuth();
   const router = useRouter();
   // const {t} = useTranslation();
-  const { data: dataInscriptionStatisticsAnglophoneSection } = useQuery(
+  const { data: dataInscriptionStatisticsAnglophoneSection, loading, error } = useQuery(
     GET_STATISTICS_PRIMAIRE_ANGLOPHONE_CLASS
   );
   const { data: dataTotalInscriptionStatisticsAnglophoneSection } = useQuery(
@@ -71,6 +71,10 @@ const SuiviPaiementFraisInscription = () => {
   useEffect(() => {
     console.log(dataInscriptionStatisticsAnglophoneSection);
   });
+
+  if (loading) return <Text>Chargement en cours...</Text>;
+  if (error) return <Text>Error: {error.message}</Text>;
+  
   return (
     <DefaultLayout>
       <Center mt="70px">

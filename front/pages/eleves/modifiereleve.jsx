@@ -399,7 +399,6 @@ export default ModifierEleve;
 //     }
 // }
 
-
 //  FONCTION DE CONVERTION EN LETTRE
 // function nombreEnLettres(montant) {
 //   const chiffres = [
@@ -491,9 +490,6 @@ export default ModifierEleve;
 //       montant
 //   }
 // }
-
-
-
 
 // import {
 //   Box,
@@ -1211,7 +1207,7 @@ export default ModifierEleve;
 //                                   <Text>Deadline</Text>
 //                                 </Box>
 //                               </Th>
-//                               {/* 
+//                               {/*
 //                               <Th border="1px">
 //                                 <Box fontSize="10px" textAlign="center" p="5px">
 //                                   <Text>Date </Text>
@@ -1502,14 +1498,12 @@ export default ModifierEleve;
 
 // export default receipt;
 
-
 // const list: Student[] = [];
 //         for (let i = (await a).length - 3; i < (await a).length; i++) {
 //           if (i >= 0) {
 //             list.push(a[i]);
 //           }
 //         }
-
 
 // const list: Student[] = [];
 //     for (let i = (await a).length - 3; i < (await a).length; i++) {
@@ -1519,8 +1513,6 @@ export default ModifierEleve;
 //     }
 //     return list
 
-
-   
 // async getclassfeebystudent(studentid:string){
 //   const a= await this.findByOne(studentid)
 //   if(!a){
@@ -1528,3 +1520,22 @@ export default ModifierEleve;
 //   }
 //   return (a.salle.getEntity().pensionsalle.getItems().map(a=>a.montantPension))[0]
 // }
+
+// LISTE ANNEE ACADEMIQUE
+{/* <Select
+  type={"date"}
+  name="anneeAcademiqueId"
+  value={anneeAcademiqueId}
+  placeholder="Annee academique"
+  onChange={(event) => setAnneeAcademiqueId(event.target.value)}
+  isRequired
+>
+  {dataAnneeAcademique &&
+    dataAnneeAcademique.findAllAnnerAccademique.map(
+      (anneeAcademique, index) => (
+        <option value={anneeAcademique.id} key={index}>
+          {anneeAcademique.name}
+        </option>
+      )
+    )}
+</Select>; */}

@@ -1,18 +1,18 @@
 /* eslint-disable prettier/prettier */
 import {
-    Collection,
-    Entity,
-    Enum,
-    Filter,
-    IdentifiedReference,
-    ManyToOne,
-    OneToMany,
-    OneToOne,
-    PrimaryKey,
-    Property,
-    Unique,
-  } from '@mikro-orm/core';
-  import { Field, ID, ObjectType } from '@nestjs/graphql';
+  Collection,
+  Entity,
+  Enum,
+  Filter,
+  IdentifiedReference,
+  ManyToOne,
+  OneToMany,
+  OneToOne,
+  PrimaryKey,
+  Property,
+  Unique,
+} from '@mikro-orm/core';
+import { Field, ID, ObjectType } from '@nestjs/graphql';
 import { PrimaryKeyUuid } from '../decorators/PrimaryKeyUuid.decorator';
 import { Pension } from './pension.entity';
 import { Personnel } from './pesonnel.entity';
@@ -22,7 +22,6 @@ import { AvanceTranche } from './avance-tranche.entity';
 import { Salle } from './salle.entity';
 import { PensionSalle } from './pensionsalle.entity';
 
-
 @Entity()
 @ObjectType()
 export class Tranche {
@@ -30,12 +29,12 @@ export class Tranche {
   @PrimaryKeyUuid()
   id!: string;
 
-  @Field({nullable:true})
-  @Property({nullable:true})
+  @Field({ nullable: true })
+  @Property({ nullable: true })
   name!: string;
 
-  @Field({nullable:true})
-  @Property({nullable:true})
+  @Field({ nullable: true })
+  @Property({ nullable: true })
   description!: string;
 
   @Property({ onCreate: () => new Date() })
@@ -46,52 +45,51 @@ export class Tranche {
   dateLine!: Date | null;
 
   @Field({ nullable: true })
-  @Property({ nullable: true})
+  @Property({ nullable: true })
   montant!: number;
 
   @Field({ nullable: true })
-  @Property({ nullable: true})
+  @Property({ nullable: true })
   priority!: number;
 
   @Field({ nullable: true })
-  @Property({ nullable: true})
+  @Property({ nullable: true })
   anneAcademique!: string;
 
-  @OneToMany(()=>TrancheStudent, (trancheStudent) => trancheStudent.tranche)
-  trancheStudent = new Collection<TrancheStudent>(this)
+  @OneToMany(() => TrancheStudent, (trancheStudent) => trancheStudent.tranche)
+  trancheStudent = new Collection<TrancheStudent>(this);
 
-  @OneToMany(()=>AvanceTranche, (avancetranche) => avancetranche.tranche)
-  avancetranche = new Collection<AvanceTranche>(this)
+  @OneToMany(() => AvanceTranche, (avancetranche) => avancetranche.tranche)
+  avancetranche = new Collection<AvanceTranche>(this);
 
-  @ManyToOne(() => AnneeAccademique ,{
-    nullable:true,
-    onDelete:'CASCADE'
+  @ManyToOne(() => AnneeAccademique, {
+    nullable: true,
+    onDelete: 'CASCADE',
   })
-  anneeAccademique!:IdentifiedReference<AnneeAccademique>|null
+  anneeAccademique!: IdentifiedReference<AnneeAccademique> | null;
 
-  @ManyToOne(() => PensionSalle ,{
-    nullable:true,
-    onDelete:'CASCADE'
+  @ManyToOne(() => PensionSalle, {
+    nullable: true,
+    onDelete: 'CASCADE',
   })
-  pensionsalle!:IdentifiedReference<PensionSalle>|null
+  pensionsalle!: IdentifiedReference<PensionSalle> | null;
 
-  @ManyToOne(() => Pension ,{
-    nullable:true,
-    onDelete:'CASCADE'
+  @ManyToOne(() => Pension, {
+    nullable: true,
+    onDelete: 'CASCADE',
   })
-  pension!:IdentifiedReference<Pension>|null
+  pension!: IdentifiedReference<Pension> | null;
 
-   @ManyToOne(() => Salle ,{
-    nullable:true,
-    onDelete:'CASCADE'
+  @ManyToOne(() => Salle, {
+    nullable: true,
+    onDelete: 'CASCADE',
   })
-  salle!:IdentifiedReference<Salle>|null
+  salle!: IdentifiedReference<Salle> | null;
 
-
-  @Field(() => ID,{nullable:true})
+  @Field(() => ID, { nullable: true })
   @Property({ persist: false })
-  get salleid():string|null {
-    return this.salle?`${this.salle.id}`:null;
+  get salleid(): string | null {
+    return this.salle ? `${this.salle.id}` : null;
   }
 
   // @Field(() => ID)

@@ -42,7 +42,8 @@ function ajoutercategorypersonnel() {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const cancelRef = React.useRef();
   const [createCategoryPersonnel, { error }, refetch] = useMutation(
-    CREATE_CATEGORY_PERSONNEL
+    CREATE_CATEGORY_PERSONNEL,
+    { onError: (error) => console.log(error) }
   );
 
   const toast = useToast();

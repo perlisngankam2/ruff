@@ -80,7 +80,11 @@ const cyclesection = () => {
 
   const { data } = useQuery(GET_ALL_SECTION);
   const { setAuthToken, authToken } = useAuth();
-  const { data: dataCycle } = useQuery(GET_ALL_CYCLE);
+  const {
+    data: dataCycle,
+    loading,
+    error,
+  } = useQuery(GET_ALL_CYCLE, { onError: (error) => console.log(error) });
   const [id, setId] = useState(null);
   const [deleteSection] = useMutation(DELETE_SECTION);
 
@@ -132,6 +136,9 @@ const cyclesection = () => {
     console.log(dataCycle?.findAllcycle);
     console.log("hh");
   });
+
+  if (loading) return <Text>Chargement en cours...</Text>;
+  if (error) return <Text>Error: {error.message}</Text>;
 
   // const displayUsers =
 
@@ -328,10 +335,10 @@ const CycleElement = ({ cycle, index }) => {
   } = useDisclosure();
   const cancelRef = React.useRef();
 
-  const [deleteCycle] = useMutation(DELETE_CYCLE);
+  const [deleteCycle, loading, error] = useMutation(DELETE_CYCLE);
   const { data: dataDetailsCycle } = useQuery(GET_ONE_CYCLE);
   const [editCycle] = useMutation(UPDATE_CYCLE);
-  const [createCycle, { error }] = useMutation(CREATE_CYCLE);
+  const [createCycle] = useMutation(CREATE_CYCLE);
 
   const removeCycle = async (id) => {
     await deleteCycle({

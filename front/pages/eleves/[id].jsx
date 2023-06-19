@@ -204,6 +204,7 @@ const DetailComponent = () => {
     error,
   } = useQuery(GET_STUDENT_BY_ID, {
     variables: { id: router.query.id },
+    onError: (error) => console.log(error),
   });
 
   // const {data:dataTrancheStudentBySudentId} = useQuery(GET_TRANCHE_STUDENT_BY_STUDENT_ID,
@@ -215,6 +216,7 @@ const DetailComponent = () => {
   //Niveau DE CHAQUE ELEVE
   const { data: dataStudentLevel } = useQuery(GET_STUDENT_SALLE, {
     variables: { studentid: router.query.id },
+    onError: (error) => console.log(error),
   });
 
   //PENSION PAR CLASSE DE CHQUE ELEVE
@@ -222,6 +224,7 @@ const DetailComponent = () => {
     GET_CLASS_FEES_BY_STUDENT_ID,
     {
       variables: { studentid: router.query.id },
+      onError: (error) => console.log(error),
     }
   );
 
@@ -243,6 +246,7 @@ const DetailComponent = () => {
     GET_ALL_TRANCHE_COMPLETE_BY_STUDENT,
     {
       variables: { studentid: router.query.id },
+      onError: (error) => console.log(error),
     }
   );
 
@@ -250,6 +254,7 @@ const DetailComponent = () => {
     GET_ALL_TRANCHE_BY_STUDENT_ID,
     {
       variables: { studentid: router.query.id },
+      onError: (error) => console.log(error),
     }
   );
 
@@ -258,6 +263,7 @@ const DetailComponent = () => {
     GET_PENSION_ALREADY_PAY_BY_STUDENT_ID,
     {
       variables: { studentid: router.query.id },
+      onError: (error) => console.log(error),
     }
   );
 
@@ -265,6 +271,7 @@ const DetailComponent = () => {
   const { data: dataSectionStudentById } = useQuery(GET_SECTION_STUDENT_BY_ID, {
     variables: {
       studentid: router.query.id,
+      onError: (error) => console.log(error),
     },
   });
 
@@ -281,7 +288,8 @@ const DetailComponent = () => {
   const { data: dataTrancheStudent } = useQuery(GET_ALL_TRANCHE_STUDENT);
   const { data: dataParents } = useQuery(GET_ALL_PARENT);
   const [dataAffectationParentToStudent] = useMutation(
-    AFFECTATION_PARENT_TO_STUDENT
+    AFFECTATION_PARENT_TO_STUDENT,
+    { onError: (error) => console.log(error) }
   );
   const { data: dataTrancheById } = useQuery(GET_TRANCHE_PENSION_BY_ID);
   const [createTrancheStudent] = useMutation(CREATE_TRANCHE_STUDENT);
@@ -479,6 +487,9 @@ const DetailComponent = () => {
     // console.log(dataTrancheCompleteByStudent?.getalltranchecompletedbystudent)
     // console.log(dataTrancheStudentBySudentId?.getTrancheStudentByStudent)
   });
+
+  if (loading) return <Text>Chargement en cours...</Text>;
+  if (error) return <Text>Error: {error.message}</Text>;
 
   console.log(dataTranchePension?.findAlltranche);
   // const AllTranche = dataTranchePension?.findAlltranche.map((tranche) => {

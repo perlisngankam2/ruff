@@ -38,7 +38,7 @@ import {
   InputRightElement,
   AlertDialogCloseButton,
   Show,
-  useToast
+  useToast,
 } from "@chakra-ui/react";
 // import Link from "../../components/atoms/Link"
 import React from "react";
@@ -96,13 +96,7 @@ const Eleves = () => {
     data: dataStudent,
     loading,
     error,
-  } = useQuery(
-    GET_ALL_STUDENT
-    // {variables: {
-    //   limit: itemsPerPage,
-    //   offset: (currentPage - 1) * itemsPerPage,
-    // },}
-  );
+  } = useQuery(GET_ALL_STUDENT, { onError: (error) => console.log(error) });
   const { account, loaded } = useAccount();
 
   //infos du personnel connete
@@ -129,7 +123,7 @@ const Eleves = () => {
     console.log(dataStudent?.findAllstudents);
   });
 
-  if (loading) return <Text>Chargement en cour...</Text>;
+  if (loading) return <Text>Chargement en cours...</Text>;
   if (error) return <Text>Une erreur s'est produite!</Text>;
 
   const removeStudent = async (id) => {

@@ -43,7 +43,9 @@ const AddLevel = () => {
     montantPension: "",
     cycleId: "",
   });
-  const [createStudyLevel] = useMutation(CREATE_STUDY_LEVEL);
+  const [createStudyLevel] = useMutation(CREATE_STUDY_LEVEL, {
+    onError: (error) => console.log(error),
+  });
   const { data: dataCycle } = useQuery(GET_ALL_CYCLE);
   const [updateStudyLevel] = useMutation(UPDATE_LEVEL);
   const { data: dataStudyLevel, refetch } = useQuery(GET_ALL_STUDY_LEVEL);
@@ -98,7 +100,7 @@ const AddLevel = () => {
           },
         ],
       }),
-      refetch();
+        refetch();
       toast({
         title: "Creation d'un niveau d'etude.",
         description: "Le niveau a ete créée avec succes.",
@@ -123,7 +125,7 @@ const AddLevel = () => {
           },
         ],
       });
-      refetch()
+      refetch();
       toast({
         title: "Modification d'un niveau d'etude.",
         description: "Le niveau a ete créée avec succes.",
@@ -152,7 +154,7 @@ const AddLevel = () => {
             background="white"
             mt={10}
           >
-            <Box as="form" width="500px"  onSubmit={addStudyLevel}            >
+            <Box as="form" width="500px" onSubmit={addStudyLevel}>
               {/* <Text>jj</Text> */}
               <Heading
                 color={"colors.primary"}

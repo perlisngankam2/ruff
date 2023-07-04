@@ -107,19 +107,19 @@ const LatePayment = () => {
             </Tr>
             <Tr color="black">
               <Td>
-                Délais de l'inscription: {""}
+                Inscription: {""}
                 {dateLineInscription}
               </Td>
             </Tr>
             <Tr color="black">
               <Td>
-                Délais de la tranche 1: {""}
+              Tranche 1: {""}
                 {dateLineTrancheOne}
               </Td>
             </Tr>
             <Tr color="black">
               <Td>
-                Délais de la tranche 2 : {""}
+                Tranche 2 : {""}
                 {dateLineTrancheTwo}
               </Td>
             </Tr>

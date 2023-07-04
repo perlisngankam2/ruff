@@ -48,7 +48,7 @@ const LoginForm = () => {
   const { setAuthToken, authToken } = useAuth();
   const { dataUser, called, loading, error } = useQuery(GET_USER_CONNECTED);
   const { t } = useTranslation();
-  //  console.log(setAuthToken.isLogged)
+  //console.log(setAuthToken.isLogged)
 
   console.log(authToken);
   // useEffect(()=>{
@@ -67,7 +67,7 @@ const LoginForm = () => {
     const login = await loginInput({
       variables: {
         loginInput: {
-          username: email,
+          username: email, 
           password: password,
         },
       },

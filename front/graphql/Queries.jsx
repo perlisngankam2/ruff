@@ -285,6 +285,9 @@ export const GET_ALL_TRANCHE_PENSION = gql`
       dateLine
       montant
       priority
+      anneAcademique
+      salleid
+      salleName
     }
   }
 `;
@@ -669,6 +672,9 @@ export const GET_TRANCHE_PENSION_BY_ID = gql`
       dateLine
       montant
       priority
+      anneAcademique
+      salleid
+      salleName
     }
   }
 `;
@@ -831,6 +837,18 @@ export const GET_RESTE_MONTANT_TRANCHE_BY_STUDENT_ID = gql`
       Nom
       Priority
       Rest
+    }
+  }
+`;
+
+//montant de chaque tranche verse par les eleves
+export const GET_AMOUNT_TRANCHE_RECEIVED_BY_STUDENT = gql`
+  query findByStudentAmountReceivedTranche($studentid: String!) {
+    findByStudentAmountReceivedTranche(studentid: $studentid) {
+      studentid
+      Nom
+      Priority
+      montantPercu
     }
   }
 `;

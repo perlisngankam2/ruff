@@ -46,6 +46,7 @@ import {
   GET_RESTE_MONTANT_TRANCHE_BY_STUDENT_ID,
   GET_ALL_TRANCHE_BY_STUDENT_ID,
   GET_PERSONNEL_BY_USERID,
+  GET_AMOUNT_TRANCHE_RECEIVED_BY_STUDENT
 } from "../../../graphql/Queries";
 import React, { useEffect, useRef } from "react";
 import { useQuery } from "@apollo/client";
@@ -135,10 +136,18 @@ const receipt = () => {
       variables: {
         studentid: router.query.id,
         trancheid: dataTranchePension?.findAlltranche[2].id,
-      },
+      }
     }
   );
 
+//MONTANT DE CHAQUE TRANCHE DEJA VERSE PAR ELEVES 
+const {data:dataTrancheAlreadyPaidByStudent} = useQuery( GET_AMOUNT_TRANCHE_RECEIVED_BY_STUDENT,
+  {
+    variables: {
+      studentid: router.query.id
+    }
+  }
+)
   //RECUPERATION DES DATELINE PAR TRANCHE POUR CHQUE ELEVE
   const { data: dataDateLineTrancheStudentInscription } = useQuery(
     GET_DATELINE_TRANCHE_BY_STUDENT,
@@ -218,7 +227,6 @@ const receipt = () => {
   //         }
 
   //     }
-
   // )
 
   const { data: dataMontantTrancheByStudent } = useQuery(
@@ -306,6 +314,7 @@ const receipt = () => {
     console.log(dataResteTrancheByStudentId?.findByStudentRestTranche);
     console.log(dataFinalRestByTranche);
     console.log(trancheId);
+    console.log("Montant des tranches deja paye par eleve",dataTrancheAlreadyPaidByStudent);
 
     // loadTranches();
   });
@@ -596,7 +605,7 @@ const receipt = () => {
                       </Box>
                     </Flex>
                     <Flex direction="column" w="300px">
-                      <Text fontSize="14px" fontWeight="bold" ml="10px">
+                      <Text fontSize="13px" fontWeight="bold" ml="10px">
                         SITUATION FINANCIERE / FINANCIAL SITUATION
                       </Text>
                       <Box>
@@ -819,7 +828,7 @@ const receipt = () => {
                     </Box>
                   </Flex>
                   <Box fontWeight="bold" mt="20px" mr="35px">
-                    <Text as="u">SIGNATURE ET CACHET / VISA AND STAMP</Text>
+                    <Text fontSize={"14px"} as="u">SIGNATURE ET CACHET / VISA AND STAMP</Text>
                   </Box>
                 </Flex>
               </Flex>

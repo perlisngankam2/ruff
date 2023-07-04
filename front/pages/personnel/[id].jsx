@@ -27,6 +27,7 @@ import {
   useToast,
 } from "@chakra-ui/react";
 import { AddIcon } from "@chakra-ui/icons";
+import { Select as Selects } from "chakra-react-select";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
@@ -76,11 +77,13 @@ const Profil = () => {
     onOpen: onOpenns,
     onClose: onClosses,
   } = useDisclosure();
+
   const {
     isOpen: isOpenns1,
     onOpen: onOpenns1,
     onClose: onClosses1,
   } = useDisclosure();
+
   const {
     isOpen: isOpenns2,
     onToggle: onToggle1,
@@ -135,7 +138,9 @@ const Profil = () => {
   const [createPrimePersonnel] = useMutation(CREATE_PRIME_PERSONNEL);
   const [createRetenuePersonnel] = useMutation(CREATE_RETENUE_PERSONNEL);
   const [personnelId, setPersonnelId] = useState("");
-  const [primeId, setPrimeId] = useState("");
+  // const [primeId, setPrimeId] = useState("");
+  const [selectedPrime, setSelectedPrime] = useState([]);
+  const [selectedRetenus, setSelectedRetenus] = useState([]);
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
   const [startDate1, setStartDate1] = useState("");
@@ -148,21 +153,42 @@ const Profil = () => {
   const [jourPaie, setJourPaie] = useState("");
   const [createSalaire] = useMutation(CREATE_SALAIRE);
 
-  // fonction prime
-  const HandleClickPrime = async (event) => {
-    event.preventDefault();
-
-    const primeDataPersonnel = await createPrimePersonnel({
-      variables: {
-        primePersonnel: {
-          primeId: primeId,
-          personnelId: dataPersonnelId.findOnePersonnel.id,
-          startMonth: startDate,
-          // enddate: endDate,
-          // categorieId: categoryPersonnelId,
-        },
-      },
+  const primes = [];
+  const loadPrimes = () => {
+    dataPrime?.findAllprime.map((prime, index) => {
+      primes.push({
+        label: prime?.nom + ", " + prime?.montant,
+        value: prime?.id,
+      });
     });
+  };
+
+  const retenues = [];
+  const loadRetenues = () =>{
+    dataRetenue?.findAllretenusalarial.map((retenue, index) =>{
+      retenues.push({
+        label: retenue?.nom + ", " + retenue?.montant,
+        value: retenue?.id
+      })
+    })
+  }
+  // fonction prime
+  const handleClickPrime = async (event) => {
+    event.preventDefault();
+    console.log("prims selectionnee",selectedPrime);
+    selectedPrime.map((prime, index) => { 
+      createPrimePersonnel({
+        variables: {
+          primePersonnel: {
+            primeId: prime.value,
+            personnelId: dataPersonnelId.findOnePersonnel.id,
+            startMonth: startDate,
+            // enddate: endDate,
+            // categorieId: categoryPersonnelId,
+          },
+        },
+      });
+  })
     refetch();
     onClose();
     // console.log(userData)
@@ -174,27 +200,29 @@ const Profil = () => {
       isClosable: true,
     });
 
-    setPrimeId("");
+    // setPrimeId("");
     setStartDate("");
     // dataPrime?.findAllprime.filter(prime => prime?.id !== primeId)
   };
 
   //fonction retenue
 
-  const HandleClickRetenue = async (event) => {
+  const handleClickRetenue = async (event) => {
     event.preventDefault();
-
-    const retenueDataPersonnel = await createRetenuePersonnel({
-      variables: {
-        retenuPersonnel: {
-          retenuId: retenuId,
-          personnelId: dataPersonnelId.findOnePersonnel.id,
-          startMonth: startDate1,
-          // enddate: endDate,
-          // categorieId: categoryPersonnelId,
+    console.log("Retenue pour un personnel", selectedRetenus);
+    selectedRetenus.map((retenu, index) => { 
+      createRetenuePersonnel({
+        variables: {
+          retenuPersonnel: {
+            retenuId: retenu?.value,
+            personnelId: dataPersonnelId.findOnePersonnel.id,
+            startMonth: startDate1,
+            // enddate: endDate,
+            // categorieId: categoryPersonnelId,
+          },
         },
-      },
-    });
+      });
+    })
     refetch();
     onClosses1();
     // console.log(userData)
@@ -205,7 +233,7 @@ const Profil = () => {
       duration: 3000,
       isClosable: true,
     });
-    setRetenuId("");
+    // setRetenuId("");
     setStartDate1("");
   };
 
@@ -220,6 +248,8 @@ const Profil = () => {
   useEffect(() => {
     console.log(dataPersonnelId);
     console.log(dataPersonnel);
+    loadPrimes();
+    loadRetenues();
   });
 
   if (loading) return <Text>Chargement en cours...</Text>;
@@ -427,24 +457,27 @@ const Profil = () => {
                               <FormLabel fontWeight={"normal"}>
                                 Prime attribuée
                               </FormLabel>
-                              <Select
-                                name="primeId"
+                              <Selects
+                                name="selectedPrime"
                                 placeholder="Prime attribuée"
-                                onChange={(event) =>
-                                  setPrimeId(event.target.value)
-                                }
-                                value={primeId}
+                                value={selectedPrime}
+                                onChange={setSelectedPrime}
+                                // onChange={(event) =>
+                                //   setPrimeId(event.target.value)
+                                // }
+                                options={primes}
+                                isMulti
                                 isRequired
                               >
-                                {dataPrime &&
+                                {/* {dataPrime &&
                                   dataPrime.findAllprime
                                     .map((prime, index) => (
                                       <option value={prime?.id} key={index}>
                                         {prime.nom}
                                       </option>
                                     ))
-                                    .filter((prime) => prime !== prime?.id)}
-                              </Select>
+                                    .filter((prime) => prime !== prime?.id)} */}
+                              </Selects>
                             </FormControl>
                           </Flex>
                         </Box>
@@ -541,7 +574,7 @@ const Profil = () => {
                                     </Button>
                                     <Button
                                       colorScheme="green"
-                                      onClick={HandleClickPrime}
+                                      onClick={handleClickPrime}
                                       ml={3}
                                     >
                                       Attribuer
@@ -628,31 +661,28 @@ const Profil = () => {
                               <FormLabel fontWeight={"normal"}>
                                 Retenue attribuée
                               </FormLabel>
-                              <Select
-                                name="retenuId"
+                              <Selects
+                                name="selectedRetenus"
+                                isMulti
                                 placeholder="Retenue attribuée"
-                                onChange={(event) =>
-                                  setRetenuId(event.target.value)
-                                }
-                                value={retenuId}
+                                onChange={setSelectedRetenus}
+                                value={selectedRetenus}
+                                options={retenues}
                                 isRequired
                               >
-                                {dataRetenue &&
+                                {/* {dataRetenue &&
                                   dataRetenue.findAllretenusalarial
-
                                     //           .filter((retenu) =>{
-                                    //               if(retenu.id !== retenuId){
+                                    //  if(retenu.id !== retenuId){
                                     //   return retenu;
                                     // }
-
                                     // })
-
                                     .map((retenu, index) => (
                                       <option value={retenu?.id} key={index}>
                                         {retenu.nom}
                                       </option>
-                                    ))}
-                              </Select>
+                                    ))} */}
+                              </Selects>
                             </FormControl>
                             {/* <FormControl>
                         <FormLabel 
@@ -769,7 +799,7 @@ const Profil = () => {
                                       </Button>
                                       <Button
                                         colorScheme="green"
-                                        onClick={HandleClickRetenue}
+                                        onClick={handleClickRetenue}
                                         ml={3}
                                       >
                                         Attribuer

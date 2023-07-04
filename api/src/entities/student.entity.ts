@@ -225,6 +225,7 @@ export class Student {
   get salleName(): string | null {
     return this.salle ? `${this.salle.getEntity().name}` : null;
   }
+  
   @Field(() => ID, { nullable: true })
   @Property({ persist: false })
   get categorieid():string|null {

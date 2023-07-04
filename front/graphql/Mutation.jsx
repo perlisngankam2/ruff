@@ -168,18 +168,19 @@ export const CREATE_REDUCTION_SCOLARITE = gql`
 
 //cretion de lq tranche
 export const CREATE_TRANCHE_PENSION = gql`
-mutation createTranche ($tranche: TrancheCreateInput!) {
-    createTranche (tranche: $tranche) {
-        id
-        name
-        description
-        dateLine
-        montant
-        priority
-        anneAcademique
-        salleid
+  mutation createTranche($tranche: TrancheCreateInput!) {
+    createTranche(tranche: $tranche) {
+      id
+      name
+      description
+      dateLine
+      montant
+      priority
+      anneAcademique
+      salleid
+      salleName
     }
-}
+  }
 `;
 
 //fronction d'initialisation du paiemt d'une pension pour un eleve donne
@@ -460,13 +461,17 @@ export const DELETE_COURSE = gql`
 
 //Suppression des montant des tranches de la pension
 export const DELETE_TRANCHE_PENSION = gql`
-  mutation deletePension($id: String!) {
-    deletePension(id: $id) {
+  mutation deleteTranche($id: String!) {
+    deleteTranche(id: $id) {
       id
       name
       description
-      montantPension
       dateLine
+      montant
+      priority
+      anneAcademique
+      salleid
+      salleName
     }
   }
 `;

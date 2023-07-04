@@ -211,6 +211,7 @@ type Tranche {
   priority: Float
   anneAcademique: String
   salleid: ID
+  salleName: ID
 }
 
 type TrancheStudent {

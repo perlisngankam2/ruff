@@ -91,6 +91,8 @@ import {
   GET_ALL_PARENT,
   GET_SECTION_STUDENT_BY_ID,
   GET_PERSONNEL_BY_USERID,
+  GET_ALL_SCHOOL_PARAMETER,
+
 } from "../../graphql/Queries";
 
 import {
@@ -156,6 +158,7 @@ const DetailComponent = () => {
     onOpen: onOpenns,
     onClose: onClosses,
   } = useDisclosure();
+
   const {
     isOpen: isOpenParent,
     onOpen: onOpenParent,
@@ -235,6 +238,7 @@ const DetailComponent = () => {
       variables: { studentid: router.query.id },
     }
   );
+  
   // const {data:dataTrancheById} = useQuery(GET_STUDENT_BY_ID,
   //       {
   //         variables: {trancheid: router.query.id}
@@ -291,6 +295,7 @@ const DetailComponent = () => {
     AFFECTATION_PARENT_TO_STUDENT,
     { onError: (error) => console.log(error) }
   );
+  const { data: dataSchoolParameter } = useQuery(GET_ALL_SCHOOL_PARAMETER);
   const { data: dataTrancheById } = useQuery(GET_TRANCHE_PENSION_BY_ID);
   const [createTrancheStudent] = useMutation(CREATE_TRANCHE_STUDENT);
   const [createFeesAvanceTranche] = useMutation(CREATE_AVANCE_TRANCHE);
@@ -406,6 +411,9 @@ const DetailComponent = () => {
   //     })
   // }
   //
+  const anneeAcademiqueName =
+  dataSchoolParameter?.findAllparameters[0].anneeAcademiqueName;
+console.log(anneeAcademiqueName);
   const getTrancheById = (id) => {
     return dataTranchePension?.findAlltranche?.find((t, i) => t.id === id);
   };
@@ -499,7 +507,7 @@ const DetailComponent = () => {
   //   }
   // });
 
-  const [resteMontantTranche, setResteMontantTranche] = useState([]);
+  // const [resteMontantTranche, setResteMontantTranche] = useState([]);
   // const montantTranche = getTrancheById(tranche.value)?.montant
   // const alertMontantMaxAPayer = () => {
   //   if(montant>)
@@ -846,15 +854,15 @@ const DetailComponent = () => {
                     <Text m="1">
                       Informations personnelles
                       <br />
-                      Annee scolaire : 2021 - 2022
+                      Annee scolaire : {anneeAcademiqueName}
                     </Text>
                   </Heading>
-                  <Avatar
+                  {/* <Avatar
                     size="md"
                     name="Dan Abrahmov"
                     src="https://bit.ly/dan-abramov"
                     ml="10"
-                  />
+                  /> */}
                 </Flex>
               </CardHeader>
 

@@ -58,6 +58,7 @@ import {
   GET_ALL_TRANCHE_PENSION,
   GET_ALL_CLASS,
   GET_ALL_SCHOOL_PARAMETER,
+  GET_ALL_PENSION_SALLE,
 } from "../../graphql/Queries";
 import { FiEdit, FiSearch } from "react-icons/fi";
 import ReactPaginate from "react-paginate";
@@ -125,6 +126,9 @@ const Pension = () => {
   );
   const { data: dataSchoolParameter } = useQuery(GET_ALL_SCHOOL_PARAMETER);
   const { data: dataClasse } = useQuery(GET_ALL_CLASS);
+  const { data: dataPensionSalle } = useQuery(GET_ALL_PENSION_SALLE, {
+    onError: (error) => console.log(error),
+  });
   const [createdFraisInscription] = useMutation(CREATE_FRAIS_INSCRIPTION);
   const [createTranchePension] = useMutation(CREATE_TRANCHE_PENSION, {
     onError: (error) => console.log(error),
@@ -189,6 +193,8 @@ const Pension = () => {
     setDateLine("");
   };
 
+  
+
   useEffect(() => {
     if (!authToken) {
       router.back();
@@ -203,6 +209,12 @@ const Pension = () => {
 
   if (loading) return <Text>Chargement en cour...</Text>;
   if (error) return <Text>Une erreur s'est produite!</Text>;
+
+  const feesVerification = () => {
+    if(dataTranchePension.salleName == dataPensionSalle.salleName && dataTranchePension.anneAcademique == dataPensionSalle.yearName ){
+      
+    }
+  };
 
   const pageCountTranchePension = Math.ceil(
     dataTranchePension?.findAlltranche.length / itemsPerPage
@@ -279,12 +291,12 @@ const Pension = () => {
             </Box>
             <Box display={{ md: "flex" }} flexDirection={"column"} mt={"-10px"}>
               <Text color={"red"}>
-                NB: Les tranches doivent etre enregistrées en fonction de
-                leursordre de paiement
+                NB: Les tranches doivent etre enregistrées en fonction de leurs
+                ordre de paiement
               </Text>
               <Text color={"red"}>
                 {" "}
-                et par ordre de priorité de la plus petite a la plus grande
+                et par ordre de priorité de la plus petite à la plus grande
               </Text>
             </Box>
             <Box mt={"20px"}>

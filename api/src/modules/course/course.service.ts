@@ -71,4 +71,40 @@ async delete(id:string){
     return a
     }
 
+// async delete(ids: string[]){
+//   for(const id of ids){
+//     const a = this.findById(id)
+//     await this.courseRepository.nativeDelete(await a)
+//     if(!a){
+//       throw Error("not found")
+//     }
+//   // return a;
+//   }
+// }
+
+// async delete(ids: string[]): Promise<Course[]> {
+//   const result: Course[] = [];
+//   for(const id of ids){2
+//     const a = this.findById(id)
+//     await this.courseRepository.nativeDelete(await a)
+//     const  title = a.title, 
+//     if(!a){
+//       throw Error("not found")
+//     }
+//   return a;
+//   }
+// }
+
+// async delete(ids: string[]) {
+//     const a = await this.findById(ids);
+    
+//     if(!a){
+//           throw Error("not found")
+//           }
+
+//     await this.courseRepository.removeAndFlush(a);
+
+//     return a;
+// }
+
 }

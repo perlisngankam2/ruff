@@ -127,8 +127,11 @@ const SectionCreate = () => {
             leastDestructiveRef={cancelRef}
             onClose={onClose}
             size="xl"
+            isCentered
           >
-            <AlertDialogOverlay>
+            <AlertDialogOverlay
+              closeOnOverlayClick={false}
+            >
               <AlertDialogContent width={"440px"}>
                 <Box as={"form"} onSubmit={addSection}>
                   <AlertDialogHeader fontSize="sm" fontWeight="base" mt="9px">

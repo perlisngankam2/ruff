@@ -323,8 +323,11 @@ const TeacherCourse = () => {
               leastDestructiveRef={cancelRef}
               onClose={onClose}
               size="xl"
+              isCentered
             >
-              <AlertDialogOverlay>
+              <AlertDialogOverlay
+                closeOnOverlayClick={false}
+              >
                 <AlertDialogContent width={"400px"}>
                   <Box mt={"20px"} onSubmit={addPersonnelSalle} as="form">
                     <Heading textAlign="center" size="md">
@@ -371,7 +374,7 @@ const TeacherCourse = () => {
                           </Select>
                         </FormControl>
                         <FormControl mt={"10px"}>
-                          <FormLabel>Enseigant</FormLabel>
+                          <FormLabel>Matière</FormLabel>
                           <Selects
                             isMulti
                             name="selectedCourse"
@@ -387,7 +390,7 @@ const TeacherCourse = () => {
                                     {course.title} 
                                   </option>
                                 ))
-                              } */}
+                            } */}
                             {console.log(selectedCourse)}
                           </Selects>
                         </FormControl>

@@ -405,6 +405,7 @@ const Profil = () => {
                   leastDestructiveRef={cancelRef}
                   onClose={onClose}
                   size="xl"
+                  isCentered
                 >
                   <AlertDialogOverlay>
                     <AlertDialogContent>
@@ -609,6 +610,7 @@ const Profil = () => {
                   leastDestructiveRef={cancelRef}
                   onClose={onClosses1}
                   size="xl"
+                  isCentered
                 >
                   <AlertDialogOverlay>
                     <AlertDialogContent>

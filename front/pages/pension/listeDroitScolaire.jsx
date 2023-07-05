@@ -307,7 +307,7 @@ const Pension = () => {
                 isOpen={isOpen}
                 isCentered
               >
-                <AlertDialogOverlay />
+                {/* <AlertDialogOverlay /> */}
                 <AlertDialogContent>
                   <Box as={"form"} onSubmit={addTranchePension}>
                     <AlertDialogHeader

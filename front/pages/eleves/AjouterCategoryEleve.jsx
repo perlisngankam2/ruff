@@ -116,8 +116,11 @@ function AjouterCategoryEleve() {
             leastDestructiveRef={cancelRef}
             onClose={onClose}
             size="xl"
+            isCentered
           >
-            <AlertDialogOverlay>
+            <AlertDialogOverlay
+             closeOnOverlayClick={false}
+            >
               <AlertDialogContent width={"420px"}>
                 <Box
                  as={"form"} onSubmit={addCategoryEleve}

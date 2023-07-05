@@ -17,6 +17,7 @@ import {
   Tr,
   Link,
   Icon,
+  Checkbox,
   AlertDialog,
   AlertDialogBody,
   AlertDialogFooter,
@@ -44,6 +45,7 @@ import ReactPaginate from "react-paginate";
 import { useTranslation } from "next-i18next";
 import { getStaticPropsTranslations } from "../../types/staticProps";
 import { useAuth } from "../../contexts/account/Auth/Auth";
+import { on } from "events";
 
 const ListeDesCours = () => {
   const router = useRouter();
@@ -52,10 +54,17 @@ const ListeDesCours = () => {
   const { t } = useTranslation();
   const { setAuthToken, authToken } = useAuth();
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const {
+    isOpen: isOpenMultipleCourse,
+    onOpen: onOpenMultipleCourse,
+    onClose: onCloseMultipleCourse,
+  } = useDisclosure();
+
   const [searchCourse, setSearchCourse] = useState("");
   const itemsPerPage = 15;
   const [pageNumber, setPageNumber] = useState(0);
   const pagesVisited = pageNumber * itemsPerPage;
+  const [selectedElements, setSelectedElements] = useState([]);
   // //const [classeValue , setClasseValue ] = useState("");
   // const [data, setData] = useState([]);
   // const keys = ["first_name", "last_name", "email", "classe"];
@@ -117,6 +126,48 @@ const ListeDesCours = () => {
   const changePage = ({ page }) => {
     setPageNumber(page);
   };
+  //  console.log(selectedElements);
+  const handleCheckboxChange = (id, event) => {
+    console.log(selectedElements);
+    console.log(id);
+    // event.preventDefault();
+    if (selectedElements.includes(id)) {
+      // console.log(id);
+      setSelectedElements(
+        selectedElements.filter((courseId) => courseId !== id)
+      );
+    } else {
+      setSelectedElements([...selectedElements, id]);
+    }
+  };
+
+  const handleDelete = async (id, event) => {
+    selectedElements.map((courseId) => {
+      const delete_ = async () => {
+        try {
+          await deleteCourse({
+            variables: { id: courseId },
+            refetchQueries: [
+              {
+                query: GET_ALL_COURSES,
+              },
+            ],
+          });
+          //   Réinitialiser la sélection des éléments après la suppression réussie
+          setSelectedElements([]);
+          refetch();
+        } catch (error) {
+          console.error("Erreur lors de la suppression :", error);
+        }
+      };
+      delete_();
+
+      return "";
+    });
+    onCloseMultipleCourse();
+    // selectedElements.splice(id)
+    console.log(selectedElements);
+  };
 
   return (
     <DefaultLayout>
@@ -164,10 +215,57 @@ const ListeDesCours = () => {
           <AjouterCours />
         </Flex>
         <Box mt={10}>
+          <Box mb={"15px"}>
+            <Button
+              colorScheme="red"
+              size="xs"
+              disabled={selectedElements.length === 0}
+              // onClick={handleDelete}
+              onClick={onOpenMultipleCourse}
+            >
+              Supprimer
+            </Button>
+            {/* POPUP POUR LA SUPPRESSION MULTIPLE */}
+            <AlertDialog
+              isOpen={isOpenMultipleCourse}
+              leastDestructiveRef={cancelRef}
+              onClose={onCloseMultipleCourse}
+              isCentered
+            >
+              <AlertDialogOverlay alignSelf={"center"}>
+                <AlertDialogContent width={"380px"}>
+                  <AlertDialogHeader
+                    fontSize="lg"
+                    fontWeight="bold"
+                    textAlign={"center"}
+                  >
+                    {t("pages.courses.courseList.confirmDeleting")}
+                  </AlertDialogHeader>
+                  <AlertDialogBody textAlign={"center"}>
+                    {t("pages.courses.courseList.wouldYouWantToDeleteCourse")}
+                  </AlertDialogBody>
+                  <AlertDialogFooter>
+                    <Button
+                      ref={cancelRef}
+                      onClick={onCloseMultipleCourse}
+                      colorScheme="red"
+                    >
+                      {t("pages.courses.courseList.cancelButton")}
+                    </Button>
+                    <Button colorScheme="green" onClick={handleDelete} ml={3}>
+                      {t("pages.courses.courseList.Supprimer")}
+                    </Button>
+                  </AlertDialogFooter>
+                </AlertDialogContent>
+              </AlertDialogOverlay>
+            </AlertDialog>
+          </Box>
+
           <TableContainer border={"1px"} rounded={"md"}>
             <Table variant={"striped"} colorScheme={"white"} bg={"white"}>
               <Thead background="colors.secondary">
                 <Tr>
+                  <Th>#</Th>
                   <Th>{t("pages.courses.courseList.name")}</Th>
                   <Th>{t("pages.courses.courseList.courseHours")}</Th>
                   <Th>{t("pages.courses.courseList.action")}</Th>
@@ -189,6 +287,13 @@ const ListeDesCours = () => {
                     })
                     .map((course, index) => (
                       <Tr key={index} borderColor={"#C6B062"}>
+                        <Td>
+                          <Checkbox
+                            size="sm"
+                            isChecked={selectedElements.includes(course.id)}
+                            onChange={() => handleCheckboxChange(course.id)}
+                          ></Checkbox>
+                        </Td>
                         <Td flex={"1"} p={0} pl={6}>
                           {course.title}
                         </Td>

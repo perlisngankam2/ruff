@@ -362,8 +362,11 @@ const PensionSalle = () => {
               leastDestructiveRef={cancelRef}
               onClose={onClosses}
               size="xl"
+              isCentered
             >
-              <AlertDialogOverlay>
+              <AlertDialogOverlay
+                closeOnOverlayClick={false}
+              >
                 <AlertDialogContent width={"400px"}>
                   <Box mt={"20px"} as="form" onSubmit={AddMontantPensionClasse}>
                     <Heading textAlign="center" size="md">

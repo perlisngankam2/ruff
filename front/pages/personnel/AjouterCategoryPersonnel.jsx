@@ -137,8 +137,11 @@ function ajoutercategorypersonnel() {
             leastDestructiveRef={cancelRef}
             size="xl"
             onClose={onClose}
+            isCentered
           >
-            <AlertDialogOverlay>
+            <AlertDialogOverlay
+             closeOnOverlayClick={false}
+            >
               <AlertDialogContent>
                 <AlertDialogHeader fontSize="sm" fontWeight="base" mt="0">
                   <Box>
@@ -153,7 +156,6 @@ function ajoutercategorypersonnel() {
                   </Box>
                 </AlertDialogHeader>
                 <AlertDialogCloseButton />
-
                 <AlertDialogBody>
                   <Box>
                     <FormControl>

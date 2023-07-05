@@ -118,8 +118,11 @@ const addParents = () => {
             leastDestructiveRef={cancelRef}
             onClose={onClose}
             size="xl"
+            isCentered
           >
-            <AlertDialogOverlay>
+            <AlertDialogOverlay
+             closeOnOverlayClick={false}
+            >
               <AlertDialogContent width={"500px"}>
                 <Box as={"form"} onSubmit={addParent}>
                   <AlertDialogHeader fontSize="sm" fontWeight="base" mt="0">

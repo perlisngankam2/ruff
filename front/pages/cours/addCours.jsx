@@ -114,8 +114,11 @@ function AjouterCours() {
             leastDestructiveRef={cancelRef}
             onClose={onClose}
             size="xl"
+            isCentered
           >
-            <AlertDialogOverlay>
+            <AlertDialogOverlay
+             closeOnOverlayClick={false}
+            >
               <AlertDialogContent width={"400px"}>
                 <Box as={"form"} onSubmit={addCourse}>
                   <AlertDialogHeader fontSize="sm" fontWeight="base" mt="0">

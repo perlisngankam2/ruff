@@ -91,6 +91,10 @@ const Profil = () => {
     onClose: onClosses2,
   } = useDisclosure();
 
+  const [isLoading, setIsLoading] = useState(false);
+  const [isLoadingRetenue, setIsLoadingRetenue] = useState(false);
+
+
   const cancelRef = React.useRef();
   const router = useRouter();
   const { t } = useTranslation();
@@ -164,19 +168,20 @@ const Profil = () => {
   };
 
   const retenues = [];
-  const loadRetenues = () =>{
-    dataRetenue?.findAllretenusalarial.map((retenue, index) =>{
+  const loadRetenues = () => {
+    dataRetenue?.findAllretenusalarial.map((retenue, index) => {
       retenues.push({
         label: retenue?.nom + ", " + retenue?.montant,
-        value: retenue?.id
-      })
-    })
-  }
+        value: retenue?.id,
+      });
+    });
+  };
   // fonction prime
   const handleClickPrime = async (event) => {
     event.preventDefault();
-    console.log("prims selectionnee",selectedPrime);
-    selectedPrime.map((prime, index) => { 
+    console.log("prims selectionnee", selectedPrime);
+    setIsLoading(true);
+    selectedPrime.map((prime, index) => {
       createPrimePersonnel({
         variables: {
           primePersonnel: {
@@ -188,7 +193,8 @@ const Profil = () => {
           },
         },
       });
-  })
+    });
+    setIsLoading(false);
     refetch();
     onClose();
     // console.log(userData)
@@ -210,7 +216,8 @@ const Profil = () => {
   const handleClickRetenue = async (event) => {
     event.preventDefault();
     console.log("Retenue pour un personnel", selectedRetenus);
-    selectedRetenus.map((retenu, index) => { 
+    setIsLoadingRetenue(true);
+    selectedRetenus.map((retenu, index) => {
       createRetenuePersonnel({
         variables: {
           retenuPersonnel: {
@@ -222,7 +229,8 @@ const Profil = () => {
           },
         },
       });
-    })
+    });
+    setIsLoadingRetenue(false);
     refetch();
     onClosses1();
     // console.log(userData)
@@ -576,6 +584,8 @@ const Profil = () => {
                                     <Button
                                       colorScheme="green"
                                       onClick={handleClickPrime}
+                                      isLoading={isLoading}
+                                      type="submit"
                                       ml={3}
                                     >
                                       Attribuer
@@ -802,6 +812,8 @@ const Profil = () => {
                                       <Button
                                         colorScheme="green"
                                         onClick={handleClickRetenue}
+                                        type="submit"
+                                        isLoadingRetenue={isLoadingRetenue}
                                         ml={3}
                                       >
                                         Attribuer

@@ -593,8 +593,8 @@ const PaySlip = () => {
                   
                    {console.log(jourPaie)}
                   </Box>
-        </Flex>
-      </Center> */}
+              </Flex>
+            </Center> */}
             <Box mx="100px" pb={"20px"} mt="20px">
               <Divider />
             </Box>

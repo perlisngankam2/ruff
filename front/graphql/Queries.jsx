@@ -1169,3 +1169,26 @@ export const FIND_ID_PRIME = gql`
     findIdPrimesByPrimesPersonnel(personnelid: $personnelid, month: $month)
   }
 `;
+
+//Toutes les primes du personnel en fonction du mois et de l'id du personnel
+export const GET_ALL_PRIME_BY_PERSONNEL_AND_MONTH = gql`
+query findPrimesByPrimesPersonnel ($personnelid: String!, $month: String!) {
+  findPrimesByPrimesPersonnel (personnelid: $personnelid, month: $month) {
+      id
+      nom
+      description
+      montant
+  }
+}
+`
+
+export const GET_ALL_PRIME_PERSONNEL = gql `
+query findAllprimepersonnel {
+  findAllprimepersonnel {
+      id
+      startMonth
+      primeid
+      personnelid
+  }
+}
+`

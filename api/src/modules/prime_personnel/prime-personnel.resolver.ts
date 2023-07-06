@@ -74,6 +74,7 @@ export class PrimePersonnelResolver {
   async findIdPrimeByPersonnel(@Args('personnelid') personnelid:string){
  return await this.primePersonnelService.findIdPrimeByPersonnel(personnelid)
   }
+  
   @Query(()=> Number)
   async findsumallprimepersonnel(@Args('personnelid') personnelid:string){
  return await this.primePersonnelService.getallpersonnelprime(personnelid)

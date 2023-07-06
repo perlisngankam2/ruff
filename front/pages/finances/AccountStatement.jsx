@@ -545,17 +545,34 @@ const AccountStatement = () => {
   const router = useRouter();
   const { setAuthToken, authToken } = useAuth();
   const [searchExpense, setSearchExpense] = useState("");
+  const [startDate, setStartDate] = useState("");
+  const [endDate, setEndDate] = useState("");
+  const [dataFilterDate, setDateFilterDate] = useState([]);
+
   const {
     data: dataExpensePersonnelStudent,
     refetch,
     loading,
     error,
   } = useQuery(GET_ALL_EXPENSE_PERSONNEL_STUDENT);
+
   const { data: dataExpensePersonnelStudentTotalDebitCredit } = useQuery(
     GET_ALL_EXPENSE_PERSONNEL_STUDENT
   );
   const date1 = new Date("December 17, 1995 03:24:00");
 
+  const [
+    initialDataExpensePersonnelStudent,
+    setInitialDataExpensePersonnelStudent,
+  ] = useState(null);
+  useEffect(() => {
+    if (dataExpensePersonnelStudent) {
+      setInitialDataExpensePersonnelStudent(
+        dataExpensePersonnelStudent.findallexpenses
+      );
+    }
+    console.log(dataExpensePersonnelStudent);
+  }, [dataExpensePersonnelStudent]);
   const componentRef = useRef();
   const ref = React.createRef();
   const options = {
@@ -583,11 +600,29 @@ const AccountStatement = () => {
     console.log(dataExpensePersonnelStudent?.findallexpenses);
     // let totalDebit = dataExpensePersonnelStudentTotalDebit?.findallexpenses.reduce((acc, curr) => (acc + curr.debitamount), 0);
     console.log(totalDebit);
+    setDateFilterDate(dataExpensePersonnelStudent);
   });
 
-  if (loading) return <Text>Chargement en cours...</Text>;
-  if (error) return <Text>Error: {error.message}</Text>;
-  
+  // dataFilterDate = [...dataExpensePersonnelStudent]
+  const handleApplyFilters = () => {
+    console.log(new Date(startDate).getTime());
+    console.log(new Date(endDate).getTime());
+    const startDateTemp = new Date(startDate).getTime();
+    const endDateTemp = new Date(endDate).getTime();
+    if (startDate && endDate) {
+      let dataFilterTemp = dataExpensePersonnelStudent?.findallexpenses.filter(
+        (item) => {
+          const createdAt = new Date(item.createdOn).getTime();
+          console.log(createdAt);
+          return createdAt >= startDateTemp && createdAt <= endDateTemp;
+        }
+      );
+      console.log(dataFilterTemp);
+      // return dataFilterTemp
+      setInitialDataExpensePersonnelStudent(dataFilterTemp);
+    }
+  };
+
   return (
     <DefaultLayout>
       <Box p="3" pt={"70px"} w="full">
@@ -617,11 +652,24 @@ const AccountStatement = () => {
           gap={20}
         >
           <Box display={{ md: "flex" }} gap={2}>
-            <Input type="date" />
+            <Input
+              name="startDate"
+              type="date"
+              onChange={(event) => setStartDate(event.target.value)}
+              value={startDate}
+            />
             <Text mt="9px" fontWeight={"bold"} color={"colors.greenColor400"}>
-              To:
+              :à
             </Text>
-            <Input type="date" />
+            <Input
+              type="date"
+              name="endDate"
+              value={endDate}
+              onChange={(event) => setEndDate(event.target.value)}
+            />
+            <Button color="purple.500" ml={3} onClick={handleApplyFilters}>
+              <Icon as={FiSearch} />
+            </Button>
           </Box>
           <Flex
             align={"center"}
@@ -646,13 +694,13 @@ const AccountStatement = () => {
               pageStyle="print"
             />
             {/* <Icon
-                                alignItems={"center"}
-                                as={TfiPrinter}
-                                boxSize="42px"
-                                p="3"
-                                // bg="blue.100"
-                                // rounded="full"
-                            /> */}
+                alignItems={"center"}
+                as={TfiPrinter}
+                boxSize="42px"
+                p="3"
+                // bg="blue.100"
+                // rounded="full"
+            /> */}
             <Icon
               as={RiDeleteBin5Line}
               boxSize="42px"
@@ -761,10 +809,12 @@ const AccountStatement = () => {
             </Box>
           </Flex>
           <>
+            {/* {console.log(dataFilterTemp)} */}
+            {console.log(initialDataExpensePersonnelStudent)}
             <Box>
-              {dataExpensePersonnelStudent &&
-                dataExpensePersonnelStudent?.findallexpenses
-                  .filter((expense) => {
+              {initialDataExpensePersonnelStudent &&
+                initialDataExpensePersonnelStudent
+                  ?.filter((expense) => {
                     if (searchExpense == "") {
                       return expense;
                     } else if (
@@ -798,7 +848,6 @@ const AccountStatement = () => {
                         )}
                         {console.log(date1.toDateString())}
                       </Box>
-
                       <Box
                         width="30%"
                         // textAlign={'center'}
@@ -843,7 +892,6 @@ const AccountStatement = () => {
                         alignItems={"center"}
                         display={{ md: "flex" }}
                         justifyContent="center"
-
                         // ml={"73px"}
                       >
                         <Flex flexDirection={"column"} gap={0}>

@@ -40,6 +40,9 @@ import {
   GET_ALL_RETENUE,
   GET_Category_Personnel_BY_ID,
   GET_Category_Personnel_ID,
+  GET_ALL_PRIME_BY_PERSONNEL_AND_MONTH,
+  GET_ALL_PRIME_PERSONNEL,
+
 } from "../../graphql/Queries";
 import {
   CREATE_PRIME_PERSONNEL,
@@ -94,11 +97,16 @@ const Profil = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [isLoadingRetenue, setIsLoadingRetenue] = useState(false);
 
-
   const cancelRef = React.useRef();
   const router = useRouter();
   const { t } = useTranslation();
 
+  //recuperation de toutes les primes des personnel
+  const { data: dataPrimePersonnel } = useQuery(GET_ALL_PRIME_PERSONNEL);
+  const dataMonthPrimePersonnel = dataPrimePersonnel?.findAllprimepersonnel.map(
+    (dataPrimePersonnel) => dataPrimePersonnel.startMonth
+  );
+  
   const {
     data: dataPersonnelId,
     loading,
@@ -139,6 +147,17 @@ const Profil = () => {
   const { data: dataPersonnel } = useQuery(GET_ALL_PERSONNELS);
   const { data: dataPrime, refetch } = useQuery(GET_PRIME);
 
+ 
+  const { data: dataAllPrimeByPersonnelAndMonth } = useQuery(
+    GET_ALL_PRIME_BY_PERSONNEL_AND_MONTH,
+    {
+      variables: {
+        personnelid: router.query.id,
+        month: "2023-08"
+      },
+    }
+  );
+
   const [createPrimePersonnel] = useMutation(CREATE_PRIME_PERSONNEL);
   const [createRetenuePersonnel] = useMutation(CREATE_RETENUE_PERSONNEL);
   const [personnelId, setPersonnelId] = useState("");
@@ -176,6 +195,39 @@ const Profil = () => {
       });
     });
   };
+
+  // const findAllPrime = async () => { 
+  //   if (Array.isArray(dataMonthPrimePersonnel)) {
+  //     for (const month of dataMonthPrimePersonnel) {
+  //       try {
+  //         const { data: dataAllPrimeByPersonnelAndMonth } = useQuery(GET_ALL_PRIME_BY_PERSONNEL_AND_MONTH, {
+  //           variables: {
+  //             personnelid: router.query.id,
+  //             month: month,
+  //           },
+  //         });
+  //         console.log(dataAllPrimeByPersonnelAndMonth);
+  //       } catch (error) {
+  //         console.error(error);
+  //       }
+  //     }
+  //   }
+  // }
+  
+ 
+
+
+// if (Array.isArray(dataMonthPrimePersonnel)) {
+//   dataMonthPrimePersonnel.forEach((month) => {
+//     const { data: dataAllPrimeByPersonnelAndMonth } = useQuery(GET_ALL_PRIME_BY_PERSONNEL_AND_MONTH, {
+//       variables: {
+//         personnelid: router.query.id,
+//         month: month,
+//       },
+//     });
+//     console.log(dataAllPrimeByPersonnelAndMonth);
+//   });
+// }
   // fonction prime
   const handleClickPrime = async (event) => {
     event.preventDefault();
@@ -258,10 +310,49 @@ const Profil = () => {
     console.log(dataPersonnel);
     loadPrimes();
     loadRetenues();
+  findAllPrime();
+
+  // console.log(dataAllPrimeByPersonnelAndMonth?.findPrimesByPrimesPersonnel);
+  console.log("tout les mois de prime personnel", dataMonthPrimePersonnel);
+
   });
 
+  
+  // dataMonthPrimePersonnel.map((month) => {
+  //   const {data: dataAllPrimeByPersonnelAndMonth} = useQuery(GET_ALL_PRIME_BY_PERSONNEL_AND_MONTH, {
+  //     variables: {
+  //       personnelid: router.query.id,
+  //       month: month,
+  //     },
+  //   })
+  //   console.log(dataAllPrimeByPersonnelAndMonth);
+  // });
+
+  ;
   if (loading) return <Text>Chargement en cours...</Text>;
   if (error) return <Text>Error: {error.message}</Text>;
+
+ 
+
+
+  // const disableStartMonth = () => {
+  //   // Vérifier si startMonth, primeid et personnelid se trouvent dans le même objet
+  //   if (
+  //     primePersonnel &&
+  //     primePersonnel.startMonth &&
+  //     primePersonnel.primeid === primePersonnel.personnelid
+  //   ) {
+  //     const [startMonth, setStartMonth] = useState(primePersonnel.startMonth);
+
+  //     // Désactivez startMonth ici en utilisant setStartMonth avec une valeur null ou vide
+  //     setStartMonth(null);
+
+  //     // Vous pouvez également effectuer d'autres actions ici si nécessaire
+
+  //     // Note : Cette modification ne sera effective que dans le composant où la fonction disableStartMonth est appelée.
+  //     // Si vous avez besoin de propager cette modification à d'autres composants, vous devrez utiliser des props ou un état partagé approprié.
+  //   }
+  // };
 
   return (
     <DefaultLayout>
@@ -724,11 +815,10 @@ const Profil = () => {
                               <Input
                                 placeholder="mois retenue"
                                 bg="white"
-                                type="month"
+                                type="mon th"
                                 name="dateOfPrime"
                                 // placeholder="{formattedDate}"
                                 // bg='white'
-
                                 // borderColor="purple.100"
                                 onChange={handleMoisPaieChange1}
                                 value={startDate1}

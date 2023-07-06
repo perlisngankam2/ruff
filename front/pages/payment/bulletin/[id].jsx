@@ -28,6 +28,7 @@ import {
   GET_SALARY_NET,
   GET_Category_Personnel_BY_ID,
   GET_Category_Personnel_ID,
+  GET_ALL_PRIME_PERSONNEL,
 } from "../../../graphql/Queries";
 import { useRouter } from "next/router";
 import { useQuery } from "@apollo/client";
@@ -46,6 +47,7 @@ const Bulletin = () => {
 
   const router = useRouter();
   // const tableRef = useRef();
+
   const {
     data: dataPersonnelId,
     loading,
@@ -119,6 +121,8 @@ const Bulletin = () => {
       month: dernierElementSalaire?.moisPaie,
     },
   });
+
+ 
 
   console.log(dataSalaireNet?.PersonnelNetSalary);
   console.log(dataSalaireId?.getsalairebypersonnel);

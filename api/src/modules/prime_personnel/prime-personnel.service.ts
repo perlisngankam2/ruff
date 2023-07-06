@@ -103,6 +103,7 @@ export class PrimePersonnelService {
       findByOne(filters: FilterQuery<PrimePersonnel>): Promise<PrimePersonnel | null> {
         return this.primePersonnelRepository.findOne(filters);
       }
+
       findById(id:string){
         return this.primePersonnelRepository.findOne(id)
       }
@@ -138,7 +139,7 @@ export class PrimePersonnelService {
 
       }
 
-      async getallpersonnelprimebymonth(personnelid:string,month:string){
+      async getallpersonnelprimebymonth(personnelid:string, month:string){
         const where = {};
         if (personnelid) {
           where['personnel'] = personnelid;
@@ -168,9 +169,9 @@ export class PrimePersonnelService {
         }
 
       async getallprimespersonnel(id:string){
-      const where = {};
-      if (id) {
-        where['personnel'] = id;
+        const where = {};
+        if (id) {
+          where['personnel'] = id;
       }
 
       const a = await this.em.find(PrimePersonnel, where, {

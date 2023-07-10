@@ -391,39 +391,6 @@ const {data:dataTrancheAlreadyPaidByStudent} = useQuery( GET_AMOUNT_TRANCHE_RECE
   return (
     <DefaultLayout>
       <Center pt="70px" ml="60px" pb="10px">
-        <Flex mt="-630px" ml={"-300px"}>
-          <ReactToPrint
-            trigger={() => (
-              <Icon
-                as={TfiPrinter}
-                boxSize="50px"
-                alignItems={"center"}
-                p="3"
-              />
-            )}
-            content={() => componentRef.current}
-            documentTitle="Recu de paiement"
-            pageStyle="print"
-          />
-          <ReactToPdf
-            targetRef={componentRef}
-            filename="Recu de paiement"
-            options={options}
-            y={10}
-          >
-            {({ toPdf }) => (
-              <Button
-                bg={"blackAlpha.100"}
-                onClick={toPdf}
-                border="1px"
-                width={"50px"}
-                fontSize={"sm"}
-              >
-                PDF
-              </Button>
-            )}
-          </ReactToPdf>
-        </Flex>
 
         <Box ref={componentRef}>
           {dataStudentId && (
@@ -835,6 +802,39 @@ const {data:dataTrancheAlreadyPaidByStudent} = useQuery( GET_AMOUNT_TRANCHE_RECE
             </Box>
           )}
         </Box>
+        <Flex mt="-630px" marginLeft={"auto"}>
+          <ReactToPrint
+            trigger={() => (
+              <Icon
+                as={TfiPrinter}
+                boxSize="50px"
+                alignItems={"center"}
+                p="3"
+              />
+            )}
+            content={() => componentRef.current}
+            documentTitle="Recu de paiement"
+            pageStyle="print"
+          />
+          <ReactToPdf
+            targetRef={componentRef}
+            filename="Recu de paiement"
+            options={options}
+            y={10}
+          >
+            {({ toPdf }) => (
+              <Button
+                bg={"blackAlpha.100"}
+                onClick={toPdf}
+                border="1px"
+                width={"30px"}
+                fontSize={"sm"}
+              >
+                PDF
+              </Button>
+            )}
+          </ReactToPdf>
+        </Flex>
       </Center>
     </DefaultLayout>
   );

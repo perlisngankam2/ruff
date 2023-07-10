@@ -310,14 +310,13 @@ const Profil = () => {
     console.log(dataPersonnel);
     loadPrimes();
     loadRetenues();
-  findAllPrime();
+  // findAllPrime();
 
   // console.log(dataAllPrimeByPersonnelAndMonth?.findPrimesByPrimesPersonnel);
   console.log("tout les mois de prime personnel", dataMonthPrimePersonnel);
 
   });
 
-  
   // dataMonthPrimePersonnel.map((month) => {
   //   const {data: dataAllPrimeByPersonnelAndMonth} = useQuery(GET_ALL_PRIME_BY_PERSONNEL_AND_MONTH, {
   //     variables: {
@@ -327,13 +326,8 @@ const Profil = () => {
   //   })
   //   console.log(dataAllPrimeByPersonnelAndMonth);
   // });
-
-  ;
   if (loading) return <Text>Chargement en cours...</Text>;
   if (error) return <Text>Error: {error.message}</Text>;
-
- 
-
 
   // const disableStartMonth = () => {
   //   // Vérifier si startMonth, primeid et personnelid se trouvent dans le même objet

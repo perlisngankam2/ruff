@@ -539,6 +539,7 @@ import { CSVLink, CSVDownload } from "react-csv";
 import { useTranslation } from "next-i18next";
 import { getStaticPropsTranslations } from "../../types/staticProps";
 import { useAuth } from "../../contexts/account/Auth/Auth";
+import { AiOutlineClose } from "react-icons/ai";
 
 const AccountStatement = () => {
   const { t } = useTranslation();
@@ -623,6 +624,12 @@ const AccountStatement = () => {
     }
   };
 
+  const handleCloseFilter = () => {
+    setInitialDataExpensePersonnelStudent(
+      dataExpensePersonnelStudent.findallexpenses
+    );
+  };
+
   return (
     <DefaultLayout>
       <Box p="3" pt={"70px"} w="full">
@@ -669,6 +676,9 @@ const AccountStatement = () => {
             />
             <Button color="purple.500" ml={3} onClick={handleApplyFilters}>
               <Icon as={FiSearch} />
+            </Button>
+            <Button color="red.500" ml={3} onClick={handleCloseFilter}>
+              <Icon as={AiOutlineClose} />
             </Button>
           </Box>
           <Flex

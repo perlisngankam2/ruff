@@ -193,8 +193,6 @@ const Pension = () => {
     setDateLine("");
   };
 
-  
-
   useEffect(() => {
     if (!authToken) {
       router.back();
@@ -211,8 +209,10 @@ const Pension = () => {
   if (error) return <Text>Une erreur s'est produite!</Text>;
 
   const feesVerification = () => {
-    if(dataTranchePension.salleName == dataPensionSalle.salleName && dataTranchePension.anneAcademique == dataPensionSalle.yearName ){
-      
+    if (
+      dataTranchePension.salleName == dataPensionSalle.salleName &&
+      dataTranchePension.anneAcademique == dataPensionSalle.yearName
+    ) {
     }
   };
 
@@ -308,14 +308,14 @@ const Pension = () => {
                 isCentered
               >
                 {/* <AlertDialogOverlay /> */}
-                <AlertDialogContent>
+                <AlertDialogContent  width={"700px"}>
                   <Box as={"form"} onSubmit={addTranchePension}>
                     <AlertDialogHeader
                       textAlign={"center"}
                       fontSize={["15px", "20px", "24px"]}
                       mt={"5px"}
                     >
-                      Ajoutez frais de scolarite
+                      Ajouter une tranche
                     </AlertDialogHeader>
                     <AlertDialogCloseButton />
                     <AlertDialogBody>
@@ -331,41 +331,46 @@ const Pension = () => {
                           <option>cc</option>
                         </Select>
                     </FormControl> */}
-                        <FormControl mt={4}>
-                          <FormLabel>Nom</FormLabel>
-                          <Input
-                            type={"text"}
-                            name="name"
-                            value={name}
-                            onChange={(event) => setName(event.target.value)}
-                            placeholder="Nom"
-                            isRequired
-                          />
-                        </FormControl>
-                        <FormControl mt={4}>
-                          <FormLabel>Montant</FormLabel>
-                          <Input
-                            type={"number"}
-                            name="montant"
-                            value={montant}
-                            placeholder="Valeur"
-                            onChange={(event) => setMontant(event.target.value)}
-                            isRequired
-                          />
-                        </FormControl>
-                        <FormControl mt={4}>
-                          <FormLabel>Priorite</FormLabel>
-                          <Input
-                            type={"number"}
-                            name="priority"
-                            value={priority}
-                            placeholder="Valeur"
-                            onChange={(event) =>
-                              setPriority(event.target.value)
-                            }
-                            isRequired
-                          />
-                          {/* <Select 
+                        <Flex gap={5}>
+                          <FormControl mt={4}>
+                            <FormLabel>Nom</FormLabel>
+                            <Input
+                              type={"text"}
+                              name="name"
+                              value={name}
+                              onChange={(event) => setName(event.target.value)}
+                              placeholder="Nom"
+                              isRequired
+                            />
+                          </FormControl>
+                          <FormControl mt={4}>
+                            <FormLabel>Montant</FormLabel>
+                            <Input
+                              type={"number"}
+                              name="montant"
+                              value={montant}
+                              placeholder="Valeur"
+                              onChange={(event) =>
+                                setMontant(event.target.value)
+                              }
+                              isRequired
+                            />
+                          </FormControl>
+                        </Flex>
+                        <Flex gap={5}>
+                          <FormControl mt={4}>
+                            <FormLabel>Priorite</FormLabel>
+                            <Input
+                              type={"number"}
+                              name="priority"
+                              value={priority}
+                              placeholder="Valeur"
+                              onChange={(event) =>
+                                setPriority(event.target.value)
+                              }
+                              isRequired
+                            />
+                            {/* <Select 
                             type={'text'} 
                             name="tranchePriorityId"
                             value={tranchePriorityId}
@@ -380,47 +385,52 @@ const Pension = () => {
                             ))
                           }
                         </Select> */}
-                        </FormControl>
-                        <FormControl mt={4}>
-                          <FormLabel>Classe</FormLabel>
-                          <Select
-                            type={"text"}
-                            name="salleId"
-                            value={salleId}
-                            placeholder="Classe"
-                            onChange={(event) => setSalleId(event.target.value)}
-                            isRequired
-                          >
-                            {dataClasse &&
-                              dataClasse.findAllsalle.map((salle, index) => (
-                                <option value={salle.id} key={index}>
-                                  {salle.name}
-                                </option>
-                              ))}
-                          </Select>
-                        </FormControl>
-                        <FormControl mt={4}>
-                          <FormLabel>Date limite paiement</FormLabel>
-                          <Input
-                            type={"date"}
-                            name="dateLine"
-                            value={dateLine}
-                            placeholder="Date limite de paiement"
-                            onChange={(event) =>
-                              setDateLine(event.target.value)
-                            }
-                            isRequired
-                          />
-                        </FormControl>
-                        <FormControl mt={4}>
-                          <FormLabel>Annee academique</FormLabel>
-                          <Input
-                            type="text"
-                            value={anneeAcademiqueName}
-                            placeholder="Annee academique"
-                            isRequired
-                          />
-                        </FormControl>
+                          </FormControl>
+                          <FormControl mt={4}>
+                            <FormLabel>Classe</FormLabel>
+                            <Select
+                              type={"text"}
+                              name="salleId"
+                              value={salleId}
+                              placeholder="Classe"
+                              onChange={(event) =>
+                                setSalleId(event.target.value)
+                              }
+                              isRequired
+                            >
+                              {dataClasse &&
+                                dataClasse.findAllsalle.map((salle, index) => (
+                                  <option value={salle.id} key={index}>
+                                    {salle.name}
+                                  </option>
+                                ))}
+                            </Select>
+                          </FormControl>
+                        </Flex>
+                        <Flex gap={5}>
+                          <FormControl mt={4}>
+                            <FormLabel>Date limite paiement</FormLabel>
+                            <Input
+                              type={"date"}
+                              name="dateLine"
+                              value={dateLine}
+                              placeholder="Date limite de paiement"
+                              onChange={(event) =>
+                                setDateLine(event.target.value)
+                              }
+                              isRequired
+                            />
+                          </FormControl>
+                          <FormControl mt={4}>
+                            <FormLabel>Annee academique</FormLabel>
+                            <Input
+                              type="text"
+                              value={anneeAcademiqueName}
+                              placeholder="Annee academique"
+                              isRequired
+                            />
+                          </FormControl>
+                        </Flex>
                       </Box>
                     </AlertDialogBody>
                     <AlertDialogFooter>

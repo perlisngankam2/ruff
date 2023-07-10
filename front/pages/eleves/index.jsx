@@ -56,7 +56,6 @@ import { useTranslation } from "next-i18next";
 import ReactToPrint from "react-to-print";
 import ReactToPdf from "react-to-pdf";
 import ReactPaginate from "react-paginate";
-
 import { getStaticPropsTranslations } from "../../types/staticProps";
 
 import {
@@ -84,7 +83,6 @@ const Eleves = () => {
   const { isOpen, onToggle, onClose, onOpen } = useDisclosure();
   const [searchNameStudent, setSearchNameStudent] = useState("");
   const [searchClasseStudent, setSearchClasseStudent] = useState("");
-
   const [deletestudent] = useMutation(DELETE_STUDENT);
   // const [currentPage, setCurrentPage] = useState(1);
 
@@ -184,7 +182,6 @@ const Eleves = () => {
             <Text>Dashboad / Éleves / Liste Élèves</Text>
           </Hide>
         </Flex>
-
         <Flex gap={10} mt={7}>
           <InputGroup>
             <InputRightElement
@@ -229,7 +226,6 @@ const Eleves = () => {
             })
           } */}
         </Flex>
-
         {/* <Box mt={10}>
           <PaiementTable data={search(Users)}/>
         </Box> */}

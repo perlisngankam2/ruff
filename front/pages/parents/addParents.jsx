@@ -120,10 +120,8 @@ const addParents = () => {
             size="xl"
             isCentered
           >
-            <AlertDialogOverlay
-             closeOnOverlayClick={false}
-            >
-              <AlertDialogContent width={"500px"}>
+            <AlertDialogOverlay closeOnOverlayClick={false}>
+              <AlertDialogContent width={"800px"}>
                 <Box as={"form"} onSubmit={addParent}>
                   <AlertDialogHeader fontSize="sm" fontWeight="base" mt="0">
                     <Box>
@@ -139,125 +137,135 @@ const addParents = () => {
                   <AlertDialogCloseButton />
                   <AlertDialogBody>
                     <Box>
-                      <FormControl>
-                        <FormLabel>Nom</FormLabel>
-                        <Input
-                          id="name"
-                          type={"text"}
-                          name="firstname"
-                          placeholder="nom"
-                          onChange={(event) =>
-                            setParent({
-                              ...parent,
-                              firstname: event.target.value,
-                            })
-                          }
-                          ref={(node) => {
-                            input = node;
-                          }}
-                          value={parent.firstname}
-                          isRequired
-                        />
-                      </FormControl>
-                      <FormControl mt="15px">
-                        <FormLabel>Prenom</FormLabel>
-                        <Input
-                          id="description"
-                          type={"text"}
-                          name="lastname"
-                          placeholder="Description"
-                          onChange={(event) =>
-                            setParent({
-                              ...parent,
-                              lastname: event.target.value,
-                            })
-                          }
-                          ref={(node) => {
-                            input = node;
-                          }}
-                          value={parent.lastname}
-                          isRequired
-                        />
-                      </FormControl>
-                      <FormControl mt="15px">
-                        <FormLabel>Sexe</FormLabel>
-                        <Select
-                          id="description"
-                          type={"text"}
-                          name="gender"
-                          placeholder="Sexe"
-                          onChange={(event) =>
-                            setParent({ ...parent, gender: event.target.value })
-                          }
-                          ref={(node) => {
-                            input = node;
-                          }}
-                          value={parent.gender}
-                          isRequired
-                        >
-                          <option>Masculin</option>
-                          <option>Feminin</option>
-                        </Select>
-                      </FormControl>
-                      <FormControl mt="15px">
-                        <FormLabel>Enfant</FormLabel>
-                        <Input
-                          id="description"
-                          type={"number"}
-                          name="childNumber"
-                          placeholder="Description"
-                          onChange={(event) =>
-                            setParent({
-                              ...parent,
-                              childNumber: event.target.value,
-                            })
-                          }
-                          ref={(node) => {
-                            input = node;
-                          }}
-                          value={parent.childNumber}
-                        />
-                      </FormControl>
-                      <FormControl mt="15px">
-                        <FormLabel>Profession</FormLabel>
-                        <Input
-                          id="description"
-                          type={"text"}
-                          name="profession"
-                          placeholder=""
-                          onChange={(event) =>
-                            setParent({
-                              ...parent,
-                              profession: event.target.value,
-                            })
-                          }
-                          ref={(node) => {
-                            input = node;
-                          }}
-                          value={parent.profession}
-                          isRequired
-                        />
-                      </FormControl>
-                      <FormControl mt="15px">
-                        <FormLabel>Telephone</FormLabel>
-                        <Input
-                          id="description"
-                          type={"text"}
-                          name="phonenumber"
-                          placeholder=""
-                          onChange={(event) =>
-                            setParent({
-                              ...parent,
-                              phonenumber: event.target.value,
-                            })
-                          }
-                          ref={(node) => {
-                            input = node;
-                          }}
-                          value={parent.phonenumber}
-                          isRequired
-                        />
-                      </FormControl>
+                      <Flex gap={5}>
+                        <FormControl>
+                          <FormLabel>Nom</FormLabel>
+                          <Input
+                            id="name"
+                            type={"text"}
+                            name="firstname"
+                            placeholder="nom"
+                            onChange={(event) =>
+                              setParent({
+                                ...parent,
+                                firstname: event.target.value,
+                              })
+                            }
+                            ref={(node) => {
+                              input = node;
+                            }}
+                            value={parent.firstname}
+                            isRequired
+                          />
+                        </FormControl>
+                        <FormControl>
+                          <FormLabel>Prenom</FormLabel>
+                          <Input
+                            id="description"
+                            type={"text"}
+                            name="lastname"
+                            placeholder="Description"
+                            onChange={(event) =>
+                              setParent({
+                                ...parent,
+                                lastname: event.target.value,
+                              })
+                            }
+                            ref={(node) => {
+                              input = node;
+                            }}
+                            value={parent.lastname}
+                            isRequired
+                          />
+                        </FormControl>
+                      </Flex>
+                      <Flex gap={5}>
+                        <FormControl mt="15px">
+                          <FormLabel>Sexe</FormLabel>
+                          <Select
+                            id="description"
+                            type={"text"}
+                            name="gender"
+                            placeholder="Sexe"
+                            onChange={(event) =>
+                              setParent({
+                                ...parent,
+                                gender: event.target.value,
+                              })
+                            }
+                            ref={(node) => {
+                              input = node;
+                            }}
+                            value={parent.gender}
+                            isRequired
+                          >
+                            <option>Masculin</option>
+                            <option>Feminin</option>
+                          </Select>
+                        </FormControl>
+                        <FormControl mt="15px">
+                          <FormLabel>Enfant</FormLabel>
+                          <Input
+                            id="description"
+                            type={"number"}
+                            name="childNumber"
+                            placeholder="Description"
+                            onChange={(event) =>
+                              setParent({
+                                ...parent,
+                                childNumber: event.target.value,
+                              })
+                            }
+                            ref={(node) => {
+                              input = node;
+                            }}
+                            value={parent.childNumber}
+                          />
+                        </FormControl>
+                      </Flex>
+                      <Flex gap={5}>
+                        <FormControl mt="15px">
+                          <FormLabel>Profession</FormLabel>
+                          <Input
+                            id="description"
+                            type={"text"}
+                            name="profession"
+                            placeholder=""
+                            onChange={(event) =>
+                              setParent({
+                                ...parent,
+                                profession: event.target.value,
+                              })
+                            }
+                            ref={(node) => {
+                              input = node;
+                            }}
+                            value={parent.profession}
+                            isRequired
+                          />
+                        </FormControl>
+                        <FormControl mt="15px">
+                          <FormLabel>Telephone</FormLabel>
+                          <Input
+                            id="description"
+                            type={"text"}
+                            name="phonenumber"
+                            placeholder=""
+                            onChange={(event) =>
+                              setParent({
+                                ...parent,
+                                phonenumber: event.target.value,
+                              })
+                            }
+                            ref={(node) => {
+                              input = node;
+                            }}
+                            value={parent.phonenumber}
+                            isRequired
+                          />
+                        </FormControl>
+                      </Flex>
+
                       <FormControl mt="15px">
                         <FormLabel>Statut</FormLabel>
                         <Select

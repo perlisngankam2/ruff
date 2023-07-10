@@ -92,7 +92,6 @@ import {
   GET_SECTION_STUDENT_BY_ID,
   GET_PERSONNEL_BY_USERID,
   GET_ALL_SCHOOL_PARAMETER,
-
 } from "../../graphql/Queries";
 
 import {
@@ -238,7 +237,7 @@ const DetailComponent = () => {
       variables: { studentid: router.query.id },
     }
   );
-  
+
   // const {data:dataTrancheById} = useQuery(GET_STUDENT_BY_ID,
   //       {
   //         variables: {trancheid: router.query.id}
@@ -412,8 +411,8 @@ const DetailComponent = () => {
   // }
   //
   const anneeAcademiqueName =
-  dataSchoolParameter?.findAllparameters[0].anneeAcademiqueName;
-console.log(anneeAcademiqueName);
+    dataSchoolParameter?.findAllparameters[0].anneeAcademiqueName;
+  console.log(anneeAcademiqueName);
   const getTrancheById = (id) => {
     return dataTranchePension?.findAlltranche?.find((t, i) => t.id === id);
   };
@@ -940,16 +939,16 @@ console.log(anneeAcademiqueName);
                     </Text>
                   </Heading>
                   <Box>
-                    <Text color={"#AB9442"} mt={"10px"}>
+                    <Text color={"#AB9442"} mt={"10px"} mb={"10px"}>
                       <Text as="b" color="#AB9442" mr="2">
-                        Derniere scolarite :
+                        Dernière scolarite :
                       </Text>
                       {/* {dataTrancheStudentBySudentId?.getTrancheStudentByStudent.montant} FCFA */}
                     </Text>
                     <Box
                     // fontWeight={800}
                     >
-                      <Box>
+                      <Box mb={"20px"}>
                         <Text fontWeight={800}>Pension total</Text>
                         <Box display={"flex"} gap={15}>
                           <Text>
@@ -975,15 +974,119 @@ console.log(anneeAcademiqueName);
                           </Text>
                         </Box>
                       </Box>
-                      <Text>Frais tranche 1</Text>
+                      {/* <Text>Frais tranche 1</Text>
                       <Text>Frais tranche 2</Text>
-                      <Text>Frais tranche 3</Text>
+                      <Text>Frais tranche 3</Text> */}
+                      <Box>
+                        <Text fontWeight={"bold"}>
+                          Détails sur les tranches
+                        </Text>
+                      </Box>
+                      <Box w="500px" mb="2">
+                        <TableContainer>
+                          <Table variant="simple" size="40px">
+                            <Thead>
+                              <Tr gap="1" bg="blackAlpha.300">
+                                <Th border="1px">
+                                  <Box fontSize="10px" textAlign="center">
+                                    <Text>Eléments</Text>
+                                    <Text>Elements</Text>
+                                  </Box>
+                                </Th>
+                                <Th border="1px">
+                                  <Box fontSize="10px" textAlign="center">
+                                    <Text>Attendu</Text>
+                                    <Text>Expected</Text>
+                                  </Box>
+                                </Th>
+                                <Th border="1px">
+                                  <Box
+                                    fontSize="10px"
+                                    textAlign="center"
+                                    p="5px"
+                                  >
+                                    <Text>Percu</Text>
+                                    <Text>Received</Text>
+                                  </Box>
+                                </Th>
+                                <Th border="1px">
+                                  <Box
+                                    fontSize="10px"
+                                    textAlign="center"
+                                    p="5px"
+                                  >
+                                    <Text>Reste</Text>
+                                    <Text>Remainder</Text>
+                                  </Box>
+                                </Th>
+                                <Th border="1px">
+                                  <Box
+                                    fontSize="10px"
+                                    textAlign="center"
+                                    p="5px"
+                                  >
+                                    <Text>Délai</Text>
+                                    <Text>Deadline</Text>
+                                  </Box>
+                                </Th>
+                                {/* 
+                              <Th border="1px">
+                                <Box fontSize="10px" textAlign="center" p="5px">
+                                  <Text>Date </Text>
+                                  <Text>Date</Text>
+                                </Box>
+                              </Th> */}
+                              </Tr>
+                            </Thead>
+                            {dataTrancheByStudentId && (
+                              <Tbody>
+                                {dataTrancheByStudentId?.getClassfeeofStudent.map(
+                                  (tranche, index) => (
+                                    <Tr key={index}>
+                                      {/* <Td rowSpan={4}></Td> */}
+                                      <Td border={"1px"} textAlign={"center"}>
+                                        {tranche.name}
+                                      </Td>
+                                      <Td border={"1px"} textAlign={"center"}>
+                                        {tranche.montant}
+                                      </Td>
+                                      <Td border={"1px"} textAlign={"center"}>
+                                        {tranche.montant}
+                                      </Td>
+                                      <Td border={"1px"} textAlign={"center"}>
+                                        {/* {dataFinalRestByTranche} */}
+                                      </Td>
+                                      <Td border={"1px"} textAlign={"center"}>
+                                        {new Date(
+                                          tranche.dateLine
+                                        ).toLocaleDateString()}
+                                      </Td>
+                                    </Tr>
+                                  )
+                                )}
+                              </Tbody>
+                            )}
+                            {/* <Tbody>
+                            {dataTrancheByStudentId &&
+                              dataTrancheByStudentId?.getClassfeeofStudent.map(
+                                (tranche, index) => (
+                                  <Tr>
+                                    {/* <Td></Td> */}
+                            {/* <Td>{tranche.dateLine}</Td>
+                                  </Tr>
+                                )
+                              )}
+                          </Tbody>  */}
+                          </Table>
+                        </TableContainer>
+                      </Box>
                     </Box>
                   </Box>
                 </Box>
               </CardHeader>
               <CardBody>
-                <Box>
+                {/* PARTIE DES ABSCENCES ET DES PAIEMENT DE TRANSPORT */}
+                {/* <Box>
                   <Heading size="sm" w={"50%"}>
                     <Text bgColor={"#767676"} p="1" color={"white"}>
                       ABSENCE
@@ -997,8 +1100,8 @@ console.log(anneeAcademiqueName);
                       20.12.2022 (Maladie)
                     </Text>
                   </Box>
-                </Box>
-                <Box mt={"5"}>
+                </Box> */}
+                {/* <Box mt={"5"}>
                   <Heading size="sm" w={"50%"}>
                     <Text bgColor={"#767676"} p="1" color={"white"}>
                       Transport
@@ -1012,7 +1115,7 @@ console.log(anneeAcademiqueName);
                       54.000 (Maladie)
                     </Text>
                   </Box>
-                </Box>
+                </Box> */}
               </CardBody>
               <CardFooter></CardFooter>
             </Card>

@@ -43,6 +43,7 @@ import {
   AlertDialogHeader,
   InputRightElement,
   Card,
+  AlertDialogCloseButton,
 } from "@chakra-ui/react";
 
 import { Select as Selects } from "chakra-react-select";
@@ -330,9 +331,10 @@ const TeacherCourse = () => {
               >
                 <AlertDialogContent width={"400px"}>
                   <Box mt={"20px"} onSubmit={addPersonnelSalle} as="form">
-                    <Heading textAlign="center" size="md">
+                    <Heading textAlign="center" size="md" mt={"20px"}>
                       Affectez un enseignant a une classe
                     </Heading>
+                    <AlertDialogCloseButton />
                     <AlertDialogBody>
                       <Box mt="4">
                         <FormControl mt="5px">

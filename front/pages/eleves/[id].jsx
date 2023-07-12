@@ -1195,8 +1195,8 @@ const DetailComponent = () => {
                     // as="form"
                     // onSubmit={addAvanceTranche}
                     >
-                      <AlertDialogCloseButton pl="20px" pb="20px" />
-                      <AlertDialogHeader fontSize="sm" fontWeight="base" mt="0">
+                      <AlertDialogCloseButton/>
+                      <AlertDialogHeader fontSize="sm" fontWeight="base" mt="20px">
                         <Box
                           bg={"colors.secondary"}
                           borderBottomRightRadius={10}

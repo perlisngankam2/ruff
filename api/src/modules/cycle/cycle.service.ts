@@ -80,7 +80,7 @@ export class CycleService {
 
       async delete(id:string):Promise<Cycle>{
       const a= await this.findById(id)
-      await this.cycleRepository.removeAndFlush(a)
+      await this.cycleRepository.nativeDelete(await a)
       if(!a){
         throw Error("not found")
       }

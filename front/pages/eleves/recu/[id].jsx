@@ -390,7 +390,7 @@ const {data:dataTrancheAlreadyPaidByStudent} = useQuery( GET_AMOUNT_TRANCHE_RECE
 
   return (
     <DefaultLayout>
-      <Center pt="70px" ml="60px" pb="10px">
+      <Center pt="70px" ml="60px" pb="100px">
 
         <Box ref={componentRef}>
           {dataStudentId && (
@@ -677,7 +677,7 @@ const {data:dataTrancheAlreadyPaidByStudent} = useQuery( GET_AMOUNT_TRANCHE_RECE
                     <Text fontSize="15px" fontWeight="bold">
                       DETAILS / DETAILS
                     </Text>
-                    <Box w="550px" mb="2">
+                    <Box w="550px" mb="2" >
                       <TableContainer>
                         <Table variant="simple" size="40px">
                           <Thead>

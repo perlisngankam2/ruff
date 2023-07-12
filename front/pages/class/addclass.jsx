@@ -29,6 +29,7 @@ import {
   GET_SALLE_BY_ID,
   GET_ALL_ANNEE_ACADEMIQUE,
   GET_ALL_SCHOOL_PARAMETER,
+  GET_CYCLE_BY_ID,
 } from "../../graphql/Queries";
 import { useAuth } from "../../contexts/account/Auth/Auth";
 

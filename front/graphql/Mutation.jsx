@@ -110,6 +110,8 @@ export const CREATE_CYCLE = gql`
     createCycle(cycle: $cycle) {
       id
       name
+      sectionId
+      sectionName
     }
   }
 `;
@@ -377,6 +379,8 @@ export const DELETE_CYCLE = gql`
     deletecycle(id: $id) {
       id
       name
+      sectionId
+      sectionName
     }
   }
 `;
@@ -475,6 +479,7 @@ export const DELETE_TRANCHE_PENSION = gql`
     }
   }
 `;
+
 //update class
 export const UPDATE_SALLE = gql`
   mutation UpdateSalle($id: String!, $input: SalleUpdateInput!) {
@@ -531,8 +536,20 @@ export const DELETE_RETENUE = gql`
   }
 `;
 
+// mise a jour du cycle
+export const UPDATE_CYCLE = gql`
+  mutation updatecycle($id: String!, $input: CycleUpdateInput!) {
+    updatecycle(id: $id, input: $input) {
+      id
+      name
+      sectionId
+      sectionName
+    }
+  }
+`;
+
 //mise a jour de la section
-export const UPDATA_SECTION = gql`
+export const UPDATE_SECTION = gql`
   mutation updatesection($id: String!, $input: SectionUpdateInput!) {
     updatesection(id: $id, input: $input) {
       id
@@ -541,19 +558,8 @@ export const UPDATA_SECTION = gql`
     }
   }
 `;
-//update cycle
-export const UPDATE_CYCLE = gql`
-  mutation updatecycle($id: String!, $input: CycleUpdateInput!) {
-    updatecycle(id: $id, input: $input) {
-      id
-      name
-      section
-    }
-  }
-`;
 
 //update eleve
-
 export const UPDATE_STUDENT = gql`
   mutation updateStudent($id: String!, $input: StudentCreateInput!) {
     updateStudent(id: $id, input: $input) {

@@ -307,7 +307,7 @@ type Section {
 type Cycle {
   id: ID!
   name: String
-  sectionid: ID!
+  sectionId: ID!
   sectionName: ID!
 }
 

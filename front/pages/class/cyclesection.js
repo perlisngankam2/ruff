@@ -33,11 +33,11 @@ import {
   FormLabel,
   InputRightElement,
   AlertDialogCloseButton,
+  useToast,
 } from "@chakra-ui/react";
 
 import DefaultLayout from "../../components/layouts/DefaultLayout";
 import React, { useEffect, useState, useContext } from "react";
-import { IoIosAdd } from "react-icons/io";
 import { Router, useRouter } from "next/router";
 import { FiEdit, FiSearch } from "react-icons/fi";
 import { MdDelete } from "react-icons/md";
@@ -46,13 +46,17 @@ import {
   GET_ONE_SECTION,
   GET_ONE_CYCLE,
   GET_ALL_CYCLE,
+  GET_SECTION_BY_ID,
+  GET_CYCLE_BY_ID
 } from "../../graphql/Queries";
 import {
   DELETE_SECTION,
   DELETE_CYCLE,
   UPDATE_CYCLE,
   CREATE_CYCLE,
+  UPDATE_SECTION,
 } from "../../graphql/Mutation";
+import { IoIosAdd } from "react-icons/io";
 import { UpdateCycle } from "./updatecycle";
 import { useMutation, useQuery } from "@apollo/client";
 import SectionCreate from "./SectionCreate";
@@ -67,8 +71,8 @@ const cyclesection = () => {
   // const router = useRouter();
   const [query, setQuery] = useState("");
   const [cycle, setCycle] = useState();
+  const toast = useToast();
   const [name, setName] = useState("");
-  const [section, setSection] = useState("");
   // const search = (data) => {
   //   let datas = data.filter((item) => keys.some((key) => (
   //     item[key].toUpperCase().includes(query)
@@ -86,17 +90,31 @@ const cyclesection = () => {
     error,
   } = useQuery(GET_ALL_CYCLE, { onError: (error) => console.log(error) });
   const [id, setId] = useState(null);
+  const { data: dataSectionById } = useQuery(GET_SECTION_BY_ID);
   const [deleteSection] = useMutation(DELETE_SECTION);
+  const [updateSection] = useMutation(UPDATE_SECTION);
 
   const { isOpen, onOpen, onClose, onToggle } = useDisclosure();
+  const {
+    isOpen: isOpenCycle,
+    onOpen: onOpenCycle,
+    onClose: onCloseCycle,
+  } = useDisclosure();
+
   const {
     isOpen: isOpennns,
     onOpen: onOpennns,
     onClose: onClossses,
     onToggle: onToggles,
   } = useDisclosure();
+  // const { isOpen, onOpen, onClose, onToggle } = useDisclosure();
 
-  const [isformOpen, setIsFormOpen] = useState(false);
+  const [sections, setSection] = useState({
+    name: "",
+    description: "",
+  });
+
+  // const [isformOpen, setIsFormOpen] = useState(false);
   const router = useRouter();
   const [pageNumber, setPageNumber] = useState(0);
   const usersPerPage = 15;
@@ -110,6 +128,7 @@ const cyclesection = () => {
   const handleChangeSection = (event) => {
     setSearchSection(event.target.value);
   };
+  // const [editSection, setEditSection] = useState(section);
 
   const pageCount = Math.ceil(data?.findAllsection.length / usersPerPage);
 
@@ -125,10 +144,22 @@ const cyclesection = () => {
   };
 
   useEffect(() => {
-    if (!authToken) {
-      router.back();
+    if (router.query.id) {
+      const dataSectionEdit = dataSectionById?.findOnesection;
+      if (dataSectionEdit) {
+        setSection({
+          name: dataSectionEdit.name,
+          description: dataSectionEdit.description,
+        });
+      }
     }
-  }, [authToken]);
+  }, [dataSectionById]);
+
+  // useEffect(() => {
+  //   if (!authToken) {
+  //     router.back();
+  //   }
+  // }, [authToken]);
 
   useEffect(() => {
     console.log(data?.findAllsection);
@@ -200,7 +231,15 @@ const cyclesection = () => {
               children={<SearchIcon variant="flushed"/>} 
             /> */}
           </InputGroup>
-          <SectionCreate />
+          <Button
+            type="submit"
+            ml={["20px", "50px", "100px", "600px"]}
+            rightIcon={<Icon as={IoIosAdd} boxSize="20px" />}
+            onClick={onOpen}
+          >
+            Ajouter une Section
+          </Button>
+          <SectionCreate onOpen={onOpen} isOpen={isOpen} onClose={onClose} />
         </Flex>
         <Box mt={10}>
           <Box>
@@ -244,6 +283,7 @@ const cyclesection = () => {
                 )}
               </Table>
             </TableContainer>
+            <Box></Box>
           </Box>
           <Box>
             <ReactPaginate
@@ -270,10 +310,26 @@ const cyclesection = () => {
               Cycles
             </Heading>
           </Box>
+          <Box>
+            <Button
+              rightIcon={<Icon as={IoIosAdd} boxSize="20px" />}
+              onClick={onOpenCycle}
+              ml={["245px", "490px", "909px"]}
+              width={"200px"}
+              mb={"20px"}
+              mt={"10px"}
+              // onClick = {() => router.push(personnel/AjouterCategoryPersonnel)}
+            >
+              Ajouter un Cycle
+            </Button>
+          </Box>
           <CycleCreate
-          // defaultValues={defaultValues}
-          // {...onSubmit ? updateCycle: addCycle}
-          // update={true}
+            // defaultValues={defaultValues}
+            // {...onSubmit ? updateCycle: addCycle}
+            // update={true}
+            onOpenCycle={onOpenCycle}
+            isOpenCycle={isOpenCycle}
+            onCloseCycle={onCloseCycle}
           />
           <Box>
             <TableContainer border={"1px"} rounded={"md"}>
@@ -327,19 +383,28 @@ export async function getStaticProps({ locale }) {
 export default cyclesection;
 
 const CycleElement = ({ cycle, index }) => {
-  const { isOpen, onOpen, onClose, onToggle } = useDisclosure();
   const {
-    isOpen: isOpenEditSeection,
-    onOpen: OnOpenEditSection,
-    onClose: OnCloseEditSection,
+    isOpen: isOpenCycle,
+    onOpen: onOpenCycle,
+    onClose: onCloseCycle,
+  } = useDisclosure();
+  const {
+    isOpen,
+    onOpen,
+    onClose,
+    onToggle
   } = useDisclosure();
   const cancelRef = React.useRef();
-
+  const toast = useToast();
+  const router = useRouter()
   const [deleteCycle, loading, error] = useMutation(DELETE_CYCLE);
-  const { data: dataDetailsCycle } = useQuery(GET_ONE_CYCLE);
-  const [editCycle] = useMutation(UPDATE_CYCLE);
-  const [createCycle] = useMutation(CREATE_CYCLE);
 
+  const { data: dataDetailsCycle } = useQuery(GET_ONE_CYCLE);
+  const { data: dataCycleById } = useQuery(GET_CYCLE_BY_ID,
+    { variables: {id: router.query.id}}
+  )
+  const [createCycle] = useMutation(CREATE_CYCLE);
+  const [editCycle, setEditCycle] = useState(null)
   const removeCycle = async (id) => {
     await deleteCycle({
       variables: { id },
@@ -359,13 +424,14 @@ const CycleElement = ({ cycle, index }) => {
     onClose();
   };
 
+  console.log(dataCycleById?.findOnecycle);
+
   return (
     <Tr key={index}>
       <Td p={0} pl={6}>
         {cycle.name}
       </Td>
       <Td>{cycle.sectionName}</Td>
-
       {/* <Td  borderColor={'#C6B062'}>{cycle.section_id}</Td> */}
       {/* <Td p={0} pl={6}>pppp</Td> */}
       <Td p={0} pl={3}>
@@ -376,9 +442,17 @@ const CycleElement = ({ cycle, index }) => {
             p="3"
             // bg="blue.100"
             rounded="full"
-            onClick={onOpen}
+            onClick={onOpenCycle}
             _hover={{ background: "red.100" }}
           />
+          {console.log(dataCycleById?.findOnecycle)}
+          <CycleCreate
+            onOpenCycle={onOpenCycle}
+            isOpenCycle={isOpenCycle}
+            onCloseCycle={onCloseCycle}
+            cycle={cycle}
+          />
+      {  console.log(cycle)}
           <Icon
             as={MdDelete}
             boxSize="44px"
@@ -388,7 +462,6 @@ const CycleElement = ({ cycle, index }) => {
             _hover={{ background: "blue.100" }}
             onClick={onToggle}
           />
-
           <Box>
             <AlertDialog
               isOpen={isOpen}
@@ -437,15 +510,22 @@ const CycleElement = ({ cycle, index }) => {
 };
 
 const SectionElement = ({ section, index }) => {
+  const toast = useToast();
+  const router = useRouter();
+  // const { isOpen, onOpen, onClose } = useDisclosure();
   const {
     isOpen: isOpennns,
     onOpen: onOpennns,
     onClose: onClossses,
     onToggle: onToggles,
   } = useDisclosure();
+  const { isOpen, onOpen, onClose } = useDisclosure();
+
   const [deleteSection] = useMutation(DELETE_SECTION);
+  const { data: dataSectionById, refetch } = useQuery(GET_SECTION_BY_ID);
+  const [updateSection] = useMutation(UPDATE_SECTION);
   const cancelRef = React.useRef();
-  const updateSection = (id) => {};
+  const [editSection, setEditSection] = useState("");
 
   const removeSection = async (id) => {
     await deleteSection({
@@ -467,6 +547,25 @@ const SectionElement = ({ section, index }) => {
     });
     onClossses();
   };
+
+  const handleEditSection = (section) => {
+    setEditSection(section);
+    refetch();
+    console.log(section);
+  };
+
+  // const sectionUpdate = async () => {
+  //   if (router.query.id) {
+  //     await updateSection({
+  //       id: router.query,
+  //       input: {
+  //         name: sections.name,
+  //         description: sections.description,
+  //       },
+  //     });
+  //   }
+  // };
+
   return (
     <Tr key={index}>
       <Td p={0} pl={6}>
@@ -480,14 +579,18 @@ const SectionElement = ({ section, index }) => {
         > */}
           <Icon
             as={FiEdit}
-            onClick={() => updateSection(section.id)}
             boxSize="40px"
             p="3"
-            // bg="blue.100"
             rounded="full"
             _hover={{ background: "red.100" }}
+            onClick={onOpen}
           />
-          {/* </Link> */}
+          <SectionCreate
+            section={section}
+            onOpen={onOpen}
+            isOpen={isOpen}
+            onClose={onClose}
+          />
           <Box href="#" mt="-3px">
             <Icon
               as={MdDelete}
@@ -521,7 +624,6 @@ const SectionElement = ({ section, index }) => {
                     <AlertDialogBody textAlign={"center"}>
                       Voulez-vous supprimer cette cette section?
                     </AlertDialogBody>
-
                     <AlertDialogFooter>
                       <Button
                         ref={cancelRef}

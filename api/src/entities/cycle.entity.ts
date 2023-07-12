@@ -47,7 +47,7 @@ export class Cycle{
 
     @Field(() => ID)
     @Property({ persist: false })
-    get sectionid():string|null {
+    get sectionId():string|null {
       return this.section? `${this.section.id}`:null;
     }
 

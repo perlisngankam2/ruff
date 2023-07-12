@@ -322,10 +322,10 @@ const Eleves = () => {
                                   />
                                 </Link>
                                 {/* {
-                                      (account?.role==="ADMIN")||
-                                      (personnelData?.getpersonnelbyaccount.fonction==="econome") ||
-                                      (personnelData?.getpersonnelbyaccount.fonction==="fondateur")
-                                        && */}
+                                  (account?.role==="ADMIN")||
+                                  (personnelData?.getpersonnelbyaccount.fonction==="econome") ||
+                                  (personnelData?.getpersonnelbyaccount.fonction==="fondateur")
+                                  && */}
                                 {personnelData?.getpersonnelbyaccount
                                   .fonction === "principal" ? (
                                   <Hide>

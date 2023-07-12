@@ -43,6 +43,7 @@ import {
   AlertDialogHeader,
   InputRightElement,
   Card,
+  AlertDialogCloseButton,
 } from "@chakra-ui/react";
 
 import { Select as Selects } from "chakra-react-select";
@@ -369,9 +370,10 @@ const PensionSalle = () => {
               >
                 <AlertDialogContent width={"400px"}>
                   <Box mt={"20px"} as="form" onSubmit={AddMontantPensionClasse}>
-                    <Heading textAlign="center" size="md">
+                    <Heading textAlign="center" size="md" mt={"10px"}>
                       Ajoutez une pension
                     </Heading>
+                    <AlertDialogCloseButton />
                     <AlertDialogBody>
                       <Box mt="4">
                         <FormControl mt="5px">

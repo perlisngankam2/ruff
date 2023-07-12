@@ -135,7 +135,7 @@ export const GET_ALL_CYCLE = gql`
     findAllcycle {
       id
       name
-      sectionid
+      sectionId
       sectionName
     }
   }
@@ -237,6 +237,17 @@ export const GET_STUDENT_BY_ID = gql`
     }
   }
 `;
+
+//RECUPERATION D'UNE SECTION 
+export const GET_SECTION_BY_ID = gql`
+query findOnesection ($id: String!) {
+  findOnesection (id: $id) {
+      id
+      name
+      description
+  }
+}
+`
 
 //annee academique
 export const GET_ALL_ANNEE_ACADEMIQUE = gql`
@@ -745,6 +756,18 @@ export const GET_LEVEL_BY_ID = gql`
     }
   }
 `;
+
+export const GET_CYCLE_BY_ID = gql`
+query findOnecycle ($id: String!) {
+  findOnecycle (id: $id) {
+      id
+      name
+      sectionId
+      sectionName
+  }
+}
+`
+
 
 export const GET_USER_CONNECTED = gql`
   query user($id: String!) {

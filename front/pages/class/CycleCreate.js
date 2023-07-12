@@ -28,6 +28,7 @@ import {
   GET_ALL_SECTION,
   GET_ONE_CYCLE,
   GET_ALL_CYCLE,
+  GET_CYCLE_BY_ID,
 } from "../../graphql/Queries";
 import { useRouter } from "next/router";
 import { useTranslation } from "next-i18next";
@@ -52,25 +53,39 @@ import { useAuth } from "../../contexts/account/Auth/Auth";
 //      onSubmit:(value = formData) => {}
 // }
 
-const CycleCreate = () => {
-  const [name, setName] = useState("");
-  const [sectionId, setSectionId] = useState("");
-  const { isOpen, onOpen, onClose } = useDisclosure();
+const CycleCreate = ({ isOpenCycle, onOpenCycle, onCloseCycle, cycle }) => {
+  const [name, setName] = useState(cycle ? cycle.name : "");
+  console.log(cycle);
+  const [sectionId, setSectionId] = useState(cycle? cycle.sectionId : "");
+  // const { isOpen:isOpenCycle, onOpen:onOpenCycle, onClose:onCloseCycle } = useDisclosure();
   const cancelRef = React.useRef();
   const { setAuthToken, authToken } = useAuth();
   const [createCycle, { error }] = useMutation(CREATE_CYCLE);
+  const [updateCycle] = useMutation(UPDATE_CYCLE);
   // const [editCycle] = useMutation(UPDATE_CYCLE);
   // const [id, setId] = useState(null)
-  const { cyleById } = useQuery(GET_ONE_CYCLE);
+  // const { cyleById } = useQuery(GET_ONE_CYCLE);
   const { data } = useQuery(GET_ALL_SECTION);
   const router = useRouter();
   const toast = useToast();
   const { t } = useTranslation();
   const [isformOpen, setIsFormOpen] = useState(false);
-
+  const { data: dataCycleById } = useQuery(GET_CYCLE_BY_ID,
+    { variables: {id: router.query.id}}
+  )
   // const cycleContext = useContext(GlobalContext);
 
   console.log(sectionId);
+
+
+  useEffect(() => {
+
+    const dataCycleEdit = dataCycleById?.findOnecycle;
+    if(dataCycleEdit){
+      setSectionId(dataCycleEdit.sectionId)
+    }
+  });
+
 
   // const {
   //     handleSubmit,
@@ -81,7 +96,6 @@ const CycleCreate = () => {
   //       ...defaultValues
   //     }
   //   });
-
   //   const onSubmitCycleForm = handleSubmit(async (values) => {
   //     try {
   //        onSubmit?.(values);
@@ -129,22 +143,32 @@ const CycleCreate = () => {
     console.log("cccc");
     console.log(name);
     console.log(sectionId);
-
-    const cycleData = await createCycle({
-      variables: {
-        cycle: {
-          name: name,
-          sectionId: sectionId,
+    if (!cycle) {
+      await createCycle({
+        variables: {
+          cycle: {
+            name: name,
+            sectionId: sectionId,
+          },
         },
-      },
-      refetchQueries: [
-        {
-          query: GET_ALL_CYCLE,
+        refetchQueries: [
+          {
+            query: GET_ALL_CYCLE,
+          },
+        ],
+      });
+    } else {
+      await updateCycle({
+        variables: {
+          id: cycle.id,
+          input: {
+            name: name,
+            sectionId: sectionId,
+          },
         },
-      ],
-    });
-    onClose();
-    console.log(cycleData);
+      });
+    }
+    onCloseCycle();
     toast({
       title: "Creation d'un cycle.",
       description: "Le cylce a éte crée avec succes.",
@@ -162,38 +186,24 @@ const CycleCreate = () => {
     console.log("j");
   }, [data]);
 
-  useEffect(() => {
-    if (!authToken) {
-      router.back();
-    }
-  }, [authToken]);
+  // useEffect(() => {
+  //   if (!authToken) {
+  //     router.back();
+  //   }
+  //   console.log(dataCycleById);
+  // }, [authToken]);
 
   return (
     <Center>
       <Box>
-        <Button
-          rightIcon={<Icon as={IoIosAdd} boxSize="20px" />}
-          onClick={onOpen}
-          ml={["245px", "490px", "909px"]}
-          width={"200px"}
-          mb={"20px"}
-          mt={"10px"}
-          // onClick = {() => router.push(personnel/AjouterCategoryPersonnel)}
-        >
-          Ajouter un Cycle
-        </Button>
-      </Box>
-      <Box>
         <AlertDialog
-          isOpen={isOpen}
+          isOpen={isOpenCycle}
           leastDestructiveRef={cancelRef}
-          onClose={onClose}
+          onClose={onCloseCycle}
           size="xl"
           isCentered
         >
-          <AlertDialogOverlay
-              closeOnOverlayClick={false}
-          >
+          <AlertDialogOverlay closeOnOverlayClick={false}>
             <AlertDialogContent width={"440px"}>
               <Box as={"form"} onSubmit={addCycle}>
                 <AlertDialogHeader fontSize="sm" fontWeight="base" mt="9px">
@@ -235,9 +245,16 @@ const CycleCreate = () => {
                       >
                         {data &&
                           data.findAllsection.map((section, index) => (
-                            <option value={section?.id} key={index}>
+                            <option
+                              selected = {
+                                sectionId == section.id ? "selected" : ""
+                              }
+                              value={section?.id}
+                              key={index}
+                            >
+                              {/* {console.log(cycle.sectionName)} */}
                               {section.name}
-                              {/* {console.log(section.id)} */}
+                          {console.log(sectionId)}
                             </option>
                           ))}
                       </Select>
@@ -245,7 +262,11 @@ const CycleCreate = () => {
                   </Box>
                 </AlertDialogBody>
                 <AlertDialogFooter>
-                  <Button ref={cancelRef} onClick={onClose} colorScheme="red">
+                  <Button
+                    ref={cancelRef}
+                    onClick={onCloseCycle}
+                    colorScheme="red"
+                  >
                     {t("pages.cycle.cycleCreate.cancelButton")}
                   </Button>
                   {/* <Link href={'/personnel/ajoutercategorypersonnel'}> */}

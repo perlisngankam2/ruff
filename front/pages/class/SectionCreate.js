@@ -20,23 +20,25 @@ import {
 } from "@chakra-ui/react";
 import React from "react";
 import { IoIosAdd } from "react-icons/io";
-import { useMutation } from "@apollo/client";
-import { CREATE_SECTION, UPDATA_SECTION } from "../../graphql/Mutation";
-import { GET_ALL_SECTION } from "../../graphql/Queries";
+import { useMutation, useQuery } from "@apollo/client";
+import { CREATE_SECTION, UPDATE_SECTION } from "../../graphql/Mutation";
+import { GET_ALL_SECTION, GET_SECTION_BY_ID } from "../../graphql/Queries";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import { getStaticPropsTranslations } from "../../types/staticProps";
 import { useTranslation } from "next-i18next";
 import { useAuth } from "../../contexts/account/Auth/Auth";
 
-const SectionCreate = () => {
-  const [name, setName] = useState("");
+const SectionCreate = ({onCreateSection, onUpdateSection, section,isOpen,onOpen,onClose }) => {
+  const [name, setName] = useState(section? section?.name : "");
+  // const [name, setName] = useState("");
+
   const [description, setDescription] = useState("");
-  const { isOpen, onOpen, onClose } = useDisclosure();
   const cancelRef = React.useRef();
   const { setAuthToken, authToken } = useAuth();
   const [createSection, { error }] = useMutation(CREATE_SECTION);
-  const [updateSection] = useMutation(UPDATA_SECTION);
+  const [updateSection] = useMutation(UPDATE_SECTION);
+  const { data: dataSectionById, refetch } = useQuery(GET_SECTION_BY_ID);
   const router = useRouter();
   const toast = useToast();
   const { t } = useTranslation();
@@ -58,6 +60,22 @@ const SectionCreate = () => {
   //     // })
   //     // console.log(categoryData)
   // }
+  const [sections, setSection] = useState({
+    name: "",
+    description: "",
+  });
+
+  useEffect(() => {
+    if (router.query.id) {
+      const dataSectionEdit = dataSectionById?.findOnesection;
+      if (dataSectionEdit) {
+        setSection({
+          name: dataSectionEdit.name,
+          description: dataSectionEdit.description,
+        });
+      }
+    }
+  }, [dataSectionById]);
 
   let input;
   useEffect(() => {
@@ -82,25 +100,65 @@ const SectionCreate = () => {
     //         }
     //     })
     // }else{
-    await createSection({
-      variables: {
-        section: {
-          name: name,
-          // description: description
-        },
-      },
-      refetchQueries: [
-        {
-          query: GET_ALL_SECTION,
-        },
-      ],
-    });
+    // await createSection({
+    //   variables: {
+    //     section: {
+    //       name: sections.name,
+    //       // description: description
+    //     },
+    //   },
+    //   refetchQueries: [
+    //     {
+    //       query: GET_ALL_SECTION,
+    //     },
+    //   ],
+    // });
     // }
+    if (section) {
+      await updateSection({
+        variables: {
+          id: section.id,
+          input: {
+            name: name,
+          },
+        },
+        refetchQueries: [
+          {
+            query: GET_ALL_SECTION,
+          },
+        ],
+      });
+      refetch();
+      // onClose();
+      // // console.log(sectionData)
+      // toast({
+      //   title: "Mise a jour d'une section.",
+      //   description: "Section mise a jour avec succes.",
+      //   status: "success",
+      //   duration: 3000,
+      //   isClosable: true,
+      // });
+    } else {
+      await createSection({
+        variables: {
+          section: {
+            name: name,
+            // description: description
+          },
+        },
+        refetchQueries: [
+          {
+            query: GET_ALL_SECTION,
+          },
+        ],
+      });
+    }
+    refetch();
     onClose();
     // console.log(sectionData)
     toast({
       title: "Creation d'une section.",
-      description: "La classe a été créée avec succes.",
+      description: "Section enregistréée avec succes.",
       status: "success",
       duration: 3000,
       isClosable: true,
@@ -109,17 +167,71 @@ const SectionCreate = () => {
     setDescription("");
   };
 
+  // const addSection = async (event, value) => {
+  //   event.preventDefault();
+  //   console.log("cccc");
+
+  //   console.log(name);
+  //   console.log(description);
+  //   // if(id){
+  //   //     updateSection({
+  //   //         variables:{
+  //   //             section:{
+  //   //                 name: name,
+  //   //                 section: description
+  //   //             }
+  //   //         }
+  //   //     })
+  //   // }else{
+  //   // await createSection({
+  //   //   variables: {
+  //   //     section: {
+  //   //       name: sections.name,
+  //   //       // description: description
+  //   //     },
+  //   //   },
+  //   //   refetchQueries: [
+  //   //     {
+  //   //       query: GET_ALL_SECTION,
+  //   //     },
+  //   //   ],
+  //   // });
+  //   // }
+  //   if (section) {
+  //     onUpdateSection(section.id, name)
+  //     refetch();
+  //     // onClose();
+  //     // // console.log(sectionData)
+  //     // toast({
+  //     //   title: "Mise a jour d'une section.",
+  //     //   description: "Section mise a jour avec succes.",
+  //     //   status: "success",
+  //     //   duration: 3000,
+  //     //   isClosable: true,
+  //     // });
+  //   } else {
+  //     onCreateSection(name)
+  //   }
+  //   refetch();
+  //   onClose();
+  //   // console.log(sectionData)
+  //   toast({
+  //     title: "Creation d'une section.",
+  //     description: "Section enregistréée avec succes.",
+  //     status: "success",
+  //     duration: 3000,
+  //     isClosable: true,
+  //   });
+  //   setName("");
+  //   setDescription("");
+  // };
+
+
   return (
     <Center>
       <Box>
         <Box>
-          <Button
-            ml={["20px", "50px", "100px", "600px"]}
-            rightIcon={<Icon as={IoIosAdd} boxSize="20px" />}
-            onClick={onOpen}
-          >
-            Ajouter une Section
-          </Button>
+         
         </Box>
         <Box>
           <AlertDialog
@@ -129,9 +241,7 @@ const SectionCreate = () => {
             size="xl"
             isCentered
           >
-            <AlertDialogOverlay
-              closeOnOverlayClick={false}
-            >
+            <AlertDialogOverlay closeOnOverlayClick={false}>
               <AlertDialogContent width={"440px"}>
                 <Box as={"form"} onSubmit={addSection}>
                   <AlertDialogHeader fontSize="sm" fontWeight="base" mt="9px">
@@ -141,7 +251,11 @@ const SectionCreate = () => {
                         fontSize={["15px", "20px", "24px"]}
                         p="2"
                       >
-                        {t("pages.section.sectionCreate.heading")}
+                        {section
+                          ? "Modifier la section"
+                          : "Ajouter une Section"}
+
+                        {/* {t("pages.section.sectionCreate.heading")} */}
                       </Heading>
                     </Box>
                   </AlertDialogHeader>
@@ -158,6 +272,9 @@ const SectionCreate = () => {
                           type={"text"}
                           name="name"
                           placeholder="nom"
+                          // onChange={(event) =>
+                          //   setSection({ ...sections, name: event.target.value })
+                          // }
                           onChange={(event) => setName(event.target.value)}
                           ref={(node) => {
                             input = node;
@@ -167,19 +284,19 @@ const SectionCreate = () => {
                         />
                       </FormControl>
                       {/* <FormControl mt="15px">
-                                    <FormLabel>
-                                    {t('pages.class.sectionCreate.description')} 
-                                    </FormLabel>
-                                    <Input 
-                                        id="description"
-                                        type={'text'} 
-                                        name="description"
-                                        placeholder="Description"
-                                        onChange = {(event) => setDescription(event.target.value)}
-                                        ref={node => {input = node;}}
-                                        value={description}
-                                    />
-                                </FormControl> */}
+                          <FormLabel>
+                          {t('pages.class.sectionCreate.description')} 
+                          </FormLabel>
+                          <Input 
+                            id="description"
+                            type={'text'} 
+                            name="description"
+                            placeholder="Description"
+                            onChange = {(event) => setDescription(event.target.value)}
+                            ref={node => {input = node;}}
+                            value={description}
+                          />
+                      </FormControl> */}
                     </Box>
                   </AlertDialogBody>
                   <AlertDialogFooter>
@@ -188,7 +305,8 @@ const SectionCreate = () => {
                     </Button>
                     {/* <Link href={'/personnel/ajoutercategorypersonnel'}> */}
                     <Button colorScheme="green" ml={3} type="submit">
-                      {t("pages.section.sectionCreate.submitButton")}
+                      {/* {t("pages.section.sectionCreate.submitButton")} */}
+                      {section ? "Mettre a jour" : "Creerrr"}
                     </Button>
                     {/* </Link>  */}
                   </AlertDialogFooter>

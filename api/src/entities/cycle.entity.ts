@@ -1,16 +1,16 @@
 /* eslint-disable prettier/prettier */
 import {
-    Collection,
-    Entity,
-    Enum,
-    IdentifiedReference,
-    ManyToMany,
-    ManyToOne,
-    OneToMany,
-    OneToOne,
-    PrimaryKey,
-    Property,
-  } from '@mikro-orm/core';
+  Collection,
+  Entity,
+  Enum,
+  IdentifiedReference,
+  ManyToMany,
+  ManyToOne,
+  OneToMany,
+  OneToOne,
+  PrimaryKey,
+  Property,
+} from '@mikro-orm/core';
 import { Field, ID, ObjectType, registerEnumType } from '@nestjs/graphql';
 import { PrimaryKeyUuid } from '../decorators/PrimaryKeyUuid.decorator';
 import { NiveauEtude } from './niveau-etude.entity';
@@ -18,43 +18,41 @@ import { SectionCycle } from './section-cycle.entity';
 import { Section } from './section.entity';
 import { Salle } from './salle.entity';
 
-
 @Entity()
 @ObjectType()
-export class Cycle{
-    @Field(() => ID)
-    @PrimaryKeyUuid()
-    id!: string;
-  
-    @Field({ nullable: true })
-    @Property({nullable:false})
-    name!: string;
+export class Cycle {
+  @Field(() => ID)
+  @PrimaryKeyUuid()
+  id!: string;
 
-    @Property({ onCreate: () => new Date() })
-    createdAt = new Date();
+  @Field({ nullable: true })
+  @Property({ nullable: false })
+  name!: string;
 
-    @OneToMany(() => NiveauEtude, (niveauEtude) => niveauEtude.cycle)
-    niveauEtude = new Collection<NiveauEtude>(this); 
+  @Property({ onCreate: () => new Date() })
+  createdAt = new Date();
 
-    @OneToMany(() => Salle, (salle) => salle.cycle)
-    salle = new Collection<Salle>(this); 
+  @OneToMany(() => NiveauEtude, (niveauEtude) => niveauEtude.cycle)
+  niveauEtude = new Collection<NiveauEtude>(this);
 
-    @ManyToOne(() => Section, {
-      nullable: true,
-      onDelete: 'CASCADE',
-    })
-    section!: IdentifiedReference<Section> | null;
+  @OneToMany(() => Salle, (salle) => salle.cycle)
+  salle = new Collection<Salle>(this);
 
-    @Field(() => ID)
-    @Property({ persist: false })
-    get sectionId():string|null {
-      return this.section? `${this.section.id}`:null;
-    }
+  @ManyToOne(() => Section, {
+    nullable: true,
+    onDelete: 'CASCADE',
+  })
+  section!: IdentifiedReference<Section> | null;
 
-    
-    @Field(()=>ID)
-    @Property({ persist: false })
-    get sectionName():string|null {
-      return this.section?`${this.section.getEntity().name}`:null;
-    }
-   }
+  @Field(() => ID)
+  @Property({ persist: false })
+  get sectionId(): string | null {
+    return this.section ? `${this.section.id}` : null;
+  }
+
+  @Field(() => ID)
+  @Property({ persist: false })
+  get sectionName(): string | null {
+    return this.section ? `${this.section.getEntity().name}` : null;
+  }
+}

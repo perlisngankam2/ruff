@@ -322,6 +322,7 @@ const TeacherCourse = () => {
             <AlertDialog
               isOpen={isOpen}
               leastDestructiveRef={cancelRef}
+              closeOnOverlayClick={false}
               onClose={onClose}
               size="xl"
               isCentered

@@ -120,25 +120,25 @@ const receipt = () => {
 
   //MONTANT DES TRANCHES PAYE EN FONCTION DE CHAQUE ELEVE
 
-  const { data: dataAvanceMontantTranche1ByStudent } = useQuery(
-    GET_AVANCE_MONTANT_TRANCHE_BY_STUDENT,
-    {
-      variables: {
-        studentid: router.query.id,
-        trancheid: dataTranchePension?.findAlltranche[1].id,
-      },
-    }
-  );
+  // const { data: dataAvanceMontantTranche1ByStudent } = useQuery(
+  //   GET_AVANCE_MONTANT_TRANCHE_BY_STUDENT,
+  //   {
+  //     variables: {
+  //       studentid: router.query.id,
+  //       trancheid: dataTranchePension?.findAlltranche[1].id,
+  //     },
+  //   }
+  // );
 
-  const { data: dataAvanceMontantTranche2ByStudent } = useQuery(
-    GET_AVANCE_MONTANT_TRANCHE_BY_STUDENT,
-    {
-      variables: {
-        studentid: router.query.id,
-        trancheid: dataTranchePension?.findAlltranche[2].id,
-      }
-    }
-  );
+  // const { data: dataAvanceMontantTranche2ByStudent } = useQuery(
+  //   GET_AVANCE_MONTANT_TRANCHE_BY_STUDENT,
+  //   {
+  //     variables: {
+  //       studentid: router.query.id,
+  //       trancheid: dataTranchePension?.findAlltranche[2].id,
+  //     }
+  //   }
+  // );
 
 //MONTANT DE CHAQUE TRANCHE DEJA VERSE PAR ELEVES 
 const {data:dataTrancheAlreadyPaidByStudent} = useQuery( GET_AMOUNT_TRANCHE_RECEIVED_BY_STUDENT,
@@ -149,35 +149,35 @@ const {data:dataTrancheAlreadyPaidByStudent} = useQuery( GET_AMOUNT_TRANCHE_RECE
   }
 )
   //RECUPERATION DES DATELINE PAR TRANCHE POUR CHQUE ELEVE
-  const { data: dataDateLineTrancheStudentInscription } = useQuery(
-    GET_DATELINE_TRANCHE_BY_STUDENT,
-    {
-      variables: {
-        studentid: router.query.id,
-        trancheid: dataTranchePension?.findAlltranche[0].id,
-      },
-    }
-  );
+  // const { data: dataDateLineTrancheStudentInscription } = useQuery(
+  //   GET_DATELINE_TRANCHE_BY_STUDENT,
+  //   {
+  //     variables: {
+  //       studentid: router.query.id,
+  //       trancheid: dataTranchePension?.findAlltranche[0].id,
+  //     },
+  //   }
+  // );
 
-  const { data: dataDateLineTrancheStudentTranche1 } = useQuery(
-    GET_DATELINE_TRANCHE_BY_STUDENT,
-    {
-      variables: {
-        studentid: router.query.id,
-        trancheid: dataTranchePension?.findAlltranche[1].id,
-      },
-    }
-  );
+  // const { data: dataDateLineTrancheStudentTranche1 } = useQuery(
+  //   GET_DATELINE_TRANCHE_BY_STUDENT,
+  //   {
+  //     variables: {
+  //       studentid: router.query.id,
+  //       trancheid: dataTranchePension?.findAlltranche[1].id,
+  //     },
+  //   }
+  // );
 
-  const { data: dataDateLineTrancheStudentTranche2 } = useQuery(
-    GET_DATELINE_TRANCHE_BY_STUDENT,
-    {
-      variables: {
-        studentid: router.query.id,
-        trancheid: dataTranchePension?.findAlltranche[2].id,
-      },
-    }
-  );
+  // const { data: dataDateLineTrancheStudentTranche2 } = useQuery(
+  //   GET_DATELINE_TRANCHE_BY_STUDENT,
+  //   {
+  //     variables: {
+  //       studentid: router.query.id,
+  //       trancheid: dataTranchePension?.findAlltranche[2].id,
+  //     },
+  //   }
+  // );
 
   //RECUPERATION DE LA SECTION DE L'ELEVE
   const { data: dataSectionStudentById } = useQuery(GET_SECTION_STUDENT_BY_ID, {
@@ -390,7 +390,7 @@ const {data:dataTrancheAlreadyPaidByStudent} = useQuery( GET_AMOUNT_TRANCHE_RECE
 
   return (
     <DefaultLayout>
-      <Center pt="70px" ml="60px" pb="100px">
+      <Center pt="70px" pb="50px" ml={"20px"}>
 
         <Box ref={componentRef}>
           {dataStudentId && (
@@ -399,7 +399,7 @@ const {data:dataTrancheAlreadyPaidByStudent} = useQuery( GET_AMOUNT_TRANCHE_RECE
               borderRadius="25px"
               borderColor="black"
               w="1020px"
-              ml={"50px"}
+              // ml={"50px"}
             >
               <Center
                 borderBottomWidth="3px"
@@ -465,7 +465,7 @@ const {data:dataTrancheAlreadyPaidByStudent} = useQuery( GET_AMOUNT_TRANCHE_RECE
                       <Flex ml="3" gap={3} mb="1">
                         <Text>Section:</Text>
                         <Text>
-                          {dataSectionStudentById?.findSectionByStudent[0].name}
+                          {/* {dataSectionStudentById?.findSectionByStudent[0].name} */}
                         </Text>
                       </Flex>
                       <Flex ml="3" gap="1" mb="1">
@@ -802,7 +802,9 @@ const {data:dataTrancheAlreadyPaidByStudent} = useQuery( GET_AMOUNT_TRANCHE_RECE
             </Box>
           )}
         </Box>
-        <Flex mt="-630px" marginLeft={"auto"}>
+       
+      </Center>
+      <Flex>
           <ReactToPrint
             trigger={() => (
               <Icon
@@ -835,7 +837,6 @@ const {data:dataTrancheAlreadyPaidByStudent} = useQuery( GET_AMOUNT_TRANCHE_RECE
             )}
           </ReactToPdf>
         </Flex>
-      </Center>
     </DefaultLayout>
   );
 };

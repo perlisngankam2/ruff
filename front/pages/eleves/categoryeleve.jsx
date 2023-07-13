@@ -206,6 +206,7 @@ const CategoryEleve = () => {
                                 <AlertDialog
                                   isOpen={isOpen}
                                   leastDestructiveRef={cancelRef}
+                                  closeOnOverlayClick={false}
                                   onClose={onClose}
                                   isCentered
                                 >

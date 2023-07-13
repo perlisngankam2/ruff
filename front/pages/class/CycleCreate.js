@@ -47,7 +47,7 @@ import { useAuth } from "../../contexts/account/Auth/Auth";
 //     defaultValues: FormData,
 //     onSubmit: (value = FormData) => {}
 // };
-
+ 
 // export const CycleProps = {
 //     defaultValues:formData,
 //      onSubmit:(value = formData) => {}
@@ -56,7 +56,7 @@ import { useAuth } from "../../contexts/account/Auth/Auth";
 const CycleCreate = ({ isOpenCycle, onOpenCycle, onCloseCycle, cycle }) => {
   const [name, setName] = useState(cycle ? cycle.name : "");
   console.log(cycle);
-  const [sectionId, setSectionId] = useState(cycle? cycle.sectionId : "");
+  const [sectionId, setSectionId] = useState(cycle ? cycle.sectionId : "");
   // const { isOpen:isOpenCycle, onOpen:onOpenCycle, onClose:onCloseCycle } = useDisclosure();
   const cancelRef = React.useRef();
   const { setAuthToken, authToken } = useAuth();
@@ -70,22 +70,19 @@ const CycleCreate = ({ isOpenCycle, onOpenCycle, onCloseCycle, cycle }) => {
   const toast = useToast();
   const { t } = useTranslation();
   const [isformOpen, setIsFormOpen] = useState(false);
-  const { data: dataCycleById } = useQuery(GET_CYCLE_BY_ID,
-    { variables: {id: router.query.id}}
-  )
+  const { data: dataCycleById } = useQuery(GET_CYCLE_BY_ID, {
+    variables: { id: router.query.id },
+  });
   // const cycleContext = useContext(GlobalContext);
 
   console.log(sectionId);
 
-
   useEffect(() => {
-
     const dataCycleEdit = dataCycleById?.findOnecycle;
-    if(dataCycleEdit){
-      setSectionId(dataCycleEdit.sectionId)
+    if (dataCycleEdit) {
+      setSectionId(dataCycleEdit.sectionId);
     }
   });
-
 
   // const {
   //     handleSubmit,
@@ -199,11 +196,12 @@ const CycleCreate = ({ isOpenCycle, onOpenCycle, onCloseCycle, cycle }) => {
         <AlertDialog
           isOpen={isOpenCycle}
           leastDestructiveRef={cancelRef}
+          closeOnOverlayClick={false}
           onClose={onCloseCycle}
           size="xl"
           isCentered
         >
-          <AlertDialogOverlay closeOnOverlayClick={false}>
+          <AlertDialogOverlay>
             <AlertDialogContent width={"440px"}>
               <Box as={"form"} onSubmit={addCycle}>
                 <AlertDialogHeader fontSize="sm" fontWeight="base" mt="9px">
@@ -246,7 +244,7 @@ const CycleCreate = ({ isOpenCycle, onOpenCycle, onCloseCycle, cycle }) => {
                         {data &&
                           data.findAllsection.map((section, index) => (
                             <option
-                              selected = {
+                              selected={
                                 sectionId == section.id ? "selected" : ""
                               }
                               value={section?.id}
@@ -254,7 +252,7 @@ const CycleCreate = ({ isOpenCycle, onOpenCycle, onCloseCycle, cycle }) => {
                             >
                               {/* {console.log(cycle.sectionName)} */}
                               {section.name}
-                          {console.log(sectionId)}
+                              {console.log(sectionId)}
                             </option>
                           ))}
                       </Select>

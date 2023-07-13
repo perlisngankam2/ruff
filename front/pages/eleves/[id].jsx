@@ -893,7 +893,7 @@ const DetailComponent = () => {
                   </Text>
                   <Text>
                     <Text as="b">Section : </Text>
-                    {dataSectionStudentById?.findSectionByStudent[0].name}
+                    {/* {dataSectionStudentById?.findSectionByStudent[0].name} */}
                   </Text>
                   <Text>
                     <Text as="b">Status : </Text>
@@ -982,7 +982,7 @@ const DetailComponent = () => {
                           Détails sur les tranches
                         </Text>
                       </Box>
-                      <Box w="500px" mb="2">
+                      <Box w="455px" mb="2">
                         <TableContainer>
                           <Table variant="simple" size="40px">
                             <Thead>
@@ -1119,11 +1119,11 @@ const DetailComponent = () => {
               </CardBody>
               <CardFooter></CardFooter>
             </Card>
-
             {/* FORMULAIRE initialisation PAIEMENT DE SCOLARITE */}
             <AlertDialog
               isOpen={isOpenns}
               leastDestructiveRef={cancelRef}
+              closeOnOverlayClick={false}
               onClose={onClosses}
               size="xl"
             >
@@ -1186,6 +1186,7 @@ const DetailComponent = () => {
               <AlertDialog
                 isOpen={isOpen}
                 leastDestructiveRef={cancelRef}
+                closeOnOverlayClick={false}
                 onClose={onClose}
                 size="xl"
               >

@@ -303,6 +303,7 @@ const Pension = () => {
               <AlertDialog
                 motionPreset="slideInBottom"
                 leastDestructiveRef={cancelRef}
+                closeOnOverlayClick={false}
                 onClose={onClose}
                 isOpen={isOpen}
                 isCentered

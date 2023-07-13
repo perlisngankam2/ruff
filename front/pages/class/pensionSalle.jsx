@@ -361,6 +361,7 @@ const PensionSalle = () => {
             <AlertDialog
               isOpen={isOpennes}
               leastDestructiveRef={cancelRef}
+              closeOnOverlayClick={false}
               onClose={onClosses}
               size="xl"
               isCentered

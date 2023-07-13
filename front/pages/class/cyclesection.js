@@ -47,7 +47,7 @@ import {
   GET_ONE_CYCLE,
   GET_ALL_CYCLE,
   GET_SECTION_BY_ID,
-  GET_CYCLE_BY_ID
+  GET_CYCLE_BY_ID,
 } from "../../graphql/Queries";
 import {
   DELETE_SECTION,
@@ -210,7 +210,7 @@ const cyclesection = () => {
             <Text>Dashboad / classe/Cycle & section</Text>
           </Hide>
         </Flex>
-        <Flex gap={10} mt={7}>
+        <Flex gap={10} mt={7} w="full">
           <InputGroup width="600px">
             {/* <InputRightElement
               children={<Icon as={FiSearch} />}
@@ -232,8 +232,9 @@ const cyclesection = () => {
             /> */}
           </InputGroup>
           <Button
+            marginLeft={"auto"}
             type="submit"
-            ml={["20px", "50px", "100px", "600px"]}
+            // ml={["20px", "50px", "100px", "600px"]}
             rightIcon={<Icon as={IoIosAdd} boxSize="20px" />}
             onClick={onOpen}
           >
@@ -299,7 +300,7 @@ const cyclesection = () => {
             />
           </Box>
         </Box>
-        <Box mt={50}>
+        <Box mt={50} w="full">
           <Box>
             <Heading
               mt={2}
@@ -310,19 +311,18 @@ const cyclesection = () => {
               Cycles
             </Heading>
           </Box>
-          <Box>
+          <Flex w="full" >
             <Button
               rightIcon={<Icon as={IoIosAdd} boxSize="20px" />}
               onClick={onOpenCycle}
-              ml={["245px", "490px", "909px"]}
-              width={"200px"}
               mb={"20px"}
               mt={"10px"}
-              // onClick = {() => router.push(personnel/AjouterCategoryPersonnel)}
+              marginLeft={"auto"}
+              type="submit"
             >
               Ajouter un Cycle
             </Button>
-          </Box>
+          </Flex>
           <CycleCreate
             // defaultValues={defaultValues}
             // {...onSubmit ? updateCycle: addCycle}
@@ -388,23 +388,18 @@ const CycleElement = ({ cycle, index }) => {
     onOpen: onOpenCycle,
     onClose: onCloseCycle,
   } = useDisclosure();
-  const {
-    isOpen,
-    onOpen,
-    onClose,
-    onToggle
-  } = useDisclosure();
+  const { isOpen, onOpen, onClose, onToggle } = useDisclosure();
   const cancelRef = React.useRef();
   const toast = useToast();
-  const router = useRouter()
+  const router = useRouter();
   const [deleteCycle, loading, error] = useMutation(DELETE_CYCLE);
 
   const { data: dataDetailsCycle } = useQuery(GET_ONE_CYCLE);
-  const { data: dataCycleById } = useQuery(GET_CYCLE_BY_ID,
-    { variables: {id: router.query.id}}
-  )
+  const { data: dataCycleById } = useQuery(GET_CYCLE_BY_ID, {
+    variables: { id: router.query.id },
+  });
   const [createCycle] = useMutation(CREATE_CYCLE);
-  const [editCycle, setEditCycle] = useState(null)
+  const [editCycle, setEditCycle] = useState(null);
   const removeCycle = async (id) => {
     await deleteCycle({
       variables: { id },
@@ -452,7 +447,7 @@ const CycleElement = ({ cycle, index }) => {
             onCloseCycle={onCloseCycle}
             cycle={cycle}
           />
-      {  console.log(cycle)}
+          {console.log(cycle)}
           <Icon
             as={MdDelete}
             boxSize="44px"

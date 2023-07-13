@@ -246,7 +246,6 @@ const generalSetting = () => {
               >
                 Mettre à jour les informations de l'ecole
               </CardHeader>
-             
               <CardBody>
                 <FormControl>
                   <FormLabel fontSize={"lg"}>Nom de l'ecole</FormLabel>
@@ -479,6 +478,7 @@ const generalSetting = () => {
           <AlertDialog
             motionPreset="slideInBottom"
             // leastDestructiveRef={cancelRef}
+            closeOnOverlayClick={false}
             onClose={onClosses}
             isOpen={isOpenns}
             isCentered

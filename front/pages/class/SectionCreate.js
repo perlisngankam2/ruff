@@ -29,8 +29,15 @@ import { getStaticPropsTranslations } from "../../types/staticProps";
 import { useTranslation } from "next-i18next";
 import { useAuth } from "../../contexts/account/Auth/Auth";
 
-const SectionCreate = ({onCreateSection, onUpdateSection, section,isOpen,onOpen,onClose }) => {
-  const [name, setName] = useState(section? section?.name : "");
+const SectionCreate = ({
+  onCreateSection,
+  onUpdateSection,
+  section,
+  isOpen,
+  onOpen,
+  onClose,
+}) => {
+  const [name, setName] = useState(section ? section?.name : "");
   // const [name, setName] = useState("");
 
   const [description, setDescription] = useState("");
@@ -226,22 +233,20 @@ const SectionCreate = ({onCreateSection, onUpdateSection, section,isOpen,onOpen,
   //   setDescription("");
   // };
 
-
   return (
     <Center>
       <Box>
-        <Box>
-         
-        </Box>
+        <Box></Box>
         <Box>
           <AlertDialog
             isOpen={isOpen}
             leastDestructiveRef={cancelRef}
+            closeOnOverlayClick={false}
             onClose={onClose}
             size="xl"
             isCentered
           >
-            <AlertDialogOverlay closeOnOverlayClick={false}>
+            <AlertDialogOverlay>
               <AlertDialogContent width={"440px"}>
                 <Box as={"form"} onSubmit={addSection}>
                   <AlertDialogHeader fontSize="sm" fontWeight="base" mt="9px">

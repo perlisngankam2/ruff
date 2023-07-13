@@ -135,6 +135,7 @@ function ajoutercategorypersonnel() {
           <AlertDialog
             isOpen={isOpen}
             leastDestructiveRef={cancelRef}
+            closeOnOverlayClick={false}
             size="xl"
             onClose={onClose}
             isCentered

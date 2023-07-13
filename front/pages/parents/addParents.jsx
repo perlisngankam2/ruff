@@ -41,7 +41,6 @@ const addParents = () => {
   const [createParent, { error }] = useMutation(CREATE_PARENT, {
     onError: (error) => console.log(error),
   });
-  const [updateSection] = useMutation(UPDATA_SECTION);
   const router = useRouter();
   const toast = useToast();
   const { data: dataparents, refetch } = useQuery(GET_ALL_PARENT);
@@ -116,6 +115,7 @@ const addParents = () => {
           <AlertDialog
             isOpen={isOpen}
             leastDestructiveRef={cancelRef}
+            closeOnOverlayClick={false}
             onClose={onClose}
             size="xl"
             isCentered

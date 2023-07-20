@@ -34,6 +34,7 @@ import {
   InputRightElement,
   AlertDialogCloseButton,
   useToast,
+  Tooltip,
 } from "@chakra-ui/react";
 
 import DefaultLayout from "../../components/layouts/DefaultLayout";
@@ -311,7 +312,7 @@ const cyclesection = () => {
               Cycles
             </Heading>
           </Box>
-          <Flex w="full" >
+          <Flex w="full">
             <Button
               rightIcon={<Icon as={IoIosAdd} boxSize="20px" />}
               onClick={onOpenCycle}
@@ -431,15 +432,17 @@ const CycleElement = ({ cycle, index }) => {
       {/* <Td p={0} pl={6}>pppp</Td> */}
       <Td p={0} pl={3}>
         <Box display="flex">
-          <Icon
-            as={FiEdit}
-            boxSize="40px"
-            p="3"
-            // bg="blue.100"
-            rounded="full"
-            onClick={onOpenCycle}
-            _hover={{ background: "red.100" }}
-          />
+          <Tooltip>
+            <Icon
+              as={FiEdit}
+              boxSize="40px"
+              p="3"
+              // bg="blue.100"
+              rounded="full"
+              onClick={onOpenCycle}
+              _hover={{ background: "red.100" }}
+            />
+          </Tooltip>
           {console.log(dataCycleById?.findOnecycle)}
           <CycleCreate
             onOpenCycle={onOpenCycle}

@@ -166,6 +166,7 @@ const AddClass = () => {
     router.push("/class");
   };
 
+
   return (
     <DefaultLayout>
       <Box pt="70px" width="full" background="colors.tertiary">

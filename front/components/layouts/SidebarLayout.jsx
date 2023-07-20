@@ -45,8 +45,8 @@ const SidebarLayout = ({ children }) => {
   
   const { account, loaded } = useAccount();
   const { data: personnelData, called, loading } = useQuery(GET_PERSONNEL_BY_USERID,
-     {
-        variables:{ userid: account?.id }
+    {
+      variables:{ userid: account?.id }
     }
   )
 

@@ -14,7 +14,7 @@ export const AccountContext = createContext(
 
 export const AccountProvider  = ({ children }) => {
 
-  const { authToken, removeAuthToken,userID } = useAuth();
+  const { authToken, removeAuthToken, userID } = useAuth();
 
   const { data: dataUser, called, loading } = useQuery(GET_USER_CONNECTED, 
       {

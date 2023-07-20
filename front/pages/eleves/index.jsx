@@ -39,6 +39,7 @@ import {
   AlertDialogCloseButton,
   Show,
   useToast,
+  Tooltip,
 } from "@chakra-ui/react";
 // import Link from "../../components/atoms/Link"
 import React from "react";
@@ -306,21 +307,25 @@ const Eleves = () => {
                             </ButtonGroup>
                             <Box>
                               <Box>
+                              <Tooltip label="Modifier">
+
                                 <Link
                                   href={{
                                     pathname: Routes.EleveEdit?.path || "",
                                     query: { id: student.id },
                                   }}
                                 >
-                                  <Icon
-                                    as={FiEdit}
-                                    boxSize="40px"
-                                    p="3"
-                                    // bg="blue.100"
-                                    rounded="full"
-                                    _hover={{ background: "red.100" }}
-                                  />
+                                    <Icon
+                                      as={FiEdit}
+                                      boxSize="40px"
+                                      p="3"
+                                      // bg="blue.100"
+                                      rounded="full"
+                                      _hover={{ background: "red.100" }}
+                                    />
                                 </Link>
+                              </Tooltip>
+
                                 {/* {
                                   (account?.role==="ADMIN")||
                                   (personnelData?.getpersonnelbyaccount.fonction==="econome") ||

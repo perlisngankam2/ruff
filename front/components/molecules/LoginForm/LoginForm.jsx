@@ -43,14 +43,16 @@ const LoginForm = () => {
   const [loginInput] = useMutation(LOGIN_USER, {
     onError: (error) => console.log(error),
   });
+
   const [user, setUser] = useState(null);
   const router = useRouter();
   const { setAuthToken, authToken } = useAuth();
   const { dataUser, called, loading, error } = useQuery(GET_USER_CONNECTED);
+  const [errors, setErrors] = useState("");
   const { t } = useTranslation();
   //console.log(setAuthToken.isLogged)
 
-  console.log(authToken);
+  // console.log(authToken);
   // useEffect(()=>{
   //   if(authToken){
   //     router.back()
@@ -64,28 +66,43 @@ const LoginForm = () => {
     event.preventDefault();
     setIsLoading(true);
 
-    const login = await loginInput({
+    const response = await loginInput({
       variables: {
         loginInput: {
-          username: email, 
+          username: email,
           password: password,
         },
       },
     });
 
-    console.log(authToken);
+    // console.log(authToken);
+    const authTokenns = response.data?.login.access_token;
+    console.log(authTokenns);
 
-    console.log(login.data.login.user);
-    if (login.data.login) {
-      setAuthToken?.(login.data.login.access_token, login.data.login.user.id);
-      // if(login.data.login.user.deactivatedAt === null && login.data.login.user.role !== 'ADMIN'){
-      //   // router.push('/resetPassword')
-      //     onOpen()
-      // } else {
+    if (authTokenns) {
       router.push("/dashboard");
-      // }
+    } else {
+      console.error("Erreur de connexion");
+      // return <Text>Vos informations sont incorrectes</Text>
+      setErrors("Vos informations sont incorrectes. Veuillez reessayer.");
     }
+    setTimeout(() => {
+      setErrors("");
+    }, 5000); // Effacer après 5 secondes (ajustez selon vos besoins)
     setIsLoading(false);
+
+    // console.log(login.data.login.user);
+    // if (data.login) {
+    //   setAuthToken?.(data.login.access_token, data.login.user.id);
+    // setAuthToken?.(data.login.access_token, data.login.user.id);
+    // if(login.data.login.user.deactivatedAt === null && login.data.login.user.role !== 'ADMIN'){
+    //   // router.push('/resetPassword')
+    //     onOpen()
+    // } else {
+    // }
+    // } else {
+    //   console.error("Erreur de connexion");
+    // }
   };
 
   return (
@@ -142,7 +159,17 @@ const LoginForm = () => {
                     isRequired
                   />
                 </FormControl>
-                <HStack mb={5} spacing={{ base: "10px", lg: "60px" }}>
+                {errors && (
+                  <Text
+                    color={"red"}
+                    textAlign={"center"}
+                    fontSize={"15px"}
+                    marginBottom={"5px"}
+                  >
+                    {errors}
+                  </Text>
+                )}
+                {/* <HStack mb={5} spacing={{ base: "10px", lg: "60px" }}>
                   <Checkbox
                     id="remember"
                     colorScheme="green"
@@ -150,15 +177,15 @@ const LoginForm = () => {
                     // onChange={formik.handleChange}
                   >
                     {/* Se souvenir de moi */}
-                    {t("molecules.LoginForm.seSouvenirDeMoi")}
-                  </Checkbox>
+                {/* {t("molecules.LoginForm.seSouvenirDeMoi")} */}
+                {/* </Checkbox>
                   <Link href="#">
                     <Box as="span" color="#0E341F">
-                      {t("molecules.LoginForm.motDePasseOublie")}
-                      {/* Mot de passe oublié ? */}
-                    </Box>
+                      {t("molecules.LoginForm.motDePasseOublie")} */}
+                {/* Mot de passe oublié ? */}
+                {/* </Box>
                   </Link>
-                </HStack>
+                </HStack>  */}
                 <>
                   <Button
                     w="100%"

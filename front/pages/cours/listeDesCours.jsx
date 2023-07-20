@@ -260,7 +260,6 @@ const ListeDesCours = () => {
               </AlertDialogOverlay>
             </AlertDialog>
           </Box>
-
           <TableContainer border={"1px"} rounded={"md"}>
             <Table variant={"striped"} colorScheme={"white"} bg={"white"}>
               <Thead background="colors.secondary">
@@ -362,7 +361,7 @@ const ListeDesCours = () => {
                                           ml={3}
                                         >
                                           {t(
-                                            "pages.courses.courseList.Supprimer"
+                                            "pages.courses.courseList.deleteButton"
                                           )}
                                         </Button>
                                       </AlertDialogFooter>

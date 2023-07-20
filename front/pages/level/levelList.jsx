@@ -30,6 +30,7 @@ import {
   AlertDialogOverlay,
   useDisclosure,
   InputRightElement,
+  Checkbox,
 } from "@chakra-ui/react";
 
 import { useRouter } from "next/router";
@@ -56,10 +57,16 @@ const levelList = () => {
   const { setAuthToken, authToken } = useAuth();
   const { t } = useTranslation();
   const { isOpen, onToggle, onClose } = useDisclosure();
+  const {
+    isOpen: isOpenMultipleLevel,
+    onOpen: onOpenMultipleLevel,
+    onClose: onCloseMultipleLevel,
+  } = useDisclosure();
   const [searchStudyLevel, setSearchStudyLevel] = useState("");
   const itemsPerPage = 2;
   const [pageNumber, setPageNumber] = useState(0);
   const pagesVisited = pageNumber * itemsPerPage;
+  const [selectedElements, setSelectedElements] = useState([]);
 
   const [deleteStudyLevel] = useMutation(DELETE_STUDY_LEVEL);
   const {
@@ -96,6 +103,45 @@ const levelList = () => {
 
   const handleChange = (e) => {
     setSearchStudyLevel(e.target.value);
+  };
+
+  const handleCheckboxChange = (id, event) => {
+    console.log(selectedElements);
+    console.log(id);
+    // event.preventDefault();
+    if (selectedElements.includes(id)) {
+      // console.log(id);
+      setSelectedElements(selectedElements.filter((levelId) => levelId !== id));
+    } else {
+      setSelectedElements([...selectedElements, id]);
+    }
+  };
+
+  const handleDelete = async (id, event) => {
+    selectedElements.map((levelId) => {
+      const delete_ = async () => {
+        try {
+          await deleteStudyLevel({
+            variables: { id: levelId },
+            refetchQueries: [
+              {
+                query: GET_ALL_STUDY_LEVEL,
+              },
+            ],
+          });
+          //   Réinitialiser la sélection des éléments après la suppression réussie
+          setSelectedElements([]);
+          refetch();
+        } catch (error) {
+          console.error("Erreur lors de la suppression :", error);
+        }
+      };
+      delete_();
+      return "";
+    });
+    onCloseMultipleLevel();
+    // selectedElements.splice(id)
+    console.log(selectedElements);
   };
 
   const pageCountStudyLevel = Math.ceil(
@@ -164,10 +210,56 @@ const levelList = () => {
             </Box>
           </Flex>
           <Box mt={10}>
+            <Box>
+              <Button
+                colorScheme="red"
+                size="xs"
+                mb={"10px"}
+                disabled={selectedElements.length === 0}
+                // onClick={handleDelete}
+                onClick={onOpenMultipleLevel}
+              >
+                Supprimer
+              </Button>
+              <AlertDialog
+                isOpen={isOpenMultipleLevel}
+                leastDestructiveRef={cancelRef}
+                onClose={onCloseMultipleLevel}
+                isCentered
+              >
+                <AlertDialogOverlay alignSelf={"center"}>
+                  <AlertDialogContent width={"380px"}>
+                    <AlertDialogHeader
+                      fontSize="lg"
+                      fontWeight="bold"
+                      textAlign={"center"}
+                    >
+                      {t("pages.courses.courseList.confirmDeleting")}
+                    </AlertDialogHeader>
+                    <AlertDialogBody textAlign={"center"}>
+                      {t("pages.courses.courseList.wouldYouWantToDeleteCourse")}
+                    </AlertDialogBody>
+                    <AlertDialogFooter>
+                      <Button
+                        ref={cancelRef}
+                        onClick={onCloseMultipleLevel}
+                        colorScheme="red"
+                      >
+                        {t("pages.courses.courseList.cancelButton")}
+                      </Button>
+                      <Button colorScheme="green" onClick={handleDelete} ml={3}>
+                        {t("pages.courses.courseList.deleteButton")}
+                      </Button>
+                    </AlertDialogFooter>
+                  </AlertDialogContent>
+                </AlertDialogOverlay>
+              </AlertDialog>
+            </Box>
             <TableContainer border={"1px"} rounded={"md"} bg={"white"}>
               <Table variant="striped" bg={"white"} colorScheme={"white"}>
                 <Thead background="colors.secondary">
                   <Tr>
+                    <Th>#</Th>
                     <Th>{t("pages.level.listLevel.name")}</Th>
                     <Th>{t("pages.level.listLevel.fees")}</Th>
                     <Th>Cyle</Th>
@@ -192,6 +284,17 @@ const levelList = () => {
                       })
                       .map((niveauEtude, index) => (
                         <Tr key={index}>
+                          <Td>
+                            <Checkbox
+                              size="sm"
+                              isChecked={selectedElements.includes(
+                                niveauEtude.id
+                              )}
+                              onChange={() =>
+                                handleCheckboxChange(niveauEtude.id)
+                              }
+                            ></Checkbox>
+                          </Td>
                           <Td p={0} pl={6}>
                             {niveauEtude.name}
                           </Td>

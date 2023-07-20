@@ -35,6 +35,7 @@ import {
   useToast,
   InputRightElement,
   InputLeftAddon,
+  Tooltip,
 } from "@chakra-ui/react";
 
 import DefaultLayout from "../../components/layouts/DefaultLayout";
@@ -290,15 +291,22 @@ const Pension = () => {
               />
             </Box>
             <Box display={{ md: "flex" }} flexDirection={"column"} mt={"-10px"}>
-              <Text color={"red"}>
+              {/* <Text color={"red"}>
                 NB: Les tranches doivent etre enregistrées en fonction de leurs
                 ordre de paiement
               </Text>
               <Text color={"red"}>
                 {" "}
                 et par ordre de priorité de la plus petite à la plus grande
-              </Text>
+              </Text> */}
             </Box>
+            <Tooltip
+              label="Les tranches doivent etre enregistrées en fonction de leurs
+                ordre de paiement, et par ordre de priorité de la plus petite à la plus grande"
+              placement="right-end"
+            >
+              <Button color={"red"}>Note</Button>
+            </Tooltip>
             <Box mt={"20px"}>
               <AlertDialog
                 motionPreset="slideInBottom"
@@ -309,7 +317,7 @@ const Pension = () => {
                 isCentered
               >
                 {/* <AlertDialogOverlay /> */}
-                <AlertDialogContent  width={"700px"}>
+                <AlertDialogContent width={"700px"}>
                   <Box as={"form"} onSubmit={addTranchePension}>
                     <AlertDialogHeader
                       textAlign={"center"}

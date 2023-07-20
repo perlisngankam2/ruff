@@ -79,7 +79,9 @@ const LoginForm = () => {
     const authTokenns = response.data?.login.access_token;
     console.log(authTokenns);
 
-    if (authTokenns) {
+    // if (authTokenns) {
+    if (response.data?.login) {
+      setAuthToken?.(authTokenns, response.data?.login.user.id)
       router.push("/dashboard");
     } else {
       console.error("Erreur de connexion");

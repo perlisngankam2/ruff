@@ -43,6 +43,7 @@ import {
   AlertDialogHeader,
   InputRightElement,
   Card,
+  Checkbox,
 } from "@chakra-ui/react";
 
 import { Select as Selects } from "chakra-react-select";
@@ -94,7 +95,12 @@ const Class = () => {
     onClose: onClosses,
     onOpen: onOpennes,
   } = useDisclosure();
-  const [salleId, setSalleId] = useState("");
+  const {
+    isOpen: isOpenMultipleClass,
+    onOpen: onOpenMultipleClass,
+    onClose: onCloseMultipleClass,
+  } = useDisclosure();
+  // const [salleId, setSalleId] = useState("");
   const [personnelId, setPersonnelId] = useState("");
   // const [anneeAcademiqueId, setAnneeAcademiqueId] = useState("");
   const [yearid, setYearId] = useState("");
@@ -105,8 +111,15 @@ const Class = () => {
   const itemsPerPage = 20;
   const [pageNumber, setPageNumber] = useState(0);
   const pagesVisited = pageNumber * itemsPerPage;
+  const [selectedElements, setSelectedElements] = useState([]);
 
-  const [deleteClasse] = useMutation(DELETE_SALLE);
+  const [deleteClasse] = useMutation(DELETE_SALLE, {
+    refetchQueries: [
+      {
+        query: GET_ALL_CLASS,
+      },
+    ],
+  });
   const {
     data: dataClasse,
     refetch,
@@ -184,39 +197,39 @@ const Class = () => {
 
   if (loading) return <Text>Chargement en cours...</Text>;
   if (error) return <Text>Error: {error.message}</Text>;
-// http://downloads.asterisk.org/pub/telephony/asterisk/asterisk-20-current.tar.gz
-  const addPersonnelSalle = async (e) => {
-    e.preventDefault();
-    console.log(selectedCourse);
-    console.log(salleId);
-    selectedCourse.map((course, index)=> {
-      createPersonnelSalle({
-        variables: {
-          input: {
-            salleId: salleId,
-            personnelId: personnelId,
-            courseId: course.value,
-          },
-        },
-        refetchQueries: [
-          {
-            query: GET_ALL_PERSONNEL_SALLE,
-          },
-        ],
-      });
-    });
-    refetch();
-    onClosse();
-    toast({
-      title: "Affection du personnel a la salle.",
-      description: "Affecte avec succes.",
-      status: "success",
-      duration: 3000,
-      isClosable: true,
-    });
-    setPersonnelId("");
-    setSalleId("");
-  };
+  // http://downloads.asterisk.org/pub/telephony/asterisk/asterisk-20-current.tar.gz
+  // const addPersonnelSalle = async (e) => {
+  //   e.preventDefault();
+  //   console.log(selectedCourse);
+  //   console.log(salleId);
+  //   selectedCourse.map((course, index) => {
+  //     createPersonnelSalle({
+  //       variables: {
+  //         input: {
+  //           salleId: salleId,
+  //           personnelId: personnelId,
+  //           courseId: course.value,
+  //         },
+  //       },
+  //       refetchQueries: [
+  //         {
+  //           query: GET_ALL_PERSONNEL_SALLE,
+  //         },
+  //       ],
+  //     });
+  //   });
+  //   refetch();
+  //   onClosse();
+  //   toast({
+  //     title: "Affection du personnel a la salle.",
+  //     description: "Affecte avec succes.",
+  //     status: "success",
+  //     duration: 3000,
+  //     isClosable: true,
+  //   });
+  //   setPersonnelId("");
+  //   setSalleId("");
+  // };
 
   const pageCountSalle = Math.ceil(
     dataClasse?.findAllsalle.length / itemsPerPage
@@ -226,6 +239,51 @@ const Class = () => {
     setPageNumber(page);
   };
 
+  const handleCheckboxChange = (id, event) => {
+    console.log(selectedElements);
+    console.log(id);
+    // event.preventDefault();
+    if (selectedElements.includes(id)) {
+      // console.log(id);
+      setSelectedElements(selectedElements.filter((salleId) => salleId !== id));
+    } else {
+      setSelectedElements([...selectedElements, id]);
+    }
+  };
+
+  const handleDelete = async (id, event) => {
+    selectedElements.map((salleId) => {
+      const delete_ = async () => {
+        try {
+          await deleteClasse({
+            variables: { id: salleId },
+            refetchQueries: [
+              {
+                query: GET_ALL_CLASS,
+              },
+            ],
+          });
+          //   Réinitialiser la sélection des éléments après la suppression réussie
+          setSelectedElements([]);
+          refetch();
+          toast({
+            title: "Suppression de la classe.",
+            description: "Suppresion reussit.",
+            status: "success",
+            duration: 3000,
+            isClosable: true,
+          });
+        } catch (error) {
+          console.error("Erreur lors de la suppression :", error);
+        }
+      };
+      delete_();
+      return "";
+    });
+    onCloseMultipleClass();
+    // selectedElements.splice(id)
+    console.log(selectedElements);
+  };
   return (
     <DefaultLayout>
       <Box background="colors.tertiary" w="full">
@@ -296,10 +354,56 @@ const Class = () => {
 
           {/* LISTE DES CLASSES */}
           <Box mt={10}>
+            <Box>
+              <Button
+                colorScheme="red"
+                size="xs"
+                mb={"10px"}
+                disabled={selectedElements.length === 0}
+                // onClick={handleDelete}
+                onClick={onOpenMultipleClass}
+              >
+                Supprimer
+              </Button>
+              <AlertDialog
+                isOpen={isOpenMultipleClass}
+                leastDestructiveRef={cancelRef}
+                onClose={onCloseMultipleClass}
+                isCentered
+              >
+                <AlertDialogOverlay alignSelf={"center"}>
+                  <AlertDialogContent width={"380px"}>
+                    <AlertDialogHeader
+                      fontSize="lg"
+                      fontWeight="bold"
+                      textAlign={"center"}
+                    >
+                      {t("pages.courses.courseList.confirmDeleting")}
+                    </AlertDialogHeader>
+                    <AlertDialogBody textAlign={"center"}>
+                      {t("pages.courses.courseList.wouldYouWantToDeleteCourse")}
+                    </AlertDialogBody>
+                    <AlertDialogFooter>
+                      <Button
+                        ref={cancelRef}
+                        onClick={onCloseMultipleClass}
+                        colorScheme="red"
+                      >
+                        {t("pages.courses.courseList.cancelButton")}
+                      </Button>
+                      <Button colorScheme="green" onClick={handleDelete} ml={3}>
+                        {t("pages.courses.courseList.deleteButton")}
+                      </Button>
+                    </AlertDialogFooter>
+                  </AlertDialogContent>
+                </AlertDialogOverlay>
+              </AlertDialog>
+            </Box>
             <TableContainer border={"1px"} rounded={"md"}>
               <Table variant="striped" colorScheme={"white"}>
                 <Thead background="colors.secondary">
                   <Tr>
+                    <Th>#</Th>
                     <Th>{t("pages.class.classList.name")}</Th>
                     <Th>Montant pension</Th>
                     <Th>Niveau</Th>
@@ -324,6 +428,13 @@ const Class = () => {
                       })
                       .map((salle, index) => (
                         <Tr key={index}>
+                          <Td>
+                            <Checkbox
+                              size="sm"
+                              isChecked={selectedElements.includes(salle.id)}
+                              onChange={() => handleCheckboxChange(salle.id)}
+                            ></Checkbox>
+                          </Td>
                           <Td p={0} pl={3}>
                             {salle.name}
                           </Td>
